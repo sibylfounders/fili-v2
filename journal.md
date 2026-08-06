@@ -32,6 +32,89 @@
 
 ---
 
+## #008 — La CI est le seul lieu où la batterie tourne en entier
+*2026-08-06 · Statut : 🟡 En cours · Complète : #007*
+
+**Contexte** — Le hook `pre-commit` de `#007` passe `--no-build` : deux builds
+complets à chaque commit rendraient le garde-fou insupportable, donc contourné.
+Conséquence assumée mais gênante : **S2-T8 n'était exécuté nulle part**. Un test
+qui n'a pas de lieu d'exécution est un test qui n'existe pas.
+
+**Décision** — `.github/workflows/qpm.yml` sur GitHub Actions, déclenché sur
+`push` et `pull_request`. La CI exécute la batterie S2 **sans** `--no-build` —
+c'est le seul endroit où T8 tourne, donc le seul endroit qui peut verrouiller S2.
+
+**Sens produit / UX** — Le hook et la CI ne font pas le même métier. Le hook
+protège l'auteur de lui-même, vite, à chaque sauvegarde ; la CI protège
+l'utilisateur final, complètement, avant que le code ne l'atteigne. Séparer les
+deux permet que le contrôle quotidien reste rapide sans que le contrôle réel ne
+soit jamais sauté. Un garde-fou lent finit contourné ; un garde-fou incomplet
+finit inutile — il en faut deux.
+
+**Choix de conception** — `npm ci` et non `npm install` : une CI qui résout ses
+versions à chaud ne prouve rien sur ce qui tournera en production.
+`permissions: contents: read` (doctrine R3, moindre privilège). `concurrency`
+avec annulation : les runs obsolètes ne se mélangent pas aux nouveaux. Un step
+vérifie que le test de mutation a bien **restauré** le fichier qu'il a muté —
+un test qui salit l'arbre de travail est un test qui finira désactivé. Un step
+final publie le périmètre et le coût mesurés (règle d'or n°5).
+
+**Alternatives écartées** — Faire tourner la batterie complète dans le hook
+(deux builds par commit → `--no-verify` deviendrait l'habitude, et le garde-fou
+mourrait de sa propre sévérité) ; un job par test pour un statut granulaire
+(quatre `npm ci` au lieu d'un, pour un gain de lisibilité qui ne change aucune
+décision) ; `continue-on-error` sur le lint le temps de la mise en place
+(rouvre le « PASS avec réserve » par la porte de service).
+
+**Ce qui reste non protégé** — Le fichier de CI ne bloque rien par lui-même :
+sans **branch ruleset** côté GitHub, une PR rouge reste fusionnable. Les
+réglages exacts sont dans le `README`, dont le plus important : *Do not allow
+bypassing*. Une protection contournable par son auteur n'est pas une protection.
+Dette **D10**.
+
+**Impact carte** — `Intégration continue` passe 🟡 ; dette **D10** ouverte.
+
+---
+
+## #007 — Le garde-fou est branché à git, sans dépendance
+*2026-08-06 · Statut : 🟡 En cours*
+
+**Contexte** — Depuis `#005`, les crash-tests existent et passent. Mais rien ne
+les déclenchait : `npm run qpm` ne s'exécutait que si quelqu'un y pensait. Et le
+journal affirmait « on n'édite jamais une entrée passée » sans qu'aucun
+mécanisme ne le garantisse — le dépôt n'était pas versionné.
+
+**Décision** — `git init`, premier commit du socle, et un hook `pre-commit` dans
+`.githooks/` activé par `git config core.hooksPath .githooks`. Il lance S2
+(toujours), puis `tsc` et `eslint` si `node_modules` existe.
+
+**Sens produit / UX** — Un contrôle qualité qui repose sur la discipline cède au
+moment exact où il servirait : sous pression, la veille d'une livraison. Le
+brancher sur le commit le rend structurel plutôt que volontaire. Et versionner
+le journal transforme sa règle d'immuabilité d'une promesse en un fait
+vérifiable : une entrée réécrite se voit dans le diff.
+
+**Alternatives écartées** — `husky` + `lint-staged` (le garde-fou dépendrait
+alors d'un `npm ci` réussi — un install raté le ferait disparaître en silence,
+et un garde-fou qui s'évapore sans bruit est pire que pas de garde-fou) ;
+CI seule (arrive trop tard, après le push, quand le contexte est déjà perdu).
+
+**Arbitrage assumé** — Le hook passe `--no-build` : deux builds complets à chaque
+commit rendraient le hook insupportable, donc contourné. S2-T8 y reste **BLOQUÉ**,
+jamais PASS. Le build reproductible se vérifie en intégration, pas à chaque
+sauvegarde. `--no-verify` reste possible : un contournement se déclare ici, il ne
+se cache pas.
+
+**Conséquences** — Ajout de `.nvmrc` (Node 22), `engines`, `.editorconfig`.
+Le `git init` exécuté depuis le pont a laissé ~30 fichiers `.lock` et
+`tmp_obj_*` résiduels dans `.git/` : le pont interdit `unlink`. Le commit est
+valide, mais `.git/index.lock` bloquera le prochain commit tant qu'il n'est pas
+supprimé à la main. Dette **D8**.
+
+**Impact carte** — Nouveau bloc `Gouvernance du dépôt` 🟡 ; dette **D8** ouverte.
+
+---
+
 ## #006 — Première exécution de la chaîne de preuve sur machine réelle
 *2026-08-06 · Statut : 🟡 En cours · Complète : #005*
 

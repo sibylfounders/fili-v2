@@ -203,6 +203,12 @@ Un sujet S4 déclaré 🟢 sur les seuls tests automatiques serait un faux verro
 | Test a11y | `axe-core` | ⚪ | Déclaré en devDependency, harness non écrit (pas de composant à tester) |
 | Crash-test S2 | `scripts/qpm-s2.mjs` | 🟢 | Zéro dépendance, exécuté, 7 PASS / 1 BLOQUÉ |
 | Machine d'états | `xstate` | ⚪ | Pertinent dès S1 |
+| Versionnement | `git` | 🟡 | Dépôt initialisé, 1 commit — locks résiduels à purger (D8) |
+| Hook pre-commit | `.githooks/pre-commit` | 🟡 | Sans dépendance. Activer : `npm run hooks` |
+| Environnement | `.nvmrc` (Node 22) · `.editorconfig` · `engines` | 🟢 | — |
+| Intégration continue | GitHub Actions | 🟡 | `.github/workflows/qpm.yml` — seul lieu où S2-T8 s'exécute |
+| Protection de branche | GitHub ruleset | ⚪ | À activer à la main (D10) — sans elle, une PR rouge reste fusionnable |
+| Runner de tests | `vitest` | ⚪ | Requis pour S1 (fixtures des 4 états) — inutile sans composant |
 
 **Écarts assumés à ce stade**
 
@@ -232,5 +238,8 @@ Un sujet S4 déclaré 🟢 sur les seuls tests automatiques serait un faux verro
 | D3 | Tokens non générés par Style Dictionary | Échelle non arrêtée (S2) | Verrouillage de S2 |
 | ~~D4~~ | ~~Chaîne de preuve a11y jamais exécutée~~ | — | ✅ **Levée** le 2026-08-06 — `eslint .` 0 erreur, `tsc -b` 0 erreur |
 | D7 | Tests a11y **manuels** S4-T3 à S4-T7 jamais faits (clavier, piège de focus, focus visible, reflow) | Non automatisables — 70 % des non-conformités sont là | Avant le premier écran produit |
+| D8 | ~30 fichiers `.lock` / `tmp_obj_*` résiduels dans `.git/` — **bloquent le prochain commit** | `git init` lancé depuis le pont, qui interdit `unlink` | `find .git \( -name "*.lock" -o -name "tmp_obj_*" \) -delete` |
+| D9 | L'écosystème Fili (19 dépôts + 2 skills) **n'est pas sur la machine d'Aurélien** — il vit dans un conteneur cloud éphémère | Registre npm et `~/.claude` hors de portée depuis le cloud | `bash ~/Claude/Projects/Fili/setup_fili.sh` |
+| D10 | La CI existe mais **ne bloque rien** — sans branch ruleset, une PR rouge reste fusionnable | Réglage côté GitHub, hors dépôt | Settings → Branches → ruleset (cf. README) |
 | D5 | Les 4 batteries de crash-tests sont écrites mais **jamais exécutées** | Outillage absent (D4) + aucun composant au périmètre | Au premier composant produit |
 | D6 | Les seuils chiffrés (CLS ≤ 0,02 · ≤ 6 tailles typo · INP ≤ 200 ms) sont posés par défaut, pas éprouvés | Aucune mesure de référence disponible | Première exécution réelle des batteries |

@@ -33,6 +33,32 @@ Un test est **binaire**. Un sujet passe 🟢 à 100 % de PASS sur 100 % du péri
 Un seul FAIL laisse la porte fermée — voir le contrat de verrouillage dans
 `system-map.md § 2 bis`.
 
+## Intégration continue
+
+`.github/workflows/qpm.yml` — déclenché sur `push` et `pull_request` vers
+`main` / `master`.
+
+C'est **le seul endroit où la batterie tourne en entier**. Le hook pre-commit
+passe `--no-build` pour rester supportable au quotidien, donc S2-T8 y reste
+BLOQUÉ ; la CI est le seul lieu qui peut verrouiller S2.
+
+Aucun `continue-on-error`, aucun `|| true`, aucune étape optionnelle.
+
+### Protection de branche à activer côté GitHub
+
+Le fichier de CI ne protège rien tout seul : sans ces réglages, une PR rouge
+reste fusionnable. Dans **Settings → Branches → Add branch ruleset** :
+
+| Réglage | Valeur |
+|---|---|
+| Require a pull request before merging | ✅ |
+| Require status checks to pass | ✅ — cocher `Crash-tests QPM` |
+| Require branches to be up to date before merging | ✅ |
+| Do not allow bypassing the above settings | ✅ |
+
+Le dernier est le plus important : une protection contournable par son auteur
+n'est pas une protection, c'est un rappel.
+
 ## Règles du socle
 
 - **Zéro valeur en dur** dans les composants. Couleurs, espacements, rayons,
