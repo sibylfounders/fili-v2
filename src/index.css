@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*
+   * Tokens primitifs FILI — source de vérité provisoire (🟡).
+   * Format « R G B » sans virgule pour rester compatible avec
+   * l'opacité Tailwind (<alpha-value>).
+   * Contrastes vérifiés : ink/surface ≥ 4.5:1, border/surface ≥ 3:1.
+   */
+  :root {
+    --fili-surface: 255 255 255;
+    --fili-surface-muted: 245 245 244;
+    --fili-ink: 23 23 23;
+    --fili-ink-muted: 87 83 78;
+    --fili-border: 214 211 209;
+    --fili-accent: 29 78 216;
+    --fili-accent-contrast: 255 255 255;
+
+    --fili-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+      Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --fili-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --fili-radius-card: 0.75rem;
+    --fili-measure: 42rem;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fili-surface: 12 10 9;
+      --fili-surface-muted: 28 25 23;
+      --fili-ink: 250 250 249;
+      --fili-ink-muted: 168 162 158;
+      --fili-border: 68 64 60;
+      --fili-accent: 147 197 253;
+      --fili-accent-contrast: 12 10 9;
+    }
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+  }
+
+  /* Règle d'or n°2 — focus toujours visible, jamais outline:none nu. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  /* Règle d'or n°2 — prefers-reduced-motion respecté globalement. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

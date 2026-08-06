@@ -1,0 +1,33 @@
+#!/bin/sh
+# =============================================================================
+#  Garde-fou FILI — pre-commit
+#
+#  Un crash-test qu'on doit se souvenir de lancer cède exactement au moment où
+#  il compte : la veille d'une livraison. Ce hook le lance à notre place.
+#
+#  Volontairement sans husky ni lint-staged : le garde-fou ne doit pas dépendre
+#  d'une dépendance qu'un `npm ci` raté ferait disparaître en silence.
+#
+#  Activation (une fois) :  git config core.hooksPath .githooks
+#  Contournement assumé  :  git commit --no-verify   → à déclarer au journal.
+# =============================================================================
+
+set -e
+
+echo "── Garde-fou Fili ───────────────────────────────────────────"
+
+# S2 tourne toujours : zéro dépendance, donc jamais d'excuse pour le sauter.
+# --no-build évite deux builds complets à chaque commit ; T8 reste alors
+# BLOQUÉ, donc jamais compté comme PASS. Le build reproductible se vérifie
+# en intégration, pas à chaque sauvegarde.
+node scripts/qpm-s2.mjs --no-build
+
+if [ -d node_modules ]; then
+  npx --no-install tsc -b --noEmit
+  npx --no-install eslint .
+else
+  echo "  ⚠  node_modules absent — lint et typecheck sautés."
+  echo "     Le commit passe, mais la preuve est incomplète : npm install."
+fi
+
+echo "── OK ───────────────────────────────────────────────────────"
