@@ -1,0 +1,104 @@
+##
+# Chaîne de preuve FILI — Qualité Perçue Minimale
+#
+# C'est ici, et nulle part ailleurs, que la batterie tourne en entier.
+# Le hook pre-commit passe `--no-build` pour rester supportable au quotidien :
+# S2-T8 (build reproductible) y reste BLOQUÉ. La CI est le seul endroit où il
+# s'exécute vraiment — donc le seul endroit qui peut verrouiller S2.
+#
+# Aucun `continue-on-error`, aucun `|| true`, aucune étape optionnelle.
+# Le contrat de verrouillage est binaire : un seul FAIL ferme la porte.
+##
+
+name: QPM — chaîne de preuve
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+# Sécurité applicative (doctrine R3) : le workflow ne lit que le dépôt.
+permissions:
+  contents: read
+
+# Un run par référence : les exécutions obsolètes sont annulées, jamais
+# fusionnées avec les nouvelles.
+concurrency:
+  group: qpm-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preuve:
+    name: Crash-tests QPM
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # `npm ci` et non `npm install` : installation reproductible à partir du
+      # lockfile. Une CI qui résout ses versions à chaud ne prouve rien sur ce
+      # qui tournera en production.
+      - name: Installer les dépendances
+        run: npm ci
+
+      # ------------------------------------------------------------------
+      # S2 — Rythme & échelle. Batterie complète, T8 inclus : deux builds
+      # successifs et comparaison des hash du CSS émis.
+      # ------------------------------------------------------------------
+      - name: 'S2 · batterie complète (T1 → T8)'
+        run: node scripts/qpm-s2.mjs
+
+      # Une batterie qu'on ne sait pas faire rougir ne prouve rien.
+      # Ce step échoue si l'injection volontaire d'un défaut passe inaperçue.
+      - name: 'S2-T9 · test de mutation'
+        run: node scripts/qpm-s2.mjs --mutate
+
+      # Le test de mutation restaure le fichier qu'il a muté. S'il reste la
+      # moindre trace, c'est que la restauration a échoué : on refuse de
+      # continuer sur un arbre de travail sale.
+      - name: 'Vérifier que la mutation a bien été restaurée'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::L'arbre de travail est modifié après le test de mutation."
+            git --no-pager diff
+            exit 1
+          fi
+
+      # ------------------------------------------------------------------
+      # S4 — part automatisable. Ne couvre qu'environ 30 % des non-conformités
+      # WCAG : ce job vert ne vaut pas conformité (cf. dette D7).
+      # ------------------------------------------------------------------
+      - name: 'Contrat de types'
+        run: npx tsc -b --noEmit
+
+      - name: 'S4 · lint a11y et tokens'
+        run: npx eslint .
+
+      # ------------------------------------------------------------------
+      # Règle d'or n°5 — tout contrôle produit un chiffre, pas seulement un avis.
+      # ------------------------------------------------------------------
+      - name: 'Publier le périmètre et le coût'
+        if: always()
+        run: |
+          {
+            echo "## QPM — périmètre mesuré"
+            echo
+            echo "| Indicateur | Valeur |"
+            echo "|---|---|"
+            echo "| Fichiers au périmètre S2 | $(find src -type f \( -name '*.ts' -o -name '*.tsx' \) | wc -l | tr -d ' ') |"
+            echo "| Lignes de source | $(find src -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.css' \) -exec cat {} + | wc -l | tr -d ' ') |"
+            echo "| Poids CSS émis | $(du -sh dist/assets 2>/dev/null | cut -f1 || echo 'n/a') |"
+            echo "| Node | $(node -v) |"
+            echo
+            echo "> S4-T3 à S4-T7 (clavier, piège de focus, focus visible, reflow)"
+            echo "> ne sont **pas** couverts par cette CI — dette D7."
+          } >> "$GITHUB_STEP_SUMMARY"
