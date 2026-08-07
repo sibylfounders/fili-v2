@@ -35,7 +35,8 @@ const style = readFileSync(CSS, 'utf8')
 const { rendre } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/temoin/runtime.mjs')).href)
 const { installerSource } = await import(pathToFileURL(path.join(RACINE, 'src/system/donnees/source.ts')).href)
 const { installerMutation } = await import(pathToFileURL(path.join(RACINE, 'src/system/donnees/useRequete.ts')).href)
-const { scenariosVerdict, scenariosConstat } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/etat/scenarios.mjs')).href)
+const { reinitialiserId } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/temoin/react-temoin.mjs')).href)
+const { scenariosVerdict, scenariosConstat, scenariosFamille, scenariosFaceAFace } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/etat/scenarios.mjs')).href)
 
 /* ── L'état réel, produit par le Gardien ─────────────────────────────────── */
 const cheminEtat = path.join(RACINE, 'public/etat.json')
@@ -67,11 +68,40 @@ const reelConstat = {
   ]
 }
 
+/* La famille et le face-à-face ne s'inventent pas non plus : ils viennent de
+   l'état que le Gardien a produit en regardant le dossier des témoins. Le
+   témoin de É3 montre donc les vraies générations, y compris la sienne. */
+/* Un témoin est un fichier posé dans temoins/<gabarit>/<date>/. Les chemins
+   que l'état porte sont ceux du produit servi (« ./temoins/… ») ; depuis le
+   témoin, ils ne résolvent nulle part. On les ramène donc à la position réelle
+   du fichier, sans quoi É3 et É4 témoigneraient d'un cadre vide — et c'est
+   exactement le défaut qu'ils existent pour attraper. */
+const relatif = (c) => (typeof c === 'string' ? c.replace(/^\.\/temoins\//, '../../') : c)
+const reelFamille = {
+  familles: (donnees('/temoins') ?? []).map((f) => ({ ...f, apercu: relatif(f.apercu) }))
+}
+const reelFaceAFace = {
+  face: (() => {
+    const f = donnees('/faceAFace')
+    if (f === null) return null
+    return {
+      ...f,
+      courant: { ...f.courant, source: relatif(f.courant.source) },
+      precedent: f.precedent ? { ...f.precedent, source: relatif(f.precedent.source) } : null
+    }
+  })(),
+  verdicts: [{ date: DATE, issue: 'accepte' }]
+}
+
 const GABARITS = [
   { cle: 'e1-verdict', titre: 'É1 · Le verdict', source: 'src/pages/EcranVerdict.tsx',
     exporte: 'EcranVerdict', scenarios: scenariosVerdict(reelVerdict) },
   { cle: 'e2-constat', titre: 'É2 · Le constat', source: 'src/pages/EcranConstat.tsx',
-    exporte: 'EcranConstat', scenarios: scenariosConstat(reelConstat) }
+    exporte: 'EcranConstat', scenarios: scenariosConstat(reelConstat) },
+  { cle: 'e3-famille', titre: 'É3 · La famille des témoins', source: 'src/pages/EcranFamille.tsx',
+    exporte: 'EcranFamille', scenarios: scenariosFamille(reelFamille) },
+  { cle: 'e4-face-a-face', titre: 'É4 · Le face-à-face', source: 'src/pages/EcranFaceAFace.tsx',
+    exporte: 'EcranFaceAFace', scenarios: scenariosFaceAFace(reelFaceAFace) }
 ]
 
 const page = (titre, corps) => `<!doctype html>
@@ -96,6 +126,11 @@ for (const g of GABARITS) {
   for (const [etat, sources] of Object.entries(g.scenarios)) {
     for (const [chemin, instantane] of Object.entries(sources)) installerSource(chemin, instantane)
     installerMutation('/runs', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'vide' })
+    installerMutation('/verdicts', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'succes' })
+    /* Deux exécutions doivent produire deux fichiers identiques : sans remise à
+       zéro, les identifiants de champ dériveraient d'un état à l'autre et le
+       face-à-face montrerait un écart qui n'existe pas. */
+    reinitialiserId()
 
     const corps = rendre({ type: Composant, props: {}, enfants: [] })
     const cible = path.join(RACINE, 'temoins', g.cle, DATE, `${etat}.html`)

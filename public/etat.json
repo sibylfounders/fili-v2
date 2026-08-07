@@ -39,5 +39,75 @@
     "donnees": [],
     "chargement": false,
     "erreur": null
+  },
+  "/temoins": {
+    "donnees": [
+      {
+        "gabarit": "e1-verdict",
+        "nom": "É1 · Le verdict",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 4,
+          "illisible": false
+        },
+        "apercu": "./temoins/e1-verdict/2026-08-07/nominal.html",
+        "historique": []
+      },
+      {
+        "gabarit": "e2-constat",
+        "nom": "É2 · Le constat",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 4,
+          "illisible": false
+        },
+        "apercu": "./temoins/e2-constat/2026-08-07/nominal.html",
+        "historique": []
+      },
+      {
+        "gabarit": "e3-famille",
+        "nom": "É3 · La famille des témoins",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 4,
+          "illisible": false
+        },
+        "apercu": "./temoins/e3-famille/2026-08-07/nominal.html",
+        "historique": []
+      },
+      {
+        "gabarit": "e4-face-a-face",
+        "nom": "É4 · Le face-à-face",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 5,
+          "illisible": false
+        },
+        "apercu": "./temoins/e4-face-a-face/2026-08-07/nominal.html",
+        "historique": []
+      }
+    ],
+    "chargement": false,
+    "erreur": null
+  },
+  "/faceAFace": {
+    "donnees": {
+      "gabarit": "e1-verdict",
+      "nom": "É1 · Le verdict",
+      "courant": {
+        "date": "2026-08-07",
+        "source": "./temoins/e1-verdict/2026-08-07/nominal.html",
+        "etats": 4
+      },
+      "precedent": null,
+      "batterie": "intégrité entière au rendu"
+    },
+    "chargement": false,
+    "erreur": null
+  },
+  "/verdicts": {
+    "donnees": [],
+    "chargement": false,
+    "erreur": null
   }
 }

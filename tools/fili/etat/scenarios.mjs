@@ -56,3 +56,42 @@ export function scenariosConstat(reel) {
     vide: { ...plein({ '/constat': reel.assertion }), ...vide(['/occurrences']) }
   }
 }
+
+export function scenariosFamille(reel) {
+  const CHEMINS = ['/temoins']
+  return {
+    /* Normal — chaque gabarit avec son témoin courant rendu. */
+    nominal: plein({ '/temoins': reel.familles }),
+    /* Chargement — la famille se lit ; aucune vignette n'est devinée. */
+    chargement: enCours(CHEMINS),
+    /* Erreur — le dossier des témoins ne répond pas. Rien ne se juge tant
+       qu'on ne sait pas ce qu'on juge. */
+    erreur: enErreur(CHEMINS, 'dossier des témoins illisible'),
+    /* Vide — K2 §6 : « Aucun témoin pour ce gabarit ». La famille existe,
+       elle est seulement sans génération. */
+    vide: plein({
+      '/temoins': reel.familles.map((f) => ({ ...f, courant: null, apercu: null, historique: [] }))
+    })
+  }
+}
+
+export function scenariosFaceAFace(reel) {
+  const CHEMINS = ['/faceAFace', '/verdicts']
+  return {
+    /* Normal — les deux générations disponibles, le verdict pas encore rendu. */
+    nominal: { ...plein({ '/faceAFace': reel.face }), ...vide(['/verdicts']) },
+    /* Chargement — le rendu depuis la source est en cours. */
+    chargement: enCours(CHEMINS),
+    /* Erreur — le rendu a échoué. AUCUNE image de secours n'est montrée :
+       juger une capture au lieu du rendu vérifié annulerait le témoin (#016). */
+    erreur: enErreur(CHEMINS, 'le rendu depuis la source a échoué'),
+    /* Vide — premier témoin du gabarit : pas de génération précédente, donc
+       pas de bascule. Le cas le plus exigeant, et il est déclaré. */
+    vide: {
+      ...plein({ '/faceAFace': { ...reel.face, precedent: null } }),
+      ...vide(['/verdicts'])
+    },
+    /* Succès — le verdict est déposé, daté, à côté du témoin qu'il juge. */
+    succes: plein({ '/faceAFace': reel.face, '/verdicts': reel.verdicts })
+  }
+}

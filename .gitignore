@@ -25,3 +25,4 @@ dist-ssr
 
 # Feuille de style produite pour le rendu des témoins — artefact, pas une pièce.
 temoins/.style.css
+public/temoins

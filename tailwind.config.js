@@ -79,7 +79,7 @@ export default {
       outlineWidth: { focus: planche.focus.epaisseur.valeur },
       outlineOffset: { focus: planche.focus.ecart.valeur },
       width: depuis(planche.taillesIcone),
-      height: depuis(planche.taillesIcone),
+      height: { ...depuis(planche.taillesIcone), ...depuis(planche.hauteurs) },
     },
   },
   plugins: [],

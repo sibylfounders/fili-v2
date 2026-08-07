@@ -16,7 +16,7 @@ let etat
 if (integrite.manques.length > 0) {
   const raison = integrite.manques.join(' · ')
   etat = Object.fromEntries(
-    ['/integrite', '/batterie', '/progression', '/constats', '/runs'].map((c) => [
+    ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/temoins', '/faceAFace', '/verdicts'].map((c) => [
       c, { donnees: null, chargement: false, erreur: raison }
     ])
   )
@@ -51,6 +51,107 @@ if (integrite.manques.length > 0) {
     '/constats': { donnees: constats, chargement: false, erreur: null },
     '/runs': { donnees: [], chargement: false, erreur: null }
   }
+}
+
+/* ── La famille des témoins, lue sur le disque et non déclarée ───────────── */
+/* Fili ne tient pas une liste de ses témoins : il regarde ce que la chaîne de
+   rendu a réellement produit. Une famille déclarée à la main dériverait du
+   dossier sans que rien ne le dise, et É3 montrerait une génération qui
+   n'existe plus. */
+const NOMS = {
+  'e1-verdict': 'É1 · Le verdict',
+  'e2-constat': 'É2 · Le constat',
+  'e3-famille': 'É3 · La famille des témoins',
+  'e4-face-a-face': 'É4 · Le face-à-face'
+}
+const DOSSIER = path.join(RACINE, 'temoins')
+const MIROIR = path.join(RACINE, 'public/temoins')
+
+const dossiers = (p) =>
+  fs.existsSync(p)
+    ? fs.readdirSync(p, { withFileTypes: true })
+        .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
+        .map((e) => e.name)
+    : []
+
+const familles = dossiers(DOSSIER)
+  .filter((cle) => cle !== 'planche')
+  .sort()
+  .map((cle) => {
+    const generations = dossiers(path.join(DOSSIER, cle))
+      .sort()
+      .reverse()
+      .map((date) => {
+        const fichiers = fs.readdirSync(path.join(DOSSIER, cle, date)).filter((f) => f.endsWith('.html'))
+        return { date, etats: fichiers.length, illisible: fichiers.length === 0 }
+      })
+    const courant = generations[0] ?? null
+    return {
+      gabarit: cle,
+      nom: NOMS[cle] ?? cle,
+      courant,
+      /* L'aperçu pointe l'état NOMINAL : c'est celui qui porte le parti visuel.
+         S'il n'a pas été rendu, on ne montre rien plutôt que n'importe lequel. */
+      apercu:
+        courant && fs.existsSync(path.join(DOSSIER, cle, courant.date, 'nominal.html'))
+          ? `./temoins/${cle}/${courant.date}/nominal.html`
+          : null,
+      historique: generations.slice(1)
+    }
+  })
+
+/* Le face-à-face s'ouvre sur le premier gabarit qui a de quoi être jugé. Le
+   choix du gabarit appartiendra au routage, quand les sept existeront. */
+const jugeable = familles.find((f) => f.apercu !== null) ?? null
+const faceAFace = jugeable === null ? null : {
+  gabarit: jugeable.gabarit,
+  nom: jugeable.nom,
+  courant: {
+    date: jugeable.courant.date,
+    source: jugeable.apercu,
+    etats: jugeable.courant.etats
+  },
+  precedent: jugeable.historique[0]
+    ? {
+        date: jugeable.historique[0].date,
+        source: `./temoins/${jugeable.gabarit}/${jugeable.historique[0].date}/nominal.html`,
+        etats: jugeable.historique[0].etats
+      }
+    : null,
+  batterie: integrite.manques.length === 0 ? 'intégrité entière au rendu' : 'REFUS DE STATUER'
+}
+
+/* Le miroir servi. Les témoins vivent dans temoins/ ; le serveur ne sert que
+   public/. La copie est un artefact de service — elle n'est pas versionnée, et
+   elle se refait à chaque production d'état. Deux lignées de témoins seraient
+   une lignée de trop. */
+/* Le miroir se recouvre fichier par fichier, il ne se vide pas et il ne
+   remplace rien en bloc. Purger d'abord reviendrait à supprimer des témoins
+   pour les réécrire — un geste destructeur sur ce qui sert de référence, pour
+   un gain nul : une génération ne disparaît jamais du dossier source, elle
+   s'y ajoute. Une écriture qui tronque suffit, et elle ne peut pas laisser le
+   miroir dans un état intermédiaire où un témoin aurait disparu. */
+const recopier = (de, vers) => {
+  fs.mkdirSync(vers, { recursive: true })
+  for (const e of fs.readdirSync(de, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue
+    const source = path.join(de, e.name)
+    const cible = path.join(vers, e.name)
+    if (e.isDirectory()) recopier(source, cible)
+    else fs.writeFileSync(cible, fs.readFileSync(source))
+  }
+}
+if (fs.existsSync(DOSSIER)) recopier(DOSSIER, MIROIR)
+
+/* Si le juge n'est pas entier, les témoins ne se montrent pas davantage que
+   le verdict : l'état produit porte le refus jusqu'au bout. Montrer une
+   famille lisible sous un refus de statuer laisserait croire qu'on peut juger
+   pendant que le juge est amputé. */
+if (integrite.manques.length === 0) {
+  etat['/temoins'] = { donnees: familles, chargement: false, erreur: null }
+  etat['/faceAFace'] = { donnees: faceAFace, chargement: false, erreur: null }
+  /* Aucun verdict n'a encore été déposé, et Fili ne l'invente pas. */
+  etat['/verdicts'] = { donnees: [], chargement: false, erreur: null }
 }
 
 fs.mkdirSync(path.dirname(SORTIE), { recursive: true })

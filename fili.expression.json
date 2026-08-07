@@ -445,6 +445,13 @@
       "apres": "fin 14 px/1,65 puis corps 17 px/1,60 puis chapeau 19 px/1,55.",
       "pourquoi": "La direction est établie : plus le texte est petit, plus il lui faut d'air. L'échelle allait dans l'autre sens sur ses deux tailles de lecture. Le régime de titre, lui, était déjà juste.",
       "origine": "Confrontation au périmètre typographique arbitré"
+    },
+    {
+      "quoi": "Les hauteurs de cadre",
+      "avant": "Le cadre du témoin portait 42rem et 16rem écrits dans le composant.",
+      "apres": "Deux hauteurs déclarées à la planche — cadre 672 px, vignette 256 px — multiples de l'échelle d'espacement.",
+      "pourquoi": "Une hauteur posée dans un composant est une valeur que rien ne gouverne : elle ne se retrouve pas, elle ne se compare pas, et la suivante sera choisie à l'œil. La chaîne de contrôle l'a vue avant qu'elle s'installe.",
+      "origine": "Chaîne QPM · S2-T2 — dimension littérale"
     }
   ],
   "$limites": [
@@ -571,5 +578,17 @@
       "emploi": "RÉSERVÉ aux espaces de démonstration, et ils vont bien au-delà des blocs sur fond de scène. Aucun écran d'exploitation n'y a droit — É1 à É7 s'en passent."
     },
     "$reprise": "Le fond animé est un canevas WebGL doublé d'un repli et d'un voile : trois couches, pas une image. Il se reprend depuis la charte comme une PIÈCE, jamais réimplémenté — un fond réécrit de mémoire ne serait plus le même fond, et personne ne le verrait."
+  },
+  "hauteurs": {
+    "$intention": "Les deux seules hauteurs posées du produit, et elles ne servent qu'à une chose : porter un témoin. Partout ailleurs la hauteur découle du contenu — une hauteur fixe sur du contenu est le geste qui produit les débordements muets. Ici elle est nécessaire : un cadre qui s'adapterait à ce qu'il contient ne montrerait plus deux générations à la même échelle, et la bascule cesserait de comparer.",
+    "$source": "Multiples de l'échelle d'espacement : 672 px vaut 21 pas de 32, 256 px en vaut 8. Aucune valeur ronde choisie à l'œil.",
+    "cadre": {
+      "valeur": "672px",
+      "emploi": "le témoin en jugement, pleine largeur — É4"
+    },
+    "vignette": {
+      "valeur": "256px",
+      "emploi": "le témoin courant en aperçu — É3"
+    }
   }
 }

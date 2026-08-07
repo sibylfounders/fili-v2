@@ -18,7 +18,12 @@ type Etat = Record<string, { donnees: unknown; chargement: boolean; erreur: stri
 const racine = document.getElementById('root')
 if (!racine) throw new Error("L'élément racine #root est introuvable dans index.html.")
 
-const gabarit: Gabarit = window.location.hash === '#constat' ? 'constat' : 'verdict'
+const HACHE: Record<string, Gabarit> = {
+  '#constat': 'constat',
+  '#temoins': 'famille',
+  '#jugement': 'faceAFace',
+}
+const gabarit: Gabarit = HACHE[window.location.hash.split('/')[0]] ?? 'verdict'
 
 function rendre() {
   createRoot(racine as HTMLElement).render(
@@ -38,17 +43,18 @@ fetch('./etat.json')
   .then((etat: Etat) => {
     for (const [chemin, instantane] of Object.entries(etat))
       installerSource(chemin, instantane)
-    installerMutation('/runs', {
-      lancer: () => undefined,
-      enAttente: false,
-      erreur: null,
-      succes: false,
-    })
+    for (const acte of ['/runs', '/verdicts'])
+      installerMutation(acte, {
+        lancer: () => undefined,
+        enAttente: false,
+        erreur: null,
+        succes: false,
+      })
     rendre()
   })
   .catch((e: unknown) => {
     const raison = e instanceof Error ? e.message : 'source illisible'
-    for (const chemin of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences'])
+    for (const chemin of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences', '/temoins', '/faceAFace', '/verdicts'])
       installerSource(chemin, { donnees: null, chargement: false, erreur: raison })
     rendre()
   })
