@@ -34,6 +34,105 @@ qu'il n'a rien perdu.
 
 ---
 
+## #053 — Le protocole est gelé définitivement, et le gel fait passer la séance de sept points de passage à neuf
+*2026-08-07 · Statut : 🟢 Verrouillé (décision d'Auteur : « ok on gèle ») · Ferme le §10.4 de `claude/protocole-reference-k4.md`*
+
+**Contexte** — K4 avait tranché un gel **en deux temps** (`#045`, arbitrage 1),
+pour tenir ensemble deux exigences contraires : le verrou de la roadmap demandait
+un protocole gelé en K4, et `#034` avait posé qu'*un protocole gelé de loin est
+gelé mal informé*. Ce qui décide était donc gelé depuis `#046` ; quatre réglages
+restaient ouverts jusqu'à la première séance — la hauteur de référence, la forme
+de la planche des registres, celle du catalogue de libellés, et l'ordre interne
+des points de passage à l'intérieur d'un même temps. Le §10.4 exigeait que le gel
+définitif soit prononcé **avant** la première séance, jamais après. Les quatre
+premiers témoins existent depuis `#052` ; la condition est remplie.
+
+**Décision** — **Le gel est prononcé.** Les quatre réglages sont arrêtés et
+consignés dans `claude/gel-protocole-k5.md`, qui fait foi sur ces points sans
+réécrire le protocole. La hauteur de référence reste à **568 px**. La planche et
+le catalogue sont **des pages datées, générées depuis le dépôt, jamais écrites à
+la main**. L'ordre interne des points de passage est celui du §4, tel qu'écrit.
+Le dossier de séance est une liste de fichiers nommés, ouverts dans l'ordre des
+quatre temps.
+
+**Sens produit / UX** — Quatre choses, dont deux n'étaient pas acquises.
+
+**Le gel fait passer la séance de sept points de passage à neuf, et c'est le seul
+gain qu'il produit.** K4 avait écrit noir sur blanc que *« les premières séances
+de K5 porteront sept points de passage sur neuf »* — B-4 et B-5 restaient sans
+objet faute de planche et de catalogue. Les deux pièces existent : la planche
+depuis la construction de l'expression, le catalogue depuis ce gel. **Le rapport
+de un à neuf sur le coût de l'œil — sept séances par génération au lieu de
+soixante-trois passages — porte donc désormais sur la forme pleine**, et non plus
+sur une forme dégradée qu'on aurait pu confondre avec elle.
+
+**Et la dernière charge a été levée par une distinction, pas par du travail.** Le
+catalogue de libellés existait déjà comme fichier de données ; le protocole
+exigeait qu'il soit **lisible d'un bloc**. Un fichier de données ne l'est pas. La
+charge paraissait levée et ne l'était pas — c'est exactement la différence entre
+*la matière existe* et *la pièce de séance existe*, et elle vaut d'être nommée
+parce qu'elle est le genre de trou qui se referme tout seul dans un compte rendu.
+Cent seize formulations sont désormais lisibles d'un bloc, groupées par écran,
+avec les règles de ton en tête et les variables laissées visibles — elles font
+partie de la formulation.
+
+**Garder 568 px est le geste prudent, pas le geste paresseux.** Le §5.3 interdit
+de monter la hauteur de référence en suite d'un B-8 non accepté, parce que ce
+serait ajuster l'instrument au résultat. La déplacer la veille de la première
+séance produirait le même effet **sans même avoir l'excuse d'un résultat à
+corriger** : on réglerait l'instrument sur ce qu'on s'attend à mesurer. Elle
+reste révisable au journal, hors séance, avec son motif propre.
+
+**Le gel ferme l'instrument ; il ne fabrique pas ce qui manque.** Trois gabarits
+sur sept n'ont pas de témoin — É5 la carte, É6 le journal, É7 l'acte —, donc pas
+de séance possible. Et aucune lignée n'a de prédécesseur : le contrôle de
+régression sera **déclaré sans objet aux quatre premières séances**, écrit à
+chaque fois plutôt que constaté à la fin.
+
+**Alternatives écartées** — *Descendre la hauteur de référence maintenant que les
+écrans existent* (c'est régler l'instrument sur ce qu'on s'apprête à mesurer, et
+la faute est plus grave avant la mesure qu'après) ; *déclarer B-5 levé parce que
+le fichier de libellés existe* (la charge aurait été comptée levée sans l'être,
+et le premier à s'en apercevoir aurait été l'Auteur en pleine séance, sans pièce
+à regarder) ; *écrire la planche et le catalogue à la main pour les rendre plus
+lisibles* (une pièce tenue à la main dérive de ce que le produit emploie
+réellement, et l'étalon jugerait alors une intention au lieu d'un état — c'est
+la faute de la maquette de `#016`, déplacée sur l'instrument) ; *réécrire
+`claude/protocole-reference-k4.md` pour y intégrer le gel* (réécrire un document
+vivant en entier est le geste interdit depuis `#049` ; un document de gel qui
+fait foi sur ses quatre points coûte un renvoi et ne risque rien) ; *repousser le
+gel après la première séance* (le §10.4 l'interdit, et pour une raison : un
+protocole figé après la première mesure est un protocole figé sur elle) ;
+*prononcer le gel sans arrêter les quatre réglages* (un gel qui laisse ouvert ce
+qu'il devait fermer n'est pas un gel, c'est une formule).
+
+**Conséquences** — **La première séance peut s'ouvrir.** Elle se tiendra hors de
+Fili, sur les fichiers rendus, puisque É3 et É4 sont à la fois le dispositif de
+jugement et son objet — l'auto-référence déclarée au §8.2 de K4, devenue
+matérielle. Les conditions d'admission sont remplies : vingt-neuf assertions
+portées et actives, les cinq Sujets à cent pour cent, dix-sept témoins rendus
+depuis la source vérifiée, aucune rupture déclarée. **Une seule chose reste avant
+d'ouvrir : décider par quel gabarit commencer** — et ce n'est pas un réglage du
+protocole, qui ne dit pas dans quel ordre les gabarits passent et n'a pas à le
+dire. Aucun contrat rouvert, aucune assertion touchée.
+
+**Ce que ce gel ne prouve pas** — que le protocole est bon. **Il n'a toujours
+jamais été exécuté.** Tout ce qu'il vaut reste une hypothèse sur ce qui rend un
+écran jugeable, et la première chose que les séances mesureront est le protocole
+lui-même : sept séances par génération est un pari sur l'attention, pas une
+mesure. Si le rythme se révèle intenable, ce sera un résultat écrit ici, et le
+groupement se révisera comme se révisent le seuil de 2 et le facteur 3.
+
+**Impact carte** — Protocole de référence : 🟡 gelé en structure → 🟢 **GELÉ
+DÉFINITIVEMENT**. Points de passage par séance : **7/9 → 9/9**. Charges
+d'instrument : la planche des registres et le catalogue de libellés passent de
+🔴 manquantes à 🟢 **levées** — les six charges de K4 sont désormais toutes
+traitées. Ajout de `claude/gel-protocole-k5.md` à la documentation vivante et de
+`tools/fili/expression/catalogue.mjs` au dépôt. Séances possibles : **quatre**,
+sur É1, É2, É3 et É4.
+
+---
+
 ## #052 — P2 est debout : le témoin se juge rendu, par bascule, et le Gardien a trouvé trois fautes dans les écrans écrits pour lui
 *2026-08-07 · Statut : 🟡 En cours (les écrans existent et tiennent ; leur parti visuel n'est pas jugé) · Poursuit K5, ouvert par `#046`*
 

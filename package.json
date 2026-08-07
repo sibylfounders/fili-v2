@@ -25,7 +25,8 @@
     "fili:etat": "node tools/fili/etat/produire.mjs",
     "fili:temoin": "node tools/fili/temoin/rendu.mjs",
     "fili:temoins": "node tools/fili/temoin/rendu-produit.mjs",
-    "fili:check": "eslint src"
+    "fili:check": "eslint src",
+    "fili:catalogue": "node tools/fili/expression/catalogue.mjs"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",
