@@ -10,6 +10,7 @@ import fs from 'node:fs'
 const lire = (f) => JSON.parse(fs.readFileSync(new URL(f, import.meta.url), 'utf8'))
 const planche = lire('./fili.expression.json')
 const registre = lire('./fili.registry.json')
+const palette = lire('./fili.palette.json')
 
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())
 const depuis = (bloc, champ = 'valeur') =>
@@ -41,7 +42,18 @@ export default {
     spacing: { ...espacement, px: '1px' },
     screens: depuis(planche.bascules),
     extend: {
-      colors: depuis(planche.tons),
+      /* Aucune couleur n'est écrite ici ni dans la planche : elles sont toutes
+         calculées depuis la primaire par tools/fili/expression/palette.mjs.
+         Un état expose son couple — surface et ce qui s'écrit dessus. */
+      colors: {
+        ...Object.fromEntries(Object.entries(palette.neutres).map(([k, v]) => [kebab(k), v])),
+        ...Object.fromEntries(
+          Object.entries(palette.etats).map(([nom, e]) => [
+            kebab(nom),
+            { surface: e.surface, sur: e.sur, plein: e.plein, 'sur-plein': e.surPlein, trait: e.trait },
+          ])
+        ),
+      },
       fontFamily: Object.fromEntries(
         Object.entries(depuis(planche.familles)).map(([k, v]) => [k, v.split(',').map((f) => f.trim())])
       ),

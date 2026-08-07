@@ -65,31 +65,9 @@ ul{padding-left:20px;max-width:74ch}li{margin:0 0 12px;font-size:15px}
 </div>
 
 <div class="encart info">
-  <p class="titre">Les règles d'emploi — 🟡 en cours — la plupart restent à écrire. Les phrases d'emploi de cette planche décrivent une intention ; une règle d'emploi opposable dit ce qui est INTERDIT, se vérifie, et entre au corpus.</p>
-  <p>Une règle d'emploi qui n'est pas vérifiable engage la main, pas le Gardien. Elle ne devient opposable qu'en entrant au corpus avec son cas piégé, son cas conforme et sa batterie.</p>
+  <p class="titre">Les règles d'emploi — 🟡 à définir — l'Auteur ne les a pas validés.</p>
+  <p>Les phrases d'emploi de cette planche décrivent l'intention, pas encore la règle. Une règle d'emploi opposable dit ce qui est INTERDIT, se vérifie, et entre au corpus avec S6. Tant qu'elles ne sont pas écrites sous cette forme, elles engagent la main, pas le Gardien.</p>
 </div>
-
-<section>
-  <h2>Les règles d'emploi opposables</h2>
-  <p class="intention">Une règle d'emploi dit ce qui est INTERDIT, se vérifie, et porte son cas piégé et son cas conforme. Celles-ci sont écrites ; elles n'entrent au corpus qu'avec leur batterie.</p>
-  <div class="carte" style="margin-bottom:16px"><div class="corps">
-    <p class="nom">E-1</p>
-    <p class="echantillon petit" style="margin-bottom:12px">Un élément à coins arrondis ne porte pas de bordure inégale. Soit ses angles sont droits, soit toutes ses bordures ont la même épaisseur.</p>
-    <p class="emploi"><b>Interdit</b> — Une carte arrondie avec une barre sur un seul côté, ou avec un côté plus épais que les autres.</p>
-    <p class="emploi"><b>Pourquoi</b> — La bordure épaisse meurt dans la courbe : elle s'y amincit en biseau et produit une jonction que rien ne justifie. C'est l'un des défauts les plus fréquents du relevé de « slop », et il se voit même quand on ne sait pas le nommer.</p>
-    <p class="mesure">piégé : rounded + border-left plus épaisse que les trois autres → bloque. · conforme : angles droits + barre latérale → passe. Arrondi + bordure uniforme → passe. Arrondi sans bordure → passe.</p>
-    <p class="source">Arbitrage d'Auteur, assumé sans preuve : « même si aucune étude ne le prouve, je veux que ce soit compris dans Fili ». Il rejoint la famille du facteur 3 de la proximité, du seuil d'alternance et du seuil de rang — des décisions d'Auteur, pas des vérités, révisables par une entrée de journal et jamais en silence.</p>
-    <p class="source">Décidable — Oui, et sans contexte : un rayon non nul et des épaisseurs de bordure qui diffèrent d'un côté à l'autre sont deux propriétés du fichier. Candidate au corpus.</p>
-  </div></div><div class="carte" style="margin-bottom:16px"><div class="corps">
-    <p class="nom">E-2</p>
-    <p class="echantillon petit" style="margin-bottom:12px">Une surface ne porte jamais le même fond que ce qui la contient. Soit son fond diffère, soit elle porte une bordure.</p>
-    <p class="emploi"><b>Interdit</b> — Une carte blanche sur un fond blanc, sans bordure. Elle n'existe pas : elle n'est qu'un espacement qu'on a cru voir.</p>
-    <p class="emploi"><b>Pourquoi</b> — Une surface qui ne se distingue pas de son conteneur ne délimite rien. Le lecteur croit lire un bloc là où il n'y a qu'un vide, et la structure qu'on pensait avoir posée n'est portée par rien.</p>
-    <p class="mesure">piégé : fond papier sur fond papier, sans bordure → bloque. · conforme : fond en retrait sur fond papier → passe. Fond papier sur fond papier avec bordure → passe.</p>
-    <p class="source">Arbitrage d'Auteur. C'est le pendant de E-1 : E-1 interdit de simuler une séparation par une bordure inégale, E-2 exige qu'une surface se distingue vraiment de ce sur quoi elle est posée.</p>
-    <p class="source">Décidable — Oui pour un fond déclaré dans le même arbre. Limite à écrire : quand le conteneur vit dans un autre composant, la comparaison demande de remonter au-delà du fichier — et le Gardien lit un fichier, jamais un projet. Cette part-là est indécidable en l'état.</p>
-  </div></div>
-</section>
 
 <section>
   <h2>La palette — calculée, pas déclarée</h2>
@@ -170,9 +148,6 @@ ul{padding-left:20px;max-width:74ch}li{margin:0 0 12px;font-size:15px}
 <section><h2>etats</h2>
   <p class="intention">Les états d'un élément avec lequel on interagit. Ils sont déclarés comme une liste fermée : sans elle, chaque écran réinvente ce que veut dire « désactivé ». Aucun n'emploie de couleur — c'est le fond, le trait et l'encre qui changent.</p><p class="source">Manque signalé — Signalé par l'Auteur avant que je le voie. C'était le trou le plus large de la version 2.</p>
   <div class="grille"><div class="carte"><div class="corps"><p class="nom">repos</p><p class="val">papier · traitNet · encre</p><p class="emploi">l'état nominal d'un contrôle</p></div></div><div class="carte"><div class="corps"><p class="nom">survol</p><p class="val">papierSurvol · encre · encre</p><p class="emploi">sous le pointeur — le trait se renforce, le fond se creuse</p></div></div><div class="carte"><div class="corps"><p class="nom">pression</p><p class="val">papierSelection · encre · encre</p><p class="emploi">pendant l'appui</p></div></div><div class="carte"><div class="corps"><p class="nom">focus</p><p class="val">anneau accent, 2 px, écart 2 px</p><p class="emploi">au clavier — il s'ajoute, il ne remplace jamais le trait d'état</p></div></div><div class="carte"><div class="corps"><p class="nom">desactive</p><p class="val">papierCreux · trait · encreEteinte</p><p class="emploi">hors service — hors seuil de contraste par exception WCAG 1.4.3</p></div></div><div class="carte"><div class="corps"><p class="nom">selectionne</p><p class="val">scene · scene · encreInverse</p><p class="emploi">choisi, et qui le reste — le poids plein, jamais une teinte</p></div></div><div class="carte"><div class="corps"><p class="nom">erreur</p><p class="val">papier · encre 2 px · encre</p><p class="emploi">en faute — le trait passe au marqueur, le libellé dit quoi</p></div></div><div class="carte"><div class="corps"><p class="nom">lectureSeule</p><p class="val">papierCreux · aucun trait · encre</p><p class="emploi">lisible, non modifiable — il ne ressemble pas à un contrôle</p></div></div></div></section>
-<section><h2>medias</h2>
-  <p class="intention">Les pièces visuelles propres à Fili. Elles ne sont PAS une règle générale : le corpus reste agnostique, et ces pièces n'appartiennent qu'au produit.</p><p class="source">Provenance — Charte partagée — charte.html. Versées dans fili.medias.json avec leur provenance.</p><p class="source">Le fond animé est un canevas WebGL doublé d'un repli et d'un voile : trois couches, pas une image. Il se reprend depuis la charte comme une PIÈCE, jamais réimplémenté — un fond réécrit de mémoire ne serait plus le même fond, et personne ne le verrait.</p>
-  <div class="grille"><div class="carte"><div class="corps"><p class="nom">marque</p><p class="val">versée au dépôt</p><p class="emploi">le sigle de Fili — une fois par vue, jamais dans le contenu : c'est du chrome</p></div></div><div class="carte"><div class="corps"><p class="nom">fondAnime</p><p class="val">🔴 déclaré, non versé</p><p class="emploi">RÉSERVÉ aux espaces de démonstration, et ils vont bien au-delà des blocs sur fond de scène. Aucun écran d'exploitation n'y a droit — É1 à É7 s'en passent.</p></div></div></div></section>
 
 <section>
   <h2>Ce qui ne vit pas ici</h2>

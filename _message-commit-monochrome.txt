@@ -1,0 +1,55 @@
+K5 · le parti est monochrome — arbitrage d'Auteur
+
+Fili gouverne des systèmes de design. Il ne peut pas porter une charte
+graphique qui oriente l'œil de celui qui juge un témoin : on jugerait le
+produit à travers sa charte au lieu de juger le témoin. C'est l'auto-référence
+déclarée en K3 §6.1, devenue visible.
+
+Le parti « registre papier chaud » de la version 2 tombe donc en entier — la
+chaleur, le serif des titres et l'austérité du mouvement partaient ensemble,
+ils tombent ensemble. Source : l'exercice de mise en page validé par l'Auteur.
+
+Ce qui change :
+
+- Les tons deviennent une seule échelle de gris, du papier à l'encre, plus une
+  scène sombre. AUCUN ton ne porte de sens. Ce qui distingue un état est sa
+  forme, son libellé et le poids de son traitement — jamais sa teinte. Un seul
+  ton coloré subsiste, réservé à ce qui n'est PAS du contenu : l'anneau de
+  focus et le lien.
+- Le monochrome ne contourne pas K2 §7.1, il le satisfait par construction :
+  aucun verdict ne peut se lire à la couleur seule s'il n'y a pas de couleur.
+  Ce que ça coûte est écrit : pas de rouge pour l'erreur, la gravité se lit au
+  poids du traitement.
+- Deux voix typographiques au lieu de trois. Un produit agnostique ne prononce
+  pas, il montre.
+- Un cran de mouvement expressif rentre, borné : réservé à un mouvement qui
+  APPREND quelque chose — un tracé qu'on suit du regard — jamais à une
+  apparition. Son motif d'origine est repris de l'exercice.
+- Le registre des états entre : repos, survol, pression, focus, désactivé,
+  sélectionné, erreur, lecture seule. C'était le trou le plus large de la
+  version 2, et l'Auteur l'avait signalé avant que je le voie.
+- Les phrases d'emploi sont marquées « à définir » : elles décrivent une
+  intention, pas encore une règle opposable.
+
+Et le catalogue de libellés est réécrit pour DEUX familles de destinataires.
+La règle « Fili parle à quelqu'un qui connaît le système » est retirée : elle
+n'était juste que tant que l'Auteur était le seul lecteur.
+
+- Aux humains : ton professionnel, pas exhaustif, le problème avant la
+  solution et un seul de chaque, le mot courant plutôt que le mot juste, rien
+  qui demande un second passage.
+- Aux machines : chaque unité porte son propre contexte et se lit seule ;
+  identifiants stables jamais positionnels ; les faits en tête et dans un champ
+  nommé ; structure de données pour ce qui est structuré ; rien ne dépend de la
+  mise en forme ; l'incertitude est un champ, pas un adverbe ; ce qui est
+  absent est déclaré absent.
+
+Cette seconde famille n'est pas une commodité : un balisage lisible par un
+humain n'est pas une structure lisible par une machine, et c'est exactement la
+panne qui a coûté quarante-deux entrées de journal le 7 août.
+
+Quinze couples de contraste mesurés, tous au-dessus de leur seuil. Gardien au
+vert : intégrité 29/29, batterie 100 %, chaîne S2 à 7 sur 7.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_017JzbyHaBJ31eHh7UG1omMY

@@ -1,0 +1,23 @@
+{
+  "$comment": "Les médias propres à FILI. Ce ne sont PAS des règles générales : le corpus reste agnostique, ces pièces n'appartiennent qu'au produit. Versées depuis la charte partagée (charte.html), avec leur provenance.",
+  "$source": "charte.html — étude des régimes",
+  "marque": {
+    "$emploi": "Le sigle de Fili. Il se pose une fois par vue, jamais deux, et il n'apparaît nulle part dans le contenu — c'est du chrome.",
+    "viewBox": "211 195 244 301.7",
+    "fillRule": "evenodd",
+    "chemins": [
+      "M356.879 197C377.293 197 391.501 204.877 394.412 217.448C395.121 220.046 395.493 223.172 395.493 226.924C395.493 239.317 385.756 248.688 372.672 248.688C364.199 248.688 357.063 244.568 353.216 238.18C353.14 238.054 353.066 237.927 352.993 237.799C351.177 234.635 350.156 230.938 350.156 226.924C350.156 216.714 356.765 208.556 366.239 205.999C363.899 203.331 360.302 201.836 355.368 201.836C339.045 201.836 329.977 216.043 321.514 257.453L317.584 277.101H338.67L391.566 277.101V391.962C391.566 411.912 393.682 417.655 407.889 424.305V424.909H340.181V424.305C354.387 417.655 356.503 411.912 356.503 391.962V310.35C356.503 298.163 355.002 290.617 349.615 284.96H316.073L281.917 424.909C270.128 472.97 248.668 493.222 213 494.733V494.128C232.345 485.363 242.018 452.113 253.202 404.355L280.406 284.96H260.456L261.06 282.542L282.521 275.892L286.451 261.987C299.146 218.461 321.514 197 356.879 197ZM430.349 381C417.664 381 408 390.472 408 403C408 415.528 417.664 425 430.349 425C443.336 425 453 415.528 453 403C453 390.472 443.336 381 430.349 381Z"
+    ]
+  },
+  "fondAnime": {
+    "$statut": "🔴 déclaré, non versé",
+    "$nature": "Un canevas WebGL, doublé d'un repli en dégradé et d'un voile — trois couches, pas une image.",
+    "$emploi": "RÉSERVÉ aux espaces de démonstration, et ils vont bien au-delà des blocs sur fond de scène. Il n'apparaît jamais dans un écran d'exploitation : É1 à É7 n'y ont pas droit.",
+    "$reprise": "À reprendre depuis la charte comme une PIÈCE, jamais à réimplémenter : un fond réécrit de mémoire ne serait plus le même fond, et personne ne le verrait.",
+    "$couches": [
+      "canevas WebGL",
+      "repli en dégradé pour les postes sans WebGL",
+      "voile de lisibilité — trois dégradés superposés"
+    ]
+  }
+}

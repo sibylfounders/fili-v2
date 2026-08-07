@@ -1,7 +1,7 @@
 {
   "$comment": "La planche des registres d'expression de Fili. Pièce du dépôt, charge d'instrument 4 du protocole de référence (K4 §7). Elle donne son objet au point de passage B-4. Elle se modifie AU DÉPÔT, jamais depuis Fili — ligne rouge de K2. Toute valeur d'expression employée dans le produit vient d'ici : c'est ce que le contrat S6 rendra opposable.",
   "$statut": "🟡 proposée à l'arbitrage de l'Auteur — K5",
-  "$version": "2 — complétée le 2026-08-07 après l'inventaire des registres. La version 1 ne couvrait que huit registres sur vingt-huit et en employait quatre sans liste.",
+  "$version": "5 — la charte de Fili, le 2026-08-07. Précision d'Auteur : la charte vaut POUR FILI, pas pour les règles générales. Le corpus reste agnostique ; le produit, lui, a le droit d'avoir un visage.",
   "$autorite": {
     "regle": "Une seule autorité : le dépôt de Fili. Le Gardien ne lit qu'un endroit, et ce qui n'y est pas n'existe pas pour lui.",
     "coupe": "Les VALEURS permises vivent ici. Les LOIS exigées vivent dans le corpus, contrat par contrat. Ce que le Gardien lit pour statuer vit dans fili.registry.json.",
@@ -13,83 +13,25 @@
     "motif": "Deux thèmes doublent chaque ton, chaque mesure de contraste, et surtout chaque témoin — deux rendus par gabarit et par date, soit un doublement de la ressource la plus rare du système (#006). Le mode sombre est hors périmètre, déclaré et non oublié. Il se rouvre par une entrée de journal, jamais en silence.",
     "consequence": "Aucun ton n'a de jumeau. Le jour où le sombre entre, la planche entière est à reprendre — et ce coût est écrit maintenant."
   },
-  "tons": {
-    "$intention": "Un poste de gouvernance lit des verdicts. La palette est celle d'un registre papier : un fond chaud, une encre franche, et quatre signaux et quatre seulement — ce qui est acquis, ce qui est en cours, ce qui refuse, ce qui informe.",
-    "$source": "Les cinq premiers et les trois signaux viennent de l'Écran Témoin accepté par l'Auteur le 6 août (#017). Les états de surface, d'encre et le ton d'information sont ajoutés en K5 ; leur contraste est mesuré.",
-    "papier": {
-      "valeur": "#FBFAF8",
-      "emploi": "le fond de la page"
-    },
-    "papierCreux": {
-      "valeur": "#F3F1ED",
-      "emploi": "le fond d'une section en retrait"
-    },
-    "papierSurvol": {
-      "valeur": "#F0EEE9",
-      "emploi": "une surface sous le pointeur"
-    },
-    "papierSelection": {
-      "valeur": "#E7E2D6",
-      "emploi": "une surface choisie, qui le reste"
-    },
-    "encre": {
-      "valeur": "#17181A",
-      "emploi": "le texte qui porte"
-    },
-    "encreDouce": {
-      "valeur": "#585C63",
-      "emploi": "le texte qui accompagne"
-    },
-    "encreEteinte": {
-      "valeur": "#9A958C",
-      "emploi": "un contrôle désactivé — hors seuil de contraste par exception WCAG 1.4.3, et déclaré comme tel"
-    },
-    "encreInverse": {
-      "valeur": "#FBFAF8",
-      "emploi": "le texte posé sur un ton plein"
-    },
-    "trait": {
-      "valeur": "#DCD8D1",
-      "emploi": "séparer deux zones — décoratif, ne porte aucun sens seul"
-    },
-    "traitNet": {
-      "valeur": "#8F887C",
-      "emploi": "délimiter un contrôle — soumis au 3:1 de WCAG 1.4.11"
-    },
-    "verrou": {
-      "valeur": "#2E6A4F",
-      "emploi": "ce qui est acquis, verrouillé, au vert"
-    },
-    "attente": {
-      "valeur": "#8A6714",
-      "emploi": "ce qui est en cours, suspendu, réversible"
-    },
-    "signal": {
-      "valeur": "#9E4526",
-      "emploi": "ce qui refuse, ce qui bloque, ce qui a échoué"
-    },
-    "information": {
-      "valeur": "#1F5A87",
-      "emploi": "ce qui informe sans juger — une note, une provenance, un rappel de règle"
-    }
-  },
   "$marque": {
     "valeur": "aucune",
-    "motif": "Fili n'a pas d'identité distincte du système qu'il montre : il est FILI rendu visible (K2 §1). Une couleur de marque en propre créerait une voix de plus, à côté des quatre signaux, et sans rien à dire. Déclarer « aucune » est une décision ; le silence n'en serait pas une."
+    "motif": "Fili est FILI rendu visible (K2 §1), et il est agnostique : une couleur de marque orienterait l'œil de celui qui juge un témoin. Le parti monochrome rend la question sans objet."
   },
   "familles": {
-    "$intention": "Trois voix, et le lecteur doit les distinguer sans y penser : ce que le système prononce, ce qu'il montre, ce qu'il nomme. Aucune fonte n'est téléchargée — Fili est un poste local et doit s'ouvrir hors ligne.",
-    "titrage": {
-      "valeur": "ui-serif, 'New York', 'Iowan Old Style', Charter, Georgia, serif",
-      "emploi": "les titres — ce que le système prononce"
-    },
+    "$intention": "Trois voix, celles de la charte partagée. La courante porte le contenu, la mécanique porte tout ce qui est chrome, étiquette, identifiant et nombre, et l'étiquette porte les libellés de formulaire.",
+    "$source": "Charte partagée — ancien kit : font-sans, font-mono, font-label. Reprises telles quelles par arbitrage d'Auteur.",
+    "$dette": "🔴 Les fichiers de fonte ne sont PAS embarqués dans le dépôt. Tant qu'ils ne le sont pas, Fili s'affiche avec la pile de repli et n'a pas le visage de la charte. Ce n'est pas un choix, c'est un manque : le registre de paquets est inaccessible depuis la session. La dette est déclarée plutôt que masquée par une pile système qui aurait fait illusion.",
     "courante": {
-      "valeur": "ui-sans-serif, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-      "emploi": "le corps — ce que le système montre"
+      "valeur": "'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "emploi": "le contenu — titres compris"
     },
     "mecanique": {
-      "valeur": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
-      "emploi": "identifiants, chemins, nombres, numéros d'assertion — ce que le système nomme"
+      "valeur": "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+      "emploi": "le chrome, les surtitres, les identifiants, les chemins, les nombres, les numéros d'assertion"
+    },
+    "etiquette": {
+      "valeur": "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "emploi": "les libellés de formulaire — provisionné, aucun emploi avant É7 · L'acte"
     }
   },
   "graisses": {
@@ -273,50 +215,53 @@
     }
   },
   "icones": {
-    "$intention": "Aucun verdict ne se lit à la couleur seule (K2 §7.1). Chaque état porte donc une forme distincte en plus de son ton. Le registre est fermé : il s'agrandit avec les écrans, et chaque ajout est une entrée de journal.",
-    "$forme": "Tracé SVG sur une grille de 16, trait de 1,5, extrémités rondes. Une icône est un signe, pas une illustration.",
+    "$intention": "Aucun verdict ne se lit à la couleur seule (K2 §7.1) : chaque état porte une forme. Ce qui est déclaré ici n'est PAS un dessin, c'est une CORRESPONDANCE — quel état porte quel signe, dans un jeu qui existe déjà.",
+    "$regle": "On ne dessine pas d'icône. On déclare une source, une version et une correspondance. Un jeu dessiné sur mesure serait un jeu à maintenir, à équilibrer et à justifier, pour un produit de sept écrans.",
+    "$source": "Lucide — jeu ouvert, licence ISC. Grille de 24, trait de 2, extrémités rondes.",
+    "$dette": "🔴 Le paquet n'est pas installé : le registre de paquets est inaccessible depuis la session. Les tracés employés aujourd'hui sont un DÉPANNAGE déclaré, dessiné à la main sur une grille de 16. Une commande suffit à les remplacer par les vrais — voir scripts/vendorer-icones.mjs.",
     "verrou": {
-      "trace": "M4.5 7V5a3.5 3.5 0 0 1 7 0v2M3.5 7h9v6h-9z",
+      "lucide": "lock",
       "emploi": "🟢 verrouillé, acquis, au vert"
     },
     "attente": {
-      "trace": "M8 3.5v4.5l3 2M2.5 8a5.5 5.5 0 1 0 11 0 5.5 5.5 0 0 0-11 0z",
+      "lucide": "clock",
       "emploi": "🟡 en cours, suspendu, réversible"
     },
     "idee": {
-      "trace": "M2.5 8a5.5 5.5 0 1 0 11 0 5.5 5.5 0 0 0-11 0z",
+      "lucide": "circle",
       "emploi": "⚪ idée, formulée, non instruite"
     },
     "refus": {
-      "trace": "M8 4.5v4.5M8 11.5v.5M8 1.5 14.5 13.5h-13z",
+      "lucide": "triangle-alert",
       "emploi": "🔴 refus de statuer, blocage, échec"
     },
     "information": {
-      "trace": "M8 7.5v4M8 4.5v.5M2.5 8a5.5 5.5 0 1 0 11 0 5.5 5.5 0 0 0-11 0z",
+      "lucide": "info",
       "emploi": "une note, une provenance, un rappel de règle"
     },
     "constat": {
-      "trace": "M4 2.5h6l2.5 2.5v8.5h-8.5zM10 2.5V5h2.5M5.5 8h5M5.5 10.5h3",
+      "lucide": "file-text",
       "emploi": "un constat, une occurrence, une ligne fautive"
     },
     "mesure": {
-      "trace": "M2.5 13.5v-5M6.5 13.5v-8M10.5 13.5v-3M14.5 13.5v-11",
+      "lucide": "chart-column",
       "emploi": "une batterie, un décompte, une mesure"
     }
   },
   "taillesIcone": {
-    "$intention": "Trois tailles de lecture. Une icône qui n'est pas accordée au texte qu'elle accompagne se lit comme un accident.",
+    "$intention": "Trois tailles de lecture, alignées sur la grille du jeu. Une icône qui n'est pas accordée au texte qu'elle accompagne se lit comme un accident — et c'est la règle qui compte, plus que le dessin.",
+    "$source": "Grille de Lucide — 16, 20, 24.",
     "petite": {
-      "valeur": "14px",
-      "emploi": "dans un libellé fin ou un menu"
+      "valeur": "16px",
+      "emploi": "dans un libellé fin, un jeton, une ligne de texte courant"
     },
     "courante": {
-      "valeur": "16px",
-      "emploi": "dans un jeton, un bouton, une ligne de texte courant"
+      "valeur": "20px",
+      "emploi": "dans un bouton, en tête d'une alerte"
     },
     "grande": {
-      "valeur": "20px",
-      "emploi": "en tête d'une alerte"
+      "valeur": "24px",
+      "emploi": "un signe qui porte seul"
     }
   },
   "rayons": {
@@ -340,15 +285,12 @@
     }
   },
   "elevations": {
-    "$intention": "Rien ne flotte dans un poste de gouvernance : ce qui doit se distinguer se distingue par un trait ou par un fond. Les deux derniers crans existent parce que l'ancien kit les porte déjà, non parce qu'un écran les réclame — ils sont provisionnés, pas employés.",
-    "$source": "Ancien kit — elevation.",
+    "$intention": "Rien ne flotte dans un poste de gouvernance : ce qui doit se distinguer se distingue par un trait ou par un fond. Les deux crans qui restent viennent de la charte partagée et n'ont aucun emploi aujourd'hui.",
+    "$source": "Charte partagée — elevation.",
+    "$retire": "Le cran « filet », une ombre intérieure sous un en-tête collant, est retiré : il ne fonctionne pas visuellement. Constat d'Auteur. Une ombre intérieure est vraisemblablement une affordance de CHAMP, et elle entrera avec le champ — pas avant, et pas à cette place.",
     "aucune": {
       "valeur": "none",
       "emploi": "tout, par défaut"
-    },
-    "filet": {
-      "valeur": "inset 0 -1px 0 #DCD8D1",
-      "emploi": "un filet sous un en-tête qui reste au défilement"
     },
     "releve": {
       "valeur": "0 1px 3px rgba(3, 7, 18, 0.10)",
@@ -392,11 +334,11 @@
     }
   },
   "durees": {
-    "$intention": "Trois durées, et rien au-delà. Un poste de travail ne fait pas attendre son opérateur pour le décorer — les crans expressifs de l'ancien kit sont écartés avec ce motif.",
-    "$source": "Ancien kit — motion.duration, crans productifs seuls.",
+    "$intention": "Le mouvement n'est pas un décor, c'est un moyen d'expliquer. Trois crans productifs, et un cran expressif borné : il est réservé à un mouvement qui APPREND quelque chose — un tracé qu'on suit, un chemin qu'on lit. Jamais à une apparition.",
+    "$source": "Ancien kit et exercice validé. Le cran de tracé vient de l'exercice, avec son motif d'origine : à mille millisecondes le trait filait et on ne lisait plus le chemin qu'il prenait.",
     "rapide": {
       "valeur": "100ms",
-      "emploi": "un retour de contrôle — survol, pression, changement de ton"
+      "emploi": "un retour de contrôle — survol, pression, changement de fond"
     },
     "base": {
       "valeur": "200ms",
@@ -404,7 +346,11 @@
     },
     "ample": {
       "valeur": "300ms",
-      "emploi": "une grande surface — provisionné"
+      "emploi": "une grande surface, un volet"
+    },
+    "trace": {
+      "valeur": "1800ms",
+      "emploi": "un mouvement qui explique — un tracé qu'on suit du regard. Sous budget de rareté : au plus un par écran, et seulement s'il apprend quelque chose."
     }
   },
   "courbes": {
@@ -465,6 +411,24 @@
       "avant": "1120px",
       "apres": "1024px",
       "motif": "1120 était un choix sans source. 1024 est le conteneur de page par défaut de l'ancien kit."
+    },
+    {
+      "quoi": "le parti entier — tons, familles, durées",
+      "avant": "registre papier chaud, trois voix dont un serif, aucun cran expressif",
+      "apres": "monochrome, deux voix, un cran de tracé",
+      "motif": "Arbitrage d'Auteur : Fili gouverne des systèmes de design, il ne peut pas porter une charte qui oriente l'œil de celui qui juge. La chaleur, le serif et l'austérité du mouvement partaient ensemble ; ils tombent ensemble."
+    },
+    {
+      "quoi": "la couleur en entier",
+      "avant": "des tons déclarés à la main, monochromes jusqu'aux états, mesurés après coup",
+      "apres": "une primaire déclarée, tout le reste calculé, les couples construits pour tenir leur seuil",
+      "motif": "Correction d'Auteur, en deux temps. D'abord : le monochrome portait sur les surfaces et les textes, pas sur les états — supprimer le rouge de l'erreur était une faute de convention. Ensuite : un jeton de couleur est un couple, et les teintes doivent se calculer depuis une primaire. La planche cesse de déclarer des valeurs et se met à déclarer une source et une règle."
+    },
+    {
+      "quoi": "les fontes, l'ombre intérieure, les icônes",
+      "avant": "piles système génériques · un cran d'élévation « filet » · sept icônes dessinées à la main",
+      "apres": "les trois fontes de la charte partagée · le filet retiré · une correspondance vers un jeu existant",
+      "motif": "Arbitrages d'Auteur. La charte vaut pour Fili, pas pour les règles générales — j'avais sur-appliqué l'agnosticisme jusqu'à la peau du produit. Le filet ne fonctionne pas visuellement et relève probablement du champ. Et on ne dessine pas d'icônes : on déclare une source et une correspondance, la règle des tailles étant ce qui compte."
     }
   ],
   "$limites": [
@@ -473,5 +437,121 @@
     "Sept registres sont déclarés sans emploi aujourd'hui — le rail, la bascule bureau, deux crans d'élévation, les cinq plans, le voile, la durée ample. Ils viennent d'une source déclarée et n'inventent rien ; ils entrent pour qu'aucun nombre ne soit écrit sur place le jour où ils serviront.",
     "L'étude de mise en page porte une mécanique de régimes verticaux — trois régimes croisés avec quatre rôles d'espacement, par décalage d'un cran — beaucoup plus fine que les trois densités de section du registre de Fili. Elle n'entre pas ici : c'est une LOI, pas une valeur, et sa place est dans le corpus.",
     "Les contrastes mesurés le sont sur le fond papier. Un ton posé sur un fond en retrait, en survol ou en sélection est mesuré séparément."
-  ]
+  ],
+  "$parti": {
+    "regle": "Deux familles, et elles n'obéissent pas à la même loi. Les SURFACES et les TEXTES sont discrets : une échelle tirée de la teinte de la primaire à très faible chroma, pour qu'aucune surface n'oriente l'œil de celui qui juge un témoin. Les ÉTATS SYSTÈME sont inviolables : l'erreur est rouge, le succès vert, l'alerte jaune.",
+    "couple": "Un jeton de couleur n'est pas une valeur, c'est un COUPLE : une surface et ce qui s'écrit dessus. Les deux se déclarent ensemble, se calculent ensemble et tiennent leur contraste par construction — jamais mesurés après coup, jamais employés séparément.",
+    "calcul": "Rien n'est saisi à la main. Une seule couleur est déclarée — la primaire de la charte partagée — et tout le reste en est dérivé : les gris à sa teinte, les états par harmonisation bornée, chaque partenaire par recherche de la clarté qui fait tenir le seuil. Les hexadécimaux de ce système sont des RÉSULTATS, reproductibles et vérifiables, pas des choix à croire sur parole.",
+    "motif": "Fili affiche des témoins qu'un œil doit juger. Une identité visuelle forte contaminerait ce jugement. D'où la discipline sur les surfaces et les textes — et d'où, à l'inverse, le respect strict des conventions d'état : elles ne sont pas la voix de Fili, elles sont le langage commun.",
+    "information": "L'information est le seul état qui n'a pas de teinte conventionnelle. Elle prend celle de la primaire — c'est le seul endroit où la marque parle.",
+    "source": "Charte partagée (ancien kit, color-primary) et exercice de mise en page validé par l'Auteur.",
+    "portee": "Cette planche est la charte de FILI, pas une règle générale du système. Ce qui doit rester agnostique, c'est le CORPUS — les assertions que le Gardien porte et qui s'appliquent à n'importe quel dépôt. Fili, en tant que produit, suit la charte partagée. J'avais confondu les deux et sur-appliqué l'agnosticisme jusqu'à la peau du produit."
+  },
+  "etats": {
+    "$intention": "Les états d'un élément avec lequel on interagit. Ils sont déclarés comme une liste fermée : sans elle, chaque écran réinvente ce que veut dire « désactivé ». Aucun n'emploie de couleur — c'est le fond, le trait et l'encre qui changent.",
+    "$manque": "Signalé par l'Auteur avant que je le voie. C'était le trou le plus large de la version 2.",
+    "repos": {
+      "valeur": "papier · traitNet · encre",
+      "emploi": "l'état nominal d'un contrôle"
+    },
+    "survol": {
+      "valeur": "papierSurvol · encre · encre",
+      "emploi": "sous le pointeur — le trait se renforce, le fond se creuse"
+    },
+    "pression": {
+      "valeur": "papierSelection · encre · encre",
+      "emploi": "pendant l'appui"
+    },
+    "focus": {
+      "valeur": "anneau accent, 2 px, écart 2 px",
+      "emploi": "au clavier — il s'ajoute, il ne remplace jamais le trait d'état"
+    },
+    "desactive": {
+      "valeur": "papierCreux · trait · encreEteinte",
+      "emploi": "hors service — hors seuil de contraste par exception WCAG 1.4.3"
+    },
+    "selectionne": {
+      "valeur": "scene · scene · encreInverse",
+      "emploi": "choisi, et qui le reste — le poids plein, jamais une teinte"
+    },
+    "erreur": {
+      "valeur": "papier · encre 2 px · encre",
+      "emploi": "en faute — le trait passe au marqueur, le libellé dit quoi"
+    },
+    "lectureSeule": {
+      "valeur": "papierCreux · aucun trait · encre",
+      "emploi": "lisible, non modifiable — il ne ressemble pas à un contrôle"
+    }
+  },
+  "$emplois": {
+    "statut": "🟡 en cours — la plupart restent à écrire. Les phrases d'emploi de cette planche décrivent une intention ; une règle d'emploi opposable dit ce qui est INTERDIT, se vérifie, et entre au corpus.",
+    "regle": "Une règle d'emploi qui n'est pas vérifiable engage la main, pas le Gardien. Elle ne devient opposable qu'en entrant au corpus avec son cas piégé, son cas conforme et sa batterie.",
+    "regles": [
+      {
+        "id": "E-1",
+        "enonce": "Un élément à coins arrondis ne porte pas de bordure inégale. Soit ses angles sont droits, soit toutes ses bordures ont la même épaisseur.",
+        "interdit": "Une carte arrondie avec une barre sur un seul côté, ou avec un côté plus épais que les autres.",
+        "pourquoi": "La bordure épaisse meurt dans la courbe : elle s'y amincit en biseau et produit une jonction que rien ne justifie. C'est l'un des défauts les plus fréquents du relevé de « slop », et il se voit même quand on ne sait pas le nommer.",
+        "casPiege": "rounded + border-left plus épaisse que les trois autres → bloque.",
+        "casConforme": "angles droits + barre latérale → passe. Arrondi + bordure uniforme → passe. Arrondi sans bordure → passe.",
+        "statut": "Arbitrage d'Auteur, assumé sans preuve : « même si aucune étude ne le prouve, je veux que ce soit compris dans Fili ». Il rejoint la famille du facteur 3 de la proximité, du seuil d'alternance et du seuil de rang — des décisions d'Auteur, pas des vérités, révisables par une entrée de journal et jamais en silence.",
+        "decidable": "Oui, et sans contexte : un rayon non nul et des épaisseurs de bordure qui diffèrent d'un côté à l'autre sont deux propriétés du fichier. Candidate au corpus."
+      },
+      {
+        "id": "E-2",
+        "enonce": "Une surface ne porte jamais le même fond que ce qui la contient. Soit son fond diffère, soit elle porte une bordure.",
+        "interdit": "Une carte blanche sur un fond blanc, sans bordure. Elle n'existe pas : elle n'est qu'un espacement qu'on a cru voir.",
+        "pourquoi": "Une surface qui ne se distingue pas de son conteneur ne délimite rien. Le lecteur croit lire un bloc là où il n'y a qu'un vide, et la structure qu'on pensait avoir posée n'est portée par rien.",
+        "casPiege": "fond papier sur fond papier, sans bordure → bloque.",
+        "casConforme": "fond en retrait sur fond papier → passe. Fond papier sur fond papier avec bordure → passe.",
+        "statut": "Arbitrage d'Auteur. C'est le pendant de E-1 : E-1 interdit de simuler une séparation par une bordure inégale, E-2 exige qu'une surface se distingue vraiment de ce sur quoi elle est posée.",
+        "decidable": "Oui pour un fond déclaré dans le même arbre. Limite à écrire : quand le conteneur vit dans un autre composant, la comparaison demande de remonter au-delà du fichier — et le Gardien lit un fichier, jamais un projet. Cette part-là est indécidable en l'état."
+      }
+    ]
+  },
+  "$primaire": {
+    "valeur": "#4F46E5",
+    "source": "Charte partagée — ancien kit, color-primary. Conservée par arbitrage d'Auteur.",
+    "emploi": "Elle n'est presque jamais employée telle quelle. Elle est la SOURCE dont tout le reste se calcule : la teinte des gris, l'attraction des états, la couleur de l'information, l'anneau de focus et le lien."
+  },
+  "$generation": {
+    "espace": "OKLCH",
+    "motifEspace": "C'est le seul espace où faire varier la clarté ne fait pas dériver la teinte. Sans lui, une échelle de gris tirée d'une primaire virerait de couleur d'un palier à l'autre, et une paire calculée pour tenir son seuil ne le tiendrait qu'à peu près.",
+    "neutres": {
+      "teinte": "celle de la primaire",
+      "chroma": 0.006,
+      "motifChroma": "Très faible, par arbitrage d'Auteur. Assez pour que les gris appartiennent à la même famille que la marque, trop peu pour qu'une surface oriente l'œil de celui qui juge un témoin. C'est le curseur exact entre cohésion et charte."
+    },
+    "harmonisation": {
+      "regle": "Chaque état garde sa teinte conventionnelle, et le calcul la tire vers la famille de la primaire sans jamais l'en faire sortir.",
+      "attraction": 0.25,
+      "bande": 12,
+      "lecture": "On calcule l'écart le plus court entre la teinte conventionnelle et celle de la primaire, on en applique le quart, et on borne le déplacement à douze degrés. Un rouge reste un rouge ; il devient seulement le rouge de cette famille-là.",
+      "alternative": "Une seconde lecture existait : tirer les états vers le COMPLÉMENT de la primaire plutôt que vers elle. Elle produit des états qui tranchent au lieu d'appartenir. Non retenue — mais elle se rouvre en changeant le signe de l'attraction, et rien d'autre.",
+      "ancres": {
+        "erreur": 27,
+        "alerte": 75,
+        "succes": 145,
+        "information": "primaire"
+      }
+    },
+    "couples": {
+      "texte": 4.5,
+      "interface": 3.0,
+      "methode": "La surface est posée ; sa partenaire est cherchée — on fait varier sa clarté, à teinte et chroma constantes, jusqu'à ce que le seuil soit atteint. La paire ne peut donc pas être en dessous : elle est construite pour y être."
+    }
+  },
+  "medias": {
+    "$intention": "Les pièces visuelles propres à Fili. Elles ne sont PAS une règle générale : le corpus reste agnostique, et ces pièces n'appartiennent qu'au produit.",
+    "$source": "Charte partagée — charte.html. Versées dans fili.medias.json avec leur provenance.",
+    "marque": {
+      "valeur": "versée au dépôt",
+      "emploi": "le sigle de Fili — une fois par vue, jamais dans le contenu : c'est du chrome"
+    },
+    "fondAnime": {
+      "valeur": "🔴 déclaré, non versé",
+      "emploi": "RÉSERVÉ aux espaces de démonstration, et ils vont bien au-delà des blocs sur fond de scène. Aucun écran d'exploitation n'y a droit — É1 à É7 s'en passent."
+    },
+    "$reprise": "Le fond animé est un canevas WebGL doublé d'un repli et d'un voile : trois couches, pas une image. Il se reprend depuis la charte comme une PIÈCE, jamais réimplémenté — un fond réécrit de mémoire ne serait plus le même fond, et personne ne le verrait."
+  }
 }

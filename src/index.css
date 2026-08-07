@@ -19,7 +19,7 @@
   /* Le focus est toujours visible. Un poste de travail se pilote au clavier :
      la souris y est un confort, jamais une condition (K2 §7.3). */
   :focus-visible {
-    @apply outline outline-focus outline-offset-focus outline-signal;
+    @apply outline outline-focus outline-offset-focus outline-accent;
   }
 
   /* Le mouvement se réduit sur demande du système. Cette garantie n'est pas

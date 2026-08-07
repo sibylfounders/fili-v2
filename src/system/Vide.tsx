@@ -8,7 +8,7 @@ import type { ReactNode } from 'react'
 export function Vide({ titre, children }: { titre: string; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-2 rounded-controle border-systeme border-dashed border-trait-net p-5">
-      <p className="font-titrage text-niveau3 font-moyenne text-encre">{titre}</p>
+      <p className="text-niveau3 font-moyenne text-encre">{titre}</p>
       <div className="text-fin text-encre-douce">{children}</div>
     </div>
   )

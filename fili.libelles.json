@@ -3,12 +3,30 @@
   "$statut": "🟡 proposé à l'arbitrage de l'Auteur — K5, première séance",
   "$portee": "Le parcours P1 en entier — É1 · Le verdict et É2 · Le constat — plus le vocabulaire commun. Les cinq autres gabarits entrent avec leurs écrans : un catalogue qui déclare des écrans qui n'existent pas ne se regarde pas, il se croit.",
   "$ton": {
-    "regle1": "Fili ne s'excuse pas. Il ne dit jamais « désolé », « oups », ni « une erreur est survenue ». Il dit ce qui s'est passé et ce qui reste possible.",
-    "regle2": "Fili ne félicite pas. Un verdict au vert est un fait, pas une bonne nouvelle. Aucun « bravo », aucun « parfait », aucun point d'exclamation.",
-    "regle3": "Fili nomme l'acteur. C'est le Gardien qui bloque ; Fili ne fait que le montrer. Aucune phrase ne laisse croire que l'interface a jugé.",
-    "regle4": "Fili parle à une personne qui connaît le système. Il ne réexplique pas la doctrine à chaque écran ; il rappelle ce qui manque, jamais ce qui va de soi.",
-    "regle5": "Un état vide dit ce qui remplirait le vide, jamais seulement qu'il est vide.",
-    "regle6": "Un état non nominal ne s'annonce qu'une fois par écran. Répéter la même alerte à chaque section, c'est la faire annoncer quatre fois par un lecteur d'écran et n'apprendre rien à personne."
+    "$statut": "🟡 réécrit le 2026-08-07 après arbitrage d'Auteur : Fili s'exprime à deux familles de destinataires, pas à une seule.",
+    "$destinataires": "Fili parle à des HUMAINS et à des MACHINES, et ce ne sont pas les mêmes contraintes. La règle 4 de la version précédente — « Fili parle à quelqu'un qui connaît le système » — est retirée : elle n'était juste que tant que l'Auteur était le seul lecteur.",
+    "humains": {
+      "$regle": "Ton professionnel. Pas exhaustif. Orienté problème d'abord, solution ensuite. Vocabulaire accessible, sans surcharge cognitive.",
+      "r1": "Fili ne s'excuse pas. Jamais « désolé », jamais « une erreur est survenue ». Il dit ce qui s'est passé et ce qui reste possible.",
+      "r2": "Fili ne félicite pas. Un verdict au vert est un fait, pas une bonne nouvelle. Aucun point d'exclamation dans tout le produit.",
+      "r3": "Fili nomme l'acteur. C'est le Gardien qui bloque ; l'interface ne fait que le montrer. Aucune phrase ne laisse croire que l'écran a jugé.",
+      "r4": "Le problème avant la solution, et un seul de chaque. Une phrase dit ce qui ne va pas ; la suivante dit ce qu'on peut faire. Pas de troisième.",
+      "r5": "Le mot courant plutôt que le mot juste. Un terme de doctrine n'apparaît que s'il est le sujet de l'écran, et il est alors expliqué en une incise — jamais dans une note de bas de page.",
+      "r6": "Un état vide dit ce qui remplirait le vide, jamais seulement qu'il est vide.",
+      "r7": "Un état non nominal ne s'annonce qu'une fois par écran. Répéter la même alerte à chaque section, c'est la faire annoncer quatre fois par un lecteur d'écran et n'apprendre rien à personne.",
+      "r8": "Rien n'est écrit pour être lu deux fois. Si une phrase demande un second passage, elle est fausse."
+    },
+    "machines": {
+      "$regle": "Ce que Fili écrit pour être relu par un modèle — verdicts consignés, entrées de journal, manifestes, rapports. Optimisé pour un lecteur qui n'a ni mise en page, ni contexte hérité, ni mémoire de ce qui précède.",
+      "$motif": "Un balisage lisible par un humain n'est pas une structure lisible par une machine. Un titre de section ne porte pas de sens pour un modèle qui n'en reçoit que la moitié — c'est exactement la panne qui a coûté quarante-deux entrées de journal le 7 août.",
+      "m1": "Chaque unité porte son propre contexte. Une entrée, un constat, un verdict se lit seul : il nomme son jalon, sa date, son objet. Aucune ne dépend de ce qui la précède dans le fichier.",
+      "m2": "Identifiants stables et explicites, jamais positionnels. « l'assertion R5.1 », jamais « la troisième ». Un rang change ; un identifiant ne change pas.",
+      "m3": "Les faits en premier, la prose ensuite. Ce qui doit être extrait — un verdict, un compte, une date, un statut — est en tête et dans un champ nommé, pas noyé dans une phrase.",
+      "m4": "Structure de données pour ce qui est structuré. Un tableau de mesures est du JSON ou du JSONL, pas un tableau Markdown : un tableau tronqué ment sans le dire, un objet tronqué casse.",
+      "m5": "Rien ne dépend de la mise en forme. Ni le gras, ni l'ordre visuel, ni l'indentation ne portent de sens. Ce qu'un émoji dit, un champ le dit aussi.",
+      "m6": "L'incertitude est un champ, pas un adverbe. « probablement » n'est pas exploitable ; un champ de confiance l'est.",
+      "m7": "Ce qui est absent est déclaré absent. Un champ vide et un champ manquant ne veulent pas dire la même chose, et un lecteur automatique ne peut pas deviner lequel."
+    }
   },
   "produit": {
     "nom": "Fili",

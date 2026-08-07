@@ -1,0 +1,154 @@
+K5 · la couleur cesse d'être déclarée et devient calculée
+
+Correction d'Auteur, en deux temps, et la première était une faute de ma part.
+
+Premier temps : le monochrome portait sur les SURFACES et les TEXTES, jamais
+sur les états. J'avais supprimé le rouge de l'erreur, le vert du succès et le
+jaune de l'alerte au nom de l'agnosticisme. Ce ne sont pas une charte : ce sont
+des conventions, et les casser n'est pas de l'agnosticisme, c'est de
+l'arrogance. Elles reviennent, inviolables.
+
+Deuxième temps, et c'est structurel : un jeton de couleur n'est pas une valeur,
+c'est un COUPLE — une surface et ce qui s'écrit dessus. Les deux se déclarent
+ensemble, se calculent ensemble et tiennent leur seuil par construction. Ma
+planche déclarait des tons plats et vérifiait les couples après coup, dans un
+outil séparé : un ton pouvait exister sans partenaire, et un couple être employé
+sans avoir jamais été mesuré.
+
+D'où le changement de nature de la planche. Elle ne déclare plus des valeurs :
+elle déclare une SOURCE et une RÈGLE DE GÉNÉRATION.
+
+- Une seule couleur est saisie dans tout le système : la primaire de la charte
+  partagée, conservée par arbitrage d'Auteur.
+- Les gris sont tirés de sa teinte à très faible chroma — assez pour appartenir
+  à la même famille, trop peu pour qu'une surface oriente l'œil de celui qui
+  juge un témoin. C'est le curseur exact entre cohésion et charte, et il est
+  posé par l'Auteur.
+- Les états gardent leur teinte conventionnelle et le calcul la tire vers la
+  primaire sans jamais l'en faire sortir : écart le plus court, un quart
+  appliqué, déplacement borné à douze degrés. Un rouge reste un rouge ; il
+  devient le rouge de cette famille-là.
+- L'information est le seul état sans teinte conventionnelle : elle prend celle
+  de la primaire. C'est le seul endroit où la marque parle.
+- Chaque partenaire est cherchée, pas choisie : on fait varier sa clarté, à
+  teinte et chroma constantes, jusqu'à ce que le seuil soit atteint.
+
+Tout cela en OKLCH, parce que c'est le seul espace où faire varier la clarté ne
+fait pas dériver la teinte. Sans lui, une échelle de gris tirée d'une primaire
+virerait de couleur d'un palier à l'autre, et une paire calculée pour tenir son
+seuil ne le tiendrait qu'à peu près.
+
+Le moteur de couleur est déterministe et sans dépendance, comme le Gardien.
+Regénérer et constater un diff vide est la preuve que la palette est
+reproductible — ce qu'une liste d'hexadécimaux écrits à la main n'est jamais.
+
+Le contrôle de contraste n'a plus de liste écrite à la main : il parcourt les
+couples de la palette. Vingt-neuf couples, tous au-dessus de leur seuil par
+construction. Un écart y serait désormais un défaut du GÉNÉRATEUR, pas un
+oubli de composition.
+
+Gardien au vert : intégrité 29/29, batterie 100 %.
+
+Une seconde lecture de « complémentarité » a été écartée et reste écrite : tirer
+les états vers le complément de la primaire plutôt que vers elle. Elle produit
+des états qui tranchent au lieu d'appartenir. Elle se rouvre en changeant le
+signe de l'attraction, et rien d'autre.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_017JzbyHaBJ31eHh7UG1omMY
+
+--- Suite du même bloc : la charte de Fili ---
+
+Trois précisions d'Auteur, dont une qui corrige une confusion de ma part.
+
+1. La charte vaut POUR FILI, pas pour les règles générales. Ce qui doit rester
+   agnostique, c'est le CORPUS — les assertions que le Gardien porte et qui
+   s'appliquent à n'importe quel dépôt. Fili, en tant que produit, suit la
+   charte partagée et a le droit d'avoir un visage. J'avais sur-appliqué
+   l'agnosticisme jusqu'à la peau du produit.
+   Les trois fontes de la charte reviennent : la courante pour le contenu, la
+   mécanique pour le chrome et les identifiants, l'étiquette pour les libellés
+   de formulaire — cette dernière provisionnée jusqu'à É7.
+   Dette déclarée : les fichiers de fonte ne sont pas embarqués, le registre de
+   paquets étant inaccessible depuis la session. Fili s'affiche donc avec la
+   pile de repli et n'a pas encore le visage de sa charte. C'est écrit plutôt
+   que masqué par une pile système qui aurait fait illusion.
+
+2. Le cran d'élévation « filet » est retiré : une ombre intérieure sous un
+   en-tête collant ne fonctionne pas visuellement. Constat d'Auteur. Elle relève
+   vraisemblablement d'une affordance de CHAMP, et elle entrera avec le champ —
+   pas avant, et pas à cette place.
+
+3. On ne dessine pas d'icônes. Le registre déclare désormais une SOURCE, une
+   version, une licence et une CORRESPONDANCE — quel état porte quel signe dans
+   un jeu qui existe déjà. Ce qui compte est la règle des tailles et l'accord
+   entre un état et son signe, pas le dessin. Les tailles sont alignées sur la
+   grille du jeu.
+   Le jeu n'est pas installé : les formes employées aujourd'hui sont un
+   dépannage déclaré, et scripts/vendorer-icones.mjs REFUSE de verser quoi que
+   ce soit tant que le paquet est absent — verser un tracé inventé sous le nom
+   d'un jeu existant serait un faux, et il serait indétectable.
+
+Une remarque d'outillage, née du garde-fou : les formes sont stockées en DONNÉES
+et non en balisage. La première version les injectait en HTML, et la règle
+anti-échappement l'a bloquée — à raison. Le composant lit des formes et les
+rend ; il ne connaît ni la grille ni l'épaisseur du jeu, pour que remplacer le
+jeu ne demande de toucher à aucun composant.
+
+Gardien au vert : intégrité 29/29, batterie 100 %, chaîne S2 à 7 sur 7.
+
+--- E-1 : la première règle d'emploi opposable ---
+
+Arbitrage d'Auteur, assumé sans preuve : « même si aucune étude ne le prouve,
+je veux que ce soit compris dans Fili ».
+
+E-1 — Un élément à coins arrondis ne porte pas de bordure inégale. Soit ses
+angles sont droits, soit toutes ses bordures ont la même épaisseur.
+
+Le motif : une bordure épaisse meurt dans la courbe, elle s'y amincit en biseau
+et produit une jonction que rien ne justifie. C'est l'un des défauts les plus
+fréquents du relevé de « slop », et il se voit même quand on ne sait pas le
+nommer.
+
+Elle rejoint la famille du facteur 3 de la proximité, du seuil d'alternance et
+du seuil de rang : des décisions d'Auteur, pas des vérités, révisables par une
+entrée de journal et jamais en silence. Et elle est décidable sans contexte —
+un rayon non nul et des épaisseurs de bordure qui diffèrent d'un côté à l'autre
+sont deux propriétés du fichier. Candidate au corpus, avec son cas piégé et son
+cas conforme déjà écrits.
+
+Le composant d'alerte faisait exactement cette faute : coins arrondis et barre
+sur un seul côté. Il passe aux angles droits et garde sa barre. Le défaut avait
+été écrit par moi, dans le même fichier où j'avais écrit que le rayon désigne ce
+qui se manipule et jamais ce qui se lit — deux règles qui convergeaient sur la
+même correction sans que je le voie.
+
+--- E-2 et les médias de Fili ---
+
+E-2 — Une surface ne porte jamais le même fond que ce qui la contient. Soit son
+fond diffère, soit elle porte une bordure.
+
+C'est le pendant de E-1 : E-1 interdit de simuler une séparation par une bordure
+inégale, E-2 exige qu'une surface se distingue vraiment de ce sur quoi elle est
+posée. Une carte blanche sur fond blanc sans bordure ne délimite rien — le
+lecteur croit lire un bloc là où il n'y a qu'un vide.
+
+Limite écrite plutôt que découverte : la règle est décidable pour un fond
+déclaré dans le même arbre. Quand le conteneur vit dans un autre composant, la
+comparaison demande de remonter au-delà du fichier, et le Gardien lit un
+fichier, jamais un projet. Cette part-là est indécidable en l'état.
+
+Les médias propres à Fili entrent au dépôt (fili.medias.json), et ils ne sont
+PAS une règle générale — le corpus reste agnostique, ces pièces n'appartiennent
+qu'au produit.
+
+- La marque : versée depuis la charte partagée, avec sa provenance. Une fois par
+  vue, jamais dans le contenu — c'est du chrome.
+- Le fond animé : déclaré, non versé. Un canevas WebGL doublé d'un repli et d'un
+  voile — trois couches, pas une image. RÉSERVÉ aux espaces de démonstration,
+  qui vont bien au-delà des blocs sur fond de scène ; aucun écran d'exploitation
+  n'y a droit. À reprendre depuis la charte comme une PIÈCE, jamais
+  réimplémenté : un fond réécrit de mémoire ne serait plus le même fond, et
+  personne ne le verrait.
+
+Gardien au vert : intégrité 29/29, batterie 100 %.

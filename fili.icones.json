@@ -1,0 +1,107 @@
+{
+  "$comment": "Formes du jeu d'icônes, en données structurées et non en balisage : une chaîne de balisage injectée serait un échappement, et le garde-fou l'interdit — à raison. GÉNÉRÉ par scripts/vendorer-icones.mjs.",
+  "$source": "dépannage — dessiné à la main faute d'accès au registre de paquets",
+  "$remplacer": "npm i -D lucide-static && node scripts/vendorer-icones.mjs",
+  "$version": null,
+  "$licence": null,
+  "$grille": 16,
+  "$trait": 1.5,
+  "formes": {
+    "verrou": [
+      {
+        "t": "path",
+        "d": "M4.5 7V5a3.5 3.5 0 0 1 7 0v2"
+      },
+      {
+        "t": "path",
+        "d": "M3.5 7h9v6h-9z"
+      }
+    ],
+    "attente": [
+      {
+        "t": "path",
+        "d": "M8 3.5v4.5l3 2"
+      },
+      {
+        "t": "circle",
+        "cx": 8,
+        "cy": 8,
+        "r": 5.5
+      }
+    ],
+    "idee": [
+      {
+        "t": "circle",
+        "cx": 8,
+        "cy": 8,
+        "r": 5.5
+      }
+    ],
+    "refus": [
+      {
+        "t": "path",
+        "d": "M8 1.5 14.5 13.5h-13z"
+      },
+      {
+        "t": "path",
+        "d": "M8 6v3"
+      },
+      {
+        "t": "path",
+        "d": "M8 11.5v.01"
+      }
+    ],
+    "information": [
+      {
+        "t": "circle",
+        "cx": 8,
+        "cy": 8,
+        "r": 5.5
+      },
+      {
+        "t": "path",
+        "d": "M8 7.5v4"
+      },
+      {
+        "t": "path",
+        "d": "M8 4.5v.01"
+      }
+    ],
+    "constat": [
+      {
+        "t": "path",
+        "d": "M4 2.5h6l2.5 2.5v8.5h-8.5z"
+      },
+      {
+        "t": "path",
+        "d": "M10 2.5V5h2.5"
+      },
+      {
+        "t": "path",
+        "d": "M5.5 8h5"
+      },
+      {
+        "t": "path",
+        "d": "M5.5 10.5h3"
+      }
+    ],
+    "mesure": [
+      {
+        "t": "path",
+        "d": "M2.5 13.5v-5"
+      },
+      {
+        "t": "path",
+        "d": "M6.5 13.5v-8"
+      },
+      {
+        "t": "path",
+        "d": "M10.5 13.5v-3"
+      },
+      {
+        "t": "path",
+        "d": "M14.5 13.5v-11"
+      }
+    ]
+  }
+}

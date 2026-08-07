@@ -1,0 +1,58 @@
+{
+  "$genere": "GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili.expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.",
+  "$primaire": "#4F46E5",
+  "$teinte": 277,
+  "$espace": "OKLCH",
+  "neutres": {
+    "papier": "#FFFFFF",
+    "papierCreux": "#F3F4F9",
+    "papierSurvol": "#E6E7EB",
+    "papierSelection": "#DADBDF",
+    "scene": "#202023",
+    "encre": "#1A1A1D",
+    "encreDouce": "#606064",
+    "encreEteinte": "#A3A4A8",
+    "encreInverse": "#F4F5F9",
+    "trait": "#DDDEE2",
+    "traitNet": "#8D8D92",
+    "accent": "#4F46E5"
+  },
+  "etats": {
+    "erreur": {
+      "teinte": 15,
+      "ancre": 27,
+      "surface": "#FFEAEB",
+      "sur": "#8E2D3D",
+      "plein": "#9A1C37",
+      "surPlein": "#FFF1F2",
+      "trait": "#CF7E85"
+    },
+    "alerte": {
+      "teinte": 63,
+      "ancre": 75,
+      "surface": "#FFECDD",
+      "sur": "#774405",
+      "plein": "#7C4601",
+      "surPlein": "#FFF3E8",
+      "trait": "#C28953"
+    },
+    "succes": {
+      "teinte": 157,
+      "ancre": 145,
+      "surface": "#DBF9E6",
+      "sur": "#095E38",
+      "plein": "#02663C",
+      "surPlein": "#EBF9F0",
+      "trait": "#58A478"
+    },
+    "information": {
+      "teinte": 277,
+      "ancre": 277,
+      "surface": "#ECEFFF",
+      "sur": "#434898",
+      "plein": "#4345AB",
+      "surPlein": "#F2F4FF",
+      "trait": "#8790D4"
+    }
+  }
+}
