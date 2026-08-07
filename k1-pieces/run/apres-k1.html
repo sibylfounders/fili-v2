@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FILI · K1 · SoigneNonInforme (après)</title>
+<style>
+/* Source de vérité unique des valeurs. Zone système. */
+:root{
+  /* Échelle d'espacement — S3 */
+  --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:24px; --e6:32px;
+  --e7:48px; --e8:64px; --e9:96px; --e10:128px;
+  /* Densités de section — S4 */
+  --d-compact:var(--e6); --d-normal:var(--e8); --d-ample:var(--e10);
+  /* Échelle typographique — la taille découle du niveau, jamais du lieu */
+  --t-affiche:clamp(2.4rem,7vw,4.2rem);
+  --t1:clamp(1.75rem,4vw,2.6rem);
+  --t2:clamp(1.375rem,3vw,1.875rem);
+  --t3:1.0625rem;
+  --t-corps:17px; --t-fin:.875rem; --t-menu:.75rem;
+  /* Couleurs */
+  --papier:#FBFAF8; --papier-creux:#F3F1ED; --encre:#17181A; --encre-douce:#585C63;
+  --trait:#DCD8D1; --signal:#9E4526; --verrou:#2E6A4F; --attente:#B0862A;
+  --large:1120px; --lecture:66ch;
+}
+
+/* Feuille du système. Toute valeur d'espacement vient de l'échelle — S3. */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papier); color:var(--encre);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:var(--t-corps); line-height:1.6; letter-spacing:-.006em; -webkit-font-smoothing:antialiased;
+}
+@media (max-width:520px){ body{font-size:16px} }
+
+/* ── Sections et densités ────────────────────────────────────────────── */
+.section{ position:relative }
+.section + .section{ border-top:1px solid var(--trait) }
+.creux{ background:var(--papier-creux) }
+.densite-compact{ padding-block:var(--d-compact) }
+.densite-normal { padding-block:var(--d-normal) }
+.densite-ample  { padding-block:var(--d-ample) }
+@media (max-width:640px){
+  .densite-compact{padding-block:var(--e5)}
+  .densite-normal {padding-block:var(--e7)}
+  .densite-ample  {padding-block:var(--e8)}
+}
+.contenu{ width:100%; max-width:var(--large); margin-inline:auto; padding-inline:clamp(20px,5vw,var(--e8)) }
+
+/* ── Conteneurs : l'espace se distribue par le haut ──────────────────── */
+.pile{ display:flex; flex-direction:column; min-width:0 }
+.grille{ display:grid; min-width:0 }
+.grille > *{ min-width:0 }
+.e1{gap:var(--e1)} .e2{gap:var(--e2)} .e3{gap:var(--e3)}
+.e4{gap:var(--e4)} .e5{gap:var(--e5)} .e6{gap:var(--e6)} .e7{gap:var(--e7)}
+@media (min-width:560px){ .col-2{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:880px){ .col-3{grid-template-columns:repeat(3,1fr)}
+                          .col-4{grid-template-columns:repeat(4,1fr)} }
+
+/* ── Titres : la taille découle du niveau ────────────────────────────── */
+.t1,.t2,.t3{ margin:0; font-weight:600; line-height:1.08; letter-spacing:-.03em; text-wrap:balance }
+.t1{ font-size:var(--t1); letter-spacing:-.04em }
+.t2{ font-size:var(--t2) }
+.t3{ font-size:var(--t3); letter-spacing:-.01em; line-height:1.35 }
+
+/* ── Texte ───────────────────────────────────────────────────────────── */
+.txt{ margin:0 }
+.txt-chapeau{ font-size:clamp(1.0625rem,2.2vw,1.3125rem); color:var(--encre-douce); line-height:1.5; max-width:var(--lecture) }
+.txt-fin{ font-size:var(--t-fin); color:var(--encre-douce); max-width:52ch }
+.txt-menu{ font-size:var(--t-menu); letter-spacing:.14em; text-transform:uppercase; color:var(--encre-douce); font-weight:600 }
+.txt-corps{ max-width:var(--lecture) }
+
+/* ── Jeton : la pastille est hors du flux, bord gauche commun ────────── */
+.jeton{ display:block; position:relative; padding-left:var(--e5);
+  font-size:.8125rem; font-weight:600; color:var(--encre-douce) }
+.pastille{ position:absolute; left:0; top:.42em; width:9px; height:9px; border-radius:50%; background:var(--trait) }
+.pastille-verrou{background:var(--verrou)} .pastille-attente{background:var(--attente)}
+.pile > .jeton + .txt{ padding-left:var(--e5) }
+
+/* ── États non nominaux ──────────────────────────────────────────────── */
+.alerte{ border:1px solid #E3C8BE; background:#FDF4F1; border-left:3px solid var(--signal);
+  border-radius:8px; padding:var(--e5); display:flex; flex-direction:column; gap:var(--e2) }
+.alerte-titre{ color:var(--signal) }
+.alerte-corps .txt{ color:#6E4A3E }
+.vide{ border:1px dashed var(--trait); border-radius:8px; padding:var(--e5);
+  display:flex; flex-direction:column; gap:var(--e2) }
+.squelette{ display:flex; flex-direction:column; gap:var(--e3);
+  border:1px solid var(--trait); border-radius:8px; padding:var(--e5); background:var(--papier) }
+.squelette-ligne{ height:var(--e4); border-radius:4px; background:#E2DDD4 }
+.squelette-ligne:first-child{ width:45%; background:#D6D0C5 }
+.squelette-ligne:last-child{ width:70% }
+
+/* ── Contrôles ───────────────────────────────────────────────────────── */
+.btn{ font:inherit; font-weight:600; font-size:.9375rem; border-radius:8px; cursor:pointer;
+  padding:var(--e3) var(--e5); border:1px solid var(--encre); background:var(--encre); color:var(--papier);
+  min-height:44px; text-align:center }
+.btn-discret{ background:transparent; color:var(--encre); border-color:var(--trait) }
+.btn:hover{ opacity:.9 }
+.btn:focus-visible{ outline:2px solid var(--signal); outline-offset:2px }
+.champ{ display:flex; flex-direction:column; gap:var(--e2) }
+.champ label{ font-size:var(--t-fin); font-weight:600; color:var(--encre-douce) }
+.champ input{ font:inherit; font-size:.9375rem; border:1px solid var(--trait); border-radius:8px;
+  padding:var(--e3) var(--e4); background:#fff; color:var(--encre); min-height:44px }
+.champ input:focus-visible{ outline:2px solid var(--signal); outline-offset:1px; border-color:var(--encre-douce) }
+
+/* ── Rupture déclarée ────────────────────────────────────────────────── */
+.affiche{ margin:0; font-size:var(--t-affiche); line-height:1.02; letter-spacing:-.045em;
+  font-weight:600; text-wrap:balance; max-width:18ch }
+[data-intent="statement"]{ position:relative }
+
+</style>
+</head>
+<body>
+<main class="mx-auto max-w-5xl p-8"><section class="section densite-compact" data-density="compact"><div class="contenu"><div class="pile e3"><div class="pile e2"><p class="text-xs font-semibold uppercase tracking-widest text-gray-500">Facturation</p><h1 class="font-semibold tracking-tight text-gray-900">Suivi des factures</h1></div><p class="max-w-prose text-base text-gray-600">Les factures en cours, leur échéance et leur statut.</p></div></div></section><section class="section densite-normal" data-density="normal" aria-labelledby="filtres"><div class="contenu"><div class="pile e3"><h2 id="filtres" class="font-semibold text-gray-900">Filtrer</h2><div class="flex flex-wrap gap-4"><div class="champ"><label for="client">Client</label><input id="client" type="text" /></div><div class="champ"><label for="statut">Statut</label><input id="statut" type="text" /></div></div></div></div></section><section class="section densite-compact" data-density="compact" aria-labelledby="liste"><div class="contenu"><div class="pile e4"><h2 id="liste" class="font-semibold text-gray-900">Les factures</h2><ul class="grid gap-4 sm:grid-cols-3"><li class="rounded-lg border border-gray-200 p-5"><div class="pile e3"><div class="pile e1"><h3 class="font-semibold text-gray-900">Atelier Ravel</h3><p class="text-sm text-gray-600">2 400 € · échéance 12 août</p></div><p class="text-xs font-semibold uppercase tracking-wide text-amber-700">En retard</p></div></li><li class="rounded-lg border border-gray-200 p-5"><div class="pile e3"><div class="pile e1"><h3 class="font-semibold text-gray-900">Studio Marceau</h3><p class="text-sm text-gray-600">860 € · échéance 19 août</p></div><p class="text-xs font-semibold uppercase tracking-wide text-amber-700">En attente</p></div></li><li class="rounded-lg border border-gray-200 p-5"><div class="pile e3"><div class="pile e1"><h3 class="font-semibold text-gray-900">Fonderie du Nord</h3><p class="text-sm text-gray-600">5 130 € · échéance 2 septembre</p></div><p class="text-xs font-semibold uppercase tracking-wide text-amber-700">En attente</p></div></li></ul></div></div></section><section class="section densite-compact" data-density="compact" aria-labelledby="agir"><div class="contenu"><div class="pile e3"><h2 id="agir" class="font-semibold text-gray-900">Agir</h2><div class="pile e2"><button type="button" class="btn btn-principal">Envoi de la relance…</button></div></div></div></section></main>
+</body>
+</html>
