@@ -95,3 +95,29 @@ export function scenariosFaceAFace(reel) {
     succes: plein({ '/faceAFace': reel.face, '/verdicts': reel.verdicts })
   }
 }
+
+export function scenariosCarte(reel) {
+  const CHEMINS = ['/carte']
+  /* K2 §6 marque « — » le vide ET le succès pour É5 : ni l'un ni l'autre n'est
+     exigible de son témoin. Trois états, donc — et l'absence des deux autres
+     n'annule rien. Le conteneur porte quand même ses quatre slots : c'est le
+     contrat d'état qui l'exige, pas le témoin. */
+  return {
+    nominal: plein({ '/carte': reel.carte }),
+    chargement: enCours(CHEMINS),
+    erreur: enErreur(CHEMINS, "la carte n'a pas la forme déclarée — en-tête de « 3. Le produit » modifiée")
+  }
+}
+
+export function scenariosJournal(reel) {
+  const CHEMINS = ['/journal']
+  return {
+    nominal: plein({ '/journal': reel.entrees }),
+    chargement: enCours(CHEMINS),
+    erreur: enErreur(CHEMINS, "aucune entrée lisible dans journal.md — la forme des entrées a changé"),
+    /* K2 §6 : « Aucune décision (état inatteignable en pratique, prévu quand
+       même) ». Un état qu'on n'atteindra jamais se conçoit tout de même — c'est
+       le seul moyen de ne pas le découvrir le jour où il arrive. */
+    vide: vide(CHEMINS)
+  }
+}

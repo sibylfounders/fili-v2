@@ -43,6 +43,13 @@
   "/temoins": {
     "donnees": [
       {
+        "gabarit": "catalogue",
+        "nom": "catalogue",
+        "courant": null,
+        "apercu": null,
+        "historique": []
+      },
+      {
         "gabarit": "e1-verdict",
         "nom": "É1 · Le verdict",
         "courant": {
@@ -85,6 +92,28 @@
         },
         "apercu": "./temoins/e4-face-a-face/2026-08-07/nominal.html",
         "historique": []
+      },
+      {
+        "gabarit": "e5-carte",
+        "nom": "e5-carte",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 3,
+          "illisible": false
+        },
+        "apercu": "./temoins/e5-carte/2026-08-07/nominal.html",
+        "historique": []
+      },
+      {
+        "gabarit": "e6-journal",
+        "nom": "e6-journal",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 4,
+          "illisible": false
+        },
+        "apercu": "./temoins/e6-journal/2026-08-07/nominal.html",
+        "historique": []
       }
     ],
     "chargement": false,
@@ -106,6 +135,282 @@
     "erreur": null
   },
   "/verdicts": {
+    "donnees": [],
+    "chargement": false,
+    "erreur": null
+  },
+  "/carte": {
+    "donnees": {
+      "jalons": [
+        {
+          "nom": "K1 · Épreuve du corpus suffisant",
+          "statut": "🟢",
+          "verrouille": "Le verdict NON : le corpus seul ne produit pas une signature",
+          "bloque": "—"
+        },
+        {
+          "nom": "K2 · Déclaration du produit",
+          "statut": "🟢",
+          "verrouille": "Fili, trois parcours, sept gabarits, un contrat d'état par écran",
+          "bloque": "—"
+        },
+        {
+          "nom": "K3 · Routage de la signature",
+          "statut": "🟢",
+          "verrouille": "Vingt composantes routées : cinq en Voie A, neuf en Voie B",
+          "bloque": "—"
+        },
+        {
+          "nom": "K4 · Les instruments",
+          "statut": "🟢",
+          "verrouille": "Le protocole de référence, ses neuf points de passage, le contrat S5",
+          "bloque": "—"
+        },
+        {
+          "nom": "K5 · Construction du produit",
+          "statut": "🟡",
+          "verrouille": "Les sept gabarits construits, un témoin daté par gabarit",
+          "bloque": "Un gabarit sans témoin : É7"
+        },
+        {
+          "nom": "K6 · Épreuve D · propagation",
+          "statut": "⚪",
+          "verrouille": "Qu'un durcissement de règle se propage à l'échelle",
+          "bloque": "K5 non verrouillé · contrat S6 non écrit"
+        }
+      ],
+      "contrats": [
+        {
+          "nom": "S1 · Composants typés",
+          "statut": "🟢",
+          "gouverne": "L'interface passe par le registre, jamais par une balise native",
+          "assertions": "6"
+        },
+        {
+          "nom": "S2 · Contrat d'état",
+          "statut": "🟢",
+          "gouverne": "Toute donnée distante expose ses quatre états",
+          "assertions": "5"
+        },
+        {
+          "nom": "S3 · Discipline spatiale",
+          "statut": "🟢",
+          "gouverne": "Tout espacement vient de l'échelle, et les rapports de groupe tiennent",
+          "assertions": "7"
+        },
+        {
+          "nom": "S4 · Rythme de composition",
+          "statut": "🟢",
+          "gouverne": "La page est une suite de sections, densités et titres compris",
+          "assertions": "7"
+        },
+        {
+          "nom": "S5 · Arbitrage de lecture",
+          "statut": "🟢",
+          "gouverne": "Une page déclare ce qui compte d'abord, une seule fois, en tête",
+          "assertions": "4"
+        },
+        {
+          "nom": "S6 · Provenance de l'expression",
+          "statut": "⚪",
+          "gouverne": "D'où viennent couleur, typographie, iconographie, mouvement, libellés",
+          "assertions": "0 — exigible avant K6"
+        }
+      ],
+      "gabarits": [
+        {
+          "nom": "É1 · Le verdict",
+          "parcours": "P1 · Prononcer le verdict",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 4 états · séance non tenue"
+        },
+        {
+          "nom": "É2 · Le constat",
+          "parcours": "P1 · Prononcer le verdict",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 4 états · séance non tenue"
+        },
+        {
+          "nom": "É3 · La famille des témoins",
+          "parcours": "P2 · Juger un témoin",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 4 états · séance non tenue"
+        },
+        {
+          "nom": "É4 · Le face-à-face",
+          "parcours": "P2 · Juger un témoin",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 5 états · séance non tenue"
+        },
+        {
+          "nom": "É5 · La carte",
+          "parcours": "P3 · Acter une décision",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 3 états · séance non tenue"
+        },
+        {
+          "nom": "É6 · Le journal",
+          "parcours": "P3 · Acter une décision",
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 4 états · séance non tenue"
+        },
+        {
+          "nom": "É7 · L'acte",
+          "parcours": "P3 · Acter une décision",
+          "statut": "⚪",
+          "temoin": "aucun"
+        }
+      ],
+      "instrument": [
+        {
+          "nom": "Le protocole de référence",
+          "statut": "🟢",
+          "porte": "Neuf points de passage, quatre temps, verdict binaire",
+          "bloque": "—"
+        },
+        {
+          "nom": "Le gel définitif",
+          "statut": "🟢",
+          "porte": "Les quatre réglages arrêtés le 7 août",
+          "bloque": "—"
+        },
+        {
+          "nom": "La planche des registres",
+          "statut": "🟢",
+          "porte": "Étalon de B-4, page datée générée",
+          "bloque": "—"
+        },
+        {
+          "nom": "Le catalogue de libellés",
+          "statut": "🟢",
+          "porte": "Étalon de B-5, 116 formulations lisibles d'un bloc",
+          "bloque": "—"
+        },
+        {
+          "nom": "La première séance",
+          "statut": "⚪",
+          "porte": "Le premier verdict d'œil du chapitre",
+          "bloque": "Le gabarit de départ n'est pas choisi"
+        }
+      ],
+      "dettes": [
+        {
+          "nom": "Les entrées #001 à #042 du journal",
+          "statut": "🟢",
+          "depuis": "#049",
+          "cout": "Perte actée, non reconstruite. Le trou est la trace."
+        },
+        {
+          "nom": "Le journal du dépôt à l'état run 1",
+          "statut": "🟢",
+          "depuis": "#051",
+          "cout": "Fermée : le journal vit au dépôt et il est scellé."
+        },
+        {
+          "nom": "L'immuabilité non scellée",
+          "statut": "🟢",
+          "depuis": "#053",
+          "cout": "Fermée : la garantie couvre la pièce qui fait foi."
+        },
+        {
+          "nom": "La sauvegarde hors machine",
+          "statut": "🟢",
+          "depuis": "#052",
+          "cout": "Fermée : le dépôt est poussé hors du disque."
+        },
+        {
+          "nom": "Le rognage de l'interligne",
+          "statut": "🔴",
+          "depuis": "#052",
+          "cout": "S3 vérifie un espacement que l'œil ne voit pas — huit pixels déclarés se voient à treize."
+        },
+        {
+          "nom": "L'auto-référence de É3",
+          "statut": "🔴",
+          "depuis": "#052",
+          "cout": "La famille des témoins se contient elle-même ; à trancher par l'œil en B-1."
+        },
+        {
+          "nom": "La restauration du script de mutation",
+          "statut": "🔴",
+          "depuis": "#046",
+          "cout": "Le garde-fou ne survit pas à une terminaison brutale ; le contrôle d'intégrité est le seul filet réel."
+        },
+        {
+          "nom": "Le suivi ClickUp",
+          "statut": "🔴",
+          "depuis": "—",
+          "cout": "Il porte la série J et s'arrête à #012 ; la série K n'y existe pas."
+        },
+        {
+          "nom": "La carte du système à reprendre",
+          "statut": "🟢",
+          "depuis": "#054",
+          "cout": "Fermée : réécrite au dépôt, et dérivée pour l'écran."
+        },
+        {
+          "nom": "L'emphase du journal invisible sur É6",
+          "statut": "🔴",
+          "depuis": "#054",
+          "cout": "Le texte des entrées est entier, son relief ne l'est pas : aucun composant du registre ne rend du balisage."
+        }
+      ],
+      "prochain": {
+        "nom": "K5 · Construction du produit",
+        "statut": "en cours",
+        "bloque": "Un gabarit sans témoin : É7"
+      }
+    },
+    "chargement": false,
+    "erreur": null
+  },
+  "/journal": {
+    "donnees": [
+      {
+        "numero": "#054",
+        "titre": "La carte et le journal sont construits, et la carte redevient une pièce vivante après avoir été perdue",
+        "date": "2026-08-07",
+        "pastille": "🟡",
+        "statut": "En cours (les écrans existent et tiennent ; leur parti visuel n'est pas jugé) · Poursuit K5",
+        "corps": "Contexte — Quatre gabarits sur sept tenaient debout, le protocole était gelé\net la première séance attendait. Restait P3 · Acter une décision — le parcours\nqui écrit dans le dépôt, et le seul dont K2 §10.3 exige qu'il rende\nmécanique l'interdiction de retoucher une entrée passée. Quatre arbitrages\nont été rendus avant qu'une ligne soit écrite : Fili prépare, l'Auteur valide\nau dépôt ; la carte est une pièce structurée dérivée du document humain ;\nle journal montre la dernière décision en entier, les autres repliées ; et\nl'ordre est lecture d'abord, acte ensuite.\n\nDécision — É5 · La carte et É6 · Le journal sont construits, avec les\nétats que K2 §6 déclare pour eux et pas un de plus : trois pour É5 — le vide\net le succès y sont marqués « — », donc non exigibles de son témoin — et\nquatre pour É6, dont un vide que K2 qualifiait lui-même d'inatteignable en\npratique et prévoyait quand même. system-map.md est réécrite : elle décrit\nle présent, elle ne se restaure pas. Deux lecteurs entrent au dépôt, et un\nquatorzième composant au système.\n\nSens produit / UX — Quatre choses, dont trois n'étaient pas cherchées.\n\nLa carte perdue le 7 août au matin redevient une pièce vivante — et par\nréécriture, jamais par restauration. #049 avait acté que son état antérieur\nn'était plus lisible et que sa reprise restait une tâche ouverte. Une carte\ndécrit le présent : la reconstituer aurait été fabriquer un passé, exactement ce\nque le refus de reconstruire les quarante-deux entrées avait interdit. Elle est\ndonc écrite depuis ce qui est vrai aujourd'hui — six jalons, six contrats, sept\ngabarits, cinq pièces d'instrument, huit dettes dont quatre fermées — et elle\ndescend au dépôt, où le journal l'a précédée en #051. La dernière tâche\nouverte de l'incident est close.\n\nUn lecteur qui « fait au mieux » est un lecteur qui ment. Dériver une pièce\nstructurée d'un document markdown expose à une panne précise : au premier titre\nreformulé, l'analyseur ne trouve plus rien et l'écran montre une carte vide —\nque personne ne distingue d'un système vide. Le lecteur refuse donc de\nstatuer : il vérifie que les cinq tableaux existent et que leur en-tête est\nexactement celle déclarée, et il nomme ce qui a changé. C'est le geste de « pas\nde registre, pas de verdict », appliqué à un document. L'en-tête des tableaux\ndevient un contrat, et la carte le dit en toutes lettres pour que personne ne\nla reformule en croyant faire de la mise en forme.\n\nLe journal ne se résume pas, et c'est une règle avant d'être un choix\nd'écran. É6 montre la dernière décision en entier et replie les autres. Ce\nqui est replié n'est pas raccourci : une entrée s'ouvre complète ou reste\nfermée. Un journal résumé par la machine qui l'affiche est un journal réécrit\npar elle, et la règle 3 — *on n'édite jamais une entrée passée* — vaut aussi\npour celui qui la donne à voir. Et le produit n'offre aucun geste d'édition :\nce n'est pas une omission, c'est la règle rendue mécanique par l'absence du\nbouton, ce que K2 §10.3 exigeait de K5.\n\nLe Gardien a de nouveau trouvé ce que la relecture n'aurait pas vu. Une\nfonction d'aide écrite dans l'écran du journal a été lue par R5.1 comme une\npage sans arbitrage de lecture — parce qu'elle en était une, au sens de la\nrègle. Le défaut n'était pas cosmétique : le rythme d'un texte suivi, l'écart\nentre deux paragraphes, la largeur de mesure, sont des décisions de composition.\nLaissées dans l'écran, elles auraient été reprises autant de fois qu'il y a de\npages, et jamais deux fois pareil. Elles sont donc remontées au système sous le\nnom Prose, quatorzième composant.\n\nUne perte est déclarée, et elle est visible à l'écran. Le journal est écrit\nen markdown ; É6 ne rend que du texte, parce qu'aucun composant du registre ne\nfabrique du balisage à partir d'une chaîne — et qu'un composant qui le ferait\nserait la porte ouverte hors du système que R1.6 ferme. L'emphase que l'Auteur\nmet dans une entrée ne se voit donc pas sur É6. Le texte est entier, son\nrelief ne l'est pas. Montrer les astérisques aurait été montrer le fichier au\nlieu du texte ; les interpréter demandait un composant que la doctrine interdit.\n\nPrécisions d'implémentation — tracées plutôt que prises en silence :\n\n*(a)* Prose est ajouté aux exportations du registre, quatorzième\ncomposant, pour la même raison que Rendu en #052 : un écran en a besoin, et\nle registre est la liste de ce que le système offre — le laisser grossir en\nsilence est précisément ce que le projet surveille.\n*(b)* Le prochain jalon se calcule, il ne se déclare pas. Un jalon désigné à\nla main dans la carte resterait juste jusqu'au jour où il ne le serait plus, et\npersonne ne verrait le décalage.\n*(c)* É5 ne rend ni vide ni succès. K2 §6 les marque « — » : ils ne sont pas\nexigibles de son témoin. Le conteneur d'états porte quand même ses quatre slots\n— c'est le contrat d'état qui l'exige, pas le témoin.\n*(d)* Les numéros d'entrée ne s'écrivent pas avec leur dièse dans les\nlibellés : la chaîne de contrôle lit une référence à trois chiffres comme une\ncouleur littérale. Faux positif de l'outil, contourné par la formulation et\nnon par une exception à la règle — la règle reste entière, c'est le texte qui\ns'écarte de l'ambiguïté. Troisième occurrence du même cas, et la formulation y\ngagne : « les quarante-deux premières entrées » se lit mieux qu'une plage de\nnuméros.\n\nAlternatives écartées — *Faire écrire Fili directement dans le dépôt par un\nservice local* (le plus fidèle à K2 — l'acte a lieu là où la lecture a lieu —\nmais cela introduit un service qui écrit sur le disque, qu'il faut lancer, et\nqui devient une pièce du système à gouverner comme les autres ; l'arbitrage\nd'Auteur a tranché autrement, et l'immuabilité reste garantie par le dépôt, qui\nla garantit déjà) ; *analyser la carte markdown avec tolérance* (un analyseur\ntolérant casse en silence, et un écran qui montre le vide comme s'il était\nl'état du système est pire qu'un écran qui refuse) ; *écrire la pièce\nstructurée à la main et générer le markdown depuis elle* (deux vérités dont\nl'une se tairait en dérivant ; le document humain reste la source) ; *résumer\nles entrées repliées* (résumer une décision passée, c'est la réécrire) ;\n*restaurer l'ancienne carte* (elle décrivait un passé, et fabriquer un passé est\nl'interdit posé par #049) ; *inscrire les paragraphes directement dans\nl'écran plutôt que de remonter Prose au système* (chaque page aurait décidé de\nson propre rythme de lecture).\n\nConséquences — Six gabarits sur sept sont construits ; il reste É7 ·\nL'acte. Registre : treize composants → quatorze. Corpus inchangé —\nvingt-neuf assertions, aucune ajoutée, aucune levée, aucune rupture déclarée\ndans tout le produit. Vingt-six témoins rendus, six lignées. La carte du dépôt\ndevient la pièce vivante ; celle du projet reste une archive. La dette « la\ncarte est à reprendre » ouverte par #049 est fermée. Ce qui reste à K5 : É7,\net il porte deux exigences propres — composer une entrée au format du journal\navec son numéro juste, et déplacer un statut de la carte sans jamais toucher aux\nentrées passées.\n\nCe que cette entrée ne prouve pas — que les deux écrans sont bons. Ils\ntiennent sous les assertions ; aucune assertion ne regarde un parti visuel. La\nprimauté déclarée par É5 — le prochain jalon avant l'inventaire — et par É6 — la\ndernière décision avant l'historique — sont des promesses de composition,\net c'est l'œil de l'Auteur qui les tranche en B-1 et B-2.\n\nImpact carte — Jalon K5 : gabarits 4/7 → 6/7, parcours 2/3 → 2,5/3.\nRegistre : components.exports 13 → 14 (Prose). Ajout de\ntools/fili/carte/produire.mjs et tools/fili/journal/lire.mjs au dépôt.\nsystem-map.md : réécrite, et devient la carte vivante. Témoins : 19 →\n26, six lignées. Ajout de /carte, /journal et /brouillons aux sources\nlues. Dette « la carte est à reprendre » (#049) : 🔴 → 🟢 fermée."
+      },
+      {
+        "numero": "#053",
+        "titre": "Le protocole est gelé définitivement, et le gel fait passer la séance de sept points de passage à neuf",
+        "date": "2026-08-07",
+        "pastille": "🟢",
+        "statut": "Verrouillé (décision d'Auteur : « ok on gèle ») · Ferme le §10.4 de `claude/protocole-reference-k4.md`",
+        "corps": "Contexte — K4 avait tranché un gel en deux temps (#045, arbitrage 1),\npour tenir ensemble deux exigences contraires : le verrou de la roadmap demandait\nun protocole gelé en K4, et #034 avait posé qu'*un protocole gelé de loin est\ngelé mal informé*. Ce qui décide était donc gelé depuis #046 ; quatre réglages\nrestaient ouverts jusqu'à la première séance — la hauteur de référence, la forme\nde la planche des registres, celle du catalogue de libellés, et l'ordre interne\ndes points de passage à l'intérieur d'un même temps. Le §10.4 exigeait que le gel\ndéfinitif soit prononcé avant la première séance, jamais après. Les quatre\npremiers témoins existent depuis #052 ; la condition est remplie.\n\nDécision — Le gel est prononcé. Les quatre réglages sont arrêtés et\nconsignés dans claude/gel-protocole-k5.md, qui fait foi sur ces points sans\nréécrire le protocole. La hauteur de référence reste à 568 px. La planche et\nle catalogue sont des pages datées, générées depuis le dépôt, jamais écrites à\nla main. L'ordre interne des points de passage est celui du §4, tel qu'écrit.\nLe dossier de séance est une liste de fichiers nommés, ouverts dans l'ordre des\nquatre temps.\n\nSens produit / UX — Quatre choses, dont deux n'étaient pas acquises.\n\nLe gel fait passer la séance de sept points de passage à neuf, et c'est le seul\ngain qu'il produit. K4 avait écrit noir sur blanc que *« les premières séances\nde K5 porteront sept points de passage sur neuf »* — B-4 et B-5 restaient sans\nobjet faute de planche et de catalogue. Les deux pièces existent : la planche\ndepuis la construction de l'expression, le catalogue depuis ce gel. Le rapport\nde un à neuf sur le coût de l'œil — sept séances par génération au lieu de\nsoixante-trois passages — porte donc désormais sur la forme pleine, et non plus\nsur une forme dégradée qu'on aurait pu confondre avec elle.\n\nEt la dernière charge a été levée par une distinction, pas par du travail. Le\ncatalogue de libellés existait déjà comme fichier de données ; le protocole\nexigeait qu'il soit lisible d'un bloc. Un fichier de données ne l'est pas. La\ncharge paraissait levée et ne l'était pas — c'est exactement la différence entre\n*la matière existe* et *la pièce de séance existe*, et elle vaut d'être nommée\nparce qu'elle est le genre de trou qui se referme tout seul dans un compte rendu.\nCent seize formulations sont désormais lisibles d'un bloc, groupées par écran,\navec les règles de ton en tête et les variables laissées visibles — elles font\npartie de la formulation.\n\nGarder 568 px est le geste prudent, pas le geste paresseux. Le §5.3 interdit\nde monter la hauteur de référence en suite d'un B-8 non accepté, parce que ce\nserait ajuster l'instrument au résultat. La déplacer la veille de la première\nséance produirait le même effet sans même avoir l'excuse d'un résultat à\ncorriger : on réglerait l'instrument sur ce qu'on s'attend à mesurer. Elle\nreste révisable au journal, hors séance, avec son motif propre.\n\nLe gel ferme l'instrument ; il ne fabrique pas ce qui manque. Trois gabarits\nsur sept n'ont pas de témoin — É5 la carte, É6 le journal, É7 l'acte —, donc pas\nde séance possible. Et aucune lignée n'a de prédécesseur : le contrôle de\nrégression sera déclaré sans objet aux quatre premières séances, écrit à\nchaque fois plutôt que constaté à la fin.\n\nAlternatives écartées — *Descendre la hauteur de référence maintenant que les\nécrans existent* (c'est régler l'instrument sur ce qu'on s'apprête à mesurer, et\nla faute est plus grave avant la mesure qu'après) ; *déclarer B-5 levé parce que\nle fichier de libellés existe* (la charge aurait été comptée levée sans l'être,\net le premier à s'en apercevoir aurait été l'Auteur en pleine séance, sans pièce\nà regarder) ; *écrire la planche et le catalogue à la main pour les rendre plus\nlisibles* (une pièce tenue à la main dérive de ce que le produit emploie\nréellement, et l'étalon jugerait alors une intention au lieu d'un état — c'est\nla faute de la maquette de #016, déplacée sur l'instrument) ; *réécrire\nclaude/protocole-reference-k4.md pour y intégrer le gel* (réécrire un document\nvivant en entier est le geste interdit depuis #049 ; un document de gel qui\nfait foi sur ses quatre points coûte un renvoi et ne risque rien) ; *repousser le\ngel après la première séance* (le §10.4 l'interdit, et pour une raison : un\nprotocole figé après la première mesure est un protocole figé sur elle) ;\n*prononcer le gel sans arrêter les quatre réglages* (un gel qui laisse ouvert ce\nqu'il devait fermer n'est pas un gel, c'est une formule).\n\nConséquences — La première séance peut s'ouvrir. Elle se tiendra hors de\nFili, sur les fichiers rendus, puisque É3 et É4 sont à la fois le dispositif de\njugement et son objet — l'auto-référence déclarée au §8.2 de K4, devenue\nmatérielle. Les conditions d'admission sont remplies : vingt-neuf assertions\nportées et actives, les cinq Sujets à cent pour cent, dix-sept témoins rendus\ndepuis la source vérifiée, aucune rupture déclarée. Une seule chose reste avant\nd'ouvrir : décider par quel gabarit commencer — et ce n'est pas un réglage du\nprotocole, qui ne dit pas dans quel ordre les gabarits passent et n'a pas à le\ndire. Aucun contrat rouvert, aucune assertion touchée.\n\nCe que ce gel ne prouve pas — que le protocole est bon. Il n'a toujours\njamais été exécuté. Tout ce qu'il vaut reste une hypothèse sur ce qui rend un\nécran jugeable, et la première chose que les séances mesureront est le protocole\nlui-même : sept séances par génération est un pari sur l'attention, pas une\nmesure. Si le rythme se révèle intenable, ce sera un résultat écrit ici, et le\ngroupement se révisera comme se révisent le seuil de 2 et le facteur 3.\n\nImpact carte — Protocole de référence : 🟡 gelé en structure → 🟢 GELÉ\nDÉFINITIVEMENT. Points de passage par séance : 7/9 → 9/9. Charges\nd'instrument : la planche des registres et le catalogue de libellés passent de\n🔴 manquantes à 🟢 levées — les six charges de K4 sont désormais toutes\ntraitées. Ajout de claude/gel-protocole-k5.md à la documentation vivante et de\ntools/fili/expression/catalogue.mjs au dépôt. Séances possibles : quatre,\nsur É1, É2, É3 et É4."
+      },
+      {
+        "numero": "#052",
+        "titre": "P2 est debout : le témoin se juge rendu, par bascule, et le Gardien a trouvé trois fautes dans les écrans écrits pour lui",
+        "date": "2026-08-07",
+        "pastille": "🟡",
+        "statut": "En cours (les écrans existent et tiennent ; leur parti visuel n'est pas jugé) · Poursuit K5, ouvert par `#046`",
+        "corps": "Contexte — P1 tenait debout — É1 le verdict, É2 le constat — sous les\nvingt-neuf assertions et sans aucune rupture déclarée. K5 restait ouvert sur\ncinq gabarits. L'Auteur a rendu quatre arbitrages avant qu'une ligne soit\nécrite : P2 d'abord ; la comparaison par bascule ; le verdict déposé\ndans une pièce datée à côté du témoin ; et le gel du protocole après\navoir vu les écrans, non avant.\n\nDécision — É3 · La famille des témoins et É4 · Le face-à-face sont\nconstruits, avec les états que K2 §6 déclare pour eux et pas un de plus :\nquatre pour É3, cinq pour É4 — le succès entre, parce que É4 porte un acte.\nDeux composants entrent au système : TextField, déclaré au registre\ndepuis l'origine et jusque-là sans emploi, et Rendu, le cadre cloisonné\nqui porte un témoin. Le registre passe de douze à treize composants.\nDix-sept témoins vivent maintenant dans quatre lignées.\n\nSens produit / UX — Quatre choses, dont trois n'étaient pas cherchées.\n\nLa bascule est un choix de mesure, pas de mise en page. Côte à côte, chaque\ngénération perd la moitié de la largeur et l'on juge deux vignettes ; à la même\nplace, l'œil compare de mémoire immédiate — et c'est ce qui rend visible un\nécart de rythme ou d'espacement, qui ne se voit jamais par balayage horizontal.\nC'est cohérent avec le verdict à froid hérité de K1 : on juge un écran, pas une\nplanche de comparaison.\n\nUn témoin ne se juge pas en capture, et cela a coûté un détournement. La\nchaîne de rendu n'a pas de React : elle transpile le fichier vérifié et le rend\nsans navigateur. Or É4 pose un crochet d'état pour sa bascule, et TextField\nen pose un pour lier son libellé à son champ. Sans intervention, tout écran\nposant un crochet devenait intémoignable — et l'on serait revenu à la capture\nque #016 interdit. Le chargeur détourne donc react vers le strict\nnécessaire : les crochets rendent la valeur initiale, et leur poseur ne fait\nrien. Ce n'est pas une simplification, c'est la définition d'un témoin — un\narrêt sur image, jamais une session. Si un écran n'était lisible qu'après une\ninteraction, l'état qu'il faut voir serait un état déclaré, et il serait rendu\ncomme les autres.\n\nLe Gardien a trouvé trois fautes dans les écrans écrits pour lui. Aucune\nn'aurait été vue en relisant. *(1)* É4 posait quatre titres de premier\nniveau — un par branche d'état — parce que le titre était placé à l'intérieur\ndu conteneur d'états ; la table des matières qu'annonce un lecteur d'écran\nn'aurait plus eu de sommet. *(2)* É3 posait un saut de niveau 1 vers 3.\n*(3)* É3 groupait ses cartes avec un écart de trente-deux pixels contenant des\ngroupes de seize : deux valeurs parfaitement issues de l'échelle, et un rapport\nde deux là où il en faut trois — le groupe se lit mal alors qu'aucune valeur\nn'est fautive. C'est précisément la classe de défaut que R3.7 existe pour\nattraper, et elle vient d'être attrapée sur du code écrit en connaissance de la\nrègle. La correction de la première a un effet de composition heureux : le titre\nne récite plus l'identité du témoin, et l'image passe réellement avant la\nmétadonnée, ce que K2 §5 demandait.\n\nEt un défaut de produit apparaît, qui n'est pas un artefact. É3 liste les\ngabarits qui ont rendu un témoin. Elle en a désormais quatre — dont elle-même.\nSa vignette se contient donc, et un navigateur bloque la récursion en laissant\nun cadre vide. Le fait est écrit plutôt que contourné : ce n'est pas au\nproducteur de décider en silence qu'un gabarit ne se montre pas lui-même. Cela\nappartient à l'œil, au point de passage B-1.\n\nPrécisions d'implémentation — tracées plutôt que prises en silence\n*(même règle qu'en #010 et #046)* :\n\n*(a)* Rendu est ajouté aux exportations du registre, treizième composant.\nIl n'était pas déclaré en K2 §10.2, mais un témoin se juge rendu : sans cadre,\nÉ4 n'a pas d'objet. Le cloisonnement est total — le témoin est du HTML du\ndépôt, mais lui donner la page qui le juge reviendrait à lui donner le pouvoir\nde la maquiller, ce qui est la ligne rouge de K2 §8 appliquée au rendu.\n*(b)* TextField est construit maintenant et non en É7. L'ordre de K5 dit\nqu'on ne construit que ce que le parcours en cours exige ; É4 l'exige, parce\nqu'un refus sans motif écrit ne se relit pas. Le libellé n'est jamais un texte\nfantôme : il disparaîtrait au moment où l'on répond à la question.\n*(c)* La famille des témoins est lue sur le disque, jamais déclarée. Une\nliste tenue à la main dériverait du dossier sans que rien ne le dise, et É3\nmontrerait une génération qui n'existe plus.\n*(d)* Le miroir servi se recouvre, il ne se vide pas. Les témoins vivent\ndans temoins/ et le serveur ne sert que public/ ; la copie est un artefact\nde service, non versionné. Purger avant de recopier supprimerait des références\npour les réécrire, sans aucun gain : une génération ne disparaît jamais du\ndossier source.\n*(e)* Les chemins portés par l'état sont ceux du produit servi ; la chaîne les\nramène à la position réelle du fichier au moment du rendu. Sans cela, É3 et É4\ntémoigneraient d'un cadre vide — le défaut exact qu'ils existent pour attraper.\n*(f)* Les identifiants de champ sont remis à zéro avant chaque rendu, sans\nquoi deux exécutions produiraient deux fichiers différents et le face-à-face\nmontrerait un écart qui n'existe pas.\n*(g)* L'état « vide » de É4 est aujourd'hui identique à son nominal : aucun\ngabarit n'a de génération précédente, donc la bascule n'existe dans aucun des\ndeux. Le fait est écrit ; il se dissipera à la deuxième génération.\n\nAlternatives écartées — *Comparer côte à côte* (plus confortable à lire, et\nl'on juge deux moitiés d'écran au lieu d'un écran) ; *déposer le verdict au\njournal* (le journal porte le sens produit ; le noyer sous des verdicts de forme\nle rendrait illisible — la pièce datée vit là où vit ce qu'elle juge) ; *geler le\nprotocole avant d'écrire les écrans* (le plus net, et #034 a posé qu'un\nprotocole gelé de loin est gelé mal informé ; K4 a prévu le gel en deux temps\npour exactement cette raison) ; *rendre le témoin par capture d'écran plutôt que\nde détourner react* (c'est la maquette interdite depuis #016, et elle aurait\nété prise pour un témoin) ; *ne pas construire TextField et faire choisir le\nmotif de refus dans une liste fermée* (plus fidèle au protocole de K4, où un\nrefus nomme le point de passage qui a échoué — mais la structure du refus fait\npartie du protocole, et le protocole se gèle après ces écrans : l'écrire\nmaintenant serait geler par anticipation) ; *masquer É3 de sa propre liste*\n(décider en silence qu'un gabarit ne se montre pas lui-même, alors que c'est un\narbitrage de lecture et donc l'affaire de l'œil) ; *corriger les trois fautes\nsans les écrire* (la triche nommée depuis #002, et sur les fautes que le\ndispositif venait de trouver).\n\nConséquences — Quatre gabarits sur sept sont construits, deux parcours\nsur trois ouverts. Registre : douze composants → treize. Le corpus est\ninchangé — vingt-neuf assertions, aucune ajoutée, aucune levée, aucune\nrupture déclarée dans tout le produit. Vingt-six fichiers sont gardés, zéro\nerreur. Ce qui reste à K5 : P3 · Acter une décision — É5 la carte, É6 le\njournal, É7 l'acte — et c'est le parcours qui écrit dans le dépôt, donc celui\nqui doit rendre mécanique l'interdiction de retoucher une entrée passée\n(K2 §10.3). Le gel définitif du protocole reste à prononcer, et il est\ndésormais prononçable : ses écrans existent.\n\nCe que cette entrée ne prouve pas — que les deux écrans sont bons. Ils\ntiennent sous les assertions ; aucune assertion ne regarde un parti visuel.\nLa primauté déclarée par É3 et É4 est une promesse de composition, et c'est\nl'œil de l'Auteur qui la tranche aux points de passage B-1 et B-2. Un fichier\nne peut pas se l'accorder à lui-même.\n\nImpact carte — Jalon K5 : gabarits 2/7 → 4/7, parcours 1/3 → 2/3.\nRegistre : components.exports 12 → 13 (Rendu). Système : ajout de\nTextField et Rendu. Chaîne de rendu : détournement de react documenté,\nidentifiants déterministes. Témoins : 8 → 17, quatre lignées. Ajout de\n/temoins, /faceAFace et /verdicts aux sources lues. Charge ouverte :\nl'auto-référence de É3, à trancher par l'œil en B-1."
+      },
+      {
+        "numero": "#051",
+        "titre": "Le journal descend au dépôt, et la pièce qui fait foi entre enfin sous la garantie construite pour elle",
+        "date": "2026-08-07",
+        "pastille": "🟢",
+        "statut": "Verrouillé (arbitrage délégué : « je te laisse décider ») · Suit `#049`",
+        "corps": "Contexte — #049 a acté la perte de quarante-deux entrées et adopté trois\nrègles, dont la première : *on ne réécrit jamais un document vivant en entier*.\nLa troisième posait que l'immuabilité devait couvrir le journal du projet,\net pas seulement celui du dépôt, puisque c'est le premier qui fait foi — et\nelle notait que la garantie restait non scellée tant qu'il en était ainsi.\n\nDeux jours d'usage ont montré que les deux règles se contredisent. L'outil qui\nécrit les documents de projet ne sait pas ajouter : il ne sait\nqu'écraser. Ajouter une entrée au journal du projet impose donc de\nréécrire les sept qui existent — c'est-à-dire de refaire exactement le geste\nqui a coûté quarante-deux entrées. La règle adoptée pour protéger le journal\ninterdisait de le tenir. Un dispositif qui rend impossible l'acte qu'il\nprotège n'est pas prudent, il est cassé.\n\nDécision — Le journal descend au dépôt. Ce fichier devient la pièce qui\nfait foi à partir de #050. claude/journal.md est gelé en l'état —\nsept entrées, #043 à #049 — et ne sera plus jamais réécrit. Aucune ligne\nn'est recopiée d'un support à l'autre.\n\nSens produit / UX — Trois choses que ce déplacement obtient, et aucune\nn'était accessible autrement.\n\nLa garantie couvre enfin la pièce qu'elle devait couvrir. L'outil\nd'empreinte du dépôt pose une signature par entrée : une entrée passée réécrite\nou disparue est un refus, pas un avertissement. Il existait depuis le 7 août au\nmatin et il gardait un fichier qui ne faisait pas foi. Il garde maintenant celui\nqui fait foi. C'est la condition que #049 avait posée pour sceller, et elle\nest remplie par déplacement de la pièce plutôt que par extension de l'outil.\n\nLe passé devient récupérable, ce qu'il n'a jamais été. Un document de projet\nn'a qu'un état : le dernier. Un fichier du dépôt les a tous. Si une session\nfuture écrase ce journal, l'état antérieur se relit — c'est précisément ce qui\nmanquait le 7 août à 08h34, et c'est ce qui a transformé un accident en perte\ndéfinitive. La sauvegarde hors machine, décidée le même jour, met ce passé hors\nd'atteinte de ce disque.\n\nEt l'ajout redevient mécanique. Ajouter une entrée n'exige plus de retoucher\nles précédentes. Le geste interdit par #049 cesse d'être le seul geste\npossible. La règle est tenue au lieu d'être contournée.\n\nCe que la décision coûte, et pourquoi le coût est accepté — Le journal est\ndésormais réparti sur deux supports, et il faut ce tableau pour savoir où\nchercher. C'est un défaut réel. Il est préféré au seul autre chemin — recopier\nles sept entrées ici — parce que cette recopie est une réécriture intégrale\nfaite de mémoire, c'est-à-dire le geste exact que #049 interdit, sur les seules\nentrées qui restent. Une répartition déclarée vaut mieux qu'une recopie\nrisquée, comme une perte déclarée vaut mieux qu'un faux indétectable. La\ndoctrine du projet ne dit rien d'autre depuis #002.\n\nAlternatives écartées — *Réécrire le journal du projet malgré la règle*\n(l'Auteur l'avait offert ; c'est refaire le geste qui a coûté quarante-deux\nentrées, sur les sept qui survivent, et sans possibilité de revenir en arrière —\nle support n'a pas d'historique) ; *recopier #043–#049 ici pour n'avoir\nqu'un seul support* (même geste, même risque, déplacé — et il produirait deux\nexemplaires dont rien ne dirait lequel fait foi) ; *garder le journal au projet\net étendre l'outil d'empreinte jusqu'à lui* (l'outil verrait la réécriture mais\nne l'empêcherait pas et ne la réparerait pas : constater la perte n'est pas la\nprévenir, et #049 a déjà mesuré ce que vaut un constat sans recours) ;\n*maintenir les deux en miroir* (deux vérités, donc aucune ; et la synchronisation\nest un geste de réécriture à chaque entrée).\n\nConséquences — Ce fichier est empreinté par l'outil du dépôt à chaque\nvérification. claude/journal.md passe de vivant à archive gelée, au même\ntitre que claude/archive/v2-run1-journal.md. La troisième règle de #049 est\ntenue, et la garantie d'immuabilité peut être scellée : elle couvre la pièce\nqui fait foi. Aucun contrat rouvert, aucune assertion touchée.\n\nImpact carte — Journal du projet : vivant → gelé à 7 entrées. Journal du\ndépôt : archive de la run 1 → journal vivant à partir de #050.\nDette « immuabilité non scellée » (#049) : 🔴 → 🟢 fermée."
+      },
+      {
+        "numero": "#050",
+        "titre": "Le périmètre typographique est arbitré par l'œil de l'Auteur, et il accuse une règle déjà verrouillée",
+        "date": "2026-08-07",
+        "pastille": "🟡",
+        "statut": "Consigné, non contractualisé · Ouvre une charge d'écriture pour un jalon ultérieur",
+        "corps": "Contexte — La documentation *Knowledge* de Google Fonts a été lue\nintégralement : soixante-deux articles, cent quatre-vingt-un termes de\nglossaire, soixante candidates Voie A dégagées et classées par décidabilité.\nLe résultat central de cette moisson était négatif : la source ne donne\npresque aucun seuil, et jamais comme une exigence. Sur l'ensemble du fonds,\nla colonne « exigence » ne contient que des points de code Unicode, des\ndéfinitions d'unités et des limites de format de fichier — jamais une valeur de\nmise en page. Soixante candidates sans nombres opposables sont un fonds, pas un\ncorpus.\n\nDécision — L'Auteur réduit le périmètre à cinq articles plus une source\nextérieure : *How type influences readability*, *Introducing accessibility in\ntypography*, *Understanding measure / line length*, *The foundations of web\ntypography*, *Vertical spacing & line-height in design systems*, et le\n*leading-trim* de Microsoft Design. Le périmètre est consigné dans\nclaude/sources-typographie-arbitrees.md. Aucune assertion n'est écrite :\nK5 est le jalon de la construction, et un contrat typographique s'écrirait\ncontre le périmètre de son thread.\n\nSens produit / UX — Trois choses, dont deux n'étaient pas cherchées.\n\nLe classement qui fait foi n'est pas celui de la machine. La moisson avait\ntrié les candidates par décidabilité — ce qu'un juge peut trancher sans\nsavoir à qui l'on parle. L'Auteur les a triées par fréquence du défaut :\n*« ce sont des choses que je constate très souvent depuis le début de ma\ncarrière. »* Les deux classements ne coïncident pas, et c'est le second qui\ngouverne. Une assertion parfaitement décidable qui ne bloque jamais rien n'est\npas un garde-fou, c'est du décor.\n\nLe *leading-trim* n'ajoute pas une règle : il en accuse une. S3 · Discipline\nSpatiale est verrouillée et vérifie que tout espacement provient de l'échelle\ndéclarée. Mais le demi-interligne hérité de CSS1, plus les métriques que la\nfonte réserve pour les diacritiques, gonflent la boîte du texte au-delà des\nlettres visibles. Dès qu'un espace borde du texte, la valeur que S3 vérifie\nn'est pas la valeur que l'œil voit : sur le corps courant, un espace déclaré\nà huit pixels se voit à treize. Le Gardien dit vert sur une mesure qui ment.\nC'est le premier point du chapitre où une source nouvelle met en cause une\nassertion déjà verrouillée au lieu d'en proposer une neuve.\n\nEt la confrontation a trouvé une faute dans l'échelle du projet. La source\ndonne une direction sans seuil : plus le texte est petit, plus il lui faut d'air.\nL'échelle de Fili faisait l'inverse sur ses deux tailles de lecture — 14 px à\n1,50 puis 17 px à 1,60. Le régime de titre, lui, était déjà juste. La leçon\ndépasse la correction : une assertion de monotonie écrite globalement\nbloquerait Fili lui-même, parce que l'étiquette de menu — 12 px, chasse\nélargie — n'est pas du texte suivi et n'entre dans aucune monotonie. La règle\nn'a de sens que par régime déclaré.\n\nDeux résultats négatifs sont acquis et opposables. L'alignement justifié est\nempiriquement indécidable : la source ne dit pas « ça dépend », elle dit que\nles études sont non concluantes et qu'il est difficile d'imaginer une expérience\nqui le serait. Toute règle d'alignement serait indéfendable sur cette base.\nEt aucun corpus n'est agnostique d'écriture par défaut : une assertion qui\ncalcule depuis la ligne de base ne doit pas « tolérer » le CJK, elle doit\nrefuser de s'exécuter faute d'objet — le même geste que *pas de registre, pas\nde verdict*.\n\nAlternatives écartées — *Écrire le contrat typographique dans le thread K5*\n(la règle de clôture prime : un thread, un périmètre, et K5 construit) ;\n*retenir les soixante candidates et laisser le jalon futur trier* (c'est\ndéléguer l'arbitrage à celui qui n'a pas les vingt ans d'observation) ;\n*importer les plages chiffrées de la source comme si elle les exigeait*\n(45–75 et 40–60 ne se recouvrent qu'en partie, et aucune n'est énoncée comme\nune règle — le corpus doit porter ses nombres et citer la source comme\nmotif) ; *corriger l'échelle typographique en silence* (une correction de\nvaleurs non tracée est la faute nommée depuis #002).\n\nConséquences — Le périmètre est borné et opposable au jalon qui\nl'exploitera, sous trois verrous : toute valeur est arbitrée par l'Auteur et\ndéclarée comme telle ; tout énoncé est borné par régime déclaré quand la source\nne donne qu'une direction ; et rien de ce qui touche aux métriques de fonte ne\ns'écrit sans les fichiers au dépôt. Une dette change de nature : l'absence\ndes fichiers de fonte était une dette de rendu, elle devient une dépendance\nd'assertion — deux des six sources n'ont aucun objet sans elle. Une charge\ns'ouvre sur S3, qui est verrouillée : la mesure spatiale autour du texte est\nfaussée tant que le rognage n'est pas déclaré. Elle est écrite, elle n'est pas\ntraitée ici.\n\nImpact carte — Ajout de claude/sources-typographie-arbitrees.md et de\nclaude/fonds-typographie-google-knowledge.md à la documentation vivante.\nPérimètre typographique : ⚪ → 🟡 arbitré, non contractualisé. Charge\nouverte sur S3 (rognage de l'interligne), consignée. Échelle typographique :\ncorrigée par régime, correction tracée à la planche."
+      }
+    ],
+    "chargement": false,
+    "erreur": null
+  },
+  "/brouillons": {
     "donnees": [],
     "chargement": false,
     "erreur": null

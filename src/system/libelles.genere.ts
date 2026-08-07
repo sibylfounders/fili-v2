@@ -147,6 +147,53 @@ export const LIBELLES = {
         "acteFerme": "Le verdict ne peut pas être déposé : la pièce qui le reçoit est illisible."
       },
       "cadreTitre": "{gabarit} — génération {date}"
+    },
+    "carte": {
+      "surtitre": "Fili · la carte",
+      "titre": "Où en est le système, et ce qui bloque la suite",
+      "chapeau": "Cette carte décrit le présent. Elle ne raconte pas comment on y est arrivé — c'est le journal qui le fait.",
+      "prochainTitre": "Le prochain jalon",
+      "prochainBloque": "Ce qui le bloque",
+      "prochainLibre": "Rien ne le bloque : il est ouvrable.",
+      "jalonsTitre": "Le chapitre",
+      "contratsTitre": "Les contrats du corpus",
+      "gabaritsTitre": "Les sept gabarits",
+      "instrumentTitre": "L'instrument de la Voie B",
+      "dettesTitre": "Les dettes",
+      "dettesAide": "Une dette fermée reste écrite : ce qui a coûté quelque chose ne s'efface pas de la carte.",
+      "colonneStatut": "Statut",
+      "etats": {
+        "chargementAide": "Lecture de la carte…",
+        "erreurTitre": "La carte n'a pas la forme déclarée",
+        "erreurCorps": "Elle est lisible par un humain, pas par le producteur : {raison}. Rien n'est affiché plutôt qu'une carte partielle — une carte incomplète se lit comme un système incomplet.",
+        "erreurAide": "Rétablissez la forme des tableaux au dépôt, puis relisez.",
+        "videTitre": "Aucune carte",
+        "videCorps": "Le document de carte n'existe pas encore. Il en portera un dès qu'un jalon sera déclaré.",
+        "suspenduTitre": "Suspendu",
+        "detteSuspendue": "La liste des dettes est illisible. Le reste de la carte, lui, se lit — et c'est le prochain jalon qui compte d'abord."
+      }
+    },
+    "journal": {
+      "surtitre": "Fili · le journal",
+      "titre": "Pourquoi le système en est là",
+      "chapeau": "Une entrée par décision. La plus récente en haut, et jamais une entrée passée réécrite.",
+      "derniereTitre": "La dernière décision",
+      "precedentesTitre": "Les décisions précédentes",
+      "precedentesAide": "Repliées. Chacune s'ouvre à la demande — elles ne se résument pas, elles se lisent en entier ou pas du tout.",
+      "deplier": "Lire l'entrée",
+      "replier": "Replier",
+      "compte": "{n} décision(s) au journal",
+      "trou": "Les quarante-deux premières entrées du journal sont déclarées perdues. Le trou est la trace, et il vaut mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.",
+      "etats": {
+        "chargementAide": "Lecture du journal…",
+        "erreurTitre": "Le journal est illisible",
+        "erreurCorps": "La mémoire du projet ne se lit pas : {raison}. Aucune entrée n'est reconstituée — une entrée déduite serait un faux indétectable.",
+        "erreurAide": "Rétablissez la forme des entrées au dépôt, puis relisez.",
+        "videTitre": "Aucune décision",
+        "videCorps": "Le journal ne porte encore aucune entrée. La première viendra avec la première décision tracée.",
+        "suspenduTitre": "Suspendu",
+        "precedentesSuspendues": "L'historique est illisible. La dernière décision, elle, reste lisible — et c'est elle qui compte d'abord."
+      }
     }
   }
 } as const

@@ -36,7 +36,7 @@ const { rendre } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/temo
 const { installerSource } = await import(pathToFileURL(path.join(RACINE, 'src/system/donnees/source.ts')).href)
 const { installerMutation } = await import(pathToFileURL(path.join(RACINE, 'src/system/donnees/useRequete.ts')).href)
 const { reinitialiserId } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/temoin/react-temoin.mjs')).href)
-const { scenariosVerdict, scenariosConstat, scenariosFamille, scenariosFaceAFace } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/etat/scenarios.mjs')).href)
+const { scenariosVerdict, scenariosConstat, scenariosFamille, scenariosFaceAFace, scenariosCarte, scenariosJournal } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/etat/scenarios.mjs')).href)
 
 /* ── L'état réel, produit par le Gardien ─────────────────────────────────── */
 const cheminEtat = path.join(RACINE, 'public/etat.json')
@@ -80,6 +80,11 @@ const relatif = (c) => (typeof c === 'string' ? c.replace(/^\.\/temoins\//, '../
 const reelFamille = {
   familles: (donnees('/temoins') ?? []).map((f) => ({ ...f, apercu: relatif(f.apercu) }))
 }
+/* La carte et le journal viennent de leurs documents réels, lus par les
+   mêmes producteurs que ceux du produit. Le témoin de É6 montre donc le vrai
+   journal — y compris l'entrée qui décrit sa propre construction. */
+const reelCarte = { carte: donnees('/carte') }
+const reelJournal = { entrees: donnees('/journal') ?? [] }
 const reelFaceAFace = {
   face: (() => {
     const f = donnees('/faceAFace')
@@ -101,7 +106,11 @@ const GABARITS = [
   { cle: 'e3-famille', titre: 'É3 · La famille des témoins', source: 'src/pages/EcranFamille.tsx',
     exporte: 'EcranFamille', scenarios: scenariosFamille(reelFamille) },
   { cle: 'e4-face-a-face', titre: 'É4 · Le face-à-face', source: 'src/pages/EcranFaceAFace.tsx',
-    exporte: 'EcranFaceAFace', scenarios: scenariosFaceAFace(reelFaceAFace) }
+    exporte: 'EcranFaceAFace', scenarios: scenariosFaceAFace(reelFaceAFace) },
+  { cle: 'e5-carte', titre: 'É5 · La carte', source: 'src/pages/EcranCarte.tsx',
+    exporte: 'EcranCarte', scenarios: scenariosCarte(reelCarte) },
+  { cle: 'e6-journal', titre: 'É6 · Le journal', source: 'src/pages/EcranJournal.tsx',
+    exporte: 'EcranJournal', scenarios: scenariosJournal(reelJournal) }
 ]
 
 const page = (titre, corps) => `<!doctype html>

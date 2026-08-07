@@ -22,6 +22,8 @@ const HACHE: Record<string, Gabarit> = {
   '#constat': 'constat',
   '#temoins': 'famille',
   '#jugement': 'faceAFace',
+  '#carte': 'carte',
+  '#journal': 'journal',
 }
 const gabarit: Gabarit = HACHE[window.location.hash.split('/')[0]] ?? 'verdict'
 
@@ -54,7 +56,7 @@ fetch('./etat.json')
   })
   .catch((e: unknown) => {
     const raison = e instanceof Error ? e.message : 'source illisible'
-    for (const chemin of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences', '/temoins', '/faceAFace', '/verdicts'])
+    for (const chemin of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons'])
       installerSource(chemin, { donnees: null, chargement: false, erreur: raison })
     rendre()
   })

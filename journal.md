@@ -34,6 +34,135 @@ qu'il n'a rien perdu.
 
 ---
 
+## #054 — La carte et le journal sont construits, et la carte redevient une pièce vivante après avoir été perdue
+*2026-08-07 · Statut : 🟡 En cours (les écrans existent et tiennent ; leur parti visuel n'est pas jugé) · Poursuit K5*
+
+**Contexte** — Quatre gabarits sur sept tenaient debout, le protocole était gelé
+et la première séance attendait. Restait P3 · Acter une décision — le parcours
+qui **écrit** dans le dépôt, et le seul dont K2 §10.3 exige qu'il rende
+**mécanique** l'interdiction de retoucher une entrée passée. Quatre arbitrages
+ont été rendus avant qu'une ligne soit écrite : **Fili prépare, l'Auteur valide
+au dépôt** ; la carte est **une pièce structurée dérivée du document humain** ;
+le journal montre **la dernière décision en entier, les autres repliées** ; et
+l'ordre est **lecture d'abord, acte ensuite**.
+
+**Décision** — **É5 · La carte et É6 · Le journal sont construits**, avec les
+états que K2 §6 déclare pour eux et pas un de plus : **trois pour É5** — le vide
+et le succès y sont marqués « — », donc non exigibles de son témoin — et
+**quatre pour É6**, dont un vide que K2 qualifiait lui-même d'inatteignable en
+pratique et prévoyait quand même. **`system-map.md` est réécrite** : elle décrit
+le présent, elle ne se restaure pas. Deux lecteurs entrent au dépôt, et un
+quatorzième composant au système.
+
+**Sens produit / UX** — Quatre choses, dont trois n'étaient pas cherchées.
+
+**La carte perdue le 7 août au matin redevient une pièce vivante — et par
+réécriture, jamais par restauration.** `#049` avait acté que son état antérieur
+n'était plus lisible et que sa reprise restait une tâche ouverte. Une carte
+décrit le présent : la reconstituer aurait été fabriquer un passé, exactement ce
+que le refus de reconstruire les quarante-deux entrées avait interdit. Elle est
+donc écrite depuis ce qui est vrai aujourd'hui — six jalons, six contrats, sept
+gabarits, cinq pièces d'instrument, huit dettes dont quatre fermées — et elle
+descend au dépôt, où le journal l'a précédée en `#051`. **La dernière tâche
+ouverte de l'incident est close.**
+
+**Un lecteur qui « fait au mieux » est un lecteur qui ment.** Dériver une pièce
+structurée d'un document markdown expose à une panne précise : au premier titre
+reformulé, l'analyseur ne trouve plus rien et l'écran montre une carte vide —
+que personne ne distingue d'un système vide. Le lecteur **refuse donc de
+statuer** : il vérifie que les cinq tableaux existent et que leur en-tête est
+exactement celle déclarée, et il nomme ce qui a changé. C'est le geste de « pas
+de registre, pas de verdict », appliqué à un document. **L'en-tête des tableaux
+devient un contrat**, et la carte le dit en toutes lettres pour que personne ne
+la reformule en croyant faire de la mise en forme.
+
+**Le journal ne se résume pas, et c'est une règle avant d'être un choix
+d'écran.** É6 montre la dernière décision **en entier** et replie les autres. Ce
+qui est replié n'est pas raccourci : une entrée s'ouvre complète ou reste
+fermée. Un journal résumé par la machine qui l'affiche est un journal réécrit
+par elle, et la règle 3 — *on n'édite jamais une entrée passée* — vaut aussi
+pour celui qui la donne à voir. **Et le produit n'offre aucun geste d'édition** :
+ce n'est pas une omission, c'est la règle rendue mécanique par l'absence du
+bouton, ce que K2 §10.3 exigeait de K5.
+
+**Le Gardien a de nouveau trouvé ce que la relecture n'aurait pas vu.** Une
+fonction d'aide écrite dans l'écran du journal a été lue par R5.1 comme **une
+page sans arbitrage de lecture** — parce qu'elle en était une, au sens de la
+règle. Le défaut n'était pas cosmétique : le rythme d'un texte suivi, l'écart
+entre deux paragraphes, la largeur de mesure, sont des décisions de composition.
+Laissées dans l'écran, elles auraient été reprises autant de fois qu'il y a de
+pages, et jamais deux fois pareil. Elles sont donc remontées au système sous le
+nom **`Prose`**, quatorzième composant.
+
+**Une perte est déclarée, et elle est visible à l'écran.** Le journal est écrit
+en markdown ; É6 ne rend que du texte, parce qu'aucun composant du registre ne
+fabrique du balisage à partir d'une chaîne — et qu'un composant qui le ferait
+serait la porte ouverte hors du système que R1.6 ferme. **L'emphase que l'Auteur
+met dans une entrée ne se voit donc pas sur É6.** Le texte est entier, son
+relief ne l'est pas. Montrer les astérisques aurait été montrer le fichier au
+lieu du texte ; les interpréter demandait un composant que la doctrine interdit.
+
+**Précisions d'implémentation — tracées plutôt que prises en silence :**
+
+*(a)* **`Prose` est ajouté aux exportations du registre**, quatorzième
+composant, pour la même raison que `Rendu` en `#052` : un écran en a besoin, et
+le registre est la liste de ce que le système offre — le laisser grossir en
+silence est précisément ce que le projet surveille.
+*(b)* Le **prochain jalon se calcule**, il ne se déclare pas. Un jalon désigné à
+la main dans la carte resterait juste jusqu'au jour où il ne le serait plus, et
+personne ne verrait le décalage.
+*(c)* **É5 ne rend ni vide ni succès.** K2 §6 les marque « — » : ils ne sont pas
+exigibles de son témoin. Le conteneur d'états porte quand même ses quatre slots
+— c'est le contrat d'état qui l'exige, pas le témoin.
+*(d)* Les **numéros d'entrée ne s'écrivent pas avec leur dièse dans les
+libellés** : la chaîne de contrôle lit une référence à trois chiffres comme une
+couleur littérale. Faux positif de l'outil, contourné **par la formulation** et
+non par une exception à la règle — la règle reste entière, c'est le texte qui
+s'écarte de l'ambiguïté. Troisième occurrence du même cas, et la formulation y
+gagne : « les quarante-deux premières entrées » se lit mieux qu'une plage de
+numéros.
+
+**Alternatives écartées** — *Faire écrire Fili directement dans le dépôt par un
+service local* (le plus fidèle à K2 — l'acte a lieu là où la lecture a lieu —
+mais cela introduit un service qui écrit sur le disque, qu'il faut lancer, et
+qui devient une pièce du système à gouverner comme les autres ; l'arbitrage
+d'Auteur a tranché autrement, et l'immuabilité reste garantie par le dépôt, qui
+la garantit déjà) ; *analyser la carte markdown avec tolérance* (un analyseur
+tolérant casse en silence, et un écran qui montre le vide comme s'il était
+l'état du système est pire qu'un écran qui refuse) ; *écrire la pièce
+structurée à la main et générer le markdown depuis elle* (deux vérités dont
+l'une se tairait en dérivant ; le document humain reste la source) ; *résumer
+les entrées repliées* (résumer une décision passée, c'est la réécrire) ;
+*restaurer l'ancienne carte* (elle décrivait un passé, et fabriquer un passé est
+l'interdit posé par `#049`) ; *inscrire les paragraphes directement dans
+l'écran plutôt que de remonter `Prose` au système* (chaque page aurait décidé de
+son propre rythme de lecture).
+
+**Conséquences** — **Six gabarits sur sept** sont construits ; il reste **É7 ·
+L'acte**. Registre : treize composants → **quatorze**. Corpus **inchangé** —
+vingt-neuf assertions, aucune ajoutée, aucune levée, **aucune rupture déclarée
+dans tout le produit**. Vingt-six témoins rendus, six lignées. La carte du dépôt
+devient la pièce vivante ; celle du projet reste une archive. **La dette « la
+carte est à reprendre » ouverte par `#049` est fermée.** Ce qui reste à K5 : É7,
+et il porte deux exigences propres — composer une entrée au format du journal
+avec son numéro juste, et déplacer un statut de la carte sans jamais toucher aux
+entrées passées.
+
+**Ce que cette entrée ne prouve pas** — que les deux écrans sont bons. Ils
+tiennent sous les assertions ; aucune assertion ne regarde un parti visuel. La
+primauté déclarée par É5 — le prochain jalon avant l'inventaire — et par É6 — la
+dernière décision avant l'historique — sont des **promesses de composition**,
+et c'est l'œil de l'Auteur qui les tranche en B-1 et B-2.
+
+**Impact carte** — Jalon K5 : gabarits **4/7 → 6/7**, parcours **2/3 → 2,5/3**.
+Registre : `components.exports` 13 → **14** (`Prose`). Ajout de
+`tools/fili/carte/produire.mjs` et `tools/fili/journal/lire.mjs` au dépôt.
+`system-map.md` : réécrite, et **devient la carte vivante**. Témoins : **19 →
+26**, six lignées. Ajout de `/carte`, `/journal` et `/brouillons` aux sources
+lues. Dette « la carte est à reprendre » (`#049`) : 🔴 → 🟢 **fermée**.
+
+---
+
 ## #053 — Le protocole est gelé définitivement, et le gel fait passer la séance de sept points de passage à neuf
 *2026-08-07 · Statut : 🟢 Verrouillé (décision d'Auteur : « ok on gèle ») · Ferme le §10.4 de `claude/protocole-reference-k4.md`*
 

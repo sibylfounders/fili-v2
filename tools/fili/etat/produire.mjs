@@ -7,6 +7,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { executerBatterie, RACINE } from '../crash-test/battery.mjs'
 import { verifierIntegrite } from '../crash-test/integrite.mjs'
+import { produire as produireCarte } from '../carte/produire.mjs'
+import { produire as produireJournal } from '../journal/lire.mjs'
 
 const SORTIE = path.join(RACINE, 'public/etat.json')
 
@@ -16,7 +18,7 @@ let etat
 if (integrite.manques.length > 0) {
   const raison = integrite.manques.join(' · ')
   etat = Object.fromEntries(
-    ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/temoins', '/faceAFace', '/verdicts'].map((c) => [
+    ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons'].map((c) => [
       c, { donnees: null, chargement: false, erreur: raison }
     ])
   )
@@ -152,6 +154,23 @@ if (integrite.manques.length === 0) {
   etat['/faceAFace'] = { donnees: faceAFace, chargement: false, erreur: null }
   /* Aucun verdict n'a encore été déposé, et Fili ne l'invente pas. */
   etat['/verdicts'] = { donnees: [], chargement: false, erreur: null }
+
+  /* La carte et le journal viennent de leurs documents, par un lecteur qui
+     REFUSE DE STATUER plutôt que de deviner. Un analyseur tolérant montrerait
+     une carte vide au premier titre reformulé, et personne ne saurait que
+     l'écran ment. L'erreur remonte donc telle quelle jusqu'à l'écran. */
+  const carte = produireCarte()
+  etat['/carte'] = carte.erreur
+    ? { donnees: null, chargement: false, erreur: carte.erreur }
+    : { donnees: carte.donnees, chargement: false, erreur: null }
+
+  const journal = produireJournal()
+  etat['/journal'] = journal.erreur
+    ? { donnees: null, chargement: false, erreur: journal.erreur }
+    : { donnees: journal.donnees, chargement: false, erreur: null }
+
+  /* É7 déposera ses brouillons ici. Aucun n'existe, et Fili ne l'invente pas. */
+  etat['/brouillons'] = { donnees: [], chargement: false, erreur: null }
 }
 
 fs.mkdirSync(path.dirname(SORTIE), { recursive: true })
