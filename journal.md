@@ -34,6 +34,121 @@ qu'il n'a rien perdu.
 
 ---
 
+## #055 — É7 · L'acte ferme la construction : sept gabarits, trois parcours, et le produit n'écrit pas dans sa propre mémoire
+*2026-08-07 · Statut : 🟡 En cours (les sept écrans existent et tiennent ; aucun n'est jugé) · Achève la construction de K5*
+
+**Contexte** — Six gabarits tenaient debout. Restait É7, le seul écran qui
+**produit** quelque chose, et le seul dont K2 §10.3 exigeait qu'il rende
+**mécanique** l'interdiction de retoucher une entrée passée. Deux arbitrages ont
+été rendus avant écriture : le formulaire **s'ouvre sur ce que la décision
+ferme**, et le brouillon porte **l'entrée et le déplacement de statut
+ensemble**.
+
+**Décision** — **É7 · L'acte est construit**, avec les **cinq états** que K2 §6
+déclare pour lui. **La construction de K5 est achevée : sept gabarits, trois
+parcours, trente et un témoins.** Un quinzième composant entre au système,
+`Selection`. Le numéro d'entrée est **calculé**, le garde-fou du verrou est
+**mécanique**, et Fili **ne touche jamais au journal**.
+
+**Sens produit / UX** — Quatre choses, dont trois découlent de vos arbitrages
+plutôt que de la technique.
+
+**L'ordre du formulaire est une mesure, pas une commodité.** L'écran s'ouvre sur
+une seule question — *qu'est-ce que cette décision ferme ?* — et le récit vient
+après. Écrites en dernier, dans l'ordre du fichier, les conséquences se rédigent
+quand la décision est déjà racontée, donc **déjà défendue** : on décrit alors le
+coût d'une chose qu'on a fini de justifier, et le coût s'allège tout seul. C'est
+la même mécanique que la mesure d'ouverture du protocole, où la primauté perçue
+se prononce avant toute déclaration : **ce qui est demandé en premier est la
+seule chose qu'on ne peut pas rattraper.**
+
+**Le verrou ne se déclare plus, il se mérite — et c'est le dépôt qui le dit.**
+Le passage à « Verrouillé » est **refusé** tant que la batterie et le contrôle
+d'intégrité ne sont pas au vert. Ce n'est pas une case à cocher ni un avertissement :
+l'option existe dans la liste, elle est **montrée et indisponible**, et le motif
+se lit à côté. La distinction compte — une option retirée de la liste laisse
+croire qu'elle n'existe pas, alors qu'elle existe et qu'elle n'est pas ouverte
+maintenant. K2 §10.3 demandait que ce garde-fou cesse d'être de la discipline ;
+il l'a cessé.
+
+**Fili n'écrit pas dans le journal, et c'est ce qui protège le journal.** Votre
+arbitrage — *Fili prépare, vous validez au dépôt* — a une conséquence qui n'était
+pas son motif : **une entrée passée reste hors de portée du produit, parce que
+le produit n'a jamais la main dessus.** L'absence de geste d'édition n'est donc
+pas seulement l'absence d'un bouton, c'est l'absence de la capacité. C'est la
+forme la plus forte que pouvait prendre l'exigence de K2 §10.3, et elle a été
+obtenue en retirant du pouvoir au produit plutôt qu'en lui ajoutant une règle.
+
+**Et le numéro se calcule.** Le saisir à la main est la façon la plus simple
+d'écrire deux fois le même, et un journal à numéros dupliqués ne se relit plus.
+Si le journal ou la carte devient illisible, la composition **refuse** : un
+numéro déduit d'une lecture partielle serait un faux, et c'est exactement le
+mécanisme qui a coûté quarante-deux entrées le 7 août au matin.
+
+**Le Gardien a de nouveau corrigé la composition, trois fois.** Trois rapports
+de proximité étaient faux — un groupe de champs imbriqué dans un écart
+identique au sien, une liste de brouillons dont l'écart extérieur ne valait que
+deux fois l'intérieur, et le même défaut une strate plus haut. Aucune valeur
+n'était hors de l'échelle ; **c'est le rapport qui était faux**, et c'est
+précisément ce que R3.7 existe pour voir. Trois fois sur trois, la correction a
+consisté à écarter les groupes, jamais à resserrer leur contenu.
+
+**Précisions d'implémentation — tracées plutôt que prises en silence :**
+
+*(a)* **`Selection` est ajouté aux exportations du registre**, quinzième
+composant. Un choix dans une liste fermée est une mécanique de système : c'est
+elle qui garantit qu'on ne désigne que ce qui existe. On ne déplace pas le
+statut d'une ligne de carte saisie de mémoire.
+*(b)* **L'état d'erreur ne vide pas le formulaire.** K2 §6 écrit *« écriture
+refusée — le fichier reste intact »* : ce qui a échoué est le dépôt, pas la
+saisie. Un écran qui viderait la composition ferait perdre à l'Auteur ce que la
+panne n'avait pas touché.
+*(c)* **Les cibles déplaçables sont les lignes que la carte déclare**, groupées
+par section — trente-quatre à ce jour. Elles ne sont pas listées à la main : la
+carte est la source.
+*(d)* La **date de l'état est fixable par argument**. Sans cela, deux
+productions le même jour auraient pu différer et le témoin de É7 aurait montré
+un écart qui n'est que l'heure.
+
+**Alternatives écartées** — *Ouvrir le formulaire dans l'ordre du journal*
+(plus naturel à remplir, et il fait écrire le coût en dernier, quand il ne coûte
+plus rien) ; *retirer « Verrouillé » de la liste quand le dépôt n'est pas au
+vert* (une option absente se lit comme une option inexistante ; montrée et
+désactivée, elle dit qu'elle existe et qu'elle attend) ; *déposer l'entrée sans
+le déplacement de statut* (c'est rouvrir le trou que K2 voulait fermer : une
+décision écrite dont l'effet sur la carte dépend de la mémoire de quelqu'un) ;
+*laisser Fili écrire directement dans le journal* (arbitrage d'Auteur, et il
+protège mieux que n'importe quelle règle — ce qu'on ne peut pas atteindre, on
+ne peut pas l'abîmer) ; *saisir le numéro d'entrée* (deux entrées du même numéro
+rendent un journal illisible, et rien ne l'attraperait) ; *resserrer les groupes
+plutôt que les écarter pour corriger les rapports de proximité* (on aurait
+obtenu le vert en tassant le contenu, c'est-à-dire en produisant le défaut que
+la règle décrit).
+
+**Conséquences** — **La construction de K5 est achevée.** Sept gabarits, trois
+parcours, **trente et un témoins** en sept lignées, **quinze composants**.
+Corpus **inchangé** — vingt-neuf assertions, aucune ajoutée, aucune levée,
+**aucune rupture déclarée dans tout le produit**. Toute la chaîne au vert :
+intégrité 29/29, cinq Sujets à 100 %, sept contrôles S2 sur sept, aucun couple
+de contraste en défaut. **Ce qui reste à K5 n'est plus de la construction : ce
+sont les séances.** Sept témoins sont admissibles ; aucun n'est jugé. Le jalon
+ne se verrouille pas parce que les écrans existent — il se verrouille quand
+l'œil a parlé.
+
+**Ce que cette entrée ne prouve pas** — que le produit est bon. Vingt-neuf
+assertions au vert signifient qu'aucune des fautes nommées n'est présente ;
+elles ne disent rien du parti visuel, de la hiérarchie perçue ni du ton. **La
+Voie B n'a pas encore parlé une seule fois**, et c'est elle que tout le chapitre
+attend.
+
+**Impact carte** — Jalon K5 : gabarits **6/7 → 7/7**, parcours **2,5/3 → 3/3** ;
+ce qui le bloque devient *« sept témoins admissibles, aucune séance tenue »*.
+Registre : `components.exports` 14 → **15** (`Selection`). Témoins : **26 →
+31**, sept lignées. Ajout de `/acte` aux sources lues. Première séance : sept
+témoins prêts, gabarit de départ non choisi.
+
+---
+
 ## #054 — La carte et le journal sont construits, et la carte redevient une pièce vivante après avoir été perdue
 *2026-08-07 · Statut : 🟡 En cours (les écrans existent et tiennent ; leur parti visuel n'est pas jugé) · Poursuit K5*
 

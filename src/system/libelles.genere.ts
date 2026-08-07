@@ -194,6 +194,48 @@ export const LIBELLES = {
         "suspenduTitre": "Suspendu",
         "precedentesSuspendues": "L'historique est illisible. La dernière décision, elle, reste lisible — et c'est elle qui compte d'abord."
       }
+    },
+    "acte": {
+      "surtitre": "Fili · l'acte",
+      "titre": "Qu'est-ce que cette décision ferme ?",
+      "chapeau": "Une décision se juge à ce qu'elle rend impossible, pas à ce qu'elle promet. C'est la première chose qu'on écrit ici, et c'est délibéré.",
+      "numeroTitre": "Numéro attribué",
+      "numeroAide": "Calculé depuis le journal. Il ne se saisit pas : deux entrées du même numéro rendent un journal illisible.",
+      "consequencesLabel": "Ce que la décision ferme",
+      "consequencesAide": "Ce qu'elle engage, ce qu'elle rend impossible, la dette qu'elle laisse. Pas ce qu'elle apporte.",
+      "resteTitre": "Le reste de l'entrée",
+      "resteAide": "Dans l'ordre du journal. Il se remplit après, parce qu'il raconte — et qu'un récit écrit avant son coût le justifie toujours.",
+      "contexteLabel": "Contexte — ce qui a rendu la décision nécessaire",
+      "decisionLabel": "Décision — ce qui est acté, en une phrase affirmative",
+      "sensLabel": "Sens produit et UX — ce que l'utilisateur y gagne",
+      "alternativesLabel": "Alternatives écartées, avec le motif du rejet",
+      "alternativesAide": "Une décision sans alternative écartée est une décision non instruite.",
+      "statutTitre": "Le déplacement de statut",
+      "statutAide": "Une décision qui ne déplace rien sur la carte n'a pas eu lieu. Le brouillon porte la ligne à remplacer, ancienne et nouvelle version.",
+      "cibleLabel": "La ligne de la carte à déplacer",
+      "cibleAide": "Seules les lignes que la carte déclare sont proposées : on ne déplace pas ce qui n'existe pas.",
+      "versLabel": "Vers quel statut",
+      "verrouTitre": "Le verrou ne se déclare pas, il se mérite",
+      "verrouFerme": "Le passage à « Verrouillé » est refusé : {motif}. Ce n'est pas un avis, c'est l'état lu sur le dépôt.",
+      "verrouOuvert": "La batterie et le contrôle d'intégrité sont au vert. Le passage à « Verrouillé » est ouvert.",
+      "deposer": "Déposer le brouillon",
+      "deposerEnCours": "Dépôt en cours…",
+      "champsManquants": "Une entrée incomplète ne se dépose pas. Il manque : {champs}.",
+      "brouillonsTitre": "Les brouillons déposés",
+      "brouillonsAide": "Fili compose, vous intégrez au dépôt. Il n'écrit pas lui-même dans le journal : c'est ce qui garantit qu'une entrée passée reste hors de sa portée.",
+      "immuable": "Aucun geste d'édition n'existe sur cet écran, et c'est la règle rendue mécanique : une entrée passée ne se retouche pas parce que le bouton n'existe pas.",
+      "etats": {
+        "chargementAide": "Écriture du brouillon…",
+        "erreurTitre": "L'écriture est refusée",
+        "erreurCorps": "Le brouillon n'a pas pu être déposé : {raison}. Le journal et la carte restent intacts — rien n'a été écrit à moitié.",
+        "erreurAide": "Rien n'est perdu de ce que vous avez saisi. Réessayez, ou reprenez au dépôt.",
+        "videTitre": "Aucun brouillon",
+        "videCorps": "Rien n'a encore été composé. Le premier brouillon apparaîtra ici, daté, avec son numéro.",
+        "succesTitre": "Brouillon déposé",
+        "succesCorps": "Entrée {numero} composée le {date}, avec le déplacement de statut qui l'accompagne. Elle attend votre validation au dépôt.",
+        "suspenduTitre": "Suspendu",
+        "acteFerme": "La composition est impossible : le journal ou la carte est illisible, et un numéro déduit d'une lecture partielle serait un faux."
+      }
     }
   }
 } as const

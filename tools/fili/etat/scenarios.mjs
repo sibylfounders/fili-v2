@@ -121,3 +121,26 @@ export function scenariosJournal(reel) {
     vide: vide(CHEMINS)
   }
 }
+
+export function scenariosActe(reel) {
+  const CHEMINS = ['/acte', '/brouillons']
+  return {
+    /* Normal — le formulaire, et ce qui a déjà été composé. */
+    nominal: plein({ '/acte': reel.acte, '/brouillons': reel.brouillons }),
+    /* Chargement — l'écriture est en cours. */
+    chargement: enCours(CHEMINS),
+    /* Erreur — K2 §6 : « Écriture refusée — LE FICHIER RESTE INTACT ». La
+       composition reste donc pleine : ce qui a échoué est le dépôt, pas la
+       saisie, et un écran qui viderait le formulaire ferait perdre à l'Auteur
+       ce que la panne n'avait pas touché. */
+    erreur: {
+      ...plein({ '/acte': reel.acte }),
+      ...enErreur(['/brouillons'], 'le dossier des brouillons est en lecture seule')
+    },
+    /* Vide — aucun brouillon composé à ce jour. Le formulaire, lui, est prêt. */
+    vide: { ...plein({ '/acte': reel.acte }), ...vide(['/brouillons']) },
+    /* Succès — l'entrée est composée, datée, numérotée, avec son déplacement
+       de statut. Elle attend la validation au dépôt : Fili n'écrit pas. */
+    succes: plein({ '/acte': reel.acte, '/brouillons': reel.brouillons })
+  }
+}

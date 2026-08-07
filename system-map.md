@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#054`
+> **Dernière décision au journal** : `#055`
 
 **Légende des statuts**
 
@@ -36,7 +36,7 @@
 | K2 · Déclaration du produit | 🟢 | Fili, trois parcours, sept gabarits, un contrat d'état par écran | — |
 | K3 · Routage de la signature | 🟢 | Vingt composantes routées : cinq en Voie A, neuf en Voie B | — |
 | K4 · Les instruments | 🟢 | Le protocole de référence, ses neuf points de passage, le contrat S5 | — |
-| K5 · Construction du produit | 🟡 | Les sept gabarits construits, un témoin daté par gabarit | Un gabarit sans témoin : É7 |
+| K5 · Construction du produit | 🟡 | Les sept gabarits construits, un témoin daté par gabarit | Sept témoins admissibles, aucune séance tenue |
 | K6 · Épreuve D · propagation | ⚪ | Qu'un durcissement de règle se propage à l'échelle | K5 non verrouillé · contrat S6 non écrit |
 
 ---
@@ -68,14 +68,14 @@ Contrôle d'intégrité : 29/29.
 | É4 · Le face-à-face | P2 · Juger un témoin | 🟡 | 2026-08-07 · 5 états · séance non tenue |
 | É5 · La carte | P3 · Acter une décision | 🟡 | 2026-08-07 · 3 états · séance non tenue |
 | É6 · Le journal | P3 · Acter une décision | 🟡 | 2026-08-07 · 4 états · séance non tenue |
-| É7 · L'acte | P3 · Acter une décision | ⚪ | aucun |
+| É7 · L'acte | P3 · Acter une décision | 🟡 | 2026-08-07 · 5 états · séance non tenue |
 
 **Un gabarit ne passe 🟢 que lorsque son témoin a été accepté en séance.**
 Aucune séance ne s'est tenue : quatre témoins sont admissibles, aucun n'est jugé.
 
-**Le système** porte **quatorze composants** — Button, TextField, EtatAsync,
-Section, Titre, Texte, Pile, Grille, Jeton, Alerte, Vide, Squelette, Rendu,
-Prose — plus Icone, interne et non exporté.
+**Le système** porte **quinze composants** — Button, TextField, Selection,
+EtatAsync, Section, Titre, Texte, Pile, Grille, Jeton, Alerte, Vide, Squelette,
+Rendu, Prose — plus Icone, interne et non exporté.
 
 ---
 
@@ -87,7 +87,7 @@ Prose — plus Icone, interne et non exporté.
 | Le gel définitif | 🟢 | Les quatre réglages arrêtés le 7 août | — |
 | La planche des registres | 🟢 | Étalon de B-4, page datée générée | — |
 | Le catalogue de libellés | 🟢 | Étalon de B-5, 116 formulations lisibles d'un bloc | — |
-| La première séance | ⚪ | Le premier verdict d'œil du chapitre | Le gabarit de départ n'est pas choisi |
+| La première séance | ⚪ | Le premier verdict d'œil du chapitre | Sept témoins prêts ; le gabarit de départ n'est pas choisi |
 
 ---
 

@@ -114,6 +114,17 @@
         },
         "apercu": "./temoins/e6-journal/2026-08-07/nominal.html",
         "historique": []
+      },
+      {
+        "gabarit": "e7-acte",
+        "nom": "e7-acte",
+        "courant": {
+          "date": "2026-08-07",
+          "etats": 5,
+          "illisible": false
+        },
+        "apercu": "./temoins/e7-acte/2026-08-07/nominal.html",
+        "historique": []
       }
     ],
     "chargement": false,
@@ -170,7 +181,7 @@
           "nom": "K5 · Construction du produit",
           "statut": "🟡",
           "verrouille": "Les sept gabarits construits, un témoin daté par gabarit",
-          "bloque": "Un gabarit sans témoin : É7"
+          "bloque": "Sept témoins admissibles, aucune séance tenue"
         },
         {
           "nom": "K6 · Épreuve D · propagation",
@@ -257,8 +268,8 @@
         {
           "nom": "É7 · L'acte",
           "parcours": "P3 · Acter une décision",
-          "statut": "⚪",
-          "temoin": "aucun"
+          "statut": "🟡",
+          "temoin": "2026-08-07 · 5 états · séance non tenue"
         }
       ],
       "instrument": [
@@ -290,7 +301,7 @@
           "nom": "La première séance",
           "statut": "⚪",
           "porte": "Le premier verdict d'œil du chapitre",
-          "bloque": "Le gabarit de départ n'est pas choisi"
+          "bloque": "Sept témoins prêts ; le gabarit de départ n'est pas choisi"
         }
       ],
       "dettes": [
@@ -358,7 +369,7 @@
       "prochain": {
         "nom": "K5 · Construction du produit",
         "statut": "en cours",
-        "bloque": "Un gabarit sans témoin : É7"
+        "bloque": "Sept témoins admissibles, aucune séance tenue"
       }
     },
     "chargement": false,
@@ -366,6 +377,14 @@
   },
   "/journal": {
     "donnees": [
+      {
+        "numero": "#055",
+        "titre": "É7 · L'acte ferme la construction : sept gabarits, trois parcours, et le produit n'écrit pas dans sa propre mémoire",
+        "date": "2026-08-07",
+        "pastille": "🟡",
+        "statut": "En cours (les sept écrans existent et tiennent ; aucun n'est jugé) · Achève la construction de K5",
+        "corps": "Contexte — Six gabarits tenaient debout. Restait É7, le seul écran qui\nproduit quelque chose, et le seul dont K2 §10.3 exigeait qu'il rende\nmécanique l'interdiction de retoucher une entrée passée. Deux arbitrages ont\nété rendus avant écriture : le formulaire s'ouvre sur ce que la décision\nferme, et le brouillon porte l'entrée et le déplacement de statut\nensemble.\n\nDécision — É7 · L'acte est construit, avec les cinq états que K2 §6\ndéclare pour lui. La construction de K5 est achevée : sept gabarits, trois\nparcours, trente et un témoins. Un quinzième composant entre au système,\nSelection. Le numéro d'entrée est calculé, le garde-fou du verrou est\nmécanique, et Fili ne touche jamais au journal.\n\nSens produit / UX — Quatre choses, dont trois découlent de vos arbitrages\nplutôt que de la technique.\n\nL'ordre du formulaire est une mesure, pas une commodité. L'écran s'ouvre sur\nune seule question — *qu'est-ce que cette décision ferme ?* — et le récit vient\naprès. Écrites en dernier, dans l'ordre du fichier, les conséquences se rédigent\nquand la décision est déjà racontée, donc déjà défendue : on décrit alors le\ncoût d'une chose qu'on a fini de justifier, et le coût s'allège tout seul. C'est\nla même mécanique que la mesure d'ouverture du protocole, où la primauté perçue\nse prononce avant toute déclaration : ce qui est demandé en premier est la\nseule chose qu'on ne peut pas rattraper.\n\nLe verrou ne se déclare plus, il se mérite — et c'est le dépôt qui le dit.\nLe passage à « Verrouillé » est refusé tant que la batterie et le contrôle\nd'intégrité ne sont pas au vert. Ce n'est pas une case à cocher ni un avertissement :\nl'option existe dans la liste, elle est montrée et indisponible, et le motif\nse lit à côté. La distinction compte — une option retirée de la liste laisse\ncroire qu'elle n'existe pas, alors qu'elle existe et qu'elle n'est pas ouverte\nmaintenant. K2 §10.3 demandait que ce garde-fou cesse d'être de la discipline ;\nil l'a cessé.\n\nFili n'écrit pas dans le journal, et c'est ce qui protège le journal. Votre\narbitrage — *Fili prépare, vous validez au dépôt* — a une conséquence qui n'était\npas son motif : une entrée passée reste hors de portée du produit, parce que\nle produit n'a jamais la main dessus. L'absence de geste d'édition n'est donc\npas seulement l'absence d'un bouton, c'est l'absence de la capacité. C'est la\nforme la plus forte que pouvait prendre l'exigence de K2 §10.3, et elle a été\nobtenue en retirant du pouvoir au produit plutôt qu'en lui ajoutant une règle.\n\nEt le numéro se calcule. Le saisir à la main est la façon la plus simple\nd'écrire deux fois le même, et un journal à numéros dupliqués ne se relit plus.\nSi le journal ou la carte devient illisible, la composition refuse : un\nnuméro déduit d'une lecture partielle serait un faux, et c'est exactement le\nmécanisme qui a coûté quarante-deux entrées le 7 août au matin.\n\nLe Gardien a de nouveau corrigé la composition, trois fois. Trois rapports\nde proximité étaient faux — un groupe de champs imbriqué dans un écart\nidentique au sien, une liste de brouillons dont l'écart extérieur ne valait que\ndeux fois l'intérieur, et le même défaut une strate plus haut. Aucune valeur\nn'était hors de l'échelle ; c'est le rapport qui était faux, et c'est\nprécisément ce que R3.7 existe pour voir. Trois fois sur trois, la correction a\nconsisté à écarter les groupes, jamais à resserrer leur contenu.\n\nPrécisions d'implémentation — tracées plutôt que prises en silence :\n\n*(a)* Selection est ajouté aux exportations du registre, quinzième\ncomposant. Un choix dans une liste fermée est une mécanique de système : c'est\nelle qui garantit qu'on ne désigne que ce qui existe. On ne déplace pas le\nstatut d'une ligne de carte saisie de mémoire.\n*(b)* L'état d'erreur ne vide pas le formulaire. K2 §6 écrit *« écriture\nrefusée — le fichier reste intact »* : ce qui a échoué est le dépôt, pas la\nsaisie. Un écran qui viderait la composition ferait perdre à l'Auteur ce que la\npanne n'avait pas touché.\n*(c)* Les cibles déplaçables sont les lignes que la carte déclare, groupées\npar section — trente-quatre à ce jour. Elles ne sont pas listées à la main : la\ncarte est la source.\n*(d)* La date de l'état est fixable par argument. Sans cela, deux\nproductions le même jour auraient pu différer et le témoin de É7 aurait montré\nun écart qui n'est que l'heure.\n\nAlternatives écartées — *Ouvrir le formulaire dans l'ordre du journal*\n(plus naturel à remplir, et il fait écrire le coût en dernier, quand il ne coûte\nplus rien) ; *retirer « Verrouillé » de la liste quand le dépôt n'est pas au\nvert* (une option absente se lit comme une option inexistante ; montrée et\ndésactivée, elle dit qu'elle existe et qu'elle attend) ; *déposer l'entrée sans\nle déplacement de statut* (c'est rouvrir le trou que K2 voulait fermer : une\ndécision écrite dont l'effet sur la carte dépend de la mémoire de quelqu'un) ;\n*laisser Fili écrire directement dans le journal* (arbitrage d'Auteur, et il\nprotège mieux que n'importe quelle règle — ce qu'on ne peut pas atteindre, on\nne peut pas l'abîmer) ; *saisir le numéro d'entrée* (deux entrées du même numéro\nrendent un journal illisible, et rien ne l'attraperait) ; *resserrer les groupes\nplutôt que les écarter pour corriger les rapports de proximité* (on aurait\nobtenu le vert en tassant le contenu, c'est-à-dire en produisant le défaut que\nla règle décrit).\n\nConséquences — La construction de K5 est achevée. Sept gabarits, trois\nparcours, trente et un témoins en sept lignées, quinze composants.\nCorpus inchangé — vingt-neuf assertions, aucune ajoutée, aucune levée,\naucune rupture déclarée dans tout le produit. Toute la chaîne au vert :\nintégrité 29/29, cinq Sujets à 100 %, sept contrôles S2 sur sept, aucun couple\nde contraste en défaut. Ce qui reste à K5 n'est plus de la construction : ce\nsont les séances. Sept témoins sont admissibles ; aucun n'est jugé. Le jalon\nne se verrouille pas parce que les écrans existent — il se verrouille quand\nl'œil a parlé.\n\nCe que cette entrée ne prouve pas — que le produit est bon. Vingt-neuf\nassertions au vert signifient qu'aucune des fautes nommées n'est présente ;\nelles ne disent rien du parti visuel, de la hiérarchie perçue ni du ton. La\nVoie B n'a pas encore parlé une seule fois, et c'est elle que tout le chapitre\nattend.\n\nImpact carte — Jalon K5 : gabarits 6/7 → 7/7, parcours 2,5/3 → 3/3 ;\nce qui le bloque devient *« sept témoins admissibles, aucune séance tenue »*.\nRegistre : components.exports 14 → 15 (Selection). Témoins : 26 →\n31, sept lignées. Ajout de /acte aux sources lues. Première séance : sept\ntémoins prêts, gabarit de départ non choisi."
+      },
       {
         "numero": "#054",
         "titre": "La carte et le journal sont construits, et la carte redevient une pièce vivante après avoir été perdue",
@@ -412,6 +431,222 @@
   },
   "/brouillons": {
     "donnees": [],
+    "chargement": false,
+    "erreur": null
+  },
+  "/acte": {
+    "donnees": {
+      "numero": "#056",
+      "date": "2026-08-07",
+      "verrouVert": true,
+      "motifVerrou": null,
+      "cibles": [
+        {
+          "id": "jalons/K1 · Épreuve du corpus suffisant",
+          "groupe": "Les jalons",
+          "nom": "K1 · Épreuve du corpus suffisant",
+          "statut": "🟢"
+        },
+        {
+          "id": "jalons/K2 · Déclaration du produit",
+          "groupe": "Les jalons",
+          "nom": "K2 · Déclaration du produit",
+          "statut": "🟢"
+        },
+        {
+          "id": "jalons/K3 · Routage de la signature",
+          "groupe": "Les jalons",
+          "nom": "K3 · Routage de la signature",
+          "statut": "🟢"
+        },
+        {
+          "id": "jalons/K4 · Les instruments",
+          "groupe": "Les jalons",
+          "nom": "K4 · Les instruments",
+          "statut": "🟢"
+        },
+        {
+          "id": "jalons/K5 · Construction du produit",
+          "groupe": "Les jalons",
+          "nom": "K5 · Construction du produit",
+          "statut": "🟡"
+        },
+        {
+          "id": "jalons/K6 · Épreuve D · propagation",
+          "groupe": "Les jalons",
+          "nom": "K6 · Épreuve D · propagation",
+          "statut": "⚪"
+        },
+        {
+          "id": "contrats/S1 · Composants typés",
+          "groupe": "Les contrats",
+          "nom": "S1 · Composants typés",
+          "statut": "🟢"
+        },
+        {
+          "id": "contrats/S2 · Contrat d'état",
+          "groupe": "Les contrats",
+          "nom": "S2 · Contrat d'état",
+          "statut": "🟢"
+        },
+        {
+          "id": "contrats/S3 · Discipline spatiale",
+          "groupe": "Les contrats",
+          "nom": "S3 · Discipline spatiale",
+          "statut": "🟢"
+        },
+        {
+          "id": "contrats/S4 · Rythme de composition",
+          "groupe": "Les contrats",
+          "nom": "S4 · Rythme de composition",
+          "statut": "🟢"
+        },
+        {
+          "id": "contrats/S5 · Arbitrage de lecture",
+          "groupe": "Les contrats",
+          "nom": "S5 · Arbitrage de lecture",
+          "statut": "🟢"
+        },
+        {
+          "id": "contrats/S6 · Provenance de l'expression",
+          "groupe": "Les contrats",
+          "nom": "S6 · Provenance de l'expression",
+          "statut": "⚪"
+        },
+        {
+          "id": "gabarits/É1 · Le verdict",
+          "groupe": "Les gabarits",
+          "nom": "É1 · Le verdict",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É2 · Le constat",
+          "groupe": "Les gabarits",
+          "nom": "É2 · Le constat",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É3 · La famille des témoins",
+          "groupe": "Les gabarits",
+          "nom": "É3 · La famille des témoins",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É4 · Le face-à-face",
+          "groupe": "Les gabarits",
+          "nom": "É4 · Le face-à-face",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É5 · La carte",
+          "groupe": "Les gabarits",
+          "nom": "É5 · La carte",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É6 · Le journal",
+          "groupe": "Les gabarits",
+          "nom": "É6 · Le journal",
+          "statut": "🟡"
+        },
+        {
+          "id": "gabarits/É7 · L'acte",
+          "groupe": "Les gabarits",
+          "nom": "É7 · L'acte",
+          "statut": "🟡"
+        },
+        {
+          "id": "instrument/Le protocole de référence",
+          "groupe": "L'instrument",
+          "nom": "Le protocole de référence",
+          "statut": "🟢"
+        },
+        {
+          "id": "instrument/Le gel définitif",
+          "groupe": "L'instrument",
+          "nom": "Le gel définitif",
+          "statut": "🟢"
+        },
+        {
+          "id": "instrument/La planche des registres",
+          "groupe": "L'instrument",
+          "nom": "La planche des registres",
+          "statut": "🟢"
+        },
+        {
+          "id": "instrument/Le catalogue de libellés",
+          "groupe": "L'instrument",
+          "nom": "Le catalogue de libellés",
+          "statut": "🟢"
+        },
+        {
+          "id": "instrument/La première séance",
+          "groupe": "L'instrument",
+          "nom": "La première séance",
+          "statut": "⚪"
+        },
+        {
+          "id": "dettes/Les entrées #001 à #042 du journal",
+          "groupe": "Les dettes",
+          "nom": "Les entrées #001 à #042 du journal",
+          "statut": "🟢"
+        },
+        {
+          "id": "dettes/Le journal du dépôt à l'état run 1",
+          "groupe": "Les dettes",
+          "nom": "Le journal du dépôt à l'état run 1",
+          "statut": "🟢"
+        },
+        {
+          "id": "dettes/L'immuabilité non scellée",
+          "groupe": "Les dettes",
+          "nom": "L'immuabilité non scellée",
+          "statut": "🟢"
+        },
+        {
+          "id": "dettes/La sauvegarde hors machine",
+          "groupe": "Les dettes",
+          "nom": "La sauvegarde hors machine",
+          "statut": "🟢"
+        },
+        {
+          "id": "dettes/Le rognage de l'interligne",
+          "groupe": "Les dettes",
+          "nom": "Le rognage de l'interligne",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/L'auto-référence de É3",
+          "groupe": "Les dettes",
+          "nom": "L'auto-référence de É3",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/La restauration du script de mutation",
+          "groupe": "Les dettes",
+          "nom": "La restauration du script de mutation",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/Le suivi ClickUp",
+          "groupe": "Les dettes",
+          "nom": "Le suivi ClickUp",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/La carte du système à reprendre",
+          "groupe": "Les dettes",
+          "nom": "La carte du système à reprendre",
+          "statut": "🟢"
+        },
+        {
+          "id": "dettes/L'emphase du journal invisible sur É6",
+          "groupe": "Les dettes",
+          "nom": "L'emphase du journal invisible sur É6",
+          "statut": "🔴"
+        }
+      ]
+    },
     "chargement": false,
     "erreur": null
   }

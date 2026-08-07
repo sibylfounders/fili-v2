@@ -11,6 +11,12 @@ import { produire as produireCarte } from '../carte/produire.mjs'
 import { produire as produireJournal } from '../journal/lire.mjs'
 
 const SORTIE = path.join(RACINE, 'public/etat.json')
+/* La date du jour est passée par argument ou lue à l'exécution : un état
+   produit deux fois le même jour doit être identique, sinon le témoin de É7
+   montrerait un écart qui n'est que l'heure. */
+const DATE_JOUR = process.argv.includes('--date')
+  ? process.argv[process.argv.indexOf('--date') + 1]
+  : new Date().toISOString().slice(0, 10)
 
 const integrite = await verifierIntegrite(RACINE)
 
@@ -18,7 +24,7 @@ let etat
 if (integrite.manques.length > 0) {
   const raison = integrite.manques.join(' · ')
   etat = Object.fromEntries(
-    ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons'].map((c) => [
+    ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons', '/acte'].map((c) => [
       c, { donnees: null, chargement: false, erreur: raison }
     ])
   )
@@ -171,6 +177,43 @@ if (integrite.manques.length === 0) {
 
   /* É7 déposera ses brouillons ici. Aucun n'existe, et Fili ne l'invente pas. */
   etat['/brouillons'] = { donnees: [], chargement: false, erreur: null }
+
+  /* ── L'acte : ce que É7 a besoin de savoir pour composer une entrée ────── */
+  /* Le numéro se CALCULE depuis le journal. Le saisir à la main est la façon
+     la plus simple d'écrire deux fois le même, et un journal à numéros
+     dupliqués ne se relit plus. */
+  const dernier = journal.erreur ? null : journal.donnees[0]
+  const numero = dernier
+    ? `#${String(Number(dernier.numero.slice(1)) + 1).padStart(3, '0')}`
+    : null
+
+  /* Le garde-fou de K2 §10.3, rendu mécanique : le passage au 🟢 est refusé
+     tant que la batterie et le contrôle d'intégrité ne sont pas au vert. Un
+     verrou ne se déclare pas, il se mérite — et c'est l'état lu en P1 qui le
+     dit, pas une case à cocher. */
+  const ecarts = etat['/batterie'].donnees?.ecarts ?? null
+  const verrouVert = integrite.manques.length === 0 && ecarts === 0
+  const motifVerrou = verrouVert
+    ? null
+    : integrite.manques.length > 0
+      ? `le contrôle d'intégrité refuse de statuer : ${integrite.manques.join(' · ')}`
+      : `la batterie porte ${String(ecarts ?? 0)} écart(s)`
+
+  /* Les cibles déplaçables sont les lignes de la carte, telles qu'elle les
+     déclare. On ne déplace pas le statut d'une ligne qui n'existe pas. */
+  const SECTIONS = [
+    ['jalons', 'Les jalons'], ['contrats', 'Les contrats'], ['gabarits', 'Les gabarits'],
+    ['instrument', "L'instrument"], ['dettes', 'Les dettes'],
+  ]
+  const cibles = carte.erreur ? [] : SECTIONS.flatMap(([cle, groupe]) =>
+    (carte.donnees[cle] ?? []).map((l) => ({
+      id: `${cle}/${l.nom}`, groupe, nom: l.nom, statut: l.statut,
+    })))
+
+  etat['/acte'] = (numero === null || carte.erreur)
+    ? { donnees: null, chargement: false, erreur: "la composition est impossible : le journal ou la carte est illisible, et un numéro déduit d'une lecture partielle serait un faux" }
+    : { donnees: { numero, date: DATE_JOUR, verrouVert, motifVerrou, cibles }, chargement: false, erreur: null }
+
 }
 
 fs.mkdirSync(path.dirname(SORTIE), { recursive: true })

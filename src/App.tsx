@@ -7,8 +7,9 @@ import { EcranFamille } from './pages/EcranFamille.tsx'
 import { EcranFaceAFace } from './pages/EcranFaceAFace.tsx'
 import { EcranCarte } from './pages/EcranCarte.tsx'
 import { EcranJournal } from './pages/EcranJournal.tsx'
+import { EcranActe } from './pages/EcranActe.tsx'
 
-export type Gabarit = 'verdict' | 'constat' | 'famille' | 'faceAFace' | 'carte' | 'journal'
+export type Gabarit = 'verdict' | 'constat' | 'famille' | 'faceAFace' | 'carte' | 'journal' | 'acte'
 
 export default function App({ gabarit }: { gabarit: Gabarit }) {
   if (gabarit === 'constat') return <EcranConstat />
@@ -16,5 +17,6 @@ export default function App({ gabarit }: { gabarit: Gabarit }) {
   if (gabarit === 'faceAFace') return <EcranFaceAFace />
   if (gabarit === 'carte') return <EcranCarte />
   if (gabarit === 'journal') return <EcranJournal />
+  if (gabarit === 'acte') return <EcranActe />
   return <EcranVerdict />
 }
