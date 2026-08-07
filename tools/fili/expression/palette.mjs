@@ -5,7 +5,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { hexVersLch, lchVersHex, contraste, contrastante, laPlusDouce } from './couleur.mjs'
+import { hexVersLch, lchVersHex, contraste, contrastante, laPlusDouce, partenaire } from './couleur.mjs'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
 const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
@@ -15,6 +15,9 @@ const [, , TEINTE] = hexVersLch(P.$primaire.valeur)
 const CN = G.neutres.chroma
 const CIBLE = G.couples.texte
 const CIBLE_UI = G.couples.interface
+/* Le plafond de confort : au-delà, un texte ne gagne plus en lisibilité, il
+   gagne en dureté. C'est un seuil déclaré comme les autres, pas un goût. */
+const CONFORT = G.couples.confort
 
 /* ── Les surfaces neutres : une échelle de gris à la teinte de la primaire ── */
 const PALIERS = {
@@ -25,11 +28,15 @@ const surfaces = Object.fromEntries(
 )
 
 /* ── Les encres : chacune est la partenaire d'une surface, pas un choix ───── */
-/* L'encre qui porte va au bout ; celle qui accompagne est la plus légère qui
-   tienne encore son seuil sur la surface la plus sombre où elle se pose. */
-const encre = contrastante(surfaces.papier, [CN, TEINTE], CIBLE, 'sombre')
+/* L'encre qui porte ne va PLUS au bout : elle s'arrête au plafond de confort.
+   Elle reste la plus légère qui tienne son seuil — mais le seuil visé est celui
+   du confort, très au-dessus du plancher, et non l'extrême que la famille
+   permet. Celle qui accompagne, elle, ne vise que le plancher : c'est ce qui
+   distingue un texte qui porte d'un texte qui accompagne. */
+const encre = laPlusDouce(surfaces.papier, [CN, TEINTE], CONFORT)
 const encreDouce = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CIBLE)
-const encreInverse = contrastante(surfaces.scene, [CN, TEINTE], CIBLE, 'clair')
+/* Sur la scène, la symétrie exacte : la moins claire qui tienne le confort. */
+const encreInverse = partenaire(surfaces.scene, [CN, TEINTE], CONFORT, { versLeBas: false })
 /* Un contrôle désactivé est hors seuil par exception WCAG 1.4.3 : sa clarté est
    posée, pas calculée, et l'exception est déclarée à la planche. */
 const encreEteinte = lchVersHex([0.72, CN, TEINTE])

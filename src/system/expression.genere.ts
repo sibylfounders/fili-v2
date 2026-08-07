@@ -1,105 +1,114 @@
 /* GÉNÉRÉ depuis fili.icones.json — ne pas éditer à la main.
    Regénérer : node scripts/generer-expression.mjs
-   Source du jeu : dépannage — dessiné à la main faute d'accès au registre de paquets */
+   Source du jeu : lucide-static 1.30.0 (ISC) */
 
-export const GRILLE = 16
-export const TRAIT = 1.5
+export const GRILLE = 24
+export const TRAIT = 2
 
 export const ICONES = {
   "verrou": [
     {
-      "t": "path",
-      "d": "M4.5 7V5a3.5 3.5 0 0 1 7 0v2"
+      "t": "rect",
+      "width": 18,
+      "height": 11,
+      "x": 3,
+      "y": 11,
+      "rx": 2,
+      "ry": 2
     },
     {
       "t": "path",
-      "d": "M3.5 7h9v6h-9z"
+      "d": "M7 11V7a5 5 0 0 1 10 0v4"
     }
   ],
   "attente": [
     {
-      "t": "path",
-      "d": "M8 3.5v4.5l3 2"
+      "t": "circle",
+      "cx": 12,
+      "cy": 12,
+      "r": 10
     },
     {
-      "t": "circle",
-      "cx": 8,
-      "cy": 8,
-      "r": 5.5
+      "t": "path",
+      "d": "M12 6v6l4 2"
     }
   ],
   "idee": [
     {
       "t": "circle",
-      "cx": 8,
-      "cy": 8,
-      "r": 5.5
+      "cx": 12,
+      "cy": 12,
+      "r": 10
     }
   ],
   "refus": [
     {
       "t": "path",
-      "d": "M8 1.5 14.5 13.5h-13z"
+      "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
     },
     {
       "t": "path",
-      "d": "M8 6v3"
+      "d": "M12 9v4"
     },
     {
       "t": "path",
-      "d": "M8 11.5v.01"
+      "d": "M12 17h.01"
     }
   ],
   "information": [
     {
       "t": "circle",
-      "cx": 8,
-      "cy": 8,
-      "r": 5.5
+      "cx": 12,
+      "cy": 12,
+      "r": 10
     },
     {
       "t": "path",
-      "d": "M8 7.5v4"
+      "d": "M12 16v-4"
     },
     {
       "t": "path",
-      "d": "M8 4.5v.01"
+      "d": "M12 8h.01"
     }
   ],
   "constat": [
     {
       "t": "path",
-      "d": "M4 2.5h6l2.5 2.5v8.5h-8.5z"
+      "d": "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"
     },
     {
       "t": "path",
-      "d": "M10 2.5V5h2.5"
+      "d": "M14 2v5a1 1 0 0 0 1 1h5"
     },
     {
       "t": "path",
-      "d": "M5.5 8h5"
+      "d": "M10 9H8"
     },
     {
       "t": "path",
-      "d": "M5.5 10.5h3"
+      "d": "M16 13H8"
+    },
+    {
+      "t": "path",
+      "d": "M16 17H8"
     }
   ],
   "mesure": [
     {
       "t": "path",
-      "d": "M2.5 13.5v-5"
+      "d": "M3 3v16a2 2 0 0 0 2 2h16"
     },
     {
       "t": "path",
-      "d": "M6.5 13.5v-8"
+      "d": "M18 17V9"
     },
     {
       "t": "path",
-      "d": "M10.5 13.5v-3"
+      "d": "M13 17V5"
     },
     {
       "t": "path",
-      "d": "M14.5 13.5v-11"
+      "d": "M8 17v-3"
     }
   ]
 } as const

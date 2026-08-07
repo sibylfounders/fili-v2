@@ -1,3 +1,14 @@
+/* Les trois voix de la charte, embarquées dans le dépôt.
+   Elles ne sont PAS appelées chez Google au moment de l'exécution : K2 §3 pose
+   qu'aucun tiers n'est destinataire de quoi que ce soit, et Fili doit s'ouvrir
+   sans réseau. Les paquets @fontsource versent les fichiers dans le dépôt et
+   les servent depuis lui — c'est la seule façon d'avoir le visage de la charte
+   sans envoyer une requête à chaque ouverture d'écran.
+   Version variable : un seul fichier porte toutes les graisses déclarées. */
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/inter';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

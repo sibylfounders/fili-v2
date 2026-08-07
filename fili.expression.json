@@ -20,7 +20,6 @@
   "familles": {
     "$intention": "Trois voix, celles de la charte partagée. La courante porte le contenu, la mécanique porte tout ce qui est chrome, étiquette, identifiant et nombre, et l'étiquette porte les libellés de formulaire.",
     "$source": "Charte partagée — ancien kit : font-sans, font-mono, font-label. Reprises telles quelles par arbitrage d'Auteur.",
-    "$dette": "🔴 Les fichiers de fonte ne sont PAS embarqués dans le dépôt. Tant qu'ils ne le sont pas, Fili s'affiche avec la pile de repli et n'a pas le visage de la charte. Ce n'est pas un choix, c'est un manque : le registre de paquets est inaccessible depuis la session. La dette est déclarée plutôt que masquée par une pile système qui aurait fait illusion.",
     "courante": {
       "valeur": "'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "emploi": "le contenu — titres compris"
@@ -32,7 +31,9 @@
     "etiquette": {
       "valeur": "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "emploi": "les libellés de formulaire — provisionné, aucun emploi avant É7 · L'acte"
-    }
+    },
+    "$fichiers": "Les fichiers de fonte sont embarqués dans le dépôt par les paquets @fontsource-variable (geist, jetbrains-mono, inter) et servis depuis lui. Aucun appel à un tiers au moment de l'exécution : K2 §3 l'interdit, et Fili doit s'ouvrir sans réseau. La preuve que la dette est fermée n'est pas cette phrase — c'est que la construction passe.",
+    "$metriques": "Les fichiers présents, les métriques de la fonte (hauteur d'ascendante, de descendante, de capitale) deviennent lisibles. C'est ce qui rend calculable le rognage de l'interligne, et c'est ce qui rend vérifiable la cohérence entre la fonte déclarée et la fonte réelle. Deux des six sources typographiques retenues n'avaient aucun objet sans elles."
   },
   "graisses": {
     "$intention": "Trois graisses. Une quatrième servirait à compenser une hiérarchie mal posée.",
@@ -62,7 +63,7 @@
     "fin": {
       "valeur": "14px",
       "emploi": "texte d'accompagnement, note",
-      "interligne": "1.5"
+      "interligne": "1.65"
     },
     "corps": {
       "valeur": "17px",
@@ -89,7 +90,8 @@
       "emploi": "titre de niveau 1",
       "interligne": "1.1"
     },
-    "$interligne": "L'interligne appartient à la taille : le séparer produirait deux listes qui divergent. Le texte courant ne descend jamais sous 1,5 — seuil de lisibilité instruit par l'étude de mise en page."
+    "$interligne": "L'interligne appartient à la taille : le séparer produirait deux listes qui divergent. Le texte courant ne descend jamais sous 1,5 — seuil de lisibilité instruit par l'étude de mise en page. Et il décroît avec le corps à l'intérieur d'un régime : 1,65 à 14 px, 1,60 à 17 px, 1,55 à 19 px. C'est la direction que la source donne sans jamais donner de nombre ; les nombres sont ceux du projet.",
+    "$regime": "Deux régimes, et la règle ne vaut que dans le sien. RÉGIME DE LECTURE — 'fin', 'corps', 'chapeau' : du texte suivi, qu'on lit ligne après ligne. Le rapport interlignage/corps y DÉCROÎT quand le corps grandit : plus le texte est petit, plus il a besoin d'air pour que l'œil retrouve la ligne suivante. RÉGIME DE TITRE — 'niveau3', 'niveau2', 'niveau1' : même sens de décroissance, valeurs plus serrées, parce qu'un titre se voit avant de se lire. HORS RÉGIME — 'menu' : une étiquette, jamais un texte suivi ; sa chasse élargie le dit. Elle n'entre dans aucune monotonie. Une assertion de monotonie écrite globalement, sans ces trois périmètres, bloquerait l'échelle de Fili elle-même."
   },
   "mesures": {
     "$intention": "Deux largeurs, et le régime qui les gouverne.",
@@ -429,6 +431,20 @@
       "avant": "piles système génériques · un cran d'élévation « filet » · sept icônes dessinées à la main",
       "apres": "les trois fontes de la charte partagée · le filet retiré · une correspondance vers un jeu existant",
       "motif": "Arbitrages d'Auteur. La charte vaut pour Fili, pas pour les règles générales — j'avais sur-appliqué l'agnosticisme jusqu'à la peau du produit. Le filet ne fonctionne pas visuellement et relève probablement du champ. Et on ne dessine pas d'icônes : on déclare une source et une correspondance, la règle des tailles étant ce qui compte."
+    },
+    {
+      "quoi": "Le plafond de confort du texte",
+      "avant": "L'encre était la plus franche que la famille permette — 17,4:1 sur le papier.",
+      "apres": "Elle est la plus légère qui tienne 12:1, seuil déclaré à la planche.",
+      "pourquoi": "Un seuil de contraste est un plancher, pas un objectif. Le dépasser de trois fois ne rend pas le texte trois fois plus lisible : il le rend dur. Constat rendu par la mesure elle-même, pas par un avis.",
+      "origine": "Arbitrage d'Auteur — « adapte au mieux »"
+    },
+    {
+      "quoi": "La monotonie de l'interligne",
+      "avant": "fin 14 px/1,50 puis corps 17 px/1,60 — le rapport CROISSAIT avec le corps.",
+      "apres": "fin 14 px/1,65 puis corps 17 px/1,60 puis chapeau 19 px/1,55.",
+      "pourquoi": "La direction est établie : plus le texte est petit, plus il lui faut d'air. L'échelle allait dans l'autre sens sur ses deux tailles de lecture. Le régime de titre, lui, était déjà juste.",
+      "origine": "Confrontation au périmètre typographique arbitré"
     }
   ],
   "$limites": [
@@ -537,8 +553,10 @@
     },
     "couples": {
       "texte": 4.5,
-      "interface": 3.0,
-      "methode": "La surface est posée ; sa partenaire est cherchée — on fait varier sa clarté, à teinte et chroma constantes, jusqu'à ce que le seuil soit atteint. La paire ne peut donc pas être en dessous : elle est construite pour y être."
+      "interface": 3,
+      "methode": "La surface est posée ; sa partenaire est cherchée — on fait varier sa clarté, à teinte et chroma constantes, jusqu'à ce que le seuil soit atteint. La paire ne peut donc pas être en dessous : elle est construite pour y être. Deux seuils gouvernent donc la recherche : un PLANCHER, sous lequel une paire est refusée, et un PLAFOND DE CONFORT, au-delà duquel on ne monte plus sans raison. Le premier protège de l'illisible, le second de l'inconfort.",
+      "confort": 12,
+      "motifConfort": "Un plancher dit à partir d'où l'on voit ; il ne dit pas jusqu'où il est confortable d'aller. Poussée au plus franc, l'encre atteignait 17,4:1 sur le papier — du noir sur du blanc, qui fatigue sur un poste où l'on passe la journée. La source retenue donne 7:1 comme juste milieu ; 12:1 le dépasse largement tout en retirant la dureté. L'encre n'est donc plus la plus franche possible : elle est la plus légère qui tienne encore douze."
     }
   },
   "medias": {

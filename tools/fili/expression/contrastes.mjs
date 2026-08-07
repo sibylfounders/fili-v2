@@ -55,14 +55,24 @@ console.log(`\n  ${echecs === 0 ? '🟢 tous les couples tiennent — le calcul 
    Ce contrôle ne bloque pas : le plafond n'est pas une exigence WCAG, c'est une
    recommandation, et son arbitrage appartient à l'Auteur. Mais il se mesure, et
    il est ici pour qu'il ne se décide pas en silence. */
-const PLAFOND = 12
-const hauts = COUPLES.filter(([a, b, seuil]) => seuil === TEXTE && contraste(a, b) > PLAFOND)
-console.log(`  PLAFOND DE CONFORT — au-delà de ${String(PLAFOND)}:1, ${String(hauts.length)} couple(s) de texte\n`)
+/* Le plafond n'est plus un nombre écrit ici : il est déclaré à la planche, au
+   même rang que les planchers, et l'encre est désormais CALCULÉE pour s'y
+   arrêter. Le contrôle change donc de nature — il ne signale plus un arbitrage
+   manquant, il vérifie qu'un arbitrage rendu tient. La tolérance existe parce
+   qu'une recherche par dichotomie s'arrête juste AU-DESSUS de sa cible : elle
+   ne pardonne pas un dépassement, elle reconnaît le pas de la recherche. */
+const PLAFOND = P.$generation.couples.confort
+const TOLERANCE = 0.1
+const hauts = COUPLES.filter(([a, b, seuil]) => seuil === TEXTE && contraste(a, b) > PLAFOND + TOLERANCE)
+console.log(`  PLAFOND DE CONFORT — ${String(PLAFOND)}:1 déclaré à la planche, ${String(hauts.length)} dépassement(s)\n`)
 for (const [a, b, , quoi] of hauts)
   console.log(`  ⚠  ${contraste(a, b).toFixed(2).padStart(6)}:1  ${quoi}`)
 if (hauts.length > 0) {
   console.log("\n     Ce n'est pas une faute : aucune règle WCAG ne pose de plafond.")
-  console.log("     C'est un arbitrage non rendu. Le milieu recommandé est 7:1.\n")
+  console.log('     Mais le projet en a déclaré un, et il est franchi.\n')
+} else {
+  console.log("  🟢 le plafond tient — le texte qui porte est calculé pour s'y arrêter,")
+  console.log('     et non pour aller au plus franc que la famille permette.\n')
 }
 
 console.log("  Ce que cette mesure ne dit pas : si la palette est juste. C'est B-4.\n")
