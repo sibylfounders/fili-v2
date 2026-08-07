@@ -1,0 +1,43 @@
+{
+  "/integrite": {
+    "donnees": {
+      "total": 29,
+      "portees": 29
+    },
+    "chargement": false,
+    "erreur": null
+  },
+  "/batterie": {
+    "donnees": {
+      "piegees": 53,
+      "conformes": 27,
+      "mutations": {
+        "detectees": 46,
+        "total": 46,
+        "date": "2026-08-07",
+        "$note": "Versé par le run de mutation du 7 août 2026, joué en quatre salves (MUT_FROM/MUT_TO). Le contrôle d'intégrité a été rejoué après la dernière salve : 29/29, aucune règle laissée éteinte. Fili n'affiche ce nombre que parce qu'il a été mesuré."
+      },
+      "ecarts": 0
+    },
+    "chargement": false,
+    "erreur": null
+  },
+  "/progression": {
+    "donnees": {
+      "faites": 80,
+      "total": 80
+    },
+    "chargement": false,
+    "erreur": null
+  },
+  "/constats": {
+    "donnees": [],
+    "chargement": false,
+    "erreur": null
+  },
+  "/runs": {
+    "donnees": [],
+    "chargement": false,
+    "erreur": null
+  }
+}
