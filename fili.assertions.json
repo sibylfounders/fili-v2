@@ -1,0 +1,40 @@
+{
+  "$comment": "Les assertions déclarées par les contrats. Le gardien doit toutes les porter, actives. Sinon la batterie refuse de rendre un verdict.",
+  "assertions": [
+    { "id": "R1.1", "regle": "no-raw-interactive",       "interrupteur": "ACTIF_R11" },
+    { "id": "R1.2", "regle": "no-fake-interactive",      "interrupteur": "ACTIF_R12" },
+    { "id": "R1.3", "regle": "registry-only-components", "interrupteur": "ACTIF_R13" },
+    { "id": "R1.4", "regle": "registry-required",        "interrupteur": null },
+    { "id": "R1.5", "regle": "registry-only-components", "interrupteur": "ACTIF_R15" },
+    { "id": "R1.6", "regle": "no-escape-hatch",          "interrupteur": "ACTIF_R16" },
+    { "id": "R2.1", "regle": "etat-declare",             "interrupteur": "ACTIF_R21" },
+    { "id": "R2.2", "regle": "etat-declare",             "interrupteur": "ACTIF_R22" },
+    { "id": "R2.3", "regle": "etat-declare",             "interrupteur": "ACTIF_R23" },
+    { "id": "R2.4", "regle": "etat-declare",             "interrupteur": "ACTIF_R24" },
+    { "id": "R2.5", "regle": "etat-declare",             "interrupteur": "ACTIF_R25" },
+    { "id": "R2.6", "regle": "registry-required",        "interrupteur": null },
+    { "id": "R3.1", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R31" },
+    { "id": "R3.2", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R32" },
+    { "id": "R3.3", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R33" },
+    { "id": "R3.4", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R34" },
+    { "id": "R3.5", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R35" },
+    { "id": "R3.6", "regle": "registry-required",        "interrupteur": null },
+    { "id": "R3.7", "regle": "discipline-spatiale",      "interrupteur": "ACTIF_R37" },
+    { "id": "R4.1", "regle": "rythme-composition",       "interrupteur": "ACTIF_R41" },
+    { "id": "R4.2", "regle": "rythme-composition",       "interrupteur": "ACTIF_R42" },
+    { "id": "R4.3", "regle": "rythme-composition",       "interrupteur": "ACTIF_R43" },
+    { "id": "R4.4", "regle": "rythme-composition",       "interrupteur": "ACTIF_R44" },
+    { "id": "R4.5", "regle": "rythme-composition",       "interrupteur": "ACTIF_R45" },
+    { "id": "R4.6", "regle": "registry-required",        "interrupteur": null },
+    { "id": "R5.1", "regle": "arbitrage-lecture",        "interrupteur": "ACTIF_R51" },
+    { "id": "R5.2", "regle": "arbitrage-lecture",        "interrupteur": "ACTIF_R52" },
+    { "id": "R5.3", "regle": "arbitrage-lecture",        "interrupteur": "ACTIF_R53" },
+    { "id": "R5.4", "regle": "registry-required",        "interrupteur": null }
+  ],
+  "invariants": [
+    { "nom": "EXIGER_MOTIF", "valeur": true },
+    { "nom": "RUPTURE_LEVE_R51", "valeur": false },
+    { "nom": "RUPTURE_LEVE_R52", "valeur": false },
+    { "nom": "TETE_PREMIER_NIVEAU_SEUL", "valeur": true }
+  ]
+}

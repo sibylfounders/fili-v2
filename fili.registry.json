@@ -1,0 +1,148 @@
+{
+  "$comment": "Registre déclaré du projet FILI V2. Source de vérité du Leviathan. Pas de registre, pas de verdict.",
+  "components": {
+    "sources": [
+      "@/system",
+      "./system",
+      "../system",
+      "src/system",
+      "../design-system",
+      "../../design-system"
+    ],
+    "exports": [
+      "Button",
+      "TextField",
+      "EtatAsync",
+      "Section",
+      "Titre",
+      "Texte",
+      "Pile",
+      "Grille",
+      "Jeton",
+      "Alerte",
+      "Vide",
+      "Squelette"
+    ]
+  },
+  "zones": {
+    "horsPerimetre": [
+      "**/*.test.tsx",
+      "**/*.stories.tsx",
+      "tools/**",
+      "scripts/**",
+      "node_modules/**",
+      "dist/**",
+      "crash-tests/hors-perimetre/**",
+      "crash-tests/lib/**"
+    ],
+    "systeme": [
+      "src/main.tsx",
+      "src/system/**",
+      "crash-tests/design-system/**"
+    ],
+    "applicative": [
+      "src/**",
+      "crash-tests/**"
+    ],
+    "page": [
+      "src/pages/**",
+      "crash-tests/pages/**",
+      "crash-tests/epreuve-a/**",
+      "crash-tests/epreuve-b/**",
+      "crash-tests/epreuve-c/**"
+    ]
+  },
+  "espacement": {
+    "echelle": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      10,
+      12,
+      16,
+      20,
+      24,
+      32
+    ],
+    "exceptions": [
+      "mx-auto"
+    ],
+    "proximite": {
+      "facteur": 3,
+      "propEspace": "espace",
+      "conteneurs": [
+        "Pile",
+        "Grille"
+      ]
+    },
+    "pixels": {
+      "prop": {
+        "1": 4,
+        "2": 8,
+        "3": 12,
+        "4": 16,
+        "5": 24,
+        "6": 32,
+        "7": 48,
+        "8": 64,
+        "9": 96,
+        "10": 128
+      },
+      "classeMultiplicateur": 4
+    }
+  },
+  "async": {
+    "lectures": [
+      "useRequete"
+    ],
+    "mutations": [
+      "useMutation"
+    ],
+    "conteneurs": [
+      "EtatAsync"
+    ],
+    "slots": [
+      "chargement",
+      "erreur",
+      "vide",
+      "enfants"
+    ],
+    "slotsRupture": [
+      "vide",
+      "succes"
+    ],
+    "champAttente": "enAttente",
+    "champsIssue": [
+      "erreur",
+      "succes"
+    ]
+  },
+  "rythme": {
+    "section": "Section",
+    "propDensite": "densite",
+    "densites": [
+      "compact",
+      "normal",
+      "ample"
+    ],
+    "seuilAlternance": 2
+  },
+  "lecture": {
+    "propTete": "tete",
+    "seuilRang": 1
+  },
+  "html": {
+    "classesSysteme": [
+      "fili-bouton",
+      "fili-bouton--principal",
+      "fili-champ",
+      "fili-lien",
+      "fili-section"
+    ]
+  }
+}

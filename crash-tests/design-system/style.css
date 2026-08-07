@@ -1,0 +1,84 @@
+/* Feuille du système. Toute valeur d'espacement vient de l'échelle — S3. */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papier); color:var(--encre);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:var(--t-corps); line-height:1.6; letter-spacing:-.006em; -webkit-font-smoothing:antialiased;
+}
+@media (max-width:520px){ body{font-size:16px} }
+
+/* ── Sections et densités ────────────────────────────────────────────── */
+.section{ position:relative }
+.section + .section{ border-top:1px solid var(--trait) }
+.creux{ background:var(--papier-creux) }
+.densite-compact{ padding-block:var(--d-compact) }
+.densite-normal { padding-block:var(--d-normal) }
+.densite-ample  { padding-block:var(--d-ample) }
+@media (max-width:640px){
+  .densite-compact{padding-block:var(--e5)}
+  .densite-normal {padding-block:var(--e7)}
+  .densite-ample  {padding-block:var(--e8)}
+}
+.contenu{ width:100%; max-width:var(--large); margin-inline:auto; padding-inline:clamp(20px,5vw,var(--e8)) }
+
+/* ── Conteneurs : l'espace se distribue par le haut ──────────────────── */
+.pile{ display:flex; flex-direction:column; min-width:0 }
+.grille{ display:grid; min-width:0 }
+.grille > *{ min-width:0 }
+.e1{gap:var(--e1)} .e2{gap:var(--e2)} .e3{gap:var(--e3)}
+.e4{gap:var(--e4)} .e5{gap:var(--e5)} .e6{gap:var(--e6)} .e7{gap:var(--e7)}
+@media (min-width:560px){ .col-2{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:880px){ .col-3{grid-template-columns:repeat(3,1fr)}
+                          .col-4{grid-template-columns:repeat(4,1fr)} }
+
+/* ── Titres : la taille découle du niveau ────────────────────────────── */
+.t1,.t2,.t3{ margin:0; font-weight:600; line-height:1.08; letter-spacing:-.03em; text-wrap:balance }
+.t1{ font-size:var(--t1); letter-spacing:-.04em }
+.t2{ font-size:var(--t2) }
+.t3{ font-size:var(--t3); letter-spacing:-.01em; line-height:1.35 }
+
+/* ── Texte ───────────────────────────────────────────────────────────── */
+.txt{ margin:0 }
+.txt-chapeau{ font-size:clamp(1.0625rem,2.2vw,1.3125rem); color:var(--encre-douce); line-height:1.5; max-width:var(--lecture) }
+.txt-fin{ font-size:var(--t-fin); color:var(--encre-douce); max-width:52ch }
+.txt-menu{ font-size:var(--t-menu); letter-spacing:.14em; text-transform:uppercase; color:var(--encre-douce); font-weight:600 }
+.txt-corps{ max-width:var(--lecture) }
+
+/* ── Jeton : la pastille est hors du flux, bord gauche commun ────────── */
+.jeton{ display:block; position:relative; padding-left:var(--e5);
+  font-size:.8125rem; font-weight:600; color:var(--encre-douce) }
+.pastille{ position:absolute; left:0; top:.42em; width:9px; height:9px; border-radius:50%; background:var(--trait) }
+.pastille-verrou{background:var(--verrou)} .pastille-attente{background:var(--attente)}
+.pile > .jeton + .txt{ padding-left:var(--e5) }
+
+/* ── États non nominaux ──────────────────────────────────────────────── */
+.alerte{ border:1px solid #E3C8BE; background:#FDF4F1; border-left:3px solid var(--signal);
+  border-radius:8px; padding:var(--e5); display:flex; flex-direction:column; gap:var(--e2) }
+.alerte-titre{ color:var(--signal) }
+.alerte-corps .txt{ color:#6E4A3E }
+.vide{ border:1px dashed var(--trait); border-radius:8px; padding:var(--e5);
+  display:flex; flex-direction:column; gap:var(--e2) }
+.squelette{ display:flex; flex-direction:column; gap:var(--e3);
+  border:1px solid var(--trait); border-radius:8px; padding:var(--e5); background:var(--papier) }
+.squelette-ligne{ height:var(--e4); border-radius:4px; background:#E2DDD4 }
+.squelette-ligne:first-child{ width:45%; background:#D6D0C5 }
+.squelette-ligne:last-child{ width:70% }
+
+/* ── Contrôles ───────────────────────────────────────────────────────── */
+.btn{ font:inherit; font-weight:600; font-size:.9375rem; border-radius:8px; cursor:pointer;
+  padding:var(--e3) var(--e5); border:1px solid var(--encre); background:var(--encre); color:var(--papier);
+  min-height:44px; text-align:center }
+.btn-discret{ background:transparent; color:var(--encre); border-color:var(--trait) }
+.btn:hover{ opacity:.9 }
+.btn:focus-visible{ outline:2px solid var(--signal); outline-offset:2px }
+.champ{ display:flex; flex-direction:column; gap:var(--e2) }
+.champ label{ font-size:var(--t-fin); font-weight:600; color:var(--encre-douce) }
+.champ input{ font:inherit; font-size:.9375rem; border:1px solid var(--trait); border-radius:8px;
+  padding:var(--e3) var(--e4); background:#fff; color:var(--encre); min-height:44px }
+.champ input:focus-visible{ outline:2px solid var(--signal); outline-offset:1px; border-color:var(--encre-douce) }
+
+/* ── Rupture déclarée ────────────────────────────────────────────────── */
+.affiche{ margin:0; font-size:var(--t-affiche); line-height:1.02; letter-spacing:-.045em;
+  font-weight:600; text-wrap:balance; max-width:18ch }
+[data-intent="statement"]{ position:relative }

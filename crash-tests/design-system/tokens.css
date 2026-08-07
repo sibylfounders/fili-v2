@@ -1,0 +1,18 @@
+/* Source de vérité unique des valeurs. Zone système. */
+:root{
+  /* Échelle d'espacement — S3 */
+  --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:24px; --e6:32px;
+  --e7:48px; --e8:64px; --e9:96px; --e10:128px;
+  /* Densités de section — S4 */
+  --d-compact:var(--e6); --d-normal:var(--e8); --d-ample:var(--e10);
+  /* Échelle typographique — la taille découle du niveau, jamais du lieu */
+  --t-affiche:clamp(2.4rem,7vw,4.2rem);
+  --t1:clamp(1.75rem,4vw,2.6rem);
+  --t2:clamp(1.375rem,3vw,1.875rem);
+  --t3:1.0625rem;
+  --t-corps:17px; --t-fin:.875rem; --t-menu:.75rem;
+  /* Couleurs */
+  --papier:#FBFAF8; --papier-creux:#F3F1ED; --encre:#17181A; --encre-douce:#585C63;
+  --trait:#DCD8D1; --signal:#9E4526; --verrou:#2E6A4F; --attente:#B0862A;
+  --large:1120px; --lecture:66ch;
+}
