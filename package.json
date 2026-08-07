@@ -15,7 +15,17 @@
     "lint": "eslint .",
     "qpm:s2": "node scripts/qpm-s2.mjs",
     "qpm:s2:mutate": "node scripts/qpm-s2.mjs --mutate",
-    "qpm": "npm run qpm:s2 && npm run qpm:s2:mutate && npm run lint"
+    "qpm": "npm run fili:crash-test && npm run fili:journal && npm run fili:contrastes && npm run lint",
+    "fili:crash-test": "node tools/fili/crash-test/run.mjs",
+    "fili:mutations": "node tools/fili/crash-test/mutations.mjs",
+    "fili:integrite": "node tools/fili/crash-test/integrite.mjs",
+    "fili:expression": "node scripts/generer-expression.mjs && node scripts/generer-libelles.mjs",
+    "fili:contrastes": "node tools/fili/expression/contrastes.mjs",
+    "fili:journal": "node tools/fili/journal/immuable.mjs",
+    "fili:etat": "node tools/fili/etat/produire.mjs",
+    "fili:temoin": "node tools/fili/temoin/rendu.mjs",
+    "fili:temoins": "node tools/fili/temoin/rendu-produit.mjs",
+    "fili:check": "eslint src"
   },
   "dependencies": {
     "react": "^19.1.0",

@@ -5,6 +5,7 @@ import tseslint from 'typescript-eslint'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import reactHooks from 'eslint-plugin-react-hooks'
 import tailwindcss from 'eslint-plugin-tailwindcss'
+import { fili_config } from './tools/fili/eslint.fili.js'
 
 /**
  * Chaîne de preuve FILI — partie automatisable de S4 et de S2.
@@ -16,7 +17,12 @@ import tailwindcss from 'eslint-plugin-tailwindcss'
  * Il ne dispense pas des tests manuels S4-T3 à S4-T7.
  */
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules'] },
+  {
+    /* La batterie de crash-tests tourne avec sa propre configuration isolée
+       (tools/fili/eslint.crash.js). Ses fixtures ne sont pas du code de projet :
+       elles ne sont pas dans tsconfig.app.json et n'ont pas à y entrer. */
+    ignores: ['dist', 'node_modules', 'crash-tests', 'k1-pieces', 'temoins'],
+  },
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -90,4 +96,8 @@ export default tseslint.config(
       ],
     },
   },
+
+  /* Le Gardien garde src/ : le produit vit sous les 29 assertions,
+     pas seulement les crash-tests. */
+  ...fili_config,
 )

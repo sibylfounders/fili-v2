@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Feuille de style produite pour le rendu des témoins — artefact, pas une pièce.
+temoins/.style.css

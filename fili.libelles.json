@@ -1,0 +1,104 @@
+{
+  "$comment": "Le catalogue de libellés de Fili. Pièce du dépôt, charge d'instrument 5 du protocole de référence (K4 §7). Il donne son objet au point de passage B-5. Il se modifie AU DÉPÔT, jamais depuis Fili. Ce qu'il achète n'est pas la qualité de la parole — S2 §7 a écrit qu'aucune règle ne l'obtiendra — mais que la voix du produit vive dans un seul endroit regardable.",
+  "$statut": "🟡 proposé à l'arbitrage de l'Auteur — K5, première séance",
+  "$portee": "Le parcours P1 en entier — É1 · Le verdict et É2 · Le constat — plus le vocabulaire commun. Les cinq autres gabarits entrent avec leurs écrans : un catalogue qui déclare des écrans qui n'existent pas ne se regarde pas, il se croit.",
+  "$ton": {
+    "regle1": "Fili ne s'excuse pas. Il ne dit jamais « désolé », « oups », ni « une erreur est survenue ». Il dit ce qui s'est passé et ce qui reste possible.",
+    "regle2": "Fili ne félicite pas. Un verdict au vert est un fait, pas une bonne nouvelle. Aucun « bravo », aucun « parfait », aucun point d'exclamation.",
+    "regle3": "Fili nomme l'acteur. C'est le Gardien qui bloque ; Fili ne fait que le montrer. Aucune phrase ne laisse croire que l'interface a jugé.",
+    "regle4": "Fili parle à une personne qui connaît le système. Il ne réexplique pas la doctrine à chaque écran ; il rappelle ce qui manque, jamais ce qui va de soi.",
+    "regle5": "Un état vide dit ce qui remplirait le vide, jamais seulement qu'il est vide.",
+    "regle6": "Un état non nominal ne s'annonce qu'une fois par écran. Répéter la même alerte à chaque section, c'est la faire annoncer quatre fois par un lecteur d'écran et n'apprendre rien à personne."
+  },
+  "produit": {
+    "nom": "Fili",
+    "baseline": "Le poste depuis lequel l'état du système se lit et se tranche."
+  },
+  "commun": {
+    "actions": {
+      "consignerLeRun": "Consigner ce run",
+      "consignerEnCours": "Consignation en cours…",
+      "reessayer": "Relancer la lecture",
+      "ouvrirLeConstat": "Ouvrir le constat",
+      "revenirAuVerdict": "Revenir au verdict"
+    },
+    "statuts": {
+      "verrou": "Verrouillé",
+      "attente": "En cours",
+      "idee": "Idée",
+      "refus": "Refus de statuer"
+    },
+    "mesures": {
+      "integrite": "Intégrité du juge",
+      "fixturesPiegees": "Pièges bloqués",
+      "fixturesConformes": "Conformes passants",
+      "mutations": "Sabotages détectés",
+      "assertions": "Assertions portées",
+      "absente": "non mesuré dans ce run"
+    }
+  },
+  "ecrans": {
+    "verdict": {
+      "$ecran": "É1 · Le verdict — parcours P1",
+      "$primaute": "L'intégrité du juge, avant le verdict lui-même. Un juge désarmé qui affiche vert est la panne que #020 a produite sans que personne la voie.",
+      "surtitre": "Fili · le verdict du dépôt",
+      "titre": "Le juge est-il entier, et le dépôt tient-il ?",
+      "chapeau": "L'intégrité d'abord : tant que les assertions déclarées ne sont pas toutes portées et actives, aucun verdict n'est prononçable. La batterie ne vient qu'ensuite.",
+      "integriteTitre": "Intégrité du juge",
+      "integriteEntier": "Les {n} assertions déclarées sont portées et actives.",
+      "integriteRompue": "{n} assertion(s) déclarée(s) ne sont pas portées ou sont éteintes.",
+      "batterieTitre": "La batterie",
+      "batterieVerte": "Aucun écart. Les cinq Sujets tiennent.",
+      "batterieRouge": "{n} écart(s). Le dépôt ne passe pas.",
+      "constatsTitre": "Ce qui rougit",
+      "constatsAide": "Une assertion qui rougit désigne une décision de doctrine, pas un fichier. Le fichier n'arrive qu'en troisième.",
+      "derniersRunsTitre": "Le dernier run consigné",
+      "consigneTitre": "Consigner",
+      "consigneAide": "Un run consigné devient une pièce du dépôt. Il ne se réécrit pas.",
+      "etats": {
+        "chargement": "Batterie en cours — {faites} épreuves sur {total}.",
+        "chargementAide": "La durée réelle s'affiche parce qu'un compte qui avance dit quelque chose qu'un rond qui tourne ne dit pas.",
+        "erreurTitre": "Refus de statuer",
+        "erreurCorps": "Le juge n'est pas entier : {raison}. La batterie ne rend pas de verdict sur un juge incomplet, et la consignation reste fermée.",
+        "erreurAide": "Ceci n'est pas une panne technique. C'est un verdict à part entière — le seul que le système accepte de prononcer dans cet état.",
+        "videTitre": "Aucun run consigné à ce jour",
+        "videCorps": "Le premier run consigné ouvrira la lignée. Lancez la batterie pour en produire un.",
+        "succesTitre": "Run consigné",
+        "succesCorps": "Daté du {date}. Il est désormais une pièce du dépôt.",
+        "suspenduTitre": "Suspendu",
+        "batterieSuspendue": "La batterie n'a pas été jouée : le juge n'est pas entier. Ce qui manque ici n'est pas un résultat, c'est le droit d'en produire un.",
+        "constatsSuspendus": "Aucun constat n'est lisible tant qu'aucun verdict n'a été rendu. Le détail viendra après le droit de statuer, jamais avant.",
+        "consigneFermee": "La consignation est fermée. On ne consigne pas un verdict qu'on n'a pas mérité."
+      }
+    },
+    "constat": {
+      "$ecran": "É2 · Le constat — parcours P1",
+      "$primaute": "L'assertion et sa raison d'être, pas la ligne fautive. Un écran qui liste les fichiers d'abord fait croire que le problème est local alors qu'il est doctrinal.",
+      "surtitre": "Fili · le constat",
+      "titre": "{assertion} — ce qu'elle interdit, et pourquoi",
+      "contratTitre": "D'où elle vient",
+      "raisonTitre": "Ce qu'elle protège",
+      "occurrencesTitre": "Où elle rougit",
+      "occurrencesCompte": "{n} occurrence(s), dans {f} fichier(s).",
+      "ruptureTitre": "Ce qu'une rupture déclarée ne lève jamais",
+      "etats": {
+        "chargement": "Lecture du détail de {assertion}…",
+        "erreurTitre": "Le constat est illisible",
+        "erreurCorps": "La source du constat ne répond pas : {raison}. L'assertion reste rouge ; ce qui manque, c'est le détail, pas le verdict.",
+        "videTitre": "Aucune occurrence",
+        "videCorps": "{assertion} est au vert. Rien à corriger — et rien à célébrer : c'est l'état attendu.",
+        "suspenduTitre": "Suspendu",
+        "occurrencesSuspendues": "La liste des occurrences est illisible. L'assertion, elle, reste lisible — et c'est elle qui compte d'abord."
+      },
+      "raisonAide": "Une assertion n'existe pas pour être satisfaite : elle existe pour empêcher une classe de défaut de revenir. C'est cela qu'on lit d'abord.",
+      "ruptureCorps": "La rupture déclarée porte sur la forme et les valeurs. Elle ne lève jamais le clavier, la hiérarchie de titres, le sens du flux, l'annonce d'un état, le contraste ni le mouvement.",
+      "occurrenceFichier": "{fichier} — ligne {ligne}",
+      "occurrencesAide": "Le fichier n'arrive qu'en troisième. Ce qui précède dit pourquoi la règle existe ; ce qui suit dit seulement où elle a été rencontrée."
+    }
+  },
+  "$limites": [
+    "Ce catalogue ne dit pas si le ton est le bon. C'est B-5, et il se juge sur un écran réel, le catalogue lisible d'un bloc en regard.",
+    "Aucune assertion ne vérifie encore qu'un libellé du produit vient d'ici plutôt que d'être écrit sur place. C'est A-5, dans S6, et K3 l'a déclarée marginale : elle sera réexaminée à l'écriture.",
+    "Les cinq gabarits restants — la famille des témoins, le face-à-face, la carte, le journal, l'acte — n'ont pas d'entrée ici. Leur absence est déclarée, pas oubliée."
+  ]
+}
