@@ -1,16 +1,22 @@
 /* Zone système. Aucun verdict ne se lit à la couleur seule (K2 §7.1) :
    chaque état porte une forme, et la forme vient de la planche des registres.
-   Ce composant n'est pas exporté au registre : il n'a pas d'emploi hors d'un
-   jeton ou d'une alerte, et un composant sans emploi propre n'entre pas. */
+   Sa taille aussi : une icône qui n'est pas accordée au texte qu'elle
+   accompagne se lit comme un accident. */
 import { ICONES } from './expression.genere.ts'
 import type { NomIcone } from './expression.genere.ts'
 
-export function Icone({ nom }: { nom: NomIcone }) {
+type Taille = 'petite' | 'courante' | 'grande'
+
+const MESURE: Record<Taille, string> = {
+  petite: 'h-petite w-petite',
+  courante: 'h-courante w-courante',
+  grande: 'h-grande w-grande',
+}
+
+export function Icone({ nom, taille = 'courante' }: { nom: NomIcone; taille?: Taille }) {
   return (
     <svg
       viewBox="0 0 16 16"
-      width="16"
-      height="16"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
@@ -18,7 +24,7 @@ export function Icone({ nom }: { nom: NomIcone }) {
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
-      className="shrink-0"
+      className={`shrink-0 ${MESURE[taille]}`}
     >
       <path d={ICONES[nom]} />
     </svg>

@@ -24,25 +24,37 @@ const t = (nom) => planche.tons[nom].valeur
 
 /* Les couples réellement employés par le produit, et le seuil qui leur
    correspond. Un seuil de 3 pour un élément d'interface (WCAG 1.4.11),
-   4,5 pour du texte courant (WCAG 1.4.3). */
+   4,5 pour du texte courant (WCAG 1.4.3).
+   `encreEteinte` n'y figure pas : un contrôle désactivé est explicitement hors
+   seuil (WCAG 1.4.3), et l'exception est déclarée dans la planche plutôt que
+   contournée par une mesure absente. */
 const COUPLES = [
-  ['encre',        'papier',       4.5, 'texte qui porte, sur le fond'],
-  ['encre',        'papierCreux',  4.5, 'texte qui porte, sur un fond en retrait'],
-  ['encreDouce',   'papier',       4.5, 'texte qui accompagne, sur le fond'],
-  ['encreDouce',   'papierCreux',  4.5, 'texte qui accompagne, sur un fond en retrait'],
-  ['verrou',       'papier',       4.5, 'libellé du verrouillé'],
-  ['attente',      'papier',       4.5, "libellé de l'en cours"],
-  ['signal',       'papier',       4.5, 'libellé du refus'],
-  ['verrou',       'papierCreux',  4.5, 'libellé du verrouillé, en retrait'],
-  ['attente',      'papierCreux',  4.5, "libellé de l'en cours, en retrait"],
-  ['signal',       'papierCreux',  4.5, 'libellé du refus, en retrait'],
-  ['encreInverse', 'signal',       4.5, 'texte posé sur un ton plein'],
-  ['encreInverse', 'verrou',       4.5, 'texte posé sur un ton plein'],
-  ['traitNet',     'papier',       3.0, "délimitation d'un contrôle (WCAG 1.4.11)"],
-  ['traitNet',     'papierCreux',  3.0, "délimitation d'un contrôle, en retrait"],
-  ['verrou',       'papier',       3.0, "pastille d'état — forme porteuse de sens"],
-  ['attente',      'papier',       3.0, "pastille d'état — forme porteuse de sens"],
-  ['signal',       'papier',       3.0, "pastille d'état — forme porteuse de sens"]
+  ['encre',        'papier',          4.5, 'texte qui porte, sur le fond'],
+  ['encre',        'papierCreux',     4.5, 'texte qui porte, sur un fond en retrait'],
+  ['encre',        'papierSurvol',    4.5, 'texte qui porte, sous le pointeur'],
+  ['encre',        'papierSelection', 4.5, 'texte qui porte, sur une surface choisie'],
+  ['encreDouce',   'papier',          4.5, 'texte qui accompagne, sur le fond'],
+  ['encreDouce',   'papierCreux',     4.5, 'texte qui accompagne, sur un fond en retrait'],
+  ['encreDouce',   'papierSelection', 4.5, 'texte qui accompagne, sur une surface choisie'],
+  ['verrou',       'papier',          4.5, 'libellé du verrouillé'],
+  ['attente',      'papier',          4.5, "libellé de l'en cours"],
+  ['signal',       'papier',          4.5, 'libellé du refus'],
+  ['information',  'papier',          4.5, "libellé de l'information"],
+  ['verrou',       'papierCreux',     4.5, 'libellé du verrouillé, en retrait'],
+  ['attente',      'papierCreux',     4.5, "libellé de l'en cours, en retrait"],
+  ['signal',       'papierCreux',     4.5, 'libellé du refus, en retrait'],
+  ['information',  'papierCreux',     4.5, "libellé de l'information, en retrait"],
+  ['encreInverse', 'signal',          4.5, 'texte posé sur un ton plein'],
+  ['encreInverse', 'verrou',          4.5, 'texte posé sur un ton plein'],
+  ['encreInverse', 'information',     4.5, 'texte posé sur un ton plein'],
+  ['encreInverse', 'encre',           4.5, "texte posé sur l'encre — le bouton principal"],
+  ['traitNet',     'papier',          3.0, "délimitation d'un contrôle (WCAG 1.4.11)"],
+  ['traitNet',     'papierCreux',     3.0, "délimitation d'un contrôle, en retrait"],
+  ['signal',       'papier',          3.0, "anneau de focus sur fond clair"],
+  ['verrou',       'papier',          3.0, "pastille d'état — forme porteuse de sens"],
+  ['attente',      'papier',          3.0, "pastille d'état — forme porteuse de sens"],
+  ['signal',       'papier',          3.0, "pastille d'état — forme porteuse de sens"],
+  ['information',  'papier',          3.0, "pastille d'état — forme porteuse de sens"]
 ]
 
 let echecs = 0

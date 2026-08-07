@@ -9,10 +9,10 @@ import type { NomIcone } from './expression.genere.ts'
 type Ton = 'verrou' | 'attente' | 'idee' | 'refus'
 
 const ALLURE: Record<Ton, string> = {
-  verrou: 'text-verrou border-verrou/30 bg-verrou/5',
-  attente: 'text-attente border-attente/30 bg-attente/5',
-  idee: 'text-encre-douce border-trait-net/40 bg-papier',
-  refus: 'text-signal border-signal/30 bg-signal/5',
+  verrou: 'text-verrou border-verrou/contour bg-verrou/voile',
+  attente: 'text-attente border-attente/contour bg-attente/voile',
+  idee: 'text-encre-douce border-trait-net/contour bg-papier',
+  refus: 'text-signal border-signal/contour bg-signal/voile',
 }
 
 const FORME: Record<Ton, NomIcone> = {
@@ -25,7 +25,7 @@ const FORME: Record<Ton, NomIcone> = {
 export function Jeton({ ton = 'idee', children }: { ton?: Ton; children: ReactNode }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-doux border px-2 py-1 text-fin font-moyenne ${ALLURE[ton]}`}
+      className={`inline-flex items-center gap-2 rounded-doux border-systeme px-2 py-1 text-fin font-moyenne ${ALLURE[ton]}`}
     >
       <Icone nom={FORME[ton]} />
       {children}

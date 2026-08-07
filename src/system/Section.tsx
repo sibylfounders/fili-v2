@@ -28,12 +28,12 @@ export function Section({
 } & Record<string, unknown>) {
   return (
     <section
-      className={`${RESPIRATION[densite]} px-5 sm:px-8 ${fond ? 'bg-papier-creux' : 'bg-papier'}`}
+      className={`${RESPIRATION[densite]} px-5 mobile:px-8 ${fond ? 'bg-papier-creux' : 'bg-papier'}`}
       data-densite={densite}
       data-tete={tete ? 'oui' : undefined}
       {...reste}
     >
-      <div className="mx-auto max-w-large">{children}</div>
+      <div className="mx-auto max-w-page">{children}</div>
     </section>
   )
 }

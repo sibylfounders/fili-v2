@@ -6,9 +6,9 @@ import { ECART } from './espace.ts'
 import type { Espace } from './espace.ts'
 
 const COLONNES: Record<2 | 3 | 4, string> = {
-  2: 'grid-cols-1 sm:grid-cols-2',
-  3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+  2: 'grid-cols-1 mobile:grid-cols-2',
+  3: 'grid-cols-1 mobile:grid-cols-2 tablette:grid-cols-3',
+  4: 'grid-cols-1 mobile:grid-cols-2 tablette:grid-cols-4',
 }
 
 export function Pile({ espace = 4, children }: { espace?: Espace; children: ReactNode }) {

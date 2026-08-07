@@ -12,8 +12,8 @@ type Annonce = 'alerte' | 'statut'
 type Ton = 'refus' | 'attente'
 
 const ALLURE: Record<Ton, string> = {
-  refus: 'border-signal/40 bg-signal/5 text-signal',
-  attente: 'border-attente/40 bg-attente/5 text-attente',
+  refus: 'border-signal/contour bg-signal/voile text-signal',
+  attente: 'border-attente/contour bg-attente/voile text-attente',
 }
 
 export function Alerte({
@@ -30,10 +30,10 @@ export function Alerte({
   return (
     <div
       role={annonce === 'alerte' ? 'alert' : 'status'}
-      className={`flex flex-col gap-3 rounded-controle border border-l-4 p-5 ${ALLURE[ton]}`}
+      className={`flex flex-col gap-3 rounded-controle border-systeme border-l-marqueur p-5 ${ALLURE[ton]}`}
     >
-      <p className="flex items-center gap-2 font-titrage text-n3 font-appuyee">
-        <Icone nom={ton === 'refus' ? 'refus' : 'attente'} />
+      <p className="flex items-center gap-2 font-titrage text-niveau3 font-appuyee">
+        <Icone nom={ton === 'refus' ? 'refus' : 'attente'} taille="grande" />
         {titre}
       </p>
       <div className="text-fin text-encre">{children}</div>

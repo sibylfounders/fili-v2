@@ -5,8 +5,8 @@ import type { ReactNode } from 'react'
 
 export function Titre({ niveau, children }: { niveau: 1 | 2 | 3; children: ReactNode }) {
   if (niveau === 1)
-    return <h1 className="text-balance font-titrage text-n1 font-appuyee text-encre">{children}</h1>
+    return <h1 className="text-balance font-titrage text-niveau1 font-appuyee text-encre">{children}</h1>
   if (niveau === 2)
-    return <h2 className="text-balance font-titrage text-n2 font-appuyee text-encre">{children}</h2>
-  return <h3 className="font-titrage text-n3 font-moyenne text-encre">{children}</h3>
+    return <h2 className="text-balance font-titrage text-niveau2 font-appuyee text-encre">{children}</h2>
+  return <h3 className="font-titrage text-niveau3 font-moyenne text-encre">{children}</h3>
 }
