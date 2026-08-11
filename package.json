@@ -28,7 +28,8 @@
     "fili:check": "eslint src",
     "fili:catalogue": "node tools/fili/expression/catalogue.mjs",
     "fili:systeme": "node tools/fili/systeme/produire.mjs",
-    "fili:lexique": "node tools/fili/lexique/produire.mjs"
+    "fili:lexique": "node tools/fili/lexique/produire.mjs",
+    "fili:regles": "node tools/fili/regles/produire.mjs"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",

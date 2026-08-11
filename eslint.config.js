@@ -21,7 +21,7 @@ export default tseslint.config(
     /* La batterie de crash-tests tourne avec sa propre configuration isolée
        (tools/fili/eslint.crash.js). Ses fixtures ne sont pas du code de projet :
        elles ne sont pas dans tsconfig.app.json et n'ont pas à y entrer. */
-    ignores: ['dist', 'node_modules', 'crash-tests', 'archive/k1-pieces', 'temoins'],
+    ignores: ['dist', 'node_modules', 'crash-tests', 'archive/k1-pieces', 'temoins', 'fili-v2'],
   },
   {
     files: ['**/*.{ts,tsx}'],
