@@ -85,7 +85,7 @@ hiérarchie mal posée.
 
 ## 3 · Les couleurs — huit fonds et encres, quatre états
 
-Fonds et encres : `papier` · `papierCreux` · `papierSurvol` · `papierSelection` · `scene` · `encre` · `encreDouce` · `encreEteinte` · `encreInverse` · `trait` · `traitNet` · `accent`
+Fonds et encres : `papier` · `papierCreux` · `papierSurvol` · `papierSelection` · `scene` · `encre` · `encreDouce` · `encreLegere` · `encreEteinte` · `encreInverse` · `trait` · `traitNet` · `accent`
 États : `erreur` · `alerte` · `succes` · `information`
 
 Une seule couleur est choisie dans tout le système (`#4F46E5`) ; toutes
@@ -105,9 +105,22 @@ une forme.
 
 ## 4 · Les formes
 
-Rayons : `rounded-net` · `rounded-coque` · `rounded-carte` · `rounded-detail` · `rounded-pastille` — le rayon suit la profondeur, il se divise par deux à chaque
-niveau. `rounded-net` pour ce qui se lit (une section, un tableau),
-`rounded-pastille` pour une pastille.
+### Les rayons
+
+`rounded-net` · `rounded-coque` · `rounded-carte` · `rounded-detail` · `rounded-controle` · `rounded-pastille`
+
+**Une surface** suit la profondeur : son rayon se divise par deux à chaque niveau.
+`rounded-net` pour ce qui se lit — une section, un tableau.
+
+**Un composant** — bouton, champ, liste de choix, jeton — ne suit pas la profondeur.
+Il prend `rounded-controle`, et ce rayon ne change ni avec l'endroit où il tombe,
+ni avec le thème : un bouton doit se reconnaître partout. Il est plus petit que le
+rayon de sa carte par construction, parce qu'un arrondi se lit par rapport à la
+taille de l'objet.
+
+**`rounded-pastille` est une forme, pas un arrondi** — et c'est une promesse :
+ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
+Un composant dont le libellé peut se replier ne devient jamais une pastille.
 
 Largeurs : `max-w-lecture` · `max-w-page` · `max-w-rail` · `max-w-plancher` — un bloc de texte suivi ne dépasse jamais `max-w-lecture`.
 

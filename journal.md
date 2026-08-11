@@ -37,6 +37,34 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #063 — Le rayon d'un composant descend du ton, pas de la profondeur — et la pastille est une promesse
+
+*2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur essais) · Deuxième point du plan*
+
+**Contexte** — Une source extérieure de l'Auteur porte une exception que le dépôt n'avait pas : *« les composants ont un rayon intrinsèque, hors chaîne et hors theming — il serait contre-productif qu'un bouton change d'arrondi »*. Chez Fili, bouton, champ, liste de choix et jeton prenaient le dernier cran de la chaîne : leur coin changeait donc avec la profondeur, et avec la base.
+
+**Décision** — **Le rayon d'un composant descend du ton du système — le tiers du rayon racine — et jamais de sa profondeur.** Deux garde-fous l'accompagnent : un composant plus rond que sa carte passe en **pastille** ; et **une pastille n'est légitime que sur une ligne**.
+
+**Sens produit / UX** — Quatre choses, dont trois viennent de l'œil de l'Auteur et pas du raisonnement.
+
+**Un bouton doit se reconnaître partout.** C'est tout l'objet de l'exception : une pièce qu'on manipule ne change pas de forme selon l'endroit où elle tombe. Elle sort donc de la chaîne — mais **elle ne sort pas du système** : elle descend du ton, ce qui la rend nulle quand le ton est à angle droit. Une première version posait 8 px en dur ; l'Auteur l'a corrigée en une phrase — *« si les bords sont droits sur les cartes alors les boutons par défaut doivent l'être »*. Un rayon déclaré aurait produit des boutons arrondis dans un système carré : le contraire d'un système.
+
+**Le tiers, et pas la moitié — et c'est l'œil qui a tranché.** L'essai montrait un bouton au rayon de sa carte, présenté comme *la limite*. Verdict : *« c'est quand même limite limite »*. La raison est perceptive et vaut règle : **un arrondi se lit par rapport à la taille de l'objet.** Douze sur une carte de quatre cents de haut est discret ; douze sur un bouton de quarante-six est beaucoup. Le tiers du ton place donc le composant sous le rayon de sa carte **par construction** — un tiers contre un demi — et la question du rabattement ne se pose jamais.
+
+**La pastille n'est pas un rayon, c'est une sortie.** Quand un composant serait plus rond que sa carte, ou quand son rayon dépasse la moitié de sa hauteur — auquel cas il s'écrase, et deux valeurs différentes rendent à l'identique —, on ne rend pas un entre-deux mou. On passe à une forme, qui ne se compare plus à un arrondi.
+
+**Et la pastille est une promesse, que l'Auteur a nommée avant qu'elle soit vue.** *« Le composant ne doit être que sur une ligne, jamais plus. »* L'essai l'a confirmé sur pièce : à deux lignes, l'arrondi devient énorme et le texte entre dans la courbe. Un composant dont le libellé peut se replier ne devient donc jamais une pastille — il garde son rayon. C'est la règle de dégagement de la v1, retrouvée par le bas.
+
+**Alternatives écartées** — *Déclarer 8 px en dur, hors du système* (fidèle à la lettre de l'exception, et il produit des boutons ronds dans un système carré) ; *plafonner le composant au rayon de sa carte* (le plafond est atteint dès qu'on égalise, et l'œil a jugé cette égalité déjà trop ronde — le tiers rend le plafond inatteignable) ; *rabattre au rayon de la carte plutôt que passer en pastille* (un rectangle rabattu reste un rectangle qui a échoué à être rond ; une forme, non) ; *laisser la pastille disponible partout* (elle casse dès que le libellé se replie, et un libellé se replie sur un téléphone).
+
+**Conséquences** — Le moteur produit **30 jetons** : `radius-controle` s'ajoute, dérivé comme les autres. Quatre pièces sortent de la chaîne — bouton, champ, liste de choix, jeton — les surfaces y restent. La planche porte la règle en trois temps et le motif de la saturation. Le fichier de règles l'annonce dans ses propres mots. **Batterie 100 %, contrastes, types, lint au vert.** Aucune valeur d'espace n'a bougé ; à réglage égal, le rayon de contrôle vaut toujours 8.
+
+**Ce qui reste ouvert** — Les deux garde-fous ne sont pas mécaniques : rien ne vérifie encore qu'un composant ne dépasse pas sa carte, ni qu'une pastille tient sur une ligne. Le premier est un contrôle d'audit déjà nommé au plan ; le second demande de savoir si un libellé peut se replier, ce que le code ne dit pas encore.
+
+**Impact carte** — Aucun jalon, aucun contrat. Registre : un rayon de plus, dérivé. Deuxième point du plan fait.
+
+---
+
 ## #062 — La profondeur se lit au contraste : la page recule, le contenu avance, et l'encre gagne un rang
 
 *2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur : « oui, fond de page gris clair et cartes blanches », puis « c'est bon » sur l'avant/après) · Premier point du plan*

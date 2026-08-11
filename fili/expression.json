@@ -273,8 +273,11 @@
     }
   },
   "rayons": {
-    "$intention": "Le rayon suit la profondeur d'emboîtement : il se divise par deux à chaque niveau. « Net » et « pastille » ne sont pas des rayons — l'un est l'absence de rayon, l'autre est une forme. Un registre n'a toujours pas de coins ronds : ce qui se lit reste net.",
+    "$intention": "Le rayon d'une SURFACE suit la profondeur d'emboîtement : il se divise par deux à chaque niveau. Les COMPOSANTS font exception — un bouton, un champ, une liste de choix, un jeton portent un rayon qui leur est propre, hors de la chaîne et hors du thème. Il serait contre-productif qu'un bouton change d'arrondi selon l'endroit où il tombe : on doit le reconnaître partout. « Net » et « pastille » ne sont pas des rayons — l'un est l'absence de rayon, l'autre est une forme.",
     "$source": "Échelle Semantic Rhythm, décision d'Auteur du 2026-08-11. Rayon racine 24 : coque 12, carte 6, détail 3. Les anciens crans « doux » (2) et « contrôle » (8) n'avaient aucune valeur commune avec la loi du ÷2 ; ils disparaissent, et la distinction qu'ils portaient — adoucir vs désigner — est reprise par « net » d'un côté et par la profondeur de l'autre.",
+    "$exception": "Décision d'Auteur du 2026-08-11. Avant, tout ce qui se manipulait prenait le dernier cran de la chaîne : un bouton s'arrondissait donc autrement selon sa profondeur, et changeait de forme quand la base changeait. Le rayon de contrôle est désormais DÉCLARÉ, pas dérivé.",
+    "$regleDuComposant": "Trois temps, décision d'Auteur du 2026-08-11. UN — le rayon d'un composant descend du TON du système, jamais de sa profondeur : un bouton doit se reconnaître partout, et il ne change pas de forme selon l'endroit où il tombe. Il en prend le tiers. DEUX — un arrondi se lit par rapport à la taille de l'objet : le même nombre paraît discret sur une carte et beaucoup sur un bouton. Le tiers du ton place donc le composant sous le rayon de sa carte (un tiers contre un demi) par construction, et il n'y a jamais à le rabattre. Un composant plus rond que sa carte ne peut arriver que si on le force : dans ce cas il passe en pastille, parce qu'une forme ne se compare plus à un arrondi. TROIS — la pastille n'est pas qu'une forme, c'est une promesse : CE COMPOSANT TIENT SUR UNE LIGNE. Sur deux lignes son arrondi devient énorme et le texte entre dans la courbe. Un composant dont le libellé peut se replier ne devient donc jamais une pastille : il garde son rayon.",
+    "$saturation": "Un rayon supérieur à la moitié de la hauteur d'un composant s'écrase : deux valeurs différentes rendent alors à l'identique. Passé ce plafond, on ne rend pas un entre-deux mou — on passe en pastille.",
     "net": {
       "valeur": "0px",
       "emploi": "une section, un tableau — ce qui se lit"
@@ -289,11 +292,16 @@
     },
     "detail": {
       "valeur": "var(--rr-radius-detail)",
-      "emploi": "un bouton, un champ, une pastille — ce qui se manipule dans une carte"
+      "emploi": "une petite surface posée dans une carte — un cadre, un squelette, une place vide"
+    },
+    "controle": {
+      "valeur": "var(--rr-radius-controle)",
+      "emploi": "un bouton, un champ, une liste de choix, un jeton",
+      "$source": "calculé — fili/geometrie.json, jeton radius-controle : le tiers du ton du système"
     },
     "pastille": {
       "valeur": "9999px",
-      "emploi": "une pastille d'état"
+      "emploi": "un composant qui assume une forme au lieu d'un arrondi — et qui tient sur une ligne"
     }
   },
   "elevations": {

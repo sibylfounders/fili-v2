@@ -25,7 +25,7 @@ export function Button({
       type="button"
       onClick={onPress}
       disabled={desactive}
-      className={`inline-flex w-fit items-center justify-center rounded-detail border-systeme px-inline-carte py-block-detail text-fin font-moyenne transition-colors duration-base ease-standard disabled:cursor-not-allowed ${ALLURE[variante]}`}
+      className={`inline-flex w-fit items-center justify-center rounded-controle border-systeme px-inline-carte py-block-detail text-fin font-moyenne transition-colors duration-base ease-standard disabled:cursor-not-allowed ${ALLURE[variante]}`}
     >
       {children}
     </button>

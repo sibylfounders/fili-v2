@@ -152,9 +152,22 @@ une forme.
 
 ## 4 · Les formes
 
-Rayons : ${rayons} — le rayon suit la profondeur, il se divise par deux à chaque
-niveau. \`rounded-net\` pour ce qui se lit (une section, un tableau),
-\`rounded-pastille\` pour une pastille.
+### Les rayons
+
+${rayons}
+
+**Une surface** suit la profondeur : son rayon se divise par deux à chaque niveau.
+\`rounded-net\` pour ce qui se lit — une section, un tableau.
+
+**Un composant** — bouton, champ, liste de choix, jeton — ne suit pas la profondeur.
+Il prend \`rounded-controle\`, et ce rayon ne change ni avec l'endroit où il tombe,
+ni avec le thème : un bouton doit se reconnaître partout. Il est plus petit que le
+rayon de sa carte par construction, parce qu'un arrondi se lit par rapport à la
+taille de l'objet.
+
+**\`rounded-pastille\` est une forme, pas un arrondi** — et c'est une promesse :
+ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
+Un composant dont le libellé peut se replier ne devient jamais une pastille.
 
 Largeurs : ${largeurs} — un bloc de texte suivi ne dépasse jamais \`max-w-lecture\`.
 

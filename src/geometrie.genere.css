@@ -29,6 +29,7 @@
   --rr-radius-coque: clamp(10.32px, 9.4286px + 0.2786vw, 13.44px);
   --rr-radius-carte: clamp(5.16px, 4.7143px + 0.1393vw, 6.72px);
   --rr-radius-detail: clamp(2.58px, 2.3571px + 0.0696vw, 3.36px);
+  --rr-radius-controle: clamp(6.88px, 6.2857px + 0.1857vw, 8.96px);
   --rr-inline-bord: clamp(19.2px, 16.4571px + 0.8571vw, 28.8px);
   --rr-block-bord: clamp(21.6px, 19.8171px + 0.5571vw, 27.84px);
   --rr-type-corps: clamp(15.36px, 14.8571px + 0.1571vw, 17.12px);

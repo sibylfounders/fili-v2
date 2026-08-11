@@ -46,7 +46,7 @@ export function Selection({
         onChange={(e) => {
           surChoix(e.target.value)
         }}
-        className="w-full rounded-detail border-systeme border-trait-net bg-papier px-inline-carte py-block-detail text-corps text-encre disabled:cursor-not-allowed disabled:text-encre-eteinte"
+        className="w-full rounded-controle border-systeme border-trait-net bg-papier px-inline-carte py-block-detail text-corps text-encre disabled:cursor-not-allowed disabled:text-encre-eteinte"
       >
         {groupes.map((g) =>
           g === '' ? (

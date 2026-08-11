@@ -59,7 +59,8 @@
   "rayons": {
     "coque": 12,
     "carte": 6,
-    "detail": 3
+    "detail": 3,
+    "controle": 8
   },
   "bord": 24,
   "texte": {
@@ -237,6 +238,13 @@
       "bas": 2.58,
       "haut": 3.36,
       "css": "clamp(2.58px, 2.3571px + 0.0696vw, 3.36px)"
+    },
+    "radius-controle": {
+      "axe": "radius",
+      "base": 8,
+      "bas": 6.88,
+      "haut": 8.96,
+      "css": "clamp(6.88px, 6.2857px + 0.1857vw, 8.96px)"
     },
     "inline-bord": {
       "axe": "inline",

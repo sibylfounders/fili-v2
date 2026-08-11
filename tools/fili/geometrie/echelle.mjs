@@ -87,6 +87,12 @@ export function deriver(entrees = ENTREES_DEFAUT) {
     coque: r4(caler(rayonRacine / 2, e.cale)),
     carte: r4(caler(rayonRacine / 4, e.cale)),
     detail: r4(caler(rayonRacine / 8, e.cale)),
+    /* Le composant. Il descend du TON du systeme, jamais de sa profondeur : un
+       bouton doit se reconnaitre partout. Un tiers du ton — un arrondi se lit
+       par rapport a la taille de l'objet, et un composant est petit. Il tombe
+       donc toujours sous le rayon de sa carte (un tiers contre un demi), et il
+       n'y a jamais a le rabattre. A ton nul, il est nul aussi. */
+    controle: r4(caler(rayonRacine / 3, e.cale)),
   }
   /* Le texte. Le corps est l'origine, les titres sont des PAS — jamais des
      tailles écrites. Deux pas au-dessus du corps, pas un de plus. */
@@ -144,7 +150,7 @@ export function jetons(socle) {
       sortie[`${axe}-ecart-${p}`] = { axe, base: socle.ecarts[p], ...clampDe(socle.ecarts[p], axe), ...ecartCourbeDroite(socle.ecarts[p], axe) }
     }
   }
-  for (const p of ['coque', 'carte', 'detail']) {
+  for (const p of ['coque', 'carte', 'detail', 'controle']) {
     sortie[`radius-${p}`] = { axe: 'radius', base: socle.rayons[p], ...clampDe(socle.rayons[p], 'radius'), ...ecartCourbeDroite(socle.rayons[p], 'radius') }
   }
   /* Le bord structurel : la marge du niveau 1, posée sur le bord de la page. */

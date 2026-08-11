@@ -5,7 +5,7 @@
 <style>
 :root{
   --papier:#FFFFFF; --creux:#F3F4F9;
-  --encre:#36363A; --douce:#606064;
+  --encre:#36363A; --douce:#444448;
   --trait:#DDDEE2; --net:#8D8D92;
   --accent:#4F46E5; --scene:#202023;
 }
@@ -164,13 +164,13 @@ valeur change là-bas, on regénère.</p>
 <div class="roule"><table>
   <thead><tr><th>Combien</th><th>Quoi</th><th>Descend de</th></tr></thead>
   <tbody><tr>
-    <td class="mono grand">29</td><td>jetons de géométrie — marges, écarts, rayons, bord, texte, cible, tous fluides</td><td class="cle">base · intervalle · corps · cible · amplitudes</td>
+    <td class="mono grand">30</td><td>jetons de géométrie — marges, écarts, rayons, bord, texte, cible, tous fluides</td><td class="cle">base · intervalle · corps · cible · amplitudes</td>
   </tr><tr>
-    <td class="mono grand">32</td><td>couleurs — fonds, encres, traits, et les quatre états avec leurs couples</td><td class="cle">couleur primaire</td>
+    <td class="mono grand">33</td><td>couleurs — fonds, encres, traits, et les quatre états avec leurs couples</td><td class="cle">couleur primaire</td>
   </tr><tr>
     <td class="mono grand">4</td><td>tailles de texte — le corps et les trois niveaux de titre</td><td class="cle">corps · intervalle des titres</td>
   </tr>
-  <tr class="somme"><td class="mono grand">65</td>
+  <tr class="somme"><td class="mono grand">67</td>
       <td colspan="2">valeurs calculées — aucune n'est écrite à la main</td></tr>
   </tbody>
 </table></div>
@@ -182,14 +182,14 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
 <div class="roule"><table>
   <thead><tr><th>Famille</th><th>Valeurs</th><th>Retombent sur un nombre déjà connu</th></tr></thead>
   <tbody><tr class="echo">
+    <td class="cle">cibles</td><td class="mono">3</td>
+    <td class="mono petit">plancher (24 px = marge coque) · confort (44 px = cible) · ecartMini (8 px = rayon controle)</td>
+  </tr><tr class="echo">
     <td class="cle">taillesIcone</td><td class="mono">3</td>
     <td class="mono petit">petite (16 px = texte corps) · courante (20 px = texte titre2) · grande (24 px = marge coque)</td>
   </tr><tr class="echo">
     <td class="cle">squelette</td><td class="mono">5</td>
     <td class="mono petit">ligne (16 px = texte corps) · titre (24 px = marge coque)</td>
-  </tr><tr class="echo">
-    <td class="cle">cibles</td><td class="mono">3</td>
-    <td class="mono petit">plancher (24 px = marge coque) · confort (44 px = cible)</td>
   </tr><tr class="">
     <td class="cle">etats</td><td class="mono">8</td>
     <td class="mono petit">—</td>
@@ -250,7 +250,7 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   </tr></tbody>
 </table></div>
 
-  <p class="note">Huit décisions produisent 65 valeurs. 76 autres sont encore posées une par une, et 7 d'entre elles retombent déjà sur un nombre que le système connaît — autant de crans qui pourraient cesser d'être écrits.</p>
+  <p class="note">Huit décisions produisent 67 valeurs. 76 autres sont encore posées une par une, et 8 d'entre elles retombent déjà sur un nombre que le système connaît — autant de crans qui pourraient cesser d'être écrits.</p>
 </section>
 
 <section id="espaces">
@@ -347,7 +347,15 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   <div class="corps">
     <p class="nom">detail</p>
     <p class="val">var(--rr-radius-detail)</p>
-    <p class="emploi">un bouton, un champ, une pastille — ce qui se manipule dans une carte</p>
+    <p class="emploi">une petite surface posée dans une carte — un cadre, un squelette, une place vide</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu forme"><span style="border-radius:var(--rr-radius-controle)"></span></div>
+  <div class="corps">
+    <p class="nom">controle</p>
+    <p class="val">var(--rr-radius-controle)</p>
+    <p class="emploi">un bouton, un champ, une liste de choix, un jeton</p>
     
   </div>
 </div><div class="carte">
@@ -355,7 +363,7 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   <div class="corps">
     <p class="nom">pastille</p>
     <p class="val">9999px</p>
-    <p class="emploi">une pastille d'état</p>
+    <p class="emploi">un composant qui assume une forme au lieu d'un arrondi — et qui tient sur une ligne</p>
     
   </div>
 </div></div>
@@ -415,9 +423,17 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
     
   </div>
 </div><div class="carte">
-  <div class="apercu" style="background:#606064"></div>
+  <div class="apercu" style="background:#444448"></div>
   <div class="corps">
     <p class="nom">encreDouce</p>
+    <p class="val">#444448</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#606064"></div>
+  <div class="corps">
+    <p class="nom">encreLegere</p>
     <p class="val">#606064</p>
     
     

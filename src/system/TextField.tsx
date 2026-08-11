@@ -31,7 +31,7 @@ export function TextField({
 }) {
   const id = useId()
   const idAide = `${id}-aide`
-  const allure = `w-full rounded-detail border-systeme bg-papier px-inline-carte py-block-detail text-corps text-encre placeholder:text-encre-eteinte disabled:cursor-not-allowed disabled:text-encre-eteinte ${
+  const allure = `w-full rounded-controle border-systeme bg-papier px-inline-carte py-block-detail text-corps text-encre placeholder:text-encre-eteinte disabled:cursor-not-allowed disabled:text-encre-eteinte ${
     invalide ? 'border-erreur-plein' : 'border-trait-net'
   }`
 
