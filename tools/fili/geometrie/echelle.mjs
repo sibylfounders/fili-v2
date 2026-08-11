@@ -23,6 +23,11 @@
 export const ENTREES_DEFAUT = {
   base: 24,
   ratio: Math.SQRT2,
+  /* L'arrondi est un réglage à part, séparé de l'espace — décision d'Auteur du
+     2026-08-11, qui révise « le rayon descend de la marge » du même jour. Sans
+     cette séparation, un système ne peut pas être large et vif à la fois, et les
+     six intentions de l'Auteur deviennent impossibles. */
+  rayonRacine: 24,
   cale: false,
   /* L'intervalle des titres. Le corps ne bouge pas : un titre de niveau 2 est
      à un pas, un titre de niveau 1 à deux pas. Source : l'outil de l'Auteur. */
@@ -71,10 +76,8 @@ export function deriver(entrees = ENTREES_DEFAUT) {
   const e = { ...ENTREES_DEFAUT, ...entrees }
   if (!(e.base >= 16 && e.base <= 32)) throw new Error('refus de statuer — base hors plage 16 → 32')
   if (!(e.ratio >= 1.2 && e.ratio <= 2.2)) throw new Error('refus de statuer — ratio hors plage 1,2 → 2,2')
-  /* LOI D'AUTEUR du 2026-08-11 : le rayon EST la marge. La marge est la source,
-     le rayon en descend — il n'y a plus de rayon de départ à choisir. On garde
-     la loi de l'octave de l'Échelle : divisé par deux à chaque profondeur. */
-  const rayonRacine = e.base
+  if (!(e.rayonRacine >= 0 && e.rayonRacine <= 48)) throw new Error('refus de statuer — rayon racine hors plage 0 → 48')
+  const rayonRacine = e.rayonRacine
 
   const marges = {}
   const ecarts = {}
@@ -87,12 +90,16 @@ export function deriver(entrees = ENTREES_DEFAUT) {
     coque: r4(caler(rayonRacine / 2, e.cale)),
     carte: r4(caler(rayonRacine / 4, e.cale)),
     detail: r4(caler(rayonRacine / 8, e.cale)),
-    /* Le composant. Il descend du TON du systeme, jamais de sa profondeur : un
-       bouton doit se reconnaitre partout. Un tiers du ton — un arrondi se lit
-       par rapport a la taille de l'objet, et un composant est petit. Il tombe
-       donc toujours sous le rayon de sa carte (un tiers contre un demi), et il
-       n'y a jamais a le rabattre. A ton nul, il est nul aussi. */
-    controle: r4(caler(rayonRacine / 3, e.cale)),
+    /* Le composant. Il descend du TON du système, jamais de sa profondeur : un
+       bouton doit se reconnaître partout, et à ton nul il est à angle droit.
+       MAIS sa taille ne bouge pas — un bouton et un champ gardent la même
+       hauteur, c'est ce qui aligne la lecture. C'est donc l'arrondi qui se
+       rabat sur elle : il ne dépasse jamais les DEUX TIERS de la marge
+       verticale du composant. Au-delà, ce n'est plus un arrondi mais une
+       forme, et le composant passe en pastille. Décision d'Auteur du
+       2026-08-11, rendue sur essai : la taille qui suivait l'arrondi cassait
+       la barre d'actions sur téléphone. */
+    controle: r4(caler(Math.min(rayonRacine / 3, (2 / 3) * marges.detail), e.cale)),
   }
   /* Le texte. Le corps est l'origine, les titres sont des PAS — jamais des
      tailles écrites. Deux pas au-dessus du corps, pas un de plus. */
@@ -105,7 +112,12 @@ export function deriver(entrees = ENTREES_DEFAUT) {
   /* La cible tactile. Elle a son axe propre : elle grandit à peine. */
   const controle = { cible: r4(e.cible) }
 
-  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle }
+  /* Le composant sature quand le ton demanderait plus que ce que sa marge
+     autorise. Ce n'est pas une valeur, c'est un fait : le produit doit alors
+     employer la pastille, jamais un entre-deux. */
+  const pastilleExigee = rayonRacine / 3 > (2 / 3) * marges.detail
+
+  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee }
 }
 
 /* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne

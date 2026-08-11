@@ -37,6 +37,40 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #064 — L'arrondi redevient un réglage à part, la taille d'un composant ne bouge pas, et l'air est large
+
+*2026-08-11 · Statut : 🟢 Verrouillé (décisions d'Auteur rendues sur essais) · **Révise `#058`** sur un point*
+
+**Contexte** — Le travail sur le rayon des composants a fait remonter deux choses que la géométrie du dépôt interdisait. L'Auteur voulait retrouver ses six intentions — *Éditorial · luxe* est large et vif, *Technique* est serré et carré — impossibles depuis que le rayon descendait de la marge. Et il a observé de longue date que **les boutons ronds sont plus larges que les boutons carrés**, sans règle pour le dire.
+
+**Décision** — Trois, prises dans cet ordre.
+
+**(1) L'arrondi redevient un réglage à part.** Il cesse de descendre de la marge. On repasse de sept décisions d'entrée à huit. **Ceci révise `#058`**, prise le matin même.
+
+**(2) La taille d'un composant ne bouge pas ; c'est l'arrondi qui se rabat sur elle.** Un bouton et un champ gardent la même hauteur, parce que c'est elle qui aligne la lecture. L'arrondi d'un composant ne dépasse donc jamais les deux tiers de sa marge verticale ; au-delà, le produit emploie la pastille.
+
+**(3) L'air horizontal est large par défaut** — un peu plus de la moitié de la hauteur. Le serré n'est pas une taille mais un **rôle**, et il n'a que deux cas : un bouton sans texte, et des boutons groupés. Jamais sur une pastille.
+
+**Sens produit / UX** — Quatre choses, dont deux ont été trouvées en essayant l'inverse.
+
+**Une loi qui interdit les intentions de l'Auteur est une loi trop courte.** *« Le rayon descend de la marge »* était juste, économe, et elle supprimait une décision. Elle rendait aussi impossible tout système large et vif, ou serré et rond — c'est-à-dire quatre des six intentions. Une simplification qui coûte l'expressivité entière du réglage n'est pas une simplification, c'est une amputation. Le réglage revient, et le journal porte les deux entrées : celle qui l'a retiré et celle qui le rend.
+
+**La voie séduisante était l'autre, et l'essai l'a tuée.** Si la marge doit valoir une fois et demie l'arrondi, alors l'arrondi commande la taille — et cela expliquait d'un coup l'observation de l'Auteur sur les boutons ronds. Monté sur un écran entier, le résultat casse : **la barre d'actions déborde sur téléphone** dès que le bouton passe à cinquante-neuf, le bouton d'icône devient un pavé carré, une liste de vingt lignes perd un demi-écran, et les hauteurs — quarante-sept, cinquante-neuf — ne retombent sur aucun cran de l'échelle. La causalité est donc l'inverse : **la taille tient, l'arrondi cède.** Trouvé en montrant, pas en raisonnant.
+
+**Le plafond a été mesuré à l'œil, sur deux tailles d'objet.** Une échelle du carré à la pastille, cran par cran : bon jusqu'au sixième de la hauteur, mauvais dès le quart, bon de nouveau en pastille. **Il existe une zone morte** — ni un coin voulu, ni une forme —, et le plafond des deux tiers de la marge verticale la ferme. Sur les composants d'aujourd'hui, il tombe exactement sur huit : la valeur en place. Rien ne change à l'écran, et pourtant la valeur cesse d'être un choix.
+
+**Et l'observation de départ trouve sa règle.** Les boutons ronds sont plus larges parce qu'**un composant doit de l'air à son texte, indépendamment de sa forme** — et que l'air moyen, jugé limite, était celui du dépôt. L'air passe donc de dix-sept à vingt-quatre. Le serré ne disparaît pas : il devient déclarable, pour les deux cas où il a un sens. *« Serré n'est pas une taille, c'est un rôle »* — la phrase est de l'Auteur, et elle empêche que le serré redevienne un moyen de gagner de la place.
+
+**Alternatives écartées** — *Garder « le rayon descend de la marge »* (elle supprime une décision et quatre intentions sur six) ; *faire grandir le composant avec son arrondi* (cohérent, séduisant, et il casse la barre d'actions sur mobile — mesuré sur un écran entier avant d'être écarté) ; *plafonner l'arrondi à la marge entière plutôt qu'aux deux tiers* (le principe est de l'Auteur, mais son œil s'est arrêté avant : sur un objet de trente-sept de haut, il a refusé neuf là où la marge en autorisait douze) ; *poser un seuil de bascule vers la pastille sur les petits objets* (l'Auteur a jugé les deux formes également bonnes selon le contexte — un seuil aurait tranché à sa place ce qu'aucune mesure ne tranche) ; *élargir tous les composants* (l'air large vaut pour ce qui porte un libellé ; un champ et une liste de choix ont leur propre inset, il n'y avait pas de motif de les toucher).
+
+**Conséquences** — Entrées : sept → **huit**. Le rayon de contrôle est plafonné et la pièce générée déclare si le plafond est atteint. L'air du bouton passe de la marge de carte à celle de coque, et une variante d'air déclarable apparaît. La planche porte les deux règles ; le fichier de règles les annonce dans ses propres mots. **Batterie 100 %, contrastes, types, lint au vert.** Aucun contrat rouvert.
+
+**Ce qui reste ouvert** — Les deux garde-fous ne sont pas mécaniques : rien ne vérifie qu'un arrondi respecte son plafond, ni qu'un serré est bien dans l'un de ses deux cas. Ce sont deux contrôles d'audit à écrire, et ils sont au plan.
+
+**Impact carte** — Aucun jalon, aucun contrat. Registre : le rayon racine revient comme entrée. `#058` est révisée sur ce point et sur celui-là seulement.
+
+---
+
 ## #063 — Le rayon d'un composant descend du ton, pas de la profondeur — et la pastille est une promesse
 
 *2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur essais) · Deuxième point du plan*

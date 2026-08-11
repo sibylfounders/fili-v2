@@ -118,6 +118,11 @@ ni avec le thème : un bouton doit se reconnaître partout. Il est plus petit qu
 rayon de sa carte par construction, parce qu'un arrondi se lit par rapport à la
 taille de l'objet.
 
+**L'air horizontal d'un composant est large** — `px-inline-coque`, un peu plus de
+la moitié de sa hauteur. Le serré, `px-inline-carte`, n'est pas une taille mais un
+rôle : un bouton sans texte, ou des boutons groupés. Deux cas, pas un de plus, et
+jamais sur une pastille.
+
 **`rounded-pastille` est une forme, pas un arrondi** — et c'est une promesse :
 ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
 Un composant dont le libellé peut se replier ne devient jamais une pastille.

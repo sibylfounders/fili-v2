@@ -6,13 +6,15 @@
   "entrees": {
     "base": 24,
     "ratio": 1.4142135623730951,
+    "rayonRacine": 24,
     "cale": false,
     "intervalleTitres": 1.25,
     "corps": 16,
     "cible": 44
   },
-  "$loiDuRayon": "Le rayon EST la marge — décision d'Auteur du 2026-08-11. La marge est la source ; il n'y a plus de rayon de départ à choisir. La loi de l'octave de l'Échelle est conservée : divisé par deux à chaque profondeur.",
+  "$loiDuRayon": "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
   "rayonRacine": 24,
+  "pastilleExigee": false,
   "profondeurs": [
     "large",
     "page",
