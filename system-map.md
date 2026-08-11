@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#060`
+> **Dernière décision au journal** : `#061`
 
 **Légende des statuts**
 
@@ -18,6 +18,7 @@
 | 🟡 | **En cours** — instruite, en discussion ou en construction. Réversible. |
 | 🟢 | **Verrouillé** — épreuve déterministe passée à 100 %. Ne se rouvre que par une décision explicite tracée au journal. |
 | 🔴 | **Ouverte** — pour une dette : constatée, non traitée. |
+| 💤 | **En sommeil** — arrêté volontairement. Rien n'est supprimé ; se rouvre par une entrée de journal. |
 
 > **Convention de lecture machine.** Les tableaux des sections **1 à 5** sont
 > lus par `tools/fili/carte/produire.mjs`, qui en dérive la pièce que l'écran
@@ -36,8 +37,8 @@
 | K2 · Déclaration du produit | 🟢 | Fili, trois parcours, sept gabarits, un contrat d'état par écran | — |
 | K3 · Routage de la signature | 🟢 | Vingt composantes routées : cinq en Voie A, neuf en Voie B | — |
 | K4 · Les instruments | 🟢 | Le protocole de référence, ses neuf points de passage, le contrat S5 | — |
-| K5 · Construction du produit | 🟡 | Les sept gabarits construits, un témoin daté par gabarit | Sept témoins admissibles, aucune séance tenue |
-| K6 · Épreuve D · propagation | ⚪ | Qu'un durcissement de règle se propage à l'échelle | K5 non verrouillé · contrat S6 non écrit |
+| K5 · Construction du produit | 🟡 | Les sept gabarits construits | **Plus rien** — la condition de séance est levée (`#061`) |
+| K6 · Épreuve D · propagation | 💤 | Qu'un durcissement de règle se propage à l'échelle | **En sommeil** (`#061`) — se rouvre par une entrée de journal |
 
 ---
 
@@ -90,15 +91,19 @@ Rendu, Prose — plus Icone, interne et non exporté.
 
 ---
 
-## 4. L'instrument de la Voie B
+## 4. L'instrument de la Voie B — 💤 **ARRÊTÉ** (`#061`)
+
+> Le protocole de jugement est arrêté le 2026-08-11. Rien n'est supprimé : les
+> pièces restent au dépôt et se rouvrent par une entrée de journal. La suite du
+> travail est une liste de règles à verser, une par une, chacune avec son test.
 
 | Pièce | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
-| Le protocole de référence | 🟢 | Neuf points de passage, quatre temps, verdict binaire | — |
+| Le protocole de référence | 💤 arrêté | Neuf points de passage, quatre temps, verdict binaire | — |
 | Le gel définitif | 🟢 | Les quatre réglages arrêtés le 7 août | — |
 | La planche des registres | 🟢 | Étalon de B-4, page datée générée | — |
 | Le catalogue de libellés | 🟢 | Étalon de B-5, 116 formulations lisibles d'un bloc | — |
-| La première séance | ⚪ | Le premier verdict d'œil du chapitre | Sept témoins prêts et admissibles ; la séance É1 du 7 août est réouvrable |
+| La première séance | 💤 abandonnée | Le premier verdict d'œil du chapitre | Sept témoins prêts et admissibles ; la séance É1 du 7 août est réouvrable |
 
 ---
 

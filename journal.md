@@ -37,6 +37,32 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #061 — Le protocole de jugement est arrêté : on garde la machine, on abandonne l'appareil de preuve
+
+*2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur : « on garde la v2, on arrête le protocole »)*
+
+**Contexte** — L'Auteur a posé la question franchement : repartir sur une v3, ou s'appuyer sur la v2. Elle venait après une journée où il a dit, dans l'ordre, qu'il ne comprenait plus les intentions, qu'il voulait un outil et se retrouvait dans une thèse, et que la seule chose dont il ait vu l'usage était le rythme sémantique. Une source extérieure, écrite par lui, a par ailleurs révélé une dizaine de règles déjà rédigées qui n'ont jamais franchi la porte du dépôt.
+
+**Décision** — **La v2 est conservée. Le protocole de jugement est arrêté.**
+
+Ce qui reste vivant : le robot et ses trente règles, la chaîne de génération, les couleurs calculées, le fichier de règles, les sept écrans comme terrain d'essai.
+
+Ce qui s'arrête : le protocole de référence et ses neuf points de passage, les séances, les témoins datés à chaque génération, et les trois épreuves qui restaient. Rien n'est supprimé — tout reste au dépôt et se rouvre par une entrée de journal.
+
+**Sens produit / UX** — La coupe ne passe pas entre le bon et le mauvais travail, mais entre **deux natures**. Ce qui manque au système, ce sont des règles ; ce qui existe est une machine à faire respecter des règles. Refaire la machine pour y verser des règles serait démolir l'usine parce qu'il manque des pièces sur l'étagère.
+
+Et l'appareil de preuve avait un coût qu'on n'avait jamais chiffré : il existe pour démontrer à un tiers que les règles tiennent. **Il n'y a pas de tiers.** Un seul utilisateur, un seul poste. On payait une démonstration que personne n'attendait, et c'est elle — pas les règles — qui a noyé la journée du 11 août.
+
+**Alternatives écartées** — *Repartir sur une v3* (on jetterait le robot, ses quarante-six sabotages et la chaîne de génération pour ajouter des règles qui s'ajoutent en une soirée chacune) ; *tout garder et avancer quand même* (c'est ce qu'on faisait, et le coût est mesuré : une journée entière d'entretien pour zéro valeur produite) ; *supprimer le protocole au lieu de l'arrêter* (une décision qui s'efface ne se rouvre pas, elle se refait de zéro).
+
+**Conséquences** — Les jalons qui dépendaient des séances passent **en sommeil**, pas en échec. La suite est une liste de règles à verser, une par une, chacune avec son test — dans l'ordre écrit au fil suivant. Aucun contrat n'est rouvert, aucune règle du corpus n'est touchée.
+
+**Ce que cette décision ne règle pas** — La question du produit reste ouverte : si le besoin devient « un outil que j'emmène ailleurs », le moteur et le robot partiraient seuls dans un petit dépôt et les sept écrans s'endormiraient. Elle n'est pas tranchée ici.
+
+**Impact carte** — Section 4 : l'instrument de la Voie B passe **arrêté**. Jalons suivants : **en sommeil**. Le reste ne bouge pas.
+
+---
+
 ## #060 — La géométrie est confrontée à sa source, et la journée montre que la mémoire du projet ne vivait pas là où on la lisait
 
 *2026-08-11 · Statut : 🟢 Verrouillé (arbitrages d'Auteur rendus dans la journée) · Complète `#058` et `#059`*
