@@ -10,7 +10,7 @@ export function HistoriqueRelances() {
   return (
     <main>
       <Section densite="ample">
-        <Pile espace={5}>
+        <Pile espace="large">
           <Texte variante="menu">Facturation</Texte>
           <Titre niveau={1}>Historique des relances</Titre>
           <Texte variante="chapeau">
@@ -20,13 +20,13 @@ export function HistoriqueRelances() {
       </Section>
 
       <Section densite="compact" fond>
-        <Pile espace={5}>
+        <Pile espace="large">
           <Titre niveau={2}>Filtrer</Titre>
-          <Grille colonnes={2} espace={6}>
-            <Pile espace={2}>
+          <Grille colonnes={2} espace="large">
+            <Pile espace="carte">
               <TextField id="periode" label="Période" />
             </Pile>
-            <Pile espace={2}>
+            <Pile espace="carte">
               <TextField id="canal" label="Canal" />
             </Pile>
           </Grille>
@@ -34,7 +34,7 @@ export function HistoriqueRelances() {
       </Section>
 
       <Section densite="compact">
-        <Pile espace={5}>
+        <Pile espace="large">
           <Titre niveau={2}>Les envois</Titre>
           <EtatAsync
             requete={relances}
@@ -50,9 +50,9 @@ export function HistoriqueRelances() {
               </Vide>
             }
             enfants={(liste) => (
-              <Grille colonnes={3} espace={5}>
+              <Grille colonnes={3} espace="large">
                 {liste.map((r) => (
-                  <Pile espace={1} key={r.id}>
+                  <Pile espace="detail" key={r.id}>
                     <Titre niveau={3}>{r.client}</Titre>
                     <Texte variante="fin">{r.date}</Texte>
                     <Jeton ton="verrou">{r.canal}</Jeton>
@@ -65,7 +65,7 @@ export function HistoriqueRelances() {
       </Section>
 
       <Section densite="normal" fond>
-        <Pile espace={4}>
+        <Pile espace="page">
           <Titre niveau={2}>Ce que dit la loi</Titre>
           <Texte variante="fin">
             Les relances sont conservées trente jours puis effacées. Aucune donnée

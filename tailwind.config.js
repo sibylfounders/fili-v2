@@ -1,16 +1,17 @@
 import fs from 'node:fs'
 
 /* Les valeurs d'expression ne sont pas écrites ici : elles viennent de la
-   planche des registres, pièce du dépôt (fili.expression.json). Ce fichier ne
+   planche des registres, pièce du dépôt (fili/expression.json). Ce fichier ne
    fait que la traduire en utilitaires. Une valeur écrite ici et non dans la
    planche serait une valeur sans provenance — exactement ce que S6 devra
    rendre impossible.
-   L'échelle d'espacement, elle, vient du registre que le Gardien lit : ce
-   qu'il refuse ne doit pas pouvoir s'écrire. */
+   L'espace, lui, ne porte plus de nombre du tout : chaque utilitaire pointe sur
+   la variable que la feuille générée pose, et le rythme continue donc de vivre
+   après compilation. Ce que le Gardien refuse ne doit pas pouvoir s'écrire. */
 const lire = (f) => JSON.parse(fs.readFileSync(new URL(f, import.meta.url), 'utf8'))
-const planche = lire('./fili.expression.json')
-const registre = lire('./fili.registry.json')
-const palette = lire('./fili.palette.json')
+const planche = lire('./fili/expression.json')
+const registre = lire('./fili/registry.json')
+const palette = lire('./fili/palette.json')
 
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())
 const depuis = (bloc, champ = 'valeur') =>
@@ -20,26 +21,33 @@ const depuis = (bloc, champ = 'valeur') =>
       .map(([cle, v]) => [kebab(cle), v[champ]])
   )
 
-const espacement = Object.fromEntries(
-  registre.espacement.echelle.map((n) => [String(n), `${n * 4}px`])
-)
-
-/* Une taille porte son interligne : les séparer produirait deux listes qui
-   divergent au premier oubli. */
-const tailles = Object.fromEntries(
-  Object.entries(planche.tailles)
-    .filter(([cle]) => !cle.startsWith('$'))
-    .map(([cle, v]) => [
-      kebab(cle),
-      [v.valeur, { lineHeight: v.interligne, ...(v.chasse ? { letterSpacing: v.chasse } : {}) }],
-    ])
-)
+/* Deux axes distincts, et le nom du jeton porte le sien. Une classe verticale
+   qui appellerait un jeton horizontal n'existe donc pas : elle ne se compile
+   pas, et le Gardien la voit avant même ça. */
+const jetons = (famille) =>
+  Object.fromEntries(
+    registre.espacement.echelle.map((nom) => {
+      const [axe, profondeur] = nom.split('-')
+      return [nom, `var(--rr-${axe}-${famille}-${profondeur})`]
+    })
+  )
+const marges = jetons('marge')
+const ecarts = jetons('ecart')
 
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    spacing: { ...espacement, px: '1px' },
+    /* Vide, et c'est voulu : plus aucune taille ni aucun espace ne descend d'une
+       échelle de nombres anonyme. Les fractions et « full » restent, ce sont des
+       rapports, pas des valeurs. */
+    spacing: {},
+    padding: marges,
+    /* L'espace se pose par le conteneur, jamais par l'enfant — R3.2. La seule
+       marge qui subsiste est le centrage, exception déclarée au registre. */
+    margin: { auto: 'auto' },
+    gap: ecarts,
+    space: ecarts,
     screens: depuis(planche.bascules),
     extend: {
       /* Aucune couleur n'est écrite ici ni dans la planche : elles sont toutes
@@ -58,7 +66,14 @@ export default {
         Object.entries(depuis(planche.familles)).map(([k, v]) => [k, v.split(',').map((f) => f.trim())])
       ),
       fontWeight: depuis(planche.graisses),
-      fontSize: tailles,
+      fontSize: Object.fromEntries(
+        Object.entries(planche.tailles)
+          .filter(([cle]) => !cle.startsWith('$'))
+          .map(([cle, v]) => [
+            kebab(cle),
+            [v.valeur, { lineHeight: v.interligne, ...(v.chasse ? { letterSpacing: v.chasse } : {}) }],
+          ])
+      ),
       maxWidth: depuis(planche.mesures),
       minWidth: depuis(planche.cibles),
       minHeight: depuis(planche.cibles),
@@ -78,8 +93,8 @@ export default {
       transitionTimingFunction: depuis(planche.courbes),
       outlineWidth: { focus: planche.focus.epaisseur.valeur },
       outlineOffset: { focus: planche.focus.ecart.valeur },
-      width: depuis(planche.taillesIcone),
-      height: { ...depuis(planche.taillesIcone), ...depuis(planche.hauteurs) },
+      width: { ...depuis(planche.taillesIcone), ...depuis(planche.squelette) },
+      height: { ...depuis(planche.taillesIcone), ...depuis(planche.hauteurs), ...depuis(planche.squelette) },
     },
   },
   plugins: [],

@@ -25,7 +25,7 @@ if (!fs.existsSync(PAQUET)) {
   process.exit(2)
 }
 
-const planche = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
+const planche = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
 const meta = JSON.parse(fs.readFileSync(path.join(PAQUET, 'package.json'), 'utf8'))
 
 /* On extrait des FORMES, pas du balisage : une chaîne de balisage réinjectée
@@ -58,11 +58,11 @@ for (const [etat, v] of Object.entries(planche.icones)) {
 if (manques.length > 0) {
   console.log(`\n🔴 REFUS DE VERSER — ${String(manques.length)} correspondance(s) sans icône dans le jeu :\n`)
   manques.forEach((m) => console.log('   ' + m))
-  console.log('\n   Corrigez la correspondance dans fili.expression.json. Rien n\'a été écrit.\n')
+  console.log('\n   Corrigez la correspondance dans fili/expression.json. Rien n\'a été écrit.\n')
   process.exit(1)
 }
 
-fs.writeFileSync(path.join(RACINE, 'fili.icones.json'), JSON.stringify({
+fs.writeFileSync(path.join(RACINE, 'fili/icones.json'), JSON.stringify({
   $comment: "Formes versées depuis le jeu déclaré à la planche, en données structurées et non en balisage. Copie datée d'une source nommée, pas une création. Regénérer : node scripts/vendorer-icones.mjs",
   $source: 'lucide-static',
   $version: meta.version,

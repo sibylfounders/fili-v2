@@ -1,20 +1,28 @@
-/* Zone système. La traduction de l'échelle déclarée en utilitaires.
+/* Zone système. La traduction de l'Échelle en utilitaires.
    Elle vit ici et nulle part ailleurs : une page ne compose jamais une classe
-   d'espacement — c'est R3.5, et c'est aussi ce qui rend l'échelle révisable
-   en un seul endroit. */
+   d'espacement — c'est R3.5, et c'est aussi ce qui rend l'Échelle révisable en
+   un seul endroit.
+   Ce qui a changé le 2026-08-11 : on ne demande plus « quel écart ? » mais
+   « à quelle profondeur ? ». La profondeur se lit dans la structure, l'écart
+   s'en déduit. Et les deux axes ne bougent pas ensemble : une colonne distribue
+   verticalement, une grille distribue des deux côtés, et ce n'est pas le même
+   jeton. */
 
-export type Espace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+export type Espace = 'detail' | 'carte' | 'coque' | 'page' | 'large'
 
-/* prop → pas de l'échelle, exactement la table du registre (espacement.pixels). */
-export const ECART: Record<Espace, string> = {
-  1: 'gap-1',
-  2: 'gap-2',
-  3: 'gap-3',
-  4: 'gap-4',
-  5: 'gap-6',
-  6: 'gap-8',
-  7: 'gap-12',
-  8: 'gap-16',
-  9: 'gap-24',
-  10: 'gap-32',
+/* profondeur → jeton, par axe. Les nombres vivent dans fili/geometrie.json. */
+export const ECART_BLOC: Record<Espace, string> = {
+  detail: 'gap-y-block-detail',
+  carte: 'gap-y-block-carte',
+  coque: 'gap-y-block-coque',
+  page: 'gap-y-block-page',
+  large: 'gap-y-block-large',
+}
+
+export const ECART_INLINE: Record<Espace, string> = {
+  detail: 'gap-x-inline-detail',
+  carte: 'gap-x-inline-carte',
+  coque: 'gap-x-inline-coque',
+  page: 'gap-x-inline-page',
+  large: 'gap-x-inline-large',
 }

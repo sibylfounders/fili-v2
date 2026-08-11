@@ -15,7 +15,7 @@ export function Temoin() {
     <main>
       {/* ── ample ─────────────────────────────────────────────────────── */}
       <Section tete densite="ample">
-        <Pile espace={6}>
+        <Pile espace="large">
           <Texte variante="menu">FILI · Écran Témoin · version du 6 août 2026</Texte>
           <Titre niveau={1}>Une décision approuvée une fois devient un invariant vérifiable.</Titre>
           <Texte variante="chapeau">
@@ -28,22 +28,22 @@ export function Temoin() {
 
       {/* ── compact ───────────────────────────────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={5}>
+        <Pile espace="large">
           <Titre niveau={2}>Où en est le système</Titre>
-          <Grille colonnes={4} espace={5}>
-            <Pile espace={1}>
+          <Grille colonnes={4} espace="large">
+            <Pile espace="detail">
               <Jeton ton="verrou">S1 · Composants typés</Jeton>
               <Texte variante="fin">Six règles, verrouillé.</Texte>
             </Pile>
-            <Pile espace={1}>
+            <Pile espace="detail">
               <Jeton ton="verrou">S2 · Contrat d'état</Jeton>
               <Texte variante="fin">Six règles, verrouillé.</Texte>
             </Pile>
-            <Pile espace={1}>
+            <Pile espace="detail">
               <Jeton ton="attente">S3 · Discipline spatiale</Jeton>
               <Texte variante="fin">Fermé jusqu'à votre verdict sur cette page.</Texte>
             </Pile>
-            <Pile espace={1}>
+            <Pile espace="detail">
               <Jeton ton="neutre">S4 · Rythme de composition</Jeton>
               <Texte variante="fin">Fermé.</Texte>
             </Pile>
@@ -51,10 +51,14 @@ export function Temoin() {
         </Pile>
       </Section>
 
-      {/* ── normal ────────────────────────────────────────────────────── */}
-      <Section densite="normal">
-        <Pile espace={6}>
-          <Pile espace={3}>
+      {/* ── normal ── R2.7 déclarée : témoin gelé, voir le motif ───────── */}
+      <Section
+        densite="normal"
+        data-intent="statement"
+        data-intent-reason="écran témoin du MVP, jugé avant R2.7 : il est conservé tel qu'il a été jugé plutôt que retouché — un témoin ne se réécrit pas"
+      >
+        <Pile espace="large">
+          <Pile espace="coque">
             <Titre niveau={2}>Les composants du registre</Titre>
             <Texte variante="chapeau">
               Une donnée distante ne s'affiche jamais nue : elle passe par un conteneur
@@ -71,9 +75,9 @@ export function Temoin() {
               <Texte variante="fin">Le registre est vide : déclarez un premier composant pour commencer.</Texte>
             </Vide>}
             enfants={(liste) => (
-              <Grille colonnes={3} espace={6}>
+              <Grille colonnes={3} espace="large">
                 {liste.map((c) => (
-                  <Pile espace={2} key={c.id}>
+                  <Pile espace="carte" key={c.id}>
                     <Titre niveau={3}>{c.nom}</Titre>
                     <Texte variante="fin">{c.variantes}</Texte>
                   </Pile>
@@ -81,13 +85,13 @@ export function Temoin() {
               </Grille>
             )}
           />
-          <Grille colonnes={2} espace={6}>
-            <Pile espace={2}>
+          <Grille colonnes={2} espace="large">
+            <Pile espace="carte">
               <TextField id="recherche" label="Rechercher un composant" />
               <Button onPress={lancer}>{enAttente ? 'Vérification en cours…' : 'Lancer la vérification'}</Button>
               {erreur ? <Texte variante="fin">La vérification a échoué. Réessayer.</Texte> : null}
             </Pile>
-            <Pile espace={2}>
+            <Pile espace="carte">
               <TextField id="registre" label="Chemin du registre" />
               <Button variante="discret">Ouvrir le registre</Button>
             </Pile>
@@ -96,13 +100,18 @@ export function Temoin() {
       </Section>
 
       {/* ── normal ── deux densités identiques à la suite : autorisé, jamais trois */}
-      <Section densite="normal" fond>
-        <Pile espace={6}>
-          <Pile espace={3}>
+      <Section
+        densite="normal"
+        fond
+        data-intent="statement"
+        data-intent-reason="écran témoin du MVP, jugé avant R2.7 : il est conservé tel qu'il a été jugé plutôt que retouché — un témoin ne se réécrit pas ; et son titre couvre trois conteneurs à la fois, il n'appartient à aucun d'eux"
+      >
+        <Pile espace="large">
+          <Pile espace="coque">
             <Titre niveau={2}>Ce qu'il se passe quand ça ne va pas</Titre>
             <Texte variante="chapeau">Trois états non nominaux, rendus par le même conteneur.</Texte>
           </Pile>
-          <Grille colonnes={3} espace={4}>
+          <Grille colonnes={3} espace="page">
             <EtatAsync
               requete={telemetrie}
               chargement={<Squelette lignes={2} />}
@@ -138,7 +147,7 @@ export function Temoin() {
         data-intent="statement"
         data-intent-reason="page manifeste : le contraste d'échelle fait partie du propos, il n'est pas un accident de mise en page"
       >
-        <Pile espace={5}>
+        <Pile espace="large">
           <Texte variante="menu">Rupture déclarée</Texte>
           <p className="affiche">Ceci n'est pas une erreur. C'est une intention signée.</p>
           <Texte variante="fin">
@@ -151,9 +160,9 @@ export function Temoin() {
 
       {/* ── compact ───────────────────────────────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={4}>
+        <Pile espace="page">
           <Titre niveau={2}>Ce que cette page ne prouve pas</Titre>
-          <Grille colonnes={3} espace={4}>
+          <Grille colonnes={3} espace="page">
             <Texte variante="fin">Qu'elle est belle. Elle prouve que la doctrine ne l'empêche pas de l'être.</Texte>
             <Texte variante="fin">Ce que l'IA en ferait. Elle est écrite à la main sous contrainte : c'est le plafond, pas le comportement d'un modèle.</Texte>
             <Texte variante="fin">Qu'elle est accessible. Le contraste et le clavier tiennent ; l'audit reste à faire.</Texte>

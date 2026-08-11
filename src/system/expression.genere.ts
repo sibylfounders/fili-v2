@@ -1,4 +1,4 @@
-/* GÉNÉRÉ depuis fili.icones.json — ne pas éditer à la main.
+/* GÉNÉRÉ depuis fili/icones.json — ne pas éditer à la main.
    Regénérer : node scripts/generer-expression.mjs
    Source du jeu : lucide-static 1.30.0 (ISC) */
 

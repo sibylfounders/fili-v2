@@ -1,0 +1,28 @@
+/* PIÈCE GÉNÉRÉE — ne pas éditer à la main.
+   Produite par tools/fili/lexique/produire.mjs.
+
+   Les alias de l'Échelle Semantic Rhythm. Un écran écrit dans la langue de
+   l'outil de l'Auteur s'habille ici avec les jetons de Fili, sans être réécrit :
+   les noms changent, les valeurs restent celles du dépôt.
+
+   Ce qui ne se traduit pas est nommé dans fili/lexique.json — jamais bricolé. */
+:root {
+  --pagePadX: var(--rr-inline-marge-coque); /* la marge horizontale du premier niveau */
+  --pagePadY: var(--rr-block-marge-coque); /* la marge verticale du premier niveau */
+  --cardPadX: var(--rr-inline-marge-carte); /* la marge horizontale d'une carte */
+  --cardPadY: var(--rr-block-marge-carte); /* la marge verticale d'une carte */
+  --subPadX: var(--rr-inline-marge-detail); /* la marge horizontale d'un détail */
+  --subPadY: var(--rr-block-marge-detail); /* la marge verticale d'un détail */
+  --gapInline: var(--rr-inline-ecart-coque); /* l'écart horizontal entre deux voisins */
+  --gapBlock: var(--rr-block-ecart-coque); /* l'écart vertical entre deux voisins */
+  --cardR: var(--rr-radius-coque); /* le rayon du premier niveau */
+  --ctl: var(--rr-radius-coque); /* le rayon d'un contrôle — même cran que la carte */
+  --subR: var(--rr-radius-carte); /* le rayon du deuxième niveau */
+  --subsubR: var(--rr-radius-detail); /* le rayon du troisième niveau */
+  --controlSize: var(--rr-control-cible); /* la hauteur d'un contrôle */
+  --heading-2: var(--rr-type-titre2); /* un titre à un pas du corps */
+  --heading-1: var(--rr-type-titre1); /* un titre à deux pas du corps */
+
+  /* L'intervalle des titres n'est pas un jeton mais une décision d'entrée. */
+  --type-scale: 1.25;
+}

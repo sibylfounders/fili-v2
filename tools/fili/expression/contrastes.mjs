@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url'
 import { contraste } from './couleur.mjs'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
-const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.palette.json'), 'utf8'))
+const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
+const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/palette.json'), 'utf8'))
 const { texte: TEXTE, interface: UI } = P.$generation.couples
 const n = L.neutres
 

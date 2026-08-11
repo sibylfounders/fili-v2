@@ -1,16 +1,16 @@
 {
   "/integrite": {
     "donnees": {
-      "total": 29,
-      "portees": 29
+      "total": 30,
+      "portees": 30
     },
     "chargement": false,
     "erreur": null
   },
   "/batterie": {
     "donnees": {
-      "piegees": 53,
-      "conformes": 27,
+      "piegees": 55,
+      "conformes": 28,
       "mutations": {
         "detectees": 46,
         "total": 46,
@@ -24,8 +24,8 @@
   },
   "/progression": {
     "donnees": {
-      "faites": 80,
-      "total": 80
+      "faites": 83,
+      "total": 83
     },
     "chargement": false,
     "erreur": null
@@ -53,77 +53,161 @@
         "gabarit": "e1-verdict",
         "nom": "É1 · Le verdict",
         "courant": {
-          "date": "2026-08-07",
-          "etats": 4,
+          "date": "2026-08-11",
+          "etats": 5,
           "illisible": false
         },
-        "apercu": "./temoins/e1-verdict/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e1-verdict/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 5,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 5,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e2-constat",
         "nom": "É2 · Le constat",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 4,
           "illisible": false
         },
-        "apercu": "./temoins/e2-constat/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e2-constat/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 4,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 4,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e3-famille",
         "nom": "É3 · La famille des témoins",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 4,
           "illisible": false
         },
-        "apercu": "./temoins/e3-famille/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e3-famille/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 4,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 4,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e4-face-a-face",
         "nom": "É4 · Le face-à-face",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 5,
           "illisible": false
         },
-        "apercu": "./temoins/e4-face-a-face/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e4-face-a-face/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 5,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 5,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e5-carte",
         "nom": "e5-carte",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 3,
           "illisible": false
         },
-        "apercu": "./temoins/e5-carte/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e5-carte/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 3,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 3,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e6-journal",
         "nom": "e6-journal",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 4,
           "illisible": false
         },
-        "apercu": "./temoins/e6-journal/2026-08-07/nominal.html",
-        "historique": []
+        "apercu": "./temoins/e6-journal/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 4,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 4,
+            "illisible": false
+          }
+        ]
       },
       {
         "gabarit": "e7-acte",
         "nom": "e7-acte",
         "courant": {
-          "date": "2026-08-07",
+          "date": "2026-08-11",
           "etats": 5,
           "illisible": false
         },
-        "apercu": "./temoins/e7-acte/2026-08-07/nominal.html",
+        "apercu": "./temoins/e7-acte/2026-08-11/nominal.html",
+        "historique": [
+          {
+            "date": "2026-08-08",
+            "etats": 5,
+            "illisible": false
+          },
+          {
+            "date": "2026-08-07",
+            "etats": 5,
+            "illisible": false
+          }
+        ]
+      },
+      {
+        "gabarit": "files",
+        "nom": "files",
+        "courant": null,
+        "apercu": null,
         "historique": []
       }
     ],
@@ -135,11 +219,15 @@
       "gabarit": "e1-verdict",
       "nom": "É1 · Le verdict",
       "courant": {
-        "date": "2026-08-07",
-        "source": "./temoins/e1-verdict/2026-08-07/nominal.html",
-        "etats": 4
+        "date": "2026-08-11",
+        "source": "./temoins/e1-verdict/2026-08-11/nominal.html",
+        "etats": 5
       },
-      "precedent": null,
+      "precedent": {
+        "date": "2026-08-08",
+        "source": "./temoins/e1-verdict/2026-08-08/nominal.html",
+        "etats": 5
+      },
       "batterie": "intégrité entière au rendu"
     },
     "chargement": false,
@@ -233,7 +321,7 @@
           "nom": "É1 · Le verdict",
           "parcours": "P1 · Prononcer le verdict",
           "statut": "🟡",
-          "temoin": "2026-08-07 · 4 états · séance non tenue"
+          "temoin": "2026-08-07 · 5 états · séance non tenue"
         },
         {
           "nom": "É2 · Le constat",
@@ -301,15 +389,15 @@
           "nom": "La première séance",
           "statut": "⚪",
           "porte": "Le premier verdict d'œil du chapitre",
-          "bloque": "Sept témoins prêts ; le gabarit de départ n'est pas choisi"
+          "bloque": "Sept témoins prêts et admissibles ; la séance É1 du 7 août est réouvrable"
         }
       ],
       "dettes": [
         {
           "nom": "Les entrées #001 à #042 du journal",
           "statut": "🟢",
-          "depuis": "#049",
-          "cout": "Perte actée, non reconstruite. Le trou est la trace."
+          "depuis": "#049 · #057",
+          "cout": "Trente perdues, non reconstruites. Douze — #001 à #012 — sont revenues à l'identique et restent hors du journal, à leur propre chemin."
         },
         {
           "nom": "Le journal du dépôt à l'état run 1",
@@ -364,6 +452,24 @@
           "statut": "🔴",
           "depuis": "#054",
           "cout": "Le texte des entrées est entier, son relief ne l'est pas : aucun composant du registre ne rend du balisage."
+        },
+        {
+          "nom": "Le moteur de géométrie sans preuve contre la source",
+          "statut": "🔴",
+          "depuis": "#059",
+          "cout": "Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois jetons produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt."
+        },
+        {
+          "nom": "La provenance des hauteurs de témoin",
+          "statut": "🔴",
+          "depuis": "#059",
+          "cout": "Elles se disaient « multiples de l'échelle d'espacement, 21 pas de 32 ». La phrase n'a plus d'objet. Les valeurs restent justes, leur justification est à réécrire."
+        },
+        {
+          "nom": "Les sept témoins non jugés après migration",
+          "statut": "🔴",
+          "depuis": "#059",
+          "cout": "Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non."
         }
       ],
       "prochain": {
@@ -377,6 +483,38 @@
   },
   "/journal": {
     "donnees": [
+      {
+        "numero": "#059",
+        "titre": "La géométrie du dépôt passe à l'Échelle : l'espace cesse d'être un nombre qu'on choisit",
+        "date": "2026-08-11",
+        "pastille": "🟢",
+        "statut": "Verrouillé mécaniquement, 🟡 non jugé par l'œil · Exécute `#058` · Ferme le chantier « Migration de la géométrie vers l'Échelle Semantic Rhythm »",
+        "corps": "Contexte — #058 a instruit le chantier et tranché quatre points ; rien\nn'avait été écrit. L'Auteur a donné son feu vert le même jour. Ce qui suit est\nl'exécution, et elle n'a rouvert aucun contrat.\n\nDécision — La géométrie du dépôt est celle de l'Échelle, et elle l'est\npartout à la fois : registre, planche, configuration, composants, épreuves,\ngardien.\n\n(1) L'espace n'a plus de nombre. L'échelle déclarée était une liste de\nquatorze crans en pas de quatre ; elle est désormais une liste de noms de\nprofondeur — large, page, coque, carte, detail. Les nombres vivent\ndans une pièce générée que personne n'écrit à la main, et chaque utilitaire\npointe sur une variable, jamais sur une valeur.\n(2) Les deux axes se séparent. Le nom d'un jeton porte son axe. Un jeton\nhorizontal posé sur une propriété verticale n'appartient pas à l'échelle de\ncette propriété, et une propriété qui porte les deux axes à la fois — p-…,\ngap-… — n'a plus aucun jeton valide. Cela n'a demandé aucune assertion\nnouvelle : c'est R3.1 qui le voit, parce que sa mécanique de lecture a changé,\npas sa règle.\n(3) Le facteur de proximité suit le ratio. Trois devient 1,414. La règle\ngarde sa forme — un plancher entre l'écart d'un groupe et celui de ses enfants.\n(4) Le rayon suit la profondeur. Les quatre rayons de la planche, qui\nn'avaient aucune valeur commune avec la loi du ÷2, deviennent les trois rayons\nde la loi, plus « net » et « pastille » qui n'en sont pas.\n(5) Tout est fluide. Vingt-trois jetons bougent avec la largeur d'écran, et\nles deux axes ne bougent pas ensemble.\n\nSens produit / UX — Trois choses, et la troisième est un aveu.\n\nCe que la migration ferme. On ne demande plus à qui écrit un écran de\nchoisir un écart, on lui demande à quelle profondeur il se trouve — un fait\nlisible dans la structure, pas un arbitrage. C'est le critère d'admission de\n#027, *décidable sans contexte*, appliqué à l'espace. La conséquence\nmécanique est là : la table de correspondance a fait tomber cinq anciens crans\nsur un seul, sans qu'aucune décision d'écran ait à être reprise.\n\nCe qu'elle coûte, et qui se voit. Les sections respirent moitié moins — 64\ndevient 34, 96 devient 48. Les boutons s'arrondissent trois fois moins. Les\npastilles épaississent. Aucune de ces valeurs n'a été choisie : elles\ndescendent toutes de la base 24 et du ratio √2, et une seule ligne les refait\ntoutes. C'est exactement ce que l'Échelle promet, et c'est aussi ce qui rend\nl'objection possible : la séance ne discutera pas d'un écran, elle discutera de\nla base et du ratio.\n\nCe que le vert ne dit pas. Trente assertions portées, quatre-vingts épreuves\nau vert, quarante-six sabotages détectés sur quarante-six. Cela dit que rien\nn'a été inventé. Cela ne dit pas que le produit est mieux réglé qu'hier —\nle thread du kit l'a établi sur pièce, un écran peut être conforme à cent pour\ncent et moins bon à l'œil. C'est pourquoi les sept témoins n'ont pas été\nremplacés : chacun existe dans ses deux états, et la planche de comparaison les\nmet côte à côte, rendus, à largeur réglable. La migration est verrouillée\nmécaniquement ; elle n'est pas jugée.\n\nAlternatives écartées — *Traduire les nombres des deux pièges de proximité*\n(leur piège est un rapport, pas un nombre : traduits, ils seraient passés au\nvert — ils sont donc réécrits dans leur intention, deux groupes emboîtés au même\nrang, et échouent toujours pour la même règle) ; *laisser R3.1 masquer\nl'interdiction des marges* (le sabotage « désactiver R3.2 » ne faisait plus\nvirer qu'une épreuve sur quatre au lieu de quatre — il restait « détecté » sans\nplus rien démontrer ; les marges portent donc leur axe elles aussi, et le\nsabotage retrouve toute sa portée) ; *laisser les mesures du squelette écrites\ndans le composant* (elles y étaient sans provenance ; elles descendent à la\nplanche sans changer d'un pixel) ; *ajouter G7, la règle qui interdit de\nmélanger les axes, au corpus* (ce serait ouvrir S3, et l'interdit tient : R3.1\nsuffit).\n\nConséquences — Aucun contrat rouvert : S3 garde ses sept assertions,\nR3.7 a changé de valeur et pas de forme, l'intégrité exige toujours les trente.\nAucune épreuve ni aucun seuil corrigé en silence : les libellés de la\nbatterie ont été remis en accord avec ce qu'ils décrivent, et les deux\nréécritures sont nommées ci-dessus. Deux dettes nouvelles, écrites plutôt que\ndécouvertes : la partie responsive du moteur n'a pas de preuve contre la\nsource tant que le générateur n'est pas revenu au dépôt ; et les deux hauteurs\nde témoin de la planche se justifiaient par « multiples de l'échelle\nd'espacement » — la phrase n'a plus d'objet, les valeurs restent justes, leur\nprovenance est à réécrire. Une dette ancienne s'est manifestée sur pièce :\nle script de mutation, interrompu par la limite de durée de l'environnement, a\nlaissé une règle éteinte et une épreuve mutée ; le contrôle d'intégrité l'a vu,\nla remise en état a été faite à la main, et le script tourne désormais par\nsalves. Un verrou git périmé du 7 août bloquait toute opération sur le\ndépôt ; il a été écarté.\n\nImpact carte — Dernière décision au journal : #059. Les sept gabarits\nrestent 🟡 : leurs témoins existent maintenant en deux états, et aucun n'est\njugé. Dettes nouvelles : la partie responsive sans preuve contre la source, la\nprovenance des hauteurs de témoin. Pièces nouvelles : fili.geometrie.json,\nsrc/geometrie.genere.css, tools/fili/geometrie/, la planche de comparaison\navant/après."
+      },
+      {
+        "numero": "#058",
+        "titre": "L'Échelle Semantic Rhythm devient la loi du dépôt, et c'est le facteur de proximité qui cède",
+        "date": "2026-08-11",
+        "pastille": "🟡",
+        "statut": "En cours (chantier instruit, aucune ligne écrite) · Décision d'Auteur : « L'Échelle Semantic Rhythm fait loi » · Prolonge `#050` au dépôt",
+        "corps": "Contexte — #050 a aligné la dérivation du kit de création sur le\ngénérateur de l'Auteur. La décision d'aujourd'hui étend cette loi au dépôt,\net non plus au seul kit. L'état a été relevé sur pièce le 11 août, avant toute\nécriture. Le registre porte une échelle de quatorze crans en pas de quatre, sa\ntable de pixels, et un facteur de proximité de trois. La planche porte quatre\nrayons — zéro, deux, huit, pastille — qui n'ont aucune valeur commune avec\nla loi du rayon divisé par deux. La configuration lit les deux fichiers. Dans le\nproduit, dix fichiers portent l'échelle : neuf composants et la table des\nécarts. Les sept écrans, eux, n'en portent aucune — la règle qui interdit à\nune page d'écrire son espace a tenu, et c'est elle qui rend la migration\nfaisable. Côté épreuves, dix-sept sur quatre-vingts portent une valeur\nd'espacement et huit sabotages sur quarante-six visent la discipline\nspatiale. Enfin, sur les quatre rayons déclarés, deux seulement sont posés\ndans le produit.\n\nDécision — Quatre, et la première tranche une contradiction rouverte par\nl'Auteur.\n\n(1) Le facteur de proximité suit désormais le ratio. La règle garde\nexactement sa forme — un plancher à ne pas passer entre l'écart d'un groupe et\ncelui de ses enfants — et ne change que de valeur : trois devient le ratio de\nl'Échelle.\n(2) La migration va jusqu'au bout, fluidité comprise. L'échelle déclarée\ncesse d'être une liste de nombres pour devenir une liste de noms, et l'axe\nunique se sépare en deux, horizontal et vertical.\n(3) Le moteur est reconstruit d'après la note de dérivation, le fichier\nd'origine n'étant plus accessible depuis le dépôt.\n(4) Les sept témoins ne tombent pas : chacun sera produit dans ses deux\nétats, avant et après, pour que la séance juge la migration au lieu de la subir.\n\nSens produit / UX — Quatre raisons, une par décision.\n\nLe facteur cède parce qu'il n'est atteignable sous aucun réglage. Ce n'est\npas un cas limite ni un désaccord de tempérament : l'Échelle sépare deux\nprofondeurs par son ratio, et ce ratio est borné à 2,2. Trois n'est pas\naccessible, même en poussant l'Échelle à son maximum. Or les deux nombres\nservent la même intention — empêcher deux niveaux d'emboîtement de se\nressembler — sauf que le facteur trois l'obtenait par un seuil posé de\nl'extérieur, quand le ratio l'obtient par construction. Garder le trois\nimposerait de choisir l'octave et de sauter un niveau à chaque emboîtement :\non tordrait la respiration de sept écrans pour sauver un nombre dont le rôle\nest déjà tenu. C'est une correction de valeurs, pas une réouverture de S3 : la\nrègle continue d'énoncer exactement ce qu'elle énonçait.\n\nLa fluidité entre maintenant parce qu'à moitié, on paierait deux fois.\nMigrer le seul socle serait la voie la plus sûre à prouver, mais elle figerait\nle rythme à une largeur d'écran et laisserait une seconde migration — celle de\nla mécanique, pas des valeurs — à faire plus tard sur un dépôt déjà déplacé.\nCe que l'Échelle apporte au-delà des nombres est justement ce qu'un socle figé\nne porte pas : on ne demande plus de choisir un écart, on demande à quelle\nprofondeur on se trouve, et cela ne se décide pas au cas par cas.\n\nLa reconstruction sans source est déclarée, jamais présentée comme vérifiée.\nLa loi du socle est écrite noir sur blanc dans la note et sera exacte. La partie\nresponsive, elle, sera reconstruite de mémoire : elle portera cette mention\npartout où elle apparaît. Une valeur reconstruite qu'on laisserait passer pour\nune valeur vérifiée serait la faute que le projet nomme depuis son origine.\n\nL'avant/après existe parce que le vert du gardien ne dit pas que c'est bien\nréglé. Le thread du kit l'a établi sur pièce : un écran peut être conforme à\ncent pour cent et moins bon à l'œil. Le gardien dit « rien n'a été inventé »,\nil ne dit jamais « le bon rôle a été employé ». Migrer sans montrer les deux\nétats, ce serait demander à la séance de juger un résultat sans point de\ncomparaison — et lui faire porter, sans le dire, une régression qu'elle ne\npourrait pas nommer.\n\nAlternatives écartées — *Monter le ratio à l'octave pour sauver le facteur\ntrois* (le nombre survivrait, la respiration des sept écrans changerait\nbeaucoup, et exiger deux niveaux d'écart à chaque emboîtement contredit le\nmodèle en trois profondeurs) ; *séparer les écarts et les marges en deux\nmécaniques distinctes* (invérifiable sans le fichier source, et rétablir deux\nlois d'espacement est précisément ce que la migration défait) ; *migrer le socle\nseul* (voir ci-dessus : deux migrations au lieu d'une) ; *déclarer les sept\ntémoins caducs et les régénérer après coup* (simple, mais la séance repartirait\nsans comparaison) ; *tenir la séance avant de migrer* (on verrouillerait sept\ngabarits sur une échelle qu'on sait condamnée le jour même).\n\nConséquences — Aucun contrat n'est rouvert. S3 garde ses sept\nassertions portées et actives ; R3.7 change de valeur, pas de forme ; le\ncontrôle d'intégrité continue d'exiger les vingt-neuf. Une dette nouvelle\ns'ouvre et elle est écrite plutôt que découverte : la partie responsive du\nmoteur n'aura pas de preuve contre la source tant que le générateur n'est pas\nrevenu au dépôt. Une charge pèse sur le gardien : il juge aujourd'hui\nl'appartenance d'un nombre à une liste, il devra juger l'appartenance d'un nom —\nc'est sa mécanique de lecture qui change, pas sa règle. Les sept gabarits\nrestent 🟡, mais leurs témoins du 7 août cessent d'être l'unique état de\nréférence. Rien n'est écrit à cette heure : ni valeur, ni épreuve, ni seuil.\n\nImpact carte — Dernière décision au journal : #058. Dette nouvelle : la\npartie responsive du moteur sans preuve contre la source, 🔴 ouverte. Chantier\n« Migration de la géométrie vers l'Échelle Semantic Rhythm » : ⚪ → 🟡 instruit."
+      },
+      {
+        "numero": "#057",
+        "titre": "Le journal est tranché : les douze entrées revenues ne rentrent pas, et ce qui doit survivre ne vit plus dans un document de projet",
+        "date": "2026-08-07",
+        "pastille": "🟢",
+        "statut": "Verrouillé (arbitrage rendu sur demande d'Auteur : « Tranche le journal ») · Clôt `claude/incident-journal-2026-08-07.md` et `claude/cause-seconde-perte-journal.md`",
+        "corps": "Contexte — #049 a acté la perte de quarante-deux entrées et adopté trois\nrègles. #051 a fait descendre le journal vivant au dépôt, sous empreinte.\nRestaient deux questions ouvertes, écrites en toutes lettres au bas de\nclaude/cause-seconde-perte-journal.md et jamais tranchées : les douze\nentrées récupérées à l'identique réintègrent-elles le journal, et la\nquatrième règle entre-t-elle au cadre. Une troisième s'était ajoutée sans que\npersonne l'écrive : le tableau d'orientation du journal déclare #001 à #042\n« nulle part », ce qui est faux depuis 15h15 pour douze d'entre elles.\n\nDécision — Trois choses, et la première est un refus.\n\n(1) Les douze entrées revenues ne réintègrent pas le journal. Elles restent\nà leur propre chemin, claude/sauvetage-journal-001-012-verbatim.md, avec leur\nprovenance, et le tableau d'orientation les désigne.\n(2) La quatrième règle entre au cadre, doublée d'une règle de structure qui\nla rend inutile partout où celle-ci s'applique.\n(3) Le tableau d'orientation porte désormais trois sorts, et non deux.\n\nSens produit / UX — Quatre arguments, dont trois sont des refus.\n\nDeux sorts différents doivent rester lisibles ; les fondre les rendrait\nindistincts. #001–#012 sont revenues à l'identique — une copie\nauthentique, pas une reconstruction. #013–#042 sont perdues. Rangées\nensemble dans le journal, elles produiraient un document qui se lit comme un\njournal à un seul trou, alors qu'il y a trois sorts distincts : revenues,\nperdues, gelées. Le tableau d'orientation existe exactement pour porter cette\ndistinction. S'en servir, c'est l'honorer ; le contourner pour faire plus joli,\nc'est le vider.\n\nEt la réintégration demanderait le geste même qui a coûté quarante-deux\nentrées. Écrire douze entrées dans le journal, c'est réécrire le fichier\nentier. On paierait ce risque-là pour un gain de confort de lecture. Ce n'est\npas de la prudence : c'est la règle *(1)* de #049 appliquée à celui qui\nprétend réparer, et #049 avait déjà nommé le piège — la première consigne de\nrécupération demandait de réécrire le journal en entier, c'est-à-dire de refaire\nle geste en plus grand.\n\nUne copie qui a traversé une perte est une pièce, pas une entrée vivante.\nLa ranger parmi les entrées que rien n'a jamais atteintes la rendrait\nindiscernable d'elles, et le fait qu'elle soit revenue disparaîtrait avec la\ndistinction. C'est la faute que #016 interdit sur les témoins — juger une\ntransposition au lieu de l'original — transposée à la mémoire du projet.\n\nUne règle de discipline ne vaut rien seule ; celle-ci est donc doublée. La\nquatrième règle dit : *une lecture ne vaut que pour l'instant où elle a eu lieu ;\ntoute écriture sur un document vivant est précédée d'une relecture immédiate, et\nse construit sur elle — jamais sur un instantané pris plus tôt dans la session.*\nElle est juste, et #020 a établi ce que vaut une garantie qui repose sur\nl'attention de quelqu'un au bon moment. Elle entre donc accompagnée d'une règle\nde structure : ce qui doit survivre vit au dépôt, sous empreinte ; un document\nde projet est une pièce, jamais de la mémoire vivante. Là où la seconde\ns'applique, la première n'a plus à être tenue par personne — c'est déjà fait\ndepuis #051, et c'est pourquoi la perte ne peut plus se reproduire sur le\njournal.\n\nCe qui reste non couvert, et qui est écrit plutôt que découvert — Un\ndocument de projet est remplacé en entier à chaque mise à jour, et rien ne\nle voit. Aucune empreinte n'est possible sur cette matière. Le cadre y répond\npar la seule garantie disponible : le gel. Un document clos ne se perd pas\npar réécriture, parce que personne ne le réécrit. Sont clos par cette entrée :\nclaude/journal.md (entrées #043–#049), les deux documents d'incident, et\nla pièce de sauvetage.\n\nAlternatives écartées — *Réintégrer les douze entrées dans le journal* (le\ndocument redeviendrait presque continu, et on paierait ce confort par le geste\nqui a coûté quarante-deux entrées, en fondant au passage deux sorts qui doivent\nrester lisibles) ; *renuméroter pour supprimer le trou* (déjà écarté par #049,\nrappelé ici parce que le retour des douze rend la tentation plus vive — un\njournal qui court de #001 à #012 puis reprend à #043 ressemble presque à un\njournal, et cette ressemblance est précisément le mensonge) ; *reconstruire les\ntrente entrées restantes à partir de la synthèse de treize entrées consignée au\n§4 du document d'incident* (le faux indétectable ; #049 tient, et la synthèse\nn'est pas le journal) ; *rouvrir la voie de récupération n°1 — demander son texte\nà la session qui a réécrit le fichier* (claude/cause-seconde-perte-journal.md\na établi qu'elle n'avait jamais lu #013–#042 : la voie était morte avant\nd'être ouverte, et l'écrire évite qu'on y revienne) ; *sceller le journal du\nprojet comme celui du dépôt* (rien ne peut le sceller — la plateforme ne porte\npas d'empreinte par entrée ; le geler est la seule garantie disponible, et elle\nest mécanique par absence d'écriture, pas par vigilance).\n\nConséquences — Le tableau d'orientation du journal porte trois sorts.\nLa dette des entrées perdues porte sur trente entrées, et non plus\nquarante-deux. Deux règles entrent au cadre, opposables à tous les threads :\nla relecture immédiate avant écriture, et le partage entre ce qui vit au dépôt\net ce qui est une pièce close. Quatre documents de projet sont clos : aucune\nsession ne les réécrit. Le sceau du dépôt couvre #050 et au-delà, et il ne\nsera jamais étendu en arrière : l'étendre reviendrait à enregistrer comme passé\nde référence un état qui ne l'est pas — le blanchiment que #049 avait déjà\nrefusé. Aucun contrat rouvert, aucune ligne de code.\n\nCe que cette entrée ne répare pas — Trente entrées. Elles ne\nreviendront pas, et rien de ce qui précède ne compense leur perte : il organise\nseulement ce qui reste pour qu'on ne le perde pas aussi.\n\nImpact carte — Dette *Les entrées #001 à #042* : reformulée — trente\nentrées perdues, douze revenues à l'identique et rangées hors du journal.\n§6 : ajout de claude/sauvetage-journal-001-012-verbatim.md comme pièce close."
+      },
+      {
+        "numero": "#056",
+        "titre": "É1 rendait quatre états sur cinq : le succès manquait, et c'est l'annonce qui manquait avec lui",
+        "date": "2026-08-07",
+        "pastille": "🟢",
+        "statut": "Posée (les cinq états de É1 sont rendus) · Débloque la séance É1 annulée le même jour",
+        "corps": "Contexte — La première séance du protocole de référence, ouverte sur É1 · Le\nverdict, a été annulée avant tout regard : K2 §6 déclare cinq états pour ce\ngabarit, le témoin du 7 août en rendait quatre. L'état Succès — « Run\nconsigné, daté » n'existait pas. Le protocole a arrêté la séance sur un\ncritère binaire, sans qu'un œil se dépense — ce qui est exactement ce qu'on lui\ndemandait de savoir faire, et la première chose qu'il ait jamais faite.\n\nDécision — Le cinquième état de É1 est construit et rendu. Le\nvocabulaire du succès était écrit et arbitré au catalogue ; ce qui manquait\nétait la situation dans laquelle l'écran le dit, et le fait qu'il le dise\nà quelqu'un.\n\nSens produit / UX — Trois choses, et la deuxième est la seule qui compte.\n\nLe succès de É1 n'est pas un autre écran : c'est le même écran juste après le\ngeste. Les cinq sources portent exactement ce que porte le nominal. Cela a été\nchoisi contre la solution qui aurait mieux « montré » : fabriquer un écart de\ndonnées entre les deux états aurait fait juger, en séance, une différence que le\nproduit ne produit pas. Un témoin qui exagère ce qu'il montre ne témoigne plus.\n\nUn succès qui ne s'annonce pas n'est pas un état, c'est une nuance. L'écran\nsavait déjà dire « Run consigné » — mais il le disait en changeant trois mots\nd'intitulé, et rien du tout pour quelqu'un qui écoute la page. Un opérateur\nau lecteur d'écran appuyait sur *Consigner ce run* et n'entendait pas que son\nacte avait abouti. C'est la perte n°1 du run de K1 qui revenait par l'autre\nbout : là elle portait sur le refus, ici sur la réussite. Le succès prend donc un\nrôle d'annonce — « statut » et non « alerte » : un acte réussi rend compte,\nil n'interrompt pas.\n\nL'annonce reste à l'endroit du geste, et le contrat de lecture de É1 n'est pas\ntouché. Ce qui compte d'abord sur É1 est l'intégrité du juge, avant le\nverdict. Faire remonter le run tout juste consigné en tête de page aurait été\nplus spectaculaire, et aurait déplacé la primauté déclarée — un arbitrage de\nK2 §5 rouvert en douce par une commodité d'affichage. L'annonce vit dans la\nsection de l'acte, une seule fois dans la page, conforme à la sixième règle de\nton du catalogue.\n\nAlternatives écartées — *Ne rien changer à l'écran et se contenter de\nbrancher la situation manquante* (le plus petit geste possible : le cinquième\nfichier existait, la condition d'admission était remplie, la séance pouvait\ns'ouvrir — écarté parce qu'on aurait présenté au jugement un état qui se\ndistingue à peine du nominal et qui reste muet à l'oreille, c'est-à-dire acheté\nl'admissibilité en fabriquant un refus probable) ; *faire remonter le run\nconsigné en tête de page* (la primauté de É1 n'est pas une préférence\nd'affichage) ; *fermer l'acte après consignation, bouton retiré ou indisponible\navec motif* (un poste de gouvernance se rouvre chaque jour, et consigner un\nnouveau run n'est pas une exception à traiter mais le geste normal ; rendre le\nbouton indisponible aurait de plus demandé un libellé absent du catalogue, donc\nun arbitrage de vocabulaire pour un cas qui n'est pas un problème).\n\nCe que la construction a trouvé et qui n'était pas cherché — Le signal de\nsuccès de É1 était posé sur l'état vide. Le témoin « vide » portait donc un\nacte réussi que rien ne pouvait rendre — il n'y avait aucun run à montrer — et\nl'état de succès, lui, n'était jamais demandé. Le cinquième témoin manquait par\nlà, et non par oubli d'écriture. Le défaut était invisible au Gardien : rien\ndans le corpus ne vérifie qu'un état déclaré au contrat est effectivement\natteignable. C'est écrit ici pour que personne ne le redécouvre, et c'est un\ncandidat pour S6.\n\nCe qui entre au système — Le composant d'annonce porte désormais trois\nregistres au lieu de deux : le refus, l'attente, et ce qui vient d'être\nacquis. Le troisième n'invente aucune couleur — il reprend le couple déjà\ncalculé pour le succès et la forme déjà déclarée à la planche, sous le même\nnom de ton que le jeton, pour qu'un état n'ait pas deux noms selon l'endroit\noù on le lit. Mesuré : 5,58:1 pour le texte de l'annonce sur son fond.\n\nCe qui entre à l'outillage — Une lignée de témoins peut désormais se\nréimprimer seule. Avant, compléter un gabarit obligeait à réécrire les six\nautres, que rien ne mettait en cause. Le filtre choisit quelles lignées\nrepartent ; il ne choisit jamais quels états d'une lignée sortent — les\nétats d'un gabarit doivent sortir du même geste, le même jour, depuis la même\nsource vérifiée, sinon deux états du même témoin ne montrent plus tout à fait le\nmême écran.\n\nConséquences — La lignée É1 du 7 août porte cinq états, et les quatre\ndéjà rendus sont réimprimés identiques au corps près. La troisième condition\nd'admission du protocole est remplie pour É1. La séance annulée peut se\nrouvrir. Elle ne se rouvre pas d'elle-même : c'est un acte d'Auteur. Mesuré\nsur les cinq états : aucun débordement de 320 à 2560 px, batterie à 100 %,\nintégrité 29/29.\n\nCe que cette entrée ne prouve pas — Rien du témoin. Il n'a pas été regardé.\nIl est admissible, ce qui est un fait de fabrication et non un verdict\nd'œil. Et la primauté déclarée de É1 à É4 reste hors du froid depuis le\n7 août : ce fait consigné par la séance annulée n'est pas effacé.\n\nImpact carte — É1 passe à cinq états. La ligne « aucune séance tenue »\nreste vraie. Aucun statut ne passe au 🟢."
+      },
       {
         "numero": "#055",
         "titre": "É7 · L'acte ferme la construction : sept gabarits, trois parcours, et le produit n'écrit pas dans sa propre mémoire",
@@ -436,8 +574,8 @@
   },
   "/acte": {
     "donnees": {
-      "numero": "#056",
-      "date": "2026-08-07",
+      "numero": "#060",
+      "date": "2026-08-11",
       "verrouVert": true,
       "motifVerrou": null,
       "cibles": [
@@ -643,6 +781,24 @@
           "id": "dettes/L'emphase du journal invisible sur É6",
           "groupe": "Les dettes",
           "nom": "L'emphase du journal invisible sur É6",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/Le moteur de géométrie sans preuve contre la source",
+          "groupe": "Les dettes",
+          "nom": "Le moteur de géométrie sans preuve contre la source",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/La provenance des hauteurs de témoin",
+          "groupe": "Les dettes",
+          "nom": "La provenance des hauteurs de témoin",
+          "statut": "🔴"
+        },
+        {
+          "id": "dettes/Les sept témoins non jugés après migration",
+          "groupe": "Les dettes",
+          "nom": "Les sept témoins non jugés après migration",
           "statut": "🔴"
         }
       ]

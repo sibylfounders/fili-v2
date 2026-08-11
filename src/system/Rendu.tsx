@@ -32,7 +32,7 @@ export function Rendu({
       title={titre}
       sandbox=""
       loading="lazy"
-      className={`w-full rounded-controle border-systeme border-trait-net bg-papier ${HAUTEUR[hauteur]}`}
+      className={`w-full rounded-detail border-systeme border-trait-net bg-papier ${HAUTEUR[hauteur]}`}
     />
   )
 }

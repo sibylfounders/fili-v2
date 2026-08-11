@@ -1,0 +1,157 @@
+{
+  "$comment": "Le lexique entre l'Échelle Semantic Rhythm et Fili. PIÈCE GÉNÉRÉE — ne pas éditer à la main : tout vient de tools/fili/lexique/produire.mjs.",
+  "$regle": "Aucune valeur n'est déclarée ici. Chaque entrée pointe sur un jeton de fili/geometrie.json, et la génération refuse de statuer si l'un manque.",
+  "$releve": "Table relevée dans l'outil de l'Auteur le 2026-08-11 — la charge utile envoyée à ses écrans de démonstration.",
+  "$arbitrage": {
+    "tranche": "Les noms de Fili restent la référence. Ceux de l'outil sont des alias.",
+    "date": "2026-08-11",
+    "motif": "Ce n'est pas un arbitrage de goût : les noms de l'outil se lisent mieux, et c'est reconnu. C'est un fait de mécanique. La règle qui attrape un jeton horizontal posé sur une propriété verticale se déclenche sur les préfixes 'inline-' et 'block-' : le nom N'EST PAS une convention d'écriture, c'est la prise du contrôle. Les renommer, c'est réécrire une règle verrouillée, le registre qu'elle lit, la configuration des utilitaires et les emplois dans les écrans — pour un gain de confort.",
+    "cePermet": "Dans une feuille de style écrite à la main, les noms de l'outil sont utilisables tels quels : src/lexique.genere.css les fait pointer sur les jetons du dépôt.",
+    "ceQuOnRefuse": "Ajouter les noms de l'outil comme classes utilitaires en plus de celles de Fili. Ce serait deux façons légales d'écrire la même valeur, et c'est ce que ce système interdit partout ailleurs. Une équivalence déclarée dans un lexique n'est pas un doublon ; deux classes qui font la même chose en sont un.",
+    "seRouvre": "Par une entrée de journal, jamais en silence. Le coût de la bascule est chiffré : la règle des espaces, le registre, la configuration, et les emplois dans les sept écrans."
+  },
+  "correspondances": [
+    {
+      "outil": "--pagePadX",
+      "fili": "--rr-inline-marge-coque",
+      "quoi": "la marge horizontale du premier niveau",
+      "valeur": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)",
+      "socle": 24
+    },
+    {
+      "outil": "--pagePadY",
+      "fili": "--rr-block-marge-coque",
+      "quoi": "la marge verticale du premier niveau",
+      "valeur": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)",
+      "socle": 24
+    },
+    {
+      "outil": "--cardPadX",
+      "fili": "--rr-inline-marge-carte",
+      "quoi": "la marge horizontale d'une carte",
+      "valeur": "clamp(13.5765px, 11.637px + 0.6061vw, 20.3647px)",
+      "socle": 16.9706
+    },
+    {
+      "outil": "--cardPadY",
+      "fili": "--rr-block-marge-carte",
+      "quoi": "la marge verticale d'une carte",
+      "valeur": "clamp(15.2735px, 14.0129px + 0.394vw, 19.6859px)",
+      "socle": 16.9706
+    },
+    {
+      "outil": "--subPadX",
+      "fili": "--rr-inline-marge-detail",
+      "quoi": "la marge horizontale d'un détail",
+      "valeur": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)",
+      "socle": 12
+    },
+    {
+      "outil": "--subPadY",
+      "fili": "--rr-block-marge-detail",
+      "quoi": "la marge verticale d'un détail",
+      "valeur": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)",
+      "socle": 12
+    },
+    {
+      "outil": "--gapInline",
+      "fili": "--rr-inline-ecart-coque",
+      "quoi": "l'écart horizontal entre deux voisins",
+      "valeur": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)",
+      "socle": 12
+    },
+    {
+      "outil": "--gapBlock",
+      "fili": "--rr-block-ecart-coque",
+      "quoi": "l'écart vertical entre deux voisins",
+      "valeur": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)",
+      "socle": 12
+    },
+    {
+      "outil": "--cardR",
+      "fili": "--rr-radius-coque",
+      "quoi": "le rayon du premier niveau",
+      "valeur": "clamp(10.32px, 9.4286px + 0.2786vw, 13.44px)",
+      "socle": 12
+    },
+    {
+      "outil": "--ctl",
+      "fili": "--rr-radius-coque",
+      "quoi": "le rayon d'un contrôle — même cran que la carte",
+      "valeur": "clamp(10.32px, 9.4286px + 0.2786vw, 13.44px)",
+      "socle": 12
+    },
+    {
+      "outil": "--subR",
+      "fili": "--rr-radius-carte",
+      "quoi": "le rayon du deuxième niveau",
+      "valeur": "clamp(5.16px, 4.7143px + 0.1393vw, 6.72px)",
+      "socle": 6
+    },
+    {
+      "outil": "--subsubR",
+      "fili": "--rr-radius-detail",
+      "quoi": "le rayon du troisième niveau",
+      "valeur": "clamp(2.58px, 2.3571px + 0.0696vw, 3.36px)",
+      "socle": 3
+    },
+    {
+      "outil": "--controlSize",
+      "fili": "--rr-control-cible",
+      "quoi": "la hauteur d'un contrôle",
+      "valeur": "clamp(44px, 43.2457px + 0.2357vw, 46.64px)",
+      "socle": 44
+    },
+    {
+      "outil": "--heading-2",
+      "fili": "--rr-type-titre2",
+      "quoi": "un titre à un pas du corps",
+      "valeur": "clamp(19.2px, 18.5714px + 0.1964vw, 21.4px)",
+      "socle": 20
+    },
+    {
+      "outil": "--heading-1",
+      "fili": "--rr-type-titre1",
+      "quoi": "un titre à deux pas du corps",
+      "valeur": "clamp(24px, 23.2143px + 0.2455vw, 26.75px)",
+      "socle": 25
+    }
+  ],
+  "intraduisibles": [
+    {
+      "cote": "outil",
+      "nom": "--pageR",
+      "quoi": "le rayon du cadre de la démonstration — c'est le rayon racine, et Fili ne l'expose pas comme jeton : chez lui le rayon racine EST la marge, il n'a pas de nom propre."
+    },
+    {
+      "cote": "outil",
+      "nom": "--gap",
+      "quoi": "la moyenne de l'écart horizontal et vertical. Fili refuse de la produire : une valeur qui porte les deux axes à la fois mélange deux échelles, et c'est précisément ce que sa règle des espaces interdit."
+    },
+    {
+      "cote": "outil",
+      "nom": "--type-scale",
+      "quoi": "l'intervalle des titres. Ce n'est pas un jeton mais une décision d'entrée : elle vaut 1.25 chez Fili."
+    },
+    {
+      "cote": "outil",
+      "nom": "fontSize",
+      "quoi": "la taille du corps, envoyée à part. Chez Fili c'est le jeton type-corps."
+    },
+    {
+      "cote": "fili",
+      "nom": "inline/block-marge-page · -large",
+      "quoi": "deux profondeurs au-dessus de la coque, pour le rythme entre sections. L'Échelle s'arrête à trois niveaux : l'outil n'a rien à leur opposer."
+    },
+    {
+      "cote": "fili",
+      "nom": "inline/block-ecart-carte · -detail",
+      "quoi": "un écart par profondeur. L'outil n'en porte qu'un seul, et ses deux axes en descendent."
+    },
+    {
+      "cote": "fili",
+      "nom": "inline-bord · block-bord",
+      "quoi": "le bord structurel. L'outil le calcule mais ne l'envoie pas à ses écrans."
+    }
+  ]
+}

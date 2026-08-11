@@ -41,7 +41,24 @@ export function scenariosVerdict(reel) {
         '/constats': reel.constats
       }),
       ...vide(['/runs'])
-    }
+    },
+    /* Succès — RUN CONSIGNÉ, DATÉ. Cinquième état déclaré par K2 §6 pour É1, et
+       le seul que la lignée du 7 août ne rendait pas : c'est ce manque qui a
+       rendu le témoin inadmissible et annulé la séance, sans qu'un œil se
+       dépense.
+       Les cinq sources portent exactement ce que porte le nominal, et c'est
+       voulu : le succès de É1 n'est pas un autre écran, c'est le même écran
+       juste après le geste. Ce qui change tient dans l'annonce — à l'endroit
+       où l'acte a eu lieu, et dite aux lecteurs d'écran. Fabriquer en plus un
+       écart de données ferait juger une différence que le produit ne produit
+       pas. */
+    succes: plein({
+      '/integrite': reel.integrite,
+      '/batterie': reel.batterie,
+      '/progression': { faites: reel.batterie.piegees + reel.batterie.conformes, total: reel.batterie.piegees + reel.batterie.conformes },
+      '/constats': reel.constats,
+      '/runs': reel.runs
+    })
   }
 }
 

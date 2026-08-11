@@ -1,0 +1,182 @@
+{
+  "$comment": "Registre déclaré du projet FILI V2. Source de vérité du Leviathan. Pas de registre, pas de verdict.",
+  "components": {
+    "sources": [
+      "@/system",
+      "./system",
+      "../system",
+      "src/system",
+      "../design-system",
+      "../../design-system"
+    ],
+    "exports": [
+      "Button",
+      "TextField",
+      "EtatAsync",
+      "Section",
+      "Titre",
+      "Texte",
+      "Pile",
+      "Grille",
+      "Jeton",
+      "Alerte",
+      "Vide",
+      "Squelette",
+      "Rendu",
+      "Prose",
+      "Selection"
+    ]
+  },
+  "zones": {
+    "horsPerimetre": [
+      "**/*.test.tsx",
+      "**/*.stories.tsx",
+      "tools/**",
+      "scripts/**",
+      "node_modules/**",
+      "dist/**",
+      "crash-tests/hors-perimetre/**",
+      "crash-tests/lib/**"
+    ],
+    "systeme": [
+      "src/main.tsx",
+      "src/system/**",
+      "crash-tests/design-system/**"
+    ],
+    "applicative": [
+      "src/**",
+      "crash-tests/**"
+    ],
+    "page": [
+      "src/pages/**",
+      "crash-tests/pages/**",
+      "crash-tests/epreuve-a/**",
+      "crash-tests/epreuve-b/**",
+      "crash-tests/epreuve-c/**"
+    ]
+  },
+  "espacement": {
+    "$loi": "Échelle Semantic Rhythm — décision d'Auteur du 2026-08-11. Une valeur d'espace ne se choisit pas : elle descend de la profondeur d'emboîtement. Les nombres vivent dans fili.geometrie.json, pièce générée par tools/fili/geometrie.",
+    "$axes": "Deux axes qui ne bougent pas ensemble. Le nom du jeton porte son axe : un jeton horizontal posé sur une propriété verticale n'appartient pas à l'échelle de cette propriété, et R3.1 le voit. Une propriété qui porte les deux axes à la fois — p-…, gap-… — n'a aucun jeton valide : elle mélangerait les deux.",
+    "profondeurs": [
+      "large",
+      "page",
+      "coque",
+      "carte",
+      "detail"
+    ],
+    "axes": {
+      "inline": [
+        "pl",
+        "pr",
+        "px",
+        "ml",
+        "mr",
+        "mx",
+        "gap-x",
+        "space-x"
+      ],
+      "block": [
+        "pt",
+        "pb",
+        "py",
+        "mt",
+        "mb",
+        "my",
+        "gap-y",
+        "space-y"
+      ]
+    },
+    "echelle": [
+      "inline-large",
+      "inline-page",
+      "inline-coque",
+      "inline-carte",
+      "inline-detail",
+      "block-large",
+      "block-page",
+      "block-coque",
+      "block-carte",
+      "block-detail"
+    ],
+    "exceptions": [
+      "mx-auto"
+    ],
+    "proximite": {
+      "$source": "Le facteur suivait un seuil posé de l'extérieur (3). Il suit désormais le ratio de l'Échelle : deux profondeurs voisines en sont séparées par construction, et 3 n'était atteignable sous aucun réglage — le ratio est borné à 2,2.",
+      "facteur": 1.4142135623730951,
+      "tolerance": 0.01,
+      "propEspace": "espace",
+      "conteneurs": [
+        "Pile",
+        "Grille"
+      ]
+    },
+    "pixels": {
+      "$comment": "Valeurs de socle, hors multiplicateur responsive : le multiplicateur est commun à tous les jetons d'un même axe, donc le rapport que R3.7 juge est le même à toutes les largeurs.",
+      "marges": {
+        "large": 48,
+        "page": 33.9411,
+        "coque": 24,
+        "carte": 16.9706,
+        "detail": 12
+      },
+      "ecarts": {
+        "large": 24,
+        "page": 16.9706,
+        "coque": 12,
+        "carte": 8.4853,
+        "detail": 6
+      }
+    }
+  },
+  "async": {
+    "lectures": [
+      "useRequete"
+    ],
+    "mutations": [
+      "useMutation"
+    ],
+    "conteneurs": [
+      "EtatAsync"
+    ],
+    "slots": [
+      "chargement",
+      "erreur",
+      "vide",
+      "enfants"
+    ],
+    "slotsRupture": [
+      "vide",
+      "succes"
+    ],
+    "champAttente": "enAttente",
+    "champsIssue": [
+      "erreur",
+      "succes"
+    ]
+  },
+  "rythme": {
+    "section": "Section",
+    "propDensite": "densite",
+    "densites": [
+      "compact",
+      "normal",
+      "ample"
+    ],
+    "seuilAlternance": 2
+  },
+  "lecture": {
+    "propTete": "tete",
+    "seuilRang": 1
+  },
+  "html": {
+    "classesSysteme": [
+      "fili-bouton",
+      "fili-bouton--principal",
+      "fili-champ",
+      "fili-lien",
+      "fili-section"
+    ]
+  }
+}

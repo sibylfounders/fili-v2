@@ -17,6 +17,7 @@ const ACTIF_R22 = true
 const ACTIF_R23 = true
 const ACTIF_R24 = true
 const ACTIF_R25 = true
+const ACTIF_R27 = true
 const ACTIF_R31 = true
 const ACTIF_R32 = true
 const ACTIF_R33 = true
@@ -69,8 +70,8 @@ const correspond = (globs, rel) => globs.some((g) => globVersRegex(g).test(rel))
 
 /* ── Registre déclaré ────────────────────────────────────────────────────── */
 function chargerRegistre(cwd) {
-  const p = path.join(cwd, 'fili.registry.json')
-  if (!fs.existsSync(p)) return { ok: false, raison: 'fichier fili.registry.json introuvable' }
+  const p = path.join(cwd, 'fili/registry.json')
+  if (!fs.existsSync(p)) return { ok: false, raison: 'fichier fili/registry.json introuvable' }
   let brut
   try { brut = JSON.parse(fs.readFileSync(p, 'utf8')) }
   catch { return { ok: false, raison: 'registre illisible (JSON invalide)' } }
@@ -374,13 +375,16 @@ const prefixeDe = (classe, liste) => {
     .sort((x, y) => y.length - x.length)[0] || null
 }
 const valeurDe = (classe, prefixe) => classe.replace(/^-/, '').slice(prefixe.length + 1)
+/* Un nombre qui se lit. L'Échelle produit des valeurs continues : les afficher
+   brutes dans un message rendrait le message illisible. */
+const lisible = (v) => String(Math.round(v * 100) / 100).replace('.', ',')
 
 const s3 = {
   meta: { type: 'problem', schema: [], messages: {
-    horsEchelle: "FILI R3.1 — « {{classe}} » n'appartient pas à l'échelle déclarée. Une valeur hors échelle appelle une compensation, qui appelle une exception, qui appelle un correctif.",
+    horsEchelle: "FILI R3.1 — « {{classe}} » n'appartient pas à l'échelle déclarée pour cette propriété. L'échelle porte des noms de profondeur, plus des nombres, et chaque nom porte son axe : un jeton horizontal ne se pose pas sur une propriété verticale, et une propriété qui porte les deux axes à la fois n'a aucun jeton valide. Une valeur hors échelle appelle une compensation, qui appelle une exception, qui appelle un correctif.",
     marge: "FILI R3.2 — « {{classe}} » est une marge. En zone applicative, l'espace se pose par le conteneur ({{ok}}), jamais par l'enfant qui pousse ses voisins. Une rupture déclarée ne lève jamais cette règle.",
     styleEnLigne: "FILI R3.3 — espacement en style inline ({{prop}}). Ni token, ni thème, ni mode sombre, ni surcharge responsive : c'est de la négligence, jamais une intention.",
-    proximite: "FILI R3.7 — l'écart entre ces groupes ({{parent}} px) n'atteint pas {{facteur}} fois leur écart intérieur ({{enfant}} px). Deux valeurs parfaitement issues de l'échelle peuvent produire un groupe illisible : c'est le rapport qui dit à l'œil ce qui va avec quoi.",
+    proximite: "FILI R3.7 — l'écart entre ces groupes ({{parent}} px) n'atteint pas {{facteur}} fois leur écart intérieur ({{enfant}} px). Deux groupes emboîtés au même rang se ressemblent : c'est le rapport, et lui seul, qui dit à l'œil ce qui va avec quoi. Le facteur est le ratio de l'Échelle — deux profondeurs voisines en sont séparées par construction.",
     magique: "FILI R3.4 — « {{classe}} » est une valeur magique. C'est la trace d'un écran, pas d'une décision : elle meurt au premier changement de contenu.",
     construite: "FILI R3.5 — classe d'espacement construite dynamiquement. Une règle contournable par concaténation n'est pas une règle.",
     ruptureSansMotif: "FILI R3.4 — rupture déclarée sans motif sur « {{classe}} ». Nommez ce que la valeur hors échelle sert."
@@ -390,6 +394,14 @@ const s3 = {
     if (!f.statuer) return {}
     const echelle = new Set(f.registre.espacement.echelle.map(String))
     const exceptions = new Set(f.registre.espacement.exceptions || [])
+    /* Deux axes distincts, et le nom du jeton porte le sien. L'échelle d'une
+       propriété horizontale n'est donc pas celle d'une propriété verticale, et
+       une propriété qui porte les deux axes à la fois — p-…, gap-… — n'a aucun
+       jeton valide : elle les mélangerait. C'est ce que le modèle d'Auteur rend
+       détectable, et qui était impossible avec un axe unique. */
+    const AXE_DE = {}
+    for (const [axe, prefixes] of Object.entries(f.registre.espacement.axes || {}))
+      for (const pref of prefixes) AXE_DE[pref] = axe
     const PROPS_ESPACE = ['margin','marginTop','marginBottom','marginLeft','marginRight','padding','paddingTop','paddingBottom','paddingLeft','paddingRight','gap','rowGap','columnGap','top','right','bottom','left']
 
     const controlerClasses = (texte, node) => {
@@ -415,7 +427,10 @@ const s3 = {
         const pEspace = prefixeDe(classe, PREF_ESPACE)
         if (!ACTIF_R31 || !pEspace) continue
         const val = valeurDe(classe, pEspace)
-        if (arbitraire || !echelle.has(val)) {
+        const axe = AXE_DE[pEspace]
+        const surLEchelle =
+          !arbitraire && axe !== undefined && echelle.has(val) && val.startsWith(axe + '-')
+        if (!surLEchelle) {
           if (declaree && motif && motif.trim()) continue
           if (declaree) { context.report({ node, messageId: 'ruptureSansMotif', data: { classe } }); continue }
           context.report({ node, messageId: 'horsEchelle', data: { classe } })
@@ -440,15 +455,15 @@ const s3 = {
             const a = attribut(ouv, prox.propEspace)
             const e = a?.value?.type === 'JSXExpressionContainer' ? a.value.expression : a?.value
             const v = e?.type === 'Literal' ? String(e.value) : null
-            if (v && px.prop[v] !== undefined) return { nom, px: px.prop[v] }
+            if (v && px.ecarts[v] !== undefined) return { nom, px: px.ecarts[v] }
           }
           /* classe utilitaire */
           const cls = attribut(ouv, 'className')
           const texte = cls?.value?.type === 'Literal' ? String(cls.value.value) : null
           if (!texte) return null
           for (const c of texte.split(/\s+/)) {
-            const m = /^(?:gap|gap-x|gap-y|space-x|space-y)-(\d+)$/.exec(c)
-            if (m) return { nom: nom || 'bloc', px: Number(m[1]) * px.classeMultiplicateur }
+            const m = /^(?:gap|gap-x|gap-y|space-x|space-y)-(?:inline|block)-([a-z]+)$/.exec(c)
+            if (m && px.ecarts[m[1]] !== undefined) return { nom: nom || 'bloc', px: px.ecarts[m[1]] }
           }
           return null
         }
@@ -486,9 +501,11 @@ const s3 = {
         for (const [, groupe] of parType) {
           if (groupe.length < 2) continue
           const interieur = Math.max(...groupe.map((g) => g.ecart.px))
-          if (parent.px < prox.facteur * interieur)
+          /* Le rapport se compare à des réels : sans tolérance, deux profondeurs
+             exactement voisines tomberaient du mauvais côté sur une décimale. */
+          if (parent.px < prox.facteur * interieur - (prox.tolerance || 0))
             context.report({ node: node.openingElement, messageId: 'proximite',
-              data: { parent: parent.px, enfant: interieur, facteur: prox.facteur } })
+              data: { parent: lisible(parent.px), enfant: lisible(interieur), facteur: lisible(prox.facteur) } })
         }
       },
       JSXAttribute(node) {
@@ -689,6 +706,153 @@ const s5 = {
   }
 }
 
+/* ── S2 · R2.7 — le squelette annonce la page qui vient ──────────────────── */
+/* Née du point de passage B-6, séance du 2026-08-07 : « les titres et les
+   textes ne sont pas traités en squelette comme le reste ». Le défaut n'est pas
+   qu'il manque du gris, c'est qu'il en manque À CÔTÉ du gris : une section qui
+   attend s'affiche à moitié lue, et le squelette dément la page qu'il annonce.
+   Arbitrage d'Auteur du 2026-08-08 : la règle ne juge que le chargement, elle
+   laisse le haut de page écrit, elle se contrôle sur le fichier, et elle se
+   déclare avec un motif quand un écran doit en sortir.
+   Ce qu'elle ne voit pas, et qui est su : le Gardien lit un fichier, pas une
+   image. Un squelette de la bonne quantité et de la mauvaise forme passe. */
+
+function nomJSX(n) {
+  return n && n.type === 'JSXElement' && n.openingElement &&
+         n.openingElement.name && n.openingElement.name.type === 'JSXIdentifier'
+    ? n.openingElement.name.name
+    : null
+}
+
+function parcourirJSX(noeud, visiter) {
+  if (!noeud || typeof noeud !== 'object') return
+  if (Array.isArray(noeud)) { for (const n of noeud) parcourirJSX(n, visiter); return }
+  if (typeof noeud.type !== 'string') return
+  if (noeud.type === 'JSXElement' || noeud.type === 'JSXText') {
+    if (visiter(noeud) === false) return
+  }
+  for (const k of Object.keys(noeud)) {
+    if (k === 'parent' || k === 'loc' || k === 'range') continue
+    const v = noeud[k]
+    if (Array.isArray(v)) { for (const x of v) parcourirJSX(x, visiter) }
+    else if (v && typeof v.type === 'string') parcourirJSX(v, visiter)
+  }
+}
+
+const niveauDe = (n) => {
+  const a = attribut(n.openingElement, 'niveau')
+  if (!a || !a.value) return null
+  if (a.value.type === 'Literal') return Number(a.value.value)
+  if (a.value.type === 'JSXExpressionContainer' && a.value.expression &&
+      a.value.expression.type === 'Literal') return Number(a.value.expression.value)
+  return null
+}
+
+const s2squelette = {
+  meta: { type: 'problem', schema: [], messages: {
+    titreEcrit: "FILI R2.7 — le titre de cette section reste écrit pendant qu'elle attend ses données. Une section qui attend attend en entier : à moitié grise, à moitié lue, elle annonce une page qui n'est pas celle qui arrive.",
+    phraseEcrite: "FILI R2.7 — la phrase posée sous ce titre reste écrite pendant que la section attend. Elle explique un contenu que personne ne voit encore.",
+    contenuOpaque: "FILI R2.7 — un bloc de contenu est rendu à côté du conteneur d'état, sans qu'on puisse lire ce qu'il contient. Écrivez-le à sa place, dans les états du conteneur.",
+    chargementParle: "FILI R2.7 — <{{el}}> est rendu pendant le chargement. Le chargement ne montre que du squelette : un mot vrai à côté du gris fait croire que la page est arrivée.",
+    ruptureSansMotif: "FILI R2.7 — rupture déclarée sans motif. Nommez la raison pour laquelle cet écran sort de la règle."
+  } },
+  create(context) {
+    const f = contexteFili(context)
+    if (!f.statuer || !f.page || !ACTIF_R27) return {}
+    const conteneurs = f.registre.async.conteneurs
+    const nomSection = f.registre.rythme.section
+    const permisEnChargement = new Set(['Squelette'].concat(
+      (f.registre.espacement.proximite && f.registre.espacement.proximite.conteneurs) || []
+    ).concat(conteneurs))
+
+    /* Enfants structurels d'un élément, sans jamais entrer dans un conteneur. */
+    const marcher = (enfants, parent, trouves, opaques) => {
+      for (const c of enfants || []) {
+        if (c.type === 'JSXElement') {
+          const n = nomJSX(c)
+          if (n && conteneurs.includes(n)) continue
+          trouves.push({ node: c, nom: n, parent })
+          marcher(c.children, c, trouves, opaques)
+        } else if (c.type === 'JSXExpressionContainer') {
+          const e = c.expression
+          if (!e || e.type === 'JSXEmptyExpression') continue
+          if (e.type === 'Identifier') opaques.push(c)
+        }
+      }
+    }
+
+    return {
+      /* (a) — ce qui reste écrit à côté d'un conteneur, dans la même section */
+      JSXElement(node) {
+        if (nomJSX(node) !== nomSection) return
+        let aConteneur = false
+        parcourirJSX(node.children, (n) => {
+          const nn = nomJSX(n)
+          if (nn && conteneurs.includes(nn)) { aConteneur = true; return false }
+        })
+        if (!aConteneur) return
+
+        const ouverture = node.openingElement
+        if (estDeclaree(ouverture)) {
+          const motif = motifDe(ouverture)
+          if (EXIGER_MOTIF && (!motif || !motif.trim()))
+            context.report({ node: ouverture, messageId: 'ruptureSansMotif' })
+          return
+        }
+
+        const trouves = [], opaques = []
+        marcher(node.children, node, trouves, opaques)
+
+        /* Le haut de page reste écrit : le groupe qui porte le titre de niveau 1. */
+        let groupeDeTete = null
+        for (const t of trouves)
+          if (t.nom === 'Titre' && niveauDe(t.node) === 1) { groupeDeTete = t.parent; break }
+
+        const parentsFautifs = new Set()
+        for (const t of trouves) {
+          if (t.nom !== 'Titre') continue
+          if (groupeDeTete && t.parent === groupeDeTete) continue
+          parentsFautifs.add(t.parent)
+          context.report({ node: t.node, messageId: 'titreEcrit' })
+        }
+        for (const t of trouves) {
+          if (t.nom !== 'Texte') continue
+          if (!parentsFautifs.has(t.parent)) continue
+          context.report({ node: t.node, messageId: 'phraseEcrite' })
+        }
+        for (const o of opaques) context.report({ node: o, messageId: 'contenuOpaque' })
+      },
+
+      /* (b) — ce que le slot « chargement » a le droit de montrer */
+      JSXOpeningElement(node) {
+        if (node.name.type !== 'JSXIdentifier') return
+        if (!conteneurs.includes(node.name.name)) return
+        const slot = attribut(node, 'chargement')
+        if (!slot || !slot.value) return
+
+        if (estDeclaree(node) && valeurTexte(attribut(node, 'data-intent-slot')) === 'chargement') {
+          const motif = motifDe(node)
+          if (EXIGER_MOTIF && (!motif || !motif.trim()))
+            context.report({ node, messageId: 'ruptureSansMotif' })
+          return
+        }
+
+        parcourirJSX(slot.value, (n) => {
+          if (n.type === 'JSXText') {
+            if (n.value.trim()) context.report({ node: n, messageId: 'chargementParle', data: { el: 'du texte' } })
+            return
+          }
+          const nom = nomJSX(n)
+          if (!nom || !/^[A-Z]/.test(nom)) return
+          if (permisEnChargement.has(nom)) return
+          context.report({ node: n, messageId: 'chargementParle', data: { el: nom } })
+        })
+      }
+    }
+  }
+}
+
+
 /* ── R1.4 — pas de registre, pas de verdict ──────────────────────────────── */
 const r14 = {
   meta: { type: 'problem', schema: [], messages: {
@@ -710,6 +874,7 @@ export default {
     'registry-only-components': r13r15,
     'no-escape-hatch': r16,
     'etat-declare': s2,
+    'squelette-annonce': s2squelette,
     'discipline-spatiale': s3,
     'rythme-composition': s4,
     'arbitrage-lecture': s5

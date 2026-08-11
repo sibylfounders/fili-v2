@@ -7,9 +7,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../', import.meta.url)))
-const jeu = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.icones.json'), 'utf8'))
+const jeu = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/icones.json'), 'utf8'))
 
-const sortie = `/* GÉNÉRÉ depuis fili.icones.json — ne pas éditer à la main.
+const sortie = `/* GÉNÉRÉ depuis fili/icones.json — ne pas éditer à la main.
    Regénérer : node scripts/generer-expression.mjs
    Source du jeu : ${jeu.$source}${jeu.$version ? ` ${jeu.$version}` : ''}${jeu.$licence ? ` (${jeu.$licence})` : ''} */
 

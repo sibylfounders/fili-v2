@@ -9,6 +9,10 @@
 @import '@fontsource-variable/jetbrains-mono';
 @import '@fontsource-variable/inter';
 
+/* La géométrie vient d'abord : les utilitaires d'espace et de rayon pointent
+   tous sur ces variables. Pièce générée, jamais éditée à la main. */
+@import './geometrie.genere.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

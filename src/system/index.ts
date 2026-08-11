@@ -1,4 +1,4 @@
-/* Le registre du produit. Les composants déclarés dans fili.registry.json
+/* Le registre du produit. Les composants déclarés dans fili/registry.json
    vivent ici — plus dans les crash-tests, qui restent le terrain de preuve et
    ne partagent aucune ligne avec le produit.
    TextField était déclaré au registre sans emploi : É4 lui en donne un — un

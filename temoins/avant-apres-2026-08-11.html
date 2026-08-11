@@ -1,0 +1,266 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Avant / après — migration vers l'Échelle Semantic Rhythm</title>
+<style>
+:root{--encre:#16161a;--douce:#6b6b76;--trait:#e2e2e8;--fond:#f6f6f9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);
+  font:400 16px/1.55 ui-sans-serif,system-ui,-apple-system,sans-serif}
+header{padding:40px 32px 24px;border-bottom:1px solid var(--trait);background:#fff}
+h1{margin:0 0 8px;font-size:24px;letter-spacing:-.01em}
+header p{margin:0 0 10px;max-width:62ch;color:var(--douce);font-size:15px}
+.reserve{border-left:3px solid #d9b310;padding-left:12px}
+.barre{display:flex;gap:12px;align-items:center;padding:16px 32px;position:sticky;top:0;
+  background:#fffffff2;backdrop-filter:blur(8px);border-bottom:1px solid var(--trait);z-index:9}
+.barre label{font-size:13px;color:var(--douce)}
+.barre input{width:220px}
+.gabarit{padding:32px}
+.gabarit h2{font-size:19px;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--trait)}
+.etat h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--douce);margin:28px 0 10px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+figure{margin:0}
+figcaption{font-size:12px;color:var(--douce);margin-bottom:6px}
+iframe,.absent{width:var(--largeur,100%);max-width:100%;height:760px;border:1px solid var(--trait);
+  background:#fff;display:block}
+.absent{display:grid;place-items:center;color:var(--douce);font-size:13px}
+@media (max-width:1100px){.duo{grid-template-columns:1fr}}
+</style></head><body>
+<header>
+  <h1>Avant / après — la géométrie passe à l'Échelle Semantic Rhythm</h1>
+  <p>Même écran, mêmes textes, mêmes couleurs, mêmes composants. Seuls changent les
+  nombres d'espacement et de rayon : ils ne sont plus choisis, ils descendent de la
+  profondeur d'emboîtement. 30 couples d'états, sept gabarits.
+  Le verdict mécanique est vert des deux côtés — il dit que rien n'a été inventé,
+  il ne dit pas que c'est mieux. C'est ce que cette page laisse à l'œil.</p>
+  <p class="reserve"><strong>Une réserve, et elle est écrite plutôt que découverte.</strong>
+  Cinq gabarits sur sept montrent exactement le même contenu des deux côtés : leurs
+  scénarios sont figés. <strong>É5 · La carte</strong> et <strong>É6 · Le journal</strong>
+  lisent la mémoire du projet, et cette mémoire a grossi depuis le 8 août — deux
+  décisions de plus. Leur contenu diffère donc aussi, et sur ces deux-là seule la
+  géométrie est comparable.</p>
+</header>
+<div class="barre">
+  <label for="l">Largeur de rendu</label>
+  <input id="l" type="range" min="320" max="1440" value="1024" step="10">
+  <output id="v">1024 px</output>
+</div>
+<article class="gabarit"><h2>É1 · Le verdict</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-08/chargement.html" title="e1-verdict chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-11/chargement.html" title="e1-verdict chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-08/erreur.html" title="e1-verdict erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-11/erreur.html" title="e1-verdict erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-08/nominal.html" title="e1-verdict nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-11/nominal.html" title="e1-verdict nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>succes</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-08/succes.html" title="e1-verdict succes.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-11/succes.html" title="e1-verdict succes.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-08/vide.html" title="e1-verdict vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e1-verdict/2026-08-11/vide.html" title="e1-verdict vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É2 · Le constat</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e2-constat/2026-08-08/chargement.html" title="e2-constat chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e2-constat/2026-08-11/chargement.html" title="e2-constat chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e2-constat/2026-08-08/erreur.html" title="e2-constat erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e2-constat/2026-08-11/erreur.html" title="e2-constat erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e2-constat/2026-08-08/nominal.html" title="e2-constat nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e2-constat/2026-08-11/nominal.html" title="e2-constat nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e2-constat/2026-08-08/vide.html" title="e2-constat vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e2-constat/2026-08-11/vide.html" title="e2-constat vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É3 · La famille des témoins</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e3-famille/2026-08-08/chargement.html" title="e3-famille chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e3-famille/2026-08-11/chargement.html" title="e3-famille chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e3-famille/2026-08-08/erreur.html" title="e3-famille erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e3-famille/2026-08-11/erreur.html" title="e3-famille erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e3-famille/2026-08-08/nominal.html" title="e3-famille nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e3-famille/2026-08-11/nominal.html" title="e3-famille nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e3-famille/2026-08-08/vide.html" title="e3-famille vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e3-famille/2026-08-11/vide.html" title="e3-famille vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É4 · Le face-à-face</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-08/chargement.html" title="e4-face-a-face chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-11/chargement.html" title="e4-face-a-face chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-08/erreur.html" title="e4-face-a-face erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-11/erreur.html" title="e4-face-a-face erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-08/nominal.html" title="e4-face-a-face nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-11/nominal.html" title="e4-face-a-face nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>succes</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-08/succes.html" title="e4-face-a-face succes.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-11/succes.html" title="e4-face-a-face succes.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-08/vide.html" title="e4-face-a-face vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e4-face-a-face/2026-08-11/vide.html" title="e4-face-a-face vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É5 · La carte</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e5-carte/2026-08-08/chargement.html" title="e5-carte chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e5-carte/2026-08-11/chargement.html" title="e5-carte chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e5-carte/2026-08-08/erreur.html" title="e5-carte erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e5-carte/2026-08-11/erreur.html" title="e5-carte erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e5-carte/2026-08-08/nominal.html" title="e5-carte nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e5-carte/2026-08-11/nominal.html" title="e5-carte nominal.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É6 · Le journal</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e6-journal/2026-08-08/chargement.html" title="e6-journal chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e6-journal/2026-08-11/chargement.html" title="e6-journal chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e6-journal/2026-08-08/erreur.html" title="e6-journal erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e6-journal/2026-08-11/erreur.html" title="e6-journal erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e6-journal/2026-08-08/nominal.html" title="e6-journal nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e6-journal/2026-08-11/nominal.html" title="e6-journal nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e6-journal/2026-08-08/vide.html" title="e6-journal vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e6-journal/2026-08-11/vide.html" title="e6-journal vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<article class="gabarit"><h2>É7 · L’acte</h2><section class="etat">
+      <h3>chargement</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e7-acte/2026-08-08/chargement.html" title="e7-acte chargement.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e7-acte/2026-08-11/chargement.html" title="e7-acte chargement.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>erreur</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e7-acte/2026-08-08/erreur.html" title="e7-acte erreur.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e7-acte/2026-08-11/erreur.html" title="e7-acte erreur.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>nominal</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e7-acte/2026-08-08/nominal.html" title="e7-acte nominal.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e7-acte/2026-08-11/nominal.html" title="e7-acte nominal.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>succes</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e7-acte/2026-08-08/succes.html" title="e7-acte succes.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e7-acte/2026-08-11/succes.html" title="e7-acte succes.html après"></iframe></figure>
+      </div>
+    </section>
+<section class="etat">
+      <h3>vide</h3>
+      <div class="duo">
+        <figure><figcaption>avant · 2026-08-08</figcaption><iframe loading="lazy" src="e7-acte/2026-08-08/vide.html" title="e7-acte vide.html avant"></iframe></figure>
+        <figure><figcaption>après · 2026-08-11</figcaption><iframe loading="lazy" src="e7-acte/2026-08-11/vide.html" title="e7-acte vide.html après"></iframe></figure>
+      </div>
+    </section></article>
+<script>
+const l = document.getElementById('l'), v = document.getElementById('v')
+l.addEventListener('input', () => {
+  document.documentElement.style.setProperty('--largeur', l.value + 'px')
+  v.textContent = l.value + ' px'
+})
+document.documentElement.style.setProperty('--largeur', '1024px')
+</script>
+</body></html>

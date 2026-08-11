@@ -11,7 +11,7 @@ export function SuiviFactures() {
   return (
     <main>
       <Section densite="ample">
-        <Pile espace={5}>
+        <Pile espace="large">
           <Texte variante="menu">Facturation</Texte>
           <Titre niveau={1}>Suivi des factures</Titre>
           <Texte variante="chapeau">
@@ -22,13 +22,13 @@ export function SuiviFactures() {
       </Section>
 
       <Section densite="compact" fond>
-        <Pile espace={5}>
+        <Pile espace="large">
           <Titre niveau={2}>Filtrer</Titre>
-          <Grille colonnes={2} espace={6}>
-            <Pile espace={2}>
+          <Grille colonnes={2} espace="large">
+            <Pile espace="carte">
               <TextField id="client" label="Rechercher un client" />
             </Pile>
-            <Pile espace={2}>
+            <Pile espace="carte">
               <TextField id="statut" label="Statut" />
             </Pile>
           </Grille>
@@ -36,7 +36,7 @@ export function SuiviFactures() {
       </Section>
 
       <Section densite="normal">
-        <Pile espace={6}>
+        <Pile espace="large">
           <Titre niveau={2}>Les factures</Titre>
           <EtatAsync
             requete={factures}
@@ -58,9 +58,9 @@ export function SuiviFactures() {
               </Vide>
             }
             enfants={(liste) => (
-              <Grille colonnes={3} espace={6}>
+              <Grille colonnes={3} espace="large">
                 {liste.map((facture) => (
-                  <Pile espace={1} key={facture.id}>
+                  <Pile espace="detail" key={facture.id}>
                     <Titre niveau={3}>{facture.client}</Titre>
                     <Texte variante="fin">{facture.montant} · échéance {facture.echeance}</Texte>
                     <Jeton ton="attente">{facture.statut}</Jeton>
@@ -73,9 +73,9 @@ export function SuiviFactures() {
       </Section>
 
       <Section densite="normal" fond>
-        <Pile espace={5}>
+        <Pile espace="large">
           <Titre niveau={2}>Relancer</Titre>
-          <Pile espace={2}>
+          <Pile espace="carte">
             <Button onPress={lancer}>{enAttente ? 'Envoi de la relance…' : 'Relancer le client'}</Button>
             {erreur ? <Texte variante="fin">La relance n'est pas partie. Réessayer.</Texte> : null}
           </Pile>

@@ -24,6 +24,13 @@ const arg = (nom, defaut) => {
   return i !== -1 && process.argv[i + 1] ? process.argv[i + 1] : defaut
 }
 const DATE = arg('date', new Date().toISOString().slice(0, 10))
+/* Une lignée se réimprime entière, ou pas du tout : les états d'un gabarit
+   doivent sortir du même geste, le même jour, depuis la même source vérifiée —
+   sinon deux états du même témoin ne montrent plus tout à fait le même écran.
+   Ce filtre choisit QUELLES lignées repartent ; il ne choisit jamais quels
+   états d'une lignée sortent. Sans lui, on ne pouvait compléter une lignée
+   qu'en réécrivant les six autres, que rien ne mettait en cause. */
+const SEULEMENT = arg('gabarit', null)
 
 /* ── La feuille de style du produit, produite depuis ses sources ─────────── */
 const CSS = path.join(RACINE, 'temoins/.style.css')
@@ -31,6 +38,15 @@ mkdirSync(path.dirname(CSS), { recursive: true })
 execFileSync('npx', ['tailwindcss', '-i', 'src/index.css', '-o', CSS, '--minify'],
   { cwd: RACINE, stdio: 'pipe' })
 const style = readFileSync(CSS, 'utf8')
+
+/* ── Les fichiers de fonte, déposés à côté des témoins ───────────────────── */
+/* Une feuille de style ne peut pas porter un fichier de fonte, seulement le
+   désigner. Sans ce dépôt, chaque témoin désignait un dossier absent et
+   retombait en silence sur la fonte système — il montrait donc autre chose
+   que le produit, ce qui est exactement ce qu'un témoin existe pour empêcher. */
+const { deposerPolices, ramenerChemins } = await import(
+  pathToFileURL(path.join(RACINE, 'tools/fili/temoin/polices.mjs')).href)
+console.log(`  ✅ ${String(deposerPolices())} fichiers de fonte dans temoins/files/`)
 
 const { rendre } = await import(pathToFileURL(path.join(RACINE, 'tools/fili/temoin/runtime.mjs')).href)
 const { installerSource } = await import(pathToFileURL(path.join(RACINE, 'src/system/donnees/source.ts')).href)
@@ -125,13 +141,13 @@ const GABARITS = [
     exporte: 'EcranActe', scenarios: scenariosActe(reelActe) }
 ]
 
-const page = (titre, corps) => `<!doctype html>
+const page = (titre, corps, feuille) => `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${titre}</title>
-<style>${style}</style>
+<style>${feuille}</style>
 </head>
 <body>
 ${corps}
@@ -139,14 +155,21 @@ ${corps}
 </html>
 `
 
-for (const g of GABARITS) {
+const ARENDRE = SEULEMENT === null ? GABARITS : GABARITS.filter((g) => g.cle === SEULEMENT)
+if (ARENDRE.length === 0) throw new Error(`gabarit « ${SEULEMENT} » inconnu — clés : ${GABARITS.map((g) => g.cle).join(', ')}`)
+
+for (const g of ARENDRE) {
   const mod = await import(pathToFileURL(path.join(RACINE, g.source)).href)
   const Composant = mod[g.exporte]
   if (typeof Composant !== 'function') throw new Error(`export « ${g.exporte} » introuvable dans ${g.source}`)
 
   for (const [etat, sources] of Object.entries(g.scenarios)) {
     for (const [chemin, instantane] of Object.entries(sources)) installerSource(chemin, instantane)
-    installerMutation('/runs', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'vide' })
+    /* Le signal de succès appartient à l'état de succès, et à lui seul. Il était
+       posé sur l'état vide : le témoin « vide » portait donc un acte réussi que
+       rien ne pouvait rendre — aucun run à montrer —, et l'état de succès, lui,
+       n'était jamais demandé. Le cinquième témoin de É1 manquait par là. */
+    installerMutation('/runs', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'succes' })
     installerMutation('/verdicts', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'succes' })
     installerMutation('/brouillons', { lancer: () => undefined, enAttente: false, erreur: null, succes: etat === 'succes' })
     /* Deux exécutions doivent produire deux fichiers identiques : sans remise à
@@ -157,8 +180,8 @@ for (const g of GABARITS) {
     const corps = rendre({ type: Composant, props: {}, enfants: [] })
     const cible = path.join(RACINE, 'temoins', g.cle, DATE, `${etat}.html`)
     mkdirSync(path.dirname(cible), { recursive: true })
-    writeFileSync(cible, page(`${g.titre} · ${etat} · ${DATE}`, corps))
+    writeFileSync(cible, page(`${g.titre} · ${etat} · ${DATE}`, corps, ramenerChemins(style, cible)))
     console.log('  ✅', path.relative(RACINE, cible), `(${String(corps.length)} octets)`)
   }
 }
-console.log(`\n  ${GABARITS.length} lignées, témoin daté du ${DATE}.\n`)
+console.log(`\n  ${ARENDRE.length} lignée(s), témoin daté du ${DATE}.\n`)

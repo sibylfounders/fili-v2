@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fili · la planche des registres · 2026-08-08</title>
+<style>
+/* geist-cyrillic-ext-wght-normal */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/geist-cyrillic-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* geist-cyrillic-wght-normal */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/geist-cyrillic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* geist-vietnamese-wght-normal */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/geist-vietnamese-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* geist-latin-ext-wght-normal */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/geist-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* geist-latin-wght-normal */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/geist-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* jetbrains-mono-cyrillic-ext-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-cyrillic-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* jetbrains-mono-cyrillic-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-cyrillic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* jetbrains-mono-greek-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-greek-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* jetbrains-mono-vietnamese-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-vietnamese-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* jetbrains-mono-latin-ext-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* jetbrains-mono-latin-wght-normal */
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url(../files/jetbrains-mono-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* inter-cyrillic-ext-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-cyrillic-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-cyrillic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-greek-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-greek-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-vietnamese-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-wght-normal */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../files/inter-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+:root{--papier:#FFFFFF;--creux:#F3F4F9;--encre:#36363A;--douce:#606064;--trait:#DDDEE2;--net:#8D8D92;--accent:#4F46E5;--scene:#202023}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papier);color:var(--encre);font:17px/1.6 'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;padding:48px 20px 96px}
+main{max-width:1024px;margin:0 auto}
+h1{font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:clamp(28px,4vw,42px);line-height:1.1;font-weight:600;margin:0 0 12px}
+h2{font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:clamp(22px,3vw,30px);line-height:1.2;font-weight:600;margin:0 0 8px}
+h3{font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:17px;font-weight:500;margin:0 0 8px}
+.menu{font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--douce);margin:0 0 12px}
+.chapeau{color:var(--douce);font-size:19px;max-width:62ch;margin:0 0 8px}
+.encart{border-left:2px solid var(--encre);background:var(--creux);padding:16px 20px;border-radius:8px;margin:32px 0 0}
+.encart.info{border-color:var(--net);background:var(--papier)}
+.encart p{margin:0 0 8px;font-size:14px}
+.encart .titre{font-weight:600;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:17px}
+section{margin:56px 0 0;padding-top:28px;border-top:1px solid var(--trait)}
+.intention{color:var(--douce);font-size:14px;max-width:62ch;margin:0 0 12px}
+.source{color:var(--douce);font-size:12px;font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;max-width:70ch;margin:0 0 8px}
+.interdit{color:var(--signal);font-size:14px;max-width:62ch;margin:0 0 12px}
+.grille{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin-top:16px}
+.carte{border:1px solid var(--trait);border-radius:8px;overflow:hidden;background:var(--papier)}
+.corps{padding:12px 14px}
+.nom{font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:13px;font-weight:500;margin:0 0 2px}
+.val{font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;font-size:12px;color:var(--douce);margin:0 0 6px;word-break:break-all}
+.emploi{font-size:13px;color:var(--douce);margin:0}
+.mesure{font-size:12px;color:var(--douce);margin:6px 0 0;font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+.echantillon{font-size:21px;margin:0 0 8px;line-height:1.25}
+.echantillon.petit{font-size:17px}
+ul{padding-left:20px;max-width:74ch}li{margin:0 0 12px;font-size:15px}
+.pied{margin-top:56px;padding-top:24px;border-top:1px solid var(--trait);color:var(--douce);font-size:14px;max-width:74ch}
+</style></head>
+<body><main>
+<p class="menu">Fili · pièce du dépôt · 2026-08-08 · version 5</p>
+<h1>La planche des registres d'expression</h1>
+<p class="chapeau">Ce que vous arbitrez ici, ce sont des valeurs — pas des écrans. Chaque registre porte son intention, sa provenance et son emploi déclaré.</p>
+
+<div class="encart">
+  <p class="titre">Aucun écran du produit ne figure sur cette planche, et c'est voulu.</p>
+  <p>Le protocole fait prononcer la primauté perçue et le parti visuel <b>à froid</b>, au premier acte de la séance, sur un témoin que vous n'avez jamais vu. Regarder un écran de Fili maintenant dépenserait ce froid : B-2 et B-3 ne mesureraient plus rien, ils confirmeraient.</p>
+</div>
+
+<div class="encart info">
+  <p class="titre">Une seule autorité</p>
+  <p>Une seule autorité : le dépôt de Fili. Le Gardien ne lit qu'un endroit, et ce qui n'y est pas n'existe pas pour lui.</p>
+  <p>Les VALEURS permises vivent ici. Les LOIS exigées vivent dans le corpus, contrat par contrat. Ce que le Gardien lit pour statuer vit dans fili.registry.json.</p>
+  <p>L'ancien kit (Design System UI) et l'étude de mise en page sont des fonds de recherche, au même titre que la doctrine v1 depuis #004. On y puise registre par registre, avec motif écrit — jamais en bloc.</p>
+  <p>On adopte un registre qui existe déjà dans une source déclarée, même sans emploi actuel : le coût est nul et le risque d'invention aussi. On refuse d'en créer un qui n'a ni source ni emploi.</p>
+</div>
+
+<div class="encart info">
+  <p class="titre">Thématisation — clair seulement</p>
+  <p>Deux thèmes doublent chaque ton, chaque mesure de contraste, et surtout chaque témoin — deux rendus par gabarit et par date, soit un doublement de la ressource la plus rare du système (#006). Le mode sombre est hors périmètre, déclaré et non oublié. Il se rouvre par une entrée de journal, jamais en silence.</p>
+  <p>Aucun ton n'a de jumeau. Le jour où le sombre entre, la planche entière est à reprendre — et ce coût est écrit maintenant.</p>
+</div>
+
+<div class="encart">
+  <p class="titre">Le parti — monochrome</p>
+  <p>Deux familles, et elles n'obéissent pas à la même loi. Les SURFACES et les TEXTES sont discrets : une échelle tirée de la teinte de la primaire à très faible chroma, pour qu'aucune surface n'oriente l'œil de celui qui juge un témoin. Les ÉTATS SYSTÈME sont inviolables : l'erreur est rouge, le succès vert, l'alerte jaune.</p>
+  <p>Fili affiche des témoins qu'un œil doit juger. Une identité visuelle forte contaminerait ce jugement. D'où la discipline sur les surfaces et les textes — et d'où, à l'inverse, le respect strict des conventions d'état : elles ne sont pas la voix de Fili, elles sont le langage commun.</p>
+  <p>undefined</p>
+  <p>undefined</p>
+  <p><b>Ce que ça coûte</b> — undefined</p>
+</div>
+
+<div class="encart info">
+  <p class="titre">Les règles d'emploi — 🟡 en cours — la plupart restent à écrire. Les phrases d'emploi de cette planche décrivent une intention ; une règle d'emploi opposable dit ce qui est INTERDIT, se vérifie, et entre au corpus.</p>
+  <p>Une règle d'emploi qui n'est pas vérifiable engage la main, pas le Gardien. Elle ne devient opposable qu'en entrant au corpus avec son cas piégé, son cas conforme et sa batterie.</p>
+</div>
+
+<section>
+  <h2>Les règles d'emploi opposables</h2>
+  <p class="intention">Une règle d'emploi dit ce qui est INTERDIT, se vérifie, et porte son cas piégé et son cas conforme. Celles-ci sont écrites ; elles n'entrent au corpus qu'avec leur batterie.</p>
+  <div class="carte" style="margin-bottom:16px"><div class="corps">
+    <p class="nom">E-1</p>
+    <p class="echantillon petit" style="margin-bottom:12px">Un élément à coins arrondis ne porte pas de bordure inégale. Soit ses angles sont droits, soit toutes ses bordures ont la même épaisseur.</p>
+    <p class="emploi"><b>Interdit</b> — Une carte arrondie avec une barre sur un seul côté, ou avec un côté plus épais que les autres.</p>
+    <p class="emploi"><b>Pourquoi</b> — La bordure épaisse meurt dans la courbe : elle s'y amincit en biseau et produit une jonction que rien ne justifie. C'est l'un des défauts les plus fréquents du relevé de « slop », et il se voit même quand on ne sait pas le nommer.</p>
+    <p class="mesure">piégé : rounded + border-left plus épaisse que les trois autres → bloque. · conforme : angles droits + barre latérale → passe. Arrondi + bordure uniforme → passe. Arrondi sans bordure → passe.</p>
+    <p class="source">Arbitrage d'Auteur, assumé sans preuve : « même si aucune étude ne le prouve, je veux que ce soit compris dans Fili ». Il rejoint la famille du facteur 3 de la proximité, du seuil d'alternance et du seuil de rang — des décisions d'Auteur, pas des vérités, révisables par une entrée de journal et jamais en silence.</p>
+    <p class="source">Décidable — Oui, et sans contexte : un rayon non nul et des épaisseurs de bordure qui diffèrent d'un côté à l'autre sont deux propriétés du fichier. Candidate au corpus.</p>
+  </div></div><div class="carte" style="margin-bottom:16px"><div class="corps">
+    <p class="nom">E-2</p>
+    <p class="echantillon petit" style="margin-bottom:12px">Une surface ne porte jamais le même fond que ce qui la contient. Soit son fond diffère, soit elle porte une bordure.</p>
+    <p class="emploi"><b>Interdit</b> — Une carte blanche sur un fond blanc, sans bordure. Elle n'existe pas : elle n'est qu'un espacement qu'on a cru voir.</p>
+    <p class="emploi"><b>Pourquoi</b> — Une surface qui ne se distingue pas de son conteneur ne délimite rien. Le lecteur croit lire un bloc là où il n'y a qu'un vide, et la structure qu'on pensait avoir posée n'est portée par rien.</p>
+    <p class="mesure">piégé : fond papier sur fond papier, sans bordure → bloque. · conforme : fond en retrait sur fond papier → passe. Fond papier sur fond papier avec bordure → passe.</p>
+    <p class="source">Arbitrage d'Auteur. C'est le pendant de E-1 : E-1 interdit de simuler une séparation par une bordure inégale, E-2 exige qu'une surface se distingue vraiment de ce sur quoi elle est posée.</p>
+    <p class="source">Décidable — Oui pour un fond déclaré dans le même arbre. Limite à écrire : quand le conteneur vit dans un autre composant, la comparaison demande de remonter au-delà du fichier — et le Gardien lit un fichier, jamais un projet. Cette part-là est indécidable en l'état.</p>
+  </div></div>
+</section>
+
+<section>
+  <h2>La palette — calculée, pas déclarée</h2>
+  <p class="intention">Une seule couleur est saisie dans tout le système : la primaire de la charte partagée. Tout le reste en découle — les gris à sa teinte et à très faible chroma, les états par harmonisation bornée, chaque partenaire par recherche de la clarté qui fait tenir le seuil. Ces hexadécimaux sont des <b>résultats</b>.</p>
+  <p class="source">Primaire #4F46E5 · teinte 277° · espace OKLCH · chroma des neutres 0.006</p>
+  <h3>Les surfaces et les encres</h3>
+  <div class="grille"><div class="carte"><div class="apercu"><div style="height:64px;background:#FFFFFF"></div></div><div class="corps"><p class="nom">papier</p><p class="val">#FFFFFF</p><p class="emploi">le fond de la page</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#F3F4F9"></div></div><div class="corps"><p class="nom">papierCreux</p><p class="val">#F3F4F9</p><p class="emploi">une section en retrait</p><p class="mesure">sur le papier : 1.10:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#E6E7EB"></div></div><div class="corps"><p class="nom">papierSurvol</p><p class="val">#E6E7EB</p><p class="emploi">sous le pointeur</p><p class="mesure">sur le papier : 1.24:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#DADBDF"></div></div><div class="corps"><p class="nom">papierSelection</p><p class="val">#DADBDF</p><p class="emploi">une surface choisie</p><p class="mesure">sur le papier : 1.38:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#202023"></div></div><div class="corps"><p class="nom">scene</p><p class="val">#202023</p><p class="emploi">le bloc plein qui porte ce qui pèse le plus</p><p class="mesure">sur le papier : 16.25:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#36363A"></div></div><div class="corps"><p class="nom">encre</p><p class="val">#36363A</p><p class="emploi">le texte qui porte</p><p class="mesure">sur le papier : 12.03:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#606064"></div></div><div class="corps"><p class="nom">encreDouce</p><p class="val">#606064</p><p class="emploi">le texte qui accompagne</p><p class="mesure">sur le papier : 6.26:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#A3A4A8"></div></div><div class="corps"><p class="nom">encreEteinte</p><p class="val">#A3A4A8</p><p class="emploi">un contrôle désactivé — hors seuil par exception WCAG 1.4.3</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#DDDDE2"></div></div><div class="corps"><p class="nom">encreInverse</p><p class="val">#DDDDE2</p><p class="emploi">le texte posé sur une scène</p><p class="mesure">sur le papier : 1.35:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#DDDEE2"></div></div><div class="corps"><p class="nom">trait</p><p class="val">#DDDEE2</p><p class="emploi">séparer deux zones — décoratif</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#8D8D92"></div></div><div class="corps"><p class="nom">traitNet</p><p class="val">#8D8D92</p><p class="emploi">délimiter un contrôle</p><p class="mesure">sur le papier : 3.30:1</p></div></div><div class="carte"><div class="apercu"><div style="height:64px;background:#4F46E5"></div></div><div class="corps"><p class="nom">accent</p><p class="val">#4F46E5</p><p class="emploi">la primaire elle-même : le focus et le lien, jamais un contenu</p><p class="mesure">sur le papier : 6.29:1</p></div></div></div>
+  <h3>Les états — teinte conventionnelle, tirée vers la primaire, bornée</h3>
+  <p class="intention">On calcule l'écart le plus court entre la teinte conventionnelle et celle de la primaire, on en applique le quart, et on borne le déplacement à douze degrés. Un rouge reste un rouge ; il devient seulement le rouge de cette famille-là.</p>
+  <p class="source">Attraction 0.25 · bande ±12°. Une seconde lecture existait : tirer les états vers le COMPLÉMENT de la primaire plutôt que vers elle. Elle produit des états qui tranchent au lieu d'appartenir. Non retenue — mais elle se rouvre en changeant le signe de l'attraction, et rien d'autre.</p>
+  <div class="grille"><div class="carte"><div class="apercu"><div style="display:flex;height:64px"><div style="flex:1;background:#FFEAEB;color:#8E2D3D;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">erreur</div><div style="flex:1;background:#9A1C37;color:#FFF1F2;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">erreur</div></div></div><div class="corps"><p class="nom">erreur</p><p class="val">ancre 27° → 15°</p>
+     <p class="emploi">surface #FFEAEB · sur #8E2D3D · plein #9A1C37</p>
+     <p class="mesure">couple surface : 7.03:1 · couple plein : 7.37:1</p></div></div><div class="carte"><div class="apercu"><div style="display:flex;height:64px"><div style="flex:1;background:#FFECDD;color:#774405;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">alerte</div><div style="flex:1;background:#7C4601;color:#FFF3E8;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">alerte</div></div></div><div class="corps"><p class="nom">alerte</p><p class="val">ancre 75° → 63°</p>
+     <p class="emploi">surface #FFECDD · sur #774405 · plein #7C4601</p>
+     <p class="mesure">couple surface : 7.00:1 · couple plein : 7.04:1</p></div></div><div class="carte"><div class="apercu"><div style="display:flex;height:64px"><div style="flex:1;background:#DBF9E6;color:#095E38;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">succes</div><div style="flex:1;background:#02663C;color:#EBF9F0;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">succes</div></div></div><div class="corps"><p class="nom">succes</p><p class="val">ancre 145° → 157°</p>
+     <p class="emploi">surface #DBF9E6 · sur #095E38 · plein #02663C</p>
+     <p class="mesure">couple surface : 7.01:1 · couple plein : 6.52:1</p></div></div><div class="carte"><div class="apercu"><div style="display:flex;height:64px"><div style="flex:1;background:#ECEFFF;color:#434898;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">information</div><div style="flex:1;background:#4345AB;color:#F2F4FF;font:600 13px 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;display:flex;align-items:center;justify-content:center">information</div></div></div><div class="corps"><p class="nom">information</p><p class="val">ancre 277° → 277°</p>
+     <p class="emploi">surface #ECEFFF · sur #434898 · plein #4345AB</p>
+     <p class="mesure">couple surface : 7.01:1 · couple plein : 7.15:1</p></div></div></div>
+</section>
+<section><h2>Les familles</h2>
+  <p class="intention">Trois voix, celles de la charte partagée. La courante porte le contenu, la mécanique porte tout ce qui est chrome, étiquette, identifiant et nombre, et l'étiquette porte les libellés de formulaire.</p><p class="source">Provenance — Charte partagée — ancien kit : font-sans, font-mono, font-label. Reprises telles quelles par arbitrage d'Auteur.</p><p class="source">Le nom écrit ici est le nom que le fichier de fonte déclare, au caractère près — « Geist Variable » et non « Geist ». Ce n'est pas une coquetterie : le navigateur ne fait aucun rapprochement approximatif. Un nom qui ne correspond pas ne produit aucune erreur, aucune alerte, aucun écart au Gardien — il produit un écran en fonte système, et il l'a produit du 7 août 2026 jusqu'à la séance de É1, sur toute la surface de Fili. Le mot « Variable » appartient au nom de la fonte parce que le paquet livre un fichier unique portant toutes les graisses ; il n'est pas un suffixe qu'on peut retirer.</p><p class="source">Les fichiers de fonte sont embarqués dans le dépôt par les paquets @fontsource-variable (geist, jetbrains-mono, inter) et servis depuis lui. Aucun appel à un tiers au moment de l'exécution : K2 §3 l'interdit, et Fili doit s'ouvrir sans réseau. La preuve que la dette est fermée n'est pas cette phrase — c'est que la construction passe.</p><p class="source">Les fichiers présents, les métriques de la fonte (hauteur d'ascendante, de descendante, de capitale) deviennent lisibles. C'est ce qui rend calculable le rognage de l'interligne, et c'est ce qui rend vérifiable la cohérence entre la fonte déclarée et la fonte réelle. Deux des six sources typographiques retenues n'avaient aucun objet sans elles.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">courante</p><p class="echantillon" style="font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Le juge est-il entier ?</p><p class="emploi">le contenu — titres compris</p></div></div><div class="carte"><div class="corps"><p class="nom">mecanique</p><p class="echantillon" style="font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Le juge est-il entier ?</p><p class="emploi">le chrome, les surtitres, les identifiants, les chemins, les nombres, les numéros d'assertion</p></div></div><div class="carte"><div class="corps"><p class="nom">etiquette</p><p class="echantillon" style="font-family:'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Le juge est-il entier ?</p><p class="emploi">les libellés de formulaire — provisionné, aucun emploi avant É7 · L'acte</p></div></div></div></section>
+<section><h2>Les graisses</h2>
+  <p class="intention">Trois graisses. Une quatrième servirait à compenser une hiérarchie mal posée.</p><p class="source">Provenance — Ancien kit — typography.weight, à l'identique.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">normale · 400</p><p class="echantillon petit" style="font-weight:400">Arbitrage de lecture</p><p class="emploi">le corps</p></div></div><div class="carte"><div class="corps"><p class="nom">moyenne · 500</p><p class="echantillon petit" style="font-weight:500">Arbitrage de lecture</p><p class="emploi">un libellé, un jeton, une étiquette</p></div></div><div class="carte"><div class="corps"><p class="nom">appuyee · 600</p><p class="echantillon petit" style="font-weight:600">Arbitrage de lecture</p><p class="emploi">un titre, un nombre qui compte</p></div></div></div></section>
+<section><h2>Les tailles de texte</h2>
+  <p class="intention">L'échelle typographique remonte dans la planche : c'est une liste fermée de valeurs d'expression comme une autre. Elle n'entre pas en conflit avec la doctrine — la taille d'un titre découle toujours de son NIVEAU (R4.5), et c'est le composant qui fait la correspondance. La planche dit ce qui existe ; la règle dit qui a le droit de s'en servir.</p><p class="source">Écart déclaré — Le corps est porté à 17 px là où l'ancien kit dit 16. C'est une décision de lecture pour un poste où l'on passe du temps, et l'écart est déclaré plutôt que subi.</p><p class="source">Interligne — L'interligne appartient à la taille : le séparer produirait deux listes qui divergent. Le texte courant ne descend jamais sous 1,5 — seuil de lisibilité instruit par l'étude de mise en page. Et il décroît avec le corps à l'intérieur d'un régime : 1,65 à 14 px, 1,60 à 17 px, 1,55 à 19 px. C'est la direction que la source donne sans jamais donner de nombre ; les nombres sont ceux du projet.</p><p class="source">Régime — Deux régimes, et la règle ne vaut que dans le sien. RÉGIME DE LECTURE — 'fin', 'corps', 'chapeau' : du texte suivi, qu'on lit ligne après ligne. Le rapport interlignage/corps y DÉCROÎT quand le corps grandit : plus le texte est petit, plus il a besoin d'air pour que l'œil retrouve la ligne suivante. RÉGIME DE TITRE — 'niveau3', 'niveau2', 'niveau1' : même sens de décroissance, valeurs plus serrées, parce qu'un titre se voit avant de se lire. HORS RÉGIME — 'menu' : une étiquette, jamais un texte suivi ; sa chasse élargie le dit. Elle n'entre dans aucune monotonie. Une assertion de monotonie écrite globalement, sans ces trois périmètres, bloquerait l'échelle de Fili elle-même.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">menu · 12px / 1.2</p><p style="font-size:12px;line-height:1.2;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">surtitre, étiquette, en-tête de colonne</p></div></div><div class="carte"><div class="corps"><p class="nom">fin · 14px / 1.65</p><p style="font-size:14px;line-height:1.65;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">texte d'accompagnement, note</p></div></div><div class="carte"><div class="corps"><p class="nom">corps · 17px / 1.6</p><p style="font-size:17px;line-height:1.6;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">le texte courant</p></div></div><div class="carte"><div class="corps"><p class="nom">chapeau · 19px / 1.55</p><p style="font-size:19px;line-height:1.55;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">le paragraphe d'ouverture d'une section</p></div></div><div class="carte"><div class="corps"><p class="nom">niveau3 · 17px / 1.35</p><p style="font-size:17px;line-height:1.35;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">titre de niveau 3</p></div></div><div class="carte"><div class="corps"><p class="nom">niveau2 · clamp(22px, 3vw, 30px) / 1.2</p><p style="font-size:clamp(22px, 3vw, 30px);line-height:1.2;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">titre de niveau 2</p></div></div><div class="carte"><div class="corps"><p class="nom">niveau1 · clamp(28px, 4vw, 42px) / 1.1</p><p style="font-size:clamp(28px, 4vw, 42px);line-height:1.1;margin:0 0 8px;font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Ce qui compte d'abord</p><p class="emploi">titre de niveau 1</p></div></div></div></section>
+<section><h2>Les mesures</h2>
+  <p class="intention">Deux largeurs, et le régime qui les gouverne.</p><p class="source">Provenance — La mesure de lecture vient de l'étude de mise en page (62 caractères, instruite). La largeur de page vient de l'ancien kit (container-default).</p><p class="source">Régime — Responsive borné. La page s'adapte entre 320 px et la largeur de page ; au-delà elle ne s'étire plus, elle se centre. Aucune mise en page fixe, aucune mise en page adaptative par paliers de gabarit.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">lecture</p><p class="val">62ch</p><p class="emploi">la largeur maximale d'un bloc de texte suivi</p></div></div><div class="carte"><div class="corps"><p class="nom">page</p><p class="val">1024px</p><p class="emploi">la largeur maximale du contenu d'une page</p></div></div><div class="carte"><div class="corps"><p class="nom">rail</p><p class="val">280px</p><p class="emploi">un rail de navigation — provisionné, aucun emploi aujourd'hui</p></div></div><div class="carte"><div class="corps"><p class="nom">plancher</p><p class="val">320px</p><p class="emploi">la largeur sous laquelle rien n'est admis à déborder</p></div></div></div></section>
+<section><h2>Les points de bascule</h2>
+  <p class="intention">Les points où la mise en page change de forme. Ils sont déclarés ici et nulle part ailleurs : jusqu'à K5 ils venaient des réglages par défaut de l'outil, c'est-à-dire de personne.</p><p class="source">Provenance — Ancien kit — breakpoint, à l'identique.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">mobile</p><p class="val">480px</p><p class="emploi">bascule de base : une colonne devient deux</p></div></div><div class="carte"><div class="corps"><p class="nom">tablette</p><p class="val">1024px</p><p class="emploi">deux colonnes deviennent trois ou quatre</p></div></div><div class="carte"><div class="corps"><p class="nom">bureau</p><p class="val">1280px</p><p class="emploi">provisionné — aucun emploi aujourd'hui</p></div></div></div></section>
+<section><h2>La grille</h2>
+  <p class="intention">Le nombre de colonnes est une liste fermée, portée par le conteneur du registre. Une grille libre est une grille que personne ne relit.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">colonnes</p><p class="val">2 · 3 · 4</p><p class="emploi">les seuls nombres de colonnes admis</p></div></div></div></section>
+<section><h2>Les opacités</h2>
+  <p class="intention">Une échelle fermée de voiles. Sans elle, chaque teinte pâle est un nombre inventé sur place — c'est le cas que K5 a trouvé sur ses propres jetons.</p>
+  <div class="grille"><div class="carte"><div class="corps"><div style="height:44px;background:#36363A;opacity:0.05;margin-bottom:12px;border-radius:2px"></div><p class="nom">voile</p><p class="val">0.05</p><p class="emploi">le fond très pâle d'un jeton ou d'une alerte</p></div></div><div class="carte"><div class="corps"><div style="height:44px;background:#36363A;opacity:0.1;margin-bottom:12px;border-radius:2px"></div><p class="nom">teinte</p><p class="val">0.1</p><p class="emploi">un fond teinté lisible</p></div></div><div class="carte"><div class="corps"><div style="height:44px;background:#36363A;opacity:0.3;margin-bottom:12px;border-radius:2px"></div><p class="nom">contour</p><p class="val">0.3</p><p class="emploi">un contour teinté par le ton qu'il porte</p></div></div><div class="carte"><div class="corps"><div style="height:44px;background:#36363A;opacity:0.55;margin-bottom:12px;border-radius:2px"></div><p class="nom">estompe</p><p class="val">0.55</p><p class="emploi">un élément atténué mais actif</p></div></div></div></section>
+<section><h2>Les traits</h2>
+  <p class="intention">Le trait est le dernier moyen de séparer : l'espace d'abord, le fond ensuite, le trait en dernier. Deux épaisseurs, deux styles.</p><p class="source">Provenance — Étude de mise en page — 1 px est le trait du système, 2 px est une exception nommée. L'anneau de focus vient de l'ancien kit (border).</p>
+  <div class="grille"><div class="carte"><div class="corps"><div style="width:100%;height:0;border-top:1px solid #8D8D92;margin-bottom:12px"></div><p class="nom">systeme</p><p class="val">1px</p><p class="emploi">toute bordure et tout filet</p></div></div><div class="carte"><div class="corps"><div style="width:100%;height:0;border-top:2px solid #8D8D92;margin-bottom:12px"></div><p class="nom">marqueur</p><p class="val">2px</p><p class="emploi">une exception nommée — une barre qui désigne, jamais une frontière</p></div></div><div class="carte"><div class="corps"><div style="width:100%;height:0;border-top:1px solid #8D8D92;margin-bottom:12px"></div><p class="nom">plein</p><p class="val">solid</p><p class="emploi">un contour qui délimite quelque chose qui existe</p></div></div><div class="carte"><div class="corps"><div style="width:100%;height:0;border-top:1px dashed #8D8D92;margin-bottom:12px"></div><p class="nom">tirete</p><p class="val">dashed</p><p class="emploi">un contour qui délimite une place vide — l'attente d'un contenu qui n'est pas là</p></div></div></div></section>
+<section><h2>L'anneau de focus</h2>
+  <p class="intention">L'anneau de focus s'adapte au fond sur lequel il tombe, et c'est sa seule variation. Un poste de travail se pilote au clavier : la souris y est un confort, jamais une condition (K2 §7.3).</p><p class="source">Provenance — Ancien kit — border.focus-width et border.focus-offset, à l'identique.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">epaisseur</p><p class="val">2px</p><p class="emploi">l'anneau, posé en outline pour ne décaler aucune mise en page</p></div></div><div class="carte"><div class="corps"><p class="nom">ecart</p><p class="val">2px</p><p class="emploi">l'écart entre le composant et son anneau</p></div></div><div class="carte"><div class="corps"><p class="nom">surClair</p><p class="val">signal</p><p class="emploi">sur un fond de papier — le ton du refus, parce qu'il est le plus visible des quatre</p></div></div><div class="carte"><div class="corps"><p class="nom">surPlein</p><p class="val">encreInverse</p><p class="emploi">sur un ton plein, où le signal disparaîtrait</p></div></div></div></section>
+<section><h2>Les cibles</h2>
+  <p class="intention">Le doigt est imprécis. Trois mesures, et la plus petite est un plancher légal, pas un objectif.</p><p class="source">Provenance — Ancien kit et étude de mise en page — valeurs identiques dans les deux, ce qui vaut confirmation.</p>
+  <div class="grille"><div class="carte"><div class="corps"><div style="width:24px;height:24px;max-width:100%;background:#DADBDF;border:1px solid #8D8D92;border-radius:2px;margin-bottom:12px"></div><p class="nom">plancher</p><p class="val">24px</p><p class="emploi">la taille minimale d'une cible (WCAG 2.5.8 AA)</p></div></div><div class="carte"><div class="corps"><div style="width:44px;height:44px;max-width:100%;background:#DADBDF;border:1px solid #8D8D92;border-radius:2px;margin-bottom:12px"></div><p class="nom">confort</p><p class="val">44px</p><p class="emploi">la taille visée au doigt</p></div></div><div class="carte"><div class="corps"><div style="width:8px;height:8px;max-width:100%;background:#DADBDF;border:1px solid #8D8D92;border-radius:2px;margin-bottom:12px"></div><p class="nom">ecartMini</p><p class="val">8px</p><p class="emploi">l'écart minimal entre deux cibles voisines</p></div></div></div></section>
+<section><h2>Les icônes</h2>
+  <p class="intention">Aucun verdict ne se lit à la couleur seule (K2 §7.1) : chaque état porte une forme. Ce qui est déclaré ici n'est PAS un dessin, c'est une CORRESPONDANCE — quel état porte quel signe, dans un jeu qui existe déjà.</p><p class="source">Règle — On ne dessine pas d'icône. On déclare une source, une version et une correspondance. Un jeu dessiné sur mesure serait un jeu à maintenir, à équilibrer et à justifier, pour un produit de sept écrans.</p><p class="source">Provenance — Lucide — jeu ouvert, licence ISC. Grille de 24, trait de 2, extrémités rondes.</p><p class="interdit">Dette — 🔴 Le paquet n'est pas installé : le registre de paquets est inaccessible depuis la session. Les tracés employés aujourd'hui sont un DÉPANNAGE déclaré, dessiné à la main sur une grille de 16. Une commande suffit à les remplacer par les vrais — voir scripts/vendorer-icones.mjs.</p>
+  <div class="grille"><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg><p class="nom">verrou</p><p class="val">lock</p><p class="emploi">🟢 verrouillé, acquis, au vert</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg><p class="nom">attente</p><p class="val">clock</p><p class="emploi">🟡 en cours, suspendu, réversible</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /></svg><p class="nom">idee</p><p class="val">circle</p><p class="emploi">⚪ idée, formulée, non instruite</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></svg><p class="nom">refus</p><p class="val">triangle-alert</p><p class="emploi">🔴 refus de statuer, blocage, échec</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg><p class="nom">information</p><p class="val">info</p><p class="emploi">une note, une provenance, un rappel de règle</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg><p class="nom">constat</p><p class="val">file-text</p><p class="emploi">un constat, une occurrence, une ligne fautive</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16" /><path d="M18 17V9" /><path d="M13 17V5" /><path d="M8 17v-3" /></svg><p class="nom">mesure</p><p class="val">chart-column</p><p class="emploi">une batterie, un décompte, une mesure</p></div></div></div></section>
+<section><h2>Les tailles de lecture des icônes</h2>
+  <p class="intention">Trois tailles de lecture, alignées sur la grille du jeu. Une icône qui n'est pas accordée au texte qu'elle accompagne se lit comme un accident — et c'est la règle qui compte, plus que le dessin.</p><p class="source">Provenance — Grille de Lucide — 16, 20, 24.</p>
+  <div class="grille"><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg><p class="nom">petite · 16px</p><p class="emploi">dans un libellé fin, un jeton, une ligne de texte courant</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg><p class="nom">courante · 20px</p><p class="emploi">dans un bouton, en tête d'une alerte</p></div></div><div class="carte"><div class="corps"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#36363A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /><path d="M14 2v5a1 1 0 0 0 1 1h5" /><path d="M10 9H8" /><path d="M16 13H8" /><path d="M16 17H8" /></svg><p class="nom">grande · 24px</p><p class="emploi">un signe qui porte seul</p></div></div></div></section>
+<section><h2>Les rayons</h2>
+  <p class="intention">Un registre n'a pas de coins ronds. Le rayon sert à désigner ce qui se manipule, jamais à adoucir ce qui se lit.</p><p class="source">Provenance — Ancien kit — radius. Le rayon de contrôle est aligné sur le cran md du kit (8) là où la version 1 de cette planche avait inventé 6.</p>
+  <div class="grille"><div class="carte"><div class="corps"><div style="width:72px;height:40px;background:#F3F4F9;border:1px solid #8D8D92;border-radius:0px;margin-bottom:10px"></div><p class="nom">net</p><p class="val">0px</p><p class="emploi">une section, un tableau — ce qui se lit</p></div></div><div class="carte"><div class="corps"><div style="width:72px;height:40px;background:#F3F4F9;border:1px solid #8D8D92;border-radius:2px;margin-bottom:10px"></div><p class="nom">doux</p><p class="val">2px</p><p class="emploi">un jeton, une étiquette</p></div></div><div class="carte"><div class="corps"><div style="width:72px;height:40px;background:#F3F4F9;border:1px solid #8D8D92;border-radius:8px;margin-bottom:10px"></div><p class="nom">controle</p><p class="val">8px</p><p class="emploi">un bouton, un champ — ce qui se manipule</p></div></div><div class="carte"><div class="corps"><div style="width:72px;height:40px;background:#F3F4F9;border:1px solid #8D8D92;border-radius:9999px;margin-bottom:10px"></div><p class="nom">pastille</p><p class="val">9999px</p><p class="emploi">une pastille d'état</p></div></div></div></section>
+<section><h2>Les élévations</h2>
+  <p class="intention">Rien ne flotte dans un poste de gouvernance : ce qui doit se distinguer se distingue par un trait ou par un fond. Les deux crans qui restent viennent de la charte partagée et n'ont aucun emploi aujourd'hui.</p><p class="source">Provenance — Charte partagée — elevation.</p><p class="source">Retiré — Le cran « filet », une ombre intérieure sous un en-tête collant, est retiré : il ne fonctionne pas visuellement. Constat d'Auteur. Une ombre intérieure est vraisemblablement une affordance de CHAMP, et elle entrera avec le champ — pas avant, et pas à cette place.</p>
+  <div class="grille"><div class="carte"><div class="corps"><div style="width:100%;height:44px;background:#FFFFFF;border-radius:8px;box-shadow:none;margin-bottom:12px"></div><p class="nom">aucune</p><p class="val">none</p><p class="emploi">tout, par défaut</p></div></div><div class="carte"><div class="corps"><div style="width:100%;height:44px;background:#FFFFFF;border-radius:8px;box-shadow:0 1px 3px rgba(3, 7, 18, 0.10);margin-bottom:12px"></div><p class="nom">releve</p><p class="val">0 1px 3px rgba(3, 7, 18, 0.10)</p><p class="emploi">provisionné — un élément détaché de son fond. Aucun emploi aujourd'hui.</p></div></div><div class="carte"><div class="corps"><div style="width:100%;height:44px;background:#FFFFFF;border-radius:8px;box-shadow:0 4px 12px rgba(3, 7, 18, 0.14);margin-bottom:12px"></div><p class="nom">superpose</p><p class="val">0 4px 12px rgba(3, 7, 18, 0.14)</p><p class="emploi">provisionné — un superposé. Aucun emploi aujourd'hui.</p></div></div></div></section>
+<section><h2>Les plans de superposition</h2>
+  <p class="intention">L'ordre des couches. Il est déclaré avant d'avoir un emploi, parce que le jour où un superposé apparaît, un nombre sera écrit sur place s'il n'est pas ici.</p><p class="source">Provenance — Ancien kit — zIndex, à l'identique.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">collant</p><p class="val">100</p><p class="emploi">un en-tête qui reste au défilement</p></div></div><div class="carte"><div class="corps"><p class="nom">superpose</p><p class="val">1000</p><p class="emploi">le voile et la surface d'un superposé modal</p></div></div><div class="carte"><div class="corps"><p class="nom">ancre</p><p class="val">1100</p><p class="emploi">un superposé ancré non modal — menu, liste déroulante</p></div></div><div class="carte"><div class="corps"><p class="nom">message</p><p class="val">1200</p><p class="emploi">un message passager</p></div></div><div class="carte"><div class="corps"><p class="nom">bulle</p><p class="val">1300</p><p class="emploi">une infobulle</p></div></div></div></section>
+<section><h2>Le voile</h2>
+  <p class="intention">Le voile d'un superposé modal. Déclaré, sans emploi aujourd'hui.</p><p class="source">Provenance — Ancien kit — overlay.scrim, à l'identique.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">scrim</p><p class="val">rgba(17, 24, 39, 0.5)</p><p class="emploi">le fond assombri derrière un superposé modal</p></div></div></div></section>
+<section><h2>Les durées</h2>
+  <p class="intention">Le mouvement n'est pas un décor, c'est un moyen d'expliquer. Trois crans productifs, et un cran expressif borné : il est réservé à un mouvement qui APPREND quelque chose — un tracé qu'on suit, un chemin qu'on lit. Jamais à une apparition.</p><p class="source">Provenance — Ancien kit et exercice validé. Le cran de tracé vient de l'exercice, avec son motif d'origine : à mille millisecondes le trait filait et on ne lisait plus le chemin qu'il prenait.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">rapide</p><p class="val">100ms</p><p class="emploi">un retour de contrôle — survol, pression, changement de fond</p></div></div><div class="carte"><div class="corps"><p class="nom">base</p><p class="val">200ms</p><p class="emploi">une apparition, un dépliement local</p></div></div><div class="carte"><div class="corps"><p class="nom">ample</p><p class="val">300ms</p><p class="emploi">une grande surface, un volet</p></div></div><div class="carte"><div class="corps"><p class="nom">trace</p><p class="val">1800ms</p><p class="emploi">un mouvement qui explique — un tracé qu'on suit du regard. Sous budget de rareté : au plus un par écran, et seulement s'il apprend quelque chose.</p></div></div></div></section>
+<section><h2>Les courbes</h2>
+  <p class="intention">Trois courbes, empruntées à la règle la plus banale qui soit : ce qui entre décélère, ce qui sort accélère, ce qui se transforme fait les deux. La courbe à rebond de l'ancien kit est écartée — elle appartient à une voix qui n'est pas celle-ci.</p><p class="source">Provenance — Ancien kit — motion.easing, crans productifs seuls.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">entree</p><p class="val">cubic-bezier(0, 0, 0.2, 1)</p><p class="emploi">ce qui apparaît</p></div></div><div class="carte"><div class="corps"><p class="nom">sortie</p><p class="val">cubic-bezier(0.4, 0, 1, 1)</p><p class="emploi">ce qui disparaît</p></div></div><div class="carte"><div class="corps"><p class="nom">standard</p><p class="val">cubic-bezier(0.4, 0, 0.2, 1)</p><p class="emploi">ce qui se transforme sur place</p></div></div></div></section>
+<section><h2>Les formes d'attente</h2>
+  <p class="intention">Les formes que prend une attente. Un squelette juste ressemble à ce qu'il remplace ; un squelette faux dément la page qui arrive — c'est ce que juge le point de passage B-6. Et une attente qui ne dit rien n'est pas une attente, c'est un vide.</p><p class="interdit">Interdit — Le rond qui tourne. Il n'informe de rien, il occupe. K2 §6 l'a écarté nommément pour l'écran du verdict, et la règle vaut pour tous.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">squelette</p><p class="val">lignes | bloc | jetons</p><p class="emploi">la forme de ce qui vient, pas une forme générique</p></div></div><div class="carte"><div class="corps"><p class="nom">compte</p><p class="val">n sur N</p><p class="emploi">une progression chiffrée réelle</p></div></div></div></section>
+<section><h2>etats</h2>
+  <p class="intention">Les états d'un élément avec lequel on interagit. Ils sont déclarés comme une liste fermée : sans elle, chaque écran réinvente ce que veut dire « désactivé ». Aucun n'emploie de couleur — c'est le fond, le trait et l'encre qui changent.</p><p class="source">Manque signalé — Signalé par l'Auteur avant que je le voie. C'était le trou le plus large de la version 2.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">repos</p><p class="val">papier · traitNet · encre</p><p class="emploi">l'état nominal d'un contrôle</p></div></div><div class="carte"><div class="corps"><p class="nom">survol</p><p class="val">papierSurvol · encre · encre</p><p class="emploi">sous le pointeur — le trait se renforce, le fond se creuse</p></div></div><div class="carte"><div class="corps"><p class="nom">pression</p><p class="val">papierSelection · encre · encre</p><p class="emploi">pendant l'appui</p></div></div><div class="carte"><div class="corps"><p class="nom">focus</p><p class="val">anneau accent, 2 px, écart 2 px</p><p class="emploi">au clavier — il s'ajoute, il ne remplace jamais le trait d'état</p></div></div><div class="carte"><div class="corps"><p class="nom">desactive</p><p class="val">papierCreux · trait · encreEteinte</p><p class="emploi">hors service — hors seuil de contraste par exception WCAG 1.4.3</p></div></div><div class="carte"><div class="corps"><p class="nom">selectionne</p><p class="val">scene · scene · encreInverse</p><p class="emploi">choisi, et qui le reste — le poids plein, jamais une teinte</p></div></div><div class="carte"><div class="corps"><p class="nom">erreur</p><p class="val">papier · encre 2 px · encre</p><p class="emploi">en faute — le trait passe au marqueur, le libellé dit quoi</p></div></div><div class="carte"><div class="corps"><p class="nom">lectureSeule</p><p class="val">papierCreux · aucun trait · encre</p><p class="emploi">lisible, non modifiable — il ne ressemble pas à un contrôle</p></div></div></div></section>
+<section><h2>medias</h2>
+  <p class="intention">Les pièces visuelles propres à Fili. Elles ne sont PAS une règle générale : le corpus reste agnostique, et ces pièces n'appartiennent qu'au produit.</p><p class="source">Provenance — Charte partagée — charte.html. Versées dans fili.medias.json avec leur provenance.</p><p class="source">Le fond animé est un canevas WebGL doublé d'un repli et d'un voile : trois couches, pas une image. Il se reprend depuis la charte comme une PIÈCE, jamais réimplémenté — un fond réécrit de mémoire ne serait plus le même fond, et personne ne le verrait.</p>
+  <div class="grille"><div class="carte"><div class="corps"><p class="nom">marque</p><p class="val">versée au dépôt</p><p class="emploi">le sigle de Fili — une fois par vue, jamais dans le contenu : c'est du chrome</p></div></div><div class="carte"><div class="corps"><p class="nom">fondAnime</p><p class="val">🔴 déclaré, non versé</p><p class="emploi">RÉSERVÉ aux espaces de démonstration, et ils vont bien au-delà des blocs sur fond de scène. Aucun écran d'exploitation n'y a droit — É1 à É7 s'en passent.</p></div></div></div></section>
+
+<section>
+  <h2>Ce qui ne vit pas ici</h2>
+  <p class="intention">Trois registres sont gouvernés par le registre que le Gardien lit, parce qu'il statue déjà dessus. Les déplacer ici créerait deux sources de vérité.</p>
+  <div class="grille">
+    <div class="carte"><div class="corps"><p class="nom">échelle d'espacement</p><p class="val">0 · 1 · 2 · 3 · 4 · 5 · 6 · 8 · 10 · 12 · 16 · 20 · 24 · 32</p><p class="emploi">les seuls pas d'écart admis — le Gardien refuse tout le reste (R3.1)</p></div></div>
+    <div class="carte"><div class="corps"><p class="nom">densités de section</p><p class="val">compact · normal · ample</p><p class="emploi">la respiration déclarée d'une section, et l'alternance qu'elle impose (R4.2, R4.3)</p></div></div>
+    <div class="carte"><div class="corps"><p class="nom">proximité</p><p class="val">facteur 3</p><p class="emploi">l'écart d'un groupe vaut au moins trois fois celui de ses enfants (R3.7)</p></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Le catalogue de libellés — les règles de ton</h2>
+  <p class="intention">Le catalogue porte la voix du produit écran par écran. Ce qui s'arbitre ici, ce sont les règles qui la gouvernent : c'est sur elles que le point de passage B-5 s'appuiera.</p>
+  <h3>Aux humains</h3><p class="intention">Ton professionnel. Pas exhaustif. Orienté problème d'abord, solution ensuite. Vocabulaire accessible, sans surcharge cognitive.</p><ul><li>Fili ne s'excuse pas. Jamais « désolé », jamais « une erreur est survenue ». Il dit ce qui s'est passé et ce qui reste possible.</li><li>Fili ne félicite pas. Un verdict au vert est un fait, pas une bonne nouvelle. Aucun point d'exclamation dans tout le produit.</li><li>Fili nomme l'acteur. C'est le Gardien qui bloque ; l'interface ne fait que le montrer. Aucune phrase ne laisse croire que l'écran a jugé.</li><li>Le problème avant la solution, et un seul de chaque. Une phrase dit ce qui ne va pas ; la suivante dit ce qu'on peut faire. Pas de troisième.</li><li>Le mot courant plutôt que le mot juste. Un terme de doctrine n'apparaît que s'il est le sujet de l'écran, et il est alors expliqué en une incise — jamais dans une note de bas de page.</li><li>Un état vide dit ce qui remplirait le vide, jamais seulement qu'il est vide.</li><li>Un état non nominal ne s'annonce qu'une fois par écran. Répéter la même alerte à chaque section, c'est la faire annoncer quatre fois par un lecteur d'écran et n'apprendre rien à personne.</li><li>Rien n'est écrit pour être lu deux fois. Si une phrase demande un second passage, elle est fausse.</li></ul><h3>Aux machines</h3><p class="intention">Ce que Fili écrit pour être relu par un modèle — verdicts consignés, entrées de journal, manifestes, rapports. Optimisé pour un lecteur qui n'a ni mise en page, ni contexte hérité, ni mémoire de ce qui précède.</p><p class="source">Un balisage lisible par un humain n'est pas une structure lisible par une machine. Un titre de section ne porte pas de sens pour un modèle qui n'en reçoit que la moitié — c'est exactement la panne qui a coûté quarante-deux entrées de journal le 7 août.</p><ul><li>Chaque unité porte son propre contexte. Une entrée, un constat, un verdict se lit seul : il nomme son jalon, sa date, son objet. Aucune ne dépend de ce qui la précède dans le fichier.</li><li>Identifiants stables et explicites, jamais positionnels. « l'assertion R5.1 », jamais « la troisième ». Un rang change ; un identifiant ne change pas.</li><li>Les faits en premier, la prose ensuite. Ce qui doit être extrait — un verdict, un compte, une date, un statut — est en tête et dans un champ nommé, pas noyé dans une phrase.</li><li>Structure de données pour ce qui est structuré. Un tableau de mesures est du JSON ou du JSONL, pas un tableau Markdown : un tableau tronqué ment sans le dire, un objet tronqué casse.</li><li>Rien ne dépend de la mise en forme. Ni le gras, ni l'ordre visuel, ni l'indentation ne portent de sens. Ce qu'un émoji dit, un champ le dit aussi.</li><li>L'incertitude est un champ, pas un adverbe. « probablement » n'est pas exploitable ; un champ de confiance l'est.</li><li>Ce qui est absent est déclaré absent. Un champ vide et un champ manquant ne veulent pas dire la même chose, et un lecteur automatique ne peut pas deviner lequel.</li></ul>
+</section>
+
+<section>
+  <h2>Les corrections, déclarées</h2>
+  <p class="intention">Cinq valeurs ont changé depuis la première version de cette planche. Aucune n'a été corrigée en silence.</p>
+  <ul><li><b>tons.attente</b> — #B0862A → <b>#8A6714</b><br><span class="emploi">Le ton d'attente de l'Écran Témoin mesure 3,25:1 sur le papier. Sous le seuil de 4,5:1 exigé d'un texte. Assombri jusqu'à 5,12:1. Le témoin accepté n'est pas modifié : il garde la sienne.</span></li><li><b>tons.traitNet</b> — — (n'existait pas) → <b>#8F887C</b><br><span class="emploi">L'Écran Témoin ne déclarait qu'un seul trait, à 1,41:1. Suffisant pour séparer deux zones, insuffisant pour délimiter un contrôle (WCAG 1.4.11 exige 3:1). Le registre en déclare donc deux, et leur emploi est écrit.</span></li><li><b>rayons.controle</b> — 6px → <b>8px</b><br><span class="emploi">La version 1 de cette planche avait inventé 6, valeur absente de toute source déclarée. Alignée sur le cran md de l'ancien kit. Correction de valeur, aucune règle touchée.</span></li><li><b>mesures.lecture</b> — 66ch → <b>62ch</b><br><span class="emploi">66 était un choix sans source. 62 est la mesure instruite par l'étude de mise en page, éprouvée sur son corpus.</span></li><li><b>mesures.page</b> — 1120px → <b>1024px</b><br><span class="emploi">1120 était un choix sans source. 1024 est le conteneur de page par défaut de l'ancien kit.</span></li><li><b>le parti entier — tons, familles, durées</b> — registre papier chaud, trois voix dont un serif, aucun cran expressif → <b>monochrome, deux voix, un cran de tracé</b><br><span class="emploi">Arbitrage d'Auteur : Fili gouverne des systèmes de design, il ne peut pas porter une charte qui oriente l'œil de celui qui juge. La chaleur, le serif et l'austérité du mouvement partaient ensemble ; ils tombent ensemble.</span></li><li><b>la couleur en entier</b> — des tons déclarés à la main, monochromes jusqu'aux états, mesurés après coup → <b>une primaire déclarée, tout le reste calculé, les couples construits pour tenir leur seuil</b><br><span class="emploi">Correction d'Auteur, en deux temps. D'abord : le monochrome portait sur les surfaces et les textes, pas sur les états — supprimer le rouge de l'erreur était une faute de convention. Ensuite : un jeton de couleur est un couple, et les teintes doivent se calculer depuis une primaire. La planche cesse de déclarer des valeurs et se met à déclarer une source et une règle.</span></li><li><b>les fontes, l'ombre intérieure, les icônes</b> — piles système génériques · un cran d'élévation « filet » · sept icônes dessinées à la main → <b>les trois fontes de la charte partagée · le filet retiré · une correspondance vers un jeu existant</b><br><span class="emploi">Arbitrages d'Auteur. La charte vaut pour Fili, pas pour les règles générales — j'avais sur-appliqué l'agnosticisme jusqu'à la peau du produit. Le filet ne fonctionne pas visuellement et relève probablement du champ. Et on ne dessine pas d'icônes : on déclare une source et une correspondance, la règle des tailles étant ce qui compte.</span></li><li><b>Le plafond de confort du texte</b> — L'encre était la plus franche que la famille permette — 17,4:1 sur le papier. → <b>Elle est la plus légère qui tienne 12:1, seuil déclaré à la planche.</b><br><span class="emploi">undefined</span></li><li><b>La monotonie de l'interligne</b> — fin 14 px/1,50 puis corps 17 px/1,60 — le rapport CROISSAIT avec le corps. → <b>fin 14 px/1,65 puis corps 17 px/1,60 puis chapeau 19 px/1,55.</b><br><span class="emploi">undefined</span></li><li><b>Les hauteurs de cadre</b> — Le cadre du témoin portait 42rem et 16rem écrits dans le composant. → <b>Deux hauteurs déclarées à la planche — cadre 672 px, vignette 256 px — multiples de l'échelle d'espacement.</b><br><span class="emploi">undefined</span></li></ul>
+</section>
+
+<section>
+  <h2>Ce que cette planche ne prouve pas</h2>
+  <ul><li>Cette planche ne dit pas si ces valeurs sont les bonnes. C'est B-4, et c'est l'œil de l'Auteur qui tranche, sur un écran réel et non sur cette planche seule.</li><li>Aucune assertion ne vérifie encore que le produit emploie ces jetons plutôt que des valeurs écrites sur place. C'est S6, exigible avant l'ouverture de K6.</li><li>Sept registres sont déclarés sans emploi aujourd'hui — le rail, la bascule bureau, deux crans d'élévation, les cinq plans, le voile, la durée ample. Ils viennent d'une source déclarée et n'inventent rien ; ils entrent pour qu'aucun nombre ne soit écrit sur place le jour où ils serviront.</li><li>L'étude de mise en page porte une mécanique de régimes verticaux — trois régimes croisés avec quatre rôles d'espacement, par décalage d'un cran — beaucoup plus fine que les trois densités de section du registre de Fili. Elle n'entre pas ici : c'est une LOI, pas une valeur, et sa place est dans le corpus.</li><li>Les contrastes mesurés le sont sur le fond papier. Un ton posé sur un fond en retrait, en survol ou en sélection est mesuré séparément.</li></ul>
+</section>
+
+<p class="pied">Trois suites possibles : vous l'acceptez telle quelle, vous nommez ce qui cloche et je corrige des valeurs, ou vous la refusez et vous fournissez la matière. Les valeurs d'expression ne convergent pas (<b>#028</b>) : aucune mesure ne peut trancher à votre place.</p>
+</main></body></html>

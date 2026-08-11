@@ -29,7 +29,7 @@ const FORME: Record<Ton, NomIcone> = {
 export function Jeton({ ton = 'idee', children }: { ton?: Ton; children: ReactNode }) {
   return (
     <span
-      className={`inline-flex w-fit items-center gap-2 rounded-doux border-systeme px-2 py-1 text-fin font-moyenne ${ALLURE[ton]}`}
+      className={`inline-flex w-fit items-center gap-x-inline-carte rounded-detail border-systeme px-inline-detail py-block-detail text-fin font-moyenne ${ALLURE[ton]}`}
     >
       <Icone nom={FORME[ton]} />
       {children}

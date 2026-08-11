@@ -9,14 +9,22 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.libelles.json'), 'utf8'))
-const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
-const PAL = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.palette.json'), 'utf8'))
+const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/libelles.json'), 'utf8'))
+const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
+const PAL = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/palette.json'), 'utf8'))
 const DATE = process.argv.includes('--date') ? process.argv[process.argv.indexOf('--date') + 1] : '2026-08-07'
 
 const t = (n) => PAL.neutres[n]
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 const items = (o) => Object.entries(o).filter(([k]) => !k.startsWith('$'))
+
+/* Cette page compose son style à la main : elle ne passe pas par la chaîne
+   Tailwind, et rien ne lui apportait donc les déclarations de fonte. Elle
+   nommait les trois voix de la charte et n'en affichait aucune. */
+const { deposerPolices, blocPolices } = await import(
+  new URL('../temoin/polices.mjs', import.meta.url).href)
+deposerPolices()
+const POLICES = blocPolices('../files/')
 
 /* Un libellé se lit avec ses variables visibles : « {raison} » dans le texte est
    une part de la formulation, pas un détail d'implémentation. */
@@ -42,6 +50,7 @@ const page = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Catalogue de libellés · ${DATE}</title>
 <style>
+${POLICES}
   :root { color-scheme: light }
   * { box-sizing: border-box }
   body { margin:0; padding:48px 32px 96px; background:${t('papierCreux')}; color:${t('encre')};
@@ -80,7 +89,7 @@ const page = `<!doctype html>
   <h1>Le catalogue de libellés</h1>
   <p class="chapeau">Toute la parole du produit, d'un bloc. Ce que la séance juge ici n'est pas
   un libellé isolé mais une voix : le produit parle-t-il d'une seule, et est-ce la vôtre ?</p>
-  <p class="note">Généré depuis <b>fili.libelles.json</b> le ${DATE}. Aucune formulation n'est
+  <p class="note">Généré depuis <b>fili/libelles.json</b> le ${DATE}. Aucune formulation n'est
   écrite dans cette page : elle montre ce que le dépôt déclare, et rien d'autre.
   Les variables sont laissées visibles — elles font partie de la formulation.</p>
 

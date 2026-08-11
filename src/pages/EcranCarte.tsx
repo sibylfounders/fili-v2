@@ -53,8 +53,8 @@ export function EcranCarte() {
     <main>
       {/* ── ample · la tête : le prochain jalon, et ce qui le bloque ─────── */}
       <Section tete densite="ample">
-        <Pile espace={7}>
-          <Pile espace={3}>
+        <Pile espace="large">
+          <Pile espace="coque">
             <Texte variante="menu">{T.surtitre}</Texte>
             <Titre niveau={1}>{T.titre}</Titre>
             <Texte variante="chapeau">{T.chapeau}</Texte>
@@ -64,7 +64,7 @@ export function EcranCarte() {
             chargement={<Squelette forme="jetons" lignes={1} />}
             erreur={
               <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                <Pile espace={2}>
+                <Pile espace="carte">
                   <Texte variante="fin">
                     {formuler(T.etats.erreurCorps, { raison: carte.erreur ?? '' })}
                   </Texte>
@@ -83,12 +83,12 @@ export function EcranCarte() {
                   <Texte variante="fin">{T.etats.videCorps}</Texte>
                 </Vide>
               ) : (
-                <Pile espace={5}>
-                  <Pile espace={1}>
+                <Pile espace="large">
+                  <Pile espace="detail">
                     <Texte variante="menu">{T.prochainTitre}</Texte>
                     <Titre niveau={2}>{c.prochain.nom}</Titre>
                   </Pile>
-                  <Pile espace={1}>
+                  <Pile espace="detail">
                     <Texte variante="menu">{T.prochainBloque}</Texte>
                     <Texte variante="corps">
                       {c.prochain.bloque === '—' ? T.prochainLibre : c.prochain.bloque}
@@ -103,7 +103,7 @@ export function EcranCarte() {
 
       {/* ── compact · le chapitre et les contrats ────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={7}>
+        <Pile espace="large">
           <EtatAsync
             requete={carte}
             chargement={<Squelette forme="lignes" lignes={3} />}
@@ -118,12 +118,12 @@ export function EcranCarte() {
               </Vide>
             }
             enfants={(c) => (
-              <Pile espace={7}>
-                <Pile espace={4}>
+              <Pile espace="large">
+                <Pile espace="page">
                   <Titre niveau={2}>{T.jalonsTitre}</Titre>
-                  <Pile espace={4}>
+                  <Pile espace="page">
                     {c.jalons.map((j) => (
-                      <Pile espace={1} key={j.nom}>
+                      <Pile espace="detail" key={j.nom}>
                         <Jeton ton={ton(j.statut)}>{mot(j.statut)}</Jeton>
                         <Titre niveau={3}>{j.nom}</Titre>
                         <Texte variante="fin">{j.verrouille}</Texte>
@@ -131,11 +131,11 @@ export function EcranCarte() {
                     ))}
                   </Pile>
                 </Pile>
-                <Pile espace={4}>
+                <Pile espace="page">
                   <Titre niveau={2}>{T.contratsTitre}</Titre>
-                  <Grille colonnes={2} espace={6}>
+                  <Grille colonnes={2} espace="large">
                     {c.contrats.map((x) => (
-                      <Pile espace={1} key={x.nom}>
+                      <Pile espace="detail" key={x.nom}>
                         <Jeton ton={ton(x.statut)}>{mot(x.statut)}</Jeton>
                         <Titre niveau={3}>{x.nom}</Titre>
                         <Texte variante="fin">{x.gouverne}</Texte>
@@ -151,7 +151,7 @@ export function EcranCarte() {
 
       {/* ── normal · les gabarits et l'instrument ────────────────────────── */}
       <Section densite="normal">
-        <Pile espace={7}>
+        <Pile espace="large">
           <EtatAsync
             requete={carte}
             chargement={<Squelette forme="lignes" lignes={3} />}
@@ -166,12 +166,12 @@ export function EcranCarte() {
               </Vide>
             }
             enfants={(c) => (
-              <Pile espace={7}>
-                <Pile espace={4}>
+              <Pile espace="large">
+                <Pile espace="page">
                   <Titre niveau={2}>{T.gabaritsTitre}</Titre>
-                  <Grille colonnes={2} espace={6}>
+                  <Grille colonnes={2} espace="large">
                     {c.gabarits.map((g) => (
-                      <Pile espace={1} key={g.nom}>
+                      <Pile espace="detail" key={g.nom}>
                         <Jeton ton={ton(g.statut)}>{mot(g.statut)}</Jeton>
                         <Titre niveau={3}>{g.nom}</Titre>
                         <Texte variante="fin">{g.temoin}</Texte>
@@ -179,11 +179,11 @@ export function EcranCarte() {
                     ))}
                   </Grille>
                 </Pile>
-                <Pile espace={4}>
+                <Pile espace="page">
                   <Titre niveau={2}>{T.instrumentTitre}</Titre>
-                  <Pile espace={4}>
+                  <Pile espace="page">
                     {c.instrument.map((p) => (
-                      <Pile espace={1} key={p.nom}>
+                      <Pile espace="detail" key={p.nom}>
                         <Jeton ton={ton(p.statut)}>{mot(p.statut)}</Jeton>
                         <Titre niveau={3}>{p.nom}</Titre>
                         <Texte variante="fin">{p.porte}</Texte>
@@ -199,34 +199,56 @@ export function EcranCarte() {
 
       {/* ── compact · les dettes ─────────────────────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.dettesTitre}</Titre>
-            <Texte variante="fin">{T.dettesAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={carte}
-            chargement={<Squelette forme="lignes" lignes={2} />}
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
+                </Pile>
+                <Squelette forme="lignes" lignes={2} />
+              </>
+            }
             erreur={
-              <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
-                <Texte variante="fin">{T.etats.detteSuspendue}</Texte>
-              </Alerte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.dettesTitre}</Titre>
+                  <Texte variante="fin">{T.dettesAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
+                  <Texte variante="fin">{T.etats.detteSuspendue}</Texte>
+                </Alerte>
+              </>
             }
             vide={
-              <Vide titre={T.etats.videTitre}>
-                <Texte variante="fin">{T.etats.videCorps}</Texte>
-              </Vide>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.dettesTitre}</Titre>
+                  <Texte variante="fin">{T.dettesAide}</Texte>
+                </Pile>
+                <Vide titre={T.etats.videTitre}>
+                  <Texte variante="fin">{T.etats.videCorps}</Texte>
+                </Vide>
+              </>
             }
             enfants={(c) => (
-              <Pile espace={6}>
-                {c.dettes.map((d) => (
-                  <Pile espace={2} key={d.nom}>
-                    <Jeton ton={ton(d.statut)}>{mot(d.statut)}</Jeton>
-                    <Titre niveau={3}>{d.nom}</Titre>
-                    <Texte variante="fin">{d.cout}</Texte>
-                  </Pile>
-                ))}
-              </Pile>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.dettesTitre}</Titre>
+                  <Texte variante="fin">{T.dettesAide}</Texte>
+                </Pile>
+                <Pile espace="large">
+                  {c.dettes.map((d) => (
+                    <Pile espace="carte" key={d.nom}>
+                      <Jeton ton={ton(d.statut)}>{mot(d.statut)}</Jeton>
+                      <Titre niveau={3}>{d.nom}</Titre>
+                      <Texte variante="fin">{d.cout}</Texte>
+                    </Pile>
+                  ))}
+                </Pile>
+              </>
             )}
           />
         </Pile>

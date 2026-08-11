@@ -1,0 +1,284 @@
+{
+  "$comment": "La géométrie du produit, dérivée de l'Échelle Semantic Rhythm. PIÈCE GÉNÉRÉE — ne pas éditer à la main : tout vient de tools/fili/geometrie/echelle.mjs.",
+  "$autorite": "Décision d'Auteur du 2026-08-11, journal #058. Loi reprise de claude/kit-creation-derivation.md (#050).",
+  "$verifie": "Confrontée à la source le 2026-08-11 : l'outil de l'Auteur a été lu ligne à ligne. EXACTS et vérifiés — les trois marges [B, B/R, B/R²], les trois rayons [R0/2, R0/4, R0/8], le bord = B, l'adoucissement x²(3−2x) de 320 à 1440, et les CINQ amplitudes d'axe. Le texte et la cible sont désormais dérivés comme dans la source : corps stable, titres à un et deux pas, cible sur son axe propre.",
+  "$ecartsDeclares": "Deux points s'écartent encore de la source, et ils ne sont PAS corrigés sans arbitrage : (1) la source ne porte QU'UN écart, base ÷ 2, quand cette pièce en dérive un par profondeur ; (2) la source s'arrête à trois profondeurs quand cette pièce en porte cinq — 'page' et 'large' prolongent la raison géométrique vers le haut, pour un rythme entre sections que la source ne couvre pas. Les deux touchent 56 emplois dans les sept écrans : les corriger est une refonte, pas une correction.",
+  "entrees": {
+    "base": 24,
+    "ratio": 1.4142135623730951,
+    "cale": false,
+    "intervalleTitres": 1.25,
+    "corps": 16,
+    "cible": 44
+  },
+  "$loiDuRayon": "Le rayon EST la marge — décision d'Auteur du 2026-08-11. La marge est la source ; il n'y a plus de rayon de départ à choisir. La loi de l'octave de l'Échelle est conservée : divisé par deux à chaque profondeur.",
+  "rayonRacine": 24,
+  "profondeurs": [
+    "large",
+    "page",
+    "coque",
+    "carte",
+    "detail"
+  ],
+  "axes": {
+    "inline": {
+      "min": 0.8,
+      "max": 1.2
+    },
+    "block": {
+      "min": 0.9,
+      "max": 1.16
+    },
+    "type": {
+      "min": 0.96,
+      "max": 1.07
+    },
+    "radius": {
+      "min": 0.86,
+      "max": 1.12
+    },
+    "control": {
+      "min": 1,
+      "max": 1.06
+    }
+  },
+  "marges": {
+    "large": 48,
+    "page": 33.9411,
+    "coque": 24,
+    "carte": 16.9706,
+    "detail": 12
+  },
+  "ecarts": {
+    "large": 24,
+    "page": 16.9706,
+    "coque": 12,
+    "carte": 8.4853,
+    "detail": 6
+  },
+  "rayons": {
+    "coque": 12,
+    "carte": 6,
+    "detail": 3
+  },
+  "bord": 24,
+  "texte": {
+    "corps": 16,
+    "titre2": 20,
+    "titre1": 25
+  },
+  "controle": {
+    "cible": 44
+  },
+  "$prixDeLaFluidite": {
+    "$comment": "Le générateur adoucit sa courbe ; le CSS ne sait qu'interpoler droit. Écart mesuré tous les 10 px de 320 à 1440, pas supposé.",
+    "pire": "inline-marge-large",
+    "ecartPx": 1.8472,
+    "aLargeur": 560
+  },
+  "jetons": {
+    "inline-marge-large": {
+      "axe": "inline",
+      "base": 48,
+      "bas": 38.4,
+      "haut": 57.6,
+      "css": "clamp(38.4px, 32.9143px + 1.7143vw, 57.6px)"
+    },
+    "inline-ecart-large": {
+      "axe": "inline",
+      "base": 24,
+      "bas": 19.2,
+      "haut": 28.8,
+      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+    },
+    "inline-marge-page": {
+      "axe": "inline",
+      "base": 33.9411,
+      "bas": 27.1529,
+      "haut": 40.7293,
+      "css": "clamp(27.1529px, 23.2739px + 1.2122vw, 40.7293px)"
+    },
+    "inline-ecart-page": {
+      "axe": "inline",
+      "base": 16.9706,
+      "bas": 13.5765,
+      "haut": 20.3647,
+      "css": "clamp(13.5765px, 11.637px + 0.6061vw, 20.3647px)"
+    },
+    "inline-marge-coque": {
+      "axe": "inline",
+      "base": 24,
+      "bas": 19.2,
+      "haut": 28.8,
+      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+    },
+    "inline-ecart-coque": {
+      "axe": "inline",
+      "base": 12,
+      "bas": 9.6,
+      "haut": 14.4,
+      "css": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)"
+    },
+    "inline-marge-carte": {
+      "axe": "inline",
+      "base": 16.9706,
+      "bas": 13.5765,
+      "haut": 20.3647,
+      "css": "clamp(13.5765px, 11.637px + 0.6061vw, 20.3647px)"
+    },
+    "inline-ecart-carte": {
+      "axe": "inline",
+      "base": 8.4853,
+      "bas": 6.7882,
+      "haut": 10.1824,
+      "css": "clamp(6.7882px, 5.8185px + 0.303vw, 10.1824px)"
+    },
+    "inline-marge-detail": {
+      "axe": "inline",
+      "base": 12,
+      "bas": 9.6,
+      "haut": 14.4,
+      "css": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)"
+    },
+    "inline-ecart-detail": {
+      "axe": "inline",
+      "base": 6,
+      "bas": 4.8,
+      "haut": 7.2,
+      "css": "clamp(4.8px, 4.1143px + 0.2143vw, 7.2px)"
+    },
+    "block-marge-large": {
+      "axe": "block",
+      "base": 48,
+      "bas": 43.2,
+      "haut": 55.68,
+      "css": "clamp(43.2px, 39.6343px + 1.1143vw, 55.68px)"
+    },
+    "block-ecart-large": {
+      "axe": "block",
+      "base": 24,
+      "bas": 21.6,
+      "haut": 27.84,
+      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+    },
+    "block-marge-page": {
+      "axe": "block",
+      "base": 33.9411,
+      "bas": 30.547,
+      "haut": 39.3717,
+      "css": "clamp(30.547px, 28.0257px + 0.7879vw, 39.3717px)"
+    },
+    "block-ecart-page": {
+      "axe": "block",
+      "base": 16.9706,
+      "bas": 15.2735,
+      "haut": 19.6859,
+      "css": "clamp(15.2735px, 14.0129px + 0.394vw, 19.6859px)"
+    },
+    "block-marge-coque": {
+      "axe": "block",
+      "base": 24,
+      "bas": 21.6,
+      "haut": 27.84,
+      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+    },
+    "block-ecart-coque": {
+      "axe": "block",
+      "base": 12,
+      "bas": 10.8,
+      "haut": 13.92,
+      "css": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)"
+    },
+    "block-marge-carte": {
+      "axe": "block",
+      "base": 16.9706,
+      "bas": 15.2735,
+      "haut": 19.6859,
+      "css": "clamp(15.2735px, 14.0129px + 0.394vw, 19.6859px)"
+    },
+    "block-ecart-carte": {
+      "axe": "block",
+      "base": 8.4853,
+      "bas": 7.6368,
+      "haut": 9.8429,
+      "css": "clamp(7.6368px, 7.0064px + 0.197vw, 9.8429px)"
+    },
+    "block-marge-detail": {
+      "axe": "block",
+      "base": 12,
+      "bas": 10.8,
+      "haut": 13.92,
+      "css": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)"
+    },
+    "block-ecart-detail": {
+      "axe": "block",
+      "base": 6,
+      "bas": 5.4,
+      "haut": 6.96,
+      "css": "clamp(5.4px, 4.9543px + 0.1393vw, 6.96px)"
+    },
+    "radius-coque": {
+      "axe": "radius",
+      "base": 12,
+      "bas": 10.32,
+      "haut": 13.44,
+      "css": "clamp(10.32px, 9.4286px + 0.2786vw, 13.44px)"
+    },
+    "radius-carte": {
+      "axe": "radius",
+      "base": 6,
+      "bas": 5.16,
+      "haut": 6.72,
+      "css": "clamp(5.16px, 4.7143px + 0.1393vw, 6.72px)"
+    },
+    "radius-detail": {
+      "axe": "radius",
+      "base": 3,
+      "bas": 2.58,
+      "haut": 3.36,
+      "css": "clamp(2.58px, 2.3571px + 0.0696vw, 3.36px)"
+    },
+    "inline-bord": {
+      "axe": "inline",
+      "base": 24,
+      "bas": 19.2,
+      "haut": 28.8,
+      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+    },
+    "block-bord": {
+      "axe": "block",
+      "base": 24,
+      "bas": 21.6,
+      "haut": 27.84,
+      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+    },
+    "type-corps": {
+      "axe": "type",
+      "base": 16,
+      "bas": 15.36,
+      "haut": 17.12,
+      "css": "clamp(15.36px, 14.8571px + 0.1571vw, 17.12px)"
+    },
+    "type-titre2": {
+      "axe": "type",
+      "base": 20,
+      "bas": 19.2,
+      "haut": 21.4,
+      "css": "clamp(19.2px, 18.5714px + 0.1964vw, 21.4px)"
+    },
+    "type-titre1": {
+      "axe": "type",
+      "base": 25,
+      "bas": 24,
+      "haut": 26.75,
+      "css": "clamp(24px, 23.2143px + 0.2455vw, 26.75px)"
+    },
+    "control-cible": {
+      "axe": "control",
+      "base": 44,
+      "bas": 44,
+      "haut": 46.64,
+      "css": "clamp(44px, 43.2457px + 0.2357vw, 46.64px)"
+    }
+  }
+}

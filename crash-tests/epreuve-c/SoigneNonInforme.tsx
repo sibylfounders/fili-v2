@@ -18,8 +18,8 @@ export function SoigneNonInforme() {
   return (
     <main className="mx-auto max-w-5xl p-8">
       <Section densite="compact">
-        <Pile espace={3}>
-          <Pile espace={2}>
+        <Pile espace="coque">
+          <Pile espace="carte">
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">Facturation</p>
             <h1 className="font-semibold tracking-tight text-gray-900">Suivi des factures</h1>
           </Pile>
@@ -30,7 +30,7 @@ export function SoigneNonInforme() {
       </Section>
 
       <Section densite="normal" aria-labelledby="filtres">
-        <Pile espace={3}>
+        <Pile espace="coque">
           <h2 id="filtres" className="font-semibold text-gray-900">Filtrer</h2>
           <div className="flex flex-wrap gap-4">
             <TextField id="client" label="Client" />
@@ -40,7 +40,7 @@ export function SoigneNonInforme() {
       </Section>
 
       <Section densite="compact" aria-labelledby="liste">
-        <Pile espace={4}>
+        <Pile espace="page">
           <h2 id="liste" className="font-semibold text-gray-900">Les factures</h2>
           <EtatAsync
             requete={factures}
@@ -64,8 +64,8 @@ export function SoigneNonInforme() {
               <ul className="grid gap-4 sm:grid-cols-3">
                 {donnees.map((f) => (
                   <li key={f.id} className="rounded-lg border border-gray-200 p-5">
-                    <Pile espace={3}>
-                      <Pile espace={1}>
+                    <Pile espace="coque">
+                      <Pile espace="detail">
                         <h3 className="font-semibold text-gray-900">{f.client}</h3>
                         <p className="text-sm text-gray-600">{f.montant} · échéance {f.echeance}</p>
                       </Pile>
@@ -80,9 +80,9 @@ export function SoigneNonInforme() {
       </Section>
 
       <Section densite="compact" aria-labelledby="agir">
-        <Pile espace={3}>
+        <Pile espace="coque">
           <h2 id="agir" className="font-semibold text-gray-900">Agir</h2>
-          <Pile espace={2}>
+          <Pile espace="carte">
             <Button onPress={lancer}>
               {enAttente ? 'Envoi de la relance…' : 'Relancer le client'}
             </Button>

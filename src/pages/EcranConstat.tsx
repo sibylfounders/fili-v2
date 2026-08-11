@@ -51,13 +51,13 @@ export function EcranConstat() {
             </Vide>
           }
           enfants={(a) => (
-            <Pile espace={7}>
-              <Pile espace={3}>
+            <Pile espace="large">
+              <Pile espace="coque">
                 <Texte variante="menu">{T.surtitre}</Texte>
                 <Titre niveau={1}>{formuler(T.titre, { assertion: a.id })}</Titre>
                 <Texte variante="chapeau">{a.enonce}</Texte>
               </Pile>
-              <Pile espace={2}>
+              <Pile espace="carte">
                 <Jeton ton="refus">{a.id}</Jeton>
                 <Texte variante="fin">{T.raisonAide}</Texte>
               </Pile>
@@ -86,16 +86,16 @@ export function EcranConstat() {
             </Vide>
           }
           enfants={(a) => (
-            <Pile espace={6}>
-              <Pile espace={2}>
+            <Pile espace="large">
+              <Pile espace="carte">
                 <Titre niveau={2}>{T.raisonTitre}</Titre>
                 <Texte variante="corps">{a.raison}</Texte>
               </Pile>
-              <Pile espace={2}>
+              <Pile espace="carte">
                 <Titre niveau={3}>{T.contratTitre}</Titre>
                 <Texte variante="fin">{a.contrat}</Texte>
               </Pile>
-              <Pile espace={2}>
+              <Pile espace="carte">
                 <Titre niveau={3}>{T.ruptureTitre}</Titre>
                 <Texte variante="fin">{T.ruptureCorps}</Texte>
               </Pile>
@@ -106,36 +106,58 @@ export function EcranConstat() {
 
       {/* ── normal · où elle rougit — le fichier n'arrive qu'ici ──────────── */}
       <Section densite="normal">
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.occurrencesTitre}</Titre>
-            <Texte variante="fin">{T.occurrencesAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={occurrences}
-            chargement={<Squelette forme="lignes" lignes={4} />}
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
+                </Pile>
+                <Squelette forme="lignes" lignes={4} />
+              </>
+            }
             erreur={
-              <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
-                <Texte variante="fin">{T.etats.occurrencesSuspendues}</Texte>
-              </Alerte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.occurrencesTitre}</Titre>
+                  <Texte variante="fin">{T.occurrencesAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
+                  <Texte variante="fin">{T.etats.occurrencesSuspendues}</Texte>
+                </Alerte>
+              </>
             }
             vide={
-              <Vide titre={T.etats.videTitre}>
-                <Texte variante="fin">
-                  {formuler(T.etats.videCorps, { assertion: 'Cette assertion' })}
-                </Texte>
-              </Vide>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.occurrencesTitre}</Titre>
+                  <Texte variante="fin">{T.occurrencesAide}</Texte>
+                </Pile>
+                <Vide titre={T.etats.videTitre}>
+                  <Texte variante="fin">
+                    {formuler(T.etats.videCorps, { assertion: 'Cette assertion' })}
+                  </Texte>
+                </Vide>
+              </>
             }
             enfants={(liste) => (
-              <Pile espace={6}>
-                {liste.map((o) => (
-                  <Pile espace={2} key={o.id}>
-                    <Texte variante="corps">
-                      {formuler(T.occurrenceFichier, { fichier: o.fichier, ligne: o.ligne })}
-                    </Texte>
-                  </Pile>
-                ))}
-              </Pile>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.occurrencesTitre}</Titre>
+                  <Texte variante="fin">{T.occurrencesAide}</Texte>
+                </Pile>
+                <Pile espace="large">
+                  {liste.map((o) => (
+                    <Pile espace="carte" key={o.id}>
+                      <Texte variante="corps">
+                        {formuler(T.occurrenceFichier, { fichier: o.fichier, ligne: o.ligne })}
+                      </Texte>
+                    </Pile>
+                  ))}
+                </Pile>
+              </>
             )}
           />
         </Pile>
@@ -143,7 +165,7 @@ export function EcranConstat() {
 
       {/* ── compact · le retour ──────────────────────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={4}>
+        <Pile espace="page">
           <Titre niveau={2}>{C.actions.revenirAuVerdict}</Titre>
           <Button variante="discret">{C.actions.revenirAuVerdict}</Button>
         </Pile>

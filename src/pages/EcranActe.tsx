@@ -72,8 +72,8 @@ export function EcranActe() {
     <main>
       {/* ── ample · la tête : ce que la décision ferme, et rien d'autre ──── */}
       <Section tete densite="ample">
-        <Pile espace={7}>
-          <Pile espace={3}>
+        <Pile espace="large">
+          <Pile espace="coque">
             <Texte variante="menu">{T.surtitre}</Texte>
             <Titre niveau={1}>{T.titre}</Titre>
             <Texte variante="chapeau">{T.chapeau}</Texte>
@@ -83,7 +83,7 @@ export function EcranActe() {
             chargement={<Squelette forme="lignes" lignes={3} />}
             erreur={
               <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                <Pile espace={2}>
+                <Pile espace="carte">
                   <Texte variante="fin">
                     {formuler(T.etats.erreurCorps, { raison: acte.erreur ?? '' })}
                   </Texte>
@@ -97,8 +97,8 @@ export function EcranActe() {
               </Vide>
             }
             enfants={(a) => (
-              <Pile espace={6}>
-                <Pile espace={1}>
+              <Pile espace="large">
+                <Pile espace="detail">
                   <Texte variante="menu">{T.numeroTitre}</Texte>
                   <Jeton ton="idee">
                     {a.numero} · {a.date}
@@ -121,8 +121,8 @@ export function EcranActe() {
 
       {/* ── compact · le reste de l'entrée, dans l'ordre du journal ──────── */}
       <Section densite="compact" fond>
-        <Pile espace={6}>
-          <Pile espace={2}>
+        <Pile espace="large">
+          <Pile espace="carte">
             <Titre niveau={2}>{T.resteTitre}</Titre>
             <Texte variante="fin">{T.resteAide}</Texte>
           </Pile>
@@ -159,57 +159,79 @@ export function EcranActe() {
 
       {/* ── normal · le déplacement de statut, et le verrou qui se mérite ── */}
       <Section densite="normal">
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.statutTitre}</Titre>
-            <Texte variante="fin">{T.statutAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={acte}
-            chargement={<Squelette forme="lignes" lignes={2} />}
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
+                </Pile>
+                <Squelette forme="lignes" lignes={2} />
+              </>
+            }
             erreur={
-              <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
-                <Texte variante="fin">{T.etats.acteFerme}</Texte>
-              </Alerte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.statutTitre}</Titre>
+                  <Texte variante="fin">{T.statutAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
+                  <Texte variante="fin">{T.etats.acteFerme}</Texte>
+                </Alerte>
+              </>
             }
             vide={
-              <Vide titre={T.etats.videTitre}>
-                <Texte variante="fin">{T.etats.videCorps}</Texte>
-              </Vide>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.statutTitre}</Titre>
+                  <Texte variante="fin">{T.statutAide}</Texte>
+                </Pile>
+                <Vide titre={T.etats.videTitre}>
+                  <Texte variante="fin">{T.etats.videCorps}</Texte>
+                </Vide>
+              </>
             }
             enfants={(a) => (
-              <Pile espace={6}>
-                <Selection
-                  label={T.cibleLabel}
-                  aide={T.cibleAide}
-                  desactive={enAttente}
-                  valeur={cible}
-                  surChoix={setCible}
-                  options={a.cibles.map((c) => ({
-                    valeur: c.id,
-                    libelle: `${c.statut} ${c.nom}`,
-                    groupe: c.groupe,
-                  }))}
-                />
-                <Selection
-                  label={T.versLabel}
-                  desactive={enAttente}
-                  valeur={vers}
-                  surChoix={setVers}
-                  options={STATUTS(a.verrouVert)}
-                />
-                {a.verrouVert ? (
-                  <Alerte titre={T.verrouTitre} ton="attente" annonce="statut">
-                    <Texte variante="fin">{T.verrouOuvert}</Texte>
-                  </Alerte>
-                ) : (
-                  <Alerte titre={T.verrouTitre} annonce="alerte">
-                    <Texte variante="fin">
-                      {formuler(T.verrouFerme, { motif: a.motifVerrou ?? '' })}
-                    </Texte>
-                  </Alerte>
-                )}
-              </Pile>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.statutTitre}</Titre>
+                  <Texte variante="fin">{T.statutAide}</Texte>
+                </Pile>
+                <Pile espace="large">
+                  <Selection
+                    label={T.cibleLabel}
+                    aide={T.cibleAide}
+                    desactive={enAttente}
+                    valeur={cible}
+                    surChoix={setCible}
+                    options={a.cibles.map((c) => ({
+                      valeur: c.id,
+                      libelle: `${c.statut} ${c.nom}`,
+                      groupe: c.groupe,
+                    }))}
+                  />
+                  <Selection
+                    label={T.versLabel}
+                    desactive={enAttente}
+                    valeur={vers}
+                    surChoix={setVers}
+                    options={STATUTS(a.verrouVert)}
+                  />
+                  {a.verrouVert ? (
+                    <Alerte titre={T.verrouTitre} ton="attente" annonce="statut">
+                      <Texte variante="fin">{T.verrouOuvert}</Texte>
+                    </Alerte>
+                  ) : (
+                    <Alerte titre={T.verrouTitre} annonce="alerte">
+                      <Texte variante="fin">
+                        {formuler(T.verrouFerme, { motif: a.motifVerrou ?? '' })}
+                      </Texte>
+                    </Alerte>
+                  )}
+                </Pile>
+              </>
             )}
           />
         </Pile>
@@ -217,67 +239,89 @@ export function EcranActe() {
 
       {/* ── compact · déposer, et ce qui a déjà été composé ──────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.brouillonsTitre}</Titre>
-            <Texte variante="fin">{T.brouillonsAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={brouillons}
-            chargement={<Squelette forme="lignes" lignes={1} />}
-            erreur={
-              <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                <Pile espace={2}>
-                  <Texte variante="fin">
-                    {formuler(T.etats.erreurCorps, { raison: brouillons.erreur ?? '' })}
-                  </Texte>
-                  <Texte variante="fin">{T.etats.erreurAide}</Texte>
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
                 </Pile>
-              </Alerte>
+                <Squelette forme="lignes" lignes={1} />
+              </>
+            }
+            erreur={
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.brouillonsTitre}</Titre>
+                  <Texte variante="fin">{T.brouillonsAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.erreurTitre} annonce="alerte">
+                  <Pile espace="carte">
+                    <Texte variante="fin">
+                      {formuler(T.etats.erreurCorps, { raison: brouillons.erreur ?? '' })}
+                    </Texte>
+                    <Texte variante="fin">{T.etats.erreurAide}</Texte>
+                  </Pile>
+                </Alerte>
+              </>
             }
             vide={
-              <Pile espace={6}>
-                <Vide titre={T.etats.videTitre}>
-                  <Texte variante="fin">{T.etats.videCorps}</Texte>
-                </Vide>
-                {manquants.length === 0 ? null : (
-                  <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                    <Texte variante="fin">
-                      {formuler(T.champsManquants, { champs: manquants.join(' · ') })}
-                    </Texte>
-                  </Alerte>
-                )}
-                <Button desactive={enAttente} onPress={verifier}>
-                  {enAttente ? T.deposerEnCours : T.deposer}
-                </Button>
-                <Texte variante="fin">{T.immuable}</Texte>
-              </Pile>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.brouillonsTitre}</Titre>
+                  <Texte variante="fin">{T.brouillonsAide}</Texte>
+                </Pile>
+                <Pile espace="large">
+                  <Vide titre={T.etats.videTitre}>
+                    <Texte variante="fin">{T.etats.videCorps}</Texte>
+                  </Vide>
+                  {manquants.length === 0 ? null : (
+                    <Alerte titre={T.etats.erreurTitre} annonce="alerte">
+                      <Texte variante="fin">
+                        {formuler(T.champsManquants, { champs: manquants.join(' · ') })}
+                      </Texte>
+                    </Alerte>
+                  )}
+                  <Button desactive={enAttente} onPress={verifier}>
+                    {enAttente ? T.deposerEnCours : T.deposer}
+                  </Button>
+                  <Texte variante="fin">{T.immuable}</Texte>
+                </Pile>
+              </>
             }
             enfants={(liste) => (
-              <Pile espace={7}>
-                <Pile espace={2}>
-                  <Texte variante="menu">
-                    {succes ? T.etats.succesTitre : T.brouillonsTitre}
-                  </Texte>
-                  <Texte variante="corps">
-                    {formuler(T.etats.succesCorps, {
-                      numero: liste[0].numero,
-                      date: liste[0].date,
-                    })}
-                  </Texte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.brouillonsTitre}</Titre>
+                  <Texte variante="fin">{T.brouillonsAide}</Texte>
                 </Pile>
-                <Pile espace={4}>
-                  {liste.map((b) => (
-                    <Pile espace={1} key={b.numero}>
-                      <Jeton ton="attente">
-                        {b.numero} · {b.date}
-                      </Jeton>
-                      <Texte variante="fin">{b.titre}</Texte>
-                    </Pile>
-                  ))}
+                <Pile espace="large">
+                  <Pile espace="carte">
+                    <Texte variante="menu">
+                      {succes ? T.etats.succesTitre : T.brouillonsTitre}
+                    </Texte>
+                    <Texte variante="corps">
+                      {formuler(T.etats.succesCorps, {
+                        numero: liste[0].numero,
+                        date: liste[0].date,
+                      })}
+                    </Texte>
+                  </Pile>
+                  <Pile espace="page">
+                    {liste.map((b) => (
+                      <Pile espace="detail" key={b.numero}>
+                        <Jeton ton="attente">
+                          {b.numero} · {b.date}
+                        </Jeton>
+                        <Texte variante="fin">{b.titre}</Texte>
+                      </Pile>
+                    ))}
+                  </Pile>
+                  <Texte variante="fin">{T.immuable}</Texte>
                 </Pile>
-                <Texte variante="fin">{T.immuable}</Texte>
-              </Pile>
+              </>
             )}
           />
         </Pile>

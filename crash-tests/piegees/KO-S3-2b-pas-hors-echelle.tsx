@@ -1,3 +1,3 @@
 export function KOS32b() {
-  return <div className="p-7">Pas absent de l'échelle</div>
+  return <div className="px-inline-moyen">Cran absent de l'Échelle</div>
 }

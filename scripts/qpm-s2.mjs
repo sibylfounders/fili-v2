@@ -32,12 +32,27 @@ const TOKEN_SOURCES = ['src/index.css', 'tailwind.config.js']
 const SRC_DIR = join(ROOT, 'src')
 const CODE_EXT = new Set(['.ts', '.tsx', '.js', '.jsx'])
 
-/** Échelle d'espacement Tailwind par défaut (theme.extend.spacing est vide). */
-const SPACING_SCALE = new Set([
-  '0', 'px', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6', '7',
-  '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40',
-  '44', '48', '52', '56', '60', '64', '72', '80', '96', 'auto', 'full',
-])
+/** L'échelle d'espacement. Elle N'EST PLUS celle de Tailwind : depuis la
+ *  migration vers l'Échelle Semantic Rhythm (journal #058, #059), un espace
+ *  porte le nom de sa profondeur et de son axe, jamais un nombre.
+ *
+ *  Elle est LUE dans fili/registry.json — la pièce que le Gardien lit pour
+ *  statuer — et non recopiée ici : deux listes qui divergent, c'est la faute
+ *  que ce test existe pour attraper. Registre absent : refus de statuer.
+ *
+ *  Corrigé le 2026-08-11 (journal #060). Ce test rougissait depuis la migration
+ *  parce qu'il comparait des noms à une liste de nombres, et le garde-fou a
+ *  bloqué tous les enregistrements pendant quatre jours. */
+const REGISTRE = JSON.parse(readFileSync(join(ROOT, 'fili/registry.json'), 'utf8'))
+const ECHELLE = REGISTRE?.espacement?.echelle
+if (!Array.isArray(ECHELLE) || !ECHELLE.length) {
+  console.error("\n  🔴 REFUS DE STATUER — l'échelle d'espacement est absente de fili/registry.json\n")
+  process.exit(2)
+}
+/** Les seules valeurs hors échelle admises : le zéro, le pixel de trait, et les
+ *  deux mots-clés qui ne sont pas des espaces mais des comportements. */
+const HORS_ECHELLE_ADMIS = ['0', 'px', 'auto', 'full']
+const SPACING_SCALE = new Set([...ECHELLE, ...HORS_ECHELLE_ADMIS])
 
 /** Tailles typographiques Tailwind — sert à distinguer text-lg de text-ink. */
 const TYPE_SCALE = new Set([

@@ -46,8 +46,8 @@ export function EcranJournal() {
     <main>
       {/* ── ample · la tête : la dernière décision, en entier ─────────────── */}
       <Section tete densite="ample">
-        <Pile espace={7}>
-          <Pile espace={3}>
+        <Pile espace="large">
+          <Pile espace="coque">
             <Texte variante="menu">{T.surtitre}</Texte>
             <Titre niveau={1}>{T.titre}</Titre>
             <Texte variante="chapeau">{T.chapeau}</Texte>
@@ -57,7 +57,7 @@ export function EcranJournal() {
             chargement={<Squelette forme="lignes" lignes={4} />}
             erreur={
               <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                <Pile espace={2}>
+                <Pile espace="carte">
                   <Texte variante="fin">
                     {formuler(T.etats.erreurCorps, { raison: journal.erreur ?? '' })}
                   </Texte>
@@ -71,8 +71,8 @@ export function EcranJournal() {
               </Vide>
             }
             enfants={(liste) => (
-              <Pile espace={6}>
-                <Pile espace={2}>
+              <Pile espace="large">
+                <Pile espace="carte">
                   <Texte variante="menu">{T.derniereTitre}</Texte>
                   <Jeton ton={ton(liste[0].pastille)}>
                     {liste[0].numero} · {liste[0].date}
@@ -88,58 +88,80 @@ export function EcranJournal() {
 
       {/* ── compact · les précédentes, repliées ──────────────────────────── */}
       <Section densite="compact" fond>
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.precedentesTitre}</Titre>
-            <Texte variante="fin">{T.precedentesAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={journal}
-            chargement={<Squelette forme="lignes" lignes={3} />}
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
+                </Pile>
+                <Squelette forme="lignes" lignes={3} />
+              </>
+            }
             erreur={
-              <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
-                <Texte variante="fin">{T.etats.precedentesSuspendues}</Texte>
-              </Alerte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.precedentesTitre}</Titre>
+                  <Texte variante="fin">{T.precedentesAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
+                  <Texte variante="fin">{T.etats.precedentesSuspendues}</Texte>
+                </Alerte>
+              </>
             }
             vide={
-              <Vide titre={T.etats.videTitre}>
-                <Texte variante="fin">{T.etats.videCorps}</Texte>
-              </Vide>
-            }
-            enfants={(liste) =>
-              liste.length < 2 ? (
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.precedentesTitre}</Titre>
+                  <Texte variante="fin">{T.precedentesAide}</Texte>
+                </Pile>
                 <Vide titre={T.etats.videTitre}>
                   <Texte variante="fin">{T.etats.videCorps}</Texte>
                 </Vide>
-              ) : (
-                <Pile espace={6}>
-                  {liste.slice(1).map((e) => (
-                    <Pile espace={2} key={e.numero}>
-                      <Jeton ton={ton(e.pastille)}>
-                        {e.numero} · {e.date}
-                      </Jeton>
-                      <Titre niveau={3}>{e.titre}</Titre>
-                      <Button
-                        variante="discret"
-                        onPress={() => {
-                          basculer(e.numero)
-                        }}
-                      >
-                        {ouvertes.includes(e.numero) ? T.replier : T.deplier}
-                      </Button>
-                      {ouvertes.includes(e.numero) ? <Prose texte={e.corps} /> : null}
-                    </Pile>
-                  ))}
-                </Pile>
-              )
+              </>
             }
+            enfants={(liste) => (
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.precedentesTitre}</Titre>
+                  <Texte variante="fin">{T.precedentesAide}</Texte>
+                </Pile>
+                {liste.length < 2 ? (
+                  <Vide titre={T.etats.videTitre}>
+                    <Texte variante="fin">{T.etats.videCorps}</Texte>
+                  </Vide>
+                ) : (
+                  <Pile espace="large">
+                    {liste.slice(1).map((e) => (
+                      <Pile espace="carte" key={e.numero}>
+                        <Jeton ton={ton(e.pastille)}>
+                          {e.numero} · {e.date}
+                        </Jeton>
+                        <Titre niveau={3}>{e.titre}</Titre>
+                        <Button
+                          variante="discret"
+                          onPress={() => {
+                            basculer(e.numero)
+                          }}
+                        >
+                          {ouvertes.includes(e.numero) ? T.replier : T.deplier}
+                        </Button>
+                        {ouvertes.includes(e.numero) ? <Prose texte={e.corps} /> : null}
+                      </Pile>
+                    ))}
+                  </Pile>
+                )}
+              </>
+            )}
           />
         </Pile>
       </Section>
 
       {/* ── normal · ce que le journal a perdu, et qui reste écrit ────────── */}
       <Section densite="normal">
-        <Pile espace={6}>
+        <Pile espace="large">
           <EtatAsync
             requete={journal}
             chargement={<Squelette forme="lignes" lignes={1} />}
@@ -154,7 +176,7 @@ export function EcranJournal() {
               </Vide>
             }
             enfants={(liste) => (
-              <Pile espace={2}>
+              <Pile espace="carte">
                 <Texte variante="menu">{formuler(T.compte, { n: liste.length })}</Texte>
                 <Texte variante="corps">{T.trou}</Texte>
               </Pile>

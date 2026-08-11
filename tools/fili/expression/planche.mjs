@@ -7,16 +7,24 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
-const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.libelles.json'), 'utf8'))
-const R = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.registry.json'), 'utf8'))
-const JEU = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.icones.json'), 'utf8'))
-const PAL = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.palette.json'), 'utf8'))
+const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
+const L = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/libelles.json'), 'utf8'))
+const R = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/registry.json'), 'utf8'))
+const JEU = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/icones.json'), 'utf8'))
+const PAL = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/palette.json'), 'utf8'))
 const DATE = process.argv.includes('--date') ? process.argv[process.argv.indexOf('--date') + 1] : '2026-08-07'
 
 const items = (o) => Object.entries(o).filter(([k]) => !k.startsWith('$'))
 const t = (n) => PAL.neutres[n]
 const e = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+
+/* Cette page compose son style à la main : elle ne passe pas par la chaîne
+   Tailwind, et rien ne lui apportait donc les déclarations de fonte. Elle
+   nommait les trois voix de la charte et n'en affichait aucune. */
+const { deposerPolices, blocPolices } = await import(
+  new URL('../temoin/polices.mjs', import.meta.url).href)
+deposerPolices()
+const POLICES = blocPolices('../files/')
 
 const canal = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
 const lum = (h) => { const n = h.replace('#',''); const [r,g,b]=[0,2,4].map(i=>parseInt(n.slice(i,i+2),16)/255); return 0.2126*canal(r)+0.7152*canal(g)+0.0722*canal(b) }
@@ -52,11 +60,11 @@ const RENDU = {
   traits: ([n, v]) => carte(
     `<div style="width:100%;height:0;border-top:${/px/.test(v.valeur)?v.valeur:'1px'} ${/px/.test(v.valeur)?'solid':v.valeur} ${t('traitNet')};margin-bottom:12px"></div>${legende(n, v.valeur, v.emploi)}`),
   elevations: ([n, v]) => carte(
-    `<div style="width:100%;height:44px;background:${t('papier')};border-radius:${P.rayons.controle.valeur};box-shadow:${v.valeur};margin-bottom:12px"></div>${legende(n, v.valeur, v.emploi)}`),
+    `<div style="width:100%;height:44px;background:${t('papier')};border-radius:${P.rayons.carte.valeur};box-shadow:${v.valeur};margin-bottom:12px"></div>${legende(n, v.valeur, v.emploi)}`),
   opacites: ([n, v]) => carte(
-    `<div style="height:44px;background:${t('encre')};opacity:${v.valeur};margin-bottom:12px;border-radius:${P.rayons.doux.valeur}"></div>${legende(n, String(v.valeur), v.emploi)}`),
+    `<div style="height:44px;background:${t('encre')};opacity:${v.valeur};margin-bottom:12px;border-radius:${P.rayons.detail.valeur}"></div>${legende(n, String(v.valeur), v.emploi)}`),
   cibles: ([n, v]) => carte(
-    `<div style="width:${v.valeur};height:${v.valeur};max-width:100%;background:${t('papierSelection')};border:1px solid ${t('traitNet')};border-radius:${P.rayons.doux.valeur};margin-bottom:12px"></div>${legende(n, v.valeur, v.emploi)}`),
+    `<div style="width:${v.valeur};height:${v.valeur};max-width:100%;background:${t('papierSelection')};border:1px solid ${t('traitNet')};border-radius:${P.rayons.detail.valeur};margin-bottom:12px"></div>${legende(n, v.valeur, v.emploi)}`),
 }
 const generique = ([n, v]) => carte(legende(n, Array.isArray(v.valeur) ? v.valeur.join(' · ') : String(v.valeur), v.emploi))
 
@@ -135,6 +143,7 @@ const html = `<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Fili · la planche des registres · ${DATE}</title>
 <style>
+${POLICES}
 :root{--papier:${t('papier')};--creux:${t('papierCreux')};--encre:${t('encre')};--douce:${t('encreDouce')};--trait:${t('trait')};--net:${t('traitNet')};--accent:${t('accent')};--scene:${t('scene')}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--papier);color:var(--encre);font:17px/1.6 ${P.familles.courante.valeur};padding:48px 20px 96px}

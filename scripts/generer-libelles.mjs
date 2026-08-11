@@ -1,4 +1,4 @@
-/* Traduit le catalogue de libellés (fili.libelles.json) en un module de la
+/* Traduit le catalogue de libellés (fili/libelles.json) en un module de la
    zone système. La voix du produit vit dans un seul endroit regardable :
    c'est la condition matérielle du point de passage B-5. */
 import fs from 'node:fs'
@@ -6,7 +6,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../', import.meta.url)))
-const brut = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.libelles.json'), 'utf8'))
+const brut = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/libelles.json'), 'utf8'))
 
 const sansMeta = (v) => {
   if (Array.isArray(v)) return v
@@ -16,7 +16,7 @@ const sansMeta = (v) => {
   )
 }
 
-const sortie = `/* GÉNÉRÉ depuis fili.libelles.json — ne pas éditer à la main.
+const sortie = `/* GÉNÉRÉ depuis fili/libelles.json — ne pas éditer à la main.
    Regénérer : node scripts/generer-libelles.mjs
    Le catalogue est la source ; ce fichier n'en est que la traduction. */
 

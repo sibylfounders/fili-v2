@@ -20,6 +20,7 @@ export default [
       'fili/registry-only-components': 'error',
       'fili/no-escape-hatch': 'error',
       'fili/etat-declare': 'error',
+      'fili/squelette-annonce': 'error',
       'fili/discipline-spatiale': 'error',
       'fili/rythme-composition': 'error',
       'fili/arbitrage-lecture': 'error'

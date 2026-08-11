@@ -10,7 +10,7 @@ export const CHEMIN_REGLE = 'tools/fili/index.js'
 export const CHEMIN_CONFIG = 'tools/fili/eslint.crash.js'
 
 export async function verifierIntegrite(racine) {
-  const manifeste = JSON.parse(fs.readFileSync(path.join(racine, 'fili.assertions.json'), 'utf8'))
+  const manifeste = JSON.parse(fs.readFileSync(path.join(racine, 'fili/assertions.json'), 'utf8'))
   const source = fs.readFileSync(path.join(racine, CHEMIN_REGLE), 'utf8')
   const plugin = (await import(pathToFileURL(path.join(racine, CHEMIN_REGLE)).href)).default
   const config = fs.readFileSync(path.join(racine, CHEMIN_CONFIG), 'utf8')

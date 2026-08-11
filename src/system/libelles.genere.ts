@@ -1,4 +1,4 @@
-/* GÉNÉRÉ depuis fili.libelles.json — ne pas éditer à la main.
+/* GÉNÉRÉ depuis fili/libelles.json — ne pas éditer à la main.
    Regénérer : node scripts/generer-libelles.mjs
    Le catalogue est la source ; ce fichier n'en est que la traduction. */
 
@@ -41,6 +41,7 @@ export const LIBELLES = {
       "titre": "Le juge est-il entier, et le dépôt tient-il ?",
       "chapeau": "L'intégrité d'abord : tant que les assertions déclarées ne sont pas toutes portées et actives, aucun verdict n'est prononçable. La batterie ne vient qu'ensuite.",
       "integriteTitre": "Intégrité du juge",
+      "integriteAide": "Le résultat ne vaut que ce que vaut le juge. Ce compte dit combien de règles il applique vraiment.",
       "integriteEntier": "Les {n} assertions déclarées sont portées et actives.",
       "integriteRompue": "{n} assertion(s) déclarée(s) ne sont pas portées ou sont éteintes.",
       "batterieTitre": "La batterie",

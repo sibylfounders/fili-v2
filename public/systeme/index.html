@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fili — le système au complet</title>
+<style>
+:root{
+  --papier:#FFFFFF; --creux:#F3F4F9;
+  --encre:#36363A; --douce:#606064;
+  --trait:#DDDEE2; --net:#8D8D92;
+  --accent:#4F46E5; --scene:#202023;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--papier);color:var(--encre);
+  font:17px/1.6 'Geist Variable',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+.enveloppe{max-width:1024px;margin:0 auto;padding:48px 20px 120px}
+h1{font-size:clamp(28px,4vw,42px);line-height:1.1;font-weight:600;margin:0 0 12px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3vw,30px);line-height:1.2;font-weight:600;margin:0 0 8px;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600;margin:28px 0 8px}
+.menu{font:600 12px/1.2 'JetBrains Mono',ui-monospace,Menlo,monospace;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--douce);margin:0 0 10px}
+.chapeau{color:var(--douce);font-size:19px;max-width:62ch;margin:0 0 20px}
+.note{color:var(--douce);font-size:14px;max-width:70ch;margin:16px 0 0}
+section{margin:56px 0 0;padding-top:28px;border-top:1px solid var(--trait)}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--papier) 92%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--trait);margin:0 -20px 0;padding:14px 20px}
+nav .dedans{max-width:1024px;margin:0 auto;display:flex;gap:16px;flex-wrap:wrap;
+  font-size:13px}
+nav a{color:var(--douce);text-decoration:none}
+nav a:hover{color:var(--accent);text-decoration:underline}
+
+.grille{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));margin-top:16px}
+.carte{border:1px solid var(--trait);border-radius:8px;overflow:hidden;background:var(--papier)}
+.carte .corps{padding:12px 14px}
+.apercu{height:64px}
+.apercu.duo{display:flex}
+.apercu.duo>div{flex:1;display:flex;align-items:center;justify-content:center;
+  font:600 13px 'JetBrains Mono',ui-monospace,monospace}
+.apercu.forme,.apercu.ligne{display:flex;align-items:center;justify-content:center;background:var(--creux)}
+.apercu.forme span{width:96px;height:40px;background:var(--papier);border:1px solid var(--net)}
+.apercu.ligne span{width:80%;display:block}
+.apercu .voile{display:block;width:100%;height:100%;background:var(--encre)}
+.apercu .bloc{display:block;width:70%;height:40px;margin:12px auto;background:var(--papier);border-radius:8px}
+.apercu .cible{display:block;background:var(--creux);border:1px solid var(--net);border-radius:2px;margin:auto}
+.apercu:has(.cible){display:flex}
+.nom{font:500 13px 'JetBrains Mono',ui-monospace,Menlo,monospace;margin:0 0 2px}
+.val{font:400 12px 'JetBrains Mono',ui-monospace,Menlo,monospace;color:var(--douce);margin:0 0 6px;word-break:break-all}
+.emploi{font-size:13px;color:var(--douce);margin:0}
+.mesure{font:400 12px 'JetBrains Mono',ui-monospace,monospace;color:var(--douce);margin:6px 0 0}
+.echantillon{margin:0 0 8px;line-height:1.25;font-size:21px}
+.echantillon.petit{font-size:17px}
+
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--trait);vertical-align:middle}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--douce);font-weight:600}
+td.cle{color:var(--douce)}
+tr.vide td{color:var(--douce);font-style:italic}
+.mono{font:400 13px 'JetBrains Mono',ui-monospace,Menlo,monospace}
+.trait{display:inline-block;height:10px;border-radius:2px;background:var(--accent);vertical-align:0;margin-right:8px}
+
+.loi{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--creux);
+  border-radius:8px;padding:20px;margin-top:8px}
+.loi-e{display:flex;flex-direction:column}
+.loi-e b{font:600 21px 'JetBrains Mono',ui-monospace,monospace}
+.loi-e span{font-size:13px;color:var(--douce)}
+.loi-op,.loi-fl{color:var(--douce);font-size:19px}
+.loi-r{font-weight:600}
+.loi-r small{display:block;font-weight:400;font-size:13px;color:var(--douce)}
+
+.socle{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));margin:16px 0 8px}
+.den{border:1px solid var(--trait);border-left:3px solid var(--accent);border-radius:8px;padding:14px 16px}
+.den b{display:block;font:600 21px 'JetBrains Mono',ui-monospace,Menlo,monospace;line-height:1.1}
+.den-cle{display:block;font-size:14px;font-weight:600;margin-top:4px}
+.den-quoi{display:block;font-size:13px;color:var(--douce);margin-top:2px}
+td.grand{font-size:19px;font-weight:600}
+tr.somme td{background:var(--creux);font-weight:600}
+tr.echo td.cle{color:var(--accent);font-weight:600}
+.mono.petit{font-size:12px}
+.pastilles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pastille{border:1px solid var(--trait);border-radius:9999px;padding:7px 14px;
+  font:500 14px 'JetBrains Mono',ui-monospace,Menlo,monospace;background:var(--creux)}
+
+/* ── le téléphone. Une page qui se lit debout dans le métro ou pas du tout ── */
+@media (max-width:640px){
+  body{font-size:16px}
+  .enveloppe{padding:24px 16px 72px}
+  nav{margin:0 -16px;padding:10px 16px}
+  nav .dedans{gap:12px;font-size:12px;overflow-x:auto;flex-wrap:nowrap;
+    white-space:nowrap;-webkit-overflow-scrolling:touch}
+  h1{font-size:26px}
+  h2{font-size:21px}
+  .chapeau{font-size:17px}
+  section{margin-top:36px;padding-top:20px}
+  .grille{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .socle{grid-template-columns:1fr;gap:10px}
+  .den b{font-size:19px}
+  /* Un tableau ne se met pas en colonnes sur un téléphone : il se fait défiler. */
+  .roule{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px -16px 0;padding:0 16px}
+  .roule table{min-width:520px;margin-top:0}
+  th,td{padding:9px 10px;font-size:14px}
+  .mono.petit{font-size:11px}
+  .trait{max-width:110px}
+  .loi{gap:10px;padding:16px}
+}
+.pied{margin-top:64px;padding-top:24px;border-top:1px solid var(--trait);
+  color:var(--douce);font-size:14px;max-width:74ch}
+</style></head>
+<body>
+
+<nav><div class="dedans">
+  <a href="#carto">La cartographie</a><a href="#espaces">Les espaces</a><a href="#rayons">Les rayons</a>
+  <a href="#couleurs">Les couleurs</a><a href="#texte">Le texte</a>
+  <a href="#largeurs">Les largeurs</a><a href="#separer">Séparer</a>
+  <a href="#mouvement">Le mouvement</a><a href="#icones">Les icônes</a>
+  <a href="#controles">Les contrôles</a><a href="#composants">Les composants</a>
+  <a href="#linter">Le robot</a><a href="#lexique">Le lexique</a>
+</div></nav>
+
+<div class="enveloppe">
+<p class="menu">Fili · pièce générée · 2026-08-11</p>
+<h1>Le système au complet</h1>
+<p class="chapeau">Tout ce que Fili sait de son apparence, sur une seule page : les espaces, les
+couleurs, le texte, les formes, le mouvement, les pièces toutes faites, et les règles que le robot
+fait respecter. Cette page ne décide rien — elle lit les fichiers du dépôt et les montre. Si une
+valeur change là-bas, on regénère.</p>
+
+<section id="carto">
+  <p class="menu">00 — La cartographie</p>
+  <h2>Huit décisions, et tout le reste en descend</h2>
+  <p class="chapeau">Un jeton est soit calculé, soit choisi. Cette page dit lequel est lequel — et combien de valeurs sont encore choisies alors qu'elles pourraient être calculées.</p>
+  
+<div class="socle">
+  <div class="den">
+    <b>24 px</b>
+    <span class="den-cle">base</span>
+    <span class="den-quoi">la marge intérieure du premier niveau</span>
+  </div><div class="den">
+    <b>1,41</b>
+    <span class="den-cle">intervalle</span>
+    <span class="den-quoi">le rapport entre deux profondeurs</span>
+  </div><div class="den">
+    <b>16 px</b>
+    <span class="den-cle">corps</span>
+    <span class="den-quoi">la base commune du texte, partout</span>
+  </div><div class="den">
+    <b>1,25</b>
+    <span class="den-cle">intervalle des titres</span>
+    <span class="den-quoi">un pas de titre au-dessus du corps</span>
+  </div><div class="den">
+    <b>44 px</b>
+    <span class="den-cle">cible</span>
+    <span class="den-quoi">ce qu'un doigt doit pouvoir viser</span>
+  </div><div class="den">
+    <b>#4F46E5</b>
+    <span class="den-cle">couleur primaire</span>
+    <span class="den-quoi">la seule couleur choisie — les 32 autres en descendent</span>
+  </div><div class="den">
+    <b>5 axes</b>
+    <span class="den-cle">amplitudes</span>
+    <span class="den-quoi">de combien chaque famille grandit entre 320 et 1440 px</span>
+  </div>
+</div>
+
+<h3>Ce qui en descend, et qui ne se choisit jamais</h3>
+<div class="roule"><table>
+  <thead><tr><th>Combien</th><th>Quoi</th><th>Descend de</th></tr></thead>
+  <tbody><tr>
+    <td class="mono grand">29</td><td>jetons de géométrie — marges, écarts, rayons, bord, texte, cible, tous fluides</td><td class="cle">base · intervalle · corps · cible · amplitudes</td>
+  </tr><tr>
+    <td class="mono grand">32</td><td>couleurs — fonds, encres, traits, et les quatre états avec leurs couples</td><td class="cle">couleur primaire</td>
+  </tr><tr>
+    <td class="mono grand">4</td><td>tailles de texte — le corps et les trois niveaux de titre</td><td class="cle">corps · intervalle des titres</td>
+  </tr>
+  <tr class="somme"><td class="mono grand">65</td>
+      <td colspan="2">valeurs calculées — aucune n'est écrite à la main</td></tr>
+  </tbody>
+</table></div>
+
+<h3>Ce qui ne descend de rien — 76 valeurs, 22 familles</h3>
+<p class="note">Chaque ligne est une famille dont les valeurs ont été choisies une par une.
+Quand une valeur retombe sur un nombre déjà connu, c'est signalé : ce n'est pas une règle,
+c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'être écrit.</p>
+<div class="roule"><table>
+  <thead><tr><th>Famille</th><th>Valeurs</th><th>Retombent sur un nombre déjà connu</th></tr></thead>
+  <tbody><tr class="echo">
+    <td class="cle">taillesIcone</td><td class="mono">3</td>
+    <td class="mono petit">petite (16 px = texte corps) · courante (20 px = texte titre2) · grande (24 px = marge coque)</td>
+  </tr><tr class="echo">
+    <td class="cle">squelette</td><td class="mono">5</td>
+    <td class="mono petit">ligne (16 px = texte corps) · titre (24 px = marge coque)</td>
+  </tr><tr class="echo">
+    <td class="cle">cibles</td><td class="mono">3</td>
+    <td class="mono petit">plancher (24 px = marge coque) · confort (44 px = cible)</td>
+  </tr><tr class="">
+    <td class="cle">etats</td><td class="mono">8</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">icones</td><td class="mono">7</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">plans</td><td class="mono">5</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">mesures</td><td class="mono">4</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">opacites</td><td class="mono">4</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">traits</td><td class="mono">4</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">focus</td><td class="mono">4</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">durees</td><td class="mono">4</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">familles</td><td class="mono">3</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">graisses</td><td class="mono">3</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">bascules</td><td class="mono">3</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">elevations</td><td class="mono">3</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">courbes</td><td class="mono">3</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">rayons</td><td class="mono">2</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">attentes</td><td class="mono">2</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">medias</td><td class="mono">2</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">hauteurs</td><td class="mono">2</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">grille</td><td class="mono">1</td>
+    <td class="mono petit">—</td>
+  </tr><tr class="">
+    <td class="cle">voile</td><td class="mono">1</td>
+    <td class="mono petit">—</td>
+  </tr></tbody>
+</table></div>
+
+  <p class="note">Huit décisions produisent 65 valeurs. 76 autres sont encore posées une par une, et 7 d'entre elles retombent déjà sur un nombre que le système connaît — autant de crans qui pourraient cesser d'être écrits.</p>
+</section>
+
+<section id="espaces">
+  <p class="menu">01 — Les espaces</p>
+  <h2>Trois réglages, et tout le reste se calcule</h2>
+  <p class="chapeau">On ne choisit jamais un espace. On dit à quelle profondeur on se trouve, et la valeur tombe toute seule.</p>
+  <div class="loi">
+  <div class="loi-e"><b>24 px</b><span>la base</span></div>
+  <div class="loi-op">÷</div>
+  <div class="loi-e"><b>1,41</b><span>le ratio</span></div>
+  <div class="loi-fl">→</div>
+  <div class="loi-r">toute la géométrie<small>marges · écarts · rayons · bord</small></div>
+</div><h3>Les cinq profondeurs</h3><div class="roule"><table>
+  <thead><tr><th>Profondeur</th><th>Marge intérieure</th><th>Écart entre enfants</th><th>Rayon</th></tr></thead>
+  <tbody><tr>
+    <td class="cle">large</td>
+    <td><span class="trait" style="width:320px"></span> <span class="mono">48 px</span></td>
+    <td><span class="trait" style="width:160px"></span> <span class="mono">24 px</span></td>
+    <td class="mono">—</td>
+  </tr><tr>
+    <td class="cle">page</td>
+    <td><span class="trait" style="width:226.27399999999997px"></span> <span class="mono">33,94 px</span></td>
+    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">16,97 px</span></td>
+    <td class="mono">—</td>
+  </tr><tr>
+    <td class="cle">coque</td>
+    <td><span class="trait" style="width:160px"></span> <span class="mono">24 px</span></td>
+    <td><span class="trait" style="width:80px"></span> <span class="mono">12 px</span></td>
+    <td class="mono">12 px</td>
+  </tr><tr>
+    <td class="cle">carte</td>
+    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">16,97 px</span></td>
+    <td><span class="trait" style="width:56.568666666666665px"></span> <span class="mono">8,49 px</span></td>
+    <td class="mono">6 px</td>
+  </tr><tr>
+    <td class="cle">detail</td>
+    <td><span class="trait" style="width:80px"></span> <span class="mono">12 px</span></td>
+    <td><span class="trait" style="width:40px"></span> <span class="mono">6 px</span></td>
+    <td class="mono">3 px</td>
+  </tr></tbody>
+</table></div><h3>Ce qui bouge avec la largeur de l'écran</h3>
+   <p class="note">L'horizontal et le vertical ne respirent pas ensemble : c'est ce qui empêche une page de s'étirer bêtement.</p><div class="roule"><table>
+  <thead><tr><th>Axe</th><th>Le plus étroit (320 px)</th><th>Le plus large (1440 px)</th></tr></thead>
+  <tbody><tr>
+    <td class="cle">horizontal</td>
+    <td class="mono">× 0,8</td><td class="mono">× 1,2</td>
+  </tr><tr>
+    <td class="cle">vertical</td>
+    <td class="mono">× 0,9</td><td class="mono">× 1,16</td>
+  </tr><tr>
+    <td class="cle">type</td>
+    <td class="mono">× 0,96</td><td class="mono">× 1,07</td>
+  </tr><tr>
+    <td class="cle">les rayons</td>
+    <td class="mono">× 0,86</td><td class="mono">× 1,12</td>
+  </tr><tr>
+    <td class="cle">control</td>
+    <td class="mono">× 1</td><td class="mono">× 1,06</td>
+  </tr></tbody>
+</table></div>
+  <p class="note">Le générateur d'origine adoucit sa courbe ; une feuille de style ne sait qu'interpoler droit. L'écart a été mesuré tous les 10 pixels : 1,85 px au pire, vers 560 px de large. Sous les deux pixels, mais réel.</p>
+</section>
+
+<section id="rayons">
+  <p class="menu">02 — Les rayons</p>
+  <h2>Le rayon EST la marge — et il se divise par deux à chaque niveau</h2>
+  <p class="chapeau">Il n'y a pas de rayon à choisir : la marge est la source. Le rayon du premier niveau vaut la moitié de la marge du premier niveau, et chaque niveau divise encore par deux.</p>
+  <div class="grille"><div class="carte">
+  <div class="apercu forme"><span style="border-radius:0px"></span></div>
+  <div class="corps">
+    <p class="nom">net</p>
+    <p class="val">0px</p>
+    <p class="emploi">une section, un tableau — ce qui se lit</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu forme"><span style="border-radius:var(--rr-radius-coque)"></span></div>
+  <div class="corps">
+    <p class="nom">coque</p>
+    <p class="val">var(--rr-radius-coque)</p>
+    <p class="emploi">la surface qui contient tout le reste</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu forme"><span style="border-radius:var(--rr-radius-carte)"></span></div>
+  <div class="corps">
+    <p class="nom">carte</p>
+    <p class="val">var(--rr-radius-carte)</p>
+    <p class="emploi">une surface posée dans la coque</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu forme"><span style="border-radius:var(--rr-radius-detail)"></span></div>
+  <div class="corps">
+    <p class="nom">detail</p>
+    <p class="val">var(--rr-radius-detail)</p>
+    <p class="emploi">un bouton, un champ, une pastille — ce qui se manipule dans une carte</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu forme"><span style="border-radius:9999px"></span></div>
+  <div class="corps">
+    <p class="nom">pastille</p>
+    <p class="val">9999px</p>
+    <p class="emploi">une pastille d'état</p>
+    
+  </div>
+</div></div>
+  <p class="note">Le rayon EST la marge — décision d'Auteur du 2026-08-11. La marge est la source ; il n'y a plus de rayon de départ à choisir. La loi de l'octave de l'Échelle est conservée : divisé par deux à chaque profondeur.</p>
+</section>
+
+<section id="couleurs">
+  <p class="menu">03 — Les couleurs</p>
+  <h2>Une seule couleur est choisie, le reste est calculé</h2>
+  <p class="chapeau">La couleur de départ est #4F46E5. Tous les gris en descendent, et chaque couple fond/texte est construit pour rester lisible.</p>
+  <h3>Les fonds et les encres</h3><div class="grille"><div class="carte">
+  <div class="apercu" style="background:#FFFFFF"></div>
+  <div class="corps">
+    <p class="nom">papier</p>
+    <p class="val">#FFFFFF</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#F3F4F9"></div>
+  <div class="corps">
+    <p class="nom">papierCreux</p>
+    <p class="val">#F3F4F9</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#E6E7EB"></div>
+  <div class="corps">
+    <p class="nom">papierSurvol</p>
+    <p class="val">#E6E7EB</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#DADBDF"></div>
+  <div class="corps">
+    <p class="nom">papierSelection</p>
+    <p class="val">#DADBDF</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#202023"></div>
+  <div class="corps">
+    <p class="nom">scene</p>
+    <p class="val">#202023</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#36363A"></div>
+  <div class="corps">
+    <p class="nom">encre</p>
+    <p class="val">#36363A</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#606064"></div>
+  <div class="corps">
+    <p class="nom">encreDouce</p>
+    <p class="val">#606064</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#A3A4A8"></div>
+  <div class="corps">
+    <p class="nom">encreEteinte</p>
+    <p class="val">#A3A4A8</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#DDDDE2"></div>
+  <div class="corps">
+    <p class="nom">encreInverse</p>
+    <p class="val">#DDDDE2</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#DDDEE2"></div>
+  <div class="corps">
+    <p class="nom">trait</p>
+    <p class="val">#DDDEE2</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#8D8D92"></div>
+  <div class="corps">
+    <p class="nom">traitNet</p>
+    <p class="val">#8D8D92</p>
+    
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu" style="background:#4F46E5"></div>
+  <div class="corps">
+    <p class="nom">accent</p>
+    <p class="val">#4F46E5</p>
+    
+    
+  </div>
+</div></div><h3>Les quatre états</h3><div class="grille"><div class="carte">
+  <div class="apercu duo">
+     <div style="background:#FFEAEB;color:#8E2D3D">erreur</div>
+     <div style="background:#9A1C37;color:#FFF1F2">erreur</div>
+   </div>
+  <div class="corps">
+    <p class="nom">erreur</p>
+    <p class="val">#FFEAEB · #9A1C37</p>
+    <p class="emploi">un fond pâle avec son texte, et sa version pleine</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu duo">
+     <div style="background:#FFECDD;color:#774405">alerte</div>
+     <div style="background:#7C4601;color:#FFF3E8">alerte</div>
+   </div>
+  <div class="corps">
+    <p class="nom">alerte</p>
+    <p class="val">#FFECDD · #7C4601</p>
+    <p class="emploi">un fond pâle avec son texte, et sa version pleine</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu duo">
+     <div style="background:#DBF9E6;color:#095E38">succes</div>
+     <div style="background:#02663C;color:#EBF9F0">succes</div>
+   </div>
+  <div class="corps">
+    <p class="nom">succes</p>
+    <p class="val">#DBF9E6 · #02663C</p>
+    <p class="emploi">un fond pâle avec son texte, et sa version pleine</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu duo">
+     <div style="background:#ECEFFF;color:#434898">information</div>
+     <div style="background:#4345AB;color:#F2F4FF">information</div>
+   </div>
+  <div class="corps">
+    <p class="nom">information</p>
+    <p class="val">#ECEFFF · #4345AB</p>
+    <p class="emploi">un fond pâle avec son texte, et sa version pleine</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="texte">
+  <p class="menu">04 — Le texte</p>
+  <h2>La taille découle du niveau, jamais de l'endroit</h2>
+  <p class="chapeau">L'échelle typographique remonte dans la planche : c'est une liste fermée de valeurs d'expression comme une autre. Elle n'entre pas en conflit avec la doctrine — la taille d'un titre découle toujours de son NIVEAU (R4.5), et c'est le composant qui fait la correspondance. La planche dit ce qui existe ; la règle dit qui a le droit de s'en servir.</p>
+  <h3>Les trois voix</h3><div class="grille"><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-family:'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Le juge est-il entier ?</p>
+    <p class="nom">courante</p>
+    
+    <p class="emploi">le contenu — titres compris</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-family:'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">Le juge est-il entier ?</p>
+    <p class="nom">mecanique</p>
+    
+    <p class="emploi">le chrome, les surtitres, les identifiants, les chemins, les nombres, les numéros d'assertion</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-family:'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">Le juge est-il entier ?</p>
+    <p class="nom">etiquette</p>
+    
+    <p class="emploi">les libellés de formulaire — provisionné, aucun emploi avant É7 · L'acte</p>
+    
+  </div>
+</div></div><h3>Les trois graisses</h3><div class="grille"><div class="carte">
+  
+  <div class="corps"><p class="echantillon petit" style="font-weight:400">Hiérarchie visuelle</p>
+    <p class="nom">normale · 400</p>
+    
+    <p class="emploi">le corps</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon petit" style="font-weight:500">Hiérarchie visuelle</p>
+    <p class="nom">moyenne · 500</p>
+    
+    <p class="emploi">un libellé, un jeton, une étiquette</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon petit" style="font-weight:600">Hiérarchie visuelle</p>
+    <p class="nom">appuyee · 600</p>
+    
+    <p class="emploi">un titre, un nombre qui compte</p>
+    
+  </div>
+</div></div><h3>Les sept tailles</h3><div class="grille"><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:12px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase">Ce qui compte d'abord</p>
+    <p class="nom">menu · 12px / 1.2</p>
+    
+    <p class="emploi">surtitre, étiquette, en-tête de colonne</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:14px;line-height:1.65">Ce qui compte d'abord</p>
+    <p class="nom">fin · 14px / 1.65</p>
+    
+    <p class="emploi">texte d'accompagnement, note</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:var(--rr-type-corps);line-height:1.6">Ce qui compte d'abord</p>
+    <p class="nom">corps · var(--rr-type-corps) / 1.6</p>
+    
+    <p class="emploi">le texte courant</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:19px;line-height:1.55">Ce qui compte d'abord</p>
+    <p class="nom">chapeau · 19px / 1.55</p>
+    
+    <p class="emploi">le paragraphe d'ouverture d'une section</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:var(--rr-type-corps);line-height:1.35">Ce qui compte d'abord</p>
+    <p class="nom">niveau3 · var(--rr-type-corps) / 1.35</p>
+    
+    <p class="emploi">titre de niveau 3</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:var(--rr-type-titre2);line-height:1.2">Ce qui compte d'abord</p>
+    <p class="nom">niveau2 · var(--rr-type-titre2) / 1.2</p>
+    
+    <p class="emploi">titre de niveau 2</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps"><p class="echantillon" style="font-size:var(--rr-type-titre1);line-height:1.1">Ce qui compte d'abord</p>
+    <p class="nom">niveau1 · var(--rr-type-titre1) / 1.1</p>
+    
+    <p class="emploi">titre de niveau 1</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="largeurs">
+  <p class="menu">05 — Les largeurs</p>
+  <h2>Où la page s'arrête, et où elle change de forme</h2>
+  <p class="chapeau">Responsive borné. La page s'adapte entre 320 px et la largeur de page ; au-delà elle ne s'étire plus, elle se centre. Aucune mise en page fixe, aucune mise en page adaptative par paliers de gabarit.</p>
+  <h3>Les largeurs</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">lecture</p>
+    <p class="val">62ch</p>
+    <p class="emploi">la largeur maximale d'un bloc de texte suivi</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">page</p>
+    <p class="val">1024px</p>
+    <p class="emploi">la largeur maximale du contenu d'une page</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">rail</p>
+    <p class="val">280px</p>
+    <p class="emploi">un rail de navigation — provisionné, aucun emploi aujourd'hui</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">plancher</p>
+    <p class="val">320px</p>
+    <p class="emploi">la largeur sous laquelle rien n'est admis à déborder</p>
+    
+  </div>
+</div></div><h3>Les points de bascule</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">mobile</p>
+    <p class="val">480px</p>
+    <p class="emploi">bascule de base : une colonne devient deux</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">tablette</p>
+    <p class="val">1024px</p>
+    <p class="emploi">deux colonnes deviennent trois ou quatre</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">bureau</p>
+    <p class="val">1280px</p>
+    <p class="emploi">provisionné — aucun emploi aujourd'hui</p>
+    
+  </div>
+</div></div><h3>Les colonnes admises</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">colonnes</p>
+    <p class="val">2 · 3 · 4</p>
+    <p class="emploi">les seuls nombres de colonnes admis</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="separer">
+  <p class="menu">06 — Séparer</p>
+  <h2>L'espace d'abord, le fond ensuite, le trait en dernier</h2>
+  <p class="chapeau">Le trait est le dernier moyen de séparer : l'espace d'abord, le fond ensuite, le trait en dernier. Deux épaisseurs, deux styles.</p>
+  <h3>Les traits</h3><div class="grille"><div class="carte">
+  <div class="apercu ligne"><span style="border-top:1px solid var(--net)"></span></div>
+  <div class="corps">
+    <p class="nom">systeme</p>
+    <p class="val">1px</p>
+    <p class="emploi">toute bordure et tout filet</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu ligne"><span style="border-top:2px solid var(--net)"></span></div>
+  <div class="corps">
+    <p class="nom">marqueur</p>
+    <p class="val">2px</p>
+    <p class="emploi">une exception nommée — une barre qui désigne, jamais une frontière</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu ligne"><span style="border-top:1px solid var(--net)"></span></div>
+  <div class="corps">
+    <p class="nom">plein</p>
+    <p class="val">solid</p>
+    <p class="emploi">un contour qui délimite quelque chose qui existe</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu ligne"><span style="border-top:1px dashed var(--net)"></span></div>
+  <div class="corps">
+    <p class="nom">tirete</p>
+    <p class="val">dashed</p>
+    <p class="emploi">un contour qui délimite une place vide — l'attente d'un contenu qui n'est pas là</p>
+    
+  </div>
+</div></div><h3>Les voiles</h3><div class="grille"><div class="carte">
+  <div class="apercu"><span class="voile" style="opacity:0.05"></span></div>
+  <div class="corps">
+    <p class="nom">voile</p>
+    <p class="val">0.05</p>
+    <p class="emploi">le fond très pâle d'un jeton ou d'une alerte</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="voile" style="opacity:0.1"></span></div>
+  <div class="corps">
+    <p class="nom">teinte</p>
+    <p class="val">0.1</p>
+    <p class="emploi">un fond teinté lisible</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="voile" style="opacity:0.3"></span></div>
+  <div class="corps">
+    <p class="nom">contour</p>
+    <p class="val">0.3</p>
+    <p class="emploi">un contour teinté par le ton qu'il porte</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="voile" style="opacity:0.55"></span></div>
+  <div class="corps">
+    <p class="nom">estompe</p>
+    <p class="val">0.55</p>
+    <p class="emploi">un élément atténué mais actif</p>
+    
+  </div>
+</div></div><h3>Les ombres</h3><div class="grille"><div class="carte">
+  <div class="apercu"><span class="bloc" style="box-shadow:none"></span></div>
+  <div class="corps">
+    <p class="nom">aucune</p>
+    <p class="val">none</p>
+    <p class="emploi">tout, par défaut</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="bloc" style="box-shadow:0 1px 3px rgba(3, 7, 18, 0.10)"></span></div>
+  <div class="corps">
+    <p class="nom">releve</p>
+    <p class="val">0 1px 3px rgba(3, 7, 18, 0.10)</p>
+    <p class="emploi">provisionné — un élément détaché de son fond. Aucun emploi aujourd'hui.</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="bloc" style="box-shadow:0 4px 12px rgba(3, 7, 18, 0.14)"></span></div>
+  <div class="corps">
+    <p class="nom">superpose</p>
+    <p class="val">0 4px 12px rgba(3, 7, 18, 0.14)</p>
+    <p class="emploi">provisionné — un superposé. Aucun emploi aujourd'hui.</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="mouvement">
+  <p class="menu">07 — Le mouvement</p>
+  <h2>Une animation explique quelque chose, ou elle n'existe pas</h2>
+  <p class="chapeau">Le mouvement n'est pas un décor, c'est un moyen d'expliquer. Trois crans productifs, et un cran expressif borné : il est réservé à un mouvement qui APPREND quelque chose — un tracé qu'on suit, un chemin qu'on lit. Jamais à une apparition.</p>
+  <h3>Les durées</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">rapide</p>
+    <p class="val">100ms</p>
+    <p class="emploi">un retour de contrôle — survol, pression, changement de fond</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">base</p>
+    <p class="val">200ms</p>
+    <p class="emploi">une apparition, un dépliement local</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">ample</p>
+    <p class="val">300ms</p>
+    <p class="emploi">une grande surface, un volet</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">trace</p>
+    <p class="val">1800ms</p>
+    <p class="emploi">un mouvement qui explique — un tracé qu'on suit du regard. Sous budget de rareté : au plus un par écran, et seulement s'il apprend quelque chose.</p>
+    
+  </div>
+</div></div><h3>Les courbes</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">entree</p>
+    <p class="val">cubic-bezier(0, 0, 0.2, 1)</p>
+    <p class="emploi">ce qui apparaît</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">sortie</p>
+    <p class="val">cubic-bezier(0.4, 0, 1, 1)</p>
+    <p class="emploi">ce qui disparaît</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">standard</p>
+    <p class="val">cubic-bezier(0.4, 0, 0.2, 1)</p>
+    <p class="emploi">ce qui se transforme sur place</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="icones">
+  <p class="menu">08 — Les icônes</p>
+  <h2>On ne dessine pas d'icône, on déclare une correspondance</h2>
+  <p class="chapeau">On ne dessine pas d'icône. On déclare une source, une version et une correspondance. Un jeu dessiné sur mesure serait un jeu à maintenir, à équilibrer et à justifier, pour un produit de sept écrans.</p>
+  <div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">verrou</p>
+    <p class="val">lock</p>
+    <p class="emploi">🟢 verrouillé, acquis, au vert</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">attente</p>
+    <p class="val">clock</p>
+    <p class="emploi">🟡 en cours, suspendu, réversible</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">idee</p>
+    <p class="val">circle</p>
+    <p class="emploi">⚪ idée, formulée, non instruite</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">refus</p>
+    <p class="val">triangle-alert</p>
+    <p class="emploi">🔴 refus de statuer, blocage, échec</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">information</p>
+    <p class="val">info</p>
+    <p class="emploi">une note, une provenance, un rappel de règle</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">constat</p>
+    <p class="val">file-text</p>
+    <p class="emploi">un constat, une occurrence, une ligne fautive</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">mesure</p>
+    <p class="val">chart-column</p>
+    <p class="emploi">une batterie, un décompte, une mesure</p>
+    
+  </div>
+</div></div><h3>Les trois tailles</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">petite</p>
+    <p class="val">16px</p>
+    <p class="emploi">dans un libellé fin, un jeton, une ligne de texte courant</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">courante</p>
+    <p class="val">20px</p>
+    <p class="emploi">dans un bouton, en tête d'une alerte</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">grande</p>
+    <p class="val">24px</p>
+    <p class="emploi">un signe qui porte seul</p>
+    
+  </div>
+</div></div>
+  <p class="note">🔴 Le paquet n'est pas installé : le registre de paquets est inaccessible depuis la session. Les tracés employés aujourd'hui sont un DÉPANNAGE déclaré, dessiné à la main sur une grille de 16. Une commande suffit à les remplacer par les vrais — voir scripts/vendorer-icones.mjs.</p>
+</section>
+
+<section id="controles">
+  <p class="menu">09 — Les contrôles</p>
+  <h2>Ce que devient un bouton quand on le touche</h2>
+  <p class="chapeau">Les états d'un élément avec lequel on interagit. Ils sont déclarés comme une liste fermée : sans elle, chaque écran réinvente ce que veut dire « désactivé ». Aucun n'emploie de couleur — c'est le fond, le trait et l'encre qui changent.</p>
+  <div class="roule"><table>
+  <thead><tr><th>État</th><th>Fond · trait · encre</th><th>Quand</th></tr></thead>
+  <tbody><tr>
+    <td class="cle">repos</td><td class="mono">papier · traitNet · encre</td><td>l'état nominal d'un contrôle</td>
+  </tr><tr>
+    <td class="cle">survol</td><td class="mono">papierSurvol · encre · encre</td><td>sous le pointeur — le trait se renforce, le fond se creuse</td>
+  </tr><tr>
+    <td class="cle">pression</td><td class="mono">papierSelection · encre · encre</td><td>pendant l'appui</td>
+  </tr><tr>
+    <td class="cle">focus</td><td class="mono">anneau accent, 2 px, écart 2 px</td><td>au clavier — il s'ajoute, il ne remplace jamais le trait d'état</td>
+  </tr><tr>
+    <td class="cle">desactive</td><td class="mono">papierCreux · trait · encreEteinte</td><td>hors service — hors seuil de contraste par exception WCAG 1.4.3</td>
+  </tr><tr>
+    <td class="cle">selectionne</td><td class="mono">scene · scene · encreInverse</td><td>choisi, et qui le reste — le poids plein, jamais une teinte</td>
+  </tr><tr>
+    <td class="cle">erreur</td><td class="mono">papier · encre 2 px · encre</td><td>en faute — le trait passe au marqueur, le libellé dit quoi</td>
+  </tr><tr>
+    <td class="cle">lectureSeule</td><td class="mono">papierCreux · aucun trait · encre</td><td>lisible, non modifiable — il ne ressemble pas à un contrôle</td>
+  </tr></tbody>
+</table></div><h3>La taille minimale d'une cible</h3><div class="grille"><div class="carte">
+  <div class="apercu"><span class="cible" style="width:24px;height:24px"></span></div>
+  <div class="corps">
+    <p class="nom">plancher</p>
+    <p class="val">24px</p>
+    <p class="emploi">la taille minimale d'une cible (WCAG 2.5.8 AA)</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="cible" style="width:44px;height:44px"></span></div>
+  <div class="corps">
+    <p class="nom">confort</p>
+    <p class="val">44px</p>
+    <p class="emploi">la taille visée au doigt</p>
+    
+  </div>
+</div><div class="carte">
+  <div class="apercu"><span class="cible" style="width:8px;height:8px"></span></div>
+  <div class="corps">
+    <p class="nom">ecartMini</p>
+    <p class="val">8px</p>
+    <p class="emploi">l'écart minimal entre deux cibles voisines</p>
+    
+  </div>
+</div></div><h3>L'anneau au clavier</h3><div class="grille"><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">epaisseur</p>
+    <p class="val">2px</p>
+    <p class="emploi">l'anneau, posé en outline pour ne décaler aucune mise en page</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">ecart</p>
+    <p class="val">2px</p>
+    <p class="emploi">l'écart entre le composant et son anneau</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">surClair</p>
+    <p class="val">signal</p>
+    <p class="emploi">sur un fond de papier — le ton du refus, parce qu'il est le plus visible des quatre</p>
+    
+  </div>
+</div><div class="carte">
+  
+  <div class="corps">
+    <p class="nom">surPlein</p>
+    <p class="val">encreInverse</p>
+    <p class="emploi">sur un ton plein, où le signal disparaîtrait</p>
+    
+  </div>
+</div></div>
+  
+</section>
+
+<section id="composants">
+  <p class="menu">10 — Les pièces toutes faites</p>
+  <h2>16 composants, et l'obligation de passer par eux</h2>
+  <p class="chapeau">Un bouton écrit à la main au lieu du composant est refusé par le robot. C'est ce qui fait qu'un même geste se ressemble d'un écran à l'autre.</p>
+  <div class="pastilles"><span class="pastille">Section</span><span class="pastille">Titre</span><span class="pastille">Texte</span><span class="pastille">Pile</span><span class="pastille">Grille</span><span class="pastille">Jeton</span><span class="pastille">Alerte</span><span class="pastille">Vide</span><span class="pastille">Squelette</span><span class="pastille">Rendu</span><span class="pastille">Prose</span><span class="pastille">Selection</span><span class="pastille">TextField</span><span class="pastille">Button</span><span class="pastille">EtatAsync</span><span class="pastille">LIBELLES</span></div><h3>Les mots</h3><p class="note">Le catalogue porte 194 formulations. Aucun écran n'invente une phrase.</p>
+  
+</section>
+
+<section id="linter">
+  <p class="menu">11 — Le robot</p>
+  <h2>30 règles, et une famille pas encore écrite</h2>
+  <p class="chapeau">Il lit le code avant qu'il parte et il bloque. Il ne juge jamais si c'est beau : il vérifie que rien n'a été inventé sur place.</p>
+  <div class="roule"><table>
+  <thead><tr><th>Famille</th><th>Ce qu'elle interdit</th><th>Règles</th></tr></thead>
+  <tbody><tr class="">
+      <td class="cle">Les composants</td><td>toute interface passe par une pièce du système, jamais par une balise nue</td>
+      <td class="mono">6 règles</td>
+    </tr><tr class="">
+      <td class="cle">Les états</td><td>tout ce qui attend une réponse montre qu'il charge, qu'il a raté, qu'il est vide</td>
+      <td class="mono">7 règles</td>
+    </tr><tr class="">
+      <td class="cle">Les espaces</td><td>aucun nombre écrit à la main : tout vient de l'échelle</td>
+      <td class="mono">7 règles</td>
+    </tr><tr class="">
+      <td class="cle">Le rythme</td><td>une page est une suite de tranches, et deux voisines ne respirent pas pareil</td>
+      <td class="mono">6 règles</td>
+    </tr><tr class="">
+      <td class="cle">La hiérarchie</td><td>une page dit ce qui compte d'abord, une seule fois, et pas en bas</td>
+      <td class="mono">4 règles</td>
+    </tr><tr class="vide">
+      <td class="cle">L'expression</td><td>d'où viennent les couleurs, les polices, les icônes, les mots</td>
+      <td class="mono">pas encore écrite</td>
+    </tr></tbody>
+</table></div>
+  <p class="note">Le vert dit « rien n'a été inventé ». Il ne dit jamais « c'est bien réglé ». Ça, c'est l'œil, et le robot ne le remplacera pas.</p>
+</section>
+
+<section id="lexique">
+  <p class="menu">12 — Le lexique</p>
+  <h2>15 mots qui se traduisent, 7 qui ne se traduisent pas</h2>
+  <p class="chapeau">L'Échelle Semantic Rhythm et Fili portent les mêmes idées sous d'autres noms. Voici la table. Un écran écrit dans une langue peut désormais s'habiller avec les jetons de l'autre, sans être réécrit.</p>
+  
+<div class="roule"><table>
+  <thead><tr><th>Dans l'outil de l'Auteur</th><th>Dans Fili</th><th>Quoi</th></tr></thead>
+  <tbody><tr>
+    <td class="mono">--pagePadX</td><td class="mono petit">--rr-inline-marge-coque</td><td>la marge horizontale du premier niveau</td>
+  </tr><tr>
+    <td class="mono">--pagePadY</td><td class="mono petit">--rr-block-marge-coque</td><td>la marge verticale du premier niveau</td>
+  </tr><tr>
+    <td class="mono">--cardPadX</td><td class="mono petit">--rr-inline-marge-carte</td><td>la marge horizontale d'une carte</td>
+  </tr><tr>
+    <td class="mono">--cardPadY</td><td class="mono petit">--rr-block-marge-carte</td><td>la marge verticale d'une carte</td>
+  </tr><tr>
+    <td class="mono">--subPadX</td><td class="mono petit">--rr-inline-marge-detail</td><td>la marge horizontale d'un détail</td>
+  </tr><tr>
+    <td class="mono">--subPadY</td><td class="mono petit">--rr-block-marge-detail</td><td>la marge verticale d'un détail</td>
+  </tr><tr>
+    <td class="mono">--gapInline</td><td class="mono petit">--rr-inline-ecart-coque</td><td>l'écart horizontal entre deux voisins</td>
+  </tr><tr>
+    <td class="mono">--gapBlock</td><td class="mono petit">--rr-block-ecart-coque</td><td>l'écart vertical entre deux voisins</td>
+  </tr><tr>
+    <td class="mono">--cardR</td><td class="mono petit">--rr-radius-coque</td><td>le rayon du premier niveau</td>
+  </tr><tr>
+    <td class="mono">--ctl</td><td class="mono petit">--rr-radius-coque</td><td>le rayon d'un contrôle — même cran que la carte</td>
+  </tr><tr>
+    <td class="mono">--subR</td><td class="mono petit">--rr-radius-carte</td><td>le rayon du deuxième niveau</td>
+  </tr><tr>
+    <td class="mono">--subsubR</td><td class="mono petit">--rr-radius-detail</td><td>le rayon du troisième niveau</td>
+  </tr><tr>
+    <td class="mono">--controlSize</td><td class="mono petit">--rr-control-cible</td><td>la hauteur d'un contrôle</td>
+  </tr><tr>
+    <td class="mono">--heading-2</td><td class="mono petit">--rr-type-titre2</td><td>un titre à un pas du corps</td>
+  </tr><tr>
+    <td class="mono">--heading-1</td><td class="mono petit">--rr-type-titre1</td><td>un titre à deux pas du corps</td>
+  </tr></tbody>
+</table></div>
+<h3>Ce qui ne se traduit pas — 7 mots</h3>
+<p class="note">Nommés plutôt que bricolés. Un lexique qui invente un équivalent ne traduit plus.</p>
+<div class="roule"><table>
+  <thead><tr><th>Côté</th><th>Mot</th><th>Pourquoi</th></tr></thead>
+  <tbody><tr>
+    <td class="cle">l'outil</td>
+    <td class="mono petit">--pageR</td><td>le rayon du cadre de la démonstration — c'est le rayon racine, et Fili ne l'expose pas comme jeton : chez lui le rayon racine EST la marge, il n'a pas de nom propre.</td>
+  </tr><tr>
+    <td class="cle">l'outil</td>
+    <td class="mono petit">--gap</td><td>la moyenne de l'écart horizontal et vertical. Fili refuse de la produire : une valeur qui porte les deux axes à la fois mélange deux échelles, et c'est précisément ce que sa règle des espaces interdit.</td>
+  </tr><tr>
+    <td class="cle">l'outil</td>
+    <td class="mono petit">--type-scale</td><td>l'intervalle des titres. Ce n'est pas un jeton mais une décision d'entrée : elle vaut 1.25 chez Fili.</td>
+  </tr><tr>
+    <td class="cle">l'outil</td>
+    <td class="mono petit">fontSize</td><td>la taille du corps, envoyée à part. Chez Fili c'est le jeton type-corps.</td>
+  </tr><tr>
+    <td class="cle">Fili</td>
+    <td class="mono petit">inline/block-marge-page · -large</td><td>deux profondeurs au-dessus de la coque, pour le rythme entre sections. L'Échelle s'arrête à trois niveaux : l'outil n'a rien à leur opposer.</td>
+  </tr><tr>
+    <td class="cle">Fili</td>
+    <td class="mono petit">inline/block-ecart-carte · -detail</td><td>un écart par profondeur. L'outil n'en porte qu'un seul, et ses deux axes en descendent.</td>
+  </tr><tr>
+    <td class="cle">Fili</td>
+    <td class="mono petit">inline-bord · block-bord</td><td>le bord structurel. L'outil le calcule mais ne l'envoie pas à ses écrans.</td>
+  </tr></tbody>
+</table></div>
+
+  <p class="note">Le lexique ne déclare aucune valeur : chaque entrée pointe sur un jeton du dépôt, et la génération refuse de statuer si l'un manque.</p>
+</section>
+
+<p class="pied">Page produite par <span class="mono">tools/fili/systeme/produire.mjs</span> depuis
+<span class="mono">fili/geometrie.json</span>, <span class="mono">fili/palette.json</span>,
+<span class="mono">fili/expression.json</span>, <span class="mono">fili/libelles.json</span>,
+<span class="mono">fili/assertions.json</span> et <span class="mono">src/system/index.ts</span>.
+Aucune valeur n'est écrite ici. Pour la mettre à jour : <span class="mono">npm run fili:systeme</span>.</p>
+
+</div></body></html>

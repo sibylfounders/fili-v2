@@ -36,8 +36,8 @@ export function EcranFamille() {
     <main>
       {/* ── ample · la tête : les témoins courants, rien d'autre ─────────── */}
       <Section tete densite="ample">
-        <Pile espace={7}>
-          <Pile espace={3}>
+        <Pile espace="large">
+          <Pile espace="coque">
             <Texte variante="menu">{T.surtitre}</Texte>
             <Titre niveau={1}>{T.titre}</Titre>
             <Texte variante="chapeau">{T.chapeau}</Texte>
@@ -47,7 +47,7 @@ export function EcranFamille() {
             chargement={<Squelette forme="bloc" lignes={1} />}
             erreur={
               <Alerte titre={T.etats.erreurTitre} annonce="alerte">
-                <Pile espace={2}>
+                <Pile espace="carte">
                   <Texte variante="fin">
                     {formuler(T.etats.erreurCorps, { raison: familles.erreur ?? '' })}
                   </Texte>
@@ -61,10 +61,10 @@ export function EcranFamille() {
               </Vide>
             }
             enfants={(liste) => (
-              <Grille colonnes={2} espace={7}>
+              <Grille colonnes={2} espace="large">
                 {liste.map((f) => (
-                  <Pile espace={4} key={f.gabarit}>
-                    <Pile espace={1}>
+                  <Pile espace="page" key={f.gabarit}>
+                    <Pile espace="detail">
                       <Texte variante="menu">{f.gabarit}</Texte>
                       <Titre niveau={2}>{f.nom}</Titre>
                     </Pile>
@@ -80,7 +80,7 @@ export function EcranFamille() {
                       <Rendu source={f.apercu} titre={f.nom} hauteur="vignette" />
                     )}
                     {f.courant === null ? null : (
-                      <Pile espace={1}>
+                      <Pile espace="detail">
                         <Jeton ton="idee">{f.courant.date}</Jeton>
                         <Texte variante="fin">
                           {formuler(T.etatsCompte, { n: f.courant.etats })}
@@ -105,43 +105,65 @@ export function EcranFamille() {
 
       {/* ── compact · l'historique, qui se déplie et ne s'expose pas ─────── */}
       <Section densite="compact" fond>
-        <Pile espace={6}>
-          <Pile espace={2}>
-            <Titre niveau={2}>{T.historiqueTitre}</Titre>
-            <Texte variante="fin">{T.historiqueAide}</Texte>
-          </Pile>
+        <Pile espace="large">
           <EtatAsync
             requete={familles}
-            chargement={<Squelette forme="lignes" lignes={2} />}
+            chargement={
+              <>
+                <Pile espace="carte">
+                  <Squelette forme="titre" />
+                  <Squelette forme="lignes" lignes={1} />
+                </Pile>
+                <Squelette forme="lignes" lignes={2} />
+              </>
+            }
             erreur={
-              <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
-                <Texte variante="fin">{T.etats.historiqueSuspendu}</Texte>
-              </Alerte>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.historiqueTitre}</Titre>
+                  <Texte variante="fin">{T.historiqueAide}</Texte>
+                </Pile>
+                <Alerte titre={T.etats.suspenduTitre} ton="attente" annonce="statut">
+                  <Texte variante="fin">{T.etats.historiqueSuspendu}</Texte>
+                </Alerte>
+              </>
             }
             vide={
-              <Vide titre={T.etats.videTitre}>
-                <Texte variante="fin">{T.etats.videCorps}</Texte>
-              </Vide>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.historiqueTitre}</Titre>
+                  <Texte variante="fin">{T.historiqueAide}</Texte>
+                </Pile>
+                <Vide titre={T.etats.videTitre}>
+                  <Texte variante="fin">{T.etats.videCorps}</Texte>
+                </Vide>
+              </>
             }
             enfants={(liste) => (
-              <Pile espace={6}>
-                {liste.map((f) => (
-                  <Pile espace={2} key={f.gabarit}>
-                    <Titre niveau={3}>{f.nom}</Titre>
-                    {f.historique.length === 0 ? (
-                      <Texte variante="fin">{T.etats.videCorps}</Texte>
-                    ) : (
-                      <Pile espace={1}>
-                        {f.historique.map((g) => (
-                          <Texte variante="fin" key={g.date}>
-                            {g.date} — {formuler(T.etatsCompte, { n: g.etats })}
-                          </Texte>
-                        ))}
-                      </Pile>
-                    )}
-                  </Pile>
-                ))}
-              </Pile>
+              <>
+                <Pile espace="carte">
+                  <Titre niveau={2}>{T.historiqueTitre}</Titre>
+                  <Texte variante="fin">{T.historiqueAide}</Texte>
+                </Pile>
+                <Pile espace="large">
+                  {liste.map((f) => (
+                    <Pile espace="carte" key={f.gabarit}>
+                      <Titre niveau={3}>{f.nom}</Titre>
+                      {f.historique.length === 0 ? (
+                        <Texte variante="fin">{T.etats.videCorps}</Texte>
+                      ) : (
+                        <Pile espace="detail">
+                          {f.historique.map((g) => (
+                            <Texte variante="fin" key={g.date}>
+                              {g.date} — {formuler(T.etatsCompte, { n: g.etats })}
+                            </Texte>
+                          ))}
+                        </Pile>
+                      )}
+                    </Pile>
+                  ))}
+                </Pile>
+              </>
             )}
           />
         </Pile>

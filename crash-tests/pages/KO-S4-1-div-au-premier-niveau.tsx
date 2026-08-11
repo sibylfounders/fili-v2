@@ -4,7 +4,7 @@ export function PageKO1() {
   return (
     <main>
       <Section tete densite="ample"><Titre niveau={1}>Titre</Titre></Section>
-      <div className="p-8">Bloc anonyme au premier niveau</div>
+      <div className="px-inline-page py-block-page">Bloc anonyme au premier niveau</div>
     </main>
   )
 }

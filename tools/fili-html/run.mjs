@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { scanner } from './scanner.mjs'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../', import.meta.url)))
-const registre = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.registry.json'), 'utf8'))
+const registre = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/registry.json'), 'utf8'))
 
 const CAS = [
   { id: 'H-KO-1', html: 'crash-tests/cible-html/piegees/bouton-nu.html',        css: null, attendu: 'BLOQUE', quoi: '<button> sans classe du système (R1.1)' },

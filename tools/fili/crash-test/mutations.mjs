@@ -11,7 +11,7 @@ function executerBatterie() {
 }
 
 const REGLE = path.join(RACINE, 'tools/fili/index.js')
-const REGISTRE = path.join(RACINE, 'fili.registry.json')
+const REGISTRE = path.join(RACINE, 'fili/registry.json')
 const OK5 = path.join(RACINE, 'crash-tests/conformes/OK-5-rupture-declaree.tsx')
 const OKS22 = path.join(RACINE, 'crash-tests/conformes/OK-S2-2-rupture-vide-avec-motif.tsx')
 const OKS34 = path.join(RACINE, 'crash-tests/conformes/OK-S3-4-rupture-avec-motif.tsx')
@@ -109,8 +109,8 @@ const MUTATIONS = [
   M('M22', 'désactiver R3.5 (classe construite)', REGLE,
     (s) => s.replace('const ACTIF_R35 = true', 'const ACTIF_R35 = false'),
     'KO-S3-9 doit virer au vert'),
-  M('M23', "ajouter mt-4 aux exceptions de l'échelle", REGISTRE,
-    (s) => s.replace('"exceptions": [', '"exceptions": [\n      "mt-4",'),
+  M('M23', "ajouter mt-block-carte aux exceptions de l'échelle", REGISTRE,
+    (s) => s.replace('"exceptions": [', '"exceptions": [\n      "mt-block-carte",'),
     'KO-S3-3 et KO-S3-10 doivent virer au vert'),
   M('M24', "retirer mx-auto des exceptions", REGISTRE,
     (s) => s.replace('"mx-auto"', '"mx-rien"'),
@@ -125,8 +125,8 @@ const MUTATIONS = [
   M('M27', 'désactiver R3.7 (proximité)', REGLE,
     (s) => s.replace('const ACTIF_R37 = true', 'const ACTIF_R37 = false'),
     'KO-S3-12 et KO-S3-13 doivent virer au vert'),
-  M('M28', 'porter le facteur de proximité de 3 à 7', REGISTRE,
-    (s) => s.replace('"facteur": 3', '"facteur": 7'),
+  M('M28', 'porter le facteur de proximité au-delà du ratio', REGISTRE,
+    (s) => s.replace(/"facteur": [\d.]+/, '"facteur": 7'),
     'OK-S3-7 et le témoin doivent virer au rouge'),
 
   M('M29', 'désactiver R4.1 (page = suite de sections)', REGLE,

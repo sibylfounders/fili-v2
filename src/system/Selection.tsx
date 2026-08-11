@@ -34,7 +34,7 @@ export function Selection({
   const groupes = [...new Set(options.map((o) => o.groupe ?? ''))]
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-y-block-carte">
       <label className="text-fin font-moyenne text-encre" htmlFor={id}>
         {label}
       </label>
@@ -46,7 +46,7 @@ export function Selection({
         onChange={(e) => {
           surChoix(e.target.value)
         }}
-        className="w-full rounded-controle border-systeme border-trait-net bg-papier px-4 py-3 text-corps text-encre disabled:cursor-not-allowed disabled:text-encre-eteinte"
+        className="w-full rounded-detail border-systeme border-trait-net bg-papier px-inline-carte py-block-detail text-corps text-encre disabled:cursor-not-allowed disabled:text-encre-eteinte"
       >
         {groupes.map((g) =>
           g === '' ? (

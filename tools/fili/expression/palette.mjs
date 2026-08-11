@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { hexVersLch, lchVersHex, contraste, contrastante, laPlusDouce, partenaire } from './couleur.mjs'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili.expression.json'), 'utf8'))
+const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
 const G = P.$generation
 
 const [, , TEINTE] = hexVersLch(P.$primaire.valeur)
@@ -71,14 +71,14 @@ for (const [nom, ancre] of Object.entries(G.harmonisation.ancres)) {
 }
 
 const palette = {
-  $genere: 'GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili.expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.',
+  $genere: 'GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili/expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.',
   $primaire: P.$primaire.valeur,
   $teinte: Number(TEINTE.toFixed(1)),
   $espace: G.espace,
   neutres: { ...surfaces, encre, encreDouce, encreEteinte, encreInverse, trait, traitNet, accent: P.$primaire.valeur },
   etats,
 }
-fs.writeFileSync(path.join(RACINE, 'fili.palette.json'), JSON.stringify(palette, null, 2) + '\n')
+fs.writeFileSync(path.join(RACINE, 'fili/palette.json'), JSON.stringify(palette, null, 2) + '\n')
 
 console.log(`\nPALETTE CALCULÉE — primaire ${P.$primaire.valeur}, teinte ${TEINTE.toFixed(1)}°, chroma des neutres ${String(CN)}\n`)
 console.log('  Surfaces et encres')
@@ -86,4 +86,4 @@ for (const [n, v] of Object.entries(palette.neutres)) console.log(`    ${n.padEn
 console.log('\n  États — ancre → teinte harmonisée')
 for (const [n, v] of Object.entries(etats))
   console.log(`    ${n.padEnd(12)} ${String(v.ancre).padStart(5)}° → ${String(v.teinte).padStart(5)}°   surface ${v.surface} · sur ${v.sur} (${contraste(v.sur, v.surface).toFixed(2)}:1) · plein ${v.plein} · dessus ${v.surPlein} (${contraste(v.surPlein, v.plein).toFixed(2)}:1)`)
-console.log('\n  → fili.palette.json\n')
+console.log('\n  → fili/palette.json\n')
