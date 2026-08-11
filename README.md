@@ -14,8 +14,10 @@ npm run dev        # http://localhost:5173
 
 | Fichier | Répond à |
 |---|---|
-| [`system-map.md`](./system-map.md) | **Où on en est** — statuts ⚪ 🟡 🟢, crash-tests, dettes ouvertes |
-| [`journal.md`](./journal.md) | **Pourquoi on en est là** — décisions datées, sens produit et UX, alternatives écartées |
+| [`system-map.md`](./system-map.md) | **Où on en est** — statuts, crash-tests, dettes ouvertes |
+| [`journal.md`](./journal.md) | **Pourquoi on en est là** — décisions datées, alternatives écartées |
+| [`PLAN.md`](./PLAN.md) | **Où on va** — ce qu'on fait ensuite, et dans quel ordre |
+| [`REGLES.md`](./REGLES.md) | **Comment écrire une interface ici** — le fichier que l'IA lit avant d'écrire. Généré. |
 
 Ils ne se remplacent pas et ne se dupliquent pas. Toute décision qui déplace la
 carte ouvre une entrée au journal, dans le même geste.
