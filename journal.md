@@ -37,6 +37,32 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #062 — La profondeur se lit au contraste : la page recule, le contenu avance, et l'encre gagne un rang
+
+*2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur : « oui, fond de page gris clair et cartes blanches », puis « c'est bon » sur l'avant/après) · Premier point du plan*
+
+**Contexte** — Une source extérieure écrite par l'Auteur portait une règle absente du dépôt : *« une surface qui contient d'autres surfaces est grise, une surface qui contient du contenu est blanche »*. L'Auteur a refusé le mot : **« gris » est un effet dans un thème clair, pas une loi.** Le vocabulaire juste est celui de la profondeur, de la surface, de la luminosité et du contraste, et la loi est celle que Material formule pour l'emphase — plus une information est utile, plus elle s'écarte de ce sur quoi elle est posée.
+
+**Décision** — **La profondeur se lit au contraste.** La page recule ; ce qui porte du contenu avance. Et l'encre porte trois rangs — la donnée, le cadrage, la reformulation — au lieu de deux.
+
+**Sens produit / UX** — Trois choses.
+
+**La reformulation vaut mieux que l'original, et pas seulement en style.** *« Le gris regroupe »* ne survit ni au thème sombre, ni à l'impression, ni à un écran mal réglé. *« La profondeur se lit au contraste »* survit aux trois, parce qu'elle ne nomme aucune couleur. Et surtout : **un contraste est un nombre.** La règle devient donc opposable — *une information déclarée secondaire ne peut pas être plus contrastée que la principale* — là où la version en couleurs n'aurait jamais pu entrer au corpus.
+
+**Le fond de Fili était à l'envers, et la règle ne pouvait pas s'y déployer.** La page était blanche : une surface qui porte n'avait nulle part où aller sauf vers le sombre, donc des cartes grises sur une page blanche — l'inverse de l'intention. Le constat a été posé avant d'écrire une ligne, et l'arbitrage rendu : la page devient la surface en retrait. La conséquence est mécanique — une section ne peint plus rien par défaut, et celle qui porte du contenu se déclare. La propriété change de nom avec son sens : `fond` devient `porte`.
+
+**Trois rangs d'encre ne tenaient pas sans en déplacer un.** Le cadrage et la reformulation partageaient la même valeur, à 6,3 — deux rôles pour un seul ton, donc un rôle de moins qu'annoncé. Et il n'y avait pas de place en dessous : 6,3 était déjà calculé sur le plancher lisible. Le cadrage est donc **remonté à 7**, et la reformulation posée **au plancher, 4,5**. Mesuré sur la nouvelle page : **10,9 · 8,8 · 5,7**. Les trois sont lisibles, aucun n'est un choix, tous descendent d'un seuil déclaré.
+
+**Alternatives écartées** — *Garder « le gris regroupe »* (une règle qui nomme une couleur ne se vérifie pas et meurt au premier thème sombre) ; *poser la reformulation sous le plancher pour ne pas toucher au cadrage* (un rang de plus ne vaut jamais une ligne illisible) ; *garder la page blanche et assombrir ce qui porte* (des cartes grises sur fond blanc, l'inverse exact de la règle) ; *appliquer la règle sans le dire à l'Auteur* (elle change l'aspect des sept écrans — l'apparence se soumet à son œil, pas à un raisonnement).
+
+**Conséquences** — Le fond de page passe en retrait. L'état vide reçoit une surface : il portait du contenu sans en avoir. Une encre de plus au registre, calculée comme les autres. **Batterie 100 %, contrastes, types et linter au vert** ; aucune valeur d'espace n'a bougé, aucun contrat n'est rouvert. Les sept écrans sont regénérés, et l'avant/après a été soumis à l'œil avant enregistrement.
+
+**Ce qui reste ouvert** — L'écart entre la page et une surface qui porte est de **1,10**. C'est volontairement discret — une distinction de surface, pas de texte — mais c'est le seul réglage que l'œil peut vouloir corriger. Et la forme opposable de la règle n'est pas encore mécanique : le robot ne vérifie pas encore qu'une information secondaire ne dépasse pas la principale, faute que les éléments déclarent leur rang.
+
+**Impact carte** — Aucun jalon, aucun contrat. Registre : une encre de plus. Premier point du plan fait ; le reste du temps 1 suit.
+
+---
+
 ## #061 — Le protocole de jugement est arrêté : on garde la machine, on abandonne l'appareil de preuve
 
 *2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur : « on garde la v2, on arrête le protocole »)*

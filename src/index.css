@@ -28,7 +28,7 @@
   }
 
   body {
-    @apply bg-papier font-courante text-corps font-normale text-encre antialiased;
+    @apply bg-papier-creux font-courante text-corps font-normale text-encre antialiased;
   }
 
   /* Le focus est toujours visible. Un poste de travail se pilote au clavier :

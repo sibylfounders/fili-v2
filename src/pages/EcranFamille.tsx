@@ -104,7 +104,7 @@ export function EcranFamille() {
       </Section>
 
       {/* ── compact · l'historique, qui se déplie et ne s'expose pas ─────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={familles}

@@ -120,7 +120,7 @@ export function EcranActe() {
       </Section>
 
       {/* ── compact · le reste de l'entrée, dans l'ordre du journal ──────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <Pile espace="carte">
             <Titre niveau={2}>{T.resteTitre}</Titre>
@@ -238,7 +238,7 @@ export function EcranActe() {
       </Section>
 
       {/* ── compact · déposer, et ce qui a déjà été composé ──────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={brouillons}

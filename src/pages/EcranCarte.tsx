@@ -102,7 +102,7 @@ export function EcranCarte() {
       </Section>
 
       {/* ── compact · le chapitre et les contrats ────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={carte}
@@ -198,7 +198,7 @@ export function EcranCarte() {
       </Section>
 
       {/* ── compact · les dettes ─────────────────────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={carte}

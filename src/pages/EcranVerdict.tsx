@@ -160,7 +160,7 @@ export function EcranVerdict() {
       </Section>
 
       {/* ── ce que le résultat vaut : l'intégrité du juge ─────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={integrite}
@@ -285,7 +285,7 @@ export function EcranVerdict() {
       </Section>
 
       {/* ── l'acte ────────────────────────────────────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={runs}

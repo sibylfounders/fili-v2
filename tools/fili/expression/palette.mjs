@@ -18,6 +18,8 @@ const CIBLE_UI = G.couples.interface
 /* Le plafond de confort : au-delà, un texte ne gagne plus en lisibilité, il
    gagne en dureté. C'est un seuil déclaré comme les autres, pas un goût. */
 const CONFORT = G.couples.confort
+/* Le cran du milieu : ni la donnee, ni la reformulation. */
+const CADRAGE = G.couples.cadrage
 
 /* ── Les surfaces neutres : une échelle de gris à la teinte de la primaire ── */
 const PALIERS = {
@@ -34,7 +36,11 @@ const surfaces = Object.fromEntries(
    permet. Celle qui accompagne, elle, ne vise que le plancher : c'est ce qui
    distingue un texte qui porte d'un texte qui accompagne. */
 const encre = laPlusDouce(surfaces.papier, [CN, TEINTE], CONFORT)
-const encreDouce = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CIBLE)
+const encreDouce = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CADRAGE)
+/* Le troisieme cran : la reformulation. La plus legere qui tienne encore le
+   plancher — en dessous, un texte cesse d'etre lisible, et un role de plus ne
+   vaut jamais une ligne illisible. */
+const encreLegere = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CIBLE)
 /* Sur la scène, la symétrie exacte : la moins claire qui tienne le confort. */
 const encreInverse = partenaire(surfaces.scene, [CN, TEINTE], CONFORT, { versLeBas: false })
 /* Un contrôle désactivé est hors seuil par exception WCAG 1.4.3 : sa clarté est
@@ -75,7 +81,7 @@ const palette = {
   $primaire: P.$primaire.valeur,
   $teinte: Number(TEINTE.toFixed(1)),
   $espace: G.espace,
-  neutres: { ...surfaces, encre, encreDouce, encreEteinte, encreInverse, trait, traitNet, accent: P.$primaire.valeur },
+  neutres: { ...surfaces, encre, encreDouce, encreLegere, encreEteinte, encreInverse, trait, traitNet, accent: P.$primaire.valeur },
   etats,
 }
 fs.writeFileSync(path.join(RACINE, 'fili/palette.json'), JSON.stringify(palette, null, 2) + '\n')

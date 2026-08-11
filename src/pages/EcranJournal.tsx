@@ -87,7 +87,7 @@ export function EcranJournal() {
       </Section>
 
       {/* ── compact · les précédentes, repliées ──────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={journal}

@@ -110,7 +110,7 @@ export function EcranFaceAFace() {
       </Section>
 
       {/* ── compact · la métadonnée, et pas avant ─────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="large">
           <EtatAsync
             requete={face}

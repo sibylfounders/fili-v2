@@ -478,7 +478,8 @@
     "motif": "Fili affiche des témoins qu'un œil doit juger. Une identité visuelle forte contaminerait ce jugement. D'où la discipline sur les surfaces et les textes — et d'où, à l'inverse, le respect strict des conventions d'état : elles ne sont pas la voix de Fili, elles sont le langage commun.",
     "information": "L'information est le seul état qui n'a pas de teinte conventionnelle. Elle prend celle de la primaire — c'est le seul endroit où la marque parle.",
     "source": "Charte partagée (ancien kit, color-primary) et exercice de mise en page validé par l'Auteur.",
-    "portee": "Cette planche est la charte de FILI, pas une règle générale du système. Ce qui doit rester agnostique, c'est le CORPUS — les assertions que le Gardien porte et qui s'appliquent à n'importe quel dépôt. Fili, en tant que produit, suit la charte partagée. J'avais confondu les deux et sur-appliqué l'agnosticisme jusqu'à la peau du produit."
+    "portee": "Cette planche est la charte de FILI, pas une règle générale du système. Ce qui doit rester agnostique, c'est le CORPUS — les assertions que le Gardien porte et qui s'appliquent à n'importe quel dépôt. Fili, en tant que produit, suit la charte partagée. J'avais confondu les deux et sur-appliqué l'agnosticisme jusqu'à la peau du produit.",
+    "surfaces": "La page RECULE, le contenu AVANCE. Le fond de page est la surface en retrait ; une surface qui porte du contenu s'en ecarte vers le blanc. La profondeur se lit donc au contraste, sans une seule ombre portee, et elle survit au theme sombre, a l'impression et a un ecran mal regle. Decision d'Auteur du 2026-08-11."
   },
   "etats": {
     "$intention": "Les états d'un élément avec lequel on interagit. Ils sont déclarés comme une liste fermée : sans elle, chaque écran réinvente ce que veut dire « désactivé ». Aucun n'emploie de couleur — c'est le fond, le trait et l'encre qui changent.",
@@ -573,7 +574,9 @@
       "interface": 3,
       "methode": "La surface est posée ; sa partenaire est cherchée — on fait varier sa clarté, à teinte et chroma constantes, jusqu'à ce que le seuil soit atteint. La paire ne peut donc pas être en dessous : elle est construite pour y être. Deux seuils gouvernent donc la recherche : un PLANCHER, sous lequel une paire est refusée, et un PLAFOND DE CONFORT, au-delà duquel on ne monte plus sans raison. Le premier protège de l'illisible, le second de l'inconfort.",
       "confort": 12,
-      "motifConfort": "Un plancher dit à partir d'où l'on voit ; il ne dit pas jusqu'où il est confortable d'aller. Poussée au plus franc, l'encre atteignait 17,4:1 sur le papier — du noir sur du blanc, qui fatigue sur un poste où l'on passe la journée. La source retenue donne 7:1 comme juste milieu ; 12:1 le dépasse largement tout en retirant la dureté. L'encre n'est donc plus la plus franche possible : elle est la plus légère qui tienne encore douze."
+      "motifConfort": "Un plancher dit à partir d'où l'on voit ; il ne dit pas jusqu'où il est confortable d'aller. Poussée au plus franc, l'encre atteignait 17,4:1 sur le papier — du noir sur du blanc, qui fatigue sur un poste où l'on passe la journée. La source retenue donne 7:1 comme juste milieu ; 12:1 le dépasse largement tout en retirant la dureté. L'encre n'est donc plus la plus franche possible : elle est la plus légère qui tienne encore douze.",
+      "cadrage": 7,
+      "motifCadrage": "Trois niveaux d'encre, pas deux. La donnee tient le confort (12), le cadrage tient 7, la reformulation tient le plancher (4,5). Avant le 2026-08-11 le cadrage ET la reformulation partageaient le meme ton a 6,3 : deux roles pour une seule valeur, donc un role de moins qu'annonce. Le plancher ne peut pas descendre : sous 4,5 un texte cesse d'etre lisible."
     }
   },
   "medias": {

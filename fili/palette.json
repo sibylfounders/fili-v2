@@ -1,5 +1,5 @@
 {
-  "$genere": "GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili.expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.",
+  "$genere": "GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili/expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.",
   "$primaire": "#4F46E5",
   "$teinte": 277,
   "$espace": "OKLCH",
@@ -10,7 +10,8 @@
     "papierSelection": "#DADBDF",
     "scene": "#202023",
     "encre": "#36363A",
-    "encreDouce": "#606064",
+    "encreDouce": "#444448",
+    "encreLegere": "#606064",
     "encreEteinte": "#A3A4A8",
     "encreInverse": "#DDDDE2",
     "trait": "#DDDEE2",

@@ -7,7 +7,7 @@ import type { ReactNode } from 'react'
 
 export function Vide({ titre, children }: { titre: string; children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-y-block-carte rounded-detail border-systeme border-dashed border-trait-net px-inline-carte py-block-carte">
+    <div className="flex flex-col gap-y-block-carte rounded-detail border-systeme border-dashed border-trait-net bg-papier px-inline-carte py-block-carte">
       <p className="text-niveau3 font-moyenne text-encre">{titre}</p>
       <div className="text-fin text-encre-douce">{children}</div>
     </div>

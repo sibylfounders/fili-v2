@@ -67,7 +67,7 @@ export function EcranConstat() {
       </Section>
 
       {/* ── compact · d'où elle vient, et ce qu'une rupture ne lève jamais ── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <EtatAsync
           requete={constat}
           chargement={<Squelette forme="lignes" lignes={2} />}
@@ -164,7 +164,7 @@ export function EcranConstat() {
       </Section>
 
       {/* ── compact · le retour ──────────────────────────────────────────── */}
-      <Section densite="compact" fond>
+      <Section densite="compact" porte>
         <Pile espace="page">
           <Titre niveau={2}>{C.actions.revenirAuVerdict}</Titre>
           <Button variante="discret">{C.actions.revenirAuVerdict}</Button>
