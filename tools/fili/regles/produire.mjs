@@ -158,6 +158,12 @@ C'est le composant qui le tient, tu n'as qu'à déclarer que tu es dans une suit
 
 ${rayons}
 
+**La marge commande l'arrondi.** L'arrondi de départ vaut la marge de base —
+aujourd'hui ${nb(ent.base)}. En dessous, c'est un choix : tu peux descendre
+jusqu'à l'angle droit. **Au-dessus, ce n'est pas possible**, ni au départ ni à
+aucun niveau : aucun arrondi ne dépasse la marge qui le porte. Si tu l'essaies,
+le système refuse de calculer — il ne te rabat pas la valeur en silence.
+
 **Une surface** suit la profondeur : son rayon se divise par deux à chaque niveau.
 \`rounded-net\` pour ce qui se lit — une section, un tableau.
 

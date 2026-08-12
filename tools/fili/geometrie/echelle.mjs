@@ -23,10 +23,15 @@
 export const ENTREES_DEFAUT = {
   base: 24,
   ratio: Math.SQRT2,
-  /* L'arrondi est un réglage à part, séparé de l'espace — décision d'Auteur du
-     2026-08-11, qui révise « le rayon descend de la marge » du même jour. Sans
-     cette séparation, un système ne peut pas être large et vif à la fois, et les
-     six intentions de l'Auteur deviennent impossibles. */
+  /* L'arrondi reste un réglage à part — sans cette séparation, un système ne
+     peut pas être large et vif à la fois, et quatre des six intentions de
+     l'Auteur deviennent impossibles.
+
+     MAIS LA MARGE LE COMMANDE. Décision d'Auteur du 2026-08-12 : l'arrondi de
+     départ vaut la marge de base. En dessous, c'est un choix esthétique et il
+     est libre ; au-dessus, ce n'est pas possible. Le réglage ne descend donc
+     plus d'un nombre en pixels choisi dans le vide : il descend de l'espace,
+     et il ne peut que s'en éloigner vers le bas. */
   rayonRacine: 24,
   cale: false,
   /* L'intervalle des titres. Le corps ne bouge pas : un titre de niveau 2 est
@@ -76,7 +81,11 @@ export function deriver(entrees = ENTREES_DEFAUT) {
   const e = { ...ENTREES_DEFAUT, ...entrees }
   if (!(e.base >= 16 && e.base <= 32)) throw new Error('refus de statuer — base hors plage 16 → 32')
   if (!(e.ratio >= 1.2 && e.ratio <= 2.2)) throw new Error('refus de statuer — ratio hors plage 1,2 → 2,2')
-  if (!(e.rayonRacine >= 0 && e.rayonRacine <= 48)) throw new Error('refus de statuer — rayon racine hors plage 0 → 48')
+  /* Le plafond n'est plus un nombre fixe : c'est la marge de base. Un arrondi
+     de départ plus grand qu'elle est refusé, jamais rabattu en silence — une
+     correction non tracée est la faute nommée depuis #002. */
+  if (!(e.rayonRacine >= 0 && e.rayonRacine <= e.base))
+    throw new Error(`refus de statuer — l'arrondi de départ (${e.rayonRacine}) dépasse la marge de base (${e.base}) ; en dessous c'est un choix, au-dessus ce n'est pas possible`)
   const rayonRacine = e.rayonRacine
 
   const marges = {}
@@ -101,6 +110,16 @@ export function deriver(entrees = ENTREES_DEFAUT) {
        la barre d'actions sur téléphone. */
     controle: r4(caler(Math.min(rayonRacine / 3, (2 / 3) * marges.detail), e.cale)),
   }
+  /* La garantie, à chaque niveau : aucun arrondi ne dépasse la marge qui le
+     porte. Elle tient d'elle-même tant que l'arrondi de départ reste sous la
+     marge de base — mais elle est vérifiée plutôt que supposée, parce que la
+     descente des arrondis (÷2) et celle des marges (÷ratio) ne suivent pas le
+     même pas et pourraient se croiser sur des réglages extrêmes. */
+  for (const p of ['coque', 'carte', 'detail']) {
+    if (rayons[p] > marges[p])
+      throw new Error(`refus de statuer — l'arrondi de ${p} (${rayons[p]}) dépasse sa marge (${marges[p]})`)
+  }
+
   /* Le texte. Le corps est l'origine, les titres sont des PAS — jamais des
      tailles écrites. Deux pas au-dessus du corps, pas un de plus. */
   const T = e.intervalleTitres

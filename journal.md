@@ -37,6 +37,74 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #067 — La marge commande l'arrondi : point de départ et plafond, la descente ne change pas
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur essai) · **Révise `#064`** sur un point*
+
+**Contexte** — La carte de restitution du jour montrait deux systèmes de même
+marge et d'arrondis différents pour illustrer « l'arrondi est un réglage à
+part ». L'exemple était fautif : il portait un arrondi de vingt-quatre sur une
+marge de douze, c'est-à-dire un arrondi qui dépasse sa propre marge — ce que le
+système interdit déjà sur les composants. L'Auteur a tranché sur cette faute :
+**la marge commande.**
+
+**Décision** — L'arrondi reste un réglage séparé de l'espace, mais il n'est plus
+libre dans le vide. **Son point de départ vaut la marge de base.** En dessous,
+c'est un choix esthétique, et il va jusqu'à l'angle droit. Au-dessus, ce n'est
+pas possible — ni au départ, ni à aucun niveau : aucun arrondi ne dépasse la
+marge qui le porte. La descente d'un niveau à l'autre ne change pas : l'arrondi
+continue de se diviser par deux pendant que la marge se divise par l'intervalle.
+**Ceci révise `#064`** sur son premier point, qui rendait le réglage entièrement
+indépendant.
+
+**Sens produit / UX** — **Un réglage libre dans le vide n'est pas un réglage,
+c'est un trou.** Séparer l'arrondi de la marge rendait les six intentions
+constructibles — c'était juste, et c'est conservé. Mais la séparation avait pour
+prix un nombre en pixels choisi sans référence : rien ne disait *par rapport à
+quoi* vingt-quatre était vingt-quatre. En le rattachant à la marge comme point de
+départ, il devient une proportion : « plein », « la moitié », « le quart », «
+rien ». On garde l'expressivité et on retire l'arbitraire.
+
+**Le plafond est plus strict que la géométrie, et c'est assumé.** Un coin de
+rayon R ne mange que 0,29 fois R dans son angle : le contenu n'est mordu qu'à
+partir de trois fois et demie la marge. La règle de l'Auteur s'arrête bien avant.
+Elle n'est donc pas une contrainte physique mais **un choix d'auteur**, écrit
+comme tel : au-delà de sa marge, un arrondi cesse de border la surface et
+commence à la déformer.
+
+**Rien ne bouge à l'écran, et c'est le signe que la règle était déjà là.** Les
+trois arrondis en place valent la moitié, le tiers et le quart de leur marge —
+aucun ne la dépassait. La règle ne corrige pas le système : elle nomme ce qu'il
+faisait sans le dire, et empêche qu'un réglage futur en sorte.
+
+**La correction est un refus, jamais un rabattement.** Si l'arrondi de départ
+dépasse la marge de base, le moteur refuse de calculer et le dit. Rabattre la
+valeur en silence aurait donné un système qui *paraît* obéir à un réglage qu'il
+a modifié — la faute nommée depuis `#002`.
+
+**Alternatives écartées** — *Une seule commande pour tous les niveaux*, où
+l'arrondi de chaque profondeur vaut sa marge multipliée par un même
+pourcentage (proposé à l'Auteur, écarté : les petits objets deviennent plus
+ronds qu'aujourd'hui, et l'écran change alors que rien ne le demande) ;
+*revenir à « le rayon descend de la marge »* de `#058`, sans réglage du tout
+(c'est ce que `#064` a défait après essai : quatre intentions sur six
+deviennent inconstructibles) ; *plafonner à 3,4 fois la marge*, la vraie limite
+géométrique (personne ne saurait lire ce nombre, et le résultat est laid bien
+avant).
+
+**Conséquences** — Le moteur de l'Échelle borne l'arrondi de départ par la marge
+de base et **refuse de statuer** au-delà. Une garantie par niveau vérifie
+qu'aucun arrondi dérivé ne dépasse sa marge — elle ne se déclenche sur aucun
+réglage courant, elle est posée parce que les deux descentes n'ont pas le même
+pas et pourraient se croiser sur des réglages extrêmes. Le fichier de règles
+porte la règle en tête de sa section des formes. **Aucun jeton ne change** : la
+géométrie régénérée est identique au bit près.
+
+**Impact carte** — `tools/fili/geometrie/echelle.mjs` : borne d'entrée et
+garantie par niveau. `REGLES.md` régénéré. Aucun changement de valeur produite.
+
+---
+
 ## #066 — Un composant peut rétrécir ; sa zone de clic ne rétrécit pas avec lui
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur rendue sur mesure)*
