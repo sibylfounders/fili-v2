@@ -97,6 +97,14 @@ n'est pas demandé — la face est nommée, la dette est écrite) ; *fusionner l
 contrôles du texte suivi* (l'un juge un niveau, l'autre une absence ; fusionnés,
 le message ne dirait plus quoi corriger).
 
+**Remesuré le soir même** — Le même exercice, refait avec une faute de plus (la
+donnée cherchée par la fenêtre) : **dix-huit fautes sur dix-neuf attrapées**,
+contre treize sur dix-huit la veille. La seule qui passe encore est l'angle mort
+déclaré — trois signaux identiques recopiés à la main. **Effet de bord non
+prévu** : depuis que la palette remplace au lieu d'ajouter, une couleur étrangère
+est refusée par deux instruments indépendants au lieu d'un. Fermer une porte
+proprement fait plus de travail que poser un contrôle.
+
 **Impact carte** — Corpus S2 : **seize assertions actives**. Trous de `#081` :
 **les cinq sont fermés**. Deux dettes nouvelles : l'amorçage qui lit hors de la
 couche de données, et le décompte des sabotages de la carte, invalidé tant qu'il
