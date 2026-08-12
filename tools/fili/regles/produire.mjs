@@ -111,6 +111,30 @@ intervalle de **${nb(ent.ratio)}**, et un arrondi de départ de
 Ces valeurs bougent avec la largeur de l'écran toutes seules — tu n'as rien à
 faire pour ça.
 
+### Une frontière est un groupe, pas un écart plus grand
+
+La profondeur dit *où tu es*. Elle ne dit pas *ce qui va avec quoi*. Deux
+paragraphes du même propos et deux propos différents sont au même niveau, donc au
+même écart — et les groupes cessent de se lire.
+
+**Tu ne réponds pas en écartant davantage. Tu réponds en groupant.** Ce qui va
+ensemble entre dans la même pile ; la pile du dessus déclare la frontière, et son
+écart passe **deux crans au-dessus** — ce qui tombe exactement sur la marge du
+niveau. On s'écarte d'un groupe autant qu'on s'écarte du bord.
+
+\`\`\`
+✅  <Pile espace="carte" frontiere>
+      <Pile espace="carte">titre + texte</Pile>
+      <Pile espace="carte">titre + texte</Pile>
+    </Pile>
+❌  <div className="mt-block-page">        (une marge extérieure, jamais)
+\`\`\`
+
+**Ce qui compte comme frontière**, et rien d'autre : entre deux surfaces sœurs ·
+au bord de la fenêtre · sous une image · avant un titre qui n'ouvre pas le bloc.
+Les quatre se lisent dans la structure sans savoir de quoi parle l'écran — comme
+la profondeur, ce sont des faits, pas des jugements.
+
 ### Les deux axes ne se mélangent jamais
 
 L'horizontal et le vertical ne respirent pas au même rythme. Le nom de la classe

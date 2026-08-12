@@ -33,6 +33,17 @@ const jetons = (famille) =>
   )
 const marges = jetons('marge')
 const ecarts = jetons('ecart')
+/* L'ÉCART DE FRONTIÈRE. Deux crans au-dessus de l'écart du niveau, ce qui vaut
+   exactement sa marge intérieure : on s'écarte d'un groupe autant qu'on s'écarte
+   du bord. Aucun jeton nouveau — ces classes pointent sur les marges, seul leur
+   nom change, parce qu'un écart et une marge ne se déclarent pas au même endroit.
+   Décision d'Auteur du 2026-08-12. */
+const frontieres = Object.fromEntries(
+  Object.entries(marges).map(([nom, v]) => {
+    const [axe, profondeur] = nom.split('-')
+    return [`${axe}-frontiere-${profondeur}`, v]
+  })
+)
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -46,8 +57,8 @@ export default {
     /* L'espace se pose par le conteneur, jamais par l'enfant — R3.2. La seule
        marge qui subsiste est le centrage, exception déclarée au registre. */
     margin: { auto: 'auto' },
-    gap: ecarts,
-    space: ecarts,
+    gap: { ...ecarts, ...frontieres },
+    space: { ...ecarts, ...frontieres },
     screens: depuis(planche.bascules),
     extend: {
       /* Aucune couleur n'est écrite ici ni dans la planche : elles sont toutes

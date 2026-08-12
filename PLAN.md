@@ -26,8 +26,8 @@ Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
 Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
 contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
 
-**Ce qui manque : deux règles, et cinq contrôles à brancher.** Il y en avait une
-dizaine le 11 août ; huit sont réglées depuis — entrées, absorbées ou écartées.
+**Ce qui manque : une règle, et cinq contrôles à brancher.** Il y en avait une
+dizaine le 11 août ; neuf sont réglées depuis — entrées, absorbées ou écartées.
 
 ---
 
@@ -91,9 +91,10 @@ au doigt, les traits d'un pixel et la largeur d'écran minimale : ils ne doivent
 grandir avec le texte. Vérifié sur quatre-vingt-dix mesures : aucune valeur ne
 bouge à taille de texte normale.
 
-**L'écart se choisit sur « même surface ou pas », plus sur la profondeur.** Un
-écart entre frères, le double dès qu'on franchit une frontière — entre deux
-surfaces sœurs, au bord de la fenêtre, sous une image, avant un titre libre.
+**✅ L'écart sur « même surface ou pas »** — *fait le 12 août, `#074`*. Elle
+s'ajoute à la profondeur au lieu de la remplacer, le saut vaut deux crans — soit la
+marge du niveau —, et une frontière n'est pas un écart plus grand : **c'est un
+groupe**, parce qu'un enfant ne réclame jamais d'espace.
 
 **Le curseur de densité.** Un multiplicateur unique sur les espaces et les
 rayons, avec la cible tactile comme plancher absolu.

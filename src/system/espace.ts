@@ -26,3 +26,26 @@ export const ECART_INLINE: Record<Espace, string> = {
   page: 'gap-x-inline-page',
   large: 'gap-x-inline-large',
 }
+
+/* LA FRONTIÈRE. Deux choses qui ne vont pas ensemble ne sont pas plus espacées :
+   elles sont dans deux groupes. C'est le conteneur du dessus qui porte l'écart de
+   frontière — l'enfant ne réclame jamais rien, R3.2 tient.
+
+   Sa valeur est deux crans au-dessus de l'écart du niveau, ce qui tombe
+   exactement sur sa marge intérieure : on s'écarte d'un groupe autant qu'on
+   s'écarte du bord. Décision d'Auteur du 2026-08-12, journal 074. */
+export const FRONTIERE_BLOC: Record<Espace, string> = {
+  detail: 'gap-y-block-frontiere-detail',
+  carte: 'gap-y-block-frontiere-carte',
+  coque: 'gap-y-block-frontiere-coque',
+  page: 'gap-y-block-frontiere-page',
+  large: 'gap-y-block-frontiere-large',
+}
+
+export const FRONTIERE_INLINE: Record<Espace, string> = {
+  detail: 'gap-x-inline-frontiere-detail',
+  carte: 'gap-x-inline-frontiere-carte',
+  coque: 'gap-x-inline-frontiere-coque',
+  page: 'gap-x-inline-frontiere-page',
+  large: 'gap-x-inline-frontiere-large',
+}

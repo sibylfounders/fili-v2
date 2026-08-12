@@ -37,6 +37,79 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #074 — L'écart ne dit pas seulement où l'on est, il dit ce qui va avec quoi — et une frontière est un groupe
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décisions d'Auteur, rendues sur essais)*
+
+**Contexte** — Le plan portait une règle héritée : *l'écart se choisit sur « même
+surface ou pas », plus sur la profondeur*. Rendue sur une carte réelle, le défaut
+qu'elle vise est net : deux paragraphes du même propos et deux propos différents
+sont au même niveau, donc au même écart. **On lit quatre lignes là où il y a deux
+blocs.**
+
+**Décision** — Trois, prises dans cet ordre.
+
+**(1) La frontière s'ajoute à la profondeur, elle ne la remplace pas.** Le plan
+disait « plus sur la profondeur » ; l'Auteur a tranché pour le cumul. La
+profondeur répond à *où suis-je*, la frontière à *qu'est-ce que je franchis* —
+deux questions différentes, deux faits.
+
+**(2) L'écart de frontière vaut deux crans au-dessus**, et non un. Les trois
+valeurs ont été rendues côte à côte sur le même contenu : un cran (+41 %) ne
+sépare pas assez, deux crans (+100 %) séparent sans écarteler.
+
+**(3) Une frontière n'est pas un écart plus grand : c'est un groupe.** Trouvé en
+écrivant, et c'est le point qui compte.
+
+**Sens produit / UX** — **La règle a changé de forme au moment de l'écrire, et
+c'est le système qui l'a imposé.** Marquer un enfant « ici je saute plus » aurait
+demandé une marge extérieure sur cet enfant — précisément ce que le corpus
+interdit depuis toujours, parce qu'un élément ne pousse pas son voisin. La seule
+forme admissible était donc de **grouper** : ce qui va ensemble entre dans la même
+pile, et la pile du dessus porte l'écart de frontière. La contrainte n'a pas
+affaibli la règle, elle l'a rendue plus juste — on ne déclare plus une aération,
+on déclare une structure. Et une structure se vérifie.
+
+**Deux crans tombent exactement sur la marge du niveau.** Ce n'est pas une
+coïncidence : l'écart d'une profondeur vaut la moitié de sa marge, donc son double
+est sa marge. La règle se dit alors d'une phrase qui se retient : **on s'écarte
+d'un groupe autant qu'on s'écarte du bord.** Aucun jeton nouveau n'entre au
+système — les utilitaires de frontière pointent sur les marges qui existent, seul
+leur nom change, parce qu'un écart et une marge ne se déclarent pas au même
+endroit.
+
+**Les quatre frontières sont des faits, pas des jugements** — entre deux surfaces
+sœurs, au bord de la fenêtre, sous une image, avant un titre qui n'ouvre pas le
+bloc. Toutes se lisent dans la structure sans savoir de quoi parle l'écran. C'est
+la condition d'entrée au corpus, et c'est le même déplacement que pour la
+répétition d'un signal en `#065` : la bonne formulation est celle qu'un robot
+peut voir.
+
+**Alternatives écartées** — *La frontière remplace la profondeur* (deux valeurs
+pour tout le système : plus simple, mais une liste dans une carte et une liste en
+pleine page respireraient pareil — on échangerait un manque contre un autre) ;
+*un cran au-dessus* (rendu sur essai : +41 %, la séparation ne se lit pas) ;
+*marquer l'enfant qui ouvre une frontière* (c'est une marge extérieure, interdite
+— et c'est cet interdit qui a produit la bonne règle).
+
+**Conséquences** — `Pile` et `Grille` reçoivent la déclaration de frontière. La
+configuration porte les utilitaires correspondants, qui pointent sur les jetons de
+marge. Le fichier de règles porte l'énoncé et son exemple. **Aucune valeur ne
+change tant qu'une frontière n'est pas déclarée** : les écrans existants sont
+identiques. Le robot ne vérifie pas encore qu'une pile hétérogène déclare sa
+frontière — charge nommée, non traitée.
+
+**Une trouvaille en passant** — le contrôle « aucune couleur littérale » a refusé
+le commentaire qui citait cette entrée : il prend une référence de journal à trois
+chiffres pour une couleur hexadécimale. Le commentaire a été reformulé plutôt que
+le contrôle relâché — mais le faux positif est réel, et il touchera quiconque
+citera le journal dans le code du produit. Charge nommée, non traitée.
+
+**Impact carte** — Il reste **une règle** au plan : le curseur de densité. Puis
+les cinq contrôles.
+
+---
+
 ## #073 — Des trois règles de coin, une seule en est une — et elle ne vaut que pour la pastille
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur mesure)*
