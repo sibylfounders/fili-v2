@@ -329,7 +329,12 @@ vide, voilà le contenu.** Aucun n'est optionnel, et la mécanique passe par
 \`EtatAsync\` — jamais par des conditions écrites à la main dans la page.
 
 Le squelette d'attente ressemble à ce qu'il remplace. **Le rond qui tourne est
-interdit** : il occupe sans informer.
+interdit** : il occupe sans informer. Une seule animation existe dans tout le
+système, la respiration du squelette — il n'y en a pas d'autre à choisir.
+
+**Ce qui vient d'ailleurs entre par une seule porte.** Une donnée lue à la main
+dans une page contourne le conteneur, donc les quatre états, et il ne reste que
+le cas heureux.
 
 Un état vide dit ce qui remplirait le vide, jamais seulement qu'il est vide.
 

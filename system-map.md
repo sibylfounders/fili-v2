@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#082`
+> **Dernière décision au journal** : `#083`
 
 **Légende des statuts**
 
@@ -123,7 +123,9 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | L'emphase du journal invisible sur É6 | 🔴 | `#054` | Le texte des entrées est entier, son relief ne l'est pas : aucun composant du registre ne rend du balisage. |
 | Le moteur de géométrie sans preuve contre la source | 🔴 | `#059` | Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois jetons produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt. |
 | La provenance des hauteurs de témoin | 🔴 | `#059` | Elles se disaient « multiples de l'échelle d'espacement, 21 pas de 32 ». La phrase n'a plus d'objet. Les valeurs restent justes, leur justification est à réécrire. |
-| Les quatre gestes que le cadre ne voit pas | 🔴 | `#081` · `#082` | Le rond qui tourne, l'icône répétée, le texte suivi hors d'une pile, l'absence d'états. Quatre règles écrites, aucune gardée. Le cinquième trou — la couleur nommée — est fermé par `#082`. |
+| Les cinq trous de la promesse mesurée | 🟢 | `#081` → `#083` | Fermée : couleur nommée (`#082`), rond qui tourne, icône répétée, texte suivi hors pile, porte des données (`#083`). |
+| L'amorçage lit hors de la couche de données | 🔴 | `#083` | Le démarrage lit l'état par la fenêtre et non par la porte. Il n'affiche rien, il ne peut donc oublier aucun état — mais il est exempté par son nom, et une exemption nommée est une dette. |
+| Le décompte des sabotages est invalidé | 🔴 | `#083` | La carte annonçait 46 sur 46 alors que le test de mutation ne pouvait plus rien injecter depuis un temps inconnu. À remesurer avant toute lecture de ce chiffre. |
 | Les sept témoins non jugés après migration | 🔴 | `#059` | Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non. |
 
 ---

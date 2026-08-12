@@ -312,7 +312,7 @@ export function EcranActe() {
                   <Pile espace="page">
                     {liste.map((b) => (
                       <Pile espace="detail" key={b.numero}>
-                        <Jeton ton="attente">
+                        <Jeton repete ton="attente">
                           {b.numero} · {b.date}
                         </Jeton>
                         <Texte variante="fin">{b.titre}</Texte>

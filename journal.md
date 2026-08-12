@@ -37,6 +37,73 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #083 — Les quatre gestes sont gardés, et le test qui prouvait la batterie ne prouvait plus rien
+
+*2026-08-12 · Statut : 🟢 Quatre contrôles branchés, trois fautes réelles corrigées · Ferme les trous (2) à (5) de `#081`*
+
+**Contexte** — `#082` a fermé le seul trou qui portait sur une valeur. Les quatre
+restants portaient tous sur un **geste** : le rond qui tourne, l'icône répétée, le
+texte suivi hors d'une pile, l'absence d'états. Tous les quatre étaient **écrits
+au fichier de règles et gardés nulle part**. C'est le motif constant de la
+semaine, et il finit par être le vrai enseignement : *une règle écrite n'est pas
+une règle tenue.*
+
+**Ce qui a été branché** — *Rien ne tourne dans le vide.* Une seule animation est
+admise, la respiration du squelette ; tout autre mouvement livré par l'outil est
+refusé sans avoir à être nommé, et la feuille de style est lue en plus pour le
+mouvement écrit à la main. *Pas de signal sur ce qui se répète.* Un jeton écrit
+dans une boucle doit déclarer qu'il se répète — c'est la répétition qui se prouve,
+pas celle qui se devine. *Pas de texte suivi hors d'une pile.* Le contrôle de la
+veille jugeait le niveau d'une pile qui distribue du texte et ne voyait rien quand
+il n'y avait pas de pile ; les deux se complètent — l'un dit « pas trop serré »,
+l'autre « pas au hasard ». *Une seule porte pour ce qui vient d'ailleurs.*
+
+**Le cinquième trou n'était pas celui qu'on croyait.** L'écran d'essai n'exposait
+aucun état, et le corpus n'a rien dit — **à juste titre** : il se déclenche sur la
+lecture d'une donnée distante, et l'écran inventait la sienne sur place. Le vrai
+risque n'est pas la page qui fait semblant, c'est celle qui va chercher sa donnée
+**par la fenêtre** : un appel réseau écrit à la main contourne le crochet, donc le
+conteneur, donc les quatre états, et il ne reste que le cas heureux. La fenêtre est
+fermée ; la porte a deux faces, toutes deux nommées.
+
+**Trois fautes réelles, trouvées du premier coup.** Trois jetons produits par une
+boucle ne déclaraient pas qu'ils se répétaient — dans l'acte, dans la famille,
+dans le verdict. La même icône s'affichait donc sur chaque ligne de trois listes,
+exactement ce que la règle du 11 août interdit. Corrigées.
+
+**Et le test qui prouve la batterie ne prouvait plus rien.** Le test de mutation
+injecte un défaut et exige que la batterie rougisse ; sa cible était écrite en dur
+— un fichier, une balise — et la coquille du produit a changé de forme depuis. Il
+échouait donc à chaque appel en disant qu'il ne pouvait pas injecter, **et
+personne ne l'appelait**. Il choisit désormais sa cible dans le périmètre réel.
+C'est la faute la plus grave de la journée : pendant un temps qu'on ne sait pas
+mesurer, **le garde-fou du garde-fou était mort**, et la carte comptait quarante-six
+sabotages sur quarante-six.
+
+**Sens produit / UX** — Le cadre passe des valeurs aux gestes. Un rond qui tourne,
+une icône de trop sur vingt lignes, deux paragraphes sans écart déclaré : aucun de
+ces trois-là n'est une faute qu'on voit en relisant du code. Ils se voient à
+l'écran, tard, chez quelqu'un d'autre. **Ce sont exactement les défauts qu'une
+relecture humaine laisse passer et qu'une machine attrape** — l'inverse de ce
+qu'on attend d'elle d'habitude.
+
+**Alternatives écartées** — *Refuser le rond par liste noire* (il faudrait
+énumérer tous les mouvements de l'outil et ceux à venir ; une liste blanche d'une
+seule entrée les couvre tous) ; *deviner la répétition en comptant les jetons
+voisins* (trois jetons écrits à la main se voient à la relecture, une boucle
+jamais — on garde ce qui échappe à l'œil, on laisse ce qui lui saute dessus) ;
+*déplacer l'amorçage dans la couche de données* (c'est du code applicatif, il
+n'est pas demandé — la face est nommée, la dette est écrite) ; *fusionner les deux
+contrôles du texte suivi* (l'un juge un niveau, l'autre une absence ; fusionnés,
+le message ne dirait plus quoi corriger).
+
+**Impact carte** — Corpus S2 : **seize assertions actives**. Trous de `#081` :
+**les cinq sont fermés**. Deux dettes nouvelles : l'amorçage qui lit hors de la
+couche de données, et le décompte des sabotages de la carte, invalidé tant qu'il
+n'est pas remesuré.
+
+---
+
 ## #082 — Le trou le plus large est fermé à la source : la palette remplace au lieu d'ajouter
 
 *2026-08-12 · Statut : 🟢 Fermé, gardé, saboté · Ferme le trou (1) de `#081`*

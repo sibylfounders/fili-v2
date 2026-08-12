@@ -415,6 +415,193 @@ test('S2-T13', `Aucune couleur hors des ${COULEURS_DU_SYSTEME.length} du systèm
   return hits
 })
 
+/** S2-T14 — Rien ne tourne dans le vide.
+ *
+ *  Trou (2) de l'essai du 2026-08-12. La règle est écrite noir sur blanc depuis
+ *  l'origine — « le rond qui tourne est interdit : il occupe sans informer » —
+ *  et rien ne la vérifiait. L'attente s'annonce par un squelette qui a la forme
+ *  de ce qui vient ; un rond qui tourne ne dit ni quoi, ni combien, ni jusqu'à
+ *  quand.
+ *
+ *  Liste blanche, pas liste noire : une seule animation est admise, la
+ *  respiration du squelette. Tout autre mouvement livré par l'outil est refusé
+ *  sans avoir à être nommé.
+ *
+ *  Le mouvement peut aussi s'écrire à la main, hors du périmètre habituel : la
+ *  feuille de style est donc lue en plus, et une image-clé qui fait un tour
+ *  complet est refusée là aussi. */
+const ANIMATIONS_ADMISES = ['animate-pulse']
+
+test('S2-T14', 'Rien ne tourne dans le vide', () => {
+  const hits = []
+  for (const { path, cls } of classNames()) {
+    if (!cls.startsWith('animate-')) continue
+    if (ANIMATIONS_ADMISES.includes(cls)) continue
+    hits.push({
+      path,
+      detail: `« ${cls} » — la seule animation admise est la respiration du squelette ; ` +
+        `ce qui attend prend la forme de ce qui vient`,
+    })
+  }
+  /* Le mouvement écrit à la main, hors du périmètre des composants. */
+  const feuille = readFileSync(join(ROOT, 'src/index.css'), 'utf8')
+  for (const m of feuille.matchAll(/@keyframes\s+([\w-]+)\s*\{([^}]*\{[^}]*\}[^}]*)*\}/g)) {
+    if (/rotate\s*\(\s*(360deg|1turn)\s*\)/.test(m[0]))
+      hits.push({ path: 'src/index.css', detail: `l'image-clé « ${m[1]} » fait un tour complet — un rond qui tourne` })
+  }
+  return hits
+})
+
+/** S2-T15 — Pas de signal sur ce qui se répète.
+ *
+ *  Trou (3) de l'essai du 2026-08-12, et règle du matin même : un signal qui
+ *  apparaît une fois informe, le même répété sur vingt lignes devient du grain.
+ *  Le composant sait déjà se taire — il attend qu'on lui déclare qu'il est dans
+ *  une suite. Personne ne vérifiait que la déclaration était là.
+ *
+ *  Ce qui est lu : un jeton écrit DANS une boucle. C'est la répétition qui se
+ *  prouve, pas celle qui se devine — un jeton produit par une boucle apparaît
+ *  autant de fois qu'il y a de lignes, par construction.
+ *
+ *  Angle mort déclaré : trois jetons écrits à la main l'un après l'autre se
+ *  répètent aussi, et ce test ne les voit pas. Ils sont rares — on ne recopie
+ *  pas trois fois la même ligne — et ils se voient à la relecture, là où une
+ *  boucle ne se voit jamais. */
+const PORTEURS_DE_SIGNAL = ['Jeton']
+
+/** Positions du corps qui tombent dans le rappel d'une boucle. */
+function dansUneBoucle(body) {
+  const pile = []
+  const zones = []
+  for (let i = 0; i < body.length; i++) {
+    if (body[i] === '(') {
+      pile.push({ boucle: body.slice(Math.max(0, i - 4), i) === '.map', debut: i })
+    } else if (body[i] === ')') {
+      const ouvert = pile.pop()
+      if (ouvert && ouvert.boucle) zones.push([ouvert.debut, i])
+    }
+  }
+  return (pos) => zones.some(([a, b]) => pos > a && pos < b)
+}
+
+test('S2-T15', 'Aucun signal sur ce qui se répète', () => {
+  const hits = []
+  for (const { path, body } of files) {
+    const dedans = dansUneBoucle(body)
+    for (const nom of PORTEURS_DE_SIGNAL) {
+      const re = new RegExp(`<${nom}([^>]*)>`, 'g')
+      let m
+      while ((m = re.exec(body))) {
+        if (/\brepete\b/.test(m[1])) continue
+        if (!dedans(m.index)) continue
+        const ligne = body.slice(0, m.index).split('\n').length
+        hits.push({
+          path: `${path}:${ligne}`,
+          detail: `<${nom}> dans une boucle sans déclarer qu'il se répète — sa forme deviendra du grain`,
+        })
+      }
+    }
+  }
+  return hits
+})
+
+/** S2-T16 — Le texte suivi ne se compose pas hors d'une pile.
+ *
+ *  Trou (4) de l'essai du 2026-08-12, et angle mort déclaré la veille par
+ *  S2-T12 : ce dernier juge le NIVEAU d'une pile qui distribue du texte, et ne
+ *  voit donc rien quand il n'y a pas de pile du tout. Deux paragraphes posés
+ *  côte à côte dans un bloc anonyme n'ont aucun écart déclaré — ils héritent de
+ *  ce qui traîne, c'est-à-dire de rien.
+ *
+ *  Les deux se complètent : T12 dit « pas trop serré », T16 dit « pas au
+ *  hasard ». Aucun ne remplace l'autre. */
+const CONTENEURS_DE_TEXTE = ['Pile', 'Grille', 'Prose']
+
+/** Positions du corps qui tombent hors de tout conteneur de texte. */
+function horsConteneur(body) {
+  const bornes = []
+  const re = new RegExp(`<(/?)(${CONTENEURS_DE_TEXTE.join('|')})([^>]*)>`, 'g')
+  let m
+  let niveau = 0
+  const zones = []
+  while ((m = re.exec(body))) {
+    const fermant = m[1] === '/'
+    const autoferme = m[3].trimEnd().endsWith('/')
+    if (autoferme) continue
+    if (fermant) {
+      niveau = Math.max(0, niveau - 1)
+      if (niveau === 0) zones.push([bornes.pop(), m.index + m[0].length])
+    } else {
+      if (niveau === 0) bornes.push(m.index)
+      niveau += 1
+    }
+  }
+  return (pos) => !zones.some(([a, b]) => pos > a && pos < b)
+}
+
+test('S2-T16', 'Aucun texte suivi hors d’une pile', () => {
+  const hits = []
+  for (const { path, body } of files) {
+    const dehors = horsConteneur(body)
+    const orphelins = []
+    for (const m of body.matchAll(/<Texte[^>]*variante=["']corps["']/g)) {
+      if (!dehors(m.index)) continue
+      orphelins.push(body.slice(0, m.index).split('\n').length)
+    }
+    if (orphelins.length < 2) continue
+    hits.push({
+      path: `${path}:${orphelins[0]}`,
+      detail: `${orphelins.length} paragraphes hors de toute pile — leur écart n'est déclaré nulle part`,
+    })
+  }
+  return hits
+})
+
+/** S2-T17 — Une seule porte pour ce qui vient d'ailleurs.
+ *
+ *  Trou (5) de l'essai du 2026-08-12, examiné et ramené à sa vraie forme. Le
+ *  corpus exige déjà les quatre états — ça charge, ça a raté, c'est vide, voilà
+ *  le contenu — mais il se déclenche sur la LECTURE : un fichier qui appelle le
+ *  crochet déclaré doit rendre à travers un conteneur d'état. L'écran d'essai
+ *  n'appelait rien, il inventait ses données sur place, et rien ne s'est
+ *  déclenché. C'était juste.
+ *
+ *  Le vrai risque n'est donc pas l'écran qui fait semblant — c'est celui qui va
+ *  chercher sa donnée par la fenêtre. Un appel réseau écrit à la main dans une
+ *  page contourne le crochet, donc le conteneur, donc les quatre états, et la
+ *  page n'expose plus que le cas heureux. Ce test ferme la fenêtre : ce qui
+ *  vient d'ailleurs entre par la couche de données, et par elle seule.
+ *
+ *  Angle mort déclaré : la liste des verbes est connue, pas devinée. Une lecture
+ *  écrite autrement lui échappe — mais elle échappe aussi à la revue, et c'est
+ *  pourquoi la couche de données existe : une porte se garde, un mur troué non. */
+/* La porte a deux faces, et les deux sont nommées : la couche de données, et
+   l'amorçage qui lit l'état une fois au démarrage puis installe les sources.
+   L'amorçage n'affiche rien — il ne peut donc pas oublier un état — mais il
+   devrait vivre dans la couche : dette nommée à la carte le 2026-08-12. */
+const PORTES_DES_DONNEES = ['src/system/donnees/', 'src/main.tsx']
+const VERBES_DU_DEHORS = ['fetch', 'XMLHttpRequest', 'axios', 'useSWR', 'useQuery', 'EventSource', 'WebSocket']
+
+test('S2-T17', 'Une seule porte pour ce qui vient d’ailleurs', () => {
+  const re = new RegExp(`\\b(${VERBES_DU_DEHORS.join('|')})\\s*[({.]`)
+  const hits = []
+  for (const { path, body } of files) {
+    const chemin = path.split('\\').join('/')
+    if (PORTES_DES_DONNEES.some((porte) => chemin.startsWith(porte))) continue
+    body.split('\n').forEach((line, i) => {
+      const t = line.trim()
+      if (t.startsWith('*') || t.startsWith('//') || t.startsWith('/*')) return
+      const m = re.exec(line)
+      if (!m) return
+      hits.push({
+        path: `${path}:${i + 1}`,
+        detail: `« ${m[1]} » hors de la couche de données — la donnée entrée par la fenêtre n'expose aucun de ses quatre états`,
+      })
+    })
+  }
+  return hits
+})
+
 test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
   try {
     statSync(join(ROOT, 'node_modules'))
@@ -463,23 +650,39 @@ test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
 /* -------------------------------------------------------------------------- */
 
 if (process.argv.includes('--mutate')) {
-  const target = join(ROOT, 'src/App.tsx')
-  const original = readFileSync(target, 'utf8')
-  const mutated = original.replace('<main className="', '<main style={{ color: "#3B82F6" }} className="')
+  /* La cible n'est plus écrite en dur. Elle l'était — « src/App.tsx », et sa
+     balise « main » — jusqu'à ce que la coquille change de forme : le test de
+     mutation a alors cessé de pouvoir injecter quoi que ce soit, et il l'a dit
+     à chaque appel sans que personne ne le lance. Découvert le 2026-08-12.
+     Il choisit désormais sa cible dans le périmètre réel. */
+  const porteur = files.find((f) => f.body.includes('className="'))
 
-  if (mutated === original) {
-    console.error('S2-T9  FAIL   la mutation n’a pas pu être injectée')
+  if (!porteur) {
+    console.error('S2-T9  FAIL   aucun fichier du périmètre ne porte de classe — mutation impossible')
     process.exit(1)
   }
 
-  writeFileSync(target, mutated)
-  const detected = /#[0-9a-fA-F]{3,8}\b/.test(readFileSync(target, 'utf8'))
-  writeFileSync(target, original) // restauration systématique
+  const cible = join(ROOT, porteur.path)
+  const original = readFileSync(cible, 'utf8')
+  const mutated = original.replace('className="', 'style={{ color: "#3B82F6" }} className="')
+
+  if (mutated === original) {
+    console.error(`S2-T9  FAIL   la mutation n’a pas pu être injectée dans ${porteur.path}`)
+    process.exit(1)
+  }
+
+  let detected = false
+  try {
+    writeFileSync(cible, mutated)
+    detected = /#[0-9a-fA-F]{3,8}\b/.test(readFileSync(cible, 'utf8'))
+  } finally {
+    writeFileSync(cible, original) // restauration systématique, même en cas d'erreur
+  }
 
   console.log(
     detected
-      ? 'S2-T9  PASS   la mutation #3B82F6 est bien détectée par S2-T1'
-      : 'S2-T9  FAIL   la mutation est passée inaperçue — S2-T1 ne prouve rien',
+      ? `S2-T9  PASS   la mutation #3B82F6 injectée dans ${porteur.path} est bien détectée par S2-T1`
+      : `S2-T9  FAIL   la mutation est passée inaperçue — S2-T1 ne prouve rien`,
   )
   process.exit(detected ? 0 : 1)
 }

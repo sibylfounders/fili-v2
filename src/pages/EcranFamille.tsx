@@ -81,7 +81,7 @@ export function EcranFamille() {
                     )}
                     {f.courant === null ? null : (
                       <Pile espace="detail">
-                        <Jeton ton="idee">{f.courant.date}</Jeton>
+                        <Jeton repete ton="idee">{f.courant.date}</Jeton>
                         <Texte variante="fin">
                           {formuler(T.etatsCompte, { n: f.courant.etats })}
                         </Texte>

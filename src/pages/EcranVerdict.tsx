@@ -267,7 +267,7 @@ export function EcranVerdict() {
                 <Pile espace="large">
                   {liste.map((c) => (
                     <Pile espace="carte" key={c.id}>
-                      <Jeton ton="refus">{c.assertion}</Jeton>
+                      <Jeton repete ton="refus">{c.assertion}</Jeton>
                       <Titre niveau={3}>{c.contrat}</Titre>
                       <Texte variante="fin">
                         {formuler(LIBELLES.ecrans.constat.occurrencesCompte, {
