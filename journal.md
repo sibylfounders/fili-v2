@@ -37,6 +37,71 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #084 — Première sortie : le cadre tient sur du code étranger, et ce n'est pas ce qu'on croyait qui a trouvé
+
+*2026-08-12 · Statut : 🟢 Épreuve 1 passée, deux enseignements qui dérangent*
+
+**Contexte** — Le kit n'avait jamais rien jugé d'autre que du code écrit par ceux
+qui connaissent ses règles. La mesure de la veille avait une faiblesse assumée :
+les fautes avaient été posées par quelqu'un qui savait lesquelles étaient
+attrapables. Première épreuve de sortie : un écran de tableau de bord produit par
+**Gemini**, à partir d'une demande volontairement banale, sans aucune consigne de
+rigueur — *fais quelque chose de propre et de moderne*.
+
+**Méthode, et c'est elle qui compte** — Avant de regarder le code, deux choses ont
+été **écrites et enregistrées** : le tri du corpus en deux — treize contrôles qui
+peuvent juger n'importe quel code, neuf qui supposent nos propres pièces et n'ont
+pas le droit de parler — et les trois chiffres qu'on allait compter avec leur
+seuil de succès. Sans ce gel préalable, on aurait choisi après coup les contrôles
+qui donnent le bon résultat. **La discipline de mesure est la mesure.**
+
+**Résultat** — Huit contrôles sur treize ont parlé, sept à raison. Deux refus
+injustes. Verdict : **succès**, au seuil déclaré.
+
+**Premier enseignement, et il dérange** — **Ce qui a trouvé n'est pas ce qu'on
+croyait.** Les contrôles historiques du projet, ceux qui existent depuis l'origine
+et sur lesquels reposait toute la promesse — la couleur écrite en dur, la durée en
+dur, le style posé sur l'élément — **n'ont rien trouvé du tout**. Gemini n'écrit
+aucune de ces fautes ; il est plus discipliné que l'écran de bouillie qu'on avait
+simulé la veille. Ce qui a trouvé, c'est la fermeture de la palette et l'échelle
+d'espacement, branchées l'une hier soir et l'autre cette semaine. **Le cadre a
+attrapé du réel avec ses deux pièces les plus jeunes, et rien avec ses plus
+vieilles.** Il faut le dire ainsi : une partie du corpus se bat contre une bouillie
+qui n'existe plus.
+
+**Second enseignement** — Deux cent quarante refus sur un seul écran. Ce n'est pas
+deux cent quarante décisions : c'est **deux** — adopter la palette, adopter
+l'échelle. Le reste est de la traduction mécanique. Mais tant que l'outil qui
+traduit n'existe pas, **le cadre est un mur pour quiconque arrive avec du code
+existant**, et la justesse de ses refus n'y change rien. C'est la première fois
+qu'on voit la différence entre *avoir raison* et *être adoptable*.
+
+**Un refus injuste qui nomme une vraie faute de règle** — « Rien ne tourne dans le
+vide » a été écrite contre le rond qui tourne pendant une attente. Elle refuse ici
+l'animation d'ouverture d'une fenêtre modale, qui n'est pas la même chose. **La
+règle est trop large d'un cran** : elle parle du mouvement en général là où elle
+voulait parler de l'attente. Constaté, non corrigé — on ne corrige pas pendant une
+mesure.
+
+**Deux trouvailles hors liste, signalées et non comptées** — Quatre classes
+d'espacement construites par concaténation, et un saut de titre du niveau 1 au
+niveau 3. Toutes deux réelles. Elles n'étaient pas dans la liste figée : les
+compter aurait été élargir le périmètre après avoir vu le résultat.
+
+**Alternatives écartées** — *Compter les messages plutôt que les contrôles* (deux
+cent quarante messages pour deux décisions : le chiffre flatterait autant qu'il
+tromperait) ; *retirer les deux refus injustes du décompte parce qu'ils
+s'expliquent* (un refus qui s'explique reste un refus subi par celui qui écrit) ;
+*corriger la règle du mouvement dans la foulée* (corriger pendant la mesure, c'est
+mesurer autre chose).
+
+**Impact carte** — Le kit a jugé du code qu'il n'a pas écrit, pour la première
+fois. Deux charges nouvelles : la règle du mouvement trop large d'un cran, et
+l'absence d'un outil de traduction sans lequel le cadre n'est pas adoptable sur du
+code existant.
+
+---
+
 ## #083 — Les quatre gestes sont gardés, et le test qui prouvait la batterie ne prouvait plus rien
 
 *2026-08-12 · Statut : 🟢 Quatre contrôles branchés, trois fautes réelles corrigées · Ferme les trous (2) à (5) de `#081`*
