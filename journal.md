@@ -37,6 +37,76 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #072 — Le rognage du texte est ajourné : le défaut est réel et chiffré, le remède coûte plus cher que lui
+
+*2026-08-12 · Statut : 🟡 Ajourné (décision d'Auteur) · **Chiffre la charge ouverte par `#050` sur S3***
+
+**Contexte** — L'Auteur revient sur une observation ancienne : selon la fonte
+employée, un même bloc paraît porter des marges verticales différentes. Le fonds
+Google Fonts Knowledge nomme le mécanisme sans le normer — depuis CSS1, une ligne
+est centrée dans sa hauteur totale et le blanc excédentaire est ajouté au-dessus
+et au-dessous.
+
+**Le défaut est mesuré, et il est plus gros qu'attendu.** Sur un bouton à marge
+verticale déclarée de dix-sept, le blanc réellement vu est de **vingt-deux et
+demi** — cinq points et demi de blanc que personne n'a décidés, par bord. À
+l'échelle du système, c'est **la moitié d'un cran**. La marge déclarée n'est donc
+pas la marge vue sur l'axe vertical, alors qu'elle l'est sur l'axe horizontal.
+C'est un défaut de fondation, pas de finition.
+
+**Décision** — **Ajourné.** Rien n'est écrit, rien n'est changé.
+
+**Sens produit / UX** — **Le remède existe et il est propre** : `text-box-trim`
+avec `text-box-edge`, qui cale la boîte sur la hauteur des capitales et la ligne
+de base. Mesuré : la marge déclarée redevient exactement la marge vue, quel que
+soit le libellé. La compensation ne demanderait **aucun jeton nouveau** — le
+composant passerait du cran « détail » au cran « carte », soit de douze à
+dix-sept, et retomberait à quarante-cinq et demi, au-dessus de la cible au doigt.
+
+**Ce qui le rend trop cher aujourd'hui, ce n'est pas le rognage.** C'est le
+**double régime** : un écran sur six ne le prend pas en charge, et à marge égale
+ces navigateurs afficheraient un bouton de cinquante-huit là où les autres en
+montreraient quarante-cinq et demi. Douze points d'écart, visibles. Deux jeux de
+valeurs à tenir et à vérifier, pendant deux à trois ans. S'y ajoutent un
+reréglage complet de l'axe vertical — chaque marge a été jugée à l'œil *en
+présence* de ce blanc — et la reprise de tous les écrans de contrôle.
+
+**Et le remède ne couvre pas tout le défaut.** Il supprime la part de la fonte,
+pas la part du mot : trois points et demi de variation subsistent selon qu'un
+libellé porte ou non une descendante, avant comme après. Un remède partiel qui
+coûte un double régime ne se prend pas à la légère.
+
+**Deux faits techniques relevés au passage, et qui resserviront** — le rognage
+**n'a aucun effet sur nos composants** tels qu'ils sont écrits, parce qu'ils sont
+centrés par une boîte souple qui gère sa hauteur elle-même ; il faut le poser sur
+un élément intérieur. Et il fait **perdre douze points de hauteur** à chaque
+composant, ce qui les fait passer sous la cible au doigt si l'on ne remonte pas
+la marge.
+
+**Condition de réouverture, écrite pour n'avoir pas à refaire la mesure** — deux
+signaux, l'un ou l'autre. La prise en charge dépasse largement les
+quatre-vingt-trois pour cent d'aujourd'hui, ce qui fait tomber le double régime.
+Ou bien le relevé du blanc propre à nos trois fontes montre un **écart fort entre
+elles** : le sujet devient alors urgent, parce que changer de fonte casserait le
+rythme du système — précisément ce que le système promet d'empêcher. **Ce relevé
+n'a pas pu être fait** : le pont vers le disque de l'Auteur a perdu son droit de
+copier des fichiers.
+
+**Alternatives écartées** — *Adopter le rognage et compenser pour retrouver la
+hauteur d'avant* (on remet le blanc qu'on vient de retirer : gain nul, et un
+nombre inventé qui ne descend de rien) ; *l'adopter sans repli* (un écran sur six
+verrait des composants d'un sixième plus hauts) ; *corriger à la main par des
+décalages verticaux* (la faute nommée par la candidate 26 du fonds
+typographique : une correction verticale en littéral ne survit pas à un
+changement de fonte).
+
+**Impact carte** — Aucun changement au dépôt. La charge ouverte sur S3 par
+`#050` — « la mesure spatiale autour du texte est faussée tant que le rognage
+n'est pas déclaré » — est désormais **chiffrée** : cinq points et demi par bord,
+la moitié d'un cran. Elle reste ouverte.
+
+---
+
 ## #071 — Les longueurs s'affichent à l'entier, le calcul garde ses décimales
 
 *2026-08-12 · Statut : 🟢 Verrouillé (arbitrage délégué par l'Auteur)*
