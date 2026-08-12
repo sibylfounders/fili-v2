@@ -18,7 +18,7 @@ const piece = {
   $verifie: "Confrontée à la source le 2026-08-11 : l'outil de l'Auteur a été lu ligne à ligne. EXACTS et vérifiés — les trois marges [B, B/R, B/R²], les trois rayons [R0/2, R0/4, R0/8], le bord = B, l'adoucissement x²(3−2x) de 320 à 1440, et les CINQ amplitudes d'axe. Le texte et la cible sont désormais dérivés comme dans la source : corps stable, titres à un et deux pas, cible sur son axe propre.",
   $ecartsDeclares: "Deux points s'écartent encore de la source, et ils ne sont PAS corrigés sans arbitrage : (1) la source ne porte QU'UN écart, base ÷ 2, quand cette pièce en dérive un par profondeur ; (2) la source s'arrête à trois profondeurs quand cette pièce en porte cinq — 'page' et 'large' prolongent la raison géométrique vers le haut, pour un rythme entre sections que la source ne couvre pas. Les deux touchent 56 emplois dans les sept écrans : les corriger est une refonte, pas une correction.",
   entrees: socle.entrees,
-  $loiDuRayon: "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
+  $loiDuRayon: "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. MAIS LA MARGE LE COMMANDE — aucun arrondi ne dépasse la marge qui le porte, et le réglage de départ ne dépasse pas le double de la marge de base, point où la coque touche exactement la sienne. Décision d'Auteur du 2026-08-12. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
   rayonRacine: socle.rayonRacine,
   pastilleExigee: socle.pastilleExigee,
   profondeurs: PROFONDEURS,
@@ -43,7 +43,8 @@ fs.writeFileSync(path.join(RACINE, 'fili/geometrie.json'), JSON.stringify(piece,
 const lignes = Object.entries(j).map(([n, v]) => `  --rr-${n}: ${v.css};`)
 const css = `/* PIÈCE GÉNÉRÉE — ne pas éditer à la main.
    Produite par tools/fili/geometrie/produire.mjs depuis l'Échelle Semantic Rhythm.
-   Base ${socle.entrees.base} · ratio ${socle.entrees.ratio} · rayon racine ${socle.rayonRacine} (= la marge : le rayon descend d'elle).
+   Base ${socle.entrees.base} · ratio ${socle.entrees.ratio} · arrondi de départ ${socle.rayonRacine}.
+   TOUT EN REM, sauf la cible au doigt : la taille de texte de l'utilisateur commande.
    Chaque jeton est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
    l'horizontal va de ${AXES.inline.min} à ${AXES.inline.max}, le vertical de ${AXES.block.min} à ${AXES.block.max},
    le texte de ${AXES.type.min} à ${AXES.type.max}, les rayons de ${AXES.radius.min} à ${AXES.radius.max},

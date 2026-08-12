@@ -60,6 +60,11 @@ export const AXES = {
   control: { min: 1.00, max: 1.06 },
 }
 
+/* La racine du navigateur. Elle appartient à l'utilisateur : c'est la taille
+   de texte qu'il a réglée, seize par défaut. Toute la géométrie s'exprime en
+   multiples d'elle. */
+export const RACINE_NAVIGATEUR = 16
+
 export const LARGEUR_MIN = 320
 export const LARGEUR_MAX = 1440
 
@@ -81,11 +86,15 @@ export function deriver(entrees = ENTREES_DEFAUT) {
   const e = { ...ENTREES_DEFAUT, ...entrees }
   if (!(e.base >= 16 && e.base <= 32)) throw new Error('refus de statuer — base hors plage 16 → 32')
   if (!(e.ratio >= 1.2 && e.ratio <= 2.2)) throw new Error('refus de statuer — ratio hors plage 1,2 → 2,2')
-  /* Le plafond n'est plus un nombre fixe : c'est la marge de base. Un arrondi
-     de départ plus grand qu'elle est refusé, jamais rabattu en silence — une
-     correction non tracée est la faute nommée depuis #002. */
-  if (!(e.rayonRacine >= 0 && e.rayonRacine <= e.base))
-    throw new Error(`refus de statuer — l'arrondi de départ (${e.rayonRacine}) dépasse la marge de base (${e.base}) ; en dessous c'est un choix, au-dessus ce n'est pas possible`)
+  /* Le plafond n'est plus un nombre fixe : il descend de la marge de base.
+     DEUX FOIS elle, et non elle-même — corrigé le 2026-08-12 après essai sur les
+     six intentions de l'Auteur, dont deux se faisaient refuser à tort. La règle
+     porte sur les arrondis QU'ON VOIT, et le premier d'entre eux vaut déjà la
+     moitié du réglage de départ : à deux fois la base, la coque touche
+     exactement sa marge, jamais plus. Un dépassement est refusé, jamais rabattu
+     en silence — une correction non tracée est la faute nommée depuis #002. */
+  if (!(e.rayonRacine >= 0 && e.rayonRacine <= 2 * e.base))
+    throw new Error(`refus de statuer — l'arrondi de départ (${e.rayonRacine}) donnerait à la coque un arrondi de ${e.rayonRacine / 2} pour une marge de ${e.base} ; aucun arrondi ne dépasse la marge qui le porte`)
   const rayonRacine = e.rayonRacine
 
   const marges = {}
@@ -142,17 +151,34 @@ export function deriver(entrees = ENTREES_DEFAUT) {
 /* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne
    sait qu'interpoler droit. On pose donc la droite qui joint les deux bornes,
    et on MESURE ce qu'elle coûte au lieu de le supposer. */
-export function clampDe(valeur, axe) {
+export function clampDe(valeur, axe, unite = 'rem') {
   const a = AXES[axe]
   const bas = valeur * a.min
   const haut = valeur * a.max
   const pente = ((haut - bas) / (LARGEUR_MAX - LARGEUR_MIN)) * 100
   const origine = bas - (LARGEUR_MIN * (haut - bas)) / (LARGEUR_MAX - LARGEUR_MIN)
   const n = (v) => String(Math.round(v * 10000) / 10000)
+  /* L'unité. Tout sort en REM — décision d'Auteur du 2026-08-12 : quand
+     quelqu'un agrandit le texte dans son navigateur, un système en pixels
+     l'ignore, un système en rem le suit. C'est une exigence d'accessibilité
+     (WCAG 1.4.4), pas un goût.
+
+     La conversion emploie SEIZE, qui est la racine du navigateur — pas le corps
+     du système, même s'ils valent la même chose aujourd'hui. Si le corps changeait,
+     le rem, lui, ne changerait pas : il appartient à l'utilisateur.
+
+     La part en vw reste en vw : c'est une fraction de la largeur de l'écran, pas
+     une longueur de texte. Elle ne suit donc pas le zoom, et c'est voulu.
+
+     Le px demeure pour ce qui ne doit PAS grandir avec le texte : la cible au
+     doigt (un doigt ne change pas de taille), les traits d'un pixel, et la
+     largeur d'écran minimale. */
+  const u = unite === 'px' ? (v) => `${n(v)}px` : (v) => `${n(v / RACINE_NAVIGATEUR)}rem`
   return {
     bas: r4(bas),
     haut: r4(haut),
-    css: `clamp(${n(bas)}px, ${n(origine)}px + ${n(pente)}vw, ${n(haut)}px)`,
+    unite,
+    css: `clamp(${u(bas)}, ${u(origine)} + ${n(pente)}vw, ${u(haut)})`,
   }
 }
 
@@ -192,6 +218,9 @@ export function jetons(socle) {
     sortie[`type-${nom}`] = { axe: 'type', base: v, ...clampDe(v, 'type'), ...ecartCourbeDroite(v, 'type') }
   }
   /* La cible tactile, sur le sien. */
-  sortie['control-cible'] = { axe: 'control', base: socle.controle.cible, ...clampDe(socle.controle.cible, 'control'), ...ecartCourbeDroite(socle.controle.cible, 'control') }
+  /* EN PIXELS, et c'est la seule. Un doigt ne grandit pas quand on agrandit le
+     texte : une cible exprimée en rem descendrait sous son plancher légal dès
+     qu'un utilisateur réduit sa taille de police. */
+  sortie['control-cible'] = { axe: 'control', base: socle.controle.cible, ...clampDe(socle.controle.cible, 'control', 'px'), ...ecartCourbeDroite(socle.controle.cible, 'control') }
   return sortie
 }

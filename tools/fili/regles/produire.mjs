@@ -70,6 +70,13 @@ Pas de \`padding: 16px\`, pas de \`gap-4\`, pas de \`p-[13px]\`, pas de
 Chaque valeur vient d'une classe nommée. Si tu ne trouves pas la classe, tu ne
 bricoles pas : tu t'arrêtes et tu poses la question.
 
+**Et tu écris en rem, jamais en pixels.** Toute la géométrie s'exprime en
+multiples de la taille de texte de l'utilisateur : quand il l'agrandit dans son
+navigateur, le système entier suit. Le pixel ne demeure que pour trois choses qui
+ne doivent PAS grandir avec le texte — la cible au doigt, les traits d'un pixel,
+et la largeur d'écran minimale. Tu n'as de toute façon rien à convertir : les
+classes portent déjà la bonne unité.
+
 **Les seules valeurs brutes tolérées** : \`0\`, \`1px\`, \`2px\`, \`50%\`,
 \`100%\`, \`auto\`, \`9999px\`. Rien d'autre, jamais.
 
@@ -158,11 +165,12 @@ C'est le composant qui le tient, tu n'as qu'à déclarer que tu es dans une suit
 
 ${rayons}
 
-**La marge commande l'arrondi.** L'arrondi de départ vaut la marge de base —
-aujourd'hui ${nb(ent.base)}. En dessous, c'est un choix : tu peux descendre
-jusqu'à l'angle droit. **Au-dessus, ce n'est pas possible**, ni au départ ni à
-aucun niveau : aucun arrondi ne dépasse la marge qui le porte. Si tu l'essaies,
-le système refuse de calculer — il ne te rabat pas la valeur en silence.
+**La marge commande l'arrondi.** **Aucun arrondi ne dépasse la marge qui le
+porte** — ni au départ, ni à aucun niveau. En dessous, c'est un choix : on
+descend jusqu'à l'angle droit si on veut. Le réglage de départ vaut aujourd'hui
+${nb(ent.base)} ; il peut monter jusqu'au double, point où l'arrondi de la coque
+touche exactement sa marge, jamais plus. Au-delà, le système refuse de calculer —
+il ne rabat pas la valeur en silence.
 
 **Une surface** suit la profondeur : son rayon se divise par deux à chaque niveau.
 \`rounded-net\` pour ce qui se lit — une section, un tableau.

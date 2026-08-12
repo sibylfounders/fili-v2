@@ -37,6 +37,101 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #069 — Le système passe en rem : la taille de texte de l'utilisateur commande la géométrie
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur)*
+
+**Contexte** — Toute la géométrie sortait en pixels. La question de l'Auteur :
+« on ne devrait pas plutôt parler en rem, hormis pour la valeur de base ? »
+
+**Décision** — Tous les jetons de géométrie s'expriment en **rem**, ainsi que les
+trois tailles de texte qui restaient écrites en dur à la planche et deux mesures
+de mise en page. **Trois choses restent en pixels**, et pour la même raison :
+elles ne doivent pas grandir avec le texte. La **cible au doigt** — un doigt ne
+change pas de taille —, les **traits d'un pixel**, et la **largeur d'écran
+minimale**, qui décrit un écran et non un contenu. La conversion emploie seize,
+qui est la racine du navigateur et non le corps du système, même s'ils valent la
+même chose aujourd'hui : le rem appartient à l'utilisateur, pas au produit.
+
+**Sens produit / UX** — **C'est de l'accessibilité, pas du goût.** Quand quelqu'un
+agrandit le texte dans son navigateur — parce qu'il voit mal, parce que l'écran
+est loin, parce qu'il est fatigué — un système en pixels l'ignore : le texte
+grossit et les espaces restent, la mise en page se déséquilibre puis se casse.
+En rem, tout suit ensemble et le rythme est préservé. Un système qui se réclame
+du RGAA ne pouvait pas rester en pixels.
+
+**Le rythme est conservé exactement.** Mesuré avant/après sur les trente jetons à
+trois largeurs : **quatre-vingt-dix mesures, zéro écart** à taille de texte
+normale. Rien ne bouge à l'écran pour l'utilisateur qui n'a rien réglé. À taille
+agrandie, **quatre-vingt-sept des quatre-vingt-dix suivent**, et les trois qui ne
+bougent pas sont la cible au doigt. Le comportement voulu, vérifié plutôt que
+supposé.
+
+**La part fluide reste en vw, et c'est voulu.** Chaque jeton est un `clamp` dont
+le milieu contient une fraction de la largeur d'écran. Cette part-là ne suit pas
+le zoom du texte : elle décrit l'écran, pas le contenu. Le résultat est un
+système qui répond à deux commandes indépendantes — la largeur de la fenêtre et
+la taille de texte choisie — sans que l'une écrase l'autre.
+
+**Alternatives écartées** — *Tout en rem, cible comprise* (une cible en rem
+descend sous son plancher légal dès qu'un utilisateur réduit sa taille de police
+— l'accessibilité se retournerait contre elle-même) ; *convertir aussi les
+bascules d'écran* (elles décrivent des écrans, et le sujet mérite son propre
+examen : laissé en place, non traité ici) ; *garder les pixels et documenter la
+conversion* (une documentation ne redimensionne rien).
+
+**Impact carte** — `echelle.mjs` porte l'unité par jeton. `expression.json` :
+trois tailles et deux mesures converties. `REGLES.md` régénéré, l'unité est
+posée dans la règle qui commande toutes les autres. Aucune valeur rendue ne
+change à taille de texte normale.
+
+---
+
+## #068 — Le plafond de l'arrondi est le double de la marge, pas la marge : deux intentions étaient refusées à tort
+
+*2026-08-12 · Statut : 🟢 Verrouillé (corrigé sur essai) · **Révise `#067`** sur sa mise en œuvre*
+
+**Contexte** — `#067` a traduit « la marge commande l'arrondi » par une borne sur
+le réglage de départ : il ne pouvait pas dépasser la marge de base. En rendant
+les six intentions de l'Auteur pour les lui montrer, **deux se sont fait
+refuser** — *Grand public* (départ 32 sur base 24) et *Ludique* (départ 44 sur
+base 28).
+
+**Décision** — La règle de l'Auteur ne change pas d'un mot : aucun arrondi ne
+dépasse la marge qui le porte. C'est sa traduction qui était fausse. Le plafond
+du réglage de départ devient **le double de la marge de base**, parce que le
+premier arrondi vaut déjà la moitié de ce réglage : à deux fois la base, la coque
+touche exactement sa marge, jamais plus.
+
+**Sens produit / UX** — **La règle porte sur ce qu'on voit, pas sur le réglage.**
+Le réglage de départ n'est pas un arrondi posé sur un objet : c'est une entrée
+abstraite dont descendent les arrondis réels. Sur *Ludique*, un départ de 44
+produit 22, 11 et 5,5 pour des marges de 28, 17 et 11 — aucun ne dépasse la
+sienne. Borner l'entrée revenait à interdire des compositions parfaitement
+légales au nom d'un nombre que personne ne voit.
+
+**Une règle trop stricte se paie en expressivité, exactement comme une règle trop
+lâche se paie en négligence.** `#064` avait déjà été prise après avoir constaté
+qu'une loi trop courte rendait quatre intentions sur six inconstructibles. La
+même faute a failli se reproduire par excès de prudence, en sens inverse. Le
+garde-fou est le même dans les deux cas : **rendre avant d'écrire**.
+
+**Et le mot « plein » devient vrai.** Au plafond, une coque a un arrondi égal à sa
+marge — ce que la formulation de l'Auteur décrivait et que la borne précédente
+rendait impossible : elle plafonnait la coque à la moitié de sa marge.
+
+**Alternatives écartées** — *Corriger les deux intentions pour qu'elles rentrent
+dans la borne* (c'est faire plier l'intention devant une traduction fautive) ;
+*supprimer la borne d'entrée et ne garder que la vérification par niveau*
+(elle suffirait, mais le message d'erreur ne dirait plus quoi régler — une borne
+nommée vaut mieux qu'un refus tardif).
+
+**Impact carte** — `echelle.mjs` : plafond porté au double de la base, message de
+refus réécrit pour dire l'arrondi qu'aurait la coque. `REGLES.md` régénéré. Les
+six intentions passent toutes.
+
+---
+
 ## #067 — La marge commande l'arrondi : point de départ et plafond, la descente ne change pas
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur essai) · **Révise `#064`** sur un point*

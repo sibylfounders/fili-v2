@@ -56,13 +56,13 @@
     "$intention": "L'échelle typographique remonte dans la planche : c'est une liste fermée de valeurs d'expression comme une autre. Elle n'entre pas en conflit avec la doctrine — la taille d'un titre découle toujours de son NIVEAU (R4.5), et c'est le composant qui fait la correspondance. La planche dit ce qui existe ; la règle dit qui a le droit de s'en servir.",
     "$ecart": "RÉVISÉ le 2026-08-11 : le corps revient à 16, la base commune partout. Le 17 déclaré ici était un écart assumé ; l'arbitrage d'Auteur le retire. Une base commune tenue de bout en bout vaut mieux qu'un demi-cran de confort sur une seule surface.",
     "menu": {
-      "valeur": "12px",
+      "valeur": "0.75rem",
       "emploi": "surtitre, étiquette, en-tête de colonne",
       "interligne": "1.2",
       "chasse": "0.08em"
     },
     "fin": {
-      "valeur": "14px",
+      "valeur": "0.875rem",
       "emploi": "texte d'accompagnement, note",
       "interligne": "1.65"
     },
@@ -73,7 +73,7 @@
       "$source": "calculé — fili/geometrie.json, jeton type-corps"
     },
     "chapeau": {
-      "valeur": "19px",
+      "valeur": "1.1875rem",
       "emploi": "le paragraphe d'ouverture d'une section",
       "interligne": "1.55"
     },
@@ -108,11 +108,11 @@
       "emploi": "la largeur maximale d'un bloc de texte suivi"
     },
     "page": {
-      "valeur": "1024px",
+      "valeur": "64rem",
       "emploi": "la largeur maximale du contenu d'une page"
     },
     "rail": {
-      "valeur": "280px",
+      "valeur": "17.5rem",
       "emploi": "un rail de navigation — provisionné, aucun emploi aujourd'hui"
     },
     "plancher": {

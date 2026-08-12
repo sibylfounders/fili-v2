@@ -12,7 +12,7 @@
     "corps": 16,
     "cible": 44
   },
-  "$loiDuRayon": "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
+  "$loiDuRayon": "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. MAIS LA MARGE LE COMMANDE — aucun arrondi ne dépasse la marge qui le porte, et le réglage de départ ne dépasse pas le double de la marge de base, point où la coque touche exactement la sienne. Décision d'Auteur du 2026-08-12. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
   "rayonRacine": 24,
   "pastilleExigee": false,
   "profondeurs": [
@@ -85,203 +85,203 @@
       "base": 48,
       "bas": 38.4,
       "haut": 57.6,
-      "css": "clamp(38.4px, 32.9143px + 1.7143vw, 57.6px)"
+      "css": "clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem)"
     },
     "inline-ecart-large": {
       "axe": "inline",
       "base": 24,
       "bas": 19.2,
       "haut": 28.8,
-      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+      "css": "clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem)"
     },
     "inline-marge-page": {
       "axe": "inline",
       "base": 33.9411,
       "bas": 27.1529,
       "haut": 40.7293,
-      "css": "clamp(27.1529px, 23.2739px + 1.2122vw, 40.7293px)"
+      "css": "clamp(1.6971rem, 1.4546rem + 1.2122vw, 2.5456rem)"
     },
     "inline-ecart-page": {
       "axe": "inline",
       "base": 16.9706,
       "bas": 13.5765,
       "haut": 20.3647,
-      "css": "clamp(13.5765px, 11.637px + 0.6061vw, 20.3647px)"
+      "css": "clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem)"
     },
     "inline-marge-coque": {
       "axe": "inline",
       "base": 24,
       "bas": 19.2,
       "haut": 28.8,
-      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+      "css": "clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem)"
     },
     "inline-ecart-coque": {
       "axe": "inline",
       "base": 12,
       "bas": 9.6,
       "haut": 14.4,
-      "css": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)"
+      "css": "clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem)"
     },
     "inline-marge-carte": {
       "axe": "inline",
       "base": 16.9706,
       "bas": 13.5765,
       "haut": 20.3647,
-      "css": "clamp(13.5765px, 11.637px + 0.6061vw, 20.3647px)"
+      "css": "clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem)"
     },
     "inline-ecart-carte": {
       "axe": "inline",
       "base": 8.4853,
       "bas": 6.7882,
       "haut": 10.1824,
-      "css": "clamp(6.7882px, 5.8185px + 0.303vw, 10.1824px)"
+      "css": "clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem)"
     },
     "inline-marge-detail": {
       "axe": "inline",
       "base": 12,
       "bas": 9.6,
       "haut": 14.4,
-      "css": "clamp(9.6px, 8.2286px + 0.4286vw, 14.4px)"
+      "css": "clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem)"
     },
     "inline-ecart-detail": {
       "axe": "inline",
       "base": 6,
       "bas": 4.8,
       "haut": 7.2,
-      "css": "clamp(4.8px, 4.1143px + 0.2143vw, 7.2px)"
+      "css": "clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem)"
     },
     "block-marge-large": {
       "axe": "block",
       "base": 48,
       "bas": 43.2,
       "haut": 55.68,
-      "css": "clamp(43.2px, 39.6343px + 1.1143vw, 55.68px)"
+      "css": "clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem)"
     },
     "block-ecart-large": {
       "axe": "block",
       "base": 24,
       "bas": 21.6,
       "haut": 27.84,
-      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+      "css": "clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem)"
     },
     "block-marge-page": {
       "axe": "block",
       "base": 33.9411,
       "bas": 30.547,
       "haut": 39.3717,
-      "css": "clamp(30.547px, 28.0257px + 0.7879vw, 39.3717px)"
+      "css": "clamp(1.9092rem, 1.7516rem + 0.7879vw, 2.4607rem)"
     },
     "block-ecart-page": {
       "axe": "block",
       "base": 16.9706,
       "bas": 15.2735,
       "haut": 19.6859,
-      "css": "clamp(15.2735px, 14.0129px + 0.394vw, 19.6859px)"
+      "css": "clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem)"
     },
     "block-marge-coque": {
       "axe": "block",
       "base": 24,
       "bas": 21.6,
       "haut": 27.84,
-      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+      "css": "clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem)"
     },
     "block-ecart-coque": {
       "axe": "block",
       "base": 12,
       "bas": 10.8,
       "haut": 13.92,
-      "css": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)"
+      "css": "clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem)"
     },
     "block-marge-carte": {
       "axe": "block",
       "base": 16.9706,
       "bas": 15.2735,
       "haut": 19.6859,
-      "css": "clamp(15.2735px, 14.0129px + 0.394vw, 19.6859px)"
+      "css": "clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem)"
     },
     "block-ecart-carte": {
       "axe": "block",
       "base": 8.4853,
       "bas": 7.6368,
       "haut": 9.8429,
-      "css": "clamp(7.6368px, 7.0064px + 0.197vw, 9.8429px)"
+      "css": "clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem)"
     },
     "block-marge-detail": {
       "axe": "block",
       "base": 12,
       "bas": 10.8,
       "haut": 13.92,
-      "css": "clamp(10.8px, 9.9086px + 0.2786vw, 13.92px)"
+      "css": "clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem)"
     },
     "block-ecart-detail": {
       "axe": "block",
       "base": 6,
       "bas": 5.4,
       "haut": 6.96,
-      "css": "clamp(5.4px, 4.9543px + 0.1393vw, 6.96px)"
+      "css": "clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem)"
     },
     "radius-coque": {
       "axe": "radius",
       "base": 12,
       "bas": 10.32,
       "haut": 13.44,
-      "css": "clamp(10.32px, 9.4286px + 0.2786vw, 13.44px)"
+      "css": "clamp(0.645rem, 0.5893rem + 0.2786vw, 0.84rem)"
     },
     "radius-carte": {
       "axe": "radius",
       "base": 6,
       "bas": 5.16,
       "haut": 6.72,
-      "css": "clamp(5.16px, 4.7143px + 0.1393vw, 6.72px)"
+      "css": "clamp(0.3225rem, 0.2946rem + 0.1393vw, 0.42rem)"
     },
     "radius-detail": {
       "axe": "radius",
       "base": 3,
       "bas": 2.58,
       "haut": 3.36,
-      "css": "clamp(2.58px, 2.3571px + 0.0696vw, 3.36px)"
+      "css": "clamp(0.1613rem, 0.1473rem + 0.0696vw, 0.21rem)"
     },
     "radius-controle": {
       "axe": "radius",
       "base": 8,
       "bas": 6.88,
       "haut": 8.96,
-      "css": "clamp(6.88px, 6.2857px + 0.1857vw, 8.96px)"
+      "css": "clamp(0.43rem, 0.3929rem + 0.1857vw, 0.56rem)"
     },
     "inline-bord": {
       "axe": "inline",
       "base": 24,
       "bas": 19.2,
       "haut": 28.8,
-      "css": "clamp(19.2px, 16.4571px + 0.8571vw, 28.8px)"
+      "css": "clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem)"
     },
     "block-bord": {
       "axe": "block",
       "base": 24,
       "bas": 21.6,
       "haut": 27.84,
-      "css": "clamp(21.6px, 19.8171px + 0.5571vw, 27.84px)"
+      "css": "clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem)"
     },
     "type-corps": {
       "axe": "type",
       "base": 16,
       "bas": 15.36,
       "haut": 17.12,
-      "css": "clamp(15.36px, 14.8571px + 0.1571vw, 17.12px)"
+      "css": "clamp(0.96rem, 0.9286rem + 0.1571vw, 1.07rem)"
     },
     "type-titre2": {
       "axe": "type",
       "base": 20,
       "bas": 19.2,
       "haut": 21.4,
-      "css": "clamp(19.2px, 18.5714px + 0.1964vw, 21.4px)"
+      "css": "clamp(1.2rem, 1.1607rem + 0.1964vw, 1.3375rem)"
     },
     "type-titre1": {
       "axe": "type",
       "base": 25,
       "bas": 24,
       "haut": 26.75,
-      "css": "clamp(24px, 23.2143px + 0.2455vw, 26.75px)"
+      "css": "clamp(1.5rem, 1.4509rem + 0.2455vw, 1.6719rem)"
     },
     "control-cible": {
       "axe": "control",
