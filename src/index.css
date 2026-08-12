@@ -51,3 +51,37 @@
     }
   }
 }
+
+@layer components {
+  /* L'ATTEINTE — un composant peut être dessiné plus petit que le doigt, il ne
+     peut pas être plus petit à toucher.
+
+     Quand le contour d'un composant descend sous la cible de confort, cette
+     classe étend la zone qui réagit jusqu'à cette cible, sans rien dessiner et
+     sans pousser ses voisins : le pseudo-élément est hors flux et n'a aucune
+     peinture. Ce n'est pas une dérogation à la taille des cibles — c'est ce qui
+     permet de la tenir quand la composition demande un objet plus petit.
+
+     Elle ne dispense pas de l'écart minimal entre deux cibles voisines : deux
+     atteintes qui se recouvrent rendent le clic imprévisible.
+
+     Écrite en CSS et non en utilitaires : le centrage et le débordement d'une
+     zone hors flux n'ont pas de jeton, et les seules valeurs employées ici sont
+     celles que le fichier de règles tolère — 0, 50 %, 100 %. La mesure, elle,
+     vient du jeton. */
+  .atteinte-confort {
+    position: relative;
+  }
+
+  .atteinte-confort::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    min-width: var(--rr-control-cible);
+    min-height: var(--rr-control-cible);
+    transform: translate(-50%, -50%);
+  }
+}

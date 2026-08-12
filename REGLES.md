@@ -98,8 +98,10 @@ la surface, et ce qui s'écrit dessus.
 ❌  bg-[#FFEAEB]                           ❌  text-red-600
 ```
 
-**Aucun état ne se lit à la couleur seule.** Une erreur porte aussi un mot, et
-une forme.
+**Aucun état ne se lit à la couleur seule.** Une erreur porte toujours un mot.
+La forme s'y ajoute quand l'élément est **seul** — et disparaît quand il se
+répète : dans une liste ou un tableau, la même icône vingt fois devient du grain.
+C'est le composant qui le tient, tu n'as qu'à déclarer que tu es dans une suite.
 
 ---
 
@@ -126,6 +128,21 @@ jamais sur une pastille.
 **`rounded-pastille` est une forme, pas un arrondi** — et c'est une promesse :
 ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
 Un composant dont le libellé peut se replier ne devient jamais une pastille.
+
+### La taille au doigt
+
+Une zone qui réagit au doigt mesure au moins **24px** —
+c'est un plancher légal, pas un objectif — et vise **44px**.
+Deux cibles voisines gardent **8px** entre elles.
+
+**Un composant peut être dessiné plus petit que ça. Sa zone d'atteinte, non.**
+Quand la composition demande un objet plus court que la cible — un bouton posé
+dans une tête de carte à côté d'un logo, une action rangée près d'un titre — le
+contour rétrécit et la zone qui réagit reste à la cible : la classe
+`atteinte-confort` l'étend tout autour, sans rien dessiner et sans pousser les
+voisins. **Rétrécir un composant sans elle est une faute, pas un choix.** Elle ne
+dispense pas de l'écart minimal : deux atteintes qui se recouvrent rendent le
+clic imprévisible.
 
 Largeurs : `max-w-lecture` · `max-w-page` · `max-w-rail` · `max-w-plancher` — un bloc de texte suivi ne dépasse jamais `max-w-lecture`.
 

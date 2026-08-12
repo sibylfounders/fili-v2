@@ -37,6 +37,121 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #066 — Un composant peut rétrécir ; sa zone de clic ne rétrécit pas avec lui
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur rendue sur mesure)*
+
+**Contexte** — Exercice sur une carte d'actualité de Google News, relevée au
+pixel sur capture. Premier constat : la carte a **50** de marge horizontale et
+**27** en haut — la même carte, deux marges. Corrigée à 50 partout, elle a fait
+apparaître le défaut que ce 27 masquait : **la rangée du haut est haute comme le
+bouton**, 137 à l'échelle de la capture, alors que les lettres du logo font 59.
+Le logo flotte au milieu, et l'œil voit 83 de blanc au-dessus de lui là où la
+marge en annonce 50.
+
+Deux issues montées et mesurées sur rendu. *Agrandir le logo* : 83 → 76, presque
+rien — une police garde du blanc au-dessus de ses capitales, et ce blanc grandit
+avec elle. *Réduire le bouton* : 83 → 58, soit la marge à huit près, et la carte
+entière remonte de 49. Remis dans la comparaison, l'original de Google donne 60 :
+**le même résultat que la réduction du bouton.** Sa marge courte n'était donc pas
+une négligence, c'était un **rattrapage** du trou laissé par un bouton trop haut.
+
+**Décision** — Les deux compositions sont justes, sous une condition qui devient
+une règle. **Un composant peut être dessiné plus petit que la cible de confort ;
+sa zone d'atteinte, elle, ne descend jamais.** La classe `atteinte-confort`
+étend la zone qui réagit jusqu'au jeton de cible, sans rien peindre et sans
+pousser les voisins. Rétrécir un composant sans elle est une faute, pas un choix.
+Elle ne dispense pas de l'écart minimal entre deux cibles voisines.
+
+**Sens produit / UX** — **Ce que la composition demande et ce que le doigt exige
+ne sont pas la même mesure, et on les avait confondues.** Tant que la taille
+dessinée *est* la cible, toute exigence tactile devient une contrainte de mise en
+page : un bouton de 44 impose une rangée de 44, même à côté d'un logo qui fait la
+moitié. En séparant le contour de l'atteinte, la contrainte tactile cesse de
+commander la composition — et elle est mieux tenue, parce qu'elle est désormais
+écrite quelque part.
+
+**Un pansement bien posé cache le défaut sans le soigner.** Le 27 de Google
+donne le bon résultat visuel pour la mauvaise raison : il compense un trou en
+cassant l'égalité des marges, ce qui déplace le défaut au lieu de le retirer. On
+n'aurait pas trouvé la cause sans avoir d'abord corrigé le symptôme — c'est
+l'égalisation des marges qui a rendu le trou visible.
+
+**Une règle trouvée en mesurant, pas en raisonnant.** L'option « agrandir le
+logo » était la plus intuitive des deux, et le rendu la tue : sept pixels gagnés.
+Le blanc d'une police n'est pas de l'espace qu'on récupère.
+
+**Alternatives écartées** — *Agrandir le logo* (mesuré : 83 → 76, et la marque
+prend un poids qui n'a pas été demandé) ; *laisser le bouton grand et rogner la
+marge du haut*, c'est-à-dire la solution de Google (elle soigne la trace, et elle
+défait l'égalité des marges qu'on venait de poser) ; *interdire tout composant
+sous la cible* (interdire une composition juste au nom d'une contrainte qui a une
+sortie connue et bon marché).
+
+**Conséquences** — Le fichier de règles gagne « La taille au doigt ». La classe
+entre au CSS, écrite en CSS et non en utilitaires : centrer une zone hors flux
+n'a pas de jeton, et les seules valeurs employées sont celles que le fichier de
+règles tolère — 0, 50 %, 100 % —, la mesure venant du jeton de cible.
+**Une dette est nommée** : aucune assertion ne vérifie encore la règle, le
+Gardien ne sait pas mesurer une hauteur rendue. Et **aucun composant du système
+n'est aujourd'hui sous la cible** : la règle attend son premier cas, elle est
+posée avant d'être utile — ce qui est l'ordre voulu.
+
+**Impact carte** — `REGLES.md` régénéré (§4, « La taille au doigt »).
+`src/index.css` gagne l'unique classe de composant du dépôt. Charge ouverte sur
+le corpus d'assertions, consignée, non traitée ici.
+
+---
+
+## #065 — Un signal qui se répète n'est plus un signal : l'icône quitte les listes, et l'alerte perd sa barre
+
+*2026-08-11 · Statut : 🟢 Verrouillé (décisions d'Auteur rendues sur essais)*
+
+**Contexte** — La règle en vigueur disait qu'un état se déclare **trois fois** :
+par sa forme, son libellé et sa teinte. Montée sur les écrans réels, elle produit
+une liste de cinq lignes où la même icône revient cinq fois, et une alerte qui
+porte quatre marques du même état — barre latérale, contour, fond teinté, titre
+coloré. L'Auteur l'a dit sur l'écran : la forme est moche, et la règle n'est pas
+« combien de signaux » mais **« combien de fois »**.
+
+**Décision** — Deux.
+
+**(1) Pas d'icône sur ce qui se répète.** Un jeton posé dans une liste, un
+tableau, ou toute suite d'éléments de même nature perd sa forme et garde son
+libellé et sa teinte. Seul, il la conserve. C'est ce qui le contient qui le
+déclare.
+
+**(2) L'alerte garde le fond teinté et perd la barre latérale.** Le trait
+redevient un contour ordinaire, de la même famille que celui du jeton.
+
+**Sens produit / UX** — **Le nombre de fois est lisible, le nombre de signaux
+demandait un jugement.** « Ai-je trop de signaux ? » ne se vérifie pas : il faut
+un œil. « Suis-je dans une liste ? » se lit dans la structure — donc un robot
+peut le voir. La règle change de nature en changeant de formulation, et c'est le
+même déplacement que pour l'espace : on ne choisit plus, on constate.
+
+**Un signal qui apparaît vingt fois n'informe plus, il texture.** L'icône était
+là pour dire « ceci est un refus » avant qu'on lise. Répétée à chaque ligne, elle
+ne distingue plus rien : elle devient du grain, et elle vole de la place au seul
+élément qui varie, le libellé.
+
+**Le contraste de l'état ne baisse pas pour autant.** L'accessibilité exige que
+l'état ne se lise pas à la couleur seule ; le libellé reste, et il porte. La
+forme était un troisième porteur, pas le second.
+
+**Alternatives écartées** — *Compter les signaux par élément et plafonner à
+deux* (le compte se fait par élément, or le défaut se produit par écran :
+la mauvaise unité de mesure) ; *garder l'icône et l'atténuer dans les listes*
+(atténuer un signal, c'est le payer sans le recevoir) ; *retirer aussi le fond
+teinté de l'alerte* (essayé à l'écran, jugé plus faible : la teinte est ce qui
+fait reconnaître l'alerte avant lecture, la barre ne faisait que la doubler).
+
+**Impact carte** — `Jeton` gagne une déclaration de répétition ; `Alerte` perd
+la barre latérale. Le fichier de règles est régénéré : le §3 ne dit plus « une
+forme » sans condition.
+
+---
+
 ## #064 — L'arrondi redevient un réglage à part, la taille d'un composant ne bouge pas, et l'air est large
 
 *2026-08-11 · Statut : 🟢 Verrouillé (décisions d'Auteur rendues sur essais) · **Révise `#058`** sur un point*
