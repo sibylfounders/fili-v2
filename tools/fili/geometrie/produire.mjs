@@ -23,6 +23,8 @@ const piece = {
   pastilleExigee: socle.pastilleExigee,
   $loiDuCoin: "Un coin de rayon R réserve (1 − 1/√2) × R en diagonale : tout ce qui entre dans ce carré sort de la surface. Sur une surface la garantie est démontrable — le plafond de l'arrondi la rend inatteignable. Sur une pastille il n'y en a aucune : son rayon vaut la moitié de sa hauteur, donc au-delà d'une certaine hauteur la marge horizontale ne suffit plus. Décision d'Auteur du 2026-08-12, journal #073.",
   coin: socle.coin,
+  $loiDesCibles: "Deux zones que le doigt doit distinguer gardent au moins l ecart minimal declare a la planche. La profondeur la plus fine qui le tient a toutes les largeurs est calculee ici : en dessous, une pile ne peut pas contenir de composants. Faute relevee et corrigee le 2026-08-12, journal 075.",
+  profondeurMiniCibles: socle.profondeurMiniCibles,
   profondeurs: PROFONDEURS,
   axes: AXES,
   marges: socle.marges,

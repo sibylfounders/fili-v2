@@ -49,3 +49,21 @@ export const FRONTIERE_INLINE: Record<Espace, string> = {
   page: 'gap-x-inline-frontiere-page',
   large: 'gap-x-inline-frontiere-large',
 }
+
+/* LA DENSITÉ. Elle ne multiplie rien : elle décale d'un cran dans l'échelle.
+   Une zone serrée respire comme le niveau du dessous, une zone ample comme celui
+   du dessus. Aucune valeur nouvelle n'entre au système, et le décalage s'arrête
+   de lui-même aux deux bouts de l'échelle.
+
+   C'est un réglage LOCAL, et c'est tout son intérêt : régler la densité de tout
+   le produit, la base sait déjà le faire. Resserrer un tableau sans toucher au
+   reste de la page, non. Décision d'Auteur du 2026-08-12, journal 076. */
+export type Densite = 'serre' | 'normal' | 'ample'
+
+const ORDRE: Espace[] = ['detail', 'carte', 'coque', 'page', 'large']
+const DECALAGE: Record<Densite, number> = { serre: -1, normal: 0, ample: 1 }
+
+export function decaler(espace: Espace, densite: Densite = 'normal'): Espace {
+  const i = ORDRE.indexOf(espace) + DECALAGE[densite]
+  return ORDRE[Math.min(ORDRE.length - 1, Math.max(0, i))]
+}

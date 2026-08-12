@@ -37,6 +37,115 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #076 — La densité se règle par zone, et elle décale d'un cran au lieu de multiplier
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur)*
+
+**Contexte** — Dernière règle du plan : *un multiplicateur unique sur les espaces
+et les rayons, avec la cible tactile comme plancher absolu*. Deux mesures l'ont
+retournée avant qu'elle soit écrite.
+
+**Un curseur global existe déjà, et il s'appelle la base.** Multiplier toutes les
+valeurs par trois quarts donne exactement le même système que régler la base de
+vingt-quatre à dix-huit — au chiffre près, sur les trois profondeurs. Deux
+réglages qui font la même chose sont une garantie de divergence.
+
+**Et le plancher annoncé n'est pas celui qui mord.** Le plan désignait la cible
+tactile ; mesuré, le bouton tient jusqu'à une densité de 0,85. C'est **l'écart
+entre deux cibles** qui lâche le premier — voir `#075`.
+
+**Décision** — Le curseur est **local**, et il **décale d'un cran dans l'échelle**
+au lieu de multiplier. Une zone serrée respire comme le niveau du dessous, une
+zone ample comme celui du dessus. Trois valeurs : serré, normal, ample.
+
+**Sens produit / UX** — **Ce qui manquait n'était pas un réglage global, c'était
+un réglage local.** Resserrer un tableau, une barre d'outils, un panneau, sans
+toucher au reste de la page : le système ne savait pas le faire. C'est
+probablement ce que « densité » voulait dire depuis le début, et le plan
+l'exprimait mal en parlant d'un multiplicateur unique.
+
+**Le décalage n'invente aucune valeur, le multiplicateur en invente à l'infini.**
+Un facteur de 0,75 produit des nombres qui ne sont dans aucune échelle et qui ne
+se retrouvent nulle part ailleurs dans le produit. Un décalage d'un cran emploie
+des valeurs déjà présentes, déjà fluides, déjà vérifiées — et il **s'arrête tout
+seul aux deux bouts** de l'échelle, sans qu'on ait à écrire une borne.
+
+**Une zone serrée reste lisible parce qu'elle reste dans le système.** C'est la
+différence entre resserrer et bricoler : après décalage, la zone respire comme
+un autre niveau du même rythme, pas comme une exception.
+
+**Alternatives écartées** — *Le multiplicateur global du plan* (redite de la base,
+et il produit des valeurs hors échelle) ; *un multiplicateur local* (même défaut
+sur les valeurs, sans le défaut de la redite — mais rien n'obligerait alors le
+résultat à retomber sur un cran) ; *plusieurs crans de décalage* (deux niveaux
+d'écart entre une zone et son voisinage ne se lisent plus comme une variation
+mais comme une rupture ; un cran suffit, et l'Auteur pourra en demander deux le
+jour où un cas le réclame).
+
+**Conséquences** — `Pile` et `Grille` reçoivent la densité. La fonction de
+décalage vit dans la zone système, avec les autres traductions de l'Échelle.
+**Aucune valeur ne change tant qu'aucune zone n'est déclarée serrée ou ample.**
+Le fichier de règles porte l'énoncé et dit où passe la frontière avec la base :
+l'un est local, l'autre est le système.
+
+**Impact carte** — **Le plan n'a plus de règle en attente.** Restent les cinq
+contrôles à brancher, puis la sortie.
+
+---
+
+## #075 — Le système enfreignait sa propre règle : deux cibles voisines étaient trop près
+
+*2026-08-12 · Statut : 🟢 Verrouillé (faute relevée et corrigée)*
+
+**Contexte** — En cherchant où le curseur de densité buterait, une mesure a montré
+autre chose : **la règle butait déjà, sans curseur**. La planche déclare un écart
+minimal de huit entre deux zones que le doigt doit distinguer. L'écart du niveau
+le plus fin vaut six. Et sur l'écran le plus étroit, où l'axe vertical se
+resserre, le niveau au-dessus tombe lui aussi sous le minimum — sept virgule six.
+
+**Personne ne l'avait vu parce que rien ne le vérifiait** : la valeur était
+déclarée à la planche depuis l'origine, et aucune assertion ne la confrontait aux
+écarts produits.
+
+**Décision** — Le moteur calcule désormais **la profondeur la plus fine dont
+l'écart tient le minimum à toutes les largeurs d'écran** — aujourd'hui la coque —
+et l'expose. Une pile qui contient des composants ne descend jamais en dessous.
+
+**Sens produit / UX** — **C'est la seule règle du corpus qu'un utilisateur peut
+sentir dans son pouce.** Toutes les autres se jugent à l'œil ; celle-ci se juge à
+l'erreur de frappe, sur un téléphone, une main occupée. Elle mérite d'être la plus
+dure du système, et elle était la seule à n'être vérifiée nulle part.
+
+**Le calcul porte sur la largeur la plus étroite, pas sur la valeur de base.**
+C'est la leçon de la mesure : à taille d'écran normale, deux niveaux tenaient. Une
+vérification faite sur les valeurs de base aurait donc conclu que tout allait
+bien. Les valeurs de ce système sont fluides — **toute garantie qui ne s'énonce
+pas sur toute la plage est une garantie qui ment**.
+
+**Les boutons groupés ne sont pas concernés**, et le dire fait partie de la règle :
+ils se touchent franchement, et un contour commun se distingue mieux qu'un
+interstice trop court.
+
+**Alternatives écartées** — *Relever les écarts des niveaux fins pour qu'ils
+passent le minimum* (ce serait déformer l'échelle entière pour un cas d'usage :
+un texte n'est pas une cible et n'a pas besoin de huit) ; *poser un plancher dur
+dans le moteur, qui relèverait l'écart quand il est trop court* (une correction
+silencieuse, la faute nommée depuis `#002` — et elle ferait mentir la valeur
+affichée) ; *laisser la règle à la charge de celui qui écrit* (c'est ce qu'on
+faisait, et voilà le résultat).
+
+**Conséquences** — L'écart minimal entre cibles entre dans les décisions d'entrée
+du moteur. La pièce de géométrie expose la profondeur minimale admissible. Le
+fichier de règles porte l'énoncé. **Aucune valeur ne change** : c'est un emploi
+qui est encadré, pas une échelle qui bouge. Le robot ne sait pas encore repérer
+une pile de composants trop fine — charge nommée, non traitée.
+
+**Impact carte** — Une faute d'accessibilité corrigée, trouvée par accident en
+préparant autre chose. À noter comme telle : **le corpus déclarait une valeur
+qu'il n'appliquait pas**, et c'est le genre de dette qu'aucune relecture n'attrape.
+
+---
+
 ## #074 — L'écart ne dit pas seulement où l'on est, il dit ce qui va avec quoi — et une frontière est un groupe
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décisions d'Auteur, rendues sur essais)*

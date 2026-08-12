@@ -43,6 +43,9 @@ export const ENTREES_DEFAUT = {
      texte a la même taille dans le produit, dans l'outil et dans le navigateur. */
   corps: 16,
   cible: 44,
+  /* Le minimum entre deux zones que le doigt doit distinguer. Déclaré à la
+     planche, jamais appliqué jusqu'au 2026-08-12. */
+  ecartMiniCibles: 8,
 }
 
 /* Une profondeur, un rang. Le rang est l'exposant du ratio : la coque est
@@ -154,6 +157,20 @@ export function deriver(entrees = ENTREES_DEFAUT) {
     if (marges[p] < requis)
       throw new Error(`refus de statuer — la marge de ${p} (${r4(marges[p])}) est inférieure au dégagement de son coin (${r4(requis)}) ; le contenu entrerait dans l'arc`)
   }
+  /* L'ÉCART ENTRE DEUX CIBLES. La planche déclare un minimum de huit entre deux
+     zones que le doigt doit distinguer. Or l'écart d'une profondeur fine tombe
+     sous ce minimum — et personne ne l'avait vu, parce que rien ne le vérifiait.
+     On calcule donc la profondeur la plus fine dont l'écart tient le minimum À
+     TOUTES LES LARGEURS d'écran, y compris la plus étroite où l'axe vertical se
+     resserre. En dessous, une pile ne peut pas contenir de cibles. */
+  let profondeurMiniCibles = null
+  for (const p of [...PROFONDEURS].reverse()) {
+    const auPlusEtroit = ecarts[p] * facteur('block', LARGEUR_MIN)
+    if (auPlusEtroit >= e.ecartMiniCibles) { profondeurMiniCibles = p; break }
+  }
+  if (!profondeurMiniCibles)
+    throw new Error(`refus de statuer — aucune profondeur ne tient l'écart minimal de ${e.ecartMiniCibles} entre deux cibles`)
+
   const coin = {
     degagement: r4(DEGAGEMENT_COIN),
     pastilleHauteurMax: {
@@ -178,7 +195,7 @@ export function deriver(entrees = ENTREES_DEFAUT) {
      employer la pastille, jamais un entre-deux. */
   const pastilleExigee = rayonRacine / 3 > (2 / 3) * marges.detail
 
-  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee, coin }
+  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee, coin, profondeurMiniCibles }
 }
 
 /* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne

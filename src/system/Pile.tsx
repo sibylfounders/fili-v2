@@ -4,7 +4,8 @@
    ce rapport n'est plus un seuil posé de l'extérieur : c'est le ratio, et deux
    profondeurs voisines en sont séparées par construction. */
 import type { ReactNode } from 'react'
-import { ECART_BLOC, ECART_INLINE, FRONTIERE_BLOC, FRONTIERE_INLINE } from './espace.ts'
+import { ECART_BLOC, ECART_INLINE, FRONTIERE_BLOC, FRONTIERE_INLINE, decaler } from './espace.ts'
+import type { Densite } from './espace.ts'
 import type { Espace } from './espace.ts'
 
 const COLONNES: Record<2 | 3 | 4, string> = {
@@ -20,14 +21,18 @@ const COLONNES: Record<2 | 3 | 4, string> = {
 export function Pile({
   espace = 'page',
   frontiere = false,
+  densite = 'normal',
   children,
 }: {
   espace?: Espace
   frontiere?: boolean
+  /* Serré ou ample décalent d'un cran dans l'échelle, sans inventer de valeur. */
+  densite?: Densite
   children: ReactNode
 }) {
+  const cran = decaler(espace, densite)
   return (
-    <div className={`flex flex-col ${(frontiere ? FRONTIERE_BLOC : ECART_BLOC)[espace]}`}>
+    <div className={`flex flex-col ${(frontiere ? FRONTIERE_BLOC : ECART_BLOC)[cran]}`}>
       {children}
     </div>
   )
@@ -37,14 +42,17 @@ export function Grille({
   colonnes = 2,
   espace = 'large',
   frontiere = false,
+  densite = 'normal',
   children,
 }: {
   colonnes?: 2 | 3 | 4
   espace?: Espace
   frontiere?: boolean
+  densite?: Densite
   children: ReactNode
 }) {
-  const x = (frontiere ? FRONTIERE_INLINE : ECART_INLINE)[espace]
-  const y = (frontiere ? FRONTIERE_BLOC : ECART_BLOC)[espace]
+  const cran = decaler(espace, densite)
+  const x = (frontiere ? FRONTIERE_INLINE : ECART_INLINE)[cran]
+  const y = (frontiere ? FRONTIERE_BLOC : ECART_BLOC)[cran]
   return <div className={`grid ${COLONNES[colonnes]} ${x} ${y}`}>{children}</div>
 }

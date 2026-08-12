@@ -26,8 +26,8 @@ Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
 Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
 contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
 
-**Ce qui manque : une règle, et cinq contrôles à brancher.** Il y en avait une
-dizaine le 11 août ; neuf sont réglées depuis — entrées, absorbées ou écartées.
+**Ce qui manque : cinq contrôles à brancher, puis la sortie.** Il y en avait une
+dizaine le 11 août ; **elles sont toutes réglées** — entrées, absorbées ou écartées.
 
 ---
 
@@ -96,8 +96,10 @@ s'ajoute à la profondeur au lieu de la remplacer, le saut vaut deux crans — s
 marge du niveau —, et une frontière n'est pas un écart plus grand : **c'est un
 groupe**, parce qu'un enfant ne réclame jamais d'espace.
 
-**Le curseur de densité.** Un multiplicateur unique sur les espaces et les
-rayons, avec la cible tactile comme plancher absolu.
+**✅ Le curseur de densité** — *fait le 12 août, `#076`*. Il est **local**, et il
+décale d'un cran dans l'échelle au lieu de multiplier : régler la densité du produit
+entier, la base sait déjà le faire. En le préparant, une faute d'accessibilité est
+apparue — deux cibles voisines étaient trop près, `#075`.
 
 **✅ Les trois règles de coin** — *faites le 12 août, `#073`, et il n'en restait
 qu'une*. La bande de tolérance mesurait la mauvaise chose ; la saturation était déjà

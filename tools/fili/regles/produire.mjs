@@ -111,6 +111,37 @@ intervalle de **${nb(ent.ratio)}**, et un arrondi de départ de
 Ces valeurs bougent avec la largeur de l'écran toutes seules — tu n'as rien à
 faire pour ça.
 
+### Deux composants voisins ne sont jamais dans une pile fine
+
+Un bouton, un champ, une liste de choix sont des **cibles** : le doigt doit les
+distinguer. La planche exige au moins ${nb(pla.cibles.ecartMini.valeur.replace('px',''))} entre deux
+cibles voisines, et les écarts des niveaux les plus fins tombent en dessous — sur
+un téléphone plus encore, parce que le vertical s'y resserre.
+
+**Une pile qui contient des composants emploie donc au minimum l'espace
+\`${geo.profondeurMiniCibles}\`.** En dessous, deux boutons se touchent presque et
+le doigt se trompe. Ce n'est pas une préférence : c'est la seule règle du corpus
+qu'un utilisateur peut sentir dans son pouce.
+
+Deux boutons **groupés**, eux, se touchent franchement — c'est un cas déclaré, et
+un contour commun vaut mieux qu'un interstice trop court.
+
+### La densité se règle par zone, et elle décale d'un cran
+
+Un tableau dense dans une page qui ne l'est pas : \`densite="serre"\` fait respirer
+la zone comme le niveau du dessous, \`densite="ample"\` comme celui du dessus.
+**Rien n'est multiplié, aucune valeur n'est inventée** — on se déplace dans
+l'échelle qui existe, et le déplacement s'arrête tout seul aux deux bouts.
+
+\`\`\`
+✅  <Pile espace="coque" densite="serre">   (respire comme « carte »)
+❌  <div style={{ gap: 'calc(var(--x) * 0.75)' }}>
+\`\`\`
+
+Pour régler la densité du produit **entier**, on ne touche pas à ce réglage : on
+change la base. Les deux ne font pas double emploi — l'un est local, l'autre est
+le système.
+
 ### Une frontière est un groupe, pas un écart plus grand
 
 La profondeur dit *où tu es*. Elle ne dit pas *ce qui va avec quoi*. Deux
