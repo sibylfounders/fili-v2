@@ -37,6 +37,53 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #070 — Les composants ne suivront pas leur surface : l'essai est concluant dans l'autre sens
+
+*2026-08-12 · Statut : 🟢 Verrouillé (essai rendu, décision d'Auteur) · **Confirme `#063`**, ne le révise pas*
+
+**Contexte** — L'Auteur a demandé à voir un système où les composants héritent de
+la surface qui les accueille : un bouton plus grand et plus rond dans une coque,
+plus petit et plus carré dans une ligne de liste. L'idée avait toujours été
+écartée pour une raison d'outil — elle imposait une variante de composant par
+profondeur, par taille et par état dans la maquette. La question posée était
+donc : avec des règles de calcul plutôt que des variantes dessinées, est-ce que
+ça redevient possible ?
+
+**Décision** — Non. **Le système ne change pas** : un composant garde sa taille et
+son arrondi quel que soit l'endroit où il tombe.
+
+**Sens produit / UX** — **La contrainte d'outil avait disparu, et ce n'était pas
+la vraie raison.** L'essai a été monté avec une seule définition de bouton pour
+les trois systèmes comparés : la surface transmet ses valeurs, le composant les
+lit. Zéro variante, trois lignes de règle. L'objection Figma tombait donc
+entièrement — et l'idée reste mauvaise pour une raison qui n'a rien à voir.
+
+**Le mur technique est tombé le matin même, et ça n'a pas suffi.** Un bouton qui
+suit sa surface descend à 41 dans une carte et 36 dans une ligne, sous le
+plancher du doigt : c'est ce qui condamnait l'idée jusqu'ici. `#066`, prise
+quelques heures plus tôt, retire exactement cet obstacle en séparant le contour
+de la zone d'atteinte. L'essai a donc pu être jugé **sur son mérite propre**, et
+non sur son impossibilité.
+
+**Ce qui le tue, c'est la reconnaissance.** Deux boutons du même rôle, sortis de
+leur contexte et posés côte à côte, ne se lisent plus comme le même geste. Et la
+hiérarchie qu'on croit gagner, on la perd : un bouton devient gros parce qu'il
+est haut placé dans l'emboîtement, pas parce qu'il est important. La taille cesse
+de dire quelque chose du sens et se met à dire quelque chose de la structure —
+qui est déjà dite par l'espace.
+
+**Alternatives écartées** — *Tout suit la surface, marge et arrondi* (casse la
+reconnaissance, et fausse la hiérarchie) ; *seul l'arrondi suit* — le compromis
+qui semblait tenir, la taille restant l'ancre de la lecture (écarté par l'Auteur
+avec le reste : un demi-changement de doctrine pour un gain qu'on n'a pas su
+nommer).
+
+**Conséquences** — Aucune, au dépôt : rien n'a été écrit, l'essai est resté une
+maquette. La valeur de l'entrée est de **fermer la question** — elle rouvrait
+tous les trois mois faute d'avoir jamais été tranchée devant un rendu.
+
+---
+
 ## #069 — Le système passe en rem : la taille de texte de l'utilisateur commande la géométrie
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur)*
