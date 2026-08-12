@@ -206,7 +206,9 @@ export function EcranFaceAFace() {
                       setMotifManquant(false)
                     }}
                   />
-                  <Pile espace="carte">
+                  {/* Deux cibles : l espace ne descend pas sous celui que le
+                      moteur autorise, sinon le doigt se trompe (S2-T10). */}
+                  <Pile espace="coque">
                     <Button desactive={enAttente} onPress={lancer}>
                       {enAttente ? T.accepterEnCours : T.accepter}
                     </Button>

@@ -193,6 +193,80 @@ test('S2-T7', 'Aucun token orphelin ni fantôme', () => {
   return hits
 })
 
+/** S2-T10 — Deux cibles voisines ne sont jamais dans une pile trop fine.
+ *
+ *  La planche déclare un écart minimal entre deux zones que le doigt doit
+ *  distinguer. Le moteur calcule la profondeur la plus fine dont l'écart tient
+ *  ce minimum À TOUTES LES LARGEURS, et l'expose. Ce test compare ce que les
+ *  écrans emploient à ce que le moteur autorise.
+ *
+ *  Il existe parce que la faute était là depuis l'origine : la valeur était
+ *  déclarée, aucune assertion ne la confrontait aux écarts produits (journal
+ *  075). Une règle corrigée mais non gardée revient.
+ *
+ *  Portée déclarée : on lit le contenu DIRECT d'une pile — ce qu'elle distribue
+ *  elle-même. Ce qui tombe dans une pile ou une grille imbriquée appartient à
+ *  cette dernière, et sera jugé sur sa propre déclaration. */
+const GEO = JSON.parse(readFileSync(join(ROOT, 'fili/geometrie.json'), 'utf8'))
+const PROFONDEURS_ORDRE = GEO.profondeurs ?? []
+const MINI_CIBLES = GEO.profondeurMiniCibles
+/** Les composants que le doigt doit pouvoir distinguer l'un de l'autre. */
+const CIBLES = ['Button', 'TextField', 'Selection']
+
+/** Contenu direct d'une pile : son corps, moins celui de ses piles imbriquées. */
+function corpsDirect(body, depart) {
+  let i = depart
+  let niveau = 1
+  let sortie = ''
+  let profondeurImbriquee = 0
+  while (i < body.length && niveau > 0) {
+    const ouvre = /^<(Pile|Grille)[\s>]/.exec(body.slice(i))
+    const ferme = /^<\/(Pile|Grille)>/.exec(body.slice(i))
+    if (ouvre) {
+      if (niveau === 1 && profondeurImbriquee === 0) profondeurImbriquee = 1
+      else if (profondeurImbriquee > 0) profondeurImbriquee++
+      else niveau++
+      i += ouvre[0].length
+      continue
+    }
+    if (ferme) {
+      if (profondeurImbriquee > 0) profondeurImbriquee--
+      else niveau--
+      i += ferme[0].length
+      continue
+    }
+    if (profondeurImbriquee === 0) sortie += body[i]
+    i++
+  }
+  return sortie
+}
+
+test('S2-T10', `Aucune pile de cibles sous « ${MINI_CIBLES} »`, () => {
+  if (!MINI_CIBLES || !PROFONDEURS_ORDRE.length)
+    return { blocked: 'la géométrie ne déclare pas de profondeur minimale pour les cibles' }
+  const rangMini = PROFONDEURS_ORDRE.indexOf(MINI_CIBLES)
+  const hits = []
+  for (const { path, body } of files) {
+    const re = /<(Pile|Grille)([^>]*)>/g
+    let m
+    while ((m = re.exec(body))) {
+      const espace = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
+      const rang = PROFONDEURS_ORDRE.indexOf(espace)
+      if (rang < 0 || rang <= rangMini) continue
+      const direct = corpsDirect(body, m.index + m[0].length)
+      /* On compte les CIBLES, pas leurs types : deux boutons sont deux cibles. */
+      const trouve = CIBLES.flatMap((c) => direct.match(new RegExp(`<${c}[\\s/>]`, "g")) ?? [])
+      if (trouve.length < 2) continue
+      const ligne = body.slice(0, m.index).split('\n').length
+      hits.push({
+        path: `${path}:${ligne}`,
+        detail: `<${m[1]} espace="${espace}"> distribue ${trouve.length} cibles — trop fin`,
+      })
+    }
+  }
+  return hits
+})
+
 test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
   try {
     statSync(join(ROOT, 'node_modules'))

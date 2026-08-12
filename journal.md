@@ -37,6 +37,57 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #077 — Le premier contrôle des règles du jour est branché, et il a trouvé une faute réelle du premier coup
+
+*2026-08-12 · Statut : 🟢 Verrouillé*
+
+**Contexte** — `#075` a corrigé une faute d'accessibilité : deux cibles voisines
+étaient trop près. La correction était une règle écrite, gardée par rien. Le plan
+prévoyait cinq contrôles à brancher ; celui-ci n'y figurait pas, et il passe
+devant — **une règle corrigée le matin et non gardée le soir revient**.
+
+**Décision** — Le corpus gagne une assertion : aucune pile ne distribue deux
+cibles avec un écart plus fin que celui que le moteur autorise.
+
+**Sens produit / UX** — **Il a trouvé une faute réelle à sa première exécution.**
+Pas seulement le défaut injecté pour l'éprouver : un écran du produit posait deux
+boutons dans une pile trop fine. La faute était là depuis l'écriture de l'écran,
+personne ne l'avait vue, et elle se sentait au pouce et nulle part ailleurs. C'est
+la meilleure démonstration possible de ce que le projet cherche à faire : le
+défaut n'était pas laid, il était invisible à l'œil et réel au doigt.
+
+**Le contrôle lit la géométrie, il ne recopie pas son seuil.** La profondeur
+minimale vient de la pièce produite par le moteur. Si l'échelle change, le
+contrôle change avec elle — c'est la faute nommée en `#060`, où deux listes
+divergentes avaient bloqué le dépôt quatre jours.
+
+**Il a fallu le saboter pour découvrir qu'il ne marchait pas.** À sa première
+écriture, il comptait les *types* de composants et non leur *nombre* : deux
+boutons faisaient un seul type, et le défaut injecté passait. Un contrôle qui
+passe ne prouve rien tant qu'on ne l'a pas fait échouer exprès. C'est la doctrine
+du dépôt depuis l'origine, et elle vient de servir à quelque chose.
+
+**Sa portée est déclarée, et elle est étroite exprès.** Il ne juge que le contenu
+**direct** d'une pile — ce qu'elle distribue elle-même. Ce qui tombe dans une pile
+imbriquée appartient à celle-ci et sera jugé sur sa propre déclaration. Un
+contrôle large produirait des faux positifs, et un garde-fou qu'on apprend à
+ignorer ne garde plus rien.
+
+**Alternatives écartées** — *Commencer par les cinq contrôles du plan* (aucun ne
+garde une règle écrite aujourd'hui ; celui-ci garde une faute corrigée il y a une
+heure) ; *juger tout le sous-arbre d'une pile* (faux positifs assurés dès qu'une
+sous-pile large contient des boutons) ; *recopier le seuil dans le contrôle*
+(deux listes finissent toujours par diverger).
+
+**Conséquences** — Une assertion de plus au corpus. **Une faute corrigée dans un
+écran du produit.** Le contrôle du plan « aucun enfant plus rond que son parent »
+est mort en même temps que sa règle, écartée par `#073` : il en reste quatre.
+
+**Impact carte** — Corpus S2 : huit contrôles au vert, un bloqué faute de pouvoir
+construire ici.
+
+---
+
 ## #076 — La densité se règle par zone, et elle décale d'un cran au lieu de multiplier
 
 *2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur)*

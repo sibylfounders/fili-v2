@@ -114,12 +114,13 @@ Six contrôles d'audit sont écrits. **Le robot n'en applique qu'un** — celui 
 proximité. Les cinq autres se branchent une fois que les règles du dessus
 existent ; avant, ils n'auraient rien à vérifier.
 
-1. Aucun enfant plus rond que son parent.
+1. ~~Aucun enfant plus rond que son parent.~~ — *mort avec sa règle, `#073`*
 2. Aucune surface plus épaisse que celle qui la contient.
 3. Jamais plus de deux positions horizontales dans une carte.
 4. Icônes et jauges alignées entre cartes voisines, à toutes les densités.
 5. Zéro débordement horizontal à 390 px.
 6. L'écart entre surfaces au moins égal au padding qui les habille. ✅ *en place*
+7. ✅ *Aucune pile ne distribue deux cibles avec un écart trop fin — `#077`, ajouté en route.*
 
 ---
 
