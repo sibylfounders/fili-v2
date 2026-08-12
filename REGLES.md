@@ -40,13 +40,18 @@ jugement.
 | Profondeur | Marge intérieure | Écart entre voisins | Rayon |
 |---|---|---|---|
 | `large` | 48 px | 24 px | — |
-| `page` | 33,94 px | 16,97 px | — |
+| `page` | 34 px | 17 px | — |
 | `coque` | 24 px | 12 px | 12 px |
-| `carte` | 16,97 px | 8,49 px | 6 px |
+| `carte` | 17 px | 8 px | 6 px |
 | `detail` | 12 px | 6 px | 3 px |
 
+Ces longueurs sont **arrondies pour la lecture**. Le calcul garde ses
+décimales, et de toute façon aucune de ces valeurs n'arrive telle quelle à
+l'écran : elles s'ouvrent et se resserrent avec la largeur.
+
 Tout descend de trois décisions : une base de **24 px**, un
-intervalle de **1,41**, et le rayon qui vaut la moitié de la marge.
+intervalle de **1,41**, et un arrondi de départ de
+**24 px** — qui est un réglage à part, borné par la marge.
 Ces valeurs bougent avec la largeur de l'écran toutes seules — tu n'as rien à
 faire pour ça.
 

@@ -37,6 +37,57 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #071 — Les longueurs s'affichent à l'entier, le calcul garde ses décimales
+
+*2026-08-12 · Statut : 🟢 Verrouillé (arbitrage délégué par l'Auteur)*
+
+**Contexte** — La question de l'Auteur : faut-il arrondir les valeurs de
+l'échelle, et à quoi — l'entier, le pair, le multiple de quatre comme Tailwind ?
+Mesure faite sur les quatorze valeurs : les décimales en gardent **neuf
+distinctes**, l'entier et le pair huit, la grille de quatre sept. Et la grille de
+quatre commet une faute que les autres ne commettent pas — elle donne **le même
+écart à deux profondeurs d'emboîtement**, huit entre deux lignes d'une carte et
+huit à l'intérieur d'une ligne : la hiérarchie qu'on lit disparaît.
+
+S'y ajoute un fait qu'un système fluide rend décisif : **une valeur ronde ne
+l'est jamais à l'écran**. La marge de la coque vaut vingt-quatre en référence, et
+19,2 sur un téléphone, 22,6 sur une tablette, 28,8 sur un bureau. La grille
+n'existerait qu'à une seule largeur, qui n'est celle de personne.
+
+**Décision** — Deux, prises ensemble. **Le calcul garde ses décimales** (décision
+d'Auteur). Et **l'affichage arrondit à l'entier** — arbitrage délégué par
+l'Auteur, qui a dit mieux lire les nombres pairs.
+
+**Sens produit / UX** — **L'inconfort était réel, il portait sur la lecture, pas
+sur le calcul.** Un tableau qui donne 16,9706 fait lire une précision que
+personne n'emploie. La réponse n'était donc pas de dégrader le moteur mais de
+soigner ce qu'on donne à lire — l'intuition de l'Auteur est servie, pas
+combattue, à l'endroit où elle porte.
+
+**L'entier et non le pair, et c'est le point de l'arbitrage.** Afficher seize
+pour 16,97 ment d'un point entier ; l'entier ment de trois centièmes et reste
+reconnaissable dans le rendu. Un affichage qui flatte l'œil au prix de la
+fidélité cesse d'être une documentation. Le confort du pair est d'ailleurs servi
+sans rien forcer : onze des quatorze valeurs sont déjà paires.
+
+**Et l'arrondi est déclaré.** Les tableaux portent la mention que ces longueurs
+sont arrondies pour la lecture. Un nombre affiché sans son statut se fait prendre
+pour une valeur exacte, et quelqu'un finit par la recopier dans du code.
+
+**Alternatives écartées** — *Arrondir le calcul à l'entier* (perd un barreau de
+l'échelle pour un gain nul, puisque la fluidité redonne des décimales aussitôt) ;
+*au pair* (perd un barreau, et ment d'un point à l'affichage) ; *au multiple de
+quatre* (perd deux barreaux dont un qui porte la distinction entre deux
+profondeurs — la seule option franchement mauvaise) ; *afficher la valeur
+complète et documenter qu'elle bouge* (c'est ce qu'on faisait ; c'est
+précisément ce qui a déclenché la question).
+
+**Impact carte** — `REGLES.md` et la page du système affichent les longueurs à
+l'entier, avec mention de l'arrondi. Les ratios gardent leurs décimales : 1,41
+n'est pas une longueur. Aucune valeur calculée ne change.
+
+---
+
 ## #070 — Les composants ne suivront pas leur surface : l'essai est concluant dans l'autre sens
 
 *2026-08-12 · Statut : 🟢 Verrouillé (essai rendu, décision d'Auteur) · **Confirme `#063`**, ne le révise pas*

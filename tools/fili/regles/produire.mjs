@@ -21,6 +21,15 @@ const pal = lire('fili/palette.json')
 
 const crans = (o) => Object.keys(o || {}).filter((k) => !k.startsWith('$'))
 const nb = (n) => (Math.round(n * 100) / 100).toString().replace('.', ',')
+/* LA LONGUEUR AFFICHÉE est arrondie à l'entier. Le calcul, lui, garde ses
+   décimales : c'est la décision du 2026-08-12. Un tableau qui donne 16,9706 fait
+   lire une précision que personne n'emploie et que l'écran ne rend jamais — la
+   même valeur vaut 13,6 sur un téléphone et 20,4 sur un bureau. On arrondit donc
+   POUR LA LECTURE, à l'entier et non au pair : afficher 16 pour 16,97 mentirait
+   d'un point entier, l'entier ment de trois centièmes et reste reconnaissable
+   dans le rendu. Les ratios, eux, gardent leurs décimales — 1,41 n'est pas une
+   longueur. */
+const px = (n) => Math.round(n).toString()
 const prof = reg.espacement.profondeurs
 const ent = geo.entrees
 
@@ -31,7 +40,7 @@ if (!prof?.length || !geo.marges) {
 }
 
 const ligneProfondeur = prof
-  .map((p) => `| \`${p}\` | ${nb(geo.marges[p])} px | ${nb(geo.ecarts[p])} px | ${geo.rayons[p] !== undefined ? nb(geo.rayons[p]) + ' px' : '—'} |`)
+  .map((p) => `| \`${p}\` | ${px(geo.marges[p])} px | ${px(geo.ecarts[p])} px | ${geo.rayons[p] !== undefined ? px(geo.rayons[p]) + ' px' : '—'} |`)
   .join('\n')
 
 const couleurs = crans(pal.neutres).map((c) => `\`${c}\``).join(' · ')
@@ -92,8 +101,13 @@ jugement.
 |---|---|---|---|
 ${ligneProfondeur}
 
+Ces longueurs sont **arrondies pour la lecture**. Le calcul garde ses
+décimales, et de toute façon aucune de ces valeurs n'arrive telle quelle à
+l'écran : elles s'ouvrent et se resserrent avec la largeur.
+
 Tout descend de trois décisions : une base de **${nb(ent.base)} px**, un
-intervalle de **${nb(ent.ratio)}**, et le rayon qui vaut la moitié de la marge.
+intervalle de **${nb(ent.ratio)}**, et un arrondi de départ de
+**${nb(ent.rayonRacine)} px** — qui est un réglage à part, borné par la marge.
 Ces valeurs bougent avec la largeur de l'écran toutes seules — tu n'as rien à
 faire pour ça.
 

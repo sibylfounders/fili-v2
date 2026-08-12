@@ -111,7 +111,7 @@ for (const [fam, v] of Object.entries(exp)) {
   const echos = []
   for (const [k, o] of cs) {
     const n = px(valeur(o))
-    if (n !== null && connus.has(n)) echos.push(`${k} (${nb(n)} px = ${connus.get(n)})`)
+    if (n !== null && connus.has(n)) echos.push(`${k} (${px(n)} px = ${connus.get(n)})`)
   }
   orphelines.push({ fam, n: cs.length, echos })
 }
@@ -173,9 +173,9 @@ const tableProfondeurs = `<div class="roule"><table>
   <thead><tr><th>Profondeur</th><th>Marge intérieure</th><th>Écart entre enfants</th><th>Rayon</th></tr></thead>
   <tbody>${profondeurs.map((p) => `<tr>
     <td class="cle">${esc(p)}</td>
-    <td>${barre(geo.marges?.[p] || 0, maxMarge)} <span class="mono">${nb(geo.marges?.[p] || 0)} px</span></td>
-    <td>${barre(geo.ecarts?.[p] || 0, maxMarge)} <span class="mono">${nb(geo.ecarts?.[p] || 0)} px</span></td>
-    <td class="mono">${geo.rayons?.[p] !== undefined ? nb(geo.rayons[p]) + ' px' : '—'}</td>
+    <td>${barre(geo.marges?.[p] || 0, maxMarge)} <span class="mono">${px(geo.marges?.[p] || 0)} px</span></td>
+    <td>${barre(geo.ecarts?.[p] || 0, maxMarge)} <span class="mono">${px(geo.ecarts?.[p] || 0)} px</span></td>
+    <td class="mono">${geo.rayons?.[p] !== undefined ? px(geo.rayons[p]) + ' px' : '—'}</td>
   </tr>`).join('')}</tbody>
 </table></div>`
 

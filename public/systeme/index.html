@@ -116,7 +116,7 @@ tr.echo td.cle{color:var(--accent);font-weight:600}
 </div></nav>
 
 <div class="enveloppe">
-<p class="menu">Fili · pièce générée · 2026-08-11</p>
+<p class="menu">Fili · pièce générée · 2026-08-12</p>
 <h1>Le système au complet</h1>
 <p class="chapeau">Tout ce que Fili sait de son apparence, sur une seule page : les espaces, les
 couleurs, le texte, les formes, le mouvement, les pièces toutes faites, et les règles que le robot
@@ -183,13 +183,13 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   <thead><tr><th>Famille</th><th>Valeurs</th><th>Retombent sur un nombre déjà connu</th></tr></thead>
   <tbody><tr class="echo">
     <td class="cle">cibles</td><td class="mono">3</td>
-    <td class="mono petit">plancher (24 px = marge coque) · confort (44 px = cible) · ecartMini (8 px = rayon controle)</td>
+    <td class="mono petit">plancher (null px = marge coque) · confort (null px = cible) · ecartMini (null px = rayon controle)</td>
   </tr><tr class="echo">
     <td class="cle">taillesIcone</td><td class="mono">3</td>
-    <td class="mono petit">petite (16 px = texte corps) · courante (20 px = texte titre2) · grande (24 px = marge coque)</td>
+    <td class="mono petit">petite (null px = texte corps) · courante (null px = texte titre2) · grande (null px = marge coque)</td>
   </tr><tr class="echo">
     <td class="cle">squelette</td><td class="mono">5</td>
-    <td class="mono petit">ligne (16 px = texte corps) · titre (24 px = marge coque)</td>
+    <td class="mono petit">ligne (null px = texte corps) · titre (null px = marge coque)</td>
   </tr><tr class="">
     <td class="cle">etats</td><td class="mono">8</td>
     <td class="mono petit">—</td>
@@ -267,29 +267,29 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   <thead><tr><th>Profondeur</th><th>Marge intérieure</th><th>Écart entre enfants</th><th>Rayon</th></tr></thead>
   <tbody><tr>
     <td class="cle">large</td>
-    <td><span class="trait" style="width:320px"></span> <span class="mono">48 px</span></td>
-    <td><span class="trait" style="width:160px"></span> <span class="mono">24 px</span></td>
+    <td><span class="trait" style="width:320px"></span> <span class="mono">null px</span></td>
+    <td><span class="trait" style="width:160px"></span> <span class="mono">null px</span></td>
     <td class="mono">—</td>
   </tr><tr>
     <td class="cle">page</td>
-    <td><span class="trait" style="width:226.27399999999997px"></span> <span class="mono">33,94 px</span></td>
-    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">16,97 px</span></td>
+    <td><span class="trait" style="width:226.27399999999997px"></span> <span class="mono">null px</span></td>
+    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">null px</span></td>
     <td class="mono">—</td>
   </tr><tr>
     <td class="cle">coque</td>
-    <td><span class="trait" style="width:160px"></span> <span class="mono">24 px</span></td>
-    <td><span class="trait" style="width:80px"></span> <span class="mono">12 px</span></td>
-    <td class="mono">12 px</td>
+    <td><span class="trait" style="width:160px"></span> <span class="mono">null px</span></td>
+    <td><span class="trait" style="width:80px"></span> <span class="mono">null px</span></td>
+    <td class="mono">null px</td>
   </tr><tr>
     <td class="cle">carte</td>
-    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">16,97 px</span></td>
-    <td><span class="trait" style="width:56.568666666666665px"></span> <span class="mono">8,49 px</span></td>
-    <td class="mono">6 px</td>
+    <td><span class="trait" style="width:113.13733333333333px"></span> <span class="mono">null px</span></td>
+    <td><span class="trait" style="width:56.568666666666665px"></span> <span class="mono">null px</span></td>
+    <td class="mono">null px</td>
   </tr><tr>
     <td class="cle">detail</td>
-    <td><span class="trait" style="width:80px"></span> <span class="mono">12 px</span></td>
-    <td><span class="trait" style="width:40px"></span> <span class="mono">6 px</span></td>
-    <td class="mono">3 px</td>
+    <td><span class="trait" style="width:80px"></span> <span class="mono">null px</span></td>
+    <td><span class="trait" style="width:40px"></span> <span class="mono">null px</span></td>
+    <td class="mono">null px</td>
   </tr></tbody>
 </table></div><h3>Ce qui bouge avec la largeur de l'écran</h3>
    <p class="note">L'horizontal et le vertical ne respirent pas ensemble : c'est ce qui empêche une page de s'étirer bêtement.</p><div class="roule"><table>
@@ -367,7 +367,7 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
     
   </div>
 </div></div>
-  <p class="note">L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.</p>
+  <p class="note">L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. MAIS LA MARGE LE COMMANDE — aucun arrondi ne dépasse la marge qui le porte, et le réglage de départ ne dépasse pas le double de la marge de base, point où la coque touche exactement la sienne. Décision d'Auteur du 2026-08-12. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.</p>
 </section>
 
 <section id="couleurs">
@@ -580,16 +580,16 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   </div>
 </div></div><h3>Les sept tailles</h3><div class="grille"><div class="carte">
   
-  <div class="corps"><p class="echantillon" style="font-size:12px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase">Ce qui compte d'abord</p>
-    <p class="nom">menu · 12px / 1.2</p>
+  <div class="corps"><p class="echantillon" style="font-size:0.75rem;line-height:1.2;letter-spacing:.08em;text-transform:uppercase">Ce qui compte d'abord</p>
+    <p class="nom">menu · 0.75rem / 1.2</p>
     
     <p class="emploi">surtitre, étiquette, en-tête de colonne</p>
     
   </div>
 </div><div class="carte">
   
-  <div class="corps"><p class="echantillon" style="font-size:14px;line-height:1.65">Ce qui compte d'abord</p>
-    <p class="nom">fin · 14px / 1.65</p>
+  <div class="corps"><p class="echantillon" style="font-size:0.875rem;line-height:1.65">Ce qui compte d'abord</p>
+    <p class="nom">fin · 0.875rem / 1.65</p>
     
     <p class="emploi">texte d'accompagnement, note</p>
     
@@ -604,8 +604,8 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   </div>
 </div><div class="carte">
   
-  <div class="corps"><p class="echantillon" style="font-size:19px;line-height:1.55">Ce qui compte d'abord</p>
-    <p class="nom">chapeau · 19px / 1.55</p>
+  <div class="corps"><p class="echantillon" style="font-size:1.1875rem;line-height:1.55">Ce qui compte d'abord</p>
+    <p class="nom">chapeau · 1.1875rem / 1.55</p>
     
     <p class="emploi">le paragraphe d'ouverture d'une section</p>
     
@@ -654,7 +654,7 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   
   <div class="corps">
     <p class="nom">page</p>
-    <p class="val">1024px</p>
+    <p class="val">64rem</p>
     <p class="emploi">la largeur maximale du contenu d'une page</p>
     
   </div>
@@ -662,7 +662,7 @@ c'est une piste — ce cran-là pourrait descendre d'une décision au lieu d'êt
   
   <div class="corps">
     <p class="nom">rail</p>
-    <p class="val">280px</p>
+    <p class="val">17.5rem</p>
     <p class="emploi">un rail de navigation — provisionné, aucun emploi aujourd'hui</p>
     
   </div>
