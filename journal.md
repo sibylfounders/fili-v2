@@ -37,6 +37,70 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #080 — Les trois contrôles qui restaient ne sont pas des assertions : ce sont des mesures
+
+*2026-08-12 · Statut : 🟡 Mesuré, non gardé — décision d'architecture à prendre*
+
+**Contexte** — Après avoir branché les deux premiers, il restait au plan trois
+contrôles : pas plus de deux positions horizontales dans une carte, icônes et
+jauges alignées entre cartes voisines, et zéro débordement horizontal à 390. Tous
+trois ont été **exécutés pour de vrai** sur les trente témoins du produit, dans un
+navigateur, à plusieurs largeurs.
+
+**Résultat** — **Deux sont verts, le troisième se dérobe.**
+
+*Le débordement horizontal :* **aucun**, ni à 320 ni à 390, sur les trente
+témoins. Le contrôle passe.
+
+*Les positions horizontales :* **aucune surface** du produit n'en porte plus de
+deux. Le contrôle passe.
+
+*L'alignement des icônes :* la mesure brute signale vingt-cinq écarts, et **aucun
+n'est une faute**. Elle compare des icônes qui n'ont pas le même rôle — celle
+d'une alerte fait vingt-deux points, celle d'un jeton seize, et l'écart de quatre
+points qu'elle relève n'est que cette différence. Le contrôle ne peut pas se
+faire : **il exige de savoir quelles icônes doivent se comparer**, et rien dans le
+produit ne le déclare.
+
+**Sens produit / UX** — **Ces trois-là n'appartiennent pas au Gardien, et c'est le
+vrai résultat de la séance.** Les douze assertions du corpus lisent du texte : un
+fichier, une classe, une déclaration. Ces trois-ci demandent de **regarder une
+page rendue**. Ce ne sont pas des règles plus difficiles, ce sont des règles d'une
+autre nature — et le Gardien, qui tourne sans dépendance avant même une
+installation, n'a pas d'yeux.
+
+**Un contrôle de rendu n'est pas une assertion de plus, c'est un second
+instrument.** Il lui faut un navigateur, donc une dépendance lourde ; il ne peut
+pas tourner avant l'installation ; il est plus lent d'un ordre de grandeur ; et il
+mesure la production avec un outil qui appartient à la production — ce que la
+doctrine du crash-test refuse depuis l'origine.
+
+**La mesure d'aujourd'hui vaut pour aujourd'hui, et pour rien d'autre.** Trente
+témoins, deux largeurs, zéro faute : c'est un état, pas une garantie. Personne ne
+saura si le prochain écran déborde.
+
+**Décision** — Aucune, et c'est délibéré. Le constat est écrit, les deux résultats
+verts sont datés, le troisième contrôle est **déclaré infaisable en l'état** avec
+son motif. **Le choix qui reste appartient à l'Auteur** : donner des yeux au dépôt
+— un navigateur en dépendance de développement, un second instrument à côté du
+Gardien — ou tenir ces trois-là comme un audit périodique, lancé à la main quand
+on veut savoir.
+
+**Alternatives écartées** — *Poser le contrôle d'alignement tel que mesuré*
+(vingt-cinq faux positifs : c'est la faute nommée en `#078`, un garde-fou qu'on
+apprend à ignorer) ; *approcher le débordement par une lecture statique*, en
+interdisant les largeurs fixes supérieures au plancher d'écran (le produit n'en
+emploie aucune : le contrôle serait vide, et il donnerait l'illusion de couvrir ce
+qu'il ne regarde pas) ; *ajouter le navigateur sans le dire* (une dépendance de
+cette taille est une décision d'architecture, pas un détail d'outillage).
+
+**Impact carte** — Les cinq contrôles du plan sont soldés : un est mort avec sa
+règle (`#073`), deux sont branchés au Gardien (`#077`, `#078`), deux sont mesurés
+verts mais non gardés, et le cinquième est déclaré infaisable sans une déclaration
+de rôle qui n'existe pas. **Le plan n'a plus de ligne ouverte avant la sortie.**
+
+---
+
 ## #079 — Le texte long se composait deux crans trop serré, et personne ne l'avait lu
 
 *2026-08-12 · Statut : 🟢 Verrouillé (faute relevée et corrigée)*
