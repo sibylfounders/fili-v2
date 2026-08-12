@@ -15,7 +15,9 @@ import { Texte } from './Texte.tsx'
 export function Prose({ texte }: { texte: string }) {
   const blocs = texte.split(/\n{2,}/).map((b) => b.trim()).filter((b) => b !== '')
   return (
-    <Pile espace="coque">
+    /* Le niveau vient de la geometrie : c est le seul dont l ecart tient
+       entre une et une fois et demie le corps, a toutes les largeurs. */
+    <Pile espace="page">
       {blocs.map((b, i) => (
         <Texte variante="corps" key={`${String(i)}-${b.slice(0, 24)}`}>
           {b.replace(/\n/g, ' ')}

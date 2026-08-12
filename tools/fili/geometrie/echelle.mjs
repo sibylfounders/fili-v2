@@ -46,6 +46,16 @@ export const ENTREES_DEFAUT = {
   /* Le minimum entre deux zones que le doigt doit distinguer. Déclaré à la
      planche, jamais appliqué jusqu'au 2026-08-12. */
   ecartMiniCibles: 8,
+  /* LE TEXTE SUIVI. Un article n'est pas un écran d'outil : l'écart entre deux
+     paragraphes se juge en multiples du corps, pas en profondeur d'emboîtement.
+     La recommandation publique tient entre une et une fois et demie le corps.
+     Confronté à l'échelle, un seul niveau y tombe — voir la garantie plus bas.
+     Décision d'Auteur du 2026-08-12. */
+  proseProfondeur: 'page',
+  /* Le plancher du rapport écart/corps, sous lequel le moteur refuse. Il est à
+     un centième sous l'unité : au plus étroit des écrans, « page » vaut 0,99 et
+     c'est le meilleur de l'échelle — l'écart est déclaré plutôt que masqué. */
+  proseRapportMini: 0.98,
 }
 
 /* Une profondeur, un rang. Le rang est l'exposant du ratio : la coque est
@@ -171,6 +181,18 @@ export function deriver(entrees = ENTREES_DEFAUT) {
   if (!profondeurMiniCibles)
     throw new Error(`refus de statuer — aucune profondeur ne tient l'écart minimal de ${e.ecartMiniCibles} entre deux cibles`)
 
+  const texte0 = r4(e.corps)
+  /* LE TEXTE SUIVI. On vérifie que la profondeur déclarée pour la prose tient
+     son rapport au corps À TOUTES LES LARGEURS. Le rapport se calcule contre le
+     corps DE LA MÊME LARGEUR : les deux respirent, et comparer un écart d'un
+     bout de la plage à un corps de l'autre ne voudrait rien dire. */
+  const proseRapports = [LARGEUR_MIN, LARGEUR_MAX].map(
+    (w) => (ecarts[e.proseProfondeur] * facteur('block', w)) / (texte0 * facteur('type', w))
+  )
+  const prosePire = Math.min(...proseRapports)
+  if (prosePire < e.proseRapportMini)
+    throw new Error(`refus de statuer — au niveau « ${e.proseProfondeur} », deux paragraphes ne sont séparés que de ${r4(prosePire)} fois le corps ; le plancher déclaré est ${e.proseRapportMini}`)
+
   const coin = {
     degagement: r4(DEGAGEMENT_COIN),
     pastilleHauteurMax: {
@@ -195,7 +217,7 @@ export function deriver(entrees = ENTREES_DEFAUT) {
      employer la pastille, jamais un entre-deux. */
   const pastilleExigee = rayonRacine / 3 > (2 / 3) * marges.detail
 
-  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee, coin, profondeurMiniCibles }
+  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee, coin, profondeurMiniCibles, prose: { profondeur: e.proseProfondeur, rapportPire: r4(prosePire) } }
 }
 
 /* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne

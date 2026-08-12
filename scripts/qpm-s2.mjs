@@ -301,6 +301,45 @@ test('S2-T11', 'Toute surface de papier déclare un contour', () => {
   return hits
 })
 
+/** S2-T12 — Le texte suivi ne se compose pas sous le niveau qu'il lui faut.
+ *
+ *  Un article n'est pas un écran d'outil. L'écart entre deux paragraphes se juge
+ *  en multiples du corps — la recommandation publique tient entre une et une fois
+ *  et demie — et confronté à l'échelle, un seul niveau y tombe. Le composant de
+ *  prose a composé pendant des mois deux crans trop serré, à 0,70 fois le corps
+ *  au lieu de 1 (journal 079).
+ *
+ *  Angle mort déclaré : ce test ne voit que les textes écrits À LA MAIN, l'un
+ *  après l'autre. Un texte rendu par une boucle n'apparaît qu'une fois dans le
+ *  source, et lui est gardé ailleurs — le moteur refuse de produire une géométrie
+ *  dont la profondeur de prose passe sous son plancher. Deux protections, deux
+ *  portées, toutes deux écrites. */
+const PROSE_PROFONDEUR = GEO.prose?.profondeur
+
+test('S2-T12', `Aucun texte suivi sous « ${PROSE_PROFONDEUR ?? '?'} »`, () => {
+  if (!PROSE_PROFONDEUR) return { blocked: 'la géométrie ne déclare pas de profondeur pour le texte suivi' }
+  const rangProse = PROFONDEURS_ORDRE.indexOf(PROSE_PROFONDEUR)
+  const hits = []
+  for (const { path, body } of files) {
+    const re = /<(Pile|Grille)([^>]*)>/g
+    let m
+    while ((m = re.exec(body))) {
+      const espace = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
+      const rang = PROFONDEURS_ORDRE.indexOf(espace)
+      if (rang < 0 || rang <= rangProse) continue
+      const direct = corpsDirect(body, m.index + m[0].length)
+      const corps = direct.match(/<Texte[^>]*variante=["']corps["']/g) ?? []
+      if (corps.length < 2) continue
+      const ligne = body.slice(0, m.index).split('\n').length
+      hits.push({
+        path: `${path}:${ligne}`,
+        detail: `<${m[1]} espace="${espace}"> distribue ${corps.length} paragraphes — trop serré pour du texte suivi`,
+      })
+    }
+  }
+  return hits
+})
+
 test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
   try {
     statSync(join(ROOT, 'node_modules'))

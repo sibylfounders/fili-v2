@@ -55,6 +55,19 @@ intervalle de **1,41**, et un arrondi de départ de
 Ces valeurs bougent avec la largeur de l'écran toutes seules — tu n'as rien à
 faire pour ça.
 
+### Un texte suivi se compose au niveau `page`, jamais plus fin
+
+Un article n'est pas un écran d'outil. Entre deux paragraphes, l'espace ne se
+juge pas en profondeur d'emboîtement mais **en multiples du corps** : il faut au
+moins une fois le corps, et pas plus d'une fois et demie. Confronté à notre
+échelle, **un seul niveau y tombe**.
+
+En dessous, les paragraphes se collent et le texte devient un mur ; au-dessus,
+ils se détachent et on lit des blocs séparés au lieu d'un propos suivi.
+
+Le composant de prose s'en charge tout seul. Si tu composes du texte long à la
+main, c'est à toi de poser le bon niveau — et le robot le vérifie.
+
 ### Deux composants voisins ne sont jamais dans une pile fine
 
 Un bouton, un champ, une liste de choix sont des **cibles** : le doigt doit les

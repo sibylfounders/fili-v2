@@ -11,7 +11,9 @@
     "intervalleTitres": 1.25,
     "corps": 16,
     "cible": 44,
-    "ecartMiniCibles": 8
+    "ecartMiniCibles": 8,
+    "proseProfondeur": "page",
+    "proseRapportMini": 0.98
   },
   "$loiDuRayon": "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. MAIS LA MARGE LE COMMANDE — aucun arrondi ne dépasse la marge qui le porte, et le réglage de départ ne dépasse pas le double de la marge de base, point où la coque touche exactement la sienne. Décision d'Auteur du 2026-08-12. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
   "rayonRacine": 24,
@@ -26,6 +28,11 @@
   },
   "$loiDesCibles": "Deux zones que le doigt doit distinguer gardent au moins l ecart minimal declare a la planche. La profondeur la plus fine qui le tient a toutes les largeurs est calculee ici : en dessous, une pile ne peut pas contenir de composants. Faute relevee et corrigee le 2026-08-12, journal 075.",
   "profondeurMiniCibles": "coque",
+  "$loiDuTexteSuivi": "Un article n est pas un ecran d outil : l ecart entre deux paragraphes se juge en multiples du corps. La recommandation publique tient entre une et une fois et demie le corps ; confronte a l echelle, un seul niveau y tombe. Le moteur refuse de statuer si la profondeur declaree passe sous le plancher. Journal 079.",
+  "prose": {
+    "profondeur": "page",
+    "rapportPire": 0.9944
+  },
   "profondeurs": [
     "large",
     "page",

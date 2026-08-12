@@ -37,6 +37,71 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #079 — Le texte long se composait deux crans trop serré, et personne ne l'avait lu
+
+*2026-08-12 · Statut : 🟢 Verrouillé (faute relevée et corrigée)*
+
+**Contexte** — L'Auteur observe qu'il aime les gabarits qui tiennent bien le blanc
+« quand il y a pas mal de typographies, un article de blog par exemple », et
+demande une recherche sur les mises en page **sans surface**. La recherche donne
+une valeur que le corpus n'avait jamais confrontée à l'échelle : entre deux
+paragraphes, il faut **entre une et une fois et demie la taille du corps**.
+
+**Le composant de prose composait à 0,70.** Il employait le niveau « coque »
+depuis son écriture. Rapporté au corps, l'écart entre deux paragraphes valait
+entre 0,70 et 0,81 fois le corps selon la largeur d'écran — soit **un tiers de
+moins que le plancher recommandé**. Le texte long du produit était un mur, et
+aucun contrôle ne regardait de ce côté.
+
+**Décision** — Le texte suivi se compose au niveau `page`, déclaré comme une
+entrée du moteur. Le composant de prose est corrigé. Une règle et un contrôle
+sont écrits.
+
+**Sens produit / UX** — **Un seul niveau de l'échelle tombe dans la fourchette, et
+c'est le résultat le plus intéressant.** Rapporté au corps, l'écart vaut 0,35 en
+« détail », 0,50 en « carte », 0,70 en « coque », **0,99 à 1,15 en « page »**, et
+1,41 à 1,63 en « large ». Le premier est un mur, le dernier disloque le propos en
+blocs. Il n'y avait pas de réglage à inventer : il y avait un niveau à choisir, et
+le système savait déjà le produire.
+
+**L'écart d'un centième est déclaré, pas masqué.** Au plus étroit des écrans,
+« page » vaut 0,994 fois le corps — un demi pour cent sous la borne. Le plancher
+du moteur est posé à 0,98 et le motif est écrit. Arrondir vers le haut pour que
+le tableau soit vert aurait été la faute inverse de celle qu'on venait de
+corriger.
+
+**Le rythme d'un texte n'est pas le rythme d'un écran.** C'est ce que l'affaire
+enseigne. Les profondeurs d'emboîtement décrivent une structure ; le texte suivi,
+lui, n'a qu'un seul niveau et se juge contre sa propre taille. Deux systèmes de
+mesure cohabitent, et le second n'était pas branché.
+
+**Et l'asymétrie autour des titres n'était pas un manque.** Elle était portée
+en creux par la règle de frontière de `#074` : l'espace au-dessus d'un titre est
+celui de la frontière, celui d'en dessous celui des frères, et la frontière vaut
+deux crans. **Le rapport de 2 tombe à tous les niveaux**, quand la recommandation
+en demande 1,5. Une règle bien posée en paie d'autres — et je l'avais annoncée
+comme manquante avant de la mesurer.
+
+**Alternatives écartées** — *Composer la prose en « large »* (1,41 à 1,63 : sort
+de la fourchette par le haut sur grand écran, et disloque le propos) ; *ajouter un
+cran d'échelle taillé pour la prose* (un nombre inventé pour un cas d'usage, quand
+un niveau existant fait l'affaire) ; *laisser le choix à celui qui écrit* (c'est
+ce qu'on faisait, et le composant du système lui-même s'est trompé).
+
+**Conséquences** — Le moteur porte la profondeur de la prose et **refuse de
+statuer** si elle passe sous son plancher. `Prose` compose au bon niveau : les
+paragraphes du produit s'écartent de moitié en plus. Le fichier de règles porte
+l'énoncé, et une douzième assertion garde le cas écrit à la main. **Angle mort
+déclaré** : le contrôle ne voit pas un texte rendu par une boucle — celui-là est
+gardé par le refus du moteur, pas par le Gardien.
+
+**Impact carte** — Corpus S2 : dix contrôles au vert. La recherche sur les mises
+en page sans surface est consignée comme fonds ; elle a produit une faute
+corrigée, une règle, un contrôle, et la confirmation qu'une règle déjà écrite en
+couvrait une autre.
+
+---
+
 ## #078 — Le deuxième contrôle a fallu être réécrit : le défaut n'était pas là où le plan le disait
 
 *2026-08-12 · Statut : 🟢 Verrouillé*

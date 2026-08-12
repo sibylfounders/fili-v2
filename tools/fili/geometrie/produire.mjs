@@ -25,6 +25,8 @@ const piece = {
   coin: socle.coin,
   $loiDesCibles: "Deux zones que le doigt doit distinguer gardent au moins l ecart minimal declare a la planche. La profondeur la plus fine qui le tient a toutes les largeurs est calculee ici : en dessous, une pile ne peut pas contenir de composants. Faute relevee et corrigee le 2026-08-12, journal 075.",
   profondeurMiniCibles: socle.profondeurMiniCibles,
+  $loiDuTexteSuivi: "Un article n est pas un ecran d outil : l ecart entre deux paragraphes se juge en multiples du corps. La recommandation publique tient entre une et une fois et demie le corps ; confronte a l echelle, un seul niveau y tombe. Le moteur refuse de statuer si la profondeur declaree passe sous le plancher. Journal 079.",
+  prose: socle.prose,
   profondeurs: PROFONDEURS,
   axes: AXES,
   marges: socle.marges,
