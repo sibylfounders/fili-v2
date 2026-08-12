@@ -20,10 +20,15 @@ import type { NomIcone } from './expression.genere.ts'
 type Annonce = 'alerte' | 'statut'
 type Ton = 'refus' | 'attente' | 'verrou'
 
+/* Le fond teinté porte l'état, et il le porte seul. La barre latérale a été
+   retirée le 2026-08-11 : elle disait une troisième fois ce que la teinte et le
+   libellé disaient déjà, et elle déséquilibrait le bloc. Le trait devient un
+   contour ordinaire, de la même famille que celui du jeton — un état n'a pas
+   deux traitements selon l'endroit où on le lit. */
 const ALLURE: Record<Ton, string> = {
-  refus: 'border-l-marqueur border-erreur-plein bg-erreur-surface text-erreur-sur',
-  attente: 'border-l-marqueur border-alerte-plein bg-alerte-surface text-alerte-sur',
-  verrou: 'border-l-marqueur border-succes-plein bg-succes-surface text-succes-sur',
+  refus: 'border-erreur-trait bg-erreur-surface text-erreur-sur',
+  attente: 'border-alerte-trait bg-alerte-surface text-alerte-sur',
+  verrou: 'border-succes-trait bg-succes-surface text-succes-sur',
 }
 
 const FORME: Record<Ton, NomIcone> = {

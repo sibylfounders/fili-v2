@@ -74,7 +74,7 @@ export function EcranJournal() {
               <Pile espace="large">
                 <Pile espace="carte">
                   <Texte variante="menu">{T.derniereTitre}</Texte>
-                  <Jeton ton={ton(liste[0].pastille)}>
+                  <Jeton repete ton={ton(liste[0].pastille)}>
                     {liste[0].numero} · {liste[0].date}
                   </Jeton>
                   <Titre niveau={2}>{liste[0].titre}</Titre>
@@ -136,7 +136,7 @@ export function EcranJournal() {
                   <Pile espace="large">
                     {liste.slice(1).map((e) => (
                       <Pile espace="carte" key={e.numero}>
-                        <Jeton ton={ton(e.pastille)}>
+                        <Jeton repete ton={ton(e.pastille)}>
                           {e.numero} · {e.date}
                         </Jeton>
                         <Titre niveau={3}>{e.titre}</Titre>

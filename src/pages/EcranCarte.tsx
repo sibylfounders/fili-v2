@@ -124,7 +124,7 @@ export function EcranCarte() {
                   <Pile espace="page">
                     {c.jalons.map((j) => (
                       <Pile espace="detail" key={j.nom}>
-                        <Jeton ton={ton(j.statut)}>{mot(j.statut)}</Jeton>
+                        <Jeton repete ton={ton(j.statut)}>{mot(j.statut)}</Jeton>
                         <Titre niveau={3}>{j.nom}</Titre>
                         <Texte variante="fin">{j.verrouille}</Texte>
                       </Pile>
@@ -136,7 +136,7 @@ export function EcranCarte() {
                   <Grille colonnes={2} espace="large">
                     {c.contrats.map((x) => (
                       <Pile espace="detail" key={x.nom}>
-                        <Jeton ton={ton(x.statut)}>{mot(x.statut)}</Jeton>
+                        <Jeton repete ton={ton(x.statut)}>{mot(x.statut)}</Jeton>
                         <Titre niveau={3}>{x.nom}</Titre>
                         <Texte variante="fin">{x.gouverne}</Texte>
                       </Pile>
@@ -172,7 +172,7 @@ export function EcranCarte() {
                   <Grille colonnes={2} espace="large">
                     {c.gabarits.map((g) => (
                       <Pile espace="detail" key={g.nom}>
-                        <Jeton ton={ton(g.statut)}>{mot(g.statut)}</Jeton>
+                        <Jeton repete ton={ton(g.statut)}>{mot(g.statut)}</Jeton>
                         <Titre niveau={3}>{g.nom}</Titre>
                         <Texte variante="fin">{g.temoin}</Texte>
                       </Pile>
@@ -184,7 +184,7 @@ export function EcranCarte() {
                   <Pile espace="page">
                     {c.instrument.map((p) => (
                       <Pile espace="detail" key={p.nom}>
-                        <Jeton ton={ton(p.statut)}>{mot(p.statut)}</Jeton>
+                        <Jeton repete ton={ton(p.statut)}>{mot(p.statut)}</Jeton>
                         <Titre niveau={3}>{p.nom}</Titre>
                         <Texte variante="fin">{p.porte}</Texte>
                       </Pile>
@@ -242,7 +242,7 @@ export function EcranCarte() {
                 <Pile espace="large">
                   {c.dettes.map((d) => (
                     <Pile espace="carte" key={d.nom}>
-                      <Jeton ton={ton(d.statut)}>{mot(d.statut)}</Jeton>
+                      <Jeton repete ton={ton(d.statut)}>{mot(d.statut)}</Jeton>
                       <Titre niveau={3}>{d.nom}</Titre>
                       <Texte variante="fin">{d.cout}</Texte>
                     </Pile>
