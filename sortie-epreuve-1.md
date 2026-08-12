@@ -60,3 +60,67 @@ de lecture qui supposent nos crochets et nos sections.
 
 **On ne corrige rien pendant la mesure.** Corriger pendant, c'est mesurer autre
 chose. Le verdict est écrit même s'il est mauvais.
+
+---
+
+# Le résultat
+
+*Mesuré le 2026-08-12, sur un écran de tableau de bord produit par Gemini.
+Le code n'a pas été touché. Rien n'a été corrigé.*
+
+## Les contrôles qui ont parlé — 8 sur 13
+
+| Contrôle | Ce qu'il a trouvé | Réel ? |
+|---|---|---|
+| T13 — couleur hors palette | **121 fois**, 35 couleurs différentes | oui |
+| T5 — espacement hors échelle | **119 fois**, 51 valeurs différentes | oui |
+| balise nue | 22 boutons et champs natifs | oui |
+| espace posé par l'enfant | 19 marges extérieures | oui |
+| T2 — longueur écrite à la main | 2 (10 et 11) | oui |
+| T4 — valeur inventée entre crochets | 2 | oui |
+| titre surchargé | 3 | oui |
+| T14 — mouvement | 1 — l'ouverture de la fenêtre modale | **non** |
+
+## Les contrôles muets — 5 sur 13, et ils ont eu raison de se taire
+
+Aucune couleur écrite en dur. Aucune durée écrite en dur. Aucun style posé sur
+l'élément. Cinq tailles de texte, pas plus. Aucune donnée cherchée par la
+fenêtre. **La machine qui a écrit cet écran est plus disciplinée que celle qu'on
+avait simulée hier.**
+
+## Deux refus injustes
+
+- **L'ouverture de la fenêtre modale.** Notre règle dit « rien ne tourne dans le
+  vide » et n'admet qu'une animation, la respiration du squelette. Elle a été
+  écrite contre le rond qui tourne pendant une attente ; elle refuse ici une
+  animation d'entrée, qui n'est pas la même chose. **La règle est trop large d'un
+  cran.**
+- **L'import de React.** Un contrôle de provenance refuse une source non déclarée
+  au registre. Sur du code étranger, ça ne dit rien de la qualité de l'écran.
+
+## Deux trouvailles hors liste — signalées, non comptées
+
+La liste était figée : ces deux-là ont parlé alors qu'elles n'y étaient pas. On
+les note, on ne les compte pas.
+
+- **Quatre classes d'espacement construites par concaténation.** Une règle
+  contournable par assemblage de morceaux n'est pas une règle — et c'est
+  exactement ce que fait cet écran pour ses états de filtre.
+- **Un saut de titre, du niveau 1 au niveau 3.** Faute d'accessibilité réelle.
+
+## Le verdict
+
+**Succès**, selon le seuil déclaré avant la mesure : sept contrôles sur treize
+trouvent du réel (le seuil était six), et les refus injustes tiennent sur une
+main (deux).
+
+**Mais le chiffre qui compte n'est pas là.** Deux cent quarante refus sur un seul
+écran, ce n'est pas deux cent quarante décisions à prendre : c'est **deux**
+— adopter la palette, adopter l'échelle. Le reste est de la traduction mécanique.
+Tant qu'on n'a pas l'outil qui traduit, le cadre est un mur pour qui arrive avec
+du code existant, quelle que soit la justesse de ses refus.
+
+**Ce qui a trouvé, ce n'est pas ce qu'on croyait.** Les contrôles historiques du
+projet — la couleur écrite en dur, la durée en dur, le style sur l'élément — n'ont
+rien trouvé du tout. Ce qui a trouvé, c'est la fermeture de la palette et
+l'échelle d'espacement, toutes deux branchées dans les deux derniers jours.
