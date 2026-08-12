@@ -4,7 +4,8 @@
 > pas : `system-map.md` dit où on en est, `journal.md` dit pourquoi on en est là,
 > celui-ci dit ce qu'on fait ensuite et dans quel ordre.
 >
-> Arrêté le 11 août 2026, à la suite de la décision `#061` — on garde la machine,
+> Arrêté le 11 août 2026 à la suite de la décision `#061`, **relevé le 12 août** :
+> le premier temps est terminé, et le rem du deuxième aussi. — on garde la machine,
 > on arrête l'appareil de preuve. Il se réécrit quand la direction change, et ce
 > changement passe par une entrée de journal.
 
@@ -22,8 +23,11 @@ Sept écrans qui servent de banc d'essai.
 
 Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
 
-**Ce qui manque : une dizaine de règles, déjà écrites ailleurs, qui ne sont
-jamais entrées ici.**
+Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
+contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
+
+**Ce qui manque : cinq règles, et cinq contrôles à brancher.** Il y en avait une
+dizaine le 11 août ; cinq sont entrées depuis.
 
 ---
 
@@ -43,7 +47,7 @@ personne intervienne.
 Elles ne touchent pas au moteur. Chacune tient dans une séance de travail, et
 l'effet se voit sur les écrans le jour même.
 
-### La profondeur se lit au contraste
+### ✅ La profondeur se lit au contraste — *fait, `#062`*
 
 Une surface qui **regroupe** d'autres surfaces reste proche du fond. Une surface
 qui **porte** du contenu s'en écarte. La hiérarchie se lit donc sans une seule
@@ -65,11 +69,11 @@ aujourd'hui marquer que la section qui compte d'abord ; c'est le même geste, à
 trop · une liste de liens vit nue, seul l'élément actif reçoit une surface · une
 surface d'appel double son épaisseur verticale.
 
-### Un signal par intention
+### ✅ Un signal par intention — *fait, `#065`*
 
 Jamais une pastille, plus une flèche, plus une couleur pour dire une seule chose.
 
-### Les composants sortent de la chaîne des rayons
+### ✅ Les composants sortent de la chaîne des rayons — *fait, `#063` et `#064`*
 
 Un bouton, un champ, une pilule, un interrupteur gardent un rayon propre, qui ne
 bouge ni avec la profondeur ni avec le thème. Il serait contre-productif qu'un
@@ -82,8 +86,10 @@ bouton change d'arrondi selon l'endroit où il tombe.
 Plus lourdes : elles retouchent ce qui calcule. Chacune se regarde en avant/après
 avant d'être gardée.
 
-**Tout en rem, base 16.** Plus aucune valeur en pixels. Le système suit alors la
-taille de police du navigateur, et l'accessibilité vient avec.
+**✅ Tout en rem, base 16** — *fait le 12 août, `#069`*. Restent en pixels la cible
+au doigt, les traits d'un pixel et la largeur d'écran minimale : ils ne doivent pas
+grandir avec le texte. Vérifié sur quatre-vingt-dix mesures : aucune valeur ne
+bouge à taille de texte normale.
 
 **L'écart se choisit sur « même surface ou pas », plus sur la profondeur.** Un
 écart entre frères, le double dès qu'on franchit une frontière — entre deux
@@ -121,6 +127,23 @@ Poser le tout sur un projet qui n'est pas Fili, et regarder ce que ça donne.
 C'est la seule épreuve qu'on garde. C'est aussi la seule qui puisse répondre à la
 question posée le 11 août — *qu'est-ce que ce système apporte ?* — parce que
 personne ne peut y répondre depuis l'intérieur.
+
+---
+
+## Mis de côté, avec la condition qui les rouvre
+
+**Le rognage du texte** (`#072`). Le défaut est chiffré : cinq points et demi de
+blanc subi par bord sur l'axe vertical, la moitié d'un cran. Le remède coûte un
+double régime tant qu'un écran sur six ne le prend pas en charge. Se rouvre si la
+prise en charge monte, ou si le blanc propre à nos trois fontes diffère beaucoup
+de l'une à l'autre — ce relevé reste à faire.
+
+**Les composants qui suivent leur surface** (`#070`). Essayé et écarté : la
+contrainte d'outil avait disparu, mais un bouton qui grossit selon sa profondeur
+dit la structure au lieu de dire le sens. Fermé.
+
+**La grille de quatre** (`#071`). Mesurée : elle donne le même écart à deux
+profondeurs d'emboîtement. Fermée.
 
 ---
 
