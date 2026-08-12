@@ -37,6 +37,68 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #081 — La promesse est mesurée pour la première fois : treize fautes attrapées, cinq passées
+
+*2026-08-12 · Statut : 🟢 Mesure faite, trous nommés*
+
+**Contexte** — Le plan n'a plus de règle en attente : reste **la sortie**, seule
+épreuve gardée, dont la question est celle du 11 août — *qu'est-ce que ce système
+apporte ?* On ne peut pas y répondre depuis l'intérieur. La première manche
+consiste donc à mesurer la promesse fondatrice : **un cadre assez strict pour que
+la bouillie visuelle devienne impossible**.
+
+**Méthode** — Un écran a été écrit **comme une IA sans le cadre le produirait** :
+couleur en dur, style posé sur l'élément, espacements au jugé, valeur inventée
+entre crochets, marges extérieures, balise interactive nue, taille de titre
+surchargée, blocs anonymes, deux boutons collés, surface blanche sans contour,
+trois jetons identiques avec icône, rond qui tourne, aucun état. **Quinze fautes
+posées volontairement.** L'écran a été soumis au corpus complet — assertions,
+règles de lecture, typage — puis retiré du dépôt.
+
+**Résultat** — **Treize fautes attrapées, cinq passées.**
+
+**Sens produit / UX** — **Le cadre tient sur les valeurs, pas encore sur les
+gestes.** Tout ce qui est un nombre, une couleur écrite, une classe hors échelle
+est vu — souvent deux fois, par deux instruments différents. Ce qui est un
+*geste* passe : répéter une icône, faire tourner un rond, omettre les états. La
+frontière n'est pas celle de la difficulté, c'est celle de la nature : une valeur
+est dans le texte, un geste est dans l'intention.
+
+**Il ne refuse pas, il explique.** Chaque message porte la règle **et son motif**,
+en français : « un titre doit être grand parce qu'il est important, pas important
+parce qu'il est grand » ; « l'espace se pose par le conteneur, jamais par l'enfant
+qui pousse ses voisins ». C'est ce qui sépare un garde-fou d'un correcteur —
+celui qui se fait bloquer apprend en même temps.
+
+**Les deux contrôles écrits ce matin ont servi dans le test.** Les deux boutons
+collés et la surface sans contour ont été attrapés par des assertions qui
+n'existaient pas il y a six heures. Une règle écrite le matin a gardé un défaut
+le soir même.
+
+**Les cinq trous, nommés dans l'ordre de leur coût** — *(1) une couleur hors
+palette passe si elle a un nom.* Écrire un code hexadécimal est refusé, écrire
+« bleu 600 » passe. **C'est le trou le plus large** : il annule à lui seul le
+travail d'une palette entièrement calculée depuis une seule teinte. *(2) Le rond
+qui tourne*, interdit noir sur blanc au fichier de règles, n'est vérifié nulle
+part. *(3) L'icône répétée*, règle du matin même, écrite et non gardée. *(4) Le
+texte suivi hors d'une pile* — le contrôle d'hier ne regarde que les piles, un
+bloc anonyme lui échappe : **angle mort déjà déclaré, désormais démontré**. *(5)
+L'absence d'états*, qui relève d'un corpus non branché ici.
+
+**Alternatives écartées** — *Mesurer sur un écran réel du produit* (il est écrit
+par quelqu'un qui connaît le cadre : on mesurerait la discipline de l'auteur, pas
+la force du cadre) ; *compter les erreurs plutôt que les fautes* (une faute unique
+lève souvent deux à quatre messages ; compter les messages flatterait le
+résultat) ; *garder l'écran d'essai au dépôt* (il rougirait à chaque contrôle et
+finirait par être mis en exception — la meilleure façon de rendre un garde-fou
+inoffensif).
+
+**Impact carte** — Première mesure de la promesse. **Treize sur dix-huit.** Les
+cinq manques sont écrits ici avec leur coût, dans l'ordre où il vaut la peine de
+les fermer.
+
+---
+
 ## #080 — Les trois contrôles qui restaient ne sont pas des assertions : ce sont des mesures
 
 *2026-08-12 · Statut : 🟡 Mesuré, non gardé — décision d'architecture à prendre*
