@@ -26,7 +26,7 @@ Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
 Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
 contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
 
-**Ce qui manque : cinq contrôles à brancher, puis la sortie.** Il y en avait une
+**Ce qui manque : la sortie — et une décision, donner ou non des yeux au dépôt.** Il y en avait une
 dizaine le 11 août ; **elles sont toutes réglées** — entrées, absorbées ou écartées.
 
 ---
@@ -118,9 +118,10 @@ existent ; avant, ils n'auraient rien à vérifier.
 2. ✅ *Réécrit : toute surface de papier déclare un contour — `#078`. La règle
    du plan ne trouvait rien à vérifier, sa voisine condamnait neuf compositions
    justes.*
-3. Jamais plus de deux positions horizontales dans une carte.
-4. Icônes et jauges alignées entre cartes voisines, à toutes les densités.
-5. Zéro débordement horizontal à 390 px.
+3. ✅ *Mesuré vert sur les 30 témoins — `#080`. Demande un rendu, donc non gardé.*
+4. 🔴 *Infaisable en l'état — `#080`. Il faudrait déclarer quelles icônes se
+   comparent ; la mesure brute donne 25 faux positifs.*
+5. ✅ *Mesuré vert à 320 et 390 sur les 30 témoins — `#080`. Demande un rendu.*
 6. L'écart entre surfaces au moins égal au padding qui les habille. ✅ *en place*
 7. ✅ *Aucune pile ne distribue deux cibles avec un écart trop fin — `#077`, ajouté en route.*
 
