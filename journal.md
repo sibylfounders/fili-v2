@@ -37,6 +37,54 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #078 — Le deuxième contrôle a fallu être réécrit : le défaut n'était pas là où le plan le disait
+
+*2026-08-12 · Statut : 🟢 Verrouillé*
+
+**Contexte** — Deuxième des contrôles du plan : *aucune surface plus épaisse que
+celle qui la contient*. Confronté au produit, il ne trouve rien à vérifier — les
+sections ne s'emboîtent pas, elles sont sœurs. Sa formulation voisine — *jamais
+deux blancs emboîtés* — trouve, elle, **neuf cas dans les sept écrans** : un état
+vide posé dans une section qui a déjà pris le blanc.
+
+**Et ces neuf cas ne sont pas des fautes.** L'état vide porte un contour tireté ;
+posé sur du papier, il reste parfaitement distinct. Le contrôle naïf aurait donc
+condamné neuf compositions justes.
+
+**Décision** — La règle vérifiée devient : **une surface qui peint du papier
+déclare un contour.** Une seule pièce est exemptée, et elle est nommée : la
+section, qui *est* le fond sur lequel les autres se posent.
+
+**Sens produit / UX** — **La bonne règle n'était pas la voisine de la mauvaise,
+elle était en dessous.** Ce que la règle du contraste protège, ce n'est pas
+l'alternance des fonds : c'est que **deux surfaces emboîtées restent
+distinguables**. Le fond est un moyen de le faire, le trait en est un autre. Un
+contrôle qui n'accepte qu'un des deux moyens confond la règle avec son
+implémentation la plus fréquente.
+
+**Un garde-fou avec neuf faux positifs est pire que pas de garde-fou.** On
+apprend à l'ignorer, puis on ignore les vrais. C'est la raison pour laquelle
+celui-ci a été réécrit plutôt que posé et « à affiner plus tard » : un corpus se
+juge à la confiance qu'on lui accorde, et elle ne se répare pas.
+
+**Il ne trouve aucune faute aujourd'hui, et c'est un résultat.** Les sept
+composants qui peignent du papier portent tous un contour. Ce qui était une
+habitude devient une garantie : le jour où quelqu'un écrit la huitième surface, le
+Gardien le lui rappellera.
+
+**Alternatives écartées** — *Le contrôle du plan tel qu'écrit* (rien à vérifier :
+les sections ne s'emboîtent pas) ; *interdire deux papiers emboîtés* (neuf faux
+positifs, tous sur des compositions correctes) ; *vérifier le contraste calculé
+entre les deux fonds* (il vaut 1 par définition — la mesure serait juste et la
+conclusion fausse, puisque c'est le trait qui distingue).
+
+**Impact carte** — Corpus S2 : neuf contrôles au vert. Il reste **trois**
+contrôles du plan : deux positions horizontales dans une carte, l'alignement entre
+cartes voisines, et le débordement à 390 — ce dernier demande un rendu, pas une
+lecture.
+
+---
+
 ## #077 — Le premier contrôle des règles du jour est branché, et il a trouvé une faute réelle du premier coup
 
 *2026-08-12 · Statut : 🟢 Verrouillé*

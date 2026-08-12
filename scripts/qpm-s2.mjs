@@ -267,6 +267,40 @@ test('S2-T10', `Aucune pile de cibles sous « ${MINI_CIBLES} »`, () => {
   return hits
 })
 
+/** S2-T11 — Ce qui porte du papier sur du papier porte un contour.
+ *
+ *  La profondeur se lit au contraste : la page recule, le contenu avance
+ *  (journal 062). Mais une surface qui porte du contenu peut se retrouver DANS
+ *  une surface qui en porte — un état vide dans une section qui a déjà pris le
+ *  blanc, par exemple. Cela arrive neuf fois dans les sept écrans, et ce n'est
+ *  pas une faute : le contour y prend le relais du fond.
+ *
+ *  La règle vérifiée n'est donc pas « jamais deux blancs emboîtés » — elle
+ *  condamnerait neuf compositions justes — mais : **une surface qui peint du
+ *  papier déclare un contour**, faute de quoi elle disparaîtrait le jour où on
+ *  la pose sur du papier. La distinction passe par le fond ou par le trait ;
+ *  elle ne passe jamais par rien.
+ *
+ *  Une seule pièce est exemptée, et elle est nommée : la section, qui EST le
+ *  fond sur lequel les autres se posent, et qui ne se pose sur rien.
+ */
+const SURFACE_SANS_CONTOUR_ADMISE = ['src/system/Section.tsx']
+
+test('S2-T11', 'Toute surface de papier déclare un contour', () => {
+  const hits = []
+  for (const { path, body } of files) {
+    if (SURFACE_SANS_CONTOUR_ADMISE.includes(path)) continue
+    body.split('\n').forEach((line, i) => {
+      const trimmed = line.trim()
+      if (trimmed.startsWith('*') || trimmed.startsWith('//') || trimmed.startsWith('/*')) return
+      if (!/bg-papier(?![\w-])/.test(line)) return
+      if (/border-/.test(line)) return
+      hits.push({ path: `${path}:${i + 1}`, detail: 'du papier sans contour — invisible sur du papier' })
+    })
+  }
+  return hits
+})
+
 test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
   try {
     statSync(join(ROOT, 'node_modules'))

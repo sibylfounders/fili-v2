@@ -115,7 +115,9 @@ proximité. Les cinq autres se branchent une fois que les règles du dessus
 existent ; avant, ils n'auraient rien à vérifier.
 
 1. ~~Aucun enfant plus rond que son parent.~~ — *mort avec sa règle, `#073`*
-2. Aucune surface plus épaisse que celle qui la contient.
+2. ✅ *Réécrit : toute surface de papier déclare un contour — `#078`. La règle
+   du plan ne trouvait rien à vérifier, sa voisine condamnait neuf compositions
+   justes.*
 3. Jamais plus de deux positions horizontales dans une carte.
 4. Icônes et jauges alignées entre cartes voisines, à toutes les densités.
 5. Zéro débordement horizontal à 390 px.
