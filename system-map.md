@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#081`
+> **Dernière décision au journal** : `#082`
 
 **Légende des statuts**
 
@@ -123,6 +123,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | L'emphase du journal invisible sur É6 | 🔴 | `#054` | Le texte des entrées est entier, son relief ne l'est pas : aucun composant du registre ne rend du balisage. |
 | Le moteur de géométrie sans preuve contre la source | 🔴 | `#059` | Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois jetons produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt. |
 | La provenance des hauteurs de témoin | 🔴 | `#059` | Elles se disaient « multiples de l'échelle d'espacement, 21 pas de 32 ». La phrase n'a plus d'objet. Les valeurs restent justes, leur justification est à réécrire. |
+| Les quatre gestes que le cadre ne voit pas | 🔴 | `#081` · `#082` | Le rond qui tourne, l'icône répétée, le texte suivi hors d'une pile, l'absence d'états. Quatre règles écrites, aucune gardée. Le cinquième trou — la couleur nommée — est fermé par `#082`. |
 | Les sept témoins non jugés après migration | 🔴 | `#059` | Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non. |
 
 ---

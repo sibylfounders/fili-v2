@@ -45,6 +45,21 @@ const frontieres = Object.fromEntries(
   })
 )
 
+/* LA PALETTE FERMÉE. Trois mots-clés qui ne sont pas des couleurs mais des
+   comportements, puis les seules couleurs du système. Rien d'autre n'existe. */
+const couleurs = {
+  transparent: 'transparent',
+  current: 'currentColor',
+  inherit: 'inherit',
+  ...Object.fromEntries(Object.entries(palette.neutres).map(([k, v]) => [kebab(k), v])),
+  ...Object.fromEntries(
+    Object.entries(palette.etats).map(([nom, e]) => [
+      kebab(nom),
+      { surface: e.surface, sur: e.sur, plein: e.plein, 'sur-plein': e.surPlein, trait: e.trait },
+    ])
+  ),
+}
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -60,19 +75,16 @@ export default {
     gap: { ...ecarts, ...frontieres },
     space: { ...ecarts, ...frontieres },
     screens: depuis(planche.bascules),
+    /* Aucune couleur n'est écrite ici ni dans la planche : elles sont toutes
+       calculées depuis la primaire par tools/fili/expression/palette.mjs.
+       Un état expose son couple — surface et ce qui s'écrit dessus.
+       DÉCLARÉ AU NIVEAU « theme » ET NON « extend », depuis le 2026-08-12 :
+       sous « extend », les 242 couleurs par défaut de Tailwind restaient
+       accessibles, et « bg-blue-600 » compilait sans que rien ne le voie. La
+       palette calculée n'était donc pas une palette, seulement une addition.
+       Ici, elle remplace : ce qui n'en vient pas ne compile plus. */
+    colors: couleurs,
     extend: {
-      /* Aucune couleur n'est écrite ici ni dans la planche : elles sont toutes
-         calculées depuis la primaire par tools/fili/expression/palette.mjs.
-         Un état expose son couple — surface et ce qui s'écrit dessus. */
-      colors: {
-        ...Object.fromEntries(Object.entries(palette.neutres).map(([k, v]) => [kebab(k), v])),
-        ...Object.fromEntries(
-          Object.entries(palette.etats).map(([nom, e]) => [
-            kebab(nom),
-            { surface: e.surface, sur: e.sur, plein: e.plein, 'sur-plein': e.surPlein, trait: e.trait },
-          ])
-        ),
-      },
       fontFamily: Object.fromEntries(
         Object.entries(depuis(planche.familles)).map(([k, v]) => [k, v.split(',').map((f) => f.trim())])
       ),

@@ -170,8 +170,11 @@ Fonds et encres : `papier` · `papierCreux` · `papierSurvol` · `papierSelectio
 
 Une seule couleur est choisie dans tout le système (`#4F46E5`) ; toutes
 les autres en sont calculées, et chaque paire fond/texte tient son contraste par
-construction. **Tu n'écris jamais un code couleur.** Un état s'emploie par paire :
-la surface, et ce qui s'écrit dessus.
+construction. **Tu n'écris jamais un code couleur, ni le nom d'une couleur qui
+ne vient pas d'ici.** La palette du système REMPLACE celle de l'outil, elle ne
+s'y ajoute pas : les couleurs livrées par défaut n'existent plus, elles ne
+compilent pas. Un état s'emploie par paire : la surface, et ce qui s'écrit
+dessus.
 
 ```
 ✅  bg-erreur-surface text-erreur-sur      ✅  bg-papier text-encre

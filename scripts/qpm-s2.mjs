@@ -340,6 +340,81 @@ test('S2-T12', `Aucun texte suivi sous « ${PROSE_PROFONDEUR ?? '?'} »`, () => 
   return hits
 })
 
+/** S2-T13 — Aucune couleur ne sort de la palette calculée.
+ *
+ *  C'est le trou le plus large qu'ait révélé l'essai de bouillie du 2026-08-12 :
+ *  écrire le code d'une couleur était refusé depuis toujours, écrire son NOM
+ *  passait sans un mot. « bg-blue-600 » et « text-gray-900 » traversaient la
+ *  batterie entière. La palette du système est pourtant calculée en entier
+ *  depuis une seule teinte — une couleur nommée ailleurs annule ce travail.
+ *
+ *  La cause était dans la configuration : la palette était déclarée en
+ *  ADDITION (« extend ») et non en REMPLACEMENT. Les deux cent quarante-deux
+ *  couleurs livrées par défaut restaient donc accessibles. La correction du
+ *  jour les retire ; ce test garde la correction ET nomme la faute, parce
+ *  qu'une classe qui ne compile plus ne dit rien à celui qui l'écrit.
+ *
+ *  Deux mesures, une seule assertion :
+ *    1. la palette est fermée — déclarée hors de « extend » ;
+ *    2. aucun fichier n'écrit le nom d'une couleur livrée par défaut.
+ *
+ *  Angle mort déclaré : la seconde mesure lit une liste de familles connues.
+ *  Un nom inventé hors de cette liste lui échappe — mais il ne compile pas non
+ *  plus, la première mesure s'en charge. Les deux se tiennent. */
+const PALETTE = JSON.parse(readFileSync(join(ROOT, 'fili/palette.json'), 'utf8'))
+const enKebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())
+const CRANS_ETAT = ['surface', 'sur', 'plein', 'sur-plein', 'trait']
+const COULEURS_DU_SYSTEME = [
+  ...Object.keys(PALETTE.neutres ?? {}).map(enKebab),
+  ...Object.keys(PALETTE.etats ?? {}).flatMap((n) => CRANS_ETAT.map((c) => `${enKebab(n)}-${c}`)),
+]
+
+/** Les familles livrées par défaut avec l'outil. Aucune n'appartient au système. */
+const FAMILLES_ETRANGERES = [
+  'slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'amber', 'yellow',
+  'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet',
+  'purple', 'fuchsia', 'pink', 'rose', 'white', 'black',
+]
+/** Tout ce qui peut porter une couleur. */
+const PORTEURS_DE_COULEUR = [
+  'bg', 'text', 'border', 'ring', 'fill', 'stroke', 'divide', 'outline',
+  'from', 'via', 'to', 'placeholder', 'caret', 'decoration', 'shadow',
+]
+const COULEUR_ETRANGERE = new RegExp(
+  `\\b(${PORTEURS_DE_COULEUR.join('|')})-(${FAMILLES_ETRANGERES.join('|')})(-\\d{2,3})?\\b`,
+)
+
+test('S2-T13', `Aucune couleur hors des ${COULEURS_DU_SYSTEME.length} du système`, () => {
+  if (!COULEURS_DU_SYSTEME.length)
+    return { blocked: 'la palette calculée est absente de fili/palette.json' }
+  const hits = []
+
+  /* 1. La palette remplace, elle n'ajoute pas. */
+  const conf = readFileSync(join(ROOT, 'tailwind.config.js'), 'utf8')
+  const posCouleurs = conf.indexOf('colors:')
+  const posExtension = conf.indexOf('extend:')
+  if (posCouleurs < 0)
+    hits.push({ path: 'tailwind.config.js', detail: 'aucune palette déclarée — tout est permis' })
+  else if (posExtension >= 0 && posCouleurs > posExtension)
+    hits.push({
+      path: 'tailwind.config.js',
+      detail: 'la palette est déclarée en addition — les couleurs livrées par défaut restent écrivables',
+    })
+
+  /* 2. Personne n'écrit le nom d'une couleur étrangère. */
+  for (const { path, body } of files) {
+    body.split('\n').forEach((line, i) => {
+      const m = COULEUR_ETRANGERE.exec(line)
+      if (!m) return
+      hits.push({
+        path: `${path}:${i + 1}`,
+        detail: `« ${m[0]} » ne vient pas de la palette calculée depuis la teinte du système`,
+      })
+    })
+  }
+  return hits
+})
+
 test('S2-T8', 'Build reproductible (hash CSS identique)', () => {
   try {
     statSync(join(ROOT, 'node_modules'))

@@ -37,6 +37,65 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #082 — Le trou le plus large est fermé à la source : la palette remplace au lieu d'ajouter
+
+*2026-08-12 · Statut : 🟢 Fermé, gardé, saboté · Ferme le trou (1) de `#081`*
+
+**Contexte** — La mesure de la veille au soir a nommé cinq trous, dans l'ordre de
+leur coût. Le premier était le plus large : **une couleur hors palette passait si
+elle avait un nom**. Écrire un code hexadécimal était refusé depuis l'origine ;
+écrire « bleu 600 » traversait la batterie entière sans un mot.
+
+**La cause n'était pas dans les contrôles, elle était dans la configuration.** La
+palette calculée était déclarée en **addition** — sous `extend` — et non en
+**remplacement**. Les deux cent quarante-deux couleurs livrées par défaut avec
+l'outil restaient donc écrivables à côté des nôtres. Autrement dit : ce que nous
+appelions « la palette du système » n'était pas une palette, c'était un ajout de
+dix-sept couleurs à deux cent quarante-deux autres. Le travail de calcul depuis
+une seule teinte était réel, et il ne fermait rien.
+
+**Décision — on ferme d'abord la porte, on met la sonnette ensuite.** La palette
+passe au niveau du thème : elle remplace. `bg-blue-600` **ne compile plus**. Puis
+une treizième assertion garde la fermeture, parce qu'une classe qui ne compile
+plus est silencieuse : celui qui l'écrit ne voit rien, son écran est simplement
+faux. Le contrôle nomme la faute en français.
+
+**Deux mesures dans une seule assertion, et c'est voulu.** La première lit la
+configuration et exige que la palette soit déclarée hors de `extend` — c'est la
+garantie d'exhaustivité, elle vaut pour toute couleur, y compris celles qu'on
+n'a pas listées. La seconde lit les fichiers et refuse le nom d'une famille
+livrée par défaut — c'est la garantie de lisibilité, elle donne le fichier, la
+ligne et le motif. **Angle mort déclaré** : la seconde ne connaît qu'une liste de
+familles ; un nom inventé hors liste lui échappe — mais il ne compile pas non
+plus, la première s'en charge. Les deux se tiennent, aucune ne suffit seule.
+
+**Sabotée deux fois, elle a dit non deux fois.** Une couleur nommée posée dans un
+composant : refusée, avec la ligne. La palette remise en addition dans la
+configuration : refusée, avec le motif. Sans ces deux sabotages, on aurait cru le
+produit sain — c'est exactement ce qui s'est passé pendant des mois.
+
+**Sens produit / UX** — Ce n'est pas une couleur de plus ou de moins : c'est la
+différence entre **une palette et une préférence**. Une palette calculée depuis
+une teinte tient ses contrastes par construction ; chaque couleur venue d'ailleurs
+casse cette garantie sans prévenir, et le défaut se voit six mois plus tard sur un
+écran mal éclairé. La règle écrite disait déjà « ❌ text-red-600 » ; **elle était
+juste et personne ne la tenait**. C'est la troisième fois cette semaine qu'une
+règle écrite et non gardée revient — le motif est constant.
+
+**Alternatives écartées** — *Garder la liste noire seule* (elle ne connaît que ce
+qu'on a pensé à y mettre : une palette fermée se prouve, elle ne s'énumère pas) ;
+*fermer la porte sans mettre de contrôle* (la classe devient silencieuse, l'écran
+est faux et personne n'est prévenu — un refus muet n'apprend rien) ; *tolérer le
+blanc et le noir purs* (ils existent déjà à la palette sous leurs noms de fond et
+d'encre ; deux façons d'écrire la même couleur, c'est la porte rouverte).
+
+**Impact carte** — Palette : ⚪ ajoutée → 🟢 **fermée**. Corpus S2 : douze
+assertions actives (T13 nouvelle). Trou (1) de `#081` : **fermé**. Restent quatre
+trous, tous des gestes : le rond qui tourne, l'icône répétée, le texte suivi hors
+d'une pile, l'absence d'états.
+
+---
+
 ## #081 — La promesse est mesurée pour la première fois : treize fautes attrapées, cinq passées
 
 *2026-08-12 · Statut : 🟢 Mesure faite, trous nommés*
