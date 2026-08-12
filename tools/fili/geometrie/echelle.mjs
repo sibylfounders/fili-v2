@@ -65,6 +65,13 @@ export const AXES = {
    multiples d'elle. */
 export const RACINE_NAVIGATEUR = 16
 
+/* LE DÉGAGEMENT DU COIN. Sur un coin de rayon R, le point le plus creux de
+   l'arc est à (1 − 1/√2) × R du bord, en diagonale. Tout ce qui entre dans ce
+   carré sort de la surface. C'est de la géométrie, pas un réglage : la valeur ne
+   se décide pas, elle se démontre. Décision d'Auteur du 2026-08-12 — la seule des
+   trois « règles de coin » du plan qui ait un objet. */
+export const DEGAGEMENT_COIN = 1 - 1 / Math.SQRT2
+
 export const LARGEUR_MIN = 320
 export const LARGEUR_MAX = 1440
 
@@ -129,6 +136,32 @@ export function deriver(entrees = ENTREES_DEFAUT) {
       throw new Error(`refus de statuer — l'arrondi de ${p} (${rayons[p]}) dépasse sa marge (${marges[p]})`)
   }
 
+  /* LE COIN. Deux choses, et elles ne se ressemblent pas.
+
+     Sur une SURFACE, la garantie est démontrable : le plafond de l'arrondi
+     (deux fois la marge de base) rend le dégagement structurellement inatteignable
+     — vérifié sur tous les réglages admis, la marge reste au-dessus dans le pire
+     cas. La vérification ci-dessous ne se déclenchera donc jamais tant que ce
+     plafond tient. Elle est écrite pour le jour où il bougerait.
+
+     Sur une PASTILLE, il n'y a aucune garantie : son rayon ne descend pas de la
+     chaîne, il vaut la moitié de sa hauteur. Plus une pastille est haute, plus son
+     coin mange — et à partir d'une certaine hauteur, la marge horizontale ne suffit
+     plus. On calcule donc la hauteur au-delà de laquelle une pastille n'est plus
+     tenable, par air. C'est le seul endroit du système où cette règle a un objet. */
+  for (const p of ['coque', 'carte', 'detail']) {
+    const requis = DEGAGEMENT_COIN * rayons[p]
+    if (marges[p] < requis)
+      throw new Error(`refus de statuer — la marge de ${p} (${r4(marges[p])}) est inférieure au dégagement de son coin (${r4(requis)}) ; le contenu entrerait dans l'arc`)
+  }
+  const coin = {
+    degagement: r4(DEGAGEMENT_COIN),
+    pastilleHauteurMax: {
+      large: r4((2 * marges.coque) / DEGAGEMENT_COIN),
+      serre: r4((2 * marges.carte) / DEGAGEMENT_COIN),
+    },
+  }
+
   /* Le texte. Le corps est l'origine, les titres sont des PAS — jamais des
      tailles écrites. Deux pas au-dessus du corps, pas un de plus. */
   const T = e.intervalleTitres
@@ -145,7 +178,7 @@ export function deriver(entrees = ENTREES_DEFAUT) {
      employer la pastille, jamais un entre-deux. */
   const pastilleExigee = rayonRacine / 3 > (2 / 3) * marges.detail
 
-  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee }
+  return { entrees: e, rayonRacine, marges, ecarts, rayons, bord: marges.coque, texte, controle, pastilleExigee, coin }
 }
 
 /* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne

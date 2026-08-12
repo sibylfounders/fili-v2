@@ -144,6 +144,16 @@ la moitié de sa hauteur. Le serré, `px-inline-carte`, n'est pas une taille mai
 rôle : un bouton sans texte, ou des boutons groupés. Deux cas, pas un de plus, et
 jamais sur une pastille.
 
+**Le coin d'une pastille mange, et il mange de plus en plus haut.** Un coin de
+rayon R réserve **0,293 × R** en diagonale : ce qui entre dans ce carré sort de la
+surface. Sur une surface ordinaire tu n'as rien à vérifier — la marge est toujours
+largement au-dessus, par construction. Sur une pastille, si : son arrondi vaut la
+moitié de sa hauteur, donc il grandit avec elle. **Au-delà de
+164 de haut en air large, ou de
+116 en air serré, la marge horizontale ne
+tient plus le coin.** Une pastille plus haute que ça n'est plus une pastille :
+c'est une surface, et elle prend un rayon de surface.
+
 **`rounded-pastille` est une forme, pas un arrondi** — et c'est une promesse :
 ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
 Un composant dont le libellé peut se replier ne devient jamais une pastille.

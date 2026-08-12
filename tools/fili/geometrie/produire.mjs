@@ -21,6 +21,8 @@ const piece = {
   $loiDuRayon: "L'arrondi est un réglage à part, séparé de l'espace : un système peut être large et vif, ou serré et rond. MAIS LA MARGE LE COMMANDE — aucun arrondi ne dépasse la marge qui le porte, et le réglage de départ ne dépasse pas le double de la marge de base, point où la coque touche exactement la sienne. Décision d'Auteur du 2026-08-12. Les surfaces divisent leur rayon par deux à chaque profondeur. Un composant, lui, prend le TIERS du rayon racine — mais sa taille ne bouge pas, donc l'arrondi se rabat sur elle : jamais plus des deux tiers de sa marge verticale. Au-delà, le produit emploie la pastille — une forme, pas un arrondi. Décisions d'Auteur du 2026-08-11.",
   rayonRacine: socle.rayonRacine,
   pastilleExigee: socle.pastilleExigee,
+  $loiDuCoin: "Un coin de rayon R réserve (1 − 1/√2) × R en diagonale : tout ce qui entre dans ce carré sort de la surface. Sur une surface la garantie est démontrable — le plafond de l'arrondi la rend inatteignable. Sur une pastille il n'y en a aucune : son rayon vaut la moitié de sa hauteur, donc au-delà d'une certaine hauteur la marge horizontale ne suffit plus. Décision d'Auteur du 2026-08-12, journal #073.",
+  coin: socle.coin,
   profondeurs: PROFONDEURS,
   axes: AXES,
   marges: socle.marges,

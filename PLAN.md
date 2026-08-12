@@ -26,8 +26,8 @@ Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
 Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
 contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
 
-**Ce qui manque : cinq règles, et cinq contrôles à brancher.** Il y en avait une
-dizaine le 11 août ; cinq sont entrées depuis.
+**Ce qui manque : deux règles, et cinq contrôles à brancher.** Il y en avait une
+dizaine le 11 août ; huit sont réglées depuis — entrées, absorbées ou écartées.
 
 ---
 
@@ -98,10 +98,10 @@ surfaces sœurs, au bord de la fenêtre, sous une image, avant un titre libre.
 **Le curseur de densité.** Un multiplicateur unique sur les espaces et les
 rayons, avec la cible tactile comme plancher absolu.
 
-**Les trois règles de coin.** La bande de tolérance — aucun enfant plus rond que
-son parent. La saturation — un rayon plus grand que la moitié de la hauteur
-s'écrase. Le dégagement — un padding au moins égal à 0,293 fois le rayon, sinon
-le contenu sort de l'arc, et en largeur seulement.
+**✅ Les trois règles de coin** — *faites le 12 août, `#073`, et il n'en restait
+qu'une*. La bande de tolérance mesurait la mauvaise chose ; la saturation était déjà
+couverte trois fois plus strictement. Seul le dégagement est écrit — et il ne mord
+que sur la pastille, dont l'arrondi ne descend pas de la chaîne.
 
 ---
 

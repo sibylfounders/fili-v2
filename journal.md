@@ -37,6 +37,74 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #073 — Des trois règles de coin, une seule en est une — et elle ne vaut que pour la pastille
+
+*2026-08-12 · Statut : 🟢 Verrouillé (décision d'Auteur, rendue sur mesure)*
+
+**Contexte** — Le plan portait trois « règles de coin » héritées d'un travail
+antérieur : la bande de tolérance (aucun enfant plus rond que son parent), la
+saturation (un rayon plus grand que la moitié de la hauteur s'écrase) et le
+dégagement (un padding au moins égal à 0,293 fois le rayon). Confrontées au
+système tel qu'il est, avec ses valeurs, deux tombent.
+
+**Décision** — **Une seule règle est écrite : le dégagement du coin.** Les deux
+autres sont écartées, pour deux motifs différents.
+
+**Sens produit / UX** — **La bande de tolérance mesurait la mauvaise chose.**
+Elle est violée trois fois aujourd'hui, et toujours par le composant : un bouton
+d'arrondi huit dans une carte d'arrondi six. Or c'est voulu — `#063` a posé qu'un
+bouton garde le même arrondi partout, pour qu'il se reconnaisse. L'appliquer
+reviendrait à défaire la décision d'hier et à revenir au système écarté par
+`#070`. Mais elle est surtout **fausse en général** : une section à angles droits
+qui contient une carte arrondie est une composition ordinaire, et l'enfant y est
+infiniment plus rond que son parent. Ce qui compte n'est pas la comparaison de
+deux arrondis, c'est **ce qui se passe dans le coin** — et si la marge tient le
+coin dégagé, les deux ne se rencontrent jamais.
+
+**La saturation est déjà couverte, trois fois plus strictement.** Elle plafonne
+l'arrondi d'un bouton de quarante-huit à vingt-quatre ; `#064` le plafonne déjà à
+huit, les deux tiers de sa marge verticale. Un garde-fou derrière un garde-fou
+n'ajoute rien qu'une règle de plus à lire.
+
+**Le dégagement, lui, est de la géométrie.** Sur un coin de rayon R, le point le
+plus creux de l'arc est à (1 − 1/√2) × R du bord, en diagonale. La valeur ne se
+décide pas, elle se démontre — c'est la première règle du corpus dans ce cas.
+
+**Et la mesure a donné le résultat inattendu.** Sur une **surface**, cette règle
+**ne peut jamais mordre** : vérifié sur tous les réglages admis — cinq bases,
+huit intervalles, cinq arrondis de départ, au pire cas de largeur d'écran — la
+marge reste toujours au-dessus du dégagement. Le plafond de l'arrondi posé le
+matin même par `#068` la rend structurellement inatteignable. Elle est écrite
+quand même, comme garantie : elle protège le jour où ce plafond bougerait.
+
+**Sur une pastille, en revanche, il n'existe aucune garantie**, et c'est le seul
+endroit du système où la règle a un objet. L'arrondi d'une pastille ne descend
+pas de la chaîne : il vaut la moitié de sa hauteur, donc **il grandit avec elle**.
+Au-delà de **cent soixante-quatre** de haut en air large — cent seize en air
+serré — la marge horizontale ne tient plus le coin. Le moteur calcule désormais
+ces deux plafonds et les expose. La règle produit donc un énoncé net : **une
+pastille plus haute que ça n'est plus une pastille, c'est une surface**, et elle
+prend un rayon de surface.
+
+**Alternatives écartées** — *Écrire les trois* (deux d'entre elles n'auraient
+jamais rien vérifié, et la première aurait contredit une décision verrouillée —
+un corpus qui porte des règles mortes perd la confiance de celui qui le lit) ;
+*n'écrire aucune des trois puisque aucune ne mord aujourd'hui* (le dégagement
+mord sur la pastille, et il est le seul rempart d'un rayon qui ne descend pas de
+la chaîne) ; *appliquer la bande de tolérance aux seules surfaces* (elle y est
+déjà vraie par construction : elle n'aurait été qu'une redite).
+
+**Conséquences** — Le moteur porte la constante du dégagement, une vérification
+par profondeur, et le calcul du plafond de hauteur d'une pastille par air. La
+pièce de géométrie l'expose. Le fichier de règles porte l'énoncé. **Aucune valeur
+ne change.** Le robot ne sait pas encore vérifier la hauteur d'une pastille — elle
+est un fait de rendu, pas de géométrie ; la charge est nommée, non traitée.
+
+**Impact carte** — Deux des cinq règles restantes du plan sont réglées : celle-ci
+en est une, et elle en absorbe deux autres. Il en reste trois.
+
+---
+
 ## #072 — Le rognage du texte est ajourné : le défaut est réel et chiffré, le remède coûte plus cher que lui
 
 *2026-08-12 · Statut : 🟡 Ajourné (décision d'Auteur) · **Chiffre la charge ouverte par `#050` sur S3***

@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#072`
+> **Dernière décision au journal** : `#073`
 
 **Légende des statuts**
 
