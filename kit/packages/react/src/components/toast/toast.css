@@ -1,0 +1,152 @@
+/**
+ * Toast — Container Queries (principe Adaptive, ADAPTIVE-UI.md + TOAST-UI.md § Position) pour
+ * la région qui héberge la pile, + timeline CSS de l'instrument E-motion (glyphe dessiné,
+ * TOAST-UI.md § Instrument E-motion). CSS natif, aucun plugin Tailwind requis — même pattern
+ * que card.css.
+ */
+
+/* ── Adaptive : la région de toasts est son propre conteneur de requête ─────────────────────
+   Elle réagit à SA largeur réelle, jamais au viewport (ADAPTIVE-UX.md : « la fenêtre définit la
+   page ; le conteneur définit le composant »).
+   RÈGLE (piège CSS corrigé le 2026-07-21, cf. DECISIONS.md — rapport utilisateur : région/toasts
+   invisibles) : `container-type: inline-size` retire au conteneur sa taille intrinsèque
+   (containment) — un `max-inline-size` SEUL ne fixe rien tant que rien d'autre ne détermine la
+   taille de départ ; sans une largeur EXPLICITE (`width`, pas seulement un plafond), l'élément
+   s'effondre à 0px et tout son contenu devient invisible. RÈGLE TRANSVERSALE pour tout futur
+   conteneur de requête de ce système : `container-type` impose toujours une largeur explicite. */
+.ds-toast-region {
+  container-type: inline-size;
+  container-name: ds-toast-region;
+  position: fixed;
+  inset-block-end: var(--space-lg);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  width: min(24rem, calc(100vw - var(--space-lg) * 2));
+  display: flex;
+  flex-direction: column; /* le plus ancien en haut, le plus récent en bas, près du point d'ancrage */
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: var(--z-toast);
+  pointer-events: none; /* la région ne capte pas le pointeur ; chaque carte le réactive */
+}
+.ds-toast-region > * {
+  pointer-events: auto;
+  width: 100%;
+}
+
+/* Ancrage bas-CENTRÉ (arbitrage utilisateur 2026-07-21 — remplace la proposition « bas-droit »
+   du premier jet de TOAST-UI.md, jamais vérifiée à l'usage). État compact (TOAST-UI.md § Position
+   — implémentation Adaptive) : pas assez de largeur pour un centrage à marge fixe → pleine largeur
+   utile. Seuil dérivé du contenu réel de ce composant (une carte de 24rem + ses marges cesse de
+   tenir centrée en dessous de 28rem), pas d'un breakpoint.mobile partagé. */
+@container ds-toast-region (max-width: 28rem) {
+  .ds-toast-region {
+    inset-inline: var(--space-md);
+    inset-inline-start: var(--space-md);
+    width: auto;
+    transform: none;
+  }
+}
+
+/* ── Emplacements — variantes de l'ancrage bas-centré par défaut ────────────────────────────
+   start/end : coin au lieu du centre (plus de translateX). top : ancrage haut ; la colonne
+   s'inverse (column-reverse) pour que le plus récent reste près du point d'ancrage. */
+.ds-toast-region--bottom-start,
+.ds-toast-region--top-start {
+  inset-inline-start: var(--space-lg);
+  transform: none;
+  align-items: flex-start;
+}
+.ds-toast-region--bottom-end,
+.ds-toast-region--top-end {
+  inset-inline-start: auto;
+  inset-inline-end: var(--space-lg);
+  transform: none;
+  align-items: flex-end;
+}
+.ds-toast-region--top,
+.ds-toast-region--top-start,
+.ds-toast-region--top-end {
+  inset-block-end: auto;
+  inset-block-start: var(--space-lg);
+  flex-direction: column-reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-toast-region {
+    transition: none;
+  }
+}
+
+/* ── Instrument E-motion — glyphe DESSINÉ (jamais une illustration importée) ────────────────
+   Réservé au toast success seul à l'écran (`illustrated`, toast.tsx). Timeline unique de
+   `--duration-celebration` (1200ms, plafond E-motion) découpée en trois actes par pourcentage :
+   0–10% anticipation (le glyphe se rétracte légèrement) → 10–80% acte (le trait se dessine,
+   `--spring`) → 80–100% résolution (le trait/l'anneau se stabilisent). Gabarit SubmitButton
+   (EMOTION-UI.md), transposé en CSS pur ici (pas de GSAP : un seul glyphe simple, contrairement
+   à la chorégraphie multi-facettes de l'avion en papier). */
+@keyframes ds-toast-glyph-scale {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0.85);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes ds-toast-glyph-draw {
+  0%,
+  10% {
+    stroke-dashoffset: 1;
+  }
+  80% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ds-toast-glyph-settle {
+  0%,
+  80% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ds-toast-glyph--illustrated {
+  transform-origin: center;
+  animation: ds-toast-glyph-scale var(--duration-celebration) var(--spring) both;
+}
+.ds-toast-glyph--illustrated .ds-toast-glyph__check {
+  stroke-dasharray: 1;
+  animation: ds-toast-glyph-draw var(--duration-celebration) var(--ease-out) both;
+}
+.ds-toast-glyph--illustrated circle {
+  animation: ds-toast-glyph-settle var(--duration-celebration) var(--ease-out) both;
+}
+
+/* RÈGLE (TOAST-UI.md) : actes 1-2 supprimés, acte 3 conservé en bascule instantanée — le
+   cercle-coche apparaît plein directement, sans traînée. Le fait (succès confirmé) reste
+   intact, seule la chorégraphie disparaît. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-toast-glyph--illustrated {
+    animation: none;
+    transform: scale(1);
+  }
+  .ds-toast-glyph--illustrated .ds-toast-glyph__check {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .ds-toast-glyph--illustrated circle {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "_note": "Dérives de fraîcheur ASSUMÉES entre une fiche condensée (tools/plugin/rules) et sa source doctrine (apps/site/content/md). Chaque entrée est PRÉCISE : fiche, source, version citée, version réelle constatée, justification, vague de résorption. La garde de build-plugin échoue sur toute dérive absente d'ici, et sur toute entrée dont la source a encore bougé depuis (actuelle ≠ version réelle) — une dérive ne peut donc jamais grandir en silence. Résorber = resynchroniser le condensé, mettre à jour sa citation, supprimer l'entrée.",
+  "derives": [
+    {
+      "fiche": "RULES-cognitive-load.md",
+      "source": "COGNITIVE-LOAD-UX.md",
+      "citee": "1.0.0",
+      "actuelle": "1.0.1",
+      "justification": "Bump patch de la source postérieur à la condensation ; aucune règle nouvelle. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-collection.md",
+      "source": "COLLECTION-UX.md",
+      "citee": "1.0.0",
+      "actuelle": "1.0.2",
+      "justification": "Bumps patch de la source postérieurs à la condensation (1.0.1 : chemins ; 1.0.2 : le consommateur de la clause « sans cible » devient Card mode=static — suppression de l'API CardGroup.Card, 2026-07-30) ; aucune règle nouvelle ni modifiée. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-form.md",
+      "source": "FORM-UX.md",
+      "citee": "2.1.0",
+      "actuelle": "2.6.0",
+      "justification": "Trois minor non condensés (2.2.0–2.4.0) — la dérive la plus large du corpus — puis 2.5.0 et 2.6.0 qui posent des CRITERE et des SCENE (outillage : les condensés ne portent ni l'un ni l'autre). Aucune règle nouvelle depuis 2.4.0. Resynchronisation PRIORITAIRE.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-form.md",
+      "source": "FORM-UI.md",
+      "citee": "1.2.0",
+      "actuelle": "1.3.0",
+      "justification": "Minor de la source non condensé — à resynchroniser avec FORM-UX (même passe).",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-grid.md",
+      "source": "GRID-UX.md",
+      "citee": "1.0.0",
+      "actuelle": "1.2.0",
+      "justification": "Dérive déjà documentée DANS la fiche : section « Shell applicatif » alignée sur GRID 1.2.0 (2026-07-24), le reste du cadre de page reste à resynchroniser (item-min 1.27.0, clause collection 1.1.0).",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-grid.md",
+      "source": "GRID-UI.md",
+      "citee": "1.0.0",
+      "actuelle": "1.2.0",
+      "justification": "Même dérive documentée que GRID-UX — resynchronisation en une seule passe.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-interaction.md",
+      "source": "INTERACTION-UX.md",
+      "citee": "1.1.0",
+      "actuelle": "1.3.0",
+      "justification": "Minor 1.2.0 non condensé, puis 1.3.0 qui pose des CRITERE sur R08/R10/R23 (outillage : les condensés ne portent pas les CRITERE). Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-interaction.md",
+      "source": "INTERACTION-UI.md",
+      "citee": "1.1.0",
+      "actuelle": "1.2.0",
+      "justification": "Minor de la source non condensé. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-motion.md",
+      "source": "MOTION-UX.md",
+      "citee": "1.3.0",
+      "actuelle": "1.3.2",
+      "justification": "Deux bumps patch de la source ; aucune règle nouvelle. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-performance.md",
+      "source": "PERFORMANCE-UX.md",
+      "citee": "1.0.0",
+      "actuelle": "1.0.1",
+      "justification": "Bump patch de la source postérieur à la condensation ; aucune règle nouvelle. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-spacing.md",
+      "source": "SPACING-UX.md",
+      "citee": "1.2.0",
+      "actuelle": "1.3.0",
+      "justification": "Bump patch 1.2.1 (éditorial) puis minor 1.3.0 qui pose un CRITERE sur R05 — l'outillage, pas la doctrine : le condensé ne porte pas les CRITERE. Aucune règle nouvelle ni modifiée. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    },
+    {
+      "fiche": "RULES-voice.md",
+      "source": "VOICE-UX.md",
+      "citee": "1.3.0",
+      "actuelle": "1.3.1",
+      "justification": "Bump patch de la source postérieur à la condensation ; aucune règle nouvelle. Resynchronisation éditoriale groupée.",
+      "vague": 5
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+[
+ {
+  "id": "RADIUS-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le radius est une fondation transversale à laquelle le modèle à axes ne s'applique pas ; sa brièveté est une propriété du sujet, pas un défaut de couverture.",
+  "mesure": ""
+ },
+ {
+  "id": "RADIUS-R02",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le rayon est une propriété d'identité et non d'état : il ne varie jamais entre repos, survol, focus, erreur ou sélection.",
+  "mesure": "rayon identique au repos et dans tous les états d'un même composant"
+ },
+ {
+  "id": "RADIUS-R03",
+  "statut": "identite",
+  "source": "S1, S7, S8, S9, S10",
+  "enonce": "Le cran de rayon se choisit selon la taille et le type du composant, sur une échelle fermée et croissante.",
+  "mesure": "chaque composant résout un cran de l'échelle ; aucune valeur de rayon en dur"
+ },
+ {
+  "id": "RADIUS-R04",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "Le rayon n'est jamais dérivé d'un pourcentage ni d'une fraction de la hauteur : c'est un cran choisi, qui ne croît pas proportionnellement à la taille.",
+  "mesure": "aucun rayon exprimé en pourcentage ou calculé depuis la hauteur"
+ },
+ {
+  "id": "RADIUS-R05",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Deux contrôles de même taille voisins dans une même composition partagent le même cran de rayon.",
+  "mesure": "contrôles de même taille d'un même groupe : même token de rayon"
+ },
+ {
+  "id": "RADIUS-R06",
+  "statut": "universelle",
+  "source": "S5, S12",
+  "enonce": "Un coin intérieur n'est jamais plus rond que le coin extérieur qui le contient : au contact il épouse le rayon extérieur, à distance il vaut le rayon extérieur moins l'écart.",
+  "mesure": "rayon interne ≤ rayon externe ; cas concentrique : rayon interne = rayon externe − écart"
+ },
+ {
+  "id": "RADIUS-R07",
+  "statut": "universelle",
+  "source": "S5, S2, S7",
+  "enonce": "Un anneau posé à l'extérieur d'un composant prend pour rayon celui du composant augmenté de son écart.",
+  "mesure": "rayon de l'anneau de focus = rayon du composant + écart de focus"
+ },
+ {
+  "id": "RADIUS-R08",
+  "statut": "identite",
+  "source": "S3, S6, S7, S8, S9",
+  "enonce": "Le rayon plein est réservé aux contenus mono-ligne dont la forme est intrinsèquement une pilule ; aucun contrôle ni contenu susceptible de passer en multiligne ne le prend.",
+  "mesure": "aucun composant de type contrôle ni contenu multiligne ne consomme le rayon plein"
+ },
+ {
+  "id": "RADIUS-R09",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Un token de rayon provisionné sans consommateur documenté est déclaré comme provision explicite, avec son consommateur candidat nommé.",
+  "mesure": ""
+ },
+ {
+  "id": "RADIUS-R10",
+  "statut": "identite",
+  "source": "S4, S11, S8, S9",
+  "enonce": "L'angle droit n'a pas de token dans l'échelle : rien n'est carré par défaut, et un besoin réel devrait ajouter explicitement un cran nul.",
+  "mesure": "l'échelle de rayon ne comporte aucun cran de valeur 0"
+ },
+ {
+  "id": "RADIUS-R11",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les risques du rayon sont consignés dans une table de cas, de risque principal et de sévérité.",
+  "mesure": ""
+ },
+ {
+  "id": "RADIUS-R12",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le rayon suit la taille du composant et rien d'autre : ni son importance, ni son état, ni une préférence locale d'écran.",
+  "mesure": ""
+ }
+]

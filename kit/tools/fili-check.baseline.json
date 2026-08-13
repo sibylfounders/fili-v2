@@ -1,0 +1,6 @@
+{
+  "note": "Constat de conformité du site au kit — versionné. Tout écart NOUVEAU ou toute AUGMENTATION échoue en --strict, y compris dans un fichier créé après ce constat. Une entrée ne s'ajoute que par décision (édition manuelle justifiée) : --adopte ne se rejoue pas.",
+  "creee": "2026-07-30 — élargissement des règles (styles inline, carte recréée indépendante de l'écriture)",
+  "purgee": "2026-07-30 — migration rétroactive achevée : l'ancien contenu a été CORRIGÉ, pas gelé. Le constat est VIDE et doit le rester : plus aucune carte recréée, aucun contrôle natif restylé, aucun contournement du kit n'est toléré, nulle part (atelier et pages de test compris).",
+  "entries": []
+}

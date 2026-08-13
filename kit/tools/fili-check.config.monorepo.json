@@ -1,0 +1,6 @@
+{
+  "note": "Configuration MONOREPO de fili-check (consommée par tools/verifie-consommation.mjs). Aucune exclusion : TOUT apps/site/app est couvert — pages, Fili DS, Fili Audit, atelier (app/ui) et pages de test (app/test) compris (retrait des exclusions globales le 2026-07-30 : une exception éventuelle est inline, étroite et justifiée — jamais un dossier entier).",
+  "roots": ["apps/site/app"],
+  "exclude": [],
+  "allow": []
+}

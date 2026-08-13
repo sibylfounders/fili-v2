@@ -1,0 +1,520 @@
+[
+ {
+  "id": "ALERT-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le composant alert se décrit par deux axes seulement : le tone (gravité) et la persistance (qui met fin au message).",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R02",
+  "statut": "methode",
+  "source": "S1",
+  "enonce": "Le niveau de contraste visuel d'un alert découle de sa gravité et ne constitue pas un axe choisi par instance.",
+  "mesure": "aucune variante de contraste exposée par le composant"
+ },
+ {
+  "id": "ALERT-R03",
+  "statut": "identite",
+  "source": "S1, S3, S5, S6",
+  "enonce": "Un alert porte l'un des quatre tones info, success, warning ou danger ; il n'existe pas de tone neutre, info étant le degré zéro de la gravité.",
+  "mesure": "l'énumération des tones vaut exactement info, success, warning, danger"
+ },
+ {
+  "id": "ALERT-R04",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le registre de gravité maximale est nommé selon ce qu'il signifie pour chaque composant — danger pour l'alert, destructive pour le bouton, error pour l'input — sans terme unique imposé.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R05",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "L'alert n'expose aucune variante de taille : sa largeur est celle de son conteneur et sa hauteur celle de son contenu.",
+  "mesure": "aucun axe size exposé par le composant"
+ },
+ {
+  "id": "ALERT-R06",
+  "statut": "identite",
+  "source": "S2, S3",
+  "enonce": "La persistance d'un alert vaut permanent lorsque seule la fin de la condition met fin au message, et dismissible lorsque l'utilisateur peut le clore.",
+  "mesure": "l'énumération de la persistance vaut exactement permanent, dismissible"
+ },
+ {
+  "id": "ALERT-R07",
+  "statut": "methode",
+  "source": "S1, S5, S18",
+  "enonce": "Un message chronométré qui se ferme seul relève du toast et un message qui bloque l'interaction relève de la modale : ni l'un ni l'autre n'est un alert.",
+  "mesure": "aucun alert ne se ferme automatiquement après un délai"
+ },
+ {
+  "id": "ALERT-R08",
+  "statut": "methode",
+  "source": "S26",
+  "enonce": "Le résumé d'erreurs d'un formulaire est un alert de tone danger et de persistance permanente placé en tête de formulaire.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R09",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Ce fichier fait autorité sur le conteneur alert générique : structure, redondance icône/couleur, tokens par tone, rôles ARIA et non-dismissibilité.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R10",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'orchestration du résumé d'erreurs dans un formulaire — déclenchement, contenu, gestion du focus, coexistence avec les messages inline — relève de FORM-UX.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R11",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les boutons d'une bannière de consentement relèvent de BUTTON-UX ; la bannière de consentement en tant qu'objet relève de CONSENTEMENT-UX.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R12",
+  "statut": "identite",
+  "source": "S11",
+  "enonce": "L'alert est l'expression canonique de l'intention « comprendre un état » : il informe sur un état et ne propose jamais un geste.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R13",
+  "statut": "universelle",
+  "source": "S1, S3, S6, S25",
+  "enonce": "Un alert sert à porter une information contextuelle que l'utilisateur doit voir sans avoir à la chercher.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R14",
+  "statut": "identite",
+  "source": "S1, S2, S6",
+  "enonce": "Le retour immédiat d'une action qui vient de réussir est porté par un toast plutôt que par un alert.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R15",
+  "statut": "universelle",
+  "source": "S5, S16, S18",
+  "enonce": "Une décision qui doit bloquer l'utilisateur est portée par un dialogue d'alerte, jamais par un alert.",
+  "mesure": "aucun alert ne bloque l'interaction avec le reste de la page"
+ },
+ {
+  "id": "ALERT-R16",
+  "statut": "universelle",
+  "source": "S3, S27",
+  "enonce": "Un alert ne porte jamais de contenu promotionnel.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R17",
+  "statut": "universelle",
+  "source": "S5, S6, S18",
+  "enonce": "Le degré d'interruption se choisit sur l'urgence réelle du message selon l'échelle croissante alert, toast, modale.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R18",
+  "statut": "universelle",
+  "source": "S3, S25, S26",
+  "enonce": "Une erreur portant sur un seul champ est rendue par le message inline de ce champ ; l'alert n'intervient que lorsque l'information dépasse l'élément.",
+  "mesure": "aucun alert n'est émis pour une erreur portant sur un unique champ"
+ },
+ {
+  "id": "ALERT-R19",
+  "statut": "identite",
+  "source": "S13",
+  "enonce": "Les quatre tones de l'alert sont la projection sur ce composant de l'axe état-émotionnel de la voix : le ton du texte se déduit du tone du conteneur.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R20",
+  "statut": "identite",
+  "source": "S3, S13",
+  "enonce": "Le tone info informe sans alarmer : état du système, précision utile, nouveauté factuelle.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R21",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Seul le tone info se justifie pour un contenu purement proactif sans risque associé.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R22",
+  "statut": "universelle",
+  "source": "S2, S25, S27",
+  "enonce": "Une information qui n'a pas besoin d'être remarquée est intégrée au contenu courant plutôt que placée dans un alert.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R23",
+  "statut": "identite",
+  "source": "S2, S3",
+  "enonce": "Le tone success s'emploie pour confirmer durablement un état acquis dont la confirmation doit rester consultable.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R24",
+  "statut": "identite",
+  "source": "S1, S2",
+  "enonce": "Un succès qui n'est qu'un retour d'action relève du toast et non de l'alert.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R25",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le tone warning signale une condition qui mérite attention avant d'agir, sans qu'aucune erreur ne soit encore commise.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R26",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Un warning énonce ce qu'il faut faire ou surveiller, et pas seulement qu'une attention est requise.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R27",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le tone danger signale qu'une condition grave est déjà vraie, erreur constatée ou état critique persistant.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R28",
+  "statut": "identite",
+  "source": "S10, S27",
+  "enonce": "Le tone danger reste rare : plusieurs alerts danger simultanés signalent un défaut d'architecture de l'information.",
+  "mesure": "au plus un alert de tone danger visible simultanément par page"
+ },
+ {
+  "id": "ALERT-R29",
+  "statut": "universelle",
+  "source": "S9, S19, S20",
+  "enonce": "Un alert danger énonce ce qui se passe, pourquoi, et comment en sortir.",
+  "mesure": "toute erreur détectée est décrite en texte et assortie d'une suggestion de correction quand celle-ci est connue"
+ },
+ {
+  "id": "ALERT-R30",
+  "statut": "identite",
+  "source": "S13",
+  "enonce": "Le message d'un alert décrit l'écart et la sortie sans jamais qualifier ni accuser l'utilisateur.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R31",
+  "statut": "identite",
+  "source": "S2, S3",
+  "enonce": "Un alert permanent vit aussi longtemps que sa condition et ne peut pas être fermé par l'utilisateur.",
+  "mesure": "un alert permanent n'expose aucun contrôle de fermeture"
+ },
+ {
+  "id": "ALERT-R32",
+  "statut": "identite",
+  "source": "S2",
+  "enonce": "La persistance permanente est réservée aux messages proactifs chargés avec la page et aux conditions qui doivent être résolues.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R33",
+  "statut": "universelle",
+  "source": "S15, S17",
+  "enonce": "La résolution d'une condition consécutive à une action de l'utilisateur est annoncée par un message qui prend le relais, et non par la seule disparition de l'alert.",
+  "mesure": "la disparition d'un alert consécutive à une action utilisateur s'accompagne d'un message porté par une région live"
+ },
+ {
+  "id": "ALERT-R34",
+  "statut": "identite",
+  "source": "S13, S21",
+  "enonce": "Un mot porte toujours l'information de résolution : la disparition visuelle et le changement de couleur ne sont jamais les seuls canaux.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R35",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Un alert qui n'est ni bloquant ni critique est fermable par l'utilisateur.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R36",
+  "statut": "universelle",
+  "source": "S3, S28",
+  "enonce": "Le contrôle de fermeture d'un alert est un bouton focusable, doté d'un nom accessible et d'une cible de taille suffisante.",
+  "mesure": "le bouton de fermeture porte un nom accessible et mesure au moins 24×24 px CSS"
+ },
+ {
+  "id": "ALERT-R37",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "La fermeture d'un alert est mémorisée au moins pour la durée de la session, et durablement pour les annonces ponctuelles.",
+  "mesure": "un alert fermé ne réapparaît pas au chargement suivant de la même page dans la même session"
+ },
+ {
+  "id": "ALERT-R38",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "Un alert fermé peut réapparaître si sa condition redevient vraie ou s'aggrave : il s'agit alors d'un nouveau message.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R39",
+  "statut": "identite",
+  "source": "S2, S3",
+  "enonce": "Toutes les combinaisons de tone et de persistance sont possibles, mais info-dismissible et danger-permanent sont les régimes nominaux et les autres demandent une justification.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R40",
+  "statut": "identite",
+  "source": "S1, S3",
+  "enonce": "L'ordre de composition d'un alert est icône, titre, corps, actions, la croix de fermeture venant au coin opposé au sens de lecture.",
+  "mesure": "l'ordre du DOM place le contenu du message avant le contrôle de fermeture"
+ },
+ {
+  "id": "ALERT-R41",
+  "statut": "universelle",
+  "source": "S3, S21",
+  "enonce": "Chaque tone est porté par une icône propre, constante dans tout le produit, en plus de sa couleur.",
+  "mesure": "aucune information de gravité portée par la couleur seule"
+ },
+ {
+  "id": "ALERT-R42",
+  "statut": "universelle",
+  "source": "S11, S21",
+  "enonce": "L'icône de tone est un canal d'information redondant et ne peut pas être retirée pour alléger le rendu.",
+  "mesure": "tout alert affiche l'icône correspondant à son tone"
+ },
+ {
+  "id": "ALERT-R43",
+  "statut": "universelle",
+  "source": "S1, S3, S21",
+  "enonce": "Les tones se distinguent par des formes d'icône différentes, et pas seulement par des couleurs différentes.",
+  "mesure": "les silhouettes d'icône des quatre tones sont deux à deux distinctes"
+ },
+ {
+  "id": "ALERT-R44",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le titre d'un alert énonce le message en une ligne et porte le contenu, pas la catégorie.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R45",
+  "statut": "identite",
+  "source": "S9, S20",
+  "enonce": "Le corps d'un alert énonce le pourquoi et le moyen de corriger ; il est facultatif quand le titre suffit.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R46",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le corps d'un alert tient en une à deux phrases ; au-delà, l'information est liée plutôt qu'entassée.",
+  "mesure": "le corps d'un alert ne dépasse pas deux phrases"
+ },
+ {
+  "id": "ALERT-R47",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Un alert met en avant une seule action ; une seconde n'est tolérée que sous forme de lien discret.",
+  "mesure": "au plus un bouton d'action mis en avant par alert"
+ },
+ {
+  "id": "ALERT-R48",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le style et le tone des boutons contenus dans un alert relèvent de BUTTON-UX ; l'alert n'impose que leur nombre.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R49",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le tone d'un alert décrit la condition et ne détermine pas le tone du bouton qu'il contient, lequel décrit l'action.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R50",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Un alert permanent ne présente jamais de croix de fermeture.",
+  "mesure": "aucun contrôle de fermeture sur un alert de persistance permanente"
+ },
+ {
+  "id": "ALERT-R51",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "Un seul alert est affiché par niveau de conteneur ; au-delà, les messages sont agrégés en un seul.",
+  "mesure": "au plus un alert par niveau de conteneur"
+ },
+ {
+  "id": "ALERT-R52",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "Lorsque plusieurs alerts cohabitent, ils sont ordonnés par gravité décroissante et jamais par ordre d'arrivée.",
+  "mesure": "l'ordre d'affichage suit la gravité décroissante"
+ },
+ {
+  "id": "ALERT-R53",
+  "statut": "identite",
+  "source": "S2, S10, S26",
+  "enonce": "Un alert unique agrégeant plusieurs conditions est préféré à une pile d'alerts.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R54",
+  "statut": "universelle",
+  "source": "S15, S18",
+  "enonce": "Un alert présent au chargement de la page est du contenu ordinaire : il ne porte pas de région live et ne fait pas l'objet d'une annonce spéciale.",
+  "mesure": "aucun rôle live sur un alert présent dans le DOM au chargement initial"
+ },
+ {
+  "id": "ALERT-R55",
+  "statut": "universelle",
+  "source": "S4, S15, S16, S17",
+  "enonce": "Un alert inséré après une action est annoncé aux technologies d'assistance par une région live, role=alert pour les messages critiques et role=status pour les messages advisoires.",
+  "mesure": "tout alert injecté dynamiquement porte role=alert ou role=status"
+ },
+ {
+  "id": "ALERT-R56",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "L'insertion d'un alert ne doit pas déplacer le contenu situé sous le point de lecture courant.",
+  "mesure": "aucun décalage de mise en page du contenu déjà visible lors de l'insertion d'un alert"
+ },
+ {
+  "id": "ALERT-R57",
+  "statut": "identite",
+  "source": "S12",
+  "enonce": "L'apparition d'un alert réactif se joue en opacité seule, sans translation, et sa disparition prend le cran de durée inférieur à son apparition.",
+  "mesure": "aucune propriété de translation dans l'animation d'apparition ou de disparition"
+ },
+ {
+  "id": "ALERT-R58",
+  "statut": "identite",
+  "source": "S12",
+  "enonce": "Un alert chargé avec la page ne s'anime pas.",
+  "mesure": "aucune animation d'entrée sur un alert présent au chargement initial"
+ },
+ {
+  "id": "ALERT-R59",
+  "statut": "identite",
+  "source": "S12",
+  "enonce": "L'apparition en opacité d'un alert est conservée telle quelle sous mouvement réduit, faute de mouvement spatial à supprimer.",
+  "mesure": "aucune translation à désactiver sous prefers-reduced-motion pour ce composant"
+ },
+ {
+  "id": "ALERT-R60",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La disparition d'un alert relève de la règle de résolution pour le permanent et de la mémoire de fermeture pour le dismissible.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R61",
+  "statut": "universelle",
+  "source": "S11, S16, S18",
+  "enonce": "Le conteneur d'un alert n'est ni focusable ni cliquable et ne porte aucun état de survol ou de focus ; seuls ses enfants interactifs en portent.",
+  "mesure": "le conteneur alert n'est pas focusable et ne porte pas de gestionnaire de clic"
+ },
+ {
+  "id": "ALERT-R62",
+  "statut": "universelle",
+  "source": "S21, S22",
+  "enonce": "Un signal sonore d'alerte double toujours un message textuel et visuel et ne porte jamais seul l'information.",
+  "mesure": "aucune information portée par le son seul"
+ },
+ {
+  "id": "ALERT-R63",
+  "statut": "identite",
+  "source": "S14",
+  "enonce": "L'alert n'active aucun instrument expressif : sa chorégraphie et son wording restent dans le registre productif.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R64",
+  "statut": "identite",
+  "source": "S14",
+  "enonce": "Le porteur d'un problème et le porteur de sa résolution sont deux composants distincts : l'alert porte le problème, un message de succès ou un toast porte la récupération.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R65",
+  "statut": "identite",
+  "source": "S13, S14",
+  "enonce": "Aucune exception de ton chaleureux ne s'applique aux alerts de tone danger ou warning.",
+  "mesure": "aucun émoji ni interjection dans un alert de tone danger ou warning"
+ },
+ {
+  "id": "ALERT-R66",
+  "statut": "universelle",
+  "source": "S3, S25, S26",
+  "enonce": "Un alert de portée page est placé en tête du contenu, sur toute sa largeur, avant ce qu'il conditionne.",
+  "mesure": "l'alert de page précède dans le DOM le contenu qu'il conditionne"
+ },
+ {
+  "id": "ALERT-R67",
+  "statut": "identite",
+  "source": "S3, S6",
+  "enonce": "La position de tête de page est réservée aux conditions qui affectent la page entière.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R68",
+  "statut": "identite",
+  "source": "S3, S6",
+  "enonce": "Un alert de portée section se place sous le titre de la section concernée et en épouse la largeur.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R69",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Dans une modale, l'alert se place au-dessus des champs ou boutons concernés et n'y prend jamais la portée d'un alert de page.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R70",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "Un alert peut se placer immédiatement au-dessus d'un contrôle précis lorsque la condition ne concerne que ce geste.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R71",
+  "statut": "methode",
+  "source": "S25",
+  "enonce": "Une condition portant sur la valeur d'un champ relève d'INPUT-UX ; une condition portant sur la disponibilité ou le contexte d'un geste relève de l'alert.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R72",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le résumé d'erreurs en tête de formulaire emprunte son conteneur à l'alert et son orchestration à FORM-UX.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R73",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les risques principaux de l'alert sont recensés et hiérarchisés par sévérité dans la table de risque du fichier.",
+  "mesure": ""
+ },
+ {
+  "id": "ALERT-R74",
+  "statut": "universelle",
+  "source": "S5, S6, S25, S27",
+  "enonce": "Le degré d'interruption d'un message est proportionnel à l'urgence réelle de ce message, jamais à la visibilité souhaitée par son émetteur.",
+  "mesure": ""
+ }
+]

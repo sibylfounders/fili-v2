@@ -1,0 +1,77 @@
+/* Relief — grammaire « objet » (posé / creusé / plat), portée par [data-relief] sur la racine
+   (relief actif par défaut ; débrayable via le panneau Theming). Portée fidèlement de l'atelier
+   (nœuds Figma 128:136 boutons · 86:129 input) et adaptée aux sélecteurs React (data-style/data-tone).
+   POSÉ (bouton filled/lighter/stroke) = bordure externe + liseré haut clair→transparent + elevation-raised.
+   CREUSÉ (input)  = ombre interne + double filet — l'objet attend qu'on y verse.
+   Pressé : le posé s'ENFONCE (ombre interne + 0.5px de course). */
+/* Ombre pressée = rôle transversal --control-pressed-shadow (clair/sombre gérés par le token). */
+[data-relief] { --rl-press: var(--control-pressed-shadow); }
+
+[data-relief] :is([data-style="filled"], [data-style="lighter"]) { position: relative; }
+[data-relief] :is([data-style="filled"], [data-style="lighter"])::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(to bottom, var(--rl-ring, transparent), transparent 85%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* FILLED */
+[data-relief] [data-style="filled"][data-tone="primary"] { border-color: color-mix(in srgb, var(--primary), var(--control-mix-dark) 38%); --rl-ring: color-mix(in srgb, var(--primary), var(--control-mix-light) 42%); --rl-ring-h: color-mix(in srgb, var(--primary), var(--control-mix-light) 55%); --rl-ring-a: color-mix(in srgb, var(--primary), var(--control-mix-dark) 38%); }
+[data-relief] [data-style="filled"][data-tone="primary"]:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--primary), var(--control-mix-light) 12%); border-color: color-mix(in srgb, var(--primary), var(--control-mix-light) 12%); }
+[data-relief] [data-style="filled"][data-tone="primary"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--primary-hover); border-color: var(--primary-hover); }
+[data-relief] [data-style="filled"][data-tone="neutral"] { border-color: var(--control-mix-dark); --rl-ring: color-mix(in srgb, var(--surface-inverse), var(--control-mix-light) 30%); --rl-ring-h: color-mix(in srgb, var(--surface-inverse), var(--control-mix-light) 42%); --rl-ring-a: var(--control-mix-dark); }
+[data-relief] [data-style="filled"][data-tone="neutral"]:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--surface-inverse), var(--control-mix-light) 12%); border-color: color-mix(in srgb, var(--surface-inverse), var(--control-mix-light) 12%); opacity: 1; }
+[data-relief] [data-style="filled"][data-tone="neutral"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--control-mix-dark); border-color: var(--control-mix-dark); }
+[data-relief] [data-style="filled"][data-tone="destructive"] { border-color: color-mix(in srgb, var(--danger), var(--control-mix-dark) 38%); --rl-ring: color-mix(in srgb, var(--danger), var(--control-mix-light) 38%); --rl-ring-h: color-mix(in srgb, var(--danger), var(--control-mix-light) 50%); --rl-ring-a: color-mix(in srgb, var(--danger), var(--control-mix-dark) 38%); }
+[data-relief] [data-style="filled"][data-tone="destructive"]:not(:disabled):not([aria-disabled="true"]):hover { background: color-mix(in srgb, var(--danger), var(--control-mix-light) 12%); border-color: color-mix(in srgb, var(--danger), var(--control-mix-light) 12%); }
+[data-relief] [data-style="filled"][data-tone="destructive"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--danger-hover); border-color: var(--danger-hover); }
+[data-relief] [data-style="filled"] { box-shadow: var(--control-raised-shadow); }
+[data-relief] [data-style="filled"]:not(:disabled):not([aria-disabled="true"]):hover { box-shadow: var(--control-hover-shadow); --rl-ring: var(--rl-ring-h); }
+[data-relief] [data-style="filled"]:not(:disabled):not([aria-disabled="true"]):active { box-shadow: var(--rl-press); --rl-ring: var(--rl-ring-a); }
+
+/* LIGHTER */
+[data-relief] [data-style="lighter"][data-tone="primary"] { background: color-mix(in srgb, var(--primary-subtle), var(--background) 50%); border-color: var(--primary-subtle-hover); color: var(--primary); }
+[data-relief] [data-style="lighter"][data-tone="primary"]:not(:disabled):not([aria-disabled="true"]):hover { background: var(--background); border-color: var(--primary-subtle); color: var(--primary); }
+[data-relief] [data-style="lighter"][data-tone="primary"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--primary-subtle); border-color: var(--primary-subtle-hover); --rl-ring: var(--primary-subtle-hover); color: var(--primary-hover); }
+[data-relief] [data-style="lighter"][data-tone="neutral"] { background: color-mix(in srgb, var(--surface), var(--background) 50%); border-color: var(--border); }
+[data-relief] [data-style="lighter"][data-tone="neutral"]:not(:disabled):not([aria-disabled="true"]):hover { background: var(--background); border-color: var(--surface); }
+[data-relief] [data-style="lighter"][data-tone="neutral"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--surface); border-color: var(--border); --rl-ring: var(--primary-subtle-hover); }
+[data-relief] [data-style="lighter"][data-tone="destructive"] { background: color-mix(in srgb, var(--danger-subtle), var(--background) 50%); border-color: var(--danger-subtle-hover); }
+[data-relief] [data-style="lighter"][data-tone="destructive"]:not(:disabled):not([aria-disabled="true"]):hover { background: var(--background); border-color: var(--danger-subtle); }
+[data-relief] [data-style="lighter"][data-tone="destructive"]:not(:disabled):not([aria-disabled="true"]):active { background: var(--danger-subtle); border-color: var(--danger-subtle-hover); --rl-ring: var(--danger-subtle-hover); }
+[data-relief] [data-style="lighter"] { --rl-ring: rgba(255, 255, 255, 0.95); box-shadow: var(--control-raised-shadow); }
+[data-relief] [data-style="lighter"]:not(:disabled):not([aria-disabled="true"]):hover { --rl-ring: transparent; box-shadow: var(--control-hover-shadow); }
+[data-relief] [data-style="lighter"]:not(:disabled):not([aria-disabled="true"]):active { box-shadow: var(--rl-press); }
+
+/* STROKE */
+[data-relief] [data-style="stroke"] { box-shadow: var(--control-raised-shadow); }
+[data-relief] [data-style="stroke"]:not(:disabled):not([aria-disabled="true"]):hover { box-shadow: var(--control-hover-shadow); }
+[data-relief] [data-style="stroke"]:not(:disabled):not([aria-disabled="true"]):active { box-shadow: var(--rl-press); }
+
+/* La COURSE de pression a migré vers .ds-pressable (lib/interaction.css) : l'active est
+   une propriété universelle, elle ne pouvait pas rester enfermée dans ce registre.
+   Ce fichier ne garde que ce qui est PROPRE au relief : la couleur enfoncée et l'ombre. */
+
+/* CREUSÉ — input : bordure + ombre interne = rôles field (alias --input-border). */
+[data-relief] [data-slot="input"]:not([data-status="error"]):not([data-status="success"]):not([data-status="warning"]) { border-color: var(--input-border); box-shadow: inset 0 0 0 1px var(--input-border), var(--field-inset-shadow); }
+[data-relief] [data-slot="input"][data-status="error"], [data-relief] [data-slot="input"][data-status="success"], [data-relief] [data-slot="input"][data-status="warning"] { box-shadow: var(--field-inset-shadow); }
+
+/* POSÉ — alert (surface de message) : l'objet est posé quand le registre est actif —
+   liseré haut clair + elevation raised, la bordure de tone reste. Tokens : ancre mix + rôle control. */
+[data-relief] [data-slot="alert"] {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--control-mix-light) 55%, transparent), var(--control-raised-shadow);
+}
+
+/* THÈME SOMBRE — le pressé et le creusé sombres sont portés par les tokens (variantes dark générées). */
+[data-theme="dark"][data-relief] [data-style="filled"][data-tone="primary"]:not(:disabled):not([aria-disabled="true"]):active { background: color-mix(in srgb, var(--primary), var(--control-mix-dark) 22%); border-color: color-mix(in srgb, var(--primary), var(--control-mix-dark) 22%); }
+[data-theme="dark"][data-relief] [data-style="filled"][data-tone="destructive"]:not(:disabled):not([aria-disabled="true"]):active { background: color-mix(in srgb, var(--danger), var(--control-mix-dark) 22%); border-color: color-mix(in srgb, var(--danger), var(--control-mix-dark) 22%); }
+[data-theme="dark"][data-relief] [data-style="filled"][data-tone="neutral"] { border-color: color-mix(in srgb, var(--surface-inverse), var(--control-mix-dark) 45%); --rl-ring-a: color-mix(in srgb, var(--surface-inverse), var(--control-mix-dark) 45%); }
+[data-theme="dark"][data-relief] [data-style="filled"][data-tone="neutral"]:not(:disabled):not([aria-disabled="true"]):active { background: color-mix(in srgb, var(--surface-inverse), var(--control-mix-dark) 15%); border-color: color-mix(in srgb, var(--surface-inverse), var(--control-mix-dark) 30%); }
+[data-theme="dark"][data-relief] [data-style="lighter"][data-tone="primary"] { --rl-ring: color-mix(in srgb, var(--primary-subtle), var(--control-mix-light) 40%); }
+[data-theme="dark"][data-relief] [data-style="lighter"][data-tone="neutral"] { --rl-ring: color-mix(in srgb, var(--surface), var(--control-mix-light) 35%); }
+[data-theme="dark"][data-relief] [data-style="lighter"][data-tone="destructive"] { --rl-ring: color-mix(in srgb, var(--danger-subtle), var(--control-mix-light) 35%); }
+[data-theme="dark"][data-relief] [data-slot="alert"] {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--control-mix-light) 10%, transparent), var(--control-raised-shadow);
+}

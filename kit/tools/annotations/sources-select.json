@@ -1,0 +1,100 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S4",
+  "affirmation": "Sémantique native du select : élément associé à un formulaire et soumis à la validation de contrainte — required impose une option de placeholder et fait échouer la validation tant qu'aucune option réelle n'est choisie ; disabled rend le contrôle non interactif et exclut sa valeur de la soumission ; la sélection d'une option désélectionne les autres en mono-sélection",
+  "source_markdown": "[HTML Living Standard — the select element](https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element)",
+  "confiance": "Normatif — mesure ce qu'un menu personnalisé doit réimplémenter à la main (requis, validation, soumission), et fonde le défaut relevé en audit"
+ },
+ {
+  "couche": "ux",
+  "ref": "S5",
+  "affirmation": "Pour tout composant d'interface, y compris généré par script, le nom et le rôle sont programmatiquement déterminables, les états et valeurs modifiables par l'utilisateur sont programmatiquement définissables, et leurs changements sont notifiés aux technologies d'assistance",
+  "source_markdown": "[WCAG 2.2 — 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+  "confiance": "Établi, standard (niveau A) — la note d'application précise qu'un contrôle personnalisé exige des mesures supplémentaires (ARIA) que le contrôle natif fournit d'office"
+ },
+ {
+  "couche": "ux",
+  "ref": "S6",
+  "affirmation": "Toute fonctionnalité est opérable au clavier sans exiger de rythme de frappe particulier ; le critère demande une parité fonctionnelle, pas une identité d'interaction",
+  "source_markdown": "[WCAG 2.2 — 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+  "confiance": "Établi, standard (niveau A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S7",
+  "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu accepte une saisie de l'utilisateur ; « requires » y signifie « accepte », donc le critère couvre les champs facultatifs comme les champs obligatoires",
+  "source_markdown": "[WCAG 2.2 — 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html)",
+  "confiance": "Établi, standard (niveau A) — nuance assumée : 3.3.2 n'impose pas par lui-même le marquage visible du caractère obligatoire, il l'encourage par technique suffisante"
+ },
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "Motif listbox : rôles listbox et option, nom accessible obligatoire, aria-selected pour la sélection unique, aria-activedescendant comme alternative au focus DOM ; focus et sélection sont fonctionnellement distincts ; Début/Fin recommandés dès 5 options, saisie prédictive dès 7",
+  "source_markdown": "[ARIA APG — Listbox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)",
+  "confiance": "Établi — complète S1 sur la partie liste et fonde explicitement la distinction option active / option sélectionnée"
+ },
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Un popover de la plateforme est toujours non modal : il vit dans la couche supérieure, le reste de la page reste interactif, aucun focus n'est piégé, et l'état auto apporte le light-dismiss (Échap et clic extérieur) ; le modal relève de dialog, pas de popover",
+  "source_markdown": "[MDN — Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API)",
+  "confiance": "Normatif (plateforme) — remplace l'ancrage uniquement interne de la fondation overlay pour le caractère non modal et le light-dismiss"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "Le select sert à choisir dans une longue liste, mais avant d'y recourir il faut chercher à poser des questions qui réduisent le nombre d'options, et la recherche utilisateur montre des difficultés récurrentes (fermeture, saisie dans le contrôle, confusion focus/sélection, zoom sur mobile, défilement non perçu) ; select multiple est déconseillé",
+  "source_markdown": "[GOV.UK Design System — Select](https://design-system.service.gov.uk/components/select/)",
+  "confiance": "Établi par convergence — système public vérifié (1/3)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Le select n'est justifié que pour environ 7 à 15 options dans un espace contraint : en dessous de 7, radios ; au-delà de 15, combo box ; plusieurs experts en font « l'interface de dernier recours » ; l'auto-soumission au changement est à proscrire",
+  "source_markdown": "[U.S. Web Design System — Select](https://designsystem.digital.gov/components/select/)",
+  "confiance": "Établi par convergence — système public vérifié (2/3) ; le seuil chiffré (7) contredit le seuil interne (≈5)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Le select s'utilise pour une longue liste d'options ; il est déconseillé pour une liste courte (radios) ou pour une sélection multiple (cases à cocher), et il faut l'éviter quand on peut, la recherche montrant que certains utilisateurs le trouvent difficile",
+  "source_markdown": "[Scottish Government Design System — Select](https://designsystem.gov.scot/components/select)",
+  "confiance": "Établi par convergence — système public vérifié (3/3) ; aucun de ces trois systèmes ne traite la question natif contre personnalisé"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "Changer le réglage d'un composant ne provoque pas automatiquement de changement de contexte sans que l'utilisateur en ait été averti au préalable ; changer une valeur dans un menu déroulant est un changement de réglage, pas une activation",
+  "source_markdown": "[WCAG 2.2 — 3.2.2 On Input](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html)",
+  "confiance": "Établi, standard (niveau A) — non mobilisé par une règle existante : le corpus ne dit rien de l'auto-soumission au changement de select (manque relevé)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T3",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard (niveau A) — fonde la coche sur l'option sélectionnée"
+ },
+ {
+  "couche": "ui",
+  "ref": "T4",
+  "affirmation": "La présentation visuelle des composants d'interface atteint un contraste d'au moins 3:1 avec les couleurs adjacentes ; une bordure n'est exigée que lorsqu'aucun autre indice visuel n'identifie la présence du contrôle",
+  "source_markdown": "[WCAG 2.2 — 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)",
+  "confiance": "Établi, standard (niveau AA) — donne à T2 son ancrage externe et sa condition : le 3:1 porte sur la bordure seulement si elle est le seul indice du contrôle"
+ },
+ {
+  "couche": "ui",
+  "ref": "T5",
+  "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la préférence système se lit par prefers-reduced-motion, dont la valeur reduce demande de supprimer ou de remplacer le mouvement non essentiel",
+  "source_markdown": "[WCAG 2.2 — 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) ; [MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — 2.3.3 est de niveau AAA et n'impose pas prefers-reduced-motion comme unique technique ; ancrage assumé, la média-requête n'est qu'une des solutions suffisantes"
+ },
+ {
+  "couche": "ui",
+  "ref": "T6",
+  "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA), avec exceptions dont le rendu par défaut du navigateur ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+  "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ; [WCAG 2.2 — 2.5.5 Target Size (Enhanced)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)",
+  "confiance": "Établi, standard (AA et AAA) — le 44 px cité par le composant est le seuil AAA, pas le seuil de conformité courant ; l'exception « contrôle du navigateur » joue en faveur du select natif"
+ }
+]

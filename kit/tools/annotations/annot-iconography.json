@@ -1,0 +1,156 @@
+[
+ {
+  "id": "ICONOGRAPHY-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'iconographie est une fondation transversale : elle n'expose ni axes ni règles d'assemblage, et tous les composants en consomment les crans, le style et les contraintes.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R02",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La fondation normalise les rôles, tailles, style, redondance, accessibilité et stabilité du sens des icônes, mais ne fournit pas de bibliothèque : le dessin des glyphes reste hors périmètre.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R03",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La fondation traite séparément le sens de l'icône, décision de contenu, et sa forme, décision de design ; aucune des deux ne se déduit de l'autre.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R04",
+  "statut": "universelle",
+  "source": "S1, S2, S3",
+  "enonce": "Toute icône est accompagnée d'un libellé textuel partout où c'est possible, et aucune icône n'est ajoutée là où elle n'est pas nécessaire.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R05",
+  "statut": "identite",
+  "source": "S1, S3",
+  "enonce": "Le droit d'une icône à paraître sans libellé visible est défini par une liste fermée et déclarée, non par un jugement au cas par cas.",
+  "mesure": "toute icône sans libellé visible appartient à la liste fermée déclarée"
+ },
+ {
+  "id": "ICONOGRAPHY-R06",
+  "statut": "universelle",
+  "source": "S12, S14, S16, S17, S1",
+  "enonce": "Tout contrôle réduit à une icône porte un nom accessible non vide décrivant sa fonction ; une info-bulle au survol ne tient jamais lieu de nom accessible.",
+  "mesure": "tout contrôle sans texte visible expose un nom accessible non vide"
+ },
+ {
+  "id": "ICONOGRAPHY-R07",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "Une action dont l'icône ne se laisse ni concevoir ni trouver en moins de cinq secondes se désigne par un mot et non par un glyphe.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R08",
+  "statut": "universelle",
+  "source": "S2, S3",
+  "enonce": "Un glyphe ne désigne qu'un seul sens dans tout le produit, et un sens donné est toujours porté par le même glyphe.",
+  "mesure": "aucun glyphe associé à plus d'un sens et aucun sens porté par plus d'un glyphe"
+ },
+ {
+  "id": "ICONOGRAPHY-R09",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "Aucun symbole dont le sens est déjà établi ailleurs n'est réaffecté à un autre sens.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R10",
+  "statut": "universelle",
+  "source": "S13",
+  "enonce": "Une icône porteuse de sens est un canal redondant d'une information déjà exprimée autrement : elle ne se retire pas pour alléger, et sa silhouette distingue le sens sans recours à la couleur.",
+  "mesure": "chaque état sémantique reste distinguable sans la couleur"
+ },
+ {
+  "id": "ICONOGRAPHY-R11",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "La bibliothèque adopte un style de contour unique à trait constant, et réserve la variante pleine à la signalisation d'un état actif.",
+  "mesure": "toutes les icônes partagent la même valeur de trait"
+ },
+ {
+  "id": "ICONOGRAPHY-R12",
+  "statut": "identite",
+  "source": "S2",
+  "enonce": "Une icône doit rester lisible au plus petit cran ; un glyphe dont les détails se bouchent est simplifié ou retiré, le cran n'est pas augmenté pour lui.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R13",
+  "statut": "identite",
+  "source": "S11",
+  "enonce": "Les icônes s'en tiennent à des formes simples et frontales, sans perspective, sans volume et sans détail intérieur superflu.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R14",
+  "statut": "universelle",
+  "source": "S8, S9",
+  "enonce": "Les tailles d'icône proviennent d'un jeu fermé de crans appariés aux corps de texte ; une icône ne se redimensionne jamais hors de ces crans, elle change de cran.",
+  "mesure": "toute icône rendue utilise une valeur du jeu de crans ; aucune taille libre"
+ },
+ {
+  "id": "ICONOGRAPHY-R15",
+  "statut": "universelle",
+  "source": "S9, S5",
+  "enonce": "À côté d'un texte, l'icône est centrée verticalement sur la ligne plutôt qu'alignée sur la ligne de base, et prend la couleur du texte qu'elle accompagne.",
+  "mesure": "aucune icône adjacente à du texte n'est alignée sur la ligne de base ; couleur héritée hors tone sémantique"
+ },
+ {
+  "id": "ICONOGRAPHY-R16",
+  "statut": "universelle",
+  "source": "S6, S12, S15",
+  "enonce": "Une icône porteuse d'information respecte un contraste d'au moins 3:1 avec les couleurs adjacentes ; une icône décorative en est exemptée et est retirée de l'arbre d'accessibilité.",
+  "mesure": "contraste ≥ 3:1 pour toute icône informative ; toute icône décorative porte aria-hidden et n'est pas focalisable"
+ },
+ {
+  "id": "ICONOGRAPHY-R17",
+  "statut": "universelle",
+  "source": "S7",
+  "enonce": "La cible tactile d'une icône interactive s'obtient par extension du padding et jamais par agrandissement du glyphe.",
+  "mesure": "toute icône interactive a une cible ≥ 44 × 44 px, obtenue sans agrandir le glyphe"
+ },
+ {
+  "id": "ICONOGRAPHY-R18",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le spinner est traité comme une icône animée : il occupe le cran de l'icône qu'il remplace sans modifier la géométrie du composant.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R19",
+  "statut": "identite",
+  "source": "S14, S18",
+  "enonce": "Une icône qui varie avec l'état est le même glyphe transformé plutôt qu'un second glyphe, et l'état reste exposé programmatiquement.",
+  "mesure": "tout contrôle dont l'icône varie selon l'état expose cet état par un attribut ARIA"
+ },
+ {
+  "id": "ICONOGRAPHY-R20",
+  "statut": "implementation",
+  "source": "S5, S19",
+  "enonce": "Les icônes sont rendues en SVG inline héritant de la couleur du texte, et non par une police d'icônes.",
+  "mesure": "aucune icône rendue via une police d'icônes ou un caractère de pseudo-élément"
+ },
+ {
+  "id": "ICONOGRAPHY-R21",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les défaillances iconographiques connues sont consignées dans une table de risque associant chaque cas à son risque principal et à sa sévérité.",
+  "mesure": ""
+ },
+ {
+  "id": "ICONOGRAPHY-R22",
+  "statut": "universelle",
+  "source": "S12, S13",
+  "enonce": "Une icône n'est jamais le seul dépositaire d'un sens : toute information qu'elle porte reste disponible par le texte, le rôle ou la structure.",
+  "mesure": "aucune information ni action disponible uniquement par le dessin d'une icône"
+ }
+]

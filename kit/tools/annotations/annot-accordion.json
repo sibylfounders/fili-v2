@@ -1,0 +1,72 @@
+[
+ {
+  "id": "ACCORDION-R01",
+  "statut": "universelle",
+  "source": "S1",
+  "enonce": "Chaque section d'un accordéon est révélée ou masquée par un en-tête qui est un bouton ; le contenu replié n'est pas détruit et sa réouverture restitue l'état précédent.",
+  "mesure": "l'en-tête de section est un élément bouton ; le contenu replié reste dans le document et retrouve son état à la réouverture"
+ },
+ {
+  "id": "ACCORDION-R02",
+  "statut": "identite",
+  "source": "S1, S2, S4",
+  "enonce": "Plusieurs sections d'un accordéon peuvent être ouvertes simultanément ; la fermeture automatique des autres sections à l'ouverture d'une section est une option demandée explicitement, jamais le comportement par défaut.",
+  "mesure": "par défaut, ouvrir une section ne referme aucune autre section"
+ },
+ {
+  "id": "ACCORDION-R03",
+  "statut": "universelle",
+  "source": "S1",
+  "enonce": "L'en-tête d'une section est un bouton portant aria-expanded et aria-controls vers sa région, laquelle est nommée par cet en-tête ; lorsque les en-têtes structurent la page, le bouton est l'unique enfant d'un élément de titre de niveau cohérent, et Entrée comme Espace basculent l'état.",
+  "mesure": "chaque en-tête porte un bouton avec aria-expanded et aria-controls ; le bouton est l'unique enfant de l'élément de titre ; Entrée et Espace basculent la section"
+ },
+ {
+  "id": "ACCORDION-R04",
+  "statut": "universelle",
+  "source": "S1, S5, S7",
+  "enonce": "L'ouverture ou la fermeture d'une section ne déplace ni le focus ni le contenu déjà sous le pointeur : le focus reste sur l'en-tête activé, la tabulation entre et sort librement, et aucun piège de focus n'est posé.",
+  "mesure": "après activation, le focus reste sur l'en-tête ; Tab et Maj+Tab traversent l'accordéon sans être retenus"
+ },
+ {
+  "id": "ACCORDION-R05",
+  "statut": "universelle",
+  "source": "S3, S8",
+  "enonce": "L'état ouvert ou fermé d'une section se lit à un indicateur non chromatique — chevron orienté, signe plus ou moins — et jamais à la seule couleur.",
+  "mesure": "l'état ouvert se distingue de l'état fermé par au moins un signal non chromatique"
+ },
+ {
+  "id": "ACCORDION-R06",
+  "statut": "universelle",
+  "source": "S6",
+  "enonce": "Le dépliage et le repliage d'une section sont un mouvement sur place emprunté aux tokens de mouvement, et deviennent une bascule instantanée lorsque l'utilisateur a demandé moins de mouvement, sans jamais escamoter de contenu.",
+  "mesure": "sous prefers-reduced-motion: reduce, la bascule est instantanée ; aucune durée ni courbe en dur"
+ },
+ {
+  "id": "ACCORDION-R07",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'accordéon ne redéfinit pas ce qui appartient à ses voisins : le chevron relève de l'iconographie, les durées et courbes du mouvement, un lien de sa région du composant lien, l'anneau de focus de la bordure, le mot de l'en-tête du langage ; un révélateur modal, qui recouvre et piège le focus, n'est pas un accordéon mais un superposé.",
+  "mesure": ""
+ },
+ {
+  "id": "ACCORDION-U01",
+  "statut": "identite",
+  "source": "T1, T2",
+  "enonce": "L'en-tête d'accordéon résout son retrait, le rayon de son fond de survol et sa couleur de texte sur les tokens, et son chevron — icône en couleur courante — pivote à l'ouverture par transformation, aux durées et courbes des tokens de mouvement.",
+  "mesure": "aucune valeur brute sur l'en-tête ; le chevron pivote par transformation, sans substitution d'icône"
+ },
+ {
+  "id": "ACCORDION-U02",
+  "statut": "identite",
+  "source": "T2, T3",
+  "enonce": "La région ouverte prend son retrait dans l'échelle d'espacement, et la séparation entre deux sections passe d'abord par l'espace, le trait n'intervenant qu'en dernier recours.",
+  "mesure": "la séparation par défaut entre deux sections est un espacement, non un trait"
+ },
+ {
+  "id": "ACCORDION-U03",
+  "statut": "methode",
+  "source": "T4",
+  "enonce": "Aucune couleur, rayon ni durée de l'accordéon n'est codé en dur — chacun résout un token de fondation — et la cible pointeur de l'en-tête atteint le seuil de confort retenu par l'accessibilité.",
+  "mesure": "aucune valeur brute dans l'implémentation de l'accordéon ; cible pointeur de l'en-tête ≥ 44 × 44 px CSS"
+ }
+]

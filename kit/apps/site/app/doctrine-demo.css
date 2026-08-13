@@ -1,0 +1,119 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   DOCTRINE — démos générées reprises du site DS-MD (volet « Spécifications »).
+   Ce sont des PREUVES VISUELLES (spécimens, matrices, échantillons), au même titre
+   que les illustrations SVG : leur balisage vient du générateur, il n'est pas
+   reconstruit en composants. Le chrome autour (onglets, cartes, modales, accordéons)
+   vient, lui, strictement de @fili/react.
+
+   Les règles ci-dessous sont extraites de public/assets/site.css et RE-CÂBLÉES sur les
+   tokens du monorepo : le pont de variables ci-dessous fait que les démos suivent le
+   thème (clair/sombre) et les réglages de rayon, au lieu de figer les valeurs d'origine.
+   Généré par tools/extrait-demos-css.py — ne pas éditer à la main.
+   ══════════════════════════════════════════════════════════════════════════ */
+.doctrine-demo {
+  --bg: var(--background);
+  --surface: var(--surface);
+  --surface-hover: var(--surface-hover);
+  --text: var(--text-primary);
+  --text-2: var(--text-secondary);
+  --muted: var(--text-muted);
+  --border: var(--border);
+  --border-fort: var(--border-strong);
+  --primary: var(--primary);
+  --primary-hover: var(--primary-hover);
+  --on-primary: var(--on-primary);
+  --danger: var(--danger);
+  --success: var(--success);
+  --warning: var(--warning);
+  --info: var(--info);
+  --sp-xs: var(--space-xs);
+  --sp-sm: var(--space-sm);
+  --sp-md: var(--space-md);
+  --sp-lg: var(--space-lg);
+  --sp-xl: var(--space-xl);
+  --r-sm: var(--radius-sm);
+  --r-md: var(--radius-md);
+  --r-lg: var(--radius-lg);
+  --raised: var(--elevation-raised);
+  --dur: var(--duration-base);
+  --ease: var(--ease-out);
+  --mono: var(--font-mono);
+  color: var(--text-primary);
+}
+.doctrine-demo svg { max-width: 100%; height: auto; }
+
+.doctrine-demo :is(.spec-item) {
+display:flex;flex-direction:column;align-items:center;gap:7px;
+}
+.doctrine-demo :is(.val-sous) {
+color:var(--muted);font-size:.8em;font-family:'JetBrains Mono',monospace;
+}
+.doctrine-demo :is(.spec-rang) {
+display:flex;gap:var(--sp-md);align-items:center;flex-wrap:wrap;margin:var(--sp-md) 0;
+}
+.doctrine-demo :is(.spec-col) {
+display:flex;flex-direction:column;gap:var(--sp-sm);margin:var(--sp-md) 0;
+}
+.doctrine-demo :is(.spec-note) {
+color:var(--text-2);font-size:.9em;
+}
+.doctrine-demo :is(.usage-couleur) {
+margin:var(--sp-lg) 0;
+}
+.doctrine-demo :is(.usage-couleur > header) {
+margin-bottom:var(--sp-sm);
+}
+.doctrine-demo :is(.usage-couleur h3) {
+margin:0 0 3px;font-size:1.06rem;
+}
+.doctrine-demo :is(.usage-couleur > header p) {
+margin:0;color:var(--text-2);font-size:.9em;max-width:70ch;
+}
+.doctrine-demo :is(.roles-liste) {
+list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--sp-xs) var(--sp-sm);
+}
+.doctrine-demo :is(.roles-liste code) {
+font-size:.9em;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:2px 8px;
+}
+.doctrine-demo :is(.note-agnostique) {
+color:var(--text-2);font-size:.92em;max-width:74ch;border-left:2px solid var(--border);padding-left:var(--sp-md);margin:0 0 var(--sp-lg);
+}
+.doctrine-demo :is(.type-echelle) {
+display:flex;flex-direction:column;gap:var(--sp-sm);
+}
+.doctrine-demo :is(.type-ligne) {
+display:flex;align-items:baseline;gap:var(--sp-md);justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:var(--sp-xs);
+}
+.doctrine-demo :is(.esp-ligne) {
+display:flex;align-items:center;gap:var(--sp-md);margin:var(--sp-xs) 0;
+}
+.doctrine-demo :is(.esp-barre) {
+height:16px;background:var(--primary);border-radius:2px;flex:none;
+}
+.doctrine-demo :is(.radius-boite), .doctrine-demo :is(.elev-boite), .doctrine-demo :is(.bord-boite), .doctrine-demo :is(.icon-boite) {
+width:130px;height:90px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+}
+.doctrine-demo :is(.radius-boite) {
+border:1px solid var(--border-strong);
+}
+.doctrine-demo :is(.elev-boite) {
+border-radius:var(--r-md);
+}
+.doctrine-demo :is(.bord-boite) {
+border-radius:var(--r-md);
+}
+.doctrine-demo :is(.motion-demo) {
+display:flex;align-items:center;gap:var(--sp-md);padding:var(--sp-sm);border:1px solid var(--border);border-radius:var(--r-sm);
+}
+.doctrine-demo :is(.motion-pion) {
+width:20px;height:20px;border-radius:6px;background:var(--primary);display:inline-block;
+}
+.doctrine-demo :is(.spec-label) {
+font:600 11px/1.3 'Inter',sans-serif;text-transform:uppercase;letter-spacing:.07em;color:var(--text-2);
+}
+.doctrine-demo :is(main.pleine .pied) {
+max-width:1220px;margin-left:auto;margin-right:auto;padding:0 var(--sp-lg) var(--sp-lg);
+}
+.doctrine-demo :is(.pied) {
+margin-top:var(--sp-xl);padding-top:var(--sp-md);border-top:1px solid var(--border);color:var(--muted);font-size:.85em;
+}

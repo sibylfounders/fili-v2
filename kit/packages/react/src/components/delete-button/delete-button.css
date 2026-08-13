@@ -1,0 +1,109 @@
+/* DeleteButton « poubelle » — deuxième citoyen de la couche E-motion.
+   Portage FIDÈLE du « Delete button » d'Aaron Iker — CodePen abOXPvN (pens publics CodePen,
+   licence MIT). CSS pur (keyframes trash-top/bottom/text), AUCUNE dépendance d'animation.
+   Deltas DS-UI : rouge destructive depuis les tokens `error`, fin sur « Supprimé » qui RESTE
+   (la suppression est un acte définitif), contrat E-motion (aria-live + prefers-reduced-motion). */
+
+.dsui-delbtn { position: relative; display: inline-block; }
+/* crans de taille — hauteurs alignées sur le Button (32/40/48) : line-height 24 + 2×padding.
+   L'icône (24px) et les keyframes de la poubelle restent constants ; typo + padding varient. */
+.dsui-delbtn--sm .dsui-delbtn__btn { --del-pad-y: 4px; --del-pad-x: 12px; --del-font: 14px; }
+.dsui-delbtn--md .dsui-delbtn__btn { --del-pad-y: 8px; --del-pad-x: 16px; --del-font: 16px; }
+.dsui-delbtn--lg .dsui-delbtn__btn { --del-pad-y: 12px; --del-pad-x: 24px; --del-font: 16px; }
+
+.dsui-delbtn__btn {
+  --del-bg: var(--danger); --del-bg-hover: var(--danger-hover); --del-on: var(--on-danger);
+  --name-top: none; --name-bottom: none; --name-text: none;
+  --span-o: 1; --span-x: 0; --span-y: 0; --span-r: 0deg;
+  position: relative; display: inline-flex; align-items: center; outline: none; cursor: pointer; border: 0;
+  /* padding X aligné sur le Button classique (12/16/24, symétrique) — l'original (12/20 fixes) décollait l'icône */
+  padding: var(--del-pad-y, 12px) var(--del-pad-x, 24px); border-radius: var(--radius-md); line-height: 24px;
+  font-family: var(--font-sans); font-weight: 600; font-size: var(--del-font, 16px); overflow: hidden;
+  color: var(--del-on); background: var(--b, var(--del-bg));
+  transition: transform .3s, background .4s; transform: scale(var(--dscale, 1)) translateZ(0);
+  -webkit-tap-highlight-color: transparent; -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+.dsui-delbtn__btn:active { --dscale: .95; }
+.dsui-delbtn[data-state="idle"] .dsui-delbtn__btn:hover { --b: var(--del-bg-hover); }
+.dsui-delbtn__btn { --control-focus-color: var(--control-focus-danger); }
+.dsui-delbtn__btn:focus-visible { outline: var(--control-focus-width) solid var(--control-focus-color); outline-offset: var(--control-focus-offset); }
+
+.dsui-delbtn__icon { width: 24px; height: 24px; position: relative; z-index: 1; margin-right: 8px; display: inline-block; vertical-align: top; color: var(--del-on); transform: translateZ(0); }
+/* icône en idiome ◈ Icons : outline trait 2 (le trait suit le scale — proportions constantes) */
+.dsui-delbtn__icon svg { width: 96px; height: 96px; display: block; position: absolute; left: -36px; top: -36px; will-change: transform; fill: none; stroke: var(--del-on); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transform: scale(.25) translateZ(0); animation: var(--name, var(--name-top, none)) 2400ms ease forwards; }
+.dsui-delbtn__icon svg.dsui-delbtn__bottom { --name: var(--name-bottom, none); }
+
+.dsui-delbtn__text { display: inline-block; vertical-align: top; animation: var(--name-text, none) 2400ms ease forwards; }
+.dsui-delbtn__text span { display: inline-block; vertical-align: top; opacity: var(--span-o, 1); transform: translate(var(--span-x, 0), var(--span-y, 0)) rotate(var(--span-r, 0deg)) scale(var(--span-s, 1)) translateZ(0); transition: transform .32s cubic-bezier(.45, -.25, .3, 1.15) var(--span-d, 0s), opacity .2s linear var(--span-o-d, .3s); }
+
+/* état « suppression » — FROISSAGE : les lettres convergent en boule au centre du label
+   (--crump-* mesurés/jittérés au clic, par lettre) pendant que la poubelle s'ouvre, puis le
+   plongeon du bloc texte (dsui-trash-text) emporte la boule entière dans la poubelle. */
+.dsui-delbtn[data-state="deleting"] .dsui-delbtn__btn { --name-top: dsui-trash-top; --name-bottom: dsui-trash-bottom; --name-text: dsui-trash-text; }
+/* déclaré SUR le span : var(--crump-*) doit se résoudre là où les cibles inline sont posées */
+.dsui-delbtn[data-state="deleting"] .dsui-delbtn__text span { --span-x: var(--crump-x, -8px); --span-y: var(--crump-y, 8px); --span-r: var(--crump-r, -40deg); --span-s: .6; --span-o: 0; --span-o-d: 1s; --span-d: var(--span-cd, .03s); }
+
+/* overlay de succès terminal : « ✓ Supprimé » sur danger-subtle, apparaît à la fin et RESTE */
+.dsui-delbtn__done { position: absolute; inset: 0; z-index: 2; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--danger-subtle); border-radius: var(--radius-md); color: var(--danger);
+  font: 600 var(--del-font, 16px)/1 var(--font-sans); opacity: 0; pointer-events: none; transition: opacity .25s var(--ease-out); }
+.dsui-delbtn__done svg { width: 16px; height: 16px; fill: none; stroke: var(--danger); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dsui-delbtn--done .dsui-delbtn__done { opacity: 1; }
+.dsui-delbtn--done .dsui-delbtn__btn { background: var(--danger-subtle); }
+/* CHARGEMENT : spinner tant que la vraie suppression n'a pas répondu (après l'acte animé) */
+.dsui-delbtn__spin { position: absolute; inset: 0; z-index: 2; display: none; align-items: center; justify-content: center; background: var(--danger); border-radius: var(--radius-md); color: var(--on-danger); }
+.dsui-delbtn--loading .dsui-delbtn__spin { display: inline-flex; }
+.dsui-delbtn__spin i { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: dsui-del-spin .7s linear infinite; }
+@keyframes dsui-del-spin { to { transform: rotate(360deg); } }
+/* ÉCHEC : « ⚠ Échec » sur fond error + secousse, puis retour à idle (ré-armable) */
+.dsui-delbtn__err { position: absolute; inset: 0; z-index: 3; display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: var(--danger); border-radius: var(--radius-md); color: var(--on-danger); font: 600 var(--del-font, 16px)/1 var(--font-sans); opacity: 0; pointer-events: none; transition: opacity .18s; }
+.dsui-delbtn--error .dsui-delbtn__err { opacity: 1; }
+.dsui-delbtn--error .dsui-delbtn__btn { animation: dsui-del-shake .42s var(--ease-out); }
+@keyframes dsui-del-shake { 0%, 100% { transform: translateX(0); } 12% { transform: translateX(-7px); } 26% { transform: translateX(6px); } 40% { transform: translateX(-5px); } 54% { transform: translateX(4px); } 68% { transform: translateX(-2px); } 82% { transform: translateX(1px); } }
+
+.dsui-delbtn__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* repli reduced-motion : pas de volée animée ni de spinner qui tourne */
+.dsui-delbtn--instant .dsui-delbtn__text span { transition: none; }
+.dsui-delbtn--instant .dsui-delbtn__spin i { animation: none; }
+
+/* la poubelle grandit vers le CENTRE du bouton (--del-cx mesuré au clic) → centrée quel que soit le label */
+@keyframes dsui-trash-bottom {
+  25%, 32% { transform: translate(var(--del-cx, 32px), 19px) scale(1) translateZ(0); }
+  70%, 80% { transform: translate(var(--del-cx, 32px), 0) scale(.25) translateZ(0); }
+  90% { transform: translate(calc(var(--del-cx, 32px) - 2px), 0) scale(.25) translateZ(0); }
+  100% { transform: scale(.25) translateZ(0); }
+}
+@keyframes dsui-trash-top {
+  25%, 32% { transform: translate(calc(var(--del-cx, 32px) + 6px), 4px) scale(1) rotate(-20deg) translateZ(0); }
+  70%, 80% { transform: translate(var(--del-cx, 32px), 0) scale(.25) translateZ(0); }
+  90% { transform: translate(calc(var(--del-cx, 32px) - 2px), 0) scale(.25) translateZ(0); }
+  100% { transform: scale(.25) translateZ(0); }
+}
+/* le texte plonge dans la poubelle et RESTE parti (l'original revenait à 100 % — ici l'acte est définitif) */
+@keyframes dsui-trash-text {
+  25% { transform: translate(-4px, -6px) rotate(-20deg) translateZ(0); }
+  70% { opacity: 1; transform: translate(-12px, 48px) rotate(-80deg) scale(.2) translateZ(0); }
+  71% { opacity: 0; }
+  72%, 100% { opacity: 0; transform: translateZ(0); }
+}
+
+/* ── Relief « posé » (langage Interaction, cf. button/relief.css) — même signal que le Button
+   filled destructive : liseré haut clair, contour sombre, elevation-raised, enfoncement au clic.
+   En box-shadow uniquement (border-width reste 0). Limité à l'état idle. */
+[data-relief] .dsui-delbtn[data-state="idle"] .dsui-delbtn__btn {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--del-bg, var(--danger)), var(--control-mix-light) 38%),
+    0 0 0 1px color-mix(in srgb, var(--del-bg, var(--danger)), var(--control-mix-dark) 38%),
+    var(--control-raised-shadow);
+}
+[data-relief] .dsui-delbtn[data-state="idle"] .dsui-delbtn__btn:hover {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--del-bg, var(--danger)), var(--control-mix-light) 50%),
+    0 0 0 1px color-mix(in srgb, var(--del-bg, var(--danger)), var(--control-mix-dark) 38%),
+    var(--control-hover-shadow);
+}
+[data-relief] .dsui-delbtn[data-state="idle"] .dsui-delbtn__btn:active {
+  box-shadow:
+    var(--control-pressed-shadow),
+    0 0 0 1px color-mix(in srgb, var(--del-bg, var(--danger)), var(--control-mix-dark) 38%);
+}

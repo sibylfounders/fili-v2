@@ -1,0 +1,2484 @@
+{
+ "slug": "interaction",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2.5\" y=\"4\" width=\"7\" height=\"7\" rx=\"2\" fill=\"#4F46E5\"/><rect x=\"14.5\" y=\"4\" width=\"7\" height=\"7\" rx=\"2\" fill=\"#F2C744\"/><rect x=\"8.5\" y=\"14\" width=\"7\" height=\"7\" rx=\"2\" fill=\"#0891B2\"/><path d=\"M9.5 7.5h5M18 11v3M12 11v3\" stroke=\"#111827\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>",
+ "nom": "interaction",
+ "nature": "Langage",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-20 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · interaction",
+  "question": "Comment faire comprendre ce qui peut être fait avant même que l’utilisateur lise chaque libellé ?",
+  "detail": "Ce langage distingue action, navigation, saisie, sélection, information et statut. Forme, limite, profondeur et mouvement renforcent ces rôles sans devenir décoratifs ni remplacer le texte accessible.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Le rôle se reconnaît avant la lecture"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La matérialité sert l’affordance"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Couleur, ombre, hover et mouvement ne portent jamais seuls une information"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "13",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "25",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "1",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-interaction.md",
+   "source": "---\nsujet: interaction\ntype: langage\nresume: \"Langage d'affordance : le rôle se reconnaît avant le style ; action, navigation, saisie, sélection, information et statut restent distincts sans dépendre d'un effet seul\"\nrequires: []\nselon-contexte: []\n---\n# RULES — Langage d'interaction (compilé, condensé)\n\n> Généré depuis `languages/interaction/INTERACTION-UX.md` (v1.1.0) et\n> `INTERACTION-UI.md` (v1.1.0). La source fait autorité. Ne pas éditer à la main.\n\n## Premier principe\n\n- **Une interface doit pouvoir être comprise avant d'être lue.** La forme, la structure, la position\n  et les états indiquent le rôle ; le mot précise l'intention.\n- Ce principe ne remplace jamais le texte accessible : icône seule = nom accessible ; état =\n  sémantique programmatique.\n\n## Intentions\n\n| Intention | Composant / expression |\n|---|---|\n| Agir | Button |\n| Naviguer | Link |\n| Saisir | Input / contrôle de formulaire |\n| Choisir | checkbox, radio, switch, select |\n| Consulter | texte, Card statique, Panel |\n| Comprendre un état | Alert, badge, message explicite |\n\n- Deux éléments qui se ressemblent et réagissent de la même façon promettent un résultat de même\n  nature. Deux rôles différents ne deviennent pas indiscernables.\n- Toujours utiliser la sémantique native correspondant à l'intention.\n\n## Lois d'affordance\n\n- **Action** : limite et états perceptibles ; présence modulée par la hiérarchie, jamais effacée.\n- **Saisie** : zone réceptive délimitée + label + focus ; jamais élevée comme une action.\n- **Surface** : Card statique calme ; Card cliquable avec une cible réelle et des signaux\n  supplémentaires.\n- **Profondeur** : explique une couche ou un changement d'état, jamais l'importance ni la décoration.\n- **Couleur** : renforce le sens, ne le crée jamais seule.\n- **États** : repos, hover, focus, active, loading et disabled distincts quand ils existent. Le hover\n  confirme une cible déjà reconnaissable ; le focus n'est pas une imitation du hover.\n\n## Matérialité fonctionnelle\n\n- Matérialité = fond, bordure, forme, position, état, mouvement ou profondeur au service d'une\n  question fonctionnelle. **Aucune ombre, aucun inset, aucun gradient n'est imposé.**\n- Conserver un effet seulement s'il explique : manipulable, réceptif, organisateur, superposé ou\n  changement d'état. Sinon, il est décoratif et hors langage.\n- Neumorphisme et glassmorphism ne sont pas le langage par défaut : effets fragiles, contrastes et\n  performance à démontrer.\n\n## Robustesse\n\n- Le langage reste opérant en niveaux de gris, sans hover, au clavier, au zoom, en contraste forcé et\n  avec mouvement réduit.\n- Ombre, vibration, couleur ou animation ne sont jamais indispensables.\n- Test : distinguer action/navigation/saisie/information en niveaux de gris ; reconnaître les cibles\n  sans hover ; voir le focus ; vérifier que des rendus équivalents promettent des résultats équivalents.\n\n## UI\n\n- Actions : limite via tokens du composant, state layers existants, `motion.fast`.\n- Saisie : `color.border-strong`, `color.background`, focus de la fondation Border.\n- Surface statique : `elevation.none`.\n- Profondeur : uniquement selon Elevation ; aucune ombre de repos créée ici.\n- Focus : `border.focus-width` + `border.focus-offset`, jamais remplacé par un effet tactile.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Intention",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Intention\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"58\" width=\"64\" height=\"26\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"54\" y=\"68\" width=\"36\" height=\"7\" rx=\"3.5\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"124\" y=\"74\" font-size=\"11\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">naviguer</text><path d=\"M124 78h48\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><rect x=\"192\" y=\"60\" width=\"84\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"202\" y=\"66\" width=\"2\" height=\"12\" fill=\"#111827\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Déclencher une action",
+     "quand": "Button identifiable, états perceptibles.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Déclencher une action\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"272\" y=\"96\" width=\"136\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"107\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><path d=\"M398 138l13 32 4-12 12-4z\" fill=\"#111827\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Button identifiable, états perceptibles.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par <code>BUTTON</code>, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « déclencher une action » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Naviguer",
+     "quand": "Link identifiable et destination explicite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Naviguer\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"200\" y=\"120\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Voir le détail</text><path d=\"M200 127h96\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M320 114L378 114\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M378 114L370.1 118.3M378 114L370.1 109.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"408\" y=\"72\" width=\"130\" height=\"96\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"424\" y=\"92\" width=\"80\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"424\" y=\"112\" width=\"96\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Link identifiable et destination explicite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « naviguer » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Saisir une donnée",
+     "quand": "Zone réceptive délimitée + label.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Saisir une donnée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"84\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"266\" y=\"98\" width=\"164\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"278\" y=\"104\" width=\"2.5\" height=\"13\" fill=\"#111827\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Zone réceptive délimitée + label.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par <code>INPUT</code>, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « saisir une donnée » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Choisir",
+     "quand": "Contrôle de sélection natif.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Choisir\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"252\" cy=\"94\" r=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"252\" cy=\"132\" r=\"9\" fill=\"#FFFFFF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"252\" cy=\"132\" r=\"4.5\" fill=\"#4F46E5\"/><rect x=\"272\" y=\"90\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"272\" y=\"128\" width=\"76\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"402\" y=\"86\" width=\"18\" height=\"18\" rx=\"4\" fill=\"#4F46E5\"/><path d=\"M406 95l4 4 7-8\" stroke=\"#ffffff\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><rect x=\"430\" y=\"90\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"402\" y=\"122\" width=\"18\" height=\"18\" rx=\"4\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"430\" y=\"126\" width=\"62\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contrôle de sélection natif.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Compléter la couverture existante, puis vérifier le résultat avec la technologie d’assistance concernée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « choisir » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Consulter",
+     "quand": "Contenu calme, sans fausse affordance.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Consulter\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"60\" width=\"180\" height=\"118\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"80\" width=\"110\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"268\" y=\"104\" width=\"140\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"124\" width=\"126\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"268\" y=\"144\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contenu calme, sans fausse affordance.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par <code>CARD</code>, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « consulter » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Comprendre un état",
+     "quand": "Mot + signal visuel.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Intention",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Comprendre un état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"96\" width=\"248\" height=\"46\" rx=\"8\" fill=\"#DCFCE7\"/><rect x=\"216\" y=\"96\" width=\"6\" height=\"46\" rx=\"3\" fill=\"#15803D\"/><circle cx=\"246\" cy=\"119\" r=\"9\" fill=\"#15803D\"/><path d=\"M242 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"266\" y=\"124\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#15803D\">Enregistré</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Mot + signal visuel.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par <code>ALERT</code>, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « comprendre un état » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Canal",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Canal\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"60\" cy=\"74\" r=\"12\" fill=\"#B91C1C\"/><rect x=\"100\" y=\"62\" width=\"50\" height=\"34\" rx=\"8\" fill=\"#111827\" opacity=\".12\"/><rect x=\"94\" y=\"56\" width=\"50\" height=\"34\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M168 74q9-13 18 0t18 0\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\"/><text x=\"226\" y=\"79\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#111827\">le mot</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Couleur",
+     "quand": "Interface désaturée / daltonisme.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Couleur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"234\" cy=\"106\" r=\"15\" fill=\"#B91C1C\"/><circle cx=\"234\" cy=\"152\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M230.5 148.5l7 7M237.5 148.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"420\" cy=\"106\" r=\"15\" fill=\"#B91C1C\"/><text x=\"446\" y=\"111\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Erreur</text><circle cx=\"510\" cy=\"106\" r=\"9\" fill=\"#15803D\"/><path d=\"M506 106l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Interface désaturée / daltonisme.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « couleur » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Ombre",
+     "quand": "Forced-colors / faible gamme.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ombre\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"72\" width=\"124\" height=\"98\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"366\" y=\"82\" width=\"124\" height=\"98\" rx=\"13\" fill=\"#111827\" opacity=\".13\"/><rect x=\"358\" y=\"74\" width=\"124\" height=\"98\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"340\" y=\"128\" font-size=\"20\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">+</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Forced-colors / faible gamme.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « ombre » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "« réceptif » décrit une fonction, pas un effet imposé. Une ombre interne peut soutenir cette",
+       "id": "INTERACTION-R09"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'ombre indique une relation spatiale ou un changement d'état ; elle ne décore pas. La",
+       "id": "INTERACTION-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Hover",
+     "quand": "Tactile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hover\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"72\" width=\"140\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"212\" y=\"132\" width=\"62\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"223\" y=\"143\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"356\" y=\"72\" width=\"140\" height=\"100\" rx=\"13\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><rect x=\"372\" y=\"132\" width=\"62\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"383\" y=\"143\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M470 110l13 32 4-12 12-4z\" fill=\"#111827\"/><text x=\"340\" y=\"126\" font-size=\"17\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">=</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tactile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « hover » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "repos, hover, focus, active, loading et disabled sont distincts quand ils existent. Le",
+       "id": "INTERACTION-R13"
+      },
+      {
+       "tag": "Règle",
+       "html": "le focus clavier est un état à part entière, jamais une imitation du hover. L'active peut",
+       "id": "INTERACTION-R14"
+      },
+      {
+       "tag": "Règle",
+       "html": "le langage reste opérant au clavier, au toucher, au zoom, en contraste forcé, sans hover et",
+       "id": "INTERACTION-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Mouvement",
+     "quand": "Reduced-motion.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mouvement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M258 104l6 7 6-7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M300 122a26 26 0 1 1 10 18\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M306 136l-8 6 10 3z\" fill=\"#4F46E5\"/><path d=\"M376 120L416 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M416 120L408.1 124.3M416 120L408.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"452\" cy=\"120\" r=\"9\" fill=\"#15803D\"/><path d=\"M448 120l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"472\" y=\"125\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sans mouvement</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Reduced-motion.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « mouvement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Vibration",
+     "quand": "Indisponible ou désactivée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Vibration\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"62\" width=\"72\" height=\"116\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><path d=\"M250 84q-9 36 0 72M354 84q9 36 0 72\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"384\" y=\"100\" width=\"150\" height=\"38\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"384\" y=\"100\" width=\"6\" height=\"38\" rx=\"3\" fill=\"#1D4ED8\"/><rect x=\"414\" y=\"116\" width=\"104\" height=\"6\" rx=\"3\" fill=\"#1D4ED8\" opacity=\"0.7\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Indisponible ou désactivée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « vibration » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Texte",
+     "quand": "Icône seule.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Canal",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"84\" width=\"24\" height=\"24\" rx=\"6\" fill=\"#E0E7FF\"/><text x=\"276\" y=\"101\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Supprimer</text><rect x=\"240\" y=\"130\" width=\"24\" height=\"24\" rx=\"6\" fill=\"#FEE2E2\"/><text x=\"276\" y=\"147\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Erreur : format attendu</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Icône seule.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « texte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ce principe ne remplace jamais le texte accessible. « Reconnaître avant de lire » réduit",
+       "id": "INTERACTION-R02"
+      },
+      {
+       "tag": "Règle",
+       "html": "un même rôle conserve ses signaux essentiels dans tous les contextes. Une action principale",
+       "id": "INTERACTION-R19"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 6 cas",
+   "titre": "Incohérence à détecter",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Incohérence à détecter\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"56\" width=\"70\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"56\" y=\"66\" width=\"40\" height=\"7\" rx=\"3.5\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"150\" y=\"64\" font-size=\"14\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">=</text><text x=\"176\" y=\"74\" font-size=\"11\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">lien inline</text><path d=\"M176 78h52\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><circle cx=\"268\" cy=\"68\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M264.5 64.5l7 7M271.5 64.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Button visuellement identique à un lien inline",
+     "quand": "Traiter le cas « Button visuellement identique à un lien inline ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Button visuellement identique à un lien inline\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"214\" y=\"116\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Enregistrer</text><path d=\"M214 123h86\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"110\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M336.5 106.5l7 7M343.5 106.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"392\" y=\"96\" width=\"116\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"428\" y=\"107\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle cx=\"534\" cy=\"110\" r=\"9\" fill=\"#15803D\"/><path d=\"M530 110l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Button visuellement identique à un lien inline ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « button visuellement identique à un lien inline » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Card statique avec hover de carte cliquable",
+     "quand": "Traiter le cas « Card statique avec hover de carte cliquable ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Card statique avec hover de carte cliquable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"244\" y=\"70\" width=\"152\" height=\"104\" rx=\"13\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><rect x=\"262\" y=\"92\" width=\"84\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"262\" y=\"114\" width=\"112\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M380 140l13 32 4-12 12-4z\" fill=\"#111827\"/><circle cx=\"436\" cy=\"92\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M432.5 88.5l7 7M439.5 88.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Card statique avec hover de carte cliquable ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « card statique avec hover de carte cliquable » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une Card statique reste calme. Une Card cliquable reçoit une cible réelle et des signaux",
+       "id": "INTERACTION-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Input élevé comme une action",
+     "quand": "Traiter le cas « Input élevé comme une action ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Input élevé comme une action\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"262\" y=\"106\" width=\"164\" height=\"30\" rx=\"7\" fill=\"#111827\" opacity=\".14\"/><rect x=\"256\" y=\"100\" width=\"164\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"452\" cy=\"110\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M448.5 106.5l7 7M455.5 106.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Input élevé comme une action ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « input élevé comme une action » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Deux composants identiques produisant action et navigation",
+     "quand": "Traiter le cas « Deux composants identiques produisant action et navigation ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Deux composants identiques produisant action et navigation\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"76\" width=\"112\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"244\" y=\"87\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"210\" y=\"132\" width=\"112\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"244\" y=\"143\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><path d=\"M334 90L388 76\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M388 76L381.4 82.2M388 76L379.3 73.8\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M334 146L388 160\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M388 160L379.3 162.2M388 160L381.4 153.8\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"416\" cy=\"72\" r=\"14\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><rect x=\"400\" y=\"146\" width=\"44\" height=\"32\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"516\" cy=\"116\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M512.5 112.5l7 7M519.5 112.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Deux composants identiques produisant action et navigation ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « deux composants identiques produisant action et navigation » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "action, navigation, erreur, sélection et focus restent compréhensibles sans perception de la",
+       "id": "INTERACTION-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Matérialité sobre qui renforce une limite déjà accessible",
+     "quand": "Traiter le cas « Matérialité sobre qui renforce une limite déjà accessible ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Matérialité sobre qui renforce une limite déjà accessible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"252\" y=\"96\" width=\"156\" height=\"26\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"252\" y=\"96\" width=\"156\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"438\" cy=\"108\" r=\"9\" fill=\"#15803D\"/><path d=\"M434 108l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Matérialité sobre qui renforce une limite déjà accessible ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « matérialité sobre qui renforce une limite déjà accessible » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "Effet décoratif sans rôle fonctionnel",
+     "quand": "Traiter le cas « Effet décoratif sans rôle fonctionnel ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Incohérence à détecter",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Effet décoratif sans rôle fonctionnel\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"72\" width=\"140\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"212\" y=\"92\" width=\"86\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"212\" y=\"114\" width=\"104\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M366 60v122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"5 6\"/><path d=\"M430 96l6 12 12 6-12 6-6 12-6-12-12-6 12-6z\" fill=\"#92400E\"/><path d=\"M486 132l4 9 9 4-9 4-4 9-4-9-9-4 9-4z\" fill=\"#92400E\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Effet décoratif sans rôle fonctionnel ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « effet décoratif sans rôle fonctionnel » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INTERACTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "si l'effet ne répond à aucune de ces questions, il est décoratif et ne fait pas partie du",
+       "id": "INTERACTION-R17"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [],
+  "tokens": [
+   {
+    "token": "action.boundary",
+    "ref": "color.border-strong",
+    "valeur": "#6B7280",
+    "couleur": "#6B7280"
+   },
+   {
+    "token": "action.hover_surface",
+    "ref": "color.surface-hover",
+    "valeur": "#E5E7EB",
+    "couleur": "#E5E7EB"
+   },
+   {
+    "token": "action.press_duration",
+    "ref": "motion.fast",
+    "valeur": "100ms",
+    "couleur": null
+   },
+   {
+    "token": "receptive.boundary",
+    "ref": "color.border-strong",
+    "valeur": "#6B7280",
+    "couleur": "#6B7280"
+   },
+   {
+    "token": "receptive.background",
+    "ref": "color.background",
+    "valeur": "#FFFFFF",
+    "couleur": "#FFFFFF"
+   },
+   {
+    "token": "surface.rest_shadow",
+    "ref": "elevation.none",
+    "valeur": "none",
+    "couleur": null
+   },
+   {
+    "token": "focus.width",
+    "ref": "border.focus-width",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "focus.offset",
+    "ref": "border.focus-offset",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "state_motion.duration",
+    "ref": "motion.fast",
+    "valeur": "100ms",
+    "couleur": null
+   },
+   {
+    "token": "state_motion.easing",
+    "ref": "motion.ease-out",
+    "valeur": "cubic-bezier(0, 0, 0.2, 1)",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "INTERACTION-R01",
+   "couche": "ux",
+   "solution": "**une interface doit pouvoir être comprise avant d'être lue.** La forme, la structure, la",
+   "enonce": "Une interface se comprend avant d'être lue : la forme, la structure, la position et les états annoncent le rôle d'un élément, et le libellé ne fait que préciser ensuite l'intention.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Les affordances et signifiants réduisent l'interprétation nécessaire",
+     "liens": [
+      {
+       "label": "Don Norman, *The Design of Everyday Things*",
+       "url": null
+      }
+     ],
+     "confiance": "Référence établie en design ; traduction visuelle interne"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Les affordances et signifiants réduisent l'interprétation nécessaire",
+    "liens": [
+     {
+      "label": "Don Norman, *The Design of Everyday Things*",
+      "url": null
+     }
+    ],
+    "confiance": "Référence établie en design ; traduction visuelle interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R02",
+   "couche": "ux",
+   "solution": "ce principe ne remplace jamais le texte accessible. « Reconnaître avant de lire » réduit",
+   "enonce": "Le fait de reconnaître un rôle avant de lire ne dispense jamais du texte accessible : aucun pictogramme ambigu ni aucun contrôle dépourvu de nom n'est admis.",
+   "mesure": "tout contrôle non textuel porte un nom accessible qui décrit sa fonction",
+   "critere": "",
+   "contre": "",
+   "probleme": "une personne parcourt une interface en reconnaissant des régularités avant de lire",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Les contrôles ont un nom, un rôle et une valeur déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Tout contenu non textuel qui est un contrôle ou accepte une saisie porte un nom décrivant sa fonction, et tout contenu non textuel dispose d'une alternative textuelle de valeur équivalente",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde l'interdiction du pictogramme sans nom (R02, R23)"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Les contrôles ont un nom, un rôle et une valeur déterminables",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-5",
+     "titre": "Texte",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R03",
+   "couche": "ux",
+   "solution": "le rôle précède le style. Le composant se choisit d'après ce qui se produit :",
+   "enonce": "Le système reconnaît six intentions — agir, naviguer, saisir, choisir, consulter, comprendre un état — et le composant se choisit d'après l'intention et le résultat produit, jamais d'après le style souhaité.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R04",
+   "couche": "ux",
+   "solution": "deux éléments qui se ressemblent et réagissent de la même façon doivent promettre le même",
+   "enonce": "Deux éléments qui se ressemblent et réagissent de la même façon promettent le même type de résultat, et deux rôles différents ne sont jamais rendus indiscernables.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R05",
+   "couche": "ux",
+   "solution": "la sémantique native suit l'intention — un bouton reste un bouton, un lien reste un lien, un",
+   "enonce": "La sémantique native suit l'intention : une action est portée par un bouton, une navigation par un lien avec destination, une saisie par un champ, et le style ne transforme jamais l'un en l'autre.",
+   "mesure": "toute action est portée par un contrôle exposant le rôle bouton et activable par Entrée et Espace ; toute navigation est portée par un lien avec destination",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Les contrôles ont un nom, un rôle et une valeur déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+    "liens": [
+     {
+      "label": "WAI-ARIA Authoring Practices — Button Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+     },
+     {
+      "label": "APG — Read Me First",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+     }
+    ],
+    "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R06",
+   "couche": "ux",
+   "solution": "un contrôle manipulable possède une limite et des états perceptibles. Cette présence peut",
+   "enonce": "Un contrôle manipulable possède une limite et des états perceptibles ; cette présence peut venir d'un fond, d'une bordure, d'une forme, d'une position ou d'une réaction, et n'exige pas une ombre.",
+   "mesure": "l'information visuelle qui identifie le contrôle et ses états atteint un contraste de 3:1 avec les couleurs adjacentes",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R07",
+   "couche": "ux",
+   "solution": "une action de faible poids peut être visuellement discrète, mais elle ne devient jamais un",
+   "enonce": "Une action de faible poids peut être visuellement discrète mais ne prend jamais l'apparence d'un lien : la hiérarchie module la présence, elle n'efface pas le rôle.",
+   "mesure": "aucun élément portant une action n'adopte la présentation visuelle réservée à la navigation",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+    "liens": [
+     {
+      "label": "WAI-ARIA Authoring Practices — Button Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+     },
+     {
+      "label": "APG — Read Me First",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+     }
+    ],
+    "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R08",
+   "couche": "ux",
+   "solution": "un champ délimite clairement l'endroit où la valeur sera reçue. Son label, sa bordure, son",
+   "enonce": "Une zone de saisie délimite clairement l'endroit où la valeur sera reçue : son label, sa limite, son contenu et son focus la distinguent d'un bouton comme d'une simple surface.",
+   "mesure": "tout champ porte un label visible et une délimitation dont le contraste atteint 3:1 avec les couleurs adjacentes",
+   "critere": "chaque(\"input:not([type=hidden]):not([type=button]):not([type=submit]),select,textarea\") etiquete_visible()",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Des labels ou des instructions sont fournis dès que le contenu attend une saisie de l'utilisateur",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde l'exigence de label visible de R08"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Des labels ou des instructions sont fournis dès que le contenu attend une saisie de l'utilisateur",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A) — fonde l'exigence de label visible de R08"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R09",
+   "couche": "ux",
+   "solution": "« réceptif » décrit une fonction, pas un effet imposé. Une ombre interne peut soutenir cette",
+   "enonce": "Le caractère réceptif d'une zone de saisie décrit une fonction et non un effet imposé : une ombre interne peut soutenir cette lecture dans un thème, mais elle n'est ni universelle ni suffisante.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Ombre",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R10",
+   "couche": "ux",
+   "solution": "une Card statique reste calme. Une Card cliquable reçoit une cible réelle et des signaux",
+   "enonce": "Une surface qui organise du contenu ne promet pas de clic : une surface cliquable reçoit une cible réelle et des signaux d'interaction supplémentaires, une surface statique ne copie jamais l'apparence d'un contrôle.",
+   "mesure": "toute surface cliquable expose un élément interactif natif atteignable au clavier ; aucune surface statique ne porte de gestionnaire de clic",
+   "critere": "compte(\"div[onclick],span[onclick],li[onclick],p[onclick],td[onclick]\") == 0",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Toute fonctionnalité du contenu est opérable par une interface clavier, sans exiger de synchronisation particulière des frappes",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde R10 (cible réelle) et R22"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+    "liens": [
+     {
+      "label": "WAI-ARIA Authoring Practices — Button Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+     },
+     {
+      "label": "APG — Read Me First",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+     }
+    ],
+    "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Card statique avec hover de carte cliquable",
+     "famille": "Incohérence à détecter"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R11",
+   "couche": "ux",
+   "solution": "l'ombre indique une relation spatiale ou un changement d'état ; elle ne décore pas. La",
+   "enonce": "L'ombre indique une relation spatiale ou un changement d'état et ne décore jamais ; les niveaux d'élévation et leurs usages restent la propriété de la fondation elevation.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Ombre",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R12",
+   "couche": "ux",
+   "solution": "action, navigation, erreur, sélection et focus restent compréhensibles sans perception de la",
+   "enonce": "L'action, la navigation, l'erreur, la sélection et le focus restent compréhensibles sans perception de la couleur : le mot, la forme, la bordure, l'icône ou la position fournissent au moins un second canal.",
+   "mesure": "en niveaux de gris, chaque rôle et chaque état reste identifiable par au moins un canal non chromatique",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "La couleur ne doit pas être le seul moyen de transmettre une information",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "La couleur ne doit pas être le seul moyen de transmettre une information",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Deux composants identiques produisant action et navigation",
+     "famille": "Incohérence à détecter"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R13",
+   "couche": "ux",
+   "solution": "repos, hover, focus, active, loading et disabled sont distincts quand ils existent. Le",
+   "enonce": "Les états de repos, de survol, de focus, d'activation, de chargement et d'indisponibilité sont distincts lorsqu'ils existent ; le changement d'état confirme ce qui arrive et ne révèle jamais tardivement qu'un élément était interactif.",
+   "mesure": "aucune cible interactive n'est identifiable ou révélée par le seul survol",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Le mécanisme d'entrée principal peut être incapable de survoler, auquel cas les effets de survol ne sont qu'une amélioration progressive ; tout contenu additionnel déclenché au survol ou au focus doit être révocable, survolable et persistant",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi — comportement plateforme documenté par MDN, complété par un critère WCAG (AA) ; fonde R13, R22 et U07"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Hover",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R14",
+   "couche": "ux",
+   "solution": "le focus clavier est un état à part entière, jamais une imitation du hover. L'active peut",
+   "enonce": "Le focus clavier est un état à part entière et jamais une imitation du survol ; l'état d'activation peut donner une sensation de pression, mais celle-ci reste subordonnée à la visibilité du focus, au contraste et à la préférence de mouvement réduit.",
+   "mesure": "un style de focus distinct du style de survol est défini pour chaque composant interactif, et aucun composant ne supprime l'indicateur de focus sans le remplacer",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible ; le focus est un état propre, distinct du survol, de la sélection et de la coche, et l'indicateur ne se supprime pas sans remplacement",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+      },
+      {
+       "label": "MDN — :focus-visible",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible"
+      }
+     ],
+     "confiance": "Établi — critère de niveau AA complété par la spécification CSS documentée par MDN ; fonde R14 et U04"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "La préférence de mouvement réduit exprime la demande d'une interface dont les animations sont supprimées, réduites ou remplacées, notamment pour les personnes souffrant de troubles vestibulaires",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, préférence utilisateur normalisée — fonde la subordination de la sensation de pression dans R14 et le comportement de U02"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible ; le focus est un état propre, distinct du survol, de la sélection et de la coche, et l'indicateur ne se supprime pas sans remplacement",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+     },
+     {
+      "label": "MDN — :focus-visible",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible"
+     }
+    ],
+    "confiance": "Établi — critère de niveau AA complété par la spécification CSS documentée par MDN ; fonde R14 et U04"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Hover",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R15",
+   "couche": "ux",
+   "solution": "la matérialité est **proportionnelle au besoin de compréhension**, pas à l'importance",
+   "enonce": "La matérialité d'un élément est proportionnelle au besoin de compréhension et jamais à son importance commerciale : elle sert d'abord à distinguer un contrôle, un réceptacle, une surface et une superposition.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R16",
+   "couche": "ux",
+   "solution": "un effet visuel est conservé seulement s'il répond à une question vérifiable :",
+   "enonce": "Un effet visuel n'est conservé que s'il répond à une question vérifiable sur l'élément : est-il manipulable, reçoit-il une information, organise-t-il du contenu, appartient-il à une couche temporaire, son état vient-il de changer.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R17",
+   "couche": "ux",
+   "solution": "si l'effet ne répond à aucune de ces questions, il est décoratif et ne fait pas partie du",
+   "enonce": "Un effet qui ne répond à aucune de ces questions est décoratif et ne fait pas partie du langage d'interaction.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-5",
+     "titre": "Effet décoratif sans rôle fonctionnel",
+     "famille": "Incohérence à détecter"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R18",
+   "couche": "ux",
+   "solution": "le système évite le neumorphisme et le glassmorphism comme langage par défaut : ils rendent la",
+   "enonce": "Le neumorphisme et le glassmorphism ne sont pas des langages par défaut du système, parce qu'ils font dépendre la compréhension d'effets fragiles, coûteux et insuffisamment contrastés ; un usage ponctuel hors composant reste possible si l'accessibilité et la performance sont démontrées.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états doit atteindre un contraste de 3:1 avec les couleurs adjacentes ; lorsqu'aucun autre moyen visuel n'identifie la présence du contrôle, sa limite doit elle-même satisfaire ce seuil",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — **fonde R06, R08, R13 et U05, qui n'énonçaient « présence perceptible » sans aucun seuil**"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R26",
+   "couche": "ux",
+   "solution": "le mode d'interaction est un axe transversal des surfaces-conteneurs.",
+   "enonce": "Le mode d'interaction — static, clickable, selectable, expandable — est un axe transversal du langage : toute surface qui organise du contenu déclare ce qu'elle promet à travers ce mode, et le mode décrit un comportement, jamais un style.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+    "liens": [
+     {
+      "label": "WAI-ARIA Authoring Practices — Button Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+     },
+     {
+      "label": "APG — Read Me First",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+     }
+    ],
+    "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R27",
+   "couche": "ux",
+   "solution": "le mode appartient aux surfaces-conteneurs, jamais aux contrôles.",
+   "enonce": "Le mode d'interaction s'applique aux surfaces qui organisent du contenu et jamais aux contrôles, dont l'intention est intrinsèque ; généraliser le mode cliquable diluerait le signal du relief, qui ne reste lisible que parce qu'il est rare.",
+   "mesure": "aucun contrôle (bouton, lien, champ, sélecteur) ne porte l'axe mode ; le relief de survol n'existe que sur une surface déclarée clickable",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Matérialité fonctionnelle sobre et tactile",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-20",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver par tests utilisateurs"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Matérialité fonctionnelle sobre et tactile",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-20",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R28",
+   "couche": "ux",
+   "solution": "un même mode porte les mêmes signaux sur toutes les surfaces.",
+   "enonce": "Deux surfaces de même mode se reconnaissent aux mêmes signaux dans tout le produit : clickable expose une cible réelle atteignable au clavier et ne gagne son relief qu'au survol ou au focus, selectable expose son état de sélection par un canal non chromatique en plus de la couleur, expandable porte son état d'ouverture par l'orientation d'un indicateur, et static ne réagit pas.",
+   "mesure": "toute surface clickable expose un élément interactif natif ; toute surface selectable expose son état programmatiquement et par un signal non chromatique",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les actions d'un bouton sont distinctes de la fonction d'un lien ; quand un élément ressemble à un lien mais agit comme un bouton, la bonne réponse est d'ajuster le dessin pour qu'il corresponde à la fonction et au rôle, et un rôle déclaré est une promesse d'implémenter les interactions clavier attendues (Entrée et Espace activent le bouton)",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — Button Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+      },
+      {
+       "label": "APG — Read Me First",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi, pratique de référence du W3C — **source normative directe de R04, R05, R07 et R10, jusqu'ici données comme des convictions internes**"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Toute fonctionnalité du contenu est opérable par une interface clavier, sans exiger de synchronisation particulière des frappes",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde R10 (cible réelle) et R22"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R19",
+   "couche": "ux",
+   "solution": "un même rôle conserve ses signaux essentiels dans tous les contextes. Une action principale",
+   "enonce": "Un même rôle conserve ses signaux essentiels dans tous les contextes : une action principale peut changer de taille ou de disposition, elle reste identifiable comme action.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-5",
+     "titre": "Texte",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R20",
+   "couche": "ux",
+   "solution": "l'adaptation à l'espace ne change jamais la nature du résultat. `ADAPTIVE-UX.md` peut",
+   "enonce": "L'adaptation à l'espace disponible ne change jamais la nature du résultat : elle peut réorganiser, condenser ou révéler progressivement, mais elle ne transforme pas une navigation en action.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R21",
+   "couche": "ux",
+   "solution": "la cohérence ne signifie pas uniformité. Button, Link, Input et Card ont justement des",
+   "enonce": "La cohérence n'est pas l'uniformité : les rôles qui font des promesses différentes reçoivent des expressions différentes.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R22",
+   "couche": "ux",
+   "solution": "le langage reste opérant au clavier, au toucher, au zoom, en contraste forcé, sans hover et",
+   "enonce": "Le langage d'interaction reste opérant au clavier, au toucher, au zoom, en couleurs forcées, sans survol et en mouvement réduit : aucun canal fragile — ombre, vibration, couleur, animation — n'est indispensable à la compréhension ou à l'usage.",
+   "mesure": "toute fonction reste disponible et identifiable au clavier, à 400 % de zoom, sous forced-colors: active, sous (hover: none) et sous prefers-reduced-motion: reduce",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Toute fonctionnalité du contenu est opérable par une interface clavier, sans exiger de synchronisation particulière des frappes",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde R10 (cible réelle) et R22"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Le contenu doit être présentable sans perte d'information ni de fonctionnalité et sans défilement bidimensionnel jusqu'à une largeur équivalente à 320 px CSS, ce qui correspond à un agrandissement de 400 %",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — donne au « au zoom » de R22 un seuil vérifiable"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "En mode de couleurs forcées, le navigateur impose ses propres valeurs aux couleurs de texte, de fond, de bordure et d'outline, et force les ombres portées, les ombres de texte et les images de fond non-url à néant : la bordure et l'anneau de focus survivent, l'ombre et le dégradé disparaissent",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme normalisé — **fonde U06 et l'interdiction de faire porter l'identification par une ombre (R06, R11, R18)**"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Le mécanisme d'entrée principal peut être incapable de survoler, auquel cas les effets de survol ne sont qu'une amélioration progressive ; tout contenu additionnel déclenché au survol ou au focus doit être révocable, survolable et persistant",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi — comportement plateforme documenté par MDN, complété par un critère WCAG (AA) ; fonde R13, R22 et U07"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "La préférence de mouvement réduit exprime la demande d'une interface dont les animations sont supprimées, réduites ou remplacées, notamment pour les personnes souffrant de troubles vestibulaires",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, préférence utilisateur normalisée — fonde la subordination de la sensation de pression dans R14 et le comportement de U02"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Toute fonctionnalité du contenu est opérable par une interface clavier, sans exiger de synchronisation particulière des frappes",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.1.1 Keyboard",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A) — fonde R10 (cible réelle) et R22"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Hover",
+     "famille": "Canal"
+    }
+   ]
+  },
+  {
+   "id": "INTERACTION-R23",
+   "couche": "ux",
+   "solution": "une icône seule conserve un nom accessible ; un changement d'état conserve un libellé ou un",
+   "enonce": "Une icône seule conserve un nom accessible, un changement d'état conserve un libellé ou un état exposé programmatiquement, et une cible conserve la sémantique native attendue de son rôle.",
+   "mesure": "tout contrôle sans texte visible porte un nom accessible et tout état est exposé programmatiquement",
+   "critere": "chaque(\"button,a[href],[role=button],input[type=button],input[type=submit]\") nomme()",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Les contrôles ont un nom, un rôle et une valeur déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Tout contenu non textuel qui est un contrôle ou accepte une saisie porte un nom décrivant sa fonction, et tout contenu non textuel dispose d'une alternative textuelle de valeur équivalente",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — fonde l'interdiction du pictogramme sans nom (R02, R23)"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Les contrôles ont un nom, un rôle et une valeur déterminables",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/TR/WCAG22/#name-role-value"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R24",
+   "couche": "ux",
+   "solution": "l'apparence cohérente accompagne une identification cohérente : un composant ayant la même",
+   "enonce": "Un composant qui remplit la même fonction est nommé et représenté de façon constante dans tout le produit : l'apparence cohérente accompagne une identification cohérente.",
+   "mesure": "un composant de même fonction porte le même nom accessible et la même représentation dans tout le produit",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le rôle et les résultats attendus doivent être cohérents pour des composants identifiés de la même manière",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-R25",
+   "couche": "ux",
+   "solution": "toute nouvelle famille de composants passe ces quatre questions :",
+   "enonce": "Toute nouvelle famille de composants est soumise aux quatre questions du test de reconnaissance — distinction des rôles en niveaux de gris, reconnaissance sans survol, visibilité du focus et de l'état au clavier, équivalence de résultat entre éléments visuellement équivalents — et un « non » appelle d'abord un meilleur composant, une meilleure sémantique ou une meilleure structure, jamais plus d'effets.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U01",
+   "couche": "ui",
+   "solution": "la présence au repos précède le feedback. Un hover ne sert pas à révéler une cible qui semblait",
+   "enonce": "La présence au repos précède le retour visuel : le survol confirme une cible déjà reconnaissable et ne sert jamais à révéler une cible qui paraissait statique.",
+   "mesure": "sous (hover: none), toute cible reste reconnaissable ; aucun style de survol n'est le seul signal d'existence d'une cible",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "La caractéristique de média hover distingue un pointeur principal capable de survoler d'un pointeur qui en est incapable, ou pour lequel le survol est malcommode ; les styles de survol ne s'appliquent conditionnellement que dans le premier cas",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme documenté — fonde U01 et U07"
+    },
+    {
+     "ref": "T9",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états atteint 3:1 avec les couleurs adjacentes ; les composants inactifs sont explicitement exemptés de cette exigence",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde U01 ; **l'exemption des composants inactifs montre que U05 est plus exigeant que la norme, donc un parti pris et non une obligation**"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "La caractéristique de média hover distingue un pointeur principal capable de survoler d'un pointeur qui en est incapable, ou pour lequel le survol est malcommode ; les styles de survol ne s'appliquent conditionnellement que dans le premier cas",
+    "liens": [
+     {
+      "label": "MDN — @media/hover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme documenté — fonde U01 et U07"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U02",
+   "couche": "ui",
+   "solution": "les transitions d'état utilisent `motion.fast` et `motion.ease-out`. Elles portent sur des",
+   "enonce": "Les transitions d'état utilisent la durée rapide et la courbe de sortie du système, portent sur des propriétés sobres, et deviennent instantanées sous préférence de mouvement réduit sans que le changement cesse d'être visible.",
+   "mesure": "les transitions d'état n'emploient que motion.fast et motion.ease-out ; sous prefers-reduced-motion: reduce, la durée est nulle et le changement d'état reste visible",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Matrice visuelle action/réceptacle/surface",
+     "liens": [
+      {
+       "label": "Décision interne issue d'INTERACTION-UX.md",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver"
+    },
+    {
+     "ref": "T6",
+     "affirmation": "La préférence de mouvement réduit demande la suppression, la réduction ou le remplacement des animations non essentielles, sans supprimer le changement d'état lui-même",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, préférence utilisateur normalisée — fonde le second volet de U02"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Matrice visuelle action/réceptacle/surface",
+    "liens": [
+     {
+      "label": "Décision interne issue d'INTERACTION-UX.md",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U03",
+   "couche": "ui",
+   "solution": "l'état `active` peut réduire un décalage ou une ombre **déjà justifiée** pour donner une",
+   "enonce": "L'état d'activation peut réduire un décalage ou une ombre déjà justifiée pour donner une sensation de pression ; il ne crée pas d'ombre de repos nouvelle et ne déplace jamais la mise en page.",
+   "mesure": "l'état active ne déclare aucune propriété déclenchant un recalcul de layout et n'introduit aucune ombre absente à l'état de repos",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Matrice visuelle action/réceptacle/surface",
+     "liens": [
+      {
+       "label": "Décision interne issue d'INTERACTION-UX.md",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Matrice visuelle action/réceptacle/surface",
+    "liens": [
+     {
+      "label": "Décision interne issue d'INTERACTION-UX.md",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U04",
+   "couche": "ui",
+   "solution": "le focus utilise la géométrie `border.focus-width` + `border.focus-offset`. Sa couleur est",
+   "enonce": "L'indicateur de focus est construit sur la géométrie de largeur et de décalage définie par la fondation de bordure, sa couleur appartient au composant propriétaire, et aucun effet tactile ne le remplace.",
+   "mesure": "l'indicateur de focus est un outline dérivé de border.focus-width et border.focus-offset ; aucun composant ne supprime l'indicateur sans le remplacer",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Focus visible et non masqué",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/TR/WCAG22/#focus-visible"
+      },
+      {
+       "label": "2.4.11 Focus Not Obscured",
+       "url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T7",
+     "affirmation": "La pseudo-classe :focus-visible ne s'applique que lorsque l'agent utilisateur juge l'indicateur de focus nécessaire, ce qui la sépare de :focus et de :hover ; supprimer l'indicateur rend la navigation clavier inaccessible aux personnes voyantes, et l'indicateur doit atteindre 3:1 avec les couleurs voisines",
+     "liens": [
+      {
+       "label": "MDN — :focus-visible",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible"
+      }
+     ],
+     "confiance": "Établi, spécification CSS documentée par MDN — fonde la géométrie et l'indépendance du focus dans U04"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Focus visible et non masqué",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-visible"
+     },
+     {
+      "label": "2.4.11 Focus Not Obscured",
+      "url": "https://www.w3.org/TR/WCAG22/#focus-not-obscured-minimum"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U05",
+   "couche": "ui",
+   "solution": "`disabled` conserve la forme et le rôle perceptibles. La baisse de contraste ne doit pas",
+   "enonce": "Un contrôle indisponible conserve une forme et un rôle perceptibles : la baisse de contraste ne va jamais jusqu'à faire disparaître la limite qui le distingue du contenu.",
+   "mesure": "aucun état disabled ne supprime la bordure ou le fond qui délimite le contrôle",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T9",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états atteint 3:1 avec les couleurs adjacentes ; les composants inactifs sont explicitement exemptés de cette exigence",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde U01 ; **l'exemption des composants inactifs montre que U05 est plus exigeant que la norme, donc un parti pris et non une obligation**"
+    },
+    {
+     "ref": "T4",
+     "affirmation": "Matrice visuelle action/réceptacle/surface",
+     "liens": [
+      {
+       "label": "Décision interne issue d'INTERACTION-UX.md",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver"
+    }
+   ],
+   "principale": {
+    "ref": "T9",
+    "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états atteint 3:1 avec les couleurs adjacentes ; les composants inactifs sont explicitement exemptés de cette exigence",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — fonde U01 ; **l'exemption des composants inactifs montre que U05 est plus exigeant que la norme, donc un parti pris et non une obligation**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U09",
+   "couche": "ui",
+   "solution": "une couche partagée unique implémente le mode, quel que soit le composant hôte.",
+   "enonce": "Le mode d'interaction est rendu par une couche partagée unique — attribut de mode sur la racine, curseur, relief et cible étendue communs — que chaque surface-conteneur consomme au lieu de réimplémenter les signaux localement.",
+   "mesure": "les signaux du mode (curseur, relief de survol, cible étendue) proviennent de la couche partagée et ne sont pas redéfinis par le composant hôte",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Matrice visuelle action/réceptacle/surface",
+     "liens": [
+      {
+       "label": "Décision interne issue d'INTERACTION-UX.md",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Matrice visuelle action/réceptacle/surface",
+    "liens": [
+     {
+      "label": "Décision interne issue d'INTERACTION-UX.md",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U10",
+   "couche": "ui",
+   "solution": "le relief du mode clickable est pré-rendu et animé en opacité, au survol et au focus seulement.",
+   "enonce": "Le relief d'une surface clickable est une ombre pré-rendue sur un pseudo-élément et animée en opacité, visible uniquement au survol et au focus interne ; aucune surface ne porte d'ombre de repos et aucun box-shadow n'est interpolé.",
+   "mesure": "au repos, l'ombre de la surface est d'opacité nulle ; la transition d'apparition porte sur opacity, jamais sur box-shadow",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Matrice visuelle action/réceptacle/surface",
+     "liens": [
+      {
+       "label": "Décision interne issue d'INTERACTION-UX.md",
+       "url": null
+      }
+     ],
+     "confiance": "À éprouver"
+    },
+    {
+     "ref": "T9",
+     "affirmation": "L'information visuelle nécessaire pour identifier un composant d'interface et ses états atteint 3:1 avec les couleurs adjacentes ; les composants inactifs sont explicitement exemptés de cette exigence",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde U01 ; **l'exemption des composants inactifs montre que U05 est plus exigeant que la norme, donc un parti pris et non une obligation**"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Matrice visuelle action/réceptacle/surface",
+    "liens": [
+     {
+      "label": "Décision interne issue d'INTERACTION-UX.md",
+      "url": null
+     }
+    ],
+    "confiance": "À éprouver"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U11",
+   "couche": "ui",
+   "solution": "la cible réelle d'une surface clickable est un lien étendu ; les actions internes restent des voisins.",
+   "enonce": "La cible réelle d'une surface clickable est un vrai lien dont un pseudo-élément étend la zone d'activation à toute la surface ; les actions internes sont des voisins positionnés au-dessus, jamais des descendants du lien.",
+   "mesure": "le lien étendu est l'élément annoncé par les technologies d'assistance ; aucune action interne n'est descendante du lien",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Utiliser les éléments natifs pour leur rôle",
+     "liens": [
+      {
+       "label": "WAI-ARIA Authoring Practices — No ARIA is better than bad ARIA",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Utiliser les éléments natifs pour leur rôle",
+    "liens": [
+     {
+      "label": "WAI-ARIA Authoring Practices — No ARIA is better than bad ARIA",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U06",
+   "couche": "ui",
+   "solution": "sous `forced-colors`, les bordures, le focus et la sémantique native survivent même si les",
+   "enonce": "En mode de couleurs forcées, les bordures, l'indicateur de focus et la sémantique native survivent même lorsque les fonds, les ombres et les reflets sont neutralisés par le système.",
+   "mesure": "sous forced-colors: active, chaque contrôle reste délimité par une bordure ou un outline recoloré par le système ; aucune identification ne repose sur box-shadow ni sur background-image",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T8",
+     "affirmation": "En mode de couleurs forcées, box-shadow et text-shadow sont forcés à néant et background-image non-url également, tandis que border-color et outline-color sont recolorés par le système : la bordure et l'anneau de focus survivent, l'ombre non",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme normalisé — **source décisive de U06, qui l'affirmait sans la citer**"
+    }
+   ],
+   "principale": {
+    "ref": "T8",
+    "affirmation": "En mode de couleurs forcées, box-shadow et text-shadow sont forcés à néant et background-image non-url également, tandis que border-color et outline-color sont recolorés par le système : la bordure et l'anneau de focus survivent, l'ombre non",
+    "liens": [
+     {
+      "label": "MDN — @media (forced-colors)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme normalisé — **source décisive de U06, qui l'affirmait sans la citer**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U07",
+   "couche": "ui",
+   "solution": "sous `(hover: none)`, aucune information ni action n'est masquée. Le style `:hover` est un",
+   "enonce": "Sous un pointeur incapable de survoler, aucune information ni aucune action n'est masquée : le style de survol n'est qu'un renforcement facultatif.",
+   "mesure": "sous (hover: none), aucune information ni action n'est inaccessible ; aucun contenu n'est déclenché uniquement par :hover",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "La caractéristique de média hover distingue un pointeur principal capable de survoler d'un pointeur qui en est incapable, ou pour lequel le survol est malcommode ; les styles de survol ne s'appliquent conditionnellement que dans le premier cas",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme documenté — fonde U01 et U07"
+    },
+    {
+     "ref": "T10",
+     "affirmation": "Tout contenu additionnel déclenché au survol ou au focus doit pouvoir être écarté sans déplacer le pointeur ni le focus, rester survolable et persister jusqu'à ce que le déclencheur disparaisse ou que l'utilisateur l'écarte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA) — complète U07"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "La caractéristique de média hover distingue un pointeur principal capable de survoler d'un pointeur qui en est incapable, ou pour lequel le survol est malcommode ; les styles de survol ne s'appliquent conditionnellement que dans le premier cas",
+    "liens": [
+     {
+      "label": "MDN — @media/hover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme documenté — fonde U01 et U07"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INTERACTION-U08",
+   "couche": "ui",
+   "solution": "une implémentation tactile n'intercepte pas les événements natifs du contrôle et respecte",
+   "enonce": "Une implémentation tactile n'intercepte pas les événements natifs du contrôle et respecte l'annulation du pointeur : l'action se déclenche au relâchement sur la cible, et sortir de la cible avant de relâcher l'annule.",
+   "mesure": "aucun gestionnaire d'action sur pointerdown, mousedown ou touchstart ; l'action se déclenche au relâchement sur la cible",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T11",
+     "affirmation": "Pour toute fonctionnalité opérable par un pointeur unique, l'événement d'appui ne doit exécuter aucune partie de la fonction, ou bien l'exécution se fait au relâchement avec un moyen d'annuler avant achèvement ou d'annuler après, sauf lorsque l'exécution à l'appui est essentielle",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A) — **U08 déléguait cette obligation à BUTTON-UX ; c'est un critère normatif, pas une convention de composant**"
+    }
+   ],
+   "principale": {
+    "ref": "T11",
+    "affirmation": "Pour toute fonctionnalité opérable par un pointeur unique, l'événement d'appui ne doit exécuter aucune partie de la fonction, ou bien l'exécution se fait au relâchement avec un moyen d'annuler avant achèvement ou d'annuler après, sauf lorsque l'exécution à l'appui est essentielle",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A) — **U08 déléguait cette obligation à BUTTON-UX ; c'est un critère normatif, pas une convention de composant**"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

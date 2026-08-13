@@ -1,0 +1,289 @@
+[
+ {
+  "id": "TOAST-R01",
+  "statut": "methode",
+  "source": "S1, interne",
+  "enonce": "Le toast n'expose qu'un seul axe, le tone : ni persistance (le caractère temporaire est constitutif du composant), ni style (le contraste suit la gravité), ni size (la largeur est dictée par le contenu et par le conteneur hôte).",
+  "mesure": "le composant expose exactement un axe nommé tone"
+ },
+ {
+  "id": "TOAST-R02",
+  "statut": "methode",
+  "source": "S1",
+  "enonce": "La frontière entre alert et toast est celle déjà posée par ALERT-UX : l'alert vit dans le flux de la page, le toast est injecté par le système au-dessus du flux et toujours de façon réactive ; ce fichier hérite cette frontière sans la redéfinir.",
+  "mesure": "aucun toast n'est présent dans le DOM au chargement initial de la page"
+ },
+ {
+  "id": "TOAST-R03",
+  "statut": "methode",
+  "source": "S2",
+  "enonce": "Le feedback immédiat d'une action qui vient de réussir relève du toast : ALERT-UX exclut explicitement ce registre de l'alert.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R04",
+  "statut": "methode",
+  "source": "S1",
+  "enonce": "L'échelle d'interruption alert < toast < modale est celle d'ALERT-UX : le toast interrompt l'attention quelques secondes et n'interrompt jamais le geste en cours.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R05",
+  "statut": "universelle",
+  "source": "S14, S15, S16",
+  "enonce": "Le toast confirme l'issue immédiate d'une action déclenchée par l'utilisateur lorsque cette confirmation n'a pas besoin de rester consultable.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R06",
+  "statut": "universelle",
+  "source": "S14, S15, S16",
+  "enonce": "Le toast n'est employé ni pour une condition qui dure, ni pour une décision qui doit bloquer l'utilisateur, ni pour du contenu promotionnel.",
+  "mesure": "aucun toast n'est émis sans être la conséquence directe d'une action de l'utilisateur"
+ },
+ {
+  "id": "TOAST-R07",
+  "statut": "methode",
+  "source": "S1, S15",
+  "enonce": "Une confirmation qui doit rester consultable après que l'utilisateur a quitté l'écran des yeux relève de l'alert success dismissible et non du toast, qui ne conserve aucune trace après sa disparition.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R08",
+  "statut": "identite",
+  "source": "S6, T1",
+  "enonce": "Le toast porte l'un des quatre tones info, success, warning ou danger, identiques à ceux de l'alert ; il n'existe pas de tone neutre.",
+  "mesure": "l'énumération des tones vaut exactement info, success, warning, danger"
+ },
+ {
+  "id": "TOAST-R09",
+  "statut": "identite",
+  "source": "S6, S14, S15, S18",
+  "enonce": "Les tones warning et danger sont autorisés sur un toast à la seule condition que la condition grave dispose d'un répondant durable ailleurs dans l'interface ; un toast n'est jamais l'unique porteur d'un état qui persiste.",
+  "mesure": "tout toast de tone danger ou warning s'accompagne d'un changement d'état visible ou d'un alert de relais"
+ },
+ {
+  "id": "TOAST-R10",
+  "statut": "universelle",
+  "source": "S14, S18, S19, S25",
+  "enonce": "Le minuteur d'un toast se suspend intégralement au survol du pointeur et au focus clavier, et ne reprend son décompte qu'à leur sortie.",
+  "mesure": "le temps restant est identique avant et après une période de survol ou de focus"
+ },
+ {
+  "id": "TOAST-R11",
+  "statut": "universelle",
+  "source": "S9, S14, S15, S18",
+  "enonce": "Un toast n'est jamais le seul porteur d'une information : l'état qu'il confirme reste lisible dans l'écran sous-jacent après sa disparition.",
+  "mesure": "l'information portée par le toast reste atteignable dans l'interface après son expiration"
+ },
+ {
+  "id": "TOAST-R12",
+  "statut": "identite",
+  "source": "S3, S16, S17, S18",
+  "enonce": "La durée d'affichage d'un toast ne descend jamais sous cinq secondes, qu'il porte une action ou non.",
+  "mesure": "durée d'affichage >= 5000 ms"
+ },
+ {
+  "id": "TOAST-R13",
+  "statut": "identite",
+  "source": "S6, S15",
+  "enonce": "Un toast porte au plus une action ; il n'expose jamais une seconde sortie ni un second lien.",
+  "mesure": "nombre d'éléments interactifs d'action par toast <= 1"
+ },
+ {
+  "id": "TOAST-R14",
+  "statut": "identite",
+  "source": "S6, S25",
+  "enonce": "L'action d'un toast est soumise à la même suspension de minuteur que son texte, afin que la fenêtre de décision annoncée reste effective au survol comme au focus clavier.",
+  "mesure": "le focus sur l'action suspend le minuteur du toast qui la porte"
+ },
+ {
+  "id": "TOAST-R15",
+  "statut": "methode",
+  "source": "S2",
+  "enonce": "Le libellé de l'action d'un toast décrit l'effet de l'action et non la gravité du message, conformément à la règle de wording déjà posée par ALERT-UX.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R16",
+  "statut": "identite",
+  "source": "S6, S14",
+  "enonce": "Au plus trois toasts sont affichés simultanément.",
+  "mesure": "nombre de toasts simultanément visibles <= 3"
+ },
+ {
+  "id": "TOAST-R17",
+  "statut": "identite",
+  "source": "S7, S16",
+  "enonce": "Une pile de toasts s'ordonne par ordre chronologique d'arrivée et non par gravité décroissante, contrairement à une pile d'alerts qui empile des conditions simultanément vraies.",
+  "mesure": "l'ordre d'affichage reproduit l'ordre d'émission"
+ },
+ {
+  "id": "TOAST-R18",
+  "statut": "identite",
+  "source": "S7",
+  "enonce": "Lorsque le plafond d'empilement est atteint, le toast le plus ancien sort ; les toasts ne sont jamais agrégés en un message de synthèse.",
+  "mesure": "aucun toast ne résume plusieurs événements"
+ },
+ {
+  "id": "TOAST-R19",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "La position et la largeur d'un toast sont déterminées par l'espace du conteneur qui l'héberge et non par un ancrage fixe à un coin du viewport.",
+  "mesure": "aucune valeur de position exprimée en unités de viewport dans la région de toasts"
+ },
+ {
+  "id": "TOAST-R20",
+  "statut": "methode",
+  "source": "interne, S21",
+  "enonce": "Le toast est superposé au contenu et n'entre jamais dans le flux ; la détermination de l'ancrage précis relève de TOAST-UI et non de cette couche.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R21",
+  "statut": "identite",
+  "source": "S8",
+  "enonce": "Le moment E-motion « réussite d'un envoi ou d'une soumission » s'incarne dans le toast et non dans l'alert.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R22",
+  "statut": "identite",
+  "source": "S6, S8",
+  "enonce": "L'instrument illustration ne s'active que sur un toast seul à l'écran, jamais sur un toast qui rejoint une pile existante.",
+  "mesure": "aucune animation d'instrument déclenchée lorsque le nombre de toasts visibles est supérieur à un"
+ },
+ {
+  "id": "TOAST-R23",
+  "statut": "methode",
+  "source": "S8",
+  "enonce": "L'exception chaleureuse ne s'applique jamais à un toast danger ou warning, qui reste dans le registre productif ; le moment de récupération s'incarne dans le toast de confirmation qui suit, conformément à la règle « un événement, un porteur » d'ALERT-UX.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R24",
+  "statut": "methode",
+  "source": "S5, S11",
+  "enonce": "Le mapping des rôles live — role=\"alert\" pour danger et warning, role=\"status\" pour info et success — est celui d'ALERT-UX et s'applique au toast sans modification, le toast étant toujours réactif.",
+  "mesure": "tout toast porte role=alert ou role=status selon son tone"
+ },
+ {
+  "id": "TOAST-R25",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'animation d'entrée et de sortie du toast est régie par le contrat motion et E-motion déjà établi : pas de clignotement au-delà de trois par seconde, transform et opacity uniquement, dégradation vers une apparition instantanée sous prefers-reduced-motion sans perte d'information.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R26",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le conteneur du toast n'expose pas d'état hover ou focus propre, conformément à ALERT-UX ; seuls l'action et la fermeture explicite en exposent.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-R27",
+  "statut": "universelle",
+  "source": "S9, S14, S18",
+  "enonce": "Un toast confirme un événement passé et ne peut jamais être le seul endroit où vit une information qui compte encore.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-U01",
+  "statut": "identite",
+  "source": "T2",
+  "enonce": "Le toast porte elevation.overlay, seul écart de relief avec l'alert qui n'en porte aucune : le relief signale la superposition, il n'est pas un décor.",
+  "mesure": "elevation du toast == elevation.overlay"
+ },
+ {
+  "id": "TOAST-U02",
+  "statut": "identite",
+  "source": "T10",
+  "enonce": "Le toast n'expose pas de bouton de fermeture par défaut, la suspension du minuteur au survol et au focus étant tenue pour couvrir le besoin de temps de lecture supplémentaire.",
+  "mesure": "aucun contrôle de fermeture rendu par défaut"
+ },
+ {
+  "id": "TOAST-U03",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "La durée d'affichage d'un toast vaut la durée de base, augmentée d'une extension par mot au-delà de huit mots et d'un bonus si une action est présente, bornée par une valeur de plafond.",
+  "mesure": "durée = base_ms + extension_par_mot_ms x max(0, mots - 8) + bonus_action_ms si action, borné à plafond_ms"
+ },
+ {
+  "id": "TOAST-U04",
+  "statut": "universelle",
+  "source": "T13, T14",
+  "enonce": "Le minuteur se suspend au survol du toast et à tout focus contenu dans le toast, action comprise, et reprend son décompte à leur sortie sans jamais repartir de zéro.",
+  "mesure": "le temps restant après une période de survol ou de focus est égal au temps restant avant celle-ci"
+ },
+ {
+  "id": "TOAST-U05",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "Le minuteur est implémenté par un unique délai programmé par toast, annulé et relancé aux entrées et sorties de survol ou de focus, jamais par une boucle d'intervalle recalculée en continu.",
+  "mesure": "aucun intervalle périodique dans la gestion du cycle de vie d'un toast"
+ },
+ {
+  "id": "TOAST-U06",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La file de toasts est en premier entré premier sorti avec un plafond de trois ; l'arrivée d'un quatrième toast fait sortir le plus ancien selon la chorégraphie de disparition normale et non par coupure brutale.",
+  "mesure": "empilement.max == 3 et ordre == fifo"
+ },
+ {
+  "id": "TOAST-U07",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "Chaque toast d'une pile possède son propre minuteur indépendant ; l'arrivée d'un nouveau toast ne réinitialise pas le temps déjà écoulé des précédents.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-U08",
+  "statut": "implementation",
+  "source": "T5",
+  "enonce": "La région qui héberge la pile de toasts est déclarée conteneur de requête sur l'axe inline, et non ancrée en dur au viewport.",
+  "mesure": "la région porte container-type: inline-size"
+ },
+ {
+  "id": "TOAST-U09",
+  "statut": "implementation",
+  "source": "T9, T11",
+  "enonce": "Un élément déclaré conteneur de requête et sorti du flux normal reçoit obligatoirement une largeur explicite : la containment de taille l'empêche de tirer sa largeur de son contenu, et un plafond de largeur seul ne détermine aucune largeur de départ.",
+  "mesure": "tout élément portant container-type et positionné hors flux déclare aussi une propriété de largeur"
+ },
+ {
+  "id": "TOAST-U10",
+  "statut": "identite",
+  "source": "T8",
+  "enonce": "En état compact la région de toasts occupe la pleine largeur utile et empile du bas vers le haut ; en états regular et expanded elle est ancrée en bas au centre, à la largeur maximale de structure.",
+  "mesure": ""
+ },
+ {
+  "id": "TOAST-U11",
+  "statut": "implementation",
+  "source": "T4",
+  "enonce": "Quand l'instrument illustration s'active, le glyphe est dessiné par animation de son tracé, jamais rendu par une illustration statique importée.",
+  "mesure": "aucun asset d'illustration externe référencé par le composant toast"
+ },
+ {
+  "id": "TOAST-U12",
+  "statut": "implementation",
+  "source": "T4",
+  "enonce": "L'animation de l'instrument suit trois actes — anticipation, tracé du glyphe, résolution chromatique — dont la somme des durées ne dépasse pas la durée de célébration.",
+  "mesure": "somme des durées des trois actes <= motion.celebration"
+ },
+ {
+  "id": "TOAST-U13",
+  "statut": "universelle",
+  "source": "T12, T4",
+  "enonce": "Sous prefers-reduced-motion, les actes de mouvement de l'instrument sont supprimés et l'état final est atteint par bascule instantanée, sans perte de l'information portée.",
+  "mesure": "sous prefers-reduced-motion: reduce, aucune translation ni tracé animé, l'icône finale est rendue immédiatement"
+ },
+ {
+  "id": "TOAST-U14",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "La condition d'activation de l'instrument est évaluée à l'injection du toast et non en continu : un acte déjà commencé va à son terme, mais aucun nouveau moment illustré ne démarre tant que la pile compte plus d'un toast.",
+  "mesure": ""
+ }
+]

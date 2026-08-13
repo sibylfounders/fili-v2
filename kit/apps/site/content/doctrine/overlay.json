@@ -1,0 +1,1168 @@
+{
+ "slug": "overlay",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"7.5\" y=\"7\" width=\"13\" height=\"11.5\" rx=\"2\" fill=\"#bcb9f5\"/><rect x=\"9.5\" y=\"9.6\" width=\"9\" height=\"1.7\" rx=\"0.85\" fill=\"#4F46E5\"/><rect x=\"9.5\" y=\"12.6\" width=\"6\" height=\"1.5\" rx=\"0.75\" fill=\"#0891B2\"/></svg>",
+ "nom": "overlay",
+ "nature": "Fondation",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-24 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · overlay",
+  "question": "Comment un panneau qui recouvre l'écran garde-t-il l'utilisateur — et son clavier — sous contrôle ?",
+  "detail": "On y range tout ce qui passe AU-DESSUS du contenu — tiroir, modale, menu, infobulle — en une seule mécanique : qui pose un voile, qui piège le focus, qui verrouille le fond, comment on ferme. La ligne de partage est modal (bloquant) vs non-modal (ancré, léger).",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un superposé est soit modal soit non-modal — ancré, léger, fermé au moindre clic dehors ; jamais un mélange des deux"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Une modale rend le clavier"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "L'ordre des couches est nommé, jamais un nombre au hasard"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "16",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "8",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-overlay.md",
+   "source": "---\nsujet: overlay\ntype: fondation\nresume: \"La couche au-dessus du flux : distinction modal/non-modal, ordre d'empilement z-index (5 crans), scrim, piège de focus, scroll-lock, inertie du fond, patterns de fermeture ; l'ombre reste elevation.overlay\"\nrequires: []\nselon-contexte: [\"elevation (l'ombre d'un superposé = elevation.overlay ; overlay la consomme, ne la redéfinit pas)\", \"motion (durées/courbes d'entrée-sortie ; ombre animée en opacité)\", \"border (focus ring d'un contrôle dans le superposé)\"]\n---\n# RULES — Overlay (compilé, condensé)\n\n> Généré depuis `foundations/overlay/OVERLAY-UX.md` (v1.0.0) et `OVERLAY-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation **sans axes**. Elle porte la **couche au-dessus du flux** : ce qui recouvre le contenu au lieu de s'y insérer. Mécanique partagée par drawer, modale, popover, dropdown, tooltip (et le toast existant).\n- Elle **possède** : échelle `z-index`, token `overlay.scrim`, piège de focus en superposition, scroll-lock, inertie du fond, fermeture. Elle **délègue** : l'ombre à `elevation.overlay`, le focus ring à `border`, les durées à `motion`, le wording à `voice`, l'ordre de focus général à `accessibility`.\n\n## Modal vs non-modal (la distinction fondatrice)\n| | Modal (drawer, modale) | Non-modal (popover, dropdown, tooltip, toast) |\n|---|---|---|\n| Scrim | oui | non |\n| Focus | piégé, fond inerte | libre, fond actif |\n| Fermeture | Échap + bouton, retour au déclencheur | light-dismiss (Échap ou clic/focus dehors) |\n| Scroll de fond | verrouillé | libre |\n| Ancrage | centré / bord | ancré au déclencheur |\n\n## z-index — cinq crans (jamais un entier en dur)\n`z-index.sticky` (100) < `z-index.overlay` (1000, scrim + surface modale) < `z-index.popover` (1100, non-modal ancré) < `z-index.toast` (1200) < `z-index.tooltip` (1300).\n- popover > overlay : un menu ouvert depuis une modale passe au-dessus d'elle. tooltip au sommet : jamais masqué. Le scrim partage la couche `overlay` (derrière la surface par ordre DOM), pas un cran de plus.\n\n## Scrim\n- Un superposé **modal** pose `overlay.scrim` (plein, `position: fixed`, sous la surface) ; un **non-modal n'a jamais de scrim**. Clic sur le scrim = fermeture (sauf perte de saisie → confirmer).\n\n## Focus / clavier\n- **Modal** : focus entre à l'ouverture ; Tab/Maj+Tab bouclent (piège) ; fond **inerte** (`aria-modal`/`inert`) ; **Échap ferme** ; focus **revient au déclencheur**. WCAG 2.1.2 respecté car Échap est la sortie clavier.\n- **Non-modal** : pas de piège, fond actif ; light-dismiss ; ancré au déclencheur.\n\n## Scroll & mouvement\n- Modal : **scroll de fond verrouillé** + fond inerte tant que ouvert. Non-modal : rien de verrouillé.\n- Entrée/sortie en durée `motion` (grande surface → `motion.slow`), ombre `elevation.overlay` animée en opacité, `prefers-reduced-motion` respecté.\n\n## Frontières\n- L'**ombre** reste `elevation.overlay` (consommée, pas redéfinie) ; le **focus ring** reste `border` ; l'**ordre de focus général** reste `accessibility` (qui délègue le seul piège en superposition) ; le **toast** garde ses règles (n'emprunte que `z-index.toast`) ; le **wording** reste `voice`.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| z-index codé en dur | Guerre d'empilement, dérive | Élevée |\n| Modale sans piège de focus / sans retour au déclencheur | Utilisateur clavier perdu, WCAG 2.4.3 cassé | Élevée |\n| Modale sans fond inerte / sans scroll-lock | Le fond « fuit » sous le superposé | Moyenne-élevée |\n| Popover avec scrim, ou modale sans | Attente utilisateur trahie (modal/non-modal confondus) | Moyenne |\n| Ombre d'un superposé redéfinie hors elevation | Deux sources d'ombre divergentes | Moyenne |\n\nCONFIANCE : mécanique modale (piège, Échap, retour, inertie) = établie (ARIA APG *Dialog*, WCAG 2.1.2). Ordre z-index = établi par convergence (Bootstrap/Material/Microsoft). Nombre de crans (5), valeurs et opacité du scrim (50 %) = arbitrage interne daté 2026-07-24, réversible.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Famille de superposé",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Famille de superposé\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"34\" y=\"24\" width=\"200\" height=\"94\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"50\" y=\"40\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"50\" y=\"58\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"50\" y=\"74\" width=\"140\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"34\" y=\"24\" width=\"200\" height=\"94\" rx=\"10\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"92\" y=\"42\" width=\"150\" height=\"58\" rx=\"9\" fill=\"#FFFFFF\"/><rect x=\"108\" y=\"60\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"108\" y=\"78\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"34\" y=\"140\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">modal : drawer, modale</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Drawer / off-canvas",
+     "quand": "Panneau ancré à un bord (nav mobile, réglages) — modal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Drawer / off-canvas\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"70\" y=\"62\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"70\" y=\"86\" width=\"430\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"70\" y=\"106\" width=\"380\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"210\" y=\"66\" width=\"260\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"232\" y=\"92\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"232\" y=\"116\" width=\"216\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"132\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"150\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"256\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"161\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">modal : voile + surface, fond verrouillé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Panneau ancré à un bord (nav mobile, réglages) — modal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « drawer / off-canvas » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Modale / dialog",
+     "quand": "Boîte centrée bloquante (confirmation, formulaire court).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Modale / dialog\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"70\" y=\"62\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"70\" y=\"86\" width=\"430\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"70\" y=\"106\" width=\"380\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"210\" y=\"66\" width=\"260\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"232\" y=\"92\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"232\" y=\"116\" width=\"216\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"132\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"150\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"256\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"161\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">modal : voile + surface, fond verrouillé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Boîte centrée bloquante (confirmation, formulaire court).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « modale / dialog » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Popover",
+     "quand": "Contenu ancré non-modal (détail, aide).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Popover\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"54\" width=\"90\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"325\" y=\"65\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M345 82v10\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><rect x=\"250\" y=\"92\" width=\"190\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"114\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"268\" y=\"132\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"148\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">non-modal : ancré au déclencheur, sans voile, fond actif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contenu ancré non-modal (détail, aide).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « popover » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Dropdown / menu",
+     "quand": "Liste d'actions ou d'options ancrée — non-modal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dropdown / menu\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"54\" width=\"90\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"325\" y=\"65\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M345 82v10\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><rect x=\"250\" y=\"92\" width=\"190\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"114\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"268\" y=\"132\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"148\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">non-modal : ancré au déclencheur, sans voile, fond actif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Liste d'actions ou d'options ancrée — non-modal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « dropdown / menu » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Tooltip",
+     "quand": "Libellé au survol/focus, non interactif — non-modal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tooltip\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"54\" width=\"90\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"325\" y=\"65\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M345 82v10\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><rect x=\"250\" y=\"92\" width=\"190\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"114\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"268\" y=\"132\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"148\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">non-modal : ancré au déclencheur, sans voile, fond actif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Libellé au survol/focus, non interactif — non-modal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « tooltip » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Toast",
+     "quand": "Notification éphémère empilée — non-modal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Famille de superposé",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Toast\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"400\" y=\"58\" width=\"230\" height=\"38\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"104\" width=\"230\" height=\"38\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"150\" width=\"230\" height=\"38\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"420\" cy=\"77\" r=\"9\" fill=\"#15803D\"/><path d=\"M416 77l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"420\" cy=\"123\" r=\"9\" fill=\"#15803D\"/><path d=\"M416 123l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"420\" cy=\"169\" r=\"9\" fill=\"#15803D\"/><path d=\"M416 169l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"438\" y=\"72\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"438\" y=\"118\" width=\"130\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"438\" y=\"164\" width=\"140\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><text x=\"400\" y=\"214\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">notifications éphémères, empilées, non-modales</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Notification éphémère empilée — non-modal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « toast » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 7 cas",
+   "titre": "Mécanique partagée",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Mécanique partagée\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"30\" y=\"26\" width=\"200\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"42\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"46\" y=\"62\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"30\" y=\"26\" width=\"200\" height=\"92\" rx=\"10\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"92\" y=\"44\" width=\"150\" height=\"56\" rx=\"9\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"108\" y=\"64\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#FFFFFF\" opacity=\"0.9\"/><text x=\"30\" y=\"140\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">voile · focus piégé · scroll verrouillé</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Ordre d'empilement",
+     "quand": "Cinq crans z-index nommés (sticky→tooltip).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ordre d'empilement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"150\" width=\"200\" height=\"44\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><rect x=\"254\" y=\"126\" width=\"200\" height=\"44\" rx=\"9\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"278\" y=\"102\" width=\"200\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" stroke-width=\"1.4\"/><rect x=\"302\" y=\"78\" width=\"200\" height=\"44\" rx=\"9\" fill=\"#DBEAFE\" stroke=\"#1D4ED8\" stroke-width=\"1.4\"/><rect x=\"326\" y=\"54\" width=\"200\" height=\"44\" rx=\"9\" fill=\"#DCFCE7\" stroke=\"#15803D\" stroke-width=\"1.4\"/><text x=\"230\" y=\"216\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">cinq couches nommées : sticky · overlay · popover · toast · tooltip</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cinq crans z-index nommés (sticky→tooltip).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « ordre d'empilement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Voile (scrim)",
+     "quand": "Plan sombre sous un superposé modal, clic = fermer.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Voile (scrim)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"70\" y=\"62\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"70\" y=\"88\" width=\"440\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"70\" y=\"110\" width=\"380\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.5\"/><text x=\"250\" y=\"128\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#FFFFFF\">le voile assombrit le fond inerte</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plan sombre sous un superposé modal, clic = fermer.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « voile (scrim) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de OVERLAY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un superposé <strong>modal</strong> pose un <strong>voile</strong> <code>overlay.scrim</code> entre le fond et sa surface — il assombrit",
+       "id": "OVERLAY-R04"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Piège de focus",
+     "quand": "Focus qui boucle dans un modal, Échap en sort.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Piège de focus\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Focus qui boucle dans un modal, Échap en sort.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « piège de focus » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Retour du focus",
+     "quand": "Le focus revient au déclencheur à la fermeture.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Retour du focus\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le focus revient au déclencheur à la fermeture.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « retour du focus » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Verrouillage du défilement",
+     "quand": "Le fond ne défile pas sous un modal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Verrouillage du défilement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le fond ne défile pas sous un modal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « verrouillage du défilement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Inertie du fond",
+     "quand": "Fond non focalisable / invisible au lecteur d'écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Inertie du fond\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Fond non focalisable / invisible au lecteur d'écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « inertie du fond » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-6",
+     "titre": "Light-dismiss",
+     "quand": "Fermeture d'un non-modal (Échap ou clic dehors).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Mécanique partagée",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Light-dismiss\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"54\" width=\"90\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"325\" y=\"65\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M345 82v10\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><rect x=\"250\" y=\"92\" width=\"190\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"114\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"268\" y=\"132\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"148\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">non-modal : ancré au déclencheur, sans voile, fond actif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Fermeture d'un non-modal (Échap ou clic dehors).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « light-dismiss » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "Frontières",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Frontières\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"24\" y=\"38\" width=\"82\" height=\"28\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"38\" y=\"56\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">elevation</text><rect x=\"118\" y=\"38\" width=\"70\" height=\"28\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"134\" y=\"56\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">border</text><rect x=\"200\" y=\"38\" width=\"96\" height=\"28\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"212\" y=\"56\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">accessibility</text><path d=\"M65 68 V86 M153 68 V86 M248 68 V86\" stroke=\"#6B7280\" stroke-width=\"1.4\" stroke-dasharray=\"3 3\"/><rect x=\"100\" y=\"88\" width=\"120\" height=\"34\" rx=\"8\" fill=\"#E0E7FF\"/><text x=\"138\" y=\"110\" font-size=\"12\" font-weight=\"700\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">overlay</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Ombre d'un superposé",
+     "quand": "Relief de la surface flottante.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "03 · Frontières",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ombre d'un superposé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"70\" y=\"62\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"70\" y=\"86\" width=\"430\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"70\" y=\"106\" width=\"380\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"210\" y=\"66\" width=\"260\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"232\" y=\"92\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"232\" y=\"116\" width=\"216\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"132\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"150\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"256\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"161\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"204\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">modal : voile + surface, fond verrouillé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Relief de la surface flottante.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « ombre d'un superposé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de OVERLAY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'<strong>ombre</strong> d'un superposé est <code>elevation.overlay</code> — overlay la <strong>consomme</strong>, ne la redéfinit pas.",
+       "id": "OVERLAY-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Anneau de focus interne",
+     "quand": "Focus d'un contrôle dans le superposé.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "03 · Frontières",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Anneau de focus interne\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Focus d'un contrôle dans le superposé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « anneau de focus interne » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Ordre de focus général",
+     "quand": "Séquence de tabulation de la page.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "03 · Frontières",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ordre de focus général\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"30\" width=\"600\" height=\"182\" rx=\"12\" fill=\"#111827\" opacity=\"0.45\"/><rect x=\"220\" y=\"58\" width=\"240\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"78\" width=\"208\" height=\"30\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"248\" y=\"90\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"236\" y=\"126\" width=\"90\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"259\" y=\"137\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"336\" y=\"126\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"356\" y=\"137\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"210\" y=\"206\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">focus piégé · Échap ferme · retour au déclencheur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Séquence de tabulation de la page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « ordre de focus général » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "OVERLAY-R01",
+   "couche": "ux",
+   "solution": "`overlay` est une **fondation sans axes** (ni style/tone/size) — une propriété transversale, pas un",
+   "enonce": "Overlay est une fondation sans axes : elle possède l'échelle z-index, le token de voile, le contrat de focus en superposition, le verrouillage du défilement, l'inertie du fond et les patterns de fermeture ; elle délègue l'ombre à ELEVATION, l'anneau de focus à BORDER, les durées et courbes à MOTION, le wording à VOICE et l'ordre de focus général à ACCESSIBILITY.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R02",
+   "couche": "ux",
+   "solution": "tout superposé est **modal** ou **non-modal**, et ce choix détermine toute sa mécanique.",
+   "enonce": "Tout superposé est soit modal, soit non-modal, et ce choix détermine l'intégralité de sa mécanique : présence d'un voile, piège de focus, inertie du fond, verrouillage du défilement, mode de fermeture et ancrage.",
+   "mesure": "chaque superposé est déclaré modal ou non-modal ; aucun superposé ne combine voile et fond actif, ni piège de focus et absence de voile",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+     "liens": [
+      {
+       "label": "ARIA APG — Dialog (Modal)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Popover/menu/tooltip non-modaux, ancrés au déclencheur, light-dismiss",
+     "liens": [
+      {
+       "label": "Carbon — Popover",
+       "url": "https://carbondesignsystem.com/components/popover/usage/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La plateforme distingue nativement modal et non-modal : show() affiche un dialogue modeless, showModal() met le dialogue dans le top layer et rend le document « blocked by the modal dialog », donc inerte hors du dialogue",
+     "liens": [
+      {
+       "label": "WHATWG HTML — The dialog element",
+       "url": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element"
+      }
+     ],
+     "confiance": "Établi, spécification normative — le verrouillage du défilement, lui, n'y figure pas"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+    "liens": [
+     {
+      "label": "ARIA APG — Dialog (Modal)",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R03",
+   "couche": "ux",
+   "solution": "tout superposé référence un cran de `z-index` — jamais un entier codé en dur. Cinq couches, dans",
+   "enonce": "Tout superposé applique un cran de l'échelle z-index du système plutôt qu'un entier codé en dur, dans l'ordre sticky < overlay (modal) < popover (non-modal ancré) < toast < tooltip.",
+   "mesure": "aucune valeur numérique de z-index écrite en dur dans le code d'un superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Ordre des couches z-index (sticky < overlay/backdrop < popover < tooltip < toast)",
+     "liens": [
+      {
+       "label": "Material Style — Z-index",
+       "url": "https://materialstyle.github.io/materialstyle/3.1/layout/z-index/"
+      },
+      {
+       "label": "Microsoft Atlas — Z-index",
+       "url": "https://design.learn.microsoft.com/tokens/z-index.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Nombre de crans (cinq), valeurs exactes, opacité du scrim (50 %)",
+     "liens": [
+      {
+       "label": "Arbitrage interne au produit",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — à éprouver"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Ordre des couches z-index (sticky < overlay/backdrop < popover < tooltip < toast)",
+    "liens": [
+     {
+      "label": "Material Style — Z-index",
+      "url": "https://materialstyle.github.io/materialstyle/3.1/layout/z-index/"
+     },
+     {
+      "label": "Microsoft Atlas — Z-index",
+      "url": "https://design.learn.microsoft.com/tokens/z-index.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R04",
+   "couche": "ux",
+   "solution": "un superposé **modal** pose un **voile** `overlay.scrim` entre le fond et sa surface — il assombrit",
+   "enonce": "Un superposé modal pose un voile entre le contenu devenu inerte et sa surface ; un superposé non-modal n'en pose jamais. Le voile partage la couche z-index du superposé et est rendu derrière sa surface.",
+   "mesure": "un superposé modal a exactement un voile ; un superposé non-modal en a zéro",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+     "liens": [
+      {
+       "label": "ARIA APG — Dialog (Modal)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Le voile est une propriété du modal, pas du superposé en général : une boîte ::backdrop n'est rendue que pour les éléments du top layer — un dialogue ouvert par show() n'en a aucune",
+     "liens": [
+      {
+       "label": "MDN — ::backdrop",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop"
+      }
+     ],
+     "confiance": "Établi, documentation de référence adossée à la spécification CSS Position 4"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+    "liens": [
+     {
+      "label": "ARIA APG — Dialog (Modal)",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Voile (scrim)",
+     "famille": "Mécanique partagée"
+    }
+   ]
+  },
+  {
+   "id": "OVERLAY-R05",
+   "couche": "ux",
+   "solution": "un clic sur le voile **ferme** le superposé modal (équivalent d'une annulation) — cohérent avec le",
+   "enonce": "Un clic sur le voile ferme le superposé modal comme le ferait une annulation, sauf lorsqu'une perte de saisie est en jeu : le propriétaire du superposé demande alors confirmation avant de fermer.",
+   "mesure": "un clic sur le voile déclenche la même action que le bouton d'annulation du superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Popover/menu/tooltip non-modaux, ancrés au déclencheur, light-dismiss",
+     "liens": [
+      {
+       "label": "Carbon — Popover",
+       "url": "https://carbondesignsystem.com/components/popover/usage/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Popover/menu/tooltip non-modaux, ancrés au déclencheur, light-dismiss",
+    "liens": [
+     {
+      "label": "Carbon — Popover",
+      "url": "https://carbondesignsystem.com/components/popover/usage/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R06",
+   "couche": "ux",
+   "solution": "(**modal**) à l'ouverture, le focus **entre** dans le superposé (premier élément focalisable, ou la",
+   "enonce": "À l'ouverture d'un superposé modal, le focus entre dans le superposé ; Tab et Maj+Tab bouclent à l'intérieur ; le fond est inerte, inatteignable au clavier comme au lecteur d'écran ; Échap ferme ; à la fermeture, le focus revient au déclencheur, ou à l'élément le plus pertinent si le déclencheur a disparu.",
+   "mesure": "aucun élément focalisable hors du superposé n'est atteignable au clavier pendant qu'il est ouvert ; Échap ferme ; le focus revient au déclencheur à la fermeture",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+     "liens": [
+      {
+       "label": "ARIA APG — Dialog (Modal)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Le piège modal est admis car Échap fournit la sortie clavier",
+     "liens": [
+      {
+       "label": "WCAG 2.1.2 — No Keyboard Trap",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+    "liens": [
+     {
+      "label": "ARIA APG — Dialog (Modal)",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R07",
+   "couche": "ux",
+   "solution": "(**non-modal**) **pas de piège**, le fond reste actif ; le superposé se ferme en **light-dismiss**",
+   "enonce": "Un superposé non-modal ne piège jamais le focus et laisse le fond actif ; il se ferme en light-dismiss (Échap ou clic/focus en dehors), rend le focus au déclencheur et reste ancré à ce déclencheur.",
+   "mesure": "le fond reste focalisable pendant l'ouverture ; Échap et un clic en dehors ferment tous deux le superposé ; le focus revient au déclencheur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Popover/menu/tooltip non-modaux, ancrés au déclencheur, light-dismiss",
+     "liens": [
+      {
+       "label": "Carbon — Popover",
+       "url": "https://carbondesignsystem.com/components/popover/usage/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Light-dismiss du non-modal : un popover auto se ferme par un clic en dehors ou par Échap, reste toujours non-modal, et le focus revient à l'invocateur à la fermeture clavier",
+     "liens": [
+      {
+       "label": "MDN — Using the Popover API",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using"
+      }
+     ],
+     "confiance": "Établi, comportement normalisé par la plateforme"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Popover/menu/tooltip non-modaux, ancrés au déclencheur, light-dismiss",
+    "liens": [
+     {
+      "label": "Carbon — Popover",
+      "url": "https://carbondesignsystem.com/components/popover/usage/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R08",
+   "couche": "ux",
+   "solution": "un superposé **modal verrouille le défilement** du fond tant qu'il est ouvert (le fond ne bouge pas",
+   "enonce": "Un superposé modal verrouille le défilement du fond et rend ce fond inerte tant qu'il est ouvert ; un superposé non-modal ne verrouille rien et ne rend rien inerte.",
+   "mesure": "pendant qu'un modal est ouvert, le document ne défile pas et aucun élément du fond n'est focalisable ni exposé au lecteur d'écran",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+     "liens": [
+      {
+       "label": "ARIA APG — Dialog (Modal)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La plateforme distingue nativement modal et non-modal : show() affiche un dialogue modeless, showModal() met le dialogue dans le top layer et rend le document « blocked by the modal dialog », donc inerte hors du dialogue",
+     "liens": [
+      {
+       "label": "WHATWG HTML — The dialog element",
+       "url": "https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element"
+      }
+     ],
+     "confiance": "Établi, spécification normative — le verrouillage du défilement, lui, n'y figure pas"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Focus modal : entre à l'ouverture, piège Tab/Maj+Tab, Échap ferme, retour au déclencheur, fond inerte",
+    "liens": [
+     {
+      "label": "ARIA APG — Dialog (Modal)",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R09",
+   "couche": "ux",
+   "solution": "l'entrée et la sortie d'un superposé utilisent les durées/courbes de MOTION (une grande surface",
+   "enonce": "L'entrée et la sortie d'un superposé utilisent les durées et courbes de MOTION — une grande surface relève de la durée lente — et respectent prefers-reduced-motion en supprimant le glissement ; l'ombre s'anime en opacité et jamais par interpolation de box-shadow.",
+   "mesure": "sous prefers-reduced-motion: reduce, aucune translation à l'entrée ni à la sortie",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "prefers-reduced-motion détecte que l'utilisateur a demandé la réduction des animations non essentielles ; la valeur reduce impose de supprimer, réduire ou remplacer le mouvement",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, media feature standard"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "prefers-reduced-motion détecte que l'utilisateur a demandé la réduction des animations non essentielles ; la valeur reduce impose de supprimer, réduire ou remplacer le mouvement",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi, media feature standard"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-R10",
+   "couche": "ux",
+   "solution": "l'**ombre** d'un superposé est `elevation.overlay` — overlay la **consomme**, ne la redéfinit pas.",
+   "enonce": "Overlay ne redéfinit ni l'ombre (elevation.overlay), ni l'anneau de focus (BORDER), ni l'ordre de focus général et la non-occultation de la cible focalisée (ACCESSIBILITY, BORDER), ni le wording d'un titre (VOICE), ni les règles propres du toast : il ne possède que le piège de focus en superposition et le cran z-index qu'il prête au toast.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Ombre d'un superposé",
+     "famille": "Frontières"
+    }
+   ]
+  },
+  {
+   "id": "OVERLAY-U01",
+   "couche": "ui",
+   "solution": "la **surface** d'un superposé modal applique `z-index.overlay` ; son **scrim** vit dans la même",
+   "enonce": "La surface d'un superposé modal applique le cran z-index.overlay et son voile vit dans la même couche, placé avant la surface dans le DOM afin d'être rendu derrière elle ; un superposé non-modal ancré applique z-index.popover.",
+   "mesure": "le voile précède la surface dans l'ordre du DOM et porte le même cran de z-index qu'elle",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Crans z-index espacés, ordonnés par type de couche",
+     "liens": [
+      {
+       "label": "Microsoft Atlas — Z-index",
+       "url": "https://design.learn.microsoft.com/tokens/z-index.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "T5",
+     "affirmation": "À z-index égal ou non spécifié, les éléments positionnés s'empilent dans l'ordre d'apparition du HTML — c'est ce qui fait qu'un voile placé avant la surface est rendu derrière elle sans cran supplémentaire",
+     "liens": [
+      {
+       "label": "MDN — Stacking without the z-index property",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Positioned_layout/Stacking_without_z-index"
+      }
+     ],
+     "confiance": "Établi, règle d'empilement CSS"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Crans z-index espacés, ordonnés par type de couche",
+    "liens": [
+     {
+      "label": "Microsoft Atlas — Z-index",
+      "url": "https://design.learn.microsoft.com/tokens/z-index.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U02",
+   "couche": "ui",
+   "solution": "le voile d'un superposé modal est un plan plein `overlay.scrim` couvrant la fenêtre",
+   "enonce": "Le voile d'un superposé modal est un plan plein de couleur overlay.scrim, en position fixed et inset 0, couvrant la fenêtre et placé sous la surface ; aucun superposé non-modal ne pose de voile.",
+   "mesure": "le voile est en position: fixed avec inset: 0 ; aucun voile n'est associé à un superposé non-modal",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U03",
+   "couche": "ui",
+   "solution": "la surface d'un superposé porte l'ombre `elevation.overlay` (jamais `raised`, réservé au survol",
+   "enonce": "La surface d'un superposé porte l'ombre elevation.overlay — jamais elevation.raised, réservée au survol cliquable —, le rayon radius.md et le fond background ; overlay consomme ces tokens sans en créer aucun.",
+   "mesure": "ombre = elevation.overlay et rayon = radius.md sur la surface de tout superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U04",
+   "couche": "ui",
+   "solution": "à l'ouverture d'un superposé **modal**, le fond reçoit `inert` (ou `aria-hidden`) — non focalisable,",
+   "enonce": "À l'ouverture d'un superposé modal, le fond reçoit inert (à défaut aria-hidden) — non focalisable et invisible au lecteur d'écran — et le défilement du document est verrouillé ; à la fermeture, l'inertie et le verrou sont retirés et le focus revient au déclencheur.",
+   "mesure": "le fond porte inert pendant l'ouverture et ne le porte plus après la fermeture ; le focus revient au déclencheur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Fond `inert` + verrouillage du défilement pour un modal",
+     "liens": [
+      {
+       "label": "ARIA APG — Dialog (Modal)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T4",
+     "affirmation": "L'attribut inert retire l'élément et tout son sous-arbre de l'ordre de tabulation et de l'arbre d'accessibilité : plus de focus, plus d'événements de clic, invisible aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "MDN — inert",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert"
+      }
+     ],
+     "confiance": "Établi, attribut standard largement disponible depuis 2023"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Fond `inert` + verrouillage du défilement pour un modal",
+    "liens": [
+     {
+      "label": "ARIA APG — Dialog (Modal)",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U05",
+   "couche": "ui",
+   "solution": "le **focus ring** d'un contrôle à l'intérieur d'un superposé reste celui de BORDER",
+   "enonce": "Un contrôle situé à l'intérieur d'un superposé conserve l'anneau de focus défini par BORDER (border.focus-width, border.focus-offset) ; overlay ne redéfinit jamais l'anneau.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U06",
+   "couche": "ui",
+   "solution": "l'entrée/sortie utilise une durée MOTION (grande surface → `motion.slow`), l'ombre s'anime en",
+   "enonce": "L'entrée et la sortie d'un superposé utilisent une durée MOTION — motion.slow pour une grande surface —, animent l'ombre elevation.overlay en opacité, et suppriment tout glissement sous prefers-reduced-motion.",
+   "mesure": "sous prefers-reduced-motion: reduce, aucune transformation de position n'est appliquée au superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "prefers-reduced-motion: reduce signale la préférence utilisateur pour une interface sans mouvement non essentiel",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, media feature standard"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "prefers-reduced-motion: reduce signale la préférence utilisateur pour une interface sans mouvement non essentiel",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi, media feature standard"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "OVERLAY-U07",
+   "couche": "ui",
+   "solution": "aucune valeur d'empilement, d'ombre, de rayon, de durée ou de couleur n'est écrite en dur : tout",
+   "enonce": "Aucune valeur d'empilement, d'ombre, de rayon, de durée ou de couleur n'est écrite en dur dans un superposé : tout référence z-index.*, overlay.scrim, elevation.overlay, radius.md, motion.* et border.* ; le toast conserve ses propres règles d'empilement et n'emprunte à overlay que le cran z-index.toast.",
+   "mesure": "aucun littéral numérique ou hexadécimal de z-index, ombre, rayon, durée ou couleur dans le code d'un superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Valeurs exactes des crans et opacité du scrim",
+     "liens": [
+      {
+       "label": "Arbitrage interne (DESIGN.md 1.30.0)",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — ajustable"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Valeurs exactes des crans et opacité du scrim",
+    "liens": [
+     {
+      "label": "Arbitrage interne (DESIGN.md 1.30.0)",
+      "url": null
+     }
+    ],
+    "confiance": "Non formalisé — ajustable"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

@@ -1,0 +1,2558 @@
+{
+ "slug": "collection",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2.5\" y=\"4\" width=\"8.6\" height=\"7\" rx=\"1.8\" fill=\"#4F46E5\"/><rect x=\"12.9\" y=\"4\" width=\"8.6\" height=\"7\" rx=\"1.8\" fill=\"#bcb9f5\"/><rect x=\"2.5\" y=\"13\" width=\"8.6\" height=\"7\" rx=\"1.8\" fill=\"#bcb9f5\"/><rect x=\"12.9\" y=\"13\" width=\"8.6\" height=\"7\" rx=\"1.8\" fill=\"#F2C744\"/></svg>",
+ "nom": "collection",
+ "nature": "Pattern",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-21 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · collection",
+  "question": "Comment une grille d’items reste-t-elle lisible quand l’écran, le tri et le nombre de résultats changent ?",
+  "detail": "Ce pattern orchestre la grille et ses outils : des colonnes qui naissent de la largeur d’un item plutôt que d’un type d’appareil, un tri et des filtres toujours annoncés, une croissance maîtrisée — charger plus, pagination quand la position compte, jamais de scroll infini seul — et un état retrouvé au retour.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Les colonnes émergent de la largeur minimale d’un item et de l’espace réel"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Le tri et les filtres par défaut sont annoncés"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "La grille est un contrat"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "31",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "31",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "2",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-collection.md",
+   "source": "---\nsujet: collection\ntype: pattern\nresume: \"Orchestration d'une grille d'items et de ses outils : grille intrinsèque (colonnes émergentes via grid.item-min, jamais fixées par appareil), régime composé du dashboard, gouttières spacing par densité, tri/filtre par défaut annoncés, croissance (charger-plus > pagination > scroll infini jamais seul), squelettes stables, état restauré au retour\"\nrequires: [\"card\", \"button\"]\nselon-contexte: [\"grid\", \"spacing\", \"adaptive\", \"cognitive-load\", \"motion\", \"voice\", \"form (échec d'une page suivante : même logique que le succès partiel)\", \"toast (jamais porteur de l'état vide/erreur d'une collection)\"]\n---\n# RULES — Collection (compilé, condensé)\n\n> Généré depuis `patterns/collection/COLLECTION-UX.md` (v1.0.0) et `COLLECTION-UI.md` (v1.0.0).\n> La source fait autorité. Ne pas éditer à la main. La carte reste l'atome (`RULES-card`) ; la collection est la phrase. C'est ce pattern qui possède la grille de colonnes (clause de naissance de `RULES-grid` levée le 2026-07-21).\n\n## Frontières d'autorité\n- Contenu, modes, densité, ratio, troncature, empty states, squelette **d'une carte** → `RULES-card`.\n- Colonnes, gouttières, régimes de grille, croissance, outils de collection → ce fichier.\n- Cadre de page (max-width, centrage) → `RULES-grid` ; valeurs d'espace → `RULES-spacing` ; bascules et ordre DOM → `RULES-adaptive` ; défauts annoncés et budget de décision → `RULES-cognitive-load`.\n\n## Les deux régimes\n- **Items homogènes** (référence — résultats, catalogue, galerie) : grille **intrinsèque**, colonnes émergentes.\n- **Composé** (dashboard) : grille explicite à colonnes égales, hiérarchie par la **taille** des widgets (RULES-card), spans en **cellules entières**, mêmes gouttières. Nombre de colonnes choisi par le contenu — pas de 12 canonique.\n- Jamais de mélange ; un dashboard peut contenir une grille homogène (widget-liste), pas l'inverse.\n\n## Grille intrinsèque\n```css\n.collection {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-item-min)), 1fr));\n  gap: var(--collection-gap);\n}\n```\n- `--grid-item-min` ← `grid.item-min` (256px). Le nombre de colonnes ÉMERGE de l'item et de l'espace réel — **jamais « 4 desktop / 2 tablette / 1 mobile »** (un viewport large ne garantit pas un conteneur large).\n- **`auto-fill`, jamais `auto-fit`** : la dernière rangée incomplète garde la largeur d'item, rien ne s'étire.\n- `min(100%, …)` : en conteneur étroit (sidebar, split), une colonne — jamais de scroll horizontal accidentel.\n- Sous `breakpoint.mobile` : colonne unique pleine largeur (moins la marge de page RULES-grid).\n- Le reflux **ne réordonne jamais** (ordre DOM = ordre de lecture, RULES-adaptive) ; aucune propriété `order`.\n- Une collection d'un ou deux items garde sa grille — pas de mise en scène du petit nombre.\n\n## Gouttières et zone\n- Une seule gouttière par collection (colonnes ET rangées), token `spacing` apparié à la densité RULES-card : `comfortable` → `spacing.lg`, `compact` → `spacing.md`. Jamais de token gouttière propre.\n- Cadre de page : `grid.container-wide`. La grille remplit ce cadre, elle ne se re-borne pas.\n- Zone de collection (grille + outils + compteur) : fond `surface` possible (calibré pour cette distinction), padding `spacing.lg` ; les cartes gardent `background`.\n\n## Outils de la collection\n- Tri, filtres, recherche, compteur : **au-dessus de la grille**, position constante, portée = toute la collection (une action d'item vit dans sa carte).\n- **Tri par défaut annoncé** (« Récents d'abord ») — jamais silencieux. **Filtre actif d'office déclaré** — un sous-ensemble non déclaré est une information cachée (frontière RULES-cognitive-load).\n- Filtres actifs visibles et retirables d'un geste ; compteur mis à jour avec eux (formulation RULES-voice).\n- **Mécanique des contrôles absente du système** (select, chips) : STOP — remonter, ne pas improviser.\n\n## Croissance\n- **« Charger plus »** par défaut : bouton secondary centré sous la grille, dans le flux ; suit le cycle de soumission (état en cours, anti-double-clic).\n- **Pagination** quand la position est adressable (citer, retrouver, comparer « page 3 »).\n- **Scroll infini jamais seul** : toujours doublé d'un chemin fini ; jamais sur un écran dont le footer doit rester atteignable. Flux de découverte oui, recherche orientée but non.\n- **Retour à la collection = état restauré** (position, tri, filtres).\n- **Échec de la page suivante** : l'acquis reste affiché, l'erreur est locale et réessayable.\n\n## Chargement et changement\n- Squelettes (anatomie RULES-card) en **nombre de cellules stable** — la grille ne saute pas ; rien n'anime au chargement.\n- Tri/filtre : réorganisation sobre (motion.base, registre productif) ; sous `prefers-reduced-motion`, remplacement sans transition.\n- Changement de résultats **annoncé** : le compteur est l'unique région live polie (`aria-live=\"polite\"`) — jamais la grille entière.\n- Vide / sans résultat / erreur : empty states RULES-card + ton RULES-voice, à la place de la grille — jamais portés par un toast (RULES-toast).\n- Balisage **liste** sur la grille (`ul/li` ou `role=\"list\"`).\n\n## Règle cardinale\n**La grille est un contrat, pas une décoration.** La promesse d'une collection est la prédictibilité — même largeur, même rythme, même ordre, mêmes règles par item. La mise en avant passe par l'ordre, la taille dans la grille (composé) ou le contenu — jamais en cassant le contrat (une carte plus large « juste ici », un ratio différent « pour voir »).\n\n## Hors périmètre — STOP et remonter\nKanban complet (réordonnancement fin, live region de drag — extension `collection-kanban` à naître), virtualisation, table de données, contrôles de barre d'outils (select, chips).\n\nCONFIANCE : grille intrinsèque établie (technique standard web.dev/MDN + cohérence avec le principe adaptatif) ; hiérarchie de croissance convergente (NN/g) mais position produit, arbitrée 2026-07-21 ; refus du N-colonnes canonique = divergence interne assumée vs Carbon/Material ; `grid.item-min` (256px) non formalisé — ajustable sur besoin réel. Décision non tranchée par une règle (colonnes d'un dashboard précis, contrôle d'outils manquant, virtualisation, kanban) : STOP — remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 9 cas",
+   "titre": "Régimes et grille",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Régimes et grille\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"40\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"104\" y=\"40\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"166\" y=\"40\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"42\" y=\"82\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"104\" y=\"82\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"166\" y=\"82\" width=\"52\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"238\" y=\"40\" width=\"66\" height=\"34\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"238\" y=\"82\" width=\"30\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"274\" y=\"82\" width=\"30\" height=\"34\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Grille d'items homogènes",
+     "quand": "Résultats, catalogue, galerie : des items de même poids.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Grille d'items homogènes\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"196\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"142\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"192\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"142\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"192\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"142\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"192\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Résultats, catalogue, galerie : des items de même poids.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Grille intrinsèque — les colonnes émergent de la largeur d'item, pas de l'appareil.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ligne de CSS, zéro media query de colonnes.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<code>collection</code> est un <strong>pattern</strong> — une composition, pas un atome. Le modèle à axes ne s'y applique pas (comme <code>form</code>) : ses variables sont le <strong>régime de grille</strong> (items homogènes / composé) et la <strong>densité</strong>, qui appartient déjà à <code>CARD</code>. Aucun axe style/tone.",
+       "id": "COLLECTION-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "régime <strong>items homogènes</strong> — le cas de référence : résultats, catalogue, galerie. Tous les items ont le même poids, la même largeur ; la grille est <strong>intrinsèque</strong> (colonnes émergentes, voir ci-dessous).",
+       "id": "COLLECTION-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "une collection ne mélange pas les régimes — un dashboard peut <em>contenir</em> une grille d'items homogènes (widget-liste), l'inverse n'existe pas.",
+       "id": "COLLECTION-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Nombre de colonnes selon l'espace",
+     "quand": "Le même composant vit en pleine page et en sidebar.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Nombre de colonnes selon l'espace\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"150\" y=\"42\" width=\"300\" height=\"156\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"166\" y=\"64\" width=\"120\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"174\" y=\"72\" width=\"104\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"174\" y=\"102\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"302\" y=\"64\" width=\"120\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"310\" y=\"72\" width=\"104\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"310\" y=\"102\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"166\" y=\"126\" width=\"120\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"174\" y=\"134\" width=\"104\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"174\" y=\"164\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"302\" y=\"126\" width=\"120\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"310\" y=\"134\" width=\"104\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"310\" y=\"164\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"474\" y=\"42\" width=\"110\" height=\"156\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"484\" y=\"64\" width=\"90\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"492\" y=\"72\" width=\"74\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"492\" y=\"102\" width=\"50\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"484\" y=\"126\" width=\"90\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"492\" y=\"134\" width=\"74\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"492\" y=\"164\" width=\"50\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le même composant vit en pleine page et en sidebar.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Laissez l'espace réel décider : minmax(item-min, 1fr).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>4 colonnes en page, 1 dans la sidebar — sans code en plus.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le nombre de colonnes <strong>émerge</strong> de deux facteurs : la largeur minimale d'un item (<code>grid.item-min</code>) et l'espace réellement disponible. Il n'est <strong>jamais</strong> fixé par appareil ni par breakpoint intermédiaire — c'est la déclinaison grille du principe adaptatif (les seuils viennent du contenu).",
+       "id": "COLLECTION-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Une colonne sous le régime mobile",
+     "quand": "L'écran passe sous le breakpoint mobile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Une colonne sous le régime mobile\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"286\" y=\"34\" width=\"108\" height=\"180\" rx=\"14\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"296\" y=\"48\" width=\"88\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"304\" y=\"56\" width=\"72\" height=\"18\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"304\" y=\"78\" width=\"48\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"296\" y=\"100\" width=\"88\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"304\" y=\"108\" width=\"72\" height=\"18\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"304\" y=\"130\" width=\"48\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"296\" y=\"152\" width=\"88\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"304\" y=\"160\" width=\"72\" height=\"18\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"304\" y=\"182\" width=\"48\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'écran passe sous le breakpoint mobile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Colonne unique pleine largeur, moins la marge de page.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La grille de cartes devient une pile lisible.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "régime <strong>items homogènes</strong> — le cas de référence : résultats, catalogue, galerie. Tous les items ont le même poids, la même largeur ; la grille est <strong>intrinsèque</strong> (colonnes émergentes, voir ci-dessous).",
+       "id": "COLLECTION-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "sous <code>breakpoint.mobile</code>, la grille passe en <strong>colonne unique</strong> pleine largeur — c'est la règle que <code>DESIGN.md</code> notait déjà sur le token (« grille de cartes → 1 colonne ») ; elle trouve ici son propriétaire.",
+       "id": "COLLECTION-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Dernière rangée incomplète",
+     "quand": "7 items sur une grille de 3 colonnes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dernière rangée incomplète\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"50\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"58\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"108\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"196\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"142\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"192\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"none\" stroke=\"#E5E7EB\" stroke-dasharray=\"5 5\"/><rect x=\"392\" y=\"134\" width=\"86\" height=\"72\" rx=\"9\" fill=\"none\" stroke=\"#E5E7EB\" stroke-dasharray=\"5 5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>7 items sur une grille de 3 colonnes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>auto-fill, jamais auto-fit : la dernière rangée reste alignée, rien ne s'étire.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le 7e item garde la largeur des six autres.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>dernière rangée incomplète</strong> reste alignée au flux de lecture — les items gardent leur largeur, rien ne s'étire pour « remplir » (la déformation casse l'uniformité que la collection promet).",
+       "id": "COLLECTION-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Dashboard composé",
+     "quand": "Des widgets de tailles différentes doivent cohabiter.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dashboard composé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"176\" y=\"50\" width=\"196\" height=\"76\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"192\" y=\"92\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">KPI — span 2</text><rect x=\"384\" y=\"50\" width=\"110\" height=\"76\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"392\" y=\"58\" width=\"94\" height=\"32\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"392\" y=\"112\" width=\"61\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"176\" y=\"138\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"184\" y=\"146\" width=\"70\" height=\"28\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"184\" y=\"190\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"274\" y=\"138\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"282\" y=\"146\" width=\"70\" height=\"28\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"282\" y=\"190\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"372\" y=\"138\" width=\"122\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"380\" y=\"146\" width=\"106\" height=\"28\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"380\" y=\"190\" width=\"67\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des widgets de tailles différentes doivent cohabiter.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Grille explicite, spans en cellules entières, hiérarchie par la taille.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un KPI sur 2 cellules, jamais 1,5.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "régime <strong>composé</strong> — le dashboard : des widgets de tailles différentes dont la hiérarchie vient de la <strong>taille dans la grille</strong> (règle <code>CARD</code>), sur une grille <strong>explicite</strong> à colonnes égales, spans en cellules entières, mêmes gouttières. Le nombre de colonnes du composé se choisit par le contenu du dashboard, pas par un 12 canonique copié — divergence assumée vs Carbon/Material, journalisée, à éprouver au premier dashboard réel.",
+       "id": "COLLECTION-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Gouttières de la grille",
+     "quand": "De l'air entre les items.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Gouttières de la grille\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"60\" width=\"110\" height=\"80\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"68\" width=\"94\" height=\"34\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"224\" y=\"126\" width=\"61\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"354\" y=\"60\" width=\"110\" height=\"80\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"362\" y=\"68\" width=\"94\" height=\"34\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"362\" y=\"126\" width=\"61\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><path d=\"M332 100L348 100\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M348 100L340.1 104.3M348 100L340.1 95.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"216\" y=\"168\" width=\"110\" height=\"40\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"176\" width=\"94\" height=\"17\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"224\" y=\"194\" width=\"61\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><path d=\"M271 146L271 162\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M271 162L266.7 154.1M271 162L275.3 154.1\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"388\" y=\"180\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un seul token spacing</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il faut de l'air entre les items.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Une seule gouttière (colonnes ET rangées), token spacing selon la densité.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>comfortable → spacing.lg, compact → spacing.md.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ce pattern <strong>lève la clause de naissance</strong> de la grille de colonnes. <code>GRID-UX.md</code> (§ Frontières) et <code>SPACING-UX.md</code> (§ note de transposition) l'avaient différée « jusqu'au pattern collection/grille » : la grille naît ici, et elle hérite des cadrages posés — les gouttières sont des tokens <code>spacing</code>, le cadre de page reste <code>grid.container-*</code>, une seule valeur nouvelle au besoin démontré (<code>grid.item-min</code>). La levée est actée dans <code>GRID-UX.md</code> 1.1.0 et journalisée (DECISIONS.md 2026-07-21).",
+       "id": "COLLECTION-R02"
+      },
+      {
+       "tag": "Règle",
+       "html": "régime <strong>composé</strong> — le dashboard : des widgets de tailles différentes dont la hiérarchie vient de la <strong>taille dans la grille</strong> (règle <code>CARD</code>), sur une grille <strong>explicite</strong> à colonnes égales, spans en cellules entières, mêmes gouttières. Le nombre de colonnes du composé se choisit par le contenu du dashboard, pas par un 12 canonique copié — divergence assumée vs Carbon/Material, journalisée, à éprouver au premier dashboard réel.",
+       "id": "COLLECTION-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Cadre de page de la collection",
+     "quand": "La collection s'étale sur grand écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cadre de page de la collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"140\" y=\"38\" width=\"400\" height=\"168\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"170\" y=\"58\" width=\"340\" height=\"128\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"186\" y=\"72\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"194\" y=\"80\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"194\" y=\"130\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"284\" y=\"72\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"292\" y=\"80\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"292\" y=\"130\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"382\" y=\"72\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"390\" y=\"80\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"390\" y=\"130\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection s'étale sur grand écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bornez au conteneur wide, centré — la grille remplit, elle ne se re-borne pas.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>grid.container-wide, marges auto.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ce pattern <strong>lève la clause de naissance</strong> de la grille de colonnes. <code>GRID-UX.md</code> (§ Frontières) et <code>SPACING-UX.md</code> (§ note de transposition) l'avaient différée « jusqu'au pattern collection/grille » : la grille naît ici, et elle hérite des cadrages posés — les gouttières sont des tokens <code>spacing</code>, le cadre de page reste <code>grid.container-*</code>, une seule valeur nouvelle au besoin démontré (<code>grid.item-min</code>). La levée est actée dans <code>GRID-UX.md</code> 1.1.0 et journalisée (DECISIONS.md 2026-07-21).",
+       "id": "COLLECTION-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Ordre préservé au reflux",
+     "quand": "3 colonnes deviennent 2 puis 1.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ordre préservé au reflux\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"60\" width=\"62\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"205\" y=\"92\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">1</text><rect x=\"254\" y=\"60\" width=\"62\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"279\" y=\"92\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">2</text><rect x=\"328\" y=\"60\" width=\"62\" height=\"52\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"353\" y=\"92\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">3</text><path d=\"M420 86L452 86\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M452 86L444.1 90.3M452 86L444.1 81.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"468\" y=\"44\" width=\"62\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"493\" y=\"72\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">1</text><rect x=\"542\" y=\"44\" width=\"62\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"567\" y=\"72\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">2</text><rect x=\"468\" y=\"98\" width=\"62\" height=\"44\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"493\" y=\"126\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">3</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>3 colonnes deviennent 2 puis 1.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'ordre de lecture ne change jamais ; aucune propriété order.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La mise en avant se décide dans les données.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>reflux ne réordonne jamais</strong> — 3→2→1 colonnes préserve l'ordre de lecture et l'ordre DOM (<code>ADAPTIVE</code> fait autorité) ; la grille ne « remonte » pas un item mis en avant, la mise en avant est un choix d'ordre, pas de layout.",
+       "id": "COLLECTION-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-8",
+     "titre": "Item unique ou rare",
+     "quand": "La collection n'a qu'un ou deux items.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Régimes et grille",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Item unique ou rare\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"176\" y=\"44\" width=\"330\" height=\"160\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"196\" y=\"64\" width=\"120\" height=\"90\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"72\" width=\"104\" height=\"38\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"140\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"330\" y=\"64\" width=\"120\" height=\"90\" rx=\"9\" fill=\"none\" stroke=\"#E5E7EB\" stroke-dasharray=\"5 5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection n'a qu'un ou deux items.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Gardez la grille et les largeurs — pas de mise en scène du petit nombre.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un item, même largeur que s'il y en avait dix.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>E-motion</strong> — sans objet, comme pour la carte : tout ce qui se répète par item est disqualifié par le budget de rareté ; l'expression appartient au contenu injecté, jamais au conteneur.",
+       "id": "COLLECTION-R31"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Contenu et uniformité (autorité CARD — le pattern renvoie)",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contenu et uniformité (autorité CARD — le pattern renvoie)\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"46\" width=\"54\" height=\"58\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"49\" y=\"53\" width=\"40\" height=\"22\" rx=\"4\" fill=\"#E0E7FF\"/><rect x=\"49\" y=\"84\" width=\"30\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"108\" y=\"46\" width=\"54\" height=\"58\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"115\" y=\"53\" width=\"40\" height=\"22\" rx=\"4\" fill=\"#E0E7FF\"/><rect x=\"115\" y=\"84\" width=\"30\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"174\" y=\"46\" width=\"54\" height=\"58\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"181\" y=\"53\" width=\"40\" height=\"22\" rx=\"4\" fill=\"#E0E7FF\"/><rect x=\"181\" y=\"84\" width=\"30\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"244\" y=\"38\" width=\"54\" height=\"72\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-dasharray=\"4 3\"/><circle cx=\"298\" cy=\"44\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M294.5 40.5l7 7M301.5 40.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Un seul mode d'interaction par collection",
+     "quand": "Des cartes cliquables côtoient des sélectionnables.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Un seul mode d'interaction par collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"60\" width=\"100\" height=\"74\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"68\" width=\"84\" height=\"31\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"120\" width=\"55\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"308\" y=\"60\" width=\"100\" height=\"74\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"316\" y=\"68\" width=\"84\" height=\"31\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"316\" y=\"120\" width=\"55\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"420\" y=\"60\" width=\"100\" height=\"74\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"428\" y=\"68\" width=\"84\" height=\"31\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"428\" y=\"120\" width=\"55\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><text x=\"230\" y=\"168\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">tout navigue — un seul mode</text><circle cx=\"560\" cy=\"70\" r=\"9\" fill=\"#15803D\"/><path d=\"M556 70l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des cartes cliquables côtoient des sélectionnables.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais : un seul mode par collection (règle CARD).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tout navigue, ou tout sélectionne.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Interaction</strong> — une collection est une surface de consultation calme ; un seul mode d'interaction par collection (<code>CARD</code>), et la barre d'outils n'introduit pas de deuxième « primary » d'écran (budget de décision, <code>COGNITIVE-LOAD</code>).",
+       "id": "COLLECTION-R28"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Une seule densité par collection",
+     "quand": "On veut resserrer « juste quelques cartes ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Une seule densité par collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"56\" width=\"120\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"64\" width=\"104\" height=\"36\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"224\" y=\"128\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"348\" y=\"56\" width=\"120\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"356\" y=\"64\" width=\"104\" height=\"36\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"356\" y=\"128\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><text x=\"240\" y=\"176\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">même densité partout</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On veut resserrer « juste quelques cartes ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La densité se décide pour toute la collection (règle CARD).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tout comfortable, ou tout compact.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la gouttière (inter-colonnes et inter-rangées, une seule valeur) est un token <code>spacing</code>, appareillé à la densité de la collection : <code>comfortable</code> et <code>compact</code> ont chacun leur gouttière (mapping dans <code>COLLECTION-UI.md</code>). Jamais de token « grid.gutter » propre — cadrage <code>SPACING</code> respecté.",
+       "id": "COLLECTION-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Ratio d'image unique",
+     "quand": "Les vignettes ont des proportions variées.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ratio d'image unique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"60\" width=\"120\" height=\"84\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"68\" width=\"104\" height=\"35\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"224\" y=\"130\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"352\" y=\"60\" width=\"120\" height=\"84\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"360\" y=\"68\" width=\"104\" height=\"35\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"360\" y=\"130\" width=\"66\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><text x=\"250\" y=\"178\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">même ratio, recadré</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Les vignettes ont des proportions variées.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un ratio fixe pour toute la collection (règle CARD) — l'alignement est la promesse.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tout en 16/9, recadré.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Troncature constante",
+     "quand": "Les descriptions ont des longueurs variées.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Troncature constante\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"58\" width=\"200\" height=\"110\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"252\" y=\"74\" width=\"168\" height=\"44\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"252\" y=\"130\" width=\"168\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"252\" y=\"146\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"380\" y=\"150\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">…</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Les descriptions ont des longueurs variées.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Nombre de lignes constant, texte complet accessible (règle CARD/VOICE).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>2 lignes partout, ellipsis honnête.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Même niveau de titre partout",
+     "quand": "Les cartes portent des titres.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Même niveau de titre partout\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"60\" width=\"120\" height=\"96\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"232\" y=\"78\" width=\"80\" height=\"9\" rx=\"4.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"232\" y=\"98\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"356\" y=\"60\" width=\"120\" height=\"96\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"372\" y=\"78\" width=\"80\" height=\"9\" rx=\"4.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"372\" y=\"98\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"260\" y=\"180\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">même niveau de titre</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Les cartes portent des titres.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Même niveau sémantique pour toute la grille (règle CARD).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Toutes en h3 sous le h2 de section.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Balisage liste de la collection",
+     "quand": "La grille doit être annoncée comme un ensemble.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu et uniformité (autorité CARD — le pattern renvoie)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Balisage liste de la collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"54\" width=\"220\" height=\"132\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"248\" cy=\"80\" r=\"4\" fill=\"#4F46E5\"/><rect x=\"264\" y=\"76\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><circle cx=\"248\" cy=\"116\" r=\"4\" fill=\"#4F46E5\"/><rect x=\"264\" y=\"112\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><circle cx=\"248\" cy=\"152\" r=\"4\" fill=\"#4F46E5\"/><rect x=\"264\" y=\"148\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><text x=\"460\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">role=list</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La grille doit être annoncée comme un ensemble.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>ul/li ou role=list sur le conteneur de grille.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Liste, 12 éléments » au lecteur d'écran.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 5 cas",
+   "titre": "Outils de la collection",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Outils de la collection\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"40\" width=\"102\" height=\"22\" rx=\"11\" fill=\"#E0E7FF\"/><text x=\"54\" y=\"55\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Récents ↓</text><text x=\"162\" y=\"55\" font-size=\"11\" font-family=\"Inter,sans-serif\" fill=\"#111827\">42 résultats</text><rect x=\"42\" y=\"76\" width=\"58\" height=\"40\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"112\" y=\"76\" width=\"58\" height=\"40\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"182\" y=\"76\" width=\"58\" height=\"40\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"256\" y=\"100\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">défaut annoncé</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Tri par défaut annoncé",
+     "quand": "La collection arrive déjà triée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Outils de la collection",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tri par défaut annoncé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"60\" width=\"150\" height=\"26\" rx=\"13\" fill=\"#E0E7FF\"/><text x=\"242\" y=\"77\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Récents d’abord ↓</text><rect x=\"196\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection arrive déjà triée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le défaut est sensé ET visible — jamais silencieux.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Récents d'abord » affiché dans la barre d'outils.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>tri par défaut est annoncé</strong> — la collection arrive triée par un défaut sensé ET visible (« Récents d'abord »), jamais silencieux. C'est le cas « En attente » de l'inventaire charge-cognitive qui trouve ici son propriétaire (<code>COGNITIVE-LOAD</code> pose l'obligation de défaut, ce pattern la mécanise).",
+       "id": "COLLECTION-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Filtre par défaut déclaré",
+     "quand": "Un filtre restreint les résultats d'office.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Outils de la collection",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Filtre par défaut déclaré\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"60\" width=\"170\" height=\"26\" rx=\"13\" fill=\"#FEF3C7\"/><text x=\"240\" y=\"77\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#92400E\">Filtré : disponibles ×</text><text x=\"420\" y=\"77\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">déclaré, retirable</text><rect x=\"196\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"104\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"112\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"162\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un filtre restreint les résultats d'office.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Déclarez-le : un sous-ensemble non annoncé est une information cachée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Filtré : disponibles » visible et retirable.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un <strong>filtre actif d'office se déclare</strong> — il ne cache jamais silencieusement une partie des résultats (déclinaison directe de la frontière dure « jamais un coût caché » : un sous-ensemble non déclaré est une information cachée).",
+       "id": "COLLECTION-R16"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Barre d'outils (tri, filtres, recherche)",
+     "quand": "La collection a besoin de contrôles.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Outils de la collection",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Barre d'outils (tri, filtres, recherche)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"186\" y=\"54\" width=\"310\" height=\"32\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"202\" y=\"74\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Trier</text><path d=\"M244 66l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"286\" y=\"74\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Filtres</text><text x=\"360\" y=\"74\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Rechercher…</text><circle cx=\"530\" cy=\"60\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M526.5 56.5l7 7M533.5 56.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"500\" y=\"110\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">composants à naître — remonter</text><rect x=\"196\" y=\"120\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"128\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"178\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"120\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"128\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"178\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"120\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"128\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"178\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection a besoin de contrôles.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Au-dessus de la grille, position constante — mais les composants (select, chips) n'existent pas : remontez.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Ne pas improviser un select maison.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>zone de collection</strong> peut se distinguer de la page par le fond <code>surface</code> (le token a été calibré pour exactement cette distinction) — elle regroupe la grille ET ses outils (barre de tri/filtres, compteur) en une région perçue comme une (Gestalt, région commune — via le catalogue des lois).",
+       "id": "COLLECTION-R13"
+      },
+      {
+       "tag": "Règle",
+       "html": "les outils (tri, filtres, recherche, compteur) vivent <strong>au-dessus de la grille</strong>, position constante ; ils portent sur toute la collection — un contrôle qui ne porte que sur un item vit dans sa carte (<code>CARD</code>, zone d'actions).",
+       "id": "COLLECTION-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Compteur de résultats",
+     "quand": "L'utilisateur doit savoir combien il y a.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Outils de la collection",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Compteur de résultats\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"226\" y=\"74\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">42 résultats</text><rect x=\"330\" y=\"58\" width=\"88\" height=\"22\" rx=\"11\" fill=\"#DBEAFE\"/><text x=\"342\" y=\"73\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#1D4ED8\">aria-live</text><rect x=\"196\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur doit savoir combien il y a.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un compteur mis à jour avec les filtres, formulation VOICE.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« 42 résultats ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les <strong>filtres actifs restent visibles</strong> et se retirent d'un geste ; le <strong>compteur de résultats</strong> se met à jour avec eux (formulation : <code>VOICE</code>).",
+       "id": "COLLECTION-R17"
+      },
+      {
+       "tag": "Règle",
+       "html": "un changement de résultats <strong>s'annonce</strong> aux technologies d'assistance (le compteur mis à jour dans une région live polie) — obligation posée ici, mécanique à éprouver à la première implémentation réelle (<code>ACCESSIBILITY</code> : annonce des changements dynamiques).",
+       "id": "COLLECTION-R26"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Filtres actifs toujours visibles",
+     "quand": "Un filtre est appliqué.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Outils de la collection",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Filtres actifs toujours visibles\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"60\" width=\"116\" height=\"24\" rx=\"12\" fill=\"#E0E7FF\"/><rect x=\"356\" y=\"60\" width=\"116\" height=\"24\" rx=\"12\" fill=\"#E0E7FF\"/><text x=\"240\" y=\"76\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Disponibles ×</text><text x=\"370\" y=\"76\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">‹ 50 € ×</text><rect x=\"196\" y=\"102\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"110\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"160\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"102\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"110\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"160\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"102\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"110\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"160\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un filtre est appliqué.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ce qui restreint se voit et se retire d'un geste.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Chip « Disponibles × » (composant à naître).</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les <strong>filtres actifs restent visibles</strong> et se retirent d'un geste ; le <strong>compteur de résultats</strong> se met à jour avec eux (formulation : <code>VOICE</code>).",
+       "id": "COLLECTION-R17"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 8 cas",
+   "titre": "Chargement, croissance, changement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Chargement, croissance, changement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"40\" width=\"58\" height=\"44\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"50\" y=\"48\" width=\"42\" height=\"16\" rx=\"4\" fill=\"#E5E7EB\"/><rect x=\"112\" y=\"40\" width=\"58\" height=\"44\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"120\" y=\"48\" width=\"42\" height=\"16\" rx=\"4\" fill=\"#E5E7EB\"/><rect x=\"182\" y=\"40\" width=\"58\" height=\"44\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"190\" y=\"48\" width=\"42\" height=\"16\" rx=\"4\" fill=\"#E5E7EB\"/><rect x=\"106\" y=\"100\" width=\"108\" height=\"26\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><text x=\"122\" y=\"117\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Charger plus</text></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Squelettes au chargement initial",
+     "quand": "La collection charge.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Squelettes au chargement initial\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"70\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"78\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E5E7EB\"/><rect x=\"204\" y=\"116\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"294\" y=\"70\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"78\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E5E7EB\"/><rect x=\"302\" y=\"116\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"392\" y=\"70\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"78\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E5E7EB\"/><rect x=\"400\" y=\"116\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><text x=\"250\" y=\"176\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nombre de cellules stable</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection charge.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Cartes squelettes (anatomie CARD) en nombre de cellules stable — rien n'anime, rien ne saute.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une rangée pleine de squelettes, remplacée en place.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "au chargement initial, des <strong>squelettes</strong> (<code>CARD</code> fait autorité sur leur anatomie) occupent un <strong>nombre de cellules stable</strong> — la grille ne saute pas quand le contenu arrive ; rien n'anime (<code>CARD</code>/<code>MOTION</code>).",
+       "id": "COLLECTION-R24"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Croissance : « Charger plus »",
+     "quand": "La collection est longue.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Croissance : « Charger plus »\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"48\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"56\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"106\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"48\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"56\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"106\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"48\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"56\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"106\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"276\" y=\"146\" width=\"128\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"320\" y=\"157\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><text x=\"300\" y=\"192\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">dans le flux, footer atteignable</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La collection est longue.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bouton « Charger plus » par défaut : contrôle gardé, footer atteignable, position stable.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Secondary centré sous la grille.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une collection longue grandit par <strong>« Charger plus »</strong> par défaut : l'utilisateur garde le contrôle, le pied de page reste atteignable, la position reste stable.",
+       "id": "COLLECTION-R19"
+      },
+      {
+       "tag": "Règle",
+       "html": "la <strong>pagination</strong> remplace « Charger plus » quand la <em>position</em> a de la valeur — résultats à citer, retrouver, comparer (« page 3 ») ; elle est le seul mode qui rend un emplacement adressable.",
+       "id": "COLLECTION-R20"
+      },
+      {
+       "tag": "Règle",
+       "html": "le <strong>scroll infini n'est jamais seul</strong> — s'il existe, il est doublé d'un chemin fini (charger-plus ou pagination) et n'emporte jamais un écran qui a un footer à atteindre. Position NN/g adoptée : le scroll infini convient au flux de découverte, pas à la recherche orientée but.",
+       "id": "COLLECTION-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Scroll infini",
+     "quand": "Un flux de découverte veut du défilement continu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Scroll infini\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><path d=\"M340 136v28\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"392\" cy=\"148\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M388.5 144.5l7 7M395.5 144.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"414\" y=\"152\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">jamais seul</text><rect x=\"276\" y=\"172\" width=\"128\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"320\" y=\"183\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un flux de découverte veut du défilement continu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais seul : doublé d'un chemin fini, jamais sur un écran à footer utile.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Flux social oui, résultats de recherche non.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>scroll infini n'est jamais seul</strong> — s'il existe, il est doublé d'un chemin fini (charger-plus ou pagination) et n'emporte jamais un écran qui a un footer à atteindre. Position NN/g adoptée : le scroll infini convient au flux de découverte, pas à la recherche orientée but.",
+       "id": "COLLECTION-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Retour à la collection",
+     "quand": "L'utilisateur revient d'une fiche détail.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Retour à la collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"186\" y=\"64\" width=\"130\" height=\"96\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"206\" y=\"100\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">détail</text><path d=\"M330 110L368 110\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M368 110L360.1 114.3M368 110L360.1 105.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"380\" y=\"52\" width=\"200\" height=\"120\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"396\" y=\"68\" width=\"80\" height=\"60\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"404\" y=\"76\" width=\"64\" height=\"25\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"404\" y=\"114\" width=\"44\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"488\" y=\"68\" width=\"80\" height=\"60\" rx=\"9\" fill=\"#E0E7FF\" stroke=\"#4F46E5\"/><text x=\"400\" y=\"190\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">position et filtres restaurés</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur revient d'une fiche détail.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Restaurez position, tri et filtres — ne faites pas payer deux fois le parcours.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Retour au 23e item, filtres intacts.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Échec de la page suivante",
+     "quand": "La page 2 échoue au chargement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Échec de la page suivante\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"44\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"52\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"102\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"238\" y=\"140\" width=\"220\" height=\"44\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"238\" y=\"140\" width=\"6\" height=\"44\" rx=\"3\" fill=\"#B91C1C\"/><text x=\"258\" y=\"166\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Impossible de charger la suite</text><rect x=\"478\" y=\"148\" width=\"86\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"501\" y=\"159\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La page 2 échoue au chargement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'acquis reste affiché ; l'erreur est locale et réessayable.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Impossible de charger la suite — Réessayer ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "si la <strong>page suivante échoue</strong>, l'acquis reste affiché — l'erreur est locale, réessayable, elle ne détruit jamais ce qui est déjà là (même logique que le succès partiel de <code>FORM</code>).",
+       "id": "COLLECTION-R23"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-5",
+     "titre": "Résultats qui changent annoncés",
+     "quand": "Trier ou filtrer change la grille.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Résultats qui changent annoncés\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"238\" y=\"76\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">8 résultats</text><circle cx=\"352\" cy=\"70\" r=\"10\" fill=\"#DBEAFE\"/><path d=\"M347 70h10M352 65v10\" stroke=\"#1D4ED8\" stroke-width=\"1.6\" stroke-linecap=\"round\"/><rect x=\"196\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"204\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"204\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"294\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"392\" y=\"96\" width=\"86\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"104\" width=\"70\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"400\" y=\"154\" width=\"47\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Trier ou filtrer change la grille.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le compteur (région live polie) annonce le changement — jamais la grille entière.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« 8 résultats » annoncé après filtrage.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-6",
+     "titre": "Collection vide / sans résultat / erreur",
+     "quand": "Il n'y a rien à afficher.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Collection vide / sans résultat / erreur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"50\" width=\"228\" height=\"138\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"340\" cy=\"96\" r=\"22\" fill=\"#E0E7FF\"/><rect x=\"296\" y=\"132\" width=\"88\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"282\" y=\"150\" width=\"116\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"296\" y=\"164\" width=\"88\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"320\" y=\"175\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il n'y a rien à afficher.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Empty state structuré (CARD) à la place de la grille, ton productif (VOICE) — jamais un toast.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Titre court, pourquoi c'est vide, action de sortie.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les états <strong>vide, sans résultat, erreur</strong> appartiennent à <code>CARD</code> (empty states structurés) et <code>VOICE</code> (ton productif, jamais blâmer) — le pattern ne fait que garantir leur place : dans la zone de collection, à la place de la grille, jamais en toast éphémère.",
+       "id": "COLLECTION-R27"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-7",
+     "titre": "Réordonnancement après tri",
+     "quand": "Le tri réorganise les items.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Chargement, croissance, changement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Réordonnancement après tri\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"230\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">B</text><rect x=\"294\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"328\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">A</text><rect x=\"392\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"426\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">C</text><path d=\"M340 146L340 166\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M340 166L335.7 158.1M340 166L344.3 158.1\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"196\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"230\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">A</text><rect x=\"294\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"328\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">B</text><rect x=\"392\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"426\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">C</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le tri réorganise les items.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Sobre (motion base) ; sous reduced-motion, remplacement sans transition.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Pas de chorégraphie de cartes volantes.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 3 cas",
+   "titre": "Hors périmètre de cette version",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Hors périmètre de cette version\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"40\" width=\"130\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"76\" y=\"60\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"76\" y=\"78\" width=\"96\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><circle cx=\"210\" cy=\"50\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M206.5 46.5l7 7M213.5 46.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"60\" y=\"132\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#B91C1C\">kanban, virtualisation, table — remonter</text></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Kanban (réordonnancement fin, live region de drag)",
+     "quand": "Un tableau kanban complet est demandé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Hors périmètre de cette version",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Kanban (réordonnancement fin, live region de drag)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"230\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">B</text><rect x=\"294\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"328\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">A</text><rect x=\"392\" y=\"60\" width=\"86\" height=\"66\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"426\" y=\"98\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">C</text><path d=\"M340 146L340 166\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M340 166L335.7 158.1M340 166L344.3 158.1\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"196\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"230\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">A</text><rect x=\"294\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"328\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">B</text><rect x=\"392\" y=\"176\" width=\"86\" height=\"30\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"426\" y=\"196\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">C</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un tableau kanban complet est demandé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Extension collection-kanban à naître — remontez, n'improvisez pas.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Seule l'alternative au glisser-déposer est déjà normative (CARD).</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLLECTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un changement de résultats <strong>s'annonce</strong> aux technologies d'assistance (le compteur mis à jour dans une région live polie) — obligation posée ici, mécanique à éprouver à la première implémentation réelle (<code>ACCESSIBILITY</code> : annonce des changements dynamiques).",
+       "id": "COLLECTION-R26"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Virtualisation (listes très longues)",
+     "quand": "Des milliers d'items à rendre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Hors périmètre de cette version",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Virtualisation (listes très longues)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"60\" width=\"228\" height=\"110\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"250\" y=\"90\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"112\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><circle cx=\"430\" cy=\"74\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M426.5 70.5l7 7M433.5 70.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"250\" y=\"152\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">hors périmètre — remonter</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des milliers d'items à rendre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Position à prendre avant tout consommateur — casse balisage liste et recherche navigateur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Remonter, documenter d'abord.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Table de données",
+     "quand": "Le besoin est un tableau à colonnes triables.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "05 · Hors périmètre de cette version",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Table de données\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"60\" width=\"228\" height=\"110\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"250\" y=\"90\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"112\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><circle cx=\"430\" cy=\"74\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M426.5 70.5l7 7M433.5 70.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"250\" y=\"152\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">hors périmètre — remonter</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le besoin est un tableau à colonnes triables.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hors périmètre du système — stoppez et remontez.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Ne pas déguiser une table en grille de cartes.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [],
+  "tokens": []
+ },
+ "evolution": [
+  {
+   "date": "2026-07-21",
+   "titre": "Pattern « collection » : la grille de colonnes naît chez son consommateur, intrinsèque et sans N canonique",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/patterns/collection/COLLECTION-UX.md</code> + <code>COLLECTION-UI.md</code> (1.0.0) ; <code>atelier/inventaires/inventaire-cas-usage-collection.md</code> (31 cas) ; <code>dist/RULES-collection.md</code> (maintenu à la main) ; <code>DESIGN.md</code> 1.27.0 (token <code>grid.item-min</code>) ; <code>GRID-UX.md</code> 1.1.0 + <code>GRID-UI.md</code> 1.1.0 (clause de naissance levée) ; <code>SPACING-UX.md</code> 1.2.1 (note de transposition réalisée) ; <code>CARD-UX.md</code> 1.4.1 + <code>CARD-UI.md</code> 1.5.1 (transfert <code>grid_gap</code>) ; <code>tools/genere-routeur.js</code> (l'intention Collection charge le pattern) ; contenus éditoriaux du site.</li><li><strong>Constat</strong> : GRID-UX (2026-07-16) et SPACING-UX avaient écrit une clause de naissance explicite — « la grille de colonnes naîtra avec le pattern collection/grille ». L'intention « Collection » du routeur existait sans pattern propriétaire ; CARD portait un <code>grid_gap</code> d'attente et promettait un « pattern collection dédié » pour le Kanban.</li><li><strong>Décisions</strong> :</li><li><strong>Grille intrinsèque</strong> (haute) : les colonnes émergent de <code>grid.item-min</code> (256px, seul token nouveau — 64 × la grille de base) et de l'espace réel via <code>repeat(auto-fill, minmax(min(100%, item-min), 1fr))</code> — jamais « 4 desktop / 2 tablette / 1 mobile ». Divergence assumée vs Carbon (16 col) / Material (window classes) : pas de multi-produits qui justifie un N canonique, et un viewport large ne garantit pas un conteneur large (cohérence adaptive). <code>auto-fill</code> jamais <code>auto-fit</code> (dernière rangée non déformée).</li><li><strong>Régime composé</strong> (moyenne) : dashboard en grille explicite, spans en cellules entières, colonnes choisies par le contenu — pas de 12 copié ; à éprouver au premier dashboard réel.</li><li><strong>Croissance</strong> (haute) : « charger plus » par défaut ; pagination quand la position est adressable ; scroll infini jamais seul (NN/g) ; état restauré au retour ; échec d'une page suivante = erreur locale, l'acquis reste.</li><li><strong>Transfert d'autorité</strong> (moyenne) : <code>CARD-UI.collection.grid_gap</code> devient un alias — le gap appartient au pattern (mapping par densité : compact = spacing.md, comfortable = spacing.lg). Même mécanisme que le transfert INPUT→FORM.</li><li><strong>Défauts de collection</strong> (moyenne) : tri par défaut annoncé, filtre d'office déclaré — le cas « En attente » de l'inventaire charge-cognitive trouve son propriétaire le jour même.</li><li><strong>Laissé ouvert</strong> : extension <code>collection-kanban</code> (promise par CARD-UX) ; virtualisation ; contrôles de barre d'outils (select, chips — composants à naître, tout build qui en a besoin remonte) ; N canonique du composé si un dashboard réel le réclame ; mécanique de la région live du compteur à éprouver.</li><li><strong>Pourquoi</strong> : deuxième absence du fil « quatre axes » intégrée, par la voie complète de la méthode — et la clause écrite le 2026-07-16 est honorée telle quelle : le système a tenu sa propre promesse de ne documenter la grille qu'avec son premier consommateur.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "COLLECTION-R01",
+   "couche": "ux",
+   "solution": "`collection` est un **pattern** — une composition, pas un atome. Le modèle à axes ne s'y applique pas (comme `form`) : ses variables sont le **régime de grille** (items homogènes / composé) et la **densité**, qui appartient déjà à `CARD`. Aucun axe style/tone.",
+   "enonce": "Un pattern de composition ne se décrit pas avec le modèle de variantes d'un composant atomique : ses variables sont ses régimes de composition et la densité de ses items, non des axes de style.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Grille d'items homogènes",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R02",
+   "couche": "ux",
+   "solution": "ce pattern **lève la clause de naissance** de la grille de colonnes. `GRID-UX.md` (§ Frontières) et `SPACING-UX.md` (§ note de transposition) l'avaient différée « jusqu'au pattern collection/grille » : la grille naît ici, et elle hérite des cadrages posés — les gouttières sont des tokens `spacing`, le cadre de page reste `grid.container-*`, une seule valeur nouvelle au besoin démontré (`grid.item-min`). La levée est actée dans `GRID-UX.md` 1.1.0 et journalisée (DECISIONS.md 2026-07-21).",
+   "enonce": "La grille de colonnes appartient au pattern de collection, qui la fait naître ; les fondations de mise en page et d'espacement qui en avaient différé la définition gardent l'autorité sur le cadre de page et sur l'échelle des valeurs.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Gouttières de la grille",
+     "famille": "Régimes et grille"
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Cadre de page de la collection",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R03",
+   "couche": "ux",
+   "solution": "**transfert d'autorité** — le nombre de colonnes et la gouttière d'une collection appartiennent au pattern, pas à la carte. `CARD-UI.md` portait un `grid_gap` d'attente ; il renvoie désormais ici (même mécanisme que le transfert de la stratégie de validation d'INPUT vers FORM — journalisé, DECISIONS.md 2026-07-21).",
+   "enonce": "Le nombre de colonnes et la gouttière d'une collection sont détenus par le pattern de collection, non par le composant d'item qu'elle dispose.",
+   "mesure": "aucun token de gouttière de grille défini dans le composant d'item",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R04",
+   "couche": "ux",
+   "solution": "régime **items homogènes** — le cas de référence : résultats, catalogue, galerie. Tous les items ont le même poids, la même largeur ; la grille est **intrinsèque** (colonnes émergentes, voir ci-dessous).",
+   "enonce": "Une collection d'items homogènes présente des items de même poids et de même largeur, disposés sur une grille dont les colonnes émergent d'une largeur minimale d'item.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+     "liens": [
+      {
+       "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+       "url": "https://web.dev/articles/one-line-layouts"
+      },
+      {
+       "label": "MDN — repeat() / minmax()",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+      }
+     ],
+     "confiance": "Établi — technique standard documentée"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+    "liens": [
+     {
+      "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+      "url": "https://web.dev/articles/one-line-layouts"
+     },
+     {
+      "label": "MDN — repeat() / minmax()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+     }
+    ],
+    "confiance": "Établi — technique standard documentée"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Grille d'items homogènes",
+     "famille": "Régimes et grille"
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Une colonne sous le régime mobile",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R05",
+   "couche": "ux",
+   "solution": "régime **composé** — le dashboard : des widgets de tailles différentes dont la hiérarchie vient de la **taille dans la grille** (règle `CARD`), sur une grille **explicite** à colonnes égales, spans en cellules entières, mêmes gouttières. Le nombre de colonnes du composé se choisit par le contenu du dashboard, pas par un 12 canonique copié — divergence assumée vs Carbon/Material, journalisée, à éprouver au premier dashboard réel.",
+   "enonce": "Une collection composée dispose des blocs de tailles différentes sur une grille explicite à colonnes égales, chaque bloc occupant un nombre entier de cellules, le nombre de colonnes se choisissant sur le contenu plutôt que sur un nombre canonique repris d'un autre système.",
+   "mesure": "toute portée de bloc s'exprime en nombre entier de colonnes",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Grilles fixes des systèmes majeurs (Carbon 16 col / Material window classes) — écartées ici",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "Material — Responsive layout grid",
+       "url": "https://m2.material.io/design/layout/responsive-layout-grid.html"
+      }
+     ],
+     "confiance": "Établi chez eux — divergence interne assumée : pas de consommateur multi-produits qui justifie un N canonique"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Grilles fixes des systèmes majeurs (Carbon 16 col / Material window classes) — écartées ici",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "Material — Responsive layout grid",
+      "url": "https://m2.material.io/design/layout/responsive-layout-grid.html"
+     }
+    ],
+    "confiance": "Établi chez eux — divergence interne assumée : pas de consommateur multi-produits qui justifie un N canonique"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Dashboard composé",
+     "famille": "Régimes et grille"
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Gouttières de la grille",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R06",
+   "couche": "ux",
+   "solution": "une collection ne mélange pas les régimes — un dashboard peut *contenir* une grille d'items homogènes (widget-liste), l'inverse n'existe pas.",
+   "enonce": "Une même collection n'applique qu'un seul régime de grille ; une collection composée peut contenir une collection d'items homogènes, jamais l'inverse.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Grille d'items homogènes",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R07",
+   "couche": "ux",
+   "solution": "le nombre de colonnes **émerge** de deux facteurs : la largeur minimale d'un item (`grid.item-min`) et l'espace réellement disponible. Il n'est **jamais** fixé par appareil ni par breakpoint intermédiaire — c'est la déclinaison grille du principe adaptatif (les seuils viennent du contenu).",
+   "enonce": "Le nombre de colonnes d'une collection se déduit de la largeur minimale d'un item et de l'espace réellement disponible dans son conteneur, jamais d'une classe d'appareil ni d'un point de rupture intermédiaire.",
+   "mesure": "aucune requête média ne fixe un nombre de colonnes de collection",
+   "contre": "",
+   "probleme": "une grille « 4 colonnes desktop / 2 tablette / 1 mobile » fige des classes d'appareils que le produit ne mesure pas et casse dans une sidebar ou un split-screen (le viewport large ne garantit pas un conteneur large — `ADAPTIVE`). Une grille pilotée par la largeur d'item est juste partout, sans palier à maintenir. Technique CSS d'une ligne, établie (cf. `COLLECTION-UI.md`).",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+     "liens": [
+      {
+       "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+       "url": "https://web.dev/articles/one-line-layouts"
+      },
+      {
+       "label": "MDN — repeat() / minmax()",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+      }
+     ],
+     "confiance": "Établi — technique standard documentée"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Les seuils viennent du contenu, pas de l'appareil ; le conteneur ne garantit rien du viewport",
+     "liens": [
+      {
+       "label": "`ADAPTIVE-UX.md` (principe interne, socle)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi en interne — cohérence de système"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Grilles fixes des systèmes majeurs (Carbon 16 col / Material window classes) — écartées ici",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "Material — Responsive layout grid",
+       "url": "https://m2.material.io/design/layout/responsive-layout-grid.html"
+      }
+     ],
+     "confiance": "Établi chez eux — divergence interne assumée : pas de consommateur multi-produits qui justifie un N canonique"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+    "liens": [
+     {
+      "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+      "url": "https://web.dev/articles/one-line-layouts"
+     },
+     {
+      "label": "MDN — repeat() / minmax()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+     }
+    ],
+    "confiance": "Établi — technique standard documentée"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Nombre de colonnes selon l'espace",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R08",
+   "couche": "ux",
+   "solution": "sous `breakpoint.mobile`, la grille passe en **colonne unique** pleine largeur — c'est la règle que `DESIGN.md` notait déjà sur le token (« grille de cartes → 1 colonne ») ; elle trouve ici son propriétaire.",
+   "enonce": "Sous le point de rupture mobile, la collection s'affiche en colonne unique occupant toute la largeur disponible.",
+   "mesure": "une seule colonne d'items en dessous du point de rupture mobile",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Une colonne sous le régime mobile",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R09",
+   "couche": "ux",
+   "solution": "la **dernière rangée incomplète** reste alignée au flux de lecture — les items gardent leur largeur, rien ne s'étire pour « remplir » (la déformation casse l'uniformité que la collection promet).",
+   "enonce": "La dernière rangée incomplète conserve la largeur d'item des rangées pleines : aucun item ne s'étire pour combler l'espace restant.",
+   "mesure": "la largeur d'item de la dernière rangée est égale à celle des rangées précédentes",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+     "liens": [
+      {
+       "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+       "url": "https://web.dev/articles/one-line-layouts"
+      },
+      {
+       "label": "MDN — repeat() / minmax()",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+      }
+     ],
+     "confiance": "Établi — technique standard documentée"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Grille intrinsèque : colonnes émergentes via une largeur minimale d'item (une ligne de CSS, sans media query)",
+    "liens": [
+     {
+      "label": "web.dev — One-line layouts (RAM : repeat, auto, minmax)",
+      "url": "https://web.dev/articles/one-line-layouts"
+     },
+     {
+      "label": "MDN — repeat() / minmax()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+     }
+    ],
+    "confiance": "Établi — technique standard documentée"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Dernière rangée incomplète",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R10",
+   "couche": "ux",
+   "solution": "le **reflux ne réordonne jamais** — 3→2→1 colonnes préserve l'ordre de lecture et l'ordre DOM (`ADAPTIVE` fait autorité) ; la grille ne « remonte » pas un item mis en avant, la mise en avant est un choix d'ordre, pas de layout.",
+   "enonce": "Le passage d'un nombre de colonnes à un autre préserve l'ordre de lecture, l'ordre du document et l'ordre de focus ; la mise en avant d'un item se décide par son rang, jamais par une réorganisation visuelle qui contredit l'ordre programmatique.",
+   "mesure": "l'ordre visuel des items est identique à l'ordre du document à toutes les largeurs ; aucune propriété d'ordre CSS sur les items",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Lorsque l'ordre de présentation du contenu affecte son sens, une séquence de lecture correcte doit pouvoir être déterminée programmatiquement ; le repositionnement par CSS qui change le sens du contenu est un échec documenté",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+      }
+     ],
+     "confiance": "Établi, standard (A) — fonde l'interdiction de réordonner visuellement au reflux"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Les composants focalisables reçoivent le focus dans un ordre qui préserve le sens et l'opérabilité, y compris lorsque du contenu est inséré dynamiquement — la recommandation étant d'insérer le contenu dynamique immédiatement après son élément déclencheur",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.3 Focus Order",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html"
+      }
+     ],
+     "confiance": "Établi, standard (A) — s'applique au reflux et à l'insertion d'un incrément ; **la norme ne prescrit pas de mécanique de focus propre à la pagination, et le fichier n'en contient aucune règle**"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Les seuils viennent du contenu, pas de l'appareil ; le conteneur ne garantit rien du viewport",
+     "liens": [
+      {
+       "label": "`ADAPTIVE-UX.md` (principe interne, socle)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi en interne — cohérence de système"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Lorsque l'ordre de présentation du contenu affecte son sens, une séquence de lecture correcte doit pouvoir être déterminée programmatiquement ; le repositionnement par CSS qui change le sens du contenu est un échec documenté",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+     }
+    ],
+    "confiance": "Établi, standard (A) — fonde l'interdiction de réordonner visuellement au reflux"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Ordre préservé au reflux",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R11",
+   "couche": "ux",
+   "solution": "une collection d'**un ou deux items** garde sa grille et ses largeurs — pas de mise en scène spéciale du petit nombre ; la stabilité prime quand la collection grandira.",
+   "enonce": "Une collection réduite à un ou deux items conserve la grille et les largeurs de la collection pleine, sans mise en scène particulière du petit nombre.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R12",
+   "couche": "ux",
+   "solution": "la gouttière (inter-colonnes et inter-rangées, une seule valeur) est un token `spacing`, appareillé à la densité de la collection : `comfortable` et `compact` ont chacun leur gouttière (mapping dans `COLLECTION-UI.md`). Jamais de token « grid.gutter » propre — cadrage `SPACING` respecté.",
+   "enonce": "Une collection n'utilise qu'une seule valeur de gouttière, identique entre colonnes et rangées, prise dans l'échelle d'espacement du système et appariée à la densité de la collection.",
+   "mesure": "gouttière horizontale égale à la gouttière verticale, résolue vers un token d'espacement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Gouttières = tokens spacing, grille héritière de l'échelle",
+     "liens": [
+      {
+       "label": "`SPACING-UX.md` (cadrage journalisé 2026-07-16)",
+       "url": null
+      }
+     ],
+     "confiance": "Décision interne établie"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Gouttières = tokens spacing, grille héritière de l'échelle",
+    "liens": [
+     {
+      "label": "`SPACING-UX.md` (cadrage journalisé 2026-07-16)",
+      "url": null
+     }
+    ],
+    "confiance": "Décision interne établie"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Une seule densité par collection",
+     "famille": "Contenu et uniformité (autorité CARD — le pattern renvoie)"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R13",
+   "couche": "ux",
+   "solution": "la **zone de collection** peut se distinguer de la page par le fond `surface` (le token a été calibré pour exactement cette distinction) — elle regroupe la grille ET ses outils (barre de tri/filtres, compteur) en une région perçue comme une (Gestalt, région commune — via le catalogue des lois).",
+   "enonce": "La zone de collection peut se distinguer du fond de page par une surface propre, qui englobe la grille et ses outils comme une seule région perçue.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Barre d'outils (tri, filtres, recherche)",
+     "famille": "Outils de la collection"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R14",
+   "couche": "ux",
+   "solution": "les outils (tri, filtres, recherche, compteur) vivent **au-dessus de la grille**, position constante ; ils portent sur toute la collection — un contrôle qui ne porte que sur un item vit dans sa carte (`CARD`, zone d'actions).",
+   "enonce": "Les outils portant sur l'ensemble de la collection — tri, filtres, recherche, compteur — occupent une position constante au-dessus de la grille ; un contrôle qui ne porte que sur un item appartient à cet item.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "Les catégories de filtres se placent verticalement à gauche ou horizontalement au-dessus du jeu de données ; lorsqu'ils sont repliés, un indicateur visible signale que des filtres sont appliqués et en donne le nombre ; chaque catégorie offre un moyen de tout effacer, et un moyen global efface tous les filtres de toutes les catégories",
+     "liens": [
+      {
+       "label": "Carbon — Filtering",
+       "url": "https://carbondesignsystem.com/patterns/filtering/"
+      }
+     ],
+     "confiance": "Établi chez eux — converge avec S17 sur la visibilité et le retrait des filtres actifs ; **diverge sur la position** (gauche ou au-dessus), ce qui laisse notre « toujours au-dessus » en parti pris ; Carbon ne dit rien de l'annonce des changements aux technologies d'assistance"
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "Les catégories de filtres se placent verticalement à gauche ou horizontalement au-dessus du jeu de données ; lorsqu'ils sont repliés, un indicateur visible signale que des filtres sont appliqués et en donne le nombre ; chaque catégorie offre un moyen de tout effacer, et un moyen global efface tous les filtres de toutes les catégories",
+    "liens": [
+     {
+      "label": "Carbon — Filtering",
+      "url": "https://carbondesignsystem.com/patterns/filtering/"
+     }
+    ],
+    "confiance": "Établi chez eux — converge avec S17 sur la visibilité et le retrait des filtres actifs ; **diverge sur la position** (gauche ou au-dessus), ce qui laisse notre « toujours au-dessus » en parti pris ; Carbon ne dit rien de l'annonce des changements aux technologies d'assistance"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Barre d'outils (tri, filtres, recherche)",
+     "famille": "Outils de la collection"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R15",
+   "couche": "ux",
+   "solution": "le **tri par défaut est annoncé** — la collection arrive triée par un défaut sensé ET visible (« Récents d'abord »), jamais silencieux. C'est le cas « En attente » de l'inventaire charge-cognitive qui trouve ici son propriétaire (`COGNITIVE-LOAD` pose l'obligation de défaut, ce pattern la mécanise).",
+   "enonce": "Le tri appliqué par défaut est visible et nommé dans l'interface : une collection n'arrive jamais triée silencieusement.",
+   "mesure": "un libellé de tri est affiché à l'arrivée sur la collection",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S18",
+     "affirmation": "Un tableau expose les rôles table, row, columnheader/rowheader et cell, et « si le tableau contient des colonnes ou des rangées triables, aria-sort est positionné à la valeur appropriée sur la cellule d'en-tête de la colonne ou de la rangée triée » ; l'attribut ne doit être posé que sur un seul en-tête à la fois et se déplace vers la colonne nouvellement triée",
+     "liens": [
+      {
+       "label": "ARIA APG — Table Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/table/"
+      },
+      {
+       "label": "MDN — aria-sort",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-sort"
+      }
+     ],
+     "confiance": "Établi, norme — **mais sans consommateur dans ce fichier** : la collection ne documente aucun régime tabulaire, aucune règle d'en-têtes de colonnes ni d'état de tri programmatique ; la déclaration visible du tri par défaut est notre parti pris, sa contrepartie normative pour un rendu en tableau est ici"
+    }
+   ],
+   "principale": {
+    "ref": "S18",
+    "affirmation": "Un tableau expose les rôles table, row, columnheader/rowheader et cell, et « si le tableau contient des colonnes ou des rangées triables, aria-sort est positionné à la valeur appropriée sur la cellule d'en-tête de la colonne ou de la rangée triée » ; l'attribut ne doit être posé que sur un seul en-tête à la fois et se déplace vers la colonne nouvellement triée",
+    "liens": [
+     {
+      "label": "ARIA APG — Table Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/table/"
+     },
+     {
+      "label": "MDN — aria-sort",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-sort"
+     }
+    ],
+    "confiance": "Établi, norme — **mais sans consommateur dans ce fichier** : la collection ne documente aucun régime tabulaire, aucune règle d'en-têtes de colonnes ni d'état de tri programmatique ; la déclaration visible du tri par défaut est notre parti pris, sa contrepartie normative pour un rendu en tableau est ici"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Tri par défaut annoncé",
+     "famille": "Outils de la collection"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R16",
+   "couche": "ux",
+   "solution": "un **filtre actif d'office se déclare** — il ne cache jamais silencieusement une partie des résultats (déclinaison directe de la frontière dure « jamais un coût caché » : un sous-ensemble non déclaré est une information cachée).",
+   "enonce": "Un filtre actif dès l'arrivée sur la collection est déclaré visiblement : aucune restriction du jeu de résultats n'est appliquée sans que l'utilisateur puisse la constater.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Filtre par défaut déclaré",
+     "famille": "Outils de la collection"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R17",
+   "couche": "ux",
+   "solution": "les **filtres actifs restent visibles** et se retirent d'un geste ; le **compteur de résultats** se met à jour avec eux (formulation : `VOICE`).",
+   "enonce": "Les filtres actifs restent affichés, chacun retirable d'un seul geste, et le compteur de résultats reflète le jeu filtré à chaque changement.",
+   "mesure": "chaque filtre actif est affiché avec un moyen de retrait direct ; le nombre affiché par le compteur correspond au jeu de résultats filtré",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "Les catégories de filtres se placent verticalement à gauche ou horizontalement au-dessus du jeu de données ; lorsqu'ils sont repliés, un indicateur visible signale que des filtres sont appliqués et en donne le nombre ; chaque catégorie offre un moyen de tout effacer, et un moyen global efface tous les filtres de toutes les catégories",
+     "liens": [
+      {
+       "label": "Carbon — Filtering",
+       "url": "https://carbondesignsystem.com/patterns/filtering/"
+      }
+     ],
+     "confiance": "Établi chez eux — converge avec S17 sur la visibilité et le retrait des filtres actifs ; **diverge sur la position** (gauche ou au-dessus), ce qui laisse notre « toujours au-dessus » en parti pris ; Carbon ne dit rien de l'annonce des changements aux technologies d'assistance"
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Les filtres appliqués sont rendus sous forme de pastilles retirables individuellement, avec une réinitialisation globale, l'ensemble formant une barre de contrôle solidaire de la liste ou du tableau",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Filters",
+       "url": "https://polaris-react.shopify.com/components/selection-and-input/filters"
+      }
+     ],
+     "confiance": "Établi chez eux — avec S16, deux systèmes publics convergents : filtres actifs visibles, retirables un à un, effaçables en bloc"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Un message de statut — information sur le résultat d'une action, l'attente ou l'existence d'erreurs — doit être déterminable programmatiquement par un rôle ou une propriété et présentable par les technologies d'assistance sans recevoir le focus ; « 18 results returned » et « No results returned » sont donnés en exemples, tandis que la liste de résultats elle-même n'est pas un message de statut",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.3 Status Messages",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **la norme la plus directement applicable au compteur de résultats d'une collection** ; elle fonde aussi le fait que la grille ne doit pas être une région live"
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "Les catégories de filtres se placent verticalement à gauche ou horizontalement au-dessus du jeu de données ; lorsqu'ils sont repliés, un indicateur visible signale que des filtres sont appliqués et en donne le nombre ; chaque catégorie offre un moyen de tout effacer, et un moyen global efface tous les filtres de toutes les catégories",
+    "liens": [
+     {
+      "label": "Carbon — Filtering",
+      "url": "https://carbondesignsystem.com/patterns/filtering/"
+     }
+    ],
+    "confiance": "Établi chez eux — converge avec S17 sur la visibilité et le retrait des filtres actifs ; **diverge sur la position** (gauche ou au-dessus), ce qui laisse notre « toujours au-dessus » en parti pris ; Carbon ne dit rien de l'annonce des changements aux technologies d'assistance"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Compteur de résultats",
+     "famille": "Outils de la collection"
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Filtres actifs toujours visibles",
+     "famille": "Outils de la collection"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R18",
+   "couche": "ux",
+   "solution": "((périmètre)) la **mécanique des contrôles** de la barre d'outils attend ses composants — select, chips de filtre n'existent pas dans le système. Un build qui en a besoin **s'arrête et remonte** ; ce pattern pose les obligations, pas les contrôles.",
+   "enonce": "Ce document pose les obligations de la barre d'outils sans définir les contrôles qui la composent : un besoin de contrôle absent du système suspend l'implémentation et est remonté.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R19",
+   "couche": "ux",
+   "solution": "une collection longue grandit par **« Charger plus »** par défaut : l'utilisateur garde le contrôle, le pied de page reste atteignable, la position reste stable.",
+   "enonce": "Par défaut, une collection longue s'étend sur demande explicite de l'utilisateur, sans déplacer sa position de lecture ni éloigner le pied de page.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Scroll infini : contrôle réduit, footer inatteignable, mauvais pour la recherche orientée but ; alternatives charger-plus/pagination",
+     "liens": [
+      {
+       "label": "NN/g — Infinite Scrolling: When to Use It, When to Avoid It",
+       "url": "https://www.nngroup.com/articles/infinite-scrolling-tips/"
+      }
+     ],
+     "confiance": "Établi (recommandation argumentée) ; la répartition exacte par contexte reste un arbitrage produit"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "La pagination est recommandée quand tout afficher sur une page allonge trop le chargement et que la plupart des utilisateurs ne consultent que les premières pages ; elle est déconseillée dans les parcours linéaires, et le défilement infini est écarté parce qu'il crée des problèmes de navigation au clavier ; le composant impose un repère de navigation étiqueté, l'indication de la page courante et le numéro de page dans le titre du document",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Pagination",
+       "url": "https://design-system.service.gov.uk/components/pagination/"
+      }
+     ],
+     "confiance": "Établi chez eux — deuxième source publique convergente avec S3 contre le défilement infini seul ; **les exigences d'accessibilité de la pagination (repère, page courante, titre) n'ont aucun équivalent dans ce fichier**"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Scroll infini : contrôle réduit, footer inatteignable, mauvais pour la recherche orientée but ; alternatives charger-plus/pagination",
+    "liens": [
+     {
+      "label": "NN/g — Infinite Scrolling: When to Use It, When to Avoid It",
+      "url": "https://www.nngroup.com/articles/infinite-scrolling-tips/"
+     }
+    ],
+    "confiance": "Établi (recommandation argumentée) ; la répartition exacte par contexte reste un arbitrage produit"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Croissance : « Charger plus »",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R20",
+   "couche": "ux",
+   "solution": "la **pagination** remplace « Charger plus » quand la *position* a de la valeur — résultats à citer, retrouver, comparer (« page 3 ») ; elle est le seul mode qui rend un emplacement adressable.",
+   "enonce": "La pagination remplace l'extension à la demande lorsque la position d'un résultat doit être adressable — citée, retrouvée ou comparée.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "La pagination est recommandée quand tout afficher sur une page allonge trop le chargement et que la plupart des utilisateurs ne consultent que les premières pages ; elle est déconseillée dans les parcours linéaires, et le défilement infini est écarté parce qu'il crée des problèmes de navigation au clavier ; le composant impose un repère de navigation étiqueté, l'indication de la page courante et le numéro de page dans le titre du document",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Pagination",
+       "url": "https://design-system.service.gov.uk/components/pagination/"
+      }
+     ],
+     "confiance": "Établi chez eux — deuxième source publique convergente avec S3 contre le défilement infini seul ; **les exigences d'accessibilité de la pagination (repère, page courante, titre) n'ont aucun équivalent dans ce fichier**"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Scroll infini : contrôle réduit, footer inatteignable, mauvais pour la recherche orientée but ; alternatives charger-plus/pagination",
+     "liens": [
+      {
+       "label": "NN/g — Infinite Scrolling: When to Use It, When to Avoid It",
+       "url": "https://www.nngroup.com/articles/infinite-scrolling-tips/"
+      }
+     ],
+     "confiance": "Établi (recommandation argumentée) ; la répartition exacte par contexte reste un arbitrage produit"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "La pagination est recommandée quand tout afficher sur une page allonge trop le chargement et que la plupart des utilisateurs ne consultent que les premières pages ; elle est déconseillée dans les parcours linéaires, et le défilement infini est écarté parce qu'il crée des problèmes de navigation au clavier ; le composant impose un repère de navigation étiqueté, l'indication de la page courante et le numéro de page dans le titre du document",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Pagination",
+      "url": "https://design-system.service.gov.uk/components/pagination/"
+     }
+    ],
+    "confiance": "Établi chez eux — deuxième source publique convergente avec S3 contre le défilement infini seul ; **les exigences d'accessibilité de la pagination (repère, page courante, titre) n'ont aucun équivalent dans ce fichier**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Croissance : « Charger plus »",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R21",
+   "couche": "ux",
+   "solution": "le **scroll infini n'est jamais seul** — s'il existe, il est doublé d'un chemin fini (charger-plus ou pagination) et n'emporte jamais un écran qui a un footer à atteindre. Position NN/g adoptée : le scroll infini convient au flux de découverte, pas à la recherche orientée but.",
+   "enonce": "Le défilement infini n'est jamais le seul moyen de parcourir une collection : il est doublé d'un chemin fini, et il est exclu d'un écran dont le pied de page doit rester atteignable.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Scroll infini : contrôle réduit, footer inatteignable, mauvais pour la recherche orientée but ; alternatives charger-plus/pagination",
+     "liens": [
+      {
+       "label": "NN/g — Infinite Scrolling: When to Use It, When to Avoid It",
+       "url": "https://www.nngroup.com/articles/infinite-scrolling-tips/"
+      }
+     ],
+     "confiance": "Établi (recommandation argumentée) ; la répartition exacte par contexte reste un arbitrage produit"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "La pagination est recommandée quand tout afficher sur une page allonge trop le chargement et que la plupart des utilisateurs ne consultent que les premières pages ; elle est déconseillée dans les parcours linéaires, et le défilement infini est écarté parce qu'il crée des problèmes de navigation au clavier ; le composant impose un repère de navigation étiqueté, l'indication de la page courante et le numéro de page dans le titre du document",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Pagination",
+       "url": "https://design-system.service.gov.uk/components/pagination/"
+      }
+     ],
+     "confiance": "Établi chez eux — deuxième source publique convergente avec S3 contre le défilement infini seul ; **les exigences d'accessibilité de la pagination (repère, page courante, titre) n'ont aucun équivalent dans ce fichier**"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Scroll infini : contrôle réduit, footer inatteignable, mauvais pour la recherche orientée but ; alternatives charger-plus/pagination",
+    "liens": [
+     {
+      "label": "NN/g — Infinite Scrolling: When to Use It, When to Avoid It",
+      "url": "https://www.nngroup.com/articles/infinite-scrolling-tips/"
+     }
+    ],
+    "confiance": "Établi (recommandation argumentée) ; la répartition exacte par contexte reste un arbitrage produit"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Croissance : « Charger plus »",
+     "famille": "Chargement, croissance, changement"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Scroll infini",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R22",
+   "couche": "ux",
+   "solution": "**revenir à la collection restaure l'état** — position, tri, filtres. Une collection qui oublie où l'utilisateur en était lui fait payer deux fois le même parcours (reconnaissance plutôt que rappel, `COGNITIVE-LOAD`).",
+   "enonce": "Le retour à une collection déjà consultée en restaure la position, le tri et les filtres.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R23",
+   "couche": "ux",
+   "solution": "si la **page suivante échoue**, l'acquis reste affiché — l'erreur est locale, réessayable, elle ne détruit jamais ce qui est déjà là (même logique que le succès partiel de `FORM`).",
+   "enonce": "L'échec du chargement d'un incrément laisse en place les items déjà affichés et propose une reprise locale de la seule opération échouée.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-4",
+     "titre": "Échec de la page suivante",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R24",
+   "couche": "ux",
+   "solution": "au chargement initial, des **squelettes** (`CARD` fait autorité sur leur anatomie) occupent un **nombre de cellules stable** — la grille ne saute pas quand le contenu arrive ; rien n'anime (`CARD`/`MOTION`).",
+   "enonce": "Au chargement initial, les marques d'attente occupent un nombre de cellules stable, de sorte que l'arrivée du contenu ne déplace pas la grille, et rien ne s'anime.",
+   "mesure": "aucun décalage de mise en page mesurable entre l'état d'attente et l'état chargé",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Squelettes au chargement initial",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R25",
+   "couche": "ux",
+   "solution": "trier ou filtrer **réorganise sans spectacle** — registre productif de `MOTION` (crans `base`, jamais de chorégraphie) ; sous `prefers-reduced-motion`, le résultat remplace l'ancien sans transition.",
+   "enonce": "Un tri ou un filtrage réorganise la grille sobrement et sans changement de contexte — ni déplacement du focus, ni changement de vue imposé ; sous préférence de mouvement réduit, le nouveau résultat remplace l'ancien sans transition.",
+   "mesure": "sous préférence de mouvement réduit, aucune transition ni animation au changement de tri ou de filtre",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "La préférence de mouvement réduit est une caractéristique média standard indiquant que l'utilisateur demande la suppression, la réduction ou le remplacement des animations non essentielles",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — standard CSS, fonde le remplacement sans transition au tri et au filtrage"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Changer le réglage d'un composant d'interface ne doit pas provoquer automatiquement un changement de contexte sans que l'utilisateur en ait été averti ; la norme précise qu'« un changement de contenu n'est pas toujours un changement de contexte », les changements de contexte visant l'agent utilisateur, la zone d'affichage, le focus et le contenu qui change le sens de la page",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.2 On Input",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/on-input.html"
+      }
+     ],
+     "confiance": "Établi, standard (A) — **vérifié et nuancé** : réordonner ou filtrer une liste de résultats est un changement de contenu, pas un changement de contexte ; un contrôle de tri qui s'applique à la sélection reste conforme tant qu'il ne déplace ni le focus ni la vue (technique SCR19)"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "La préférence de mouvement réduit est une caractéristique média standard indiquant que l'utilisateur demande la suppression, la réduction ou le remplacement des animations non essentielles",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — standard CSS, fonde le remplacement sans transition au tri et au filtrage"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R26",
+   "couche": "ux",
+   "solution": "un changement de résultats **s'annonce** aux technologies d'assistance (le compteur mis à jour dans une région live polie) — obligation posée ici, mécanique à éprouver à la première implémentation réelle (`ACCESSIBILITY` : annonce des changements dynamiques).",
+   "enonce": "Tout changement du jeu de résultats est annoncé aux technologies d'assistance par un message de statut déterminable programmatiquement, qui ne prend pas le focus.",
+   "mesure": "le compteur de résultats est exposé dans une région live polie et sa valeur change à chaque changement de résultats",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Un message de statut — information sur le résultat d'une action, l'attente ou l'existence d'erreurs — doit être déterminable programmatiquement par un rôle ou une propriété et présentable par les technologies d'assistance sans recevoir le focus ; « 18 results returned » et « No results returned » sont donnés en exemples, tandis que la liste de résultats elle-même n'est pas un message de statut",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.3 Status Messages",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **la norme la plus directement applicable au compteur de résultats d'une collection** ; elle fonde aussi le fait que la grille ne doit pas être une région live"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Un message de statut — information sur le résultat d'une action, l'attente ou l'existence d'erreurs — doit être déterminable programmatiquement par un rôle ou une propriété et présentable par les technologies d'assistance sans recevoir le focus ; « 18 results returned » et « No results returned » sont donnés en exemples, tandis que la liste de résultats elle-même n'est pas un message de statut",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.3 Status Messages",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — **la norme la plus directement applicable au compteur de résultats d'une collection** ; elle fonde aussi le fait que la grille ne doit pas être une région live"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Compteur de résultats",
+     "famille": "Outils de la collection"
+    },
+    {
+     "id": "cas-4-0",
+     "titre": "Kanban (réordonnancement fin, live region de drag)",
+     "famille": "Hors périmètre de cette version"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R27",
+   "couche": "ux",
+   "solution": "les états **vide, sans résultat, erreur** appartiennent à `CARD` (empty states structurés) et `VOICE` (ton productif, jamais blâmer) — le pattern ne fait que garantir leur place : dans la zone de collection, à la place de la grille, jamais en toast éphémère.",
+   "enonce": "Les états vide, sans résultat et en erreur sont rendus par le composant d'état vide et par le langage éditorial ; la collection garantit seulement qu'ils prennent la place de la grille et ne sont jamais éphémères.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Les états vides se répartissent en trois cas (absence de données, résultat d'une action de l'utilisateur, erreur ou permission) ; leur anatomie est image optionnelle, titre, corps, action principale optionnelle ; « les états vides apparaissent toujours dans l'espace resté vide, dans le contexte des données manquantes » et « remplacent l'élément qui s'afficherait normalement » — pour un tableau, l'état vide remplace le tableau, en-têtes compris",
+     "liens": [
+      {
+       "label": "Carbon — Empty states",
+       "url": "https://carbondesignsystem.com/patterns/empty-states-pattern/"
+      }
+     ],
+     "confiance": "Établi chez eux — **convention de design system, pas une norme** ; converge avec S13 et S14 sur la structure et le rôle, diverge sur le périmètre (Carbon accepte l'état vide partiel, Polaris le réserve à la page entière)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "L'état vide est utilisé « quand une liste, un tableau ou un graphique n'a aucun élément ni donnée à afficher » ; il combine titre orienté action, illustration, corps et une seule action principale, et son ton évite de faire sentir l'échec à l'utilisateur ; Polaris le réserve explicitement aux pages entières",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Empty state",
+       "url": "https://polaris-react.shopify.com/components/layout-and-structure/empty-state"
+      }
+     ],
+     "confiance": "Établi chez eux — convention ; divergence de périmètre notée avec S12"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "« Un état vide apparaît lorsqu'il n'y a aucune donnée à afficher et décrit ce que l'utilisateur peut faire ensuite »",
+     "liens": [
+      {
+       "label": "Atlassian Design System — Empty state",
+       "url": "https://atlassian.design/components/empty-state"
+      }
+     ],
+     "confiance": "Établi chez eux — troisième système public convergent sur la définition (expliquer + proposer la suite) ; page peu détaillée, la convergence porte sur le principe, pas sur l'anatomie"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Les états vides se répartissent en trois cas (absence de données, résultat d'une action de l'utilisateur, erreur ou permission) ; leur anatomie est image optionnelle, titre, corps, action principale optionnelle ; « les états vides apparaissent toujours dans l'espace resté vide, dans le contexte des données manquantes » et « remplacent l'élément qui s'afficherait normalement » — pour un tableau, l'état vide remplace le tableau, en-têtes compris",
+    "liens": [
+     {
+      "label": "Carbon — Empty states",
+      "url": "https://carbondesignsystem.com/patterns/empty-states-pattern/"
+     }
+    ],
+    "confiance": "Établi chez eux — **convention de design system, pas une norme** ; converge avec S13 et S14 sur la structure et le rôle, diverge sur le périmètre (Carbon accepte l'état vide partiel, Polaris le réserve à la page entière)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-6",
+     "titre": "Collection vide / sans résultat / erreur",
+     "famille": "Chargement, croissance, changement"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R28",
+   "couche": "ux",
+   "solution": "**Interaction** — une collection est une surface de consultation calme ; un seul mode d'interaction par collection (`CARD`), et la barre d'outils n'introduit pas de deuxième « primary » d'écran (budget de décision, `COGNITIVE-LOAD`).",
+   "enonce": "Le mode d'interaction des items relève du composant d'item et le budget d'actions de l'écran du principe de charge cognitive ; la barre d'outils d'une collection n'introduit pas d'action principale concurrente.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Un seul mode d'interaction par collection",
+     "famille": "Contenu et uniformité (autorité CARD — le pattern renvoie)"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R29",
+   "couche": "ux",
+   "solution": "**Motion** — rien au chargement, sobriété au changement (ci-dessus) ; le mouvement confirme un tri demandé, il ne décore jamais une grille.",
+   "enonce": "Le registre de mouvement d'une collection est celui du langage de motion : rien au chargement, sobriété au changement, aucune animation décorative.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R30",
+   "couche": "ux",
+   "solution": "**Voice** — compteurs, libellés de tri et états vides suivent la mécanique commune (nombres, casse) ; « sans résultat » décrit et propose, ne blâme pas.",
+   "enonce": "La formulation des compteurs, des libellés de tri et des états sans résultat relève du langage éditorial, qui décrit et propose sans blâmer.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R31",
+   "couche": "ux",
+   "solution": "**E-motion** — sans objet, comme pour la carte : tout ce qui se répète par item est disqualifié par le budget de rareté ; l'expression appartient au contenu injecté, jamais au conteneur.",
+   "enonce": "L'expression émotionnelle est sans objet au niveau du conteneur de collection : ce qui se répète à chaque item est exclu par le budget de rareté et appartient au contenu injecté.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-8",
+     "titre": "Item unique ou rare",
+     "famille": "Régimes et grille"
+    }
+   ]
+  },
+  {
+   "id": "COLLECTION-R33",
+   "couche": "ux",
+   "solution": "**le mode appartient à la collection, la cible appartient à l'élément.** Une collection ne porte qu'un seul mode d'interaction (R28) — mais tous ses éléments n'ont pas forcément une destination : une règle sans détail supplémentaire, une ligne sans fiche, une option indisponible. Un élément qui n'ouvre rien se déclare **sans cible** et perd alors *toute* affordance : pas de curseur d'action, pas de **surface** au survol, pas de relief, pas de cible étendue. Il garde sa place, sa forme et son rang dans la collection.",
+   "enonce": "Dans une collection, le mode d'interaction est une propriété du groupe et la présence d'une cible une propriété de l'élément ; un élément sans cible ne présente aucun signal d'interaction.",
+   "mesure": "aucun élément dépourvu de destination ou de commande ne porte de curseur d'action, ne gagne de surface au survol, ni ne reçoit de relief.",
+   "contre": "**aucun système public relevé ne l'écrit.** Les motifs ARIA de liste et de grille documentent la sélection et le tri, jamais la disponibilité d'un élément isolé ; le motif Listbox ne mentionne même pas d'option désactivée (vérifié le 2026-07-27). Notre position est donc isolée, et assumée comme telle.",
+   "probleme": "sans cette séparation, il ne reste que deux issues, toutes deux mauvaises. Garder l'affordance partout fait promettre au survol un contenu qui n'existe pas — un mensonge d'interface, et la contradiction directe de « le relief est un signal, jamais un décor » (CARD-UX). Retirer l'affordance partout oblige à réintroduire un bouton explicite sur chaque élément qui, lui, mène quelque part : l'interface s'alourdit d'un contrôle par ligne pour compenser une information que la carte pouvait porter seule.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-R32",
+   "couche": "ux",
+   "solution": "**la grille est un contrat, pas une décoration.** Ce que la collection promet — même largeur, même rythme, même ordre, mêmes règles pour chaque item — est exactement ce que l'utilisateur utilise pour balayer vite. Chaque exception locale (une carte plus large « pour mettre en avant », un ratio différent « juste ici ») dépense la prédictibilité de toute la collection. La mise en avant se fait par l'ordre, la taille *dans* la grille (régime composé) ou le contenu — jamais en cassant le contrat.",
+   "enonce": "L'uniformité de largeur, de rythme, d'ordre et de règles est le contrat d'une collection : la mise en avant d'un item passe par son rang, par sa taille en cellules ou par son contenu, jamais par une exception locale à ce contrat.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "la mécanique de grille intrinsèque est établie (technique standard + cohérence avec le principe adaptatif) ; le refus d'un nombre de colonnes canonique et la hiérarchie charger-plus > pagination > scroll-infini-doublé sont des **positions du système** (convergence NN/g pour la seconde), à éprouver au premier consommateur réel. Décision non tranchée par une règle (colonnes du régime composé, contrôle de barre d'outils manquant, virtualisation, kanban) : STOP — remonter.",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U01",
+   "couche": "ui",
+   "solution": "la grille de référence tient en une déclaration — colonnes émergentes, sans media query :",
+   "enonce": "La grille d'items se déclare par une répétition de colonnes bornées par une largeur minimale d'item et une fraction de l'espace restant, sans requête média ; la largeur minimale est plafonnée par la largeur du conteneur, et le mode de répétition retenu ne remplit pas les colonnes manquantes de la dernière rangée.",
+   "mesure": "aucune requête média ne définit le nombre de colonnes ; la largeur minimale d'item est bornée par la largeur du conteneur",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`repeat(auto-fill, minmax(min(100%, X), 1fr))` — grille intrinsèque robuste aux conteneurs étroits",
+     "liens": [
+      {
+       "label": "web.dev — One-line layouts (RAM)",
+       "url": "https://web.dev/articles/one-line-layouts"
+      },
+      {
+       "label": "MDN — repeat()",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+      }
+     ],
+     "confiance": "Établi — technique standard"
+    },
+    {
+     "ref": "T2",
+     "affirmation": "`auto-fill` vs `auto-fit` (dernière rangée non étirée)",
+     "liens": [
+      {
+       "label": "MDN — auto-fill/auto-fit",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Auto-placement_in_grid_layout"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`repeat(auto-fill, minmax(min(100%, X), 1fr))` — grille intrinsèque robuste aux conteneurs étroits",
+    "liens": [
+     {
+      "label": "web.dev — One-line layouts (RAM)",
+      "url": "https://web.dev/articles/one-line-layouts"
+     },
+     {
+      "label": "MDN — repeat()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+     }
+    ],
+    "confiance": "Établi — technique standard"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U02",
+   "couche": "ui",
+   "solution": "sous `breakpoint.mobile`, colonne unique pleine largeur (moins la marge de page `GRID-UI`) — le comportement émerge déjà de `min(100%, …)` dans la plupart des cas ; la media query n'est ajoutée que si un item plus étroit que `grid.item-min` doit malgré tout occuper toute la largeur.",
+   "enonce": "Sous le point de rupture mobile, la colonne unique n'est forcée par une requête média que lorsqu'elle n'émerge pas déjà du plafonnement de la largeur minimale d'item.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`repeat(auto-fill, minmax(min(100%, X), 1fr))` — grille intrinsèque robuste aux conteneurs étroits",
+     "liens": [
+      {
+       "label": "web.dev — One-line layouts (RAM)",
+       "url": "https://web.dev/articles/one-line-layouts"
+      },
+      {
+       "label": "MDN — repeat()",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+      }
+     ],
+     "confiance": "Établi — technique standard"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`repeat(auto-fill, minmax(min(100%, X), 1fr))` — grille intrinsèque robuste aux conteneurs étroits",
+    "liens": [
+     {
+      "label": "web.dev — One-line layouts (RAM)",
+      "url": "https://web.dev/articles/one-line-layouts"
+     },
+     {
+      "label": "MDN — repeat()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+     }
+    ],
+    "confiance": "Établi — technique standard"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U03",
+   "couche": "ui",
+   "solution": "une seule valeur de gouttière par collection (colonnes ET rangées), appareillée à la densité `CARD` :",
+   "enonce": "La gouttière d'une collection est un token d'espacement unique par niveau de densité, appliqué identiquement aux colonnes et aux rangées.",
+   "mesure": "une seule déclaration d'espacement de grille par collection, résolue vers un token d'espacement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U04",
+   "couche": "ui",
+   "solution": "**transfert d'autorité** — `CARD-UI.md` portait `grid_gap: spacing.md` en attente de propriétaire ; cette ligne est désormais un alias de compatibilité qui renvoie ici (CARD-UI 1.5.1, journalisé). Aucune valeur ne change pour l'existant : `compact` reprend `spacing.md`.",
+   "enonce": "Le token de gouttière autrefois porté par le composant d'item devient un alias de compatibilité renvoyant au pattern de collection, sans changement de valeur pour l'existant.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U05",
+   "couche": "ui",
+   "solution": "le conteneur de page d'une collection est `grid.container-wide` (max-width + centrage — `GRID-UI` fait autorité) ; la grille remplit ce cadre, elle ne se re-borne pas.",
+   "enonce": "Le cadre de page d'une collection est le conteneur borné défini par les fondations de grille ; la grille de collection remplit ce cadre et ne se re-borne pas.",
+   "mesure": "aucune largeur maximale déclarée sur la grille elle-même",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U06",
+   "couche": "ui",
+   "solution": "la zone de collection (grille + barre d'outils + compteur) peut se poser sur le fond `surface` (token calibré précisément pour la distinction zone de collection / carte, cf. DESIGN.md 1.3.0) avec un padding `spacing.lg` ; les cartes gardent leur fond `background`.",
+   "enonce": "La zone de collection peut porter un fond de surface distinct du fond de page et un remplissage pris dans l'échelle d'espacement, les items conservant le fond de base.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U07",
+   "couche": "ui",
+   "solution": "grille explicite à colonnes égales, spans en cellules entières :",
+   "enonce": "La grille du régime composé se déclare en colonnes égales, les blocs s'y étendant par portées de cellules entières.",
+   "mesure": "toute portée de bloc est un nombre entier de colonnes",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U08",
+   "couche": "ui",
+   "solution": "mêmes gouttières que le régime homogène ; un widget ne définit jamais sa propre marge externe (la grille possède l'espace entre widgets).",
+   "enonce": "L'espace entre blocs appartient à la grille : aucun bloc ne déclare de marge externe.",
+   "mesure": "aucune marge externe déclarée sur les éléments de la grille",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U09",
+   "couche": "ui",
+   "solution": "« Charger plus » est un `BUTTON` secondary, centré sous la grille, dans le flux (jamais flottant) ; pendant le chargement il suit le cycle de soumission (état en cours, anti-double-clic — `BUTTON`/`FORM`).",
+   "enonce": "Le déclencheur d'extension à la demande est un bouton secondaire placé dans le flux sous la grille, jamais flottant, et il suit le cycle d'action en cours avec protection contre la double activation.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U10",
+   "couche": "ui",
+   "solution": "les squelettes occupent un **nombre de cellules fixe** (une rangée pleine au minimum) et les cellules réelles les remplacent en place — aucun layout shift mesurable (la grille ne change pas de hauteur au remplacement d'une rangée complète).",
+   "enonce": "Les marques d'attente occupent un nombre de cellules fixe, au moins une rangée pleine, et sont remplacées en place par les cellules réelles.",
+   "mesure": "hauteur de grille identique entre l'état d'attente et l'état chargé d'une rangée",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLLECTION-U11",
+   "couche": "ui",
+   "solution": "le compteur de résultats est une région live polie :",
+   "enonce": "Le compteur de résultats est la seule région live de la collection et son annonce est polie ; la grille elle-même n'est jamais déclarée région live.",
+   "mesure": "exactement un élément à annonce polie dans la collection, portant le compteur de résultats",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Région live polie pour un compteur mis à jour",
+     "liens": [
+      {
+       "label": "MDN — ARIA live regions",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions"
+      }
+     ],
+     "confiance": "Établi — mécanique à éprouver à la première implémentation (cf. UX)"
+    },
+    {
+     "ref": "T5",
+     "affirmation": "Le compteur mis à jour est un message de statut au sens de la norme : déterminable programmatiquement, présenté sans prise de focus ; la liste de résultats elle-même n'en est pas un",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.3 Status Messages",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde « une seule région live, le compteur, jamais la grille »"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Région live polie pour un compteur mis à jour",
+    "liens": [
+     {
+      "label": "MDN — ARIA live regions",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions"
+     }
+    ],
+    "confiance": "Établi — mécanique à éprouver à la première implémentation (cf. UX)"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

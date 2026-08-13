@@ -1,0 +1,1163 @@
+{
+ "slug": "select",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"6.5\" rx=\"2\" fill=\"#bcb9f5\"/><path d=\"M15 6.7l1.7 1.9 1.7-1.9\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"3.5\" y=\"12.5\" width=\"17\" height=\"7\" rx=\"2\" fill=\"#4F46E5\"/><rect x=\"5.6\" y=\"14.5\" width=\"8.5\" height=\"1.5\" rx=\"0.75\" fill=\"white\"/><path d=\"M16.7 15.2l1 1 2-2.2\" fill=\"none\" stroke=\"#F2C744\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"5.6\" y=\"16.9\" width=\"6.5\" height=\"1.3\" rx=\"0.65\" fill=\"#0891B2\"/></svg>",
+ "nom": "select",
+ "nature": "Composant",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-24 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · select",
+  "question": "Comment choisir une valeur dans une liste sans encombrer l'écran ni perdre le clavier ?",
+  "detail": "Un déclencheur montre la valeur courante et déplie, à la demande, une liste d'options. La liste flotte au-dessus du contenu sans le bloquer (non-modale) : on la ferme d'un Échap ou d'un clic ailleurs, et tout se pilote au clavier.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "On choisit une valeur parmi une liste prédéfinie"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La liste flotte sans bloquer la page et tout se navigue au clavier, y compris la frappe pour filtrer"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "L'option retenue se reconnaît à une coche"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "13",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "8",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-select.md",
+   "source": "---\nsujet: select\ntype: composant\nresume: \"Choix unique parmi des options prédéfinies : déclencheur (combobox) + liste (listbox) en popover NON-MODAL (overlay), clavier APG (↑↓ Début/Fin Entrée Échap, type-ahead), option sélectionnée marquée par une coche (jamais la seule couleur)\"\nrequires: []\nselon-contexte: [\"overlay (la liste est un superposé non-modal : ancrage, light-dismiss, z-index.popover, elevation.overlay)\", \"form (le requis et la validation d'un select dans un formulaire)\", \"iconography (chevron + coche de l'option sélectionnée)\", \"input (frontière : le select n'est pas une saisie libre)\"]\n---\n# RULES — Select (compilé, condensé)\n\n> Généré depuis `components/select/SELECT-UX.md` (v1.0.0) et `SELECT-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Choisir **une** valeur parmi un ensemble **prédéfini et limité**. INPUT y renvoie dès que le choix n'est pas une saisie libre. Déclencheur (montre la valeur courante) + liste dépliable.\n- **select** pour une liste longue/encombrante ; **radios** visibles pour peu d'options (≈ 2-5) ; **input** pour une saisie libre ; **switch** pour activer/désactiver tout de suite.\n\n## Liste = popover non-modal (fondation overlay)\n- Ancrée au déclencheur, **sans voile**, **sans piège de focus**, `z-index.popover` ; **light-dismiss** (Échap ou clic/focus dehors) ; retour du focus au déclencheur à la fermeture.\n- À l'ouverture, l'option sélectionnée (ou la première) devient active ; navigation par `aria-activedescendant`.\n\n## Clavier (select-only combobox, ARIA APG)\n- Fermé : ↓/↑/Entrée/Espace ouvrent ; une frappe ouvre + présélectionne (type-ahead).\n- Ouvert : ↑↓ déplacent l'actif, Début/Fin aux extrêmes, Entrée/Espace sélectionnent + ferment, Échap ferme sans changer, Tab ferme en validant l'actif.\n\n## Rôle / nom / valeur\n- Déclencheur `role=\"combobox\"` + `aria-expanded` + `aria-haspopup=\"listbox\"`, nom accessible = libellé visible ; liste `listbox`, options `option` + `aria-selected`.\n\n## UI (tokens)\n- Déclencheur : hauteur `scale.base`, `radius.md`, **bordure `border-strong`** (délimite un contrôle : 3:1), chevron `icon.md`, focus ring `border`.\n- Liste : `z-index.popover`, `elevation.overlay`, `radius.md`, fond `background` ; option active = `surface-hover` ; option sélectionnée = **coche** (icône, jamais la seule couleur). Ouverture en `motion.base`, `prefers-reduced-motion` respecté. Cible tactile 44px.\n\n## Frontières\n- Ancrage/dismiss/z-index → `overlay` ; requis/validation → `form` ; chevron/coche → `iconography` ; saisie libre → `input` ; wording → `voice`.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Liste modale (scrim + piège) au lieu de non-modale | Attente trahie, focus sur-contraint | Moyenne-élevée |\n| Option sélectionnée signalée par la seule couleur | Choix illisible sans perception des couleurs (WCAG 1.4.1) | Élevée |\n| Déclencheur qui masque la valeur courante | L'utilisateur ne sait plus ce qui est choisi | Moyenne |\n| Clavier partiel (pas de type-ahead / Début-Fin) | Navigation lente, non conforme APG | Moyenne |\n\nCONFIANCE : motif combobox/listbox + clavier = établi (ARIA APG *Select-Only Combobox*). Seuil select vs radios = repère convergent (NN/g), pas une loi. Mono-sélection ; multi/recherche différés.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 4 cas",
+   "titre": "Usage",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Usage\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"60\" width=\"120\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M162 67l4 5 4-5\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.6\" stroke-linecap=\"round\"/><rect x=\"200\" y=\"46\" width=\"90\" height=\"58\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"200\" y=\"46\" width=\"90\" height=\"18\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"54\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><circle cx=\"278\" cy=\"55\" r=\"9\" fill=\"#15803D\"/><path d=\"M274 55l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"210\" y=\"76\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"60\" y=\"130\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">déclencheur + liste non-modale</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Sélecteur de site",
+     "quand": "Passer d'un site/espace à un autre (tête du rail de nav).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sélecteur de site\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Passer d'un site/espace à un autre (tête du rail de nav).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « sélecteur de site » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Réglage dans le rail d'outils",
+     "quand": "Densité, thème, préférence à effet immédiat.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Réglage dans le rail d'outils\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Densité, thème, préférence à effet immédiat.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « réglage dans le rail d'outils » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Champ de formulaire",
+     "quand": "Un choix parmi des options, validé à la soumission.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champ de formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un choix parmi des options, validé à la soumission.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « champ de formulaire » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Filtre d'une collection",
+     "quand": "Restreindre une liste affichée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Filtre d'une collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Restreindre une liste affichée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « filtre d'une collection » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 5 cas",
+   "titre": "Contenu de la liste",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contenu de la liste\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"90\" y=\"34\" width=\"140\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M212 41l5 6 5-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><rect x=\"90\" y=\"62\" width=\"140\" height=\"76\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"90\" y=\"62\" width=\"140\" height=\"22\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"102\" y=\"71\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"214\" cy=\"73\" r=\"9\" fill=\"#15803D\"/><path d=\"M210 73l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"102\" y=\"98\" width=\"86\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"102\" y=\"118\" width=\"66\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Liste courte",
+     "quand": "Quelques options comparables d'un coup.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu de la liste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Liste courte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Quelques options comparables d'un coup.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « liste courte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Liste longue",
+     "quand": "Beaucoup d'options à déplier à la demande.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contenu de la liste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Liste longue\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"241\" y=\"75\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M410 78l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"230\" y=\"104\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"116\" width=\"96\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><circle cx=\"410\" cy=\"119\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M406 119l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"250\" y=\"150\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"176\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"230\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">liste non-modale : Échap ou clic dehors ferme, tout au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Beaucoup d'options à déplier à la demande.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « liste longue » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de SELECT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>select</strong> pour un choix unique dans une liste <strong>longue ou encombrante</strong> à déplier à la demande.",
+       "id": "SELECT-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Options groupées",
+     "quand": "Regrouper par catégorie.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Contenu de la liste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Options groupées\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"56\" width=\"190\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"261\" y=\"65\" width=\"86\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"250\" y=\"92\" width=\"190\" height=\"122\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"266\" y=\"112\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">GROUPE A</text><rect x=\"266\" y=\"122\" width=\"120\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"266\" y=\"142\" width=\"100\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><path d=\"M250 158h190\" stroke=\"#E5E7EB\"/><text x=\"266\" y=\"176\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">GROUPE B</text><rect x=\"266\" y=\"188\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><text x=\"250\" y=\"228\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">options regroupées par catégorie</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Regrouper par catégorie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « options groupées » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Recherche dans la liste (combobox éditable)",
+     "quand": "Saisie qui filtre les options.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "02 · Contenu de la liste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Recherche dans la liste (combobox éditable)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"96\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"105\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"455\" cy=\"106\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M451.5 102.5l7 7M458.5 102.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"240\" y=\"150\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">saisie qui filtre / multi-sélection : hors périmètre, différé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Saisie qui filtre les options.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « recherche dans la liste (combobox éditable) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Multi-sélection",
+     "quand": "Plusieurs valeurs à la fois.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "02 · Contenu de la liste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Multi-sélection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"96\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"105\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"455\" cy=\"106\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M451.5 102.5l7 7M458.5 102.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"240\" y=\"150\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">saisie qui filtre / multi-sélection : hors périmètre, différé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plusieurs valeurs à la fois.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « multi-sélection » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "État",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"30\" y=\"54\" width=\"86\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M100 61l4 5 4-5\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.6\" stroke-linecap=\"round\"/><text x=\"30\" y=\"90\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">rempli</text><rect x=\"128\" y=\"54\" width=\"86\" height=\"20\" rx=\"5\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"128\" y=\"90\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">désactivé</text><rect x=\"226\" y=\"54\" width=\"72\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-width=\"1.5\"/><text x=\"226\" y=\"90\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">erreur</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Vide (placeholder)",
+     "quand": "Aucun choix encore fait.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Vide (placeholder)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"90\" width=\"170\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"71\" y=\"99\" width=\"77\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M212 98l5 6 5-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"60\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">rempli</text><rect x=\"260\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"276\" y=\"97\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"260\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><rect x=\"460\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-width=\"1.6\"/><rect x=\"476\" y=\"97\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.5\"/><text x=\"460\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">erreur (orchestrée par le form)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucun choix encore fait.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « vide (placeholder) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Désactivé",
+     "quand": "Non focalisable, contraste réduit assumé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Désactivé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"90\" width=\"170\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"71\" y=\"99\" width=\"77\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M212 98l5 6 5-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"60\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">rempli</text><rect x=\"260\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"276\" y=\"97\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"260\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><rect x=\"460\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-width=\"1.6\"/><rect x=\"476\" y=\"97\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.5\"/><text x=\"460\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">erreur (orchestrée par le form)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Non focalisable, contraste réduit assumé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « désactivé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de SELECT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>désactivé</strong> (non focalisable, contraste réduit assumé), <strong>erreur</strong> (bordure et message d'erreur",
+       "id": "SELECT-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Erreur",
+     "quand": "Choix requis manquant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Erreur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"90\" width=\"170\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"71\" y=\"99\" width=\"77\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M212 98l5 6 5-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"60\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">rempli</text><rect x=\"260\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"276\" y=\"97\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"260\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><rect x=\"460\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-width=\"1.6\"/><rect x=\"476\" y=\"97\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.5\"/><text x=\"460\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">erreur (orchestrée par le form)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Choix requis manquant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « erreur » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de SELECT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>désactivé</strong> (non focalisable, contraste réduit assumé), <strong>erreur</strong> (bordure et message d'erreur",
+       "id": "SELECT-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Option désactivée",
+     "quand": "Une entrée non sélectionnable dans la liste.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Option désactivée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"90\" width=\"170\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"71\" y=\"99\" width=\"77\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M212 98l5 6 5-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"60\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">rempli</text><rect x=\"260\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"276\" y=\"97\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"260\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><rect x=\"460\" y=\"86\" width=\"170\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#B91C1C\" stroke-width=\"1.6\"/><rect x=\"476\" y=\"97\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.5\"/><text x=\"460\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">erreur (orchestrée par le form)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une entrée non sélectionnable dans la liste.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « option désactivée » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "SELECT-R01",
+   "couche": "ux",
+   "solution": "**select** pour un choix unique dans une liste **longue ou encombrante** à déplier à la demande.",
+   "enonce": "Le select est réservé au choix unique dans une liste assez longue ou encombrante pour justifier d'être repliée ; en deçà du seuil retenu d'environ cinq options comparables d'un coup d'œil, le choix est présenté en radios visibles, une saisie libre relève du champ de texte et une bascule à effet immédiat du switch.",
+   "mesure": "aucun select ne porte un choix binaire ni une saisie libre",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Seuil select vs radios (peu d'options → radios visibles)",
+     "liens": [
+      {
+       "label": "NN/g — Listbox vs Radio",
+       "url": "https://www.nngroup.com/articles/drop-down-menus/"
+      }
+     ],
+     "confiance": "Convergent, pas une loi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Le select sert à choisir dans une longue liste, mais avant d'y recourir il faut chercher à poser des questions qui réduisent le nombre d'options, et la recherche utilisateur montre des difficultés récurrentes (fermeture, saisie dans le contrôle, confusion focus/sélection, zoom sur mobile, défilement non perçu) ; select multiple est déconseillé",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Select",
+       "url": "https://design-system.service.gov.uk/components/select/"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié (1/3)"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Le select n'est justifié que pour environ 7 à 15 options dans un espace contraint : en dessous de 7, radios ; au-delà de 15, combo box ; plusieurs experts en font « l'interface de dernier recours » ; l'auto-soumission au changement est à proscrire",
+     "liens": [
+      {
+       "label": "U.S. Web Design System — Select",
+       "url": "https://designsystem.digital.gov/components/select/"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié (2/3) ; le seuil chiffré (7) contredit le seuil interne (≈5)"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Le select s'utilise pour une longue liste d'options ; il est déconseillé pour une liste courte (radios) ou pour une sélection multiple (cases à cocher), et il faut l'éviter quand on peut, la recherche montrant que certains utilisateurs le trouvent difficile",
+     "liens": [
+      {
+       "label": "Scottish Government Design System — Select",
+       "url": "https://designsystem.gov.scot/components/select"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié (3/3) ; aucun de ces trois systèmes ne traite la question natif contre personnalisé"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Seuil select vs radios (peu d'options → radios visibles)",
+    "liens": [
+     {
+      "label": "NN/g — Listbox vs Radio",
+      "url": "https://www.nngroup.com/articles/drop-down-menus/"
+     }
+    ],
+    "confiance": "Convergent, pas une loi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Liste longue",
+     "famille": "Contenu de la liste"
+    }
+   ]
+  },
+  {
+   "id": "SELECT-R02",
+   "couche": "ux",
+   "solution": "le déclencheur **montre la valeur courante** (ou un placeholder neutre si aucun choix), jamais une",
+   "enonce": "Le déclencheur d'un select affiche la valeur actuellement sélectionnée, ou à défaut un placeholder neutre qui n'est ni une option sélectionnable ni une valeur soumissible, et jamais une étiquette figée qui masquerait la sélection.",
+   "mesure": "le texte du déclencheur change à chaque changement de valeur ; l'option de placeholder porte une valeur vide et ne satisfait pas une contrainte de champ requis",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Sémantique native du select : élément associé à un formulaire et soumis à la validation de contrainte — required impose une option de placeholder et fait échouer la validation tant qu'aucune option réelle n'est choisie ; disabled rend le contrôle non interactif et exclut sa valeur de la soumission ; la sélection d'une option désélectionne les autres en mono-sélection",
+     "liens": [
+      {
+       "label": "HTML Living Standard — the select element",
+       "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"
+      }
+     ],
+     "confiance": "Normatif — mesure ce qu'un menu personnalisé doit réimplémenter à la main (requis, validation, soumission), et fonde le défaut relevé en audit"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Pour tout composant d'interface, y compris généré par script, le nom et le rôle sont programmatiquement déterminables, les états et valeurs modifiables par l'utilisateur sont programmatiquement définissables, et leurs changements sont notifiés aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — la note d'application précise qu'un contrôle personnalisé exige des mesures supplémentaires (ARIA) que le contrôle natif fournit d'office"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu accepte une saisie de l'utilisateur ; « requires » y signifie « accepte », donc le critère couvre les champs facultatifs comme les champs obligatoires",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — nuance assumée : 3.3.2 n'impose pas par lui-même le marquage visible du caractère obligatoire, il l'encourage par technique suffisante"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Sémantique native du select : élément associé à un formulaire et soumis à la validation de contrainte — required impose une option de placeholder et fait échouer la validation tant qu'aucune option réelle n'est choisie ; disabled rend le contrôle non interactif et exclut sa valeur de la soumission ; la sélection d'une option désélectionne les autres en mono-sélection",
+    "liens": [
+     {
+      "label": "HTML Living Standard — the select element",
+      "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"
+     }
+    ],
+    "confiance": "Normatif — mesure ce qu'un menu personnalisé doit réimplémenter à la main (requis, validation, soumission), et fonde le défaut relevé en audit"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-R03",
+   "couche": "ux",
+   "solution": "la liste est un superposé **non-modal** (fondation overlay) : **ancrée au déclencheur**, **sans",
+   "enonce": "La liste d'un select est un superposé non modal : ancrée à son déclencheur, sans voile, sans piège de focus, refermée aussi bien par Échap que par un clic ou un focus à l'extérieur, et rendant le focus au déclencheur à la fermeture.",
+   "mesure": "Échap et un clic extérieur ferment la liste ; aucun piège de focus n'est posé ; le focus revient au déclencheur après fermeture",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+     "liens": [
+      {
+       "label": "ARIA APG — Select-Only Combobox",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Liste ancrée non-modale, light-dismiss",
+     "liens": [
+      {
+       "label": "Carbon — Dropdown / Popover",
+       "url": "https://carbondesignsystem.com/components/dropdown/usage/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Un popover de la plateforme est toujours non modal : il vit dans la couche supérieure, le reste de la page reste interactif, aucun focus n'est piégé, et l'état auto apporte le light-dismiss (Échap et clic extérieur) ; le modal relève de dialog, pas de popover",
+     "liens": [
+      {
+       "label": "MDN — Popover API",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/API/Popover_API"
+      }
+     ],
+     "confiance": "Normatif (plateforme) — remplace l'ancrage uniquement interne de la fondation overlay pour le caractère non modal et le light-dismiss"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+    "liens": [
+     {
+      "label": "ARIA APG — Select-Only Combobox",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-R04",
+   "couche": "ux",
+   "solution": "à l'ouverture, l'option **sélectionnée** (ou la première) devient l'option **active** ; la liste ne",
+   "enonce": "À l'ouverture de la liste, l'option sélectionnée — ou la première à défaut — devient l'option active sans que le focus du document quitte le déclencheur : l'option active est désignée par aria-activedescendant et rendue visible dans la liste.",
+   "mesure": "à l'ouverture, aria-activedescendant du déclencheur désigne l'option sélectionnée ou la première ; le focus du document reste sur le déclencheur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+     "liens": [
+      {
+       "label": "ARIA APG — Select-Only Combobox",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Motif listbox : rôles listbox et option, nom accessible obligatoire, aria-selected pour la sélection unique, aria-activedescendant comme alternative au focus DOM ; focus et sélection sont fonctionnellement distincts ; Début/Fin recommandés dès 5 options, saisie prédictive dès 7",
+     "liens": [
+      {
+       "label": "ARIA APG — Listbox Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/"
+      }
+     ],
+     "confiance": "Établi — complète S1 sur la partie liste et fonde explicitement la distinction option active / option sélectionnée"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+    "liens": [
+     {
+      "label": "ARIA APG — Select-Only Combobox",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-R05",
+   "couche": "ux",
+   "solution": "déclencheur fermé — **↓ / ↑ / Entrée / Espace** ouvrent ; une **frappe de caractère** ouvre et",
+   "enonce": "Le select est intégralement opérable au clavier selon le motif combobox à sélection seule : fermé, les flèches, Entrée, Espace et toute frappe de caractère l'ouvrent, la frappe présélectionnant par correspondance ; ouvert, les flèches déplacent l'option active, Début et Fin vont aux extrêmes, Entrée et Espace sélectionnent et ferment, Échap ferme sans changer la valeur et Tab ferme en validant l'option active.",
+   "mesure": "chaque touche du motif combobox à sélection seule produit l'effet prescrit ; aucune fonction du select n'exige le pointeur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+     "liens": [
+      {
+       "label": "ARIA APG — Select-Only Combobox",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Toute fonctionnalité est opérable au clavier sans exiger de rythme de frappe particulier ; le critère demande une parité fonctionnelle, pas une identité d'interaction",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A)"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Motif listbox : rôles listbox et option, nom accessible obligatoire, aria-selected pour la sélection unique, aria-activedescendant comme alternative au focus DOM ; focus et sélection sont fonctionnellement distincts ; Début/Fin recommandés dès 5 options, saisie prédictive dès 7",
+     "liens": [
+      {
+       "label": "ARIA APG — Listbox Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/"
+      }
+     ],
+     "confiance": "Établi — complète S1 sur la partie liste et fonde explicitement la distinction option active / option sélectionnée"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+    "liens": [
+     {
+      "label": "ARIA APG — Select-Only Combobox",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-R06",
+   "couche": "ux",
+   "solution": "le déclencheur porte `role=\"combobox\"`, `aria-expanded`, `aria-haspopup=\"listbox\"` et son **nom",
+   "enonce": "Le déclencheur d'un select expose role=combobox, aria-expanded et une relation programmatique vers sa liste, et son nom accessible reprend le libellé visible ; la liste expose role=listbox, chaque option role=option avec son état de sélection, et la valeur choisie est restituée comme nom et valeur du combobox.",
+   "mesure": "le déclencheur porte role=combobox, aria-expanded et aria-controls vers la liste ; son nom accessible contient le libellé visible ; chaque option porte role=option et aria-selected",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+     "liens": [
+      {
+       "label": "ARIA APG — Select-Only Combobox",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Pour tout composant d'interface, y compris généré par script, le nom et le rôle sont programmatiquement déterminables, les états et valeurs modifiables par l'utilisateur sont programmatiquement définissables, et leurs changements sont notifiés aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — la note d'application précise qu'un contrôle personnalisé exige des mesures supplémentaires (ARIA) que le contrôle natif fournit d'office"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu accepte une saisie de l'utilisateur ; « requires » y signifie « accepte », donc le critère couvre les champs facultatifs comme les champs obligatoires",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — nuance assumée : 3.3.2 n'impose pas par lui-même le marquage visible du caractère obligatoire, il l'encourage par technique suffisante"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+    "liens": [
+     {
+      "label": "ARIA APG — Select-Only Combobox",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-R07",
+   "couche": "ux",
+   "solution": "**désactivé** (non focalisable, contraste réduit assumé), **erreur** (bordure et message d'erreur",
+   "enonce": "Le select distingue visuellement trois choses différentes — l'option survolée, l'option active et l'option sélectionnée — et expose ses états : désactivé et alors non focalisable, vide et alors signalé par un placeholder neutre, en erreur et alors signalé sans que le select prenne en charge l'orchestration du message.",
+   "mesure": "survol, option active et option sélectionnée se distinguent chacun par au moins une propriété visuelle ; un select désactivé n'est pas atteignable au clavier",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+     "liens": [
+      {
+       "label": "ARIA APG — Select-Only Combobox",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Sémantique native du select : élément associé à un formulaire et soumis à la validation de contrainte — required impose une option de placeholder et fait échouer la validation tant qu'aucune option réelle n'est choisie ; disabled rend le contrôle non interactif et exclut sa valeur de la soumission ; la sélection d'une option désélectionne les autres en mono-sélection",
+     "liens": [
+      {
+       "label": "HTML Living Standard — the select element",
+       "url": "https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element"
+      }
+     ],
+     "confiance": "Normatif — mesure ce qu'un menu personnalisé doit réimplémenter à la main (requis, validation, soumission), et fonde le défaut relevé en audit"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Motif listbox : rôles listbox et option, nom accessible obligatoire, aria-selected pour la sélection unique, aria-activedescendant comme alternative au focus DOM ; focus et sélection sont fonctionnellement distincts ; Début/Fin recommandés dès 5 options, saisie prédictive dès 7",
+     "liens": [
+      {
+       "label": "ARIA APG — Listbox Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/"
+      }
+     ],
+     "confiance": "Établi — complète S1 sur la partie liste et fonde explicitement la distinction option active / option sélectionnée"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Déclencheur combobox + listbox, clavier (↑↓ Début/Fin Entrée Échap, type-ahead)",
+    "liens": [
+     {
+      "label": "ARIA APG — Select-Only Combobox",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Désactivé",
+     "famille": "État"
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Erreur",
+     "famille": "État"
+    }
+   ]
+  },
+  {
+   "id": "SELECT-R08",
+   "couche": "ux",
+   "solution": "l'**ancrage, le light-dismiss, le z-index** de la liste relèvent d'`overlay` (non-modal) ; le",
+   "enonce": "Le select ne redéfinit pas ce qui appartient à ses voisins : l'ancrage, le light-dismiss et l'empilement de sa liste relèvent du superposé, le caractère requis et la validation du formulaire, le chevron de l'iconographie, la saisie libre du champ de texte, et le mot du libellé du langage.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U01",
+   "couche": "ui",
+   "solution": "hauteur interactive `scale.base` (compacte `scale.compact`, aérée `scale.expanded`), rayon",
+   "enonce": "Le déclencheur d'un select résout sa hauteur interactive, son rayon, son fond, sa couleur de texte et ses retraits sur les échelles de tokens, et porte une bordure délimitante contrastée à au moins 3:1, seule marque de la présence du contrôle ; son chevron est une icône en couleur courante.",
+   "mesure": "aucune valeur brute de hauteur, rayon, couleur ou retrait sur le déclencheur ; contraste de la bordure délimitante ≥ 3:1",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Liste ancrée en `elevation.overlay` + `z-index.popover`, sans scrim",
+     "liens": [
+      {
+       "label": "fondation `overlay` (OVERLAY-UI)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T2",
+     "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+     "liens": [
+      {
+       "label": "BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T4",
+     "affirmation": "La présentation visuelle des composants d'interface atteint un contraste d'au moins 3:1 avec les couleurs adjacentes ; une bordure n'est exigée que lorsqu'aucun autre indice visuel n'identifie la présence du contrôle",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — donne à T2 son ancrage externe et sa condition : le 3:1 porte sur la bordure seulement si elle est le seul indice du contrôle"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Liste ancrée en `elevation.overlay` + `z-index.popover`, sans scrim",
+    "liens": [
+     {
+      "label": "fondation `overlay` (OVERLAY-UI)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U02",
+   "couche": "ui",
+   "solution": "l'anneau de focus est celui de BORDER (`border.focus-width` / `border.focus-offset`) ; l'état",
+   "enonce": "L'anneau de focus du select n'est pas redéfini localement : il reprend celui de la fondation bordure, et l'état désactivé abaisse l'opacité sans modifier ni le trait ni le rayon.",
+   "mesure": "aucun style de focus propre au select ; trait et rayon identiques entre l'état normal et l'état désactivé",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+     "liens": [
+      {
+       "label": "BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+    "liens": [
+     {
+      "label": "BORDER-UX (guardrail)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U03",
+   "couche": "ui",
+   "solution": "la liste applique `z-index.popover`, l'ombre `elevation.overlay`, le rayon `radius.md`, le fond",
+   "enonce": "La liste d'un select reprend le niveau d'empilement, l'ombre, le rayon et le fond du superposé non modal, sans voile, et s'aligne en ancrage comme en largeur sur son déclencheur.",
+   "mesure": "la liste applique le token d'empilement popover et l'ombre de superposé ; aucun voile n'est rendu ; largeur de la liste égale à celle du déclencheur",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Liste ancrée en `elevation.overlay` + `z-index.popover`, sans scrim",
+     "liens": [
+      {
+       "label": "fondation `overlay` (OVERLAY-UI)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Liste ancrée en `elevation.overlay` + `z-index.popover`, sans scrim",
+    "liens": [
+     {
+      "label": "fondation `overlay` (OVERLAY-UI)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U04",
+   "couche": "ui",
+   "solution": "une option a un padding `spacing` ; l'option **active** (survol/clavier) prend `surface-hover` ;",
+   "enonce": "L'option sélectionnée d'une liste est marquée par un canal non chromatique — une coche — en plus de toute variation de couleur, et l'option active se distingue par une surface qui lui est propre.",
+   "mesure": "l'option sélectionnée porte un indicateur non chromatique ; la distinction entre option active et option sélectionnée ne repose pas sur la seule couleur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde la coche sur l'option sélectionnée"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A) — fonde la coche sur l'option sélectionnée"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U05",
+   "couche": "ui",
+   "solution": "l'ouverture/fermeture de la liste utilise `motion.base` et respecte `prefers-reduced-motion`",
+   "enonce": "L'ouverture et la fermeture de la liste empruntent leurs durées et leurs courbes aux tokens de mouvement, et se réduisent à une apparition sans glissement lorsque l'utilisateur a demandé moins de mouvement.",
+   "mesure": "aucune durée ni courbe en dur ; sous prefers-reduced-motion: reduce, aucune translation n'est jouée",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la préférence système se lit par prefers-reduced-motion, dont la valeur reduce demande de supprimer ou de remplacer le mouvement non essentiel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+      },
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — 2.3.3 est de niveau AAA et n'impose pas prefers-reduced-motion comme unique technique ; ancrage assumé, la média-requête n'est qu'une des solutions suffisantes"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la préférence système se lit par prefers-reduced-motion, dont la valeur reduce demande de supprimer ou de remplacer le mouvement non essentiel",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+     },
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — 2.3.3 est de niveau AAA et n'impose pas prefers-reduced-motion comme unique technique ; ancrage assumé, la média-requête n'est qu'une des solutions suffisantes"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SELECT-U06",
+   "couche": "ui",
+   "solution": "aucune valeur d'empilement, d'ombre, de rayon, de hauteur ou de couleur codée en dur : tout",
+   "enonce": "Aucune valeur d'empilement, d'ombre, de rayon, de hauteur, de couleur, de retrait ni de durée du select n'est codée en dur : chacune résout un token de fondation, et la cible pointeur du déclencheur atteint le seuil de confort retenu par l'accessibilité.",
+   "mesure": "aucune valeur brute dans l'implémentation du select ; cible pointeur du déclencheur ≥ 44 × 44 px CSS",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA), avec exceptions dont le rendu par défaut du navigateur ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA et AAA) — le 44 px cité par le composant est le seuil AAA, pas le seuil de conformité courant ; l'exception « contrôle du navigateur » joue en faveur du select natif"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA), avec exceptions dont le rendu par défaut du navigateur ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     },
+     {
+      "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA et AAA) — le 44 px cité par le composant est le seuil AAA, pas le seuil de conformité courant ; l'exception « contrôle du navigateur » joue en faveur du select natif"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

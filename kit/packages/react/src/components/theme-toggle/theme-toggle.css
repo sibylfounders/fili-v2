@@ -1,0 +1,56 @@
+/**
+ * ThemeToggle — interrupteur clair/sombre (soleil ↔ lune). Port 1:1 de `.sw-theme`
+ * de l'atelier : le pouce glisse (translateX) et se comprime au survol/press
+ * (scaleX + bascule du transform-origin) — langage fluide. Var() de @ds-ui/tokens
+ * (mêmes noms), passe tel quel dans le pipeline PostCSS. Cf. atelier.html (origine).
+ *
+ * Tailles alignées sur Button (sm/md/lg) via variables : --tt-w/--tt-h (piste),
+ * --tt-knob (pouce), --tt-shift (course = piste − pouce − 4px), --tt-ic (icônes).
+ */
+.ds-theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  --tt-w: 46px;
+  --tt-h: 24px;
+  --tt-knob: 20px;
+  --tt-shift: 22px;
+  --tt-ic: 12px;
+  --tt-ic-off: 6px;
+}
+.ds-theme-toggle--sm { --tt-w: 36px; --tt-h: 20px; --tt-knob: 16px; --tt-shift: 16px; --tt-ic: 10px; --tt-ic-off: 5px; }
+.ds-theme-toggle--lg { --tt-w: 56px; --tt-h: 28px; --tt-knob: 24px; --tt-shift: 28px; --tt-ic: 14px; --tt-ic-off: 7px; }
+/* Conteneur positionné de la piste : icônes et knob s'ancrent ICI, jamais sur le label entier
+   (avec un libellé texte, un ancrage droit sur le label posait la lune sur le mot). */
+.ds-theme-toggle__control { position: relative; display: inline-flex; align-items: center; }
+.ds-theme-toggle input {
+  width: var(--tt-w); height: var(--tt-h); appearance: none; -webkit-appearance: none;
+  background: var(--border); border-radius: var(--radius-pill); cursor: pointer; margin: 0;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.ds-theme-toggle input:checked { background: var(--primary); }
+.ds-theme-toggle .tr {
+  position: absolute; top: calc((var(--tt-h) - var(--tt-ic)) / 2); width: var(--tt-ic); height: var(--tt-ic);
+  color: var(--text-secondary); pointer-events: none; z-index: 1;
+}
+.ds-theme-toggle .tr-sun { left: var(--tt-ic-off); }
+.ds-theme-toggle .tr-moon { right: var(--tt-ic-off); }
+.ds-theme-toggle input:checked ~ .tr { color: var(--on-primary); }
+.ds-theme-toggle .knob {
+  position: absolute; top: calc((var(--tt-h) - var(--tt-knob)) / 2); left: 2px;
+  width: var(--tt-knob); height: var(--tt-knob);
+  border-radius: var(--radius-pill); background: var(--static-white); box-shadow: 0 1px 2px rgba(3, 7, 18, .25);
+  pointer-events: none; z-index: 2; transform-origin: left center;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.ds-theme-toggle input:checked ~ .knob { transform: translateX(var(--tt-shift)); transform-origin: right center; }
+.ds-theme-toggle input:hover ~ .knob { transform: scaleX(1.1); }
+.ds-theme-toggle input:active ~ .knob { transform: scaleX(1.2); }
+.ds-theme-toggle input:checked:hover ~ .knob { transform: translateX(var(--tt-shift)) scaleX(1.1); }
+.ds-theme-toggle input:checked:active ~ .knob { transform: translateX(var(--tt-shift)) scaleX(1.2); }
+.ds-theme-toggle input:focus-visible { outline: var(--control-focus-width) solid var(--control-focus-color); outline-offset: var(--control-focus-offset); }
+.ds-theme-toggle__label { margin-left: var(--space-sm); color: var(--text-primary); font-size: 14px; }
+.ds-theme-toggle--lg .ds-theme-toggle__label { font-size: 16px; }
+@media (prefers-reduced-motion: reduce) {
+  .ds-theme-toggle input, .ds-theme-toggle .knob { transition: none; }
+}

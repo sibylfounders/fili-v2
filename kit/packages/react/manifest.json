@@ -1,0 +1,2220 @@
+{
+  "$schema": "./src/manifest/schema.ts",
+  "generated": "genere-manifeste.mjs — NE PAS ÉDITER",
+  "entries": [
+    {
+      "name": "Accordion",
+      "package": "@fili/react",
+      "import": "import { Accordion } from \"@fili/react\";",
+      "status": "stable",
+      "category": "contenu",
+      "purpose": "Sections dépliables (multi-ouvert par défaut) — headings réels + aria-expanded.",
+      "doctrine": {
+        "ux": "components/ACCORDION-UX.md",
+        "ui": "components/ACCORDION-UI.md"
+      },
+      "rules": "RULES-accordion.md",
+      "anatomy": [
+        "Accordion",
+        "Accordion.Root",
+        "Accordion.Item",
+        "Accordion.Header",
+        "Accordion.Panel"
+      ],
+      "axes": {
+        "type": {
+          "kind": "enum",
+          "description": "Politique d'ouverture des panneaux.",
+          "values": {
+            "single": "un seul panneau ouvert à la fois",
+            "multiple": "multi-ouvert (défaut de la doctrine)"
+          },
+          "default": "multiple"
+        }
+      },
+      "props": {
+        "defaultOpen": {
+          "type": "string[]",
+          "default": "[]",
+          "description": "Panneaux ouverts au montage."
+        },
+        "level": {
+          "type": "2 | 3 | 4 | 5 | 6",
+          "default": "3",
+          "description": "Niveau de heading RÉEL du Header (hiérarchie du document)."
+        }
+      },
+      "accessibility": [
+        "Headers = vrais headings (level)",
+        "aria-expanded/aria-controls posés",
+        "chevron pivote sans changer de glyphe"
+      ],
+      "antiPatterns": [
+        "Recréer un dépliable avec details/summary stylé à la main",
+        "level décoratif (il suit la hiérarchie réelle de la page)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Deux sections, multi-ouvert",
+          "code": "<Accordion type=\"multiple\" defaultOpen={[\"a\"]}>\n  <Accordion.Item value=\"a\">\n    <Accordion.Header level={3}>Livraison</Accordion.Header>\n    <Accordion.Panel>Sous 48 h ouvrées.</Accordion.Panel>\n  </Accordion.Item>\n  <Accordion.Item value=\"b\">\n    <Accordion.Header level={3}>Retours</Accordion.Header>\n    <Accordion.Panel>30 jours, sans justification.</Accordion.Panel>\n  </Accordion.Item>\n</Accordion>"
+        }
+      ]
+    },
+    {
+      "name": "Alert",
+      "package": "@fili/react",
+      "import": "import { Alert } from \"@fili/react\";",
+      "status": "stable",
+      "category": "message",
+      "purpose": "Message contextuel persistant dans le flux. L'icône est la silhouette normative du tone — jamais retirée.",
+      "doctrine": {
+        "ux": "components/ALERT-UX.md",
+        "ui": "components/ALERT-UI.md"
+      },
+      "rules": "RULES-alert.md",
+      "anatomy": [
+        "Alert",
+        "Alert.Root",
+        "Alert.Icon",
+        "Alert.Content",
+        "Alert.Title",
+        "Alert.Description",
+        "Alert.Actions",
+        "Alert.Close"
+      ],
+      "axes": {
+        "tone": {
+          "kind": "tone",
+          "description": "Sémantique du message (registre messages du dictionnaire des tones). L'anneau de focus des contrôles internes suit le tone (focus v2).",
+          "values": {
+            "info": "information",
+            "success": "confirmation",
+            "warning": "avertissement",
+            "danger": "erreur / danger"
+          },
+          "default": "info"
+        }
+      },
+      "props": {
+        "live": {
+          "type": "boolean",
+          "default": "false",
+          "description": "true → role=alert (danger/warning) ou role=status (info/success)."
+        }
+      },
+      "tokens": [
+        "familles info/success/warning/danger (-subtle en fond)",
+        "relief posé sous [data-relief] (liseré + control-raised-shadow)"
+      ],
+      "accessibility": [
+        "role=alert/status via live",
+        "l'icône normative reste (le tone ne se lit jamais qu'à la couleur)"
+      ],
+      "antiPatterns": [
+        "S'en servir comme bouton warning (l'avertissement est un message, pas une action)",
+        "Toast pour une condition qui dure (l'Alert vit dans le flux)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Erreur bloquante de formulaire",
+          "code": "<Alert.Root tone=\"danger\" live>\n  <Alert.Icon />\n  <Alert.Content>\n    <Alert.Title>Le paiement a été refusé</Alert.Title>\n    <Alert.Description>Vérifiez le numéro de carte puis réessayez.</Alert.Description>\n  </Alert.Content>\n</Alert.Root>"
+        }
+      ]
+    },
+    {
+      "name": "AppLayout",
+      "package": "@fili/react",
+      "import": "import { AppLayout } from \"@fili/react\";",
+      "status": "stable",
+      "category": "gabarit",
+      "purpose": "Façade du shell applicatif (sidebar repliable, topbar, aside) pilotée par la largeur du SHELL, jamais du viewport. Sa nav intégrée consomme la facture unique de Nav (navRowClass).",
+      "doctrine": null,
+      "dette": "Doctrine à écrire (vague 7 gabarits) — le composant est né de l'usage du site ; ses décisions (container queries, off-canvas, FAB aside) sont journalisées dans DECISIONS.md mais pas encore en paire UX/UI.",
+      "rules": null,
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Gabarit d'application ou de documentation.",
+          "values": {
+            "default": "app (rail nav + aside outils)",
+            "docs": "documentation (rail fixe, contenu borné)"
+          },
+          "default": "default"
+        }
+      },
+      "props": {
+        "collapsible": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Rail de navigation repliable."
+        },
+        "nav": {
+          "type": "AppNavGroup[] | AppNavItem[]",
+          "description": "Navigation structurée (rendue par la facture unique de Nav)."
+        },
+        "topbar": {
+          "type": "{ breadcrumb, search, actions }",
+          "description": "Barre supérieure composable."
+        },
+        "aside": {
+          "type": "ReactNode",
+          "description": "Rail d'outils (fin) — off-canvas sous breakpoint desktop."
+        },
+        "asideLabel": {
+          "type": "string",
+          "default": "\"Panneau\"",
+          "description": "Nom accessible du rail d'outils — sert aussi de libellé au FAB qui l'invoque hors-champ."
+        },
+        "sidebar": {
+          "type": "ReactNode",
+          "description": "Échappatoire : remplace brand+nav par un contenu sur-mesure."
+        }
+      },
+      "accessibility": [
+        "nav intégrée = landmark étiqueté",
+        "off-canvas refermé après navigation (combobox/switch exclus du piège)"
+      ],
+      "adaptiveBehavior": "Container queries sur la largeur du shell : rail replié, off-canvas, aside invocable — jamais un breakpoint viewport.",
+      "antiPatterns": [
+        "Recréer un shell avec des grid/flex ad hoc",
+        "breakpoints viewport (tablet:) dans le contenu d'un shell"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Application minimale",
+          "code": "<AppLayout\n  brand={<span>Fili</span>}\n  nav={[{ label: \"Accueil\", href: \"/\", active: true }, { label: \"Rapports\", href: \"/rapports\" }]}\n  topbar={{ search: true }}\n>\n  <p>Contenu.</p>\n</AppLayout>"
+        }
+      ]
+    },
+    {
+      "name": "AppShell",
+      "package": "@fili/react",
+      "import": "import { AppShell } from \"@fili/react\";",
+      "status": "interne",
+      "category": "gabarit",
+      "purpose": "Primitive bas-niveau à 3 régions sous AppLayout. Ne pas consommer directement : préférer AppLayout (statut interne — zéro consommateur ; retrait du baril = décision de majeure).",
+      "doctrine": null,
+      "rules": null
+    },
+    {
+      "name": "Brand",
+      "package": "@fili/react",
+      "import": "import { Brand } from \"@fili/react\";",
+      "status": "stable",
+      "category": "identité",
+      "purpose": "Verrou logo + nom pour la tête de rail. Le sélecteur de site est un Select distinct, jamais fusionné.",
+      "doctrine": null,
+      "dette": "Couvert par le pattern NAVIGATION en creux (tête de rail) — fiche propre à écrire à la vague 8, ou absorption documentée dans NAVIGATION-UX.",
+      "rules": null,
+      "anatomy": [
+        "Brand",
+        "Brand.Root",
+        "Brand.Logo",
+        "Brand.Text"
+      ],
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Rend l'enfant (lien d'accueil) à la place du div."
+        }
+      },
+      "accessibility": [
+        "Quand la marque est un lien d'accueil : asChild + <a aria-label> du consommateur"
+      ],
+      "antiPatterns": [
+        "Fusionner marque et sélecteur d'espace dans un seul contrôle"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Tête de rail",
+          "code": "<Brand.Root>\n  <Brand.Text>Fili</Brand.Text>\n</Brand.Root>"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "package": "@fili/react",
+      "import": "import { Button } from \"@fili/react\";",
+      "status": "stable",
+      "category": "contrôle",
+      "purpose": "Déclencher une action. Jamais une navigation (→ Link) ni un avertissement (→ Alert).",
+      "doctrine": {
+        "ux": "components/BUTTON-UX.md",
+        "ui": "components/BUTTON-UI.md"
+      },
+      "rules": "RULES-button.md",
+      "anatomy": [
+        "Button",
+        "Button.Root",
+        "Button.Icon"
+      ],
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "La facture (le remplissage) — orthogonale au tone.",
+          "values": {
+            "filled": "fond plein + texte on-* — l'action qui doit se voir",
+            "stroke": "contour délimitant + texte tone — action secondaire affirmée",
+            "lighter": "lavis (fond doux) — action présente sans crier",
+            "ghost": "sans fond, remplissage léger au survol — action discrète"
+          },
+          "default": "filled"
+        },
+        "tone": {
+          "kind": "tone",
+          "description": "L'intention de l'action. PAS de warning : l'avertissement est un message (Alert), jamais une action (arbitrage 2026-07-29).",
+          "values": {
+            "primary": "l'action principale (marque)",
+            "neutral": "l'action ordinaire (haute-contraste, s'inverse en sombre)",
+            "destructive": "l'action irréversible — consomme la famille chromatique danger"
+          },
+          "default": "primary"
+        },
+        "size": {
+          "kind": "size",
+          "description": "La densité du contrôle.",
+          "values": {
+            "sm": "min-h 32px",
+            "md": "min-h 40px",
+            "lg": "min-h 48px"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "style": {
+          "type": "ButtonVariant",
+          "description": "Ancien nom de variant.",
+          "deprecated": "Utiliser `variant` (mêmes valeurs ; variant l'emporte). Retrait en prochaine majeure."
+        },
+        "iconOnly": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Bouton carré (largeur = hauteur) — exige un aria-label."
+        },
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Rend l'enfant à la place du <button> (Radix Slot)."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Squelette de chargement aux mêmes dimensions (aria-busy, désactivé)."
+        }
+      },
+      "tokens": [
+        "--button-radius → --control-radius",
+        "--control-focus-* (géométrie unique .ds-focus-ring ; couleur = cran subtil accordé au tone, défaut primary éclairci)",
+        "--control-raised-shadow / --control-hover-shadow / --control-pressed-shadow (relief posé)",
+        "familles primary / neutral·surface-inverse / danger selon le tone"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus-visible",
+        "active/pressed (relief s'enfonce)",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "type=button par défaut (jamais submit implicite)",
+        "focus ring v2 : cran subtil accordé au tone (primary/neutral/danger), géométrie BORDER unique",
+        "disabled garde le curseur not-allowed (cause à exposer en usage)",
+        "iconOnly exige aria-label"
+      ],
+      "allowedComposition": [
+        "Button.Icon + libellé",
+        "asChild pour porter un <a> stylé bouton (navigation assumée)"
+      ],
+      "antiPatterns": [
+        "Recréer un bouton avec <div onClick> ou <button> natif stylé à la main",
+        "tone destructive pour une action banale (l'intention doit être réelle)",
+        "variant filled × plusieurs boutons de même rang (une seule action principale par vue)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Action principale + secondaire",
+          "code": "<div className=\"flex gap-sm\">\n  <Button variant=\"filled\" tone=\"primary\">Enregistrer</Button>\n  <Button variant=\"stroke\" tone=\"neutral\">Annuler</Button>\n</div>"
+        },
+        {
+          "title": "Destructive avec icône",
+          "code": "<Button variant=\"lighter\" tone=\"destructive\" size=\"sm\">\n  <Button.Icon><svg viewBox=\"0 0 20 20\" /></Button.Icon>\n  Supprimer\n</Button>"
+        }
+      ]
+    },
+    {
+      "name": "Card",
+      "package": "@fili/react",
+      "import": "import { Card } from \"@fili/react\";",
+      "status": "stable",
+      "category": "surface",
+      "purpose": "La surface de contenu autonome, adaptée à SON conteneur (container query, jamais le viewport). Identité fixe (outlined, relief au survol si interactive) — pas de tone.",
+      "doctrine": {
+        "ux": "components/CARD-UX.md",
+        "ui": "components/CARD-UI.md",
+        "pattern": "patterns/COLLECTION"
+      },
+      "rules": "RULES-card.md",
+      "dette": "Le manifeste décrit les props du ROOT ; celles des sous-composants compound ne sont pas encore dans le schéma. `Card.TitleLink` en est le cas visible : son `asChild` porte le routage sous basePath (2026-07-30) sans apparaître dans `props`. Trou de couverture RELEVÉ, pas comblé, à la Stabilisation 0.2 — en attendant, la capacité est tenue par un exemple canonique compilé et par un test de consommation. Étendre le schéma aux sous-composants est une tranche à part.",
+      "anatomy": [
+        "Card",
+        "Card.Root",
+        "Card.Media",
+        "Card.Icon",
+        "Card.Header",
+        "Card.Body",
+        "Card.Title",
+        "Card.TitleLink",
+        "Card.TitleCommand",
+        "Card.Description",
+        "Card.Actions",
+        "Card.Check",
+        "Card.Chevron",
+        "Card.Skeleton"
+      ],
+      "axes": {
+        "mode": {
+          "kind": "mode",
+          "description": "Nature de l'interaction — langage transversal INTERACTION (R26-R28) : réservé aux surfaces-conteneurs, jamais aux contrôles.",
+          "values": {
+            "static": "aucune interaction propre",
+            "clickable": "toute la surface navigue (lien étendu via Card.TitleLink)",
+            "selectable": "la surface se sélectionne (selected)",
+            "expandable": "la surface se déplie (Card.Chevron)"
+          },
+          "default": "static"
+        },
+        "density": {
+          "kind": "density",
+          "description": "Densité de la composition interne.",
+          "values": {
+            "comfortable": "espacements pleins",
+            "compact": "espacements resserrés"
+          },
+          "default": "comfortable"
+        }
+      },
+      "props": {
+        "selected": {
+          "type": "boolean",
+          "description": "État sélectionné (mode selectable)."
+        },
+        "onSelectedChange": {
+          "type": "(selected: boolean) => void",
+          "description": "Mode selectable : bascule portée par la CARTE (clic hors cibles internes, Espace/Entrée) — la collection ne refait pas cette mécanique."
+        },
+        "value": {
+          "type": "string",
+          "description": "Valeur de la carte dans un CardGroup à régime de sélection (CARD-R26) — exigée dans ce cas, inutile ailleurs."
+        },
+        "adaptiveMedia": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Media passe à côté du contenu dès ~24rem de largeur RÉELLE."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Rend Card.Skeleton aux mêmes proportions."
+        }
+      },
+      "tokens": [
+        "--card-radius → --surface-radius (cran lg des surfaces conteneur)",
+        ".ds-interactive / .ds-interactive-target (langage INTERACTION : relief hover, lien étendu)",
+        "border / background / surface"
+      ],
+      "states": [
+        "static",
+        "hover (relief si interactive)",
+        "selected",
+        "loading"
+      ],
+      "accessibility": [
+        "lien étendu accessible : la cible reste le Card.TitleLink (un vrai <a>), pas un onClick de div",
+        "titre = vrai heading (Card.Title as h2…h6)",
+        "mode selectable autonome : role=button + aria-pressed ; sous le régime d'un CardGroup : role=radio ou checkbox + aria-checked (la branche « input réel » de CARD-R25 reste ouverte, cf. essai carded)"
+      ],
+      "adaptiveBehavior": "Container query sur sa propre largeur (état compact empilé = CSS de base ; regular côte-à-côte ≥ 24rem).",
+      "allowedComposition": [
+        "CardGroup pour toute COLLECTION de cartes : les Card sont les ENFANTS DIRECTS du pattern, qui leur transmet mode et densité par contexte (une Card `mode=\"static\"` explicite reste sans cible dans une collection interactive)"
+      ],
+      "antiPatterns": [
+        "Recréer une carte avec div + border + shadow à la main",
+        "onClick sur la surface entière sans lien réel (le lien étendu passe par TitleLink)",
+        "mode sur un contrôle (INTERACTION-R27 : surfaces-conteneurs seulement)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Carte cliquable SOUS ROUTEUR — Card.TitleLink asChild",
+          "imports": [
+            "import NextLink from \"next/link\";"
+          ],
+          "code": "<Card.Root mode=\"clickable\">\n  <Card.Body>\n    <Card.Header>\n      <Card.Title as=\"h3\">\n        <Card.TitleLink asChild>\n          <NextLink href=\"/md/card/\">Card</NextLink>\n        </Card.TitleLink>\n      </Card.Title>\n    </Card.Header>\n    <Card.Description>Le routeur préfixe le basePath du déploiement.</Card.Description>\n  </Card.Body>\n</Card.Root>"
+        },
+        {
+          "title": "Carte cliquable",
+          "code": "<Card.Root mode=\"clickable\">\n  <Card.Body>\n    <Card.Header>\n      <Card.Title><Card.TitleLink href=\"/article\">Titre de l'article</Card.TitleLink></Card.Title>\n    </Card.Header>\n    <Card.Description>Résumé en une ou deux phrases.</Card.Description>\n  </Card.Body>\n</Card.Root>"
+        }
+      ]
+    },
+    {
+      "name": "CardGroup",
+      "package": "@fili/react",
+      "import": "import { CardGroup } from \"@fili/react\";",
+      "status": "stable",
+      "category": "collection",
+      "purpose": "Le PATTERN Collection — il assemble et orchestre de vraies Card (enfants directs), il ne redessine JAMAIS leur contenu : grille intrinsèque, régime joint/séparé, filets et coins, highlight de proximité, balisage liste + cellule, contexte collectif de mode et de densité.",
+      "doctrine": {
+        "pattern": "patterns/COLLECTION-UX.md + COLLECTION-UI.md"
+      },
+      "rules": "RULES-collection.md",
+      "anatomy": [
+        "CardGroup",
+        "CardGroup.Root"
+      ],
+      "axes": {
+        "mode": {
+          "kind": "mode",
+          "description": "Mode d'interaction UNIQUE pour toute la collection (langage INTERACTION).",
+          "values": {
+            "static": "lecture",
+            "clickable": "chaque carte navigue",
+            "selectable": "chaque carte se sélectionne"
+          },
+          "default": "static"
+        },
+        "density": {
+          "kind": "density",
+          "description": "Densité de la collection.",
+          "values": {
+            "comfortable": "défaut",
+            "compact": "resserrée"
+          },
+          "default": "comfortable"
+        },
+        "selection": {
+          "kind": "enum",
+          "description": "Régime de sélection d'un groupe selectable (CARD-R26) — porté par le GROUPE, jamais carte par carte : « une seule à la fois » est indécidable localement. Absent = chaque carte reste autonome.",
+          "values": {
+            "single": "choix exclusif — radiogroup, un seul arrêt de tabulation, les flèches circulent et retiennent",
+            "multiple": "choix cumulable — group, chaque carte est une case et un arrêt de tabulation"
+          },
+          "default": null
+        }
+      },
+      "props": {
+        "cols": {
+          "type": "1 | 2 | 3 | 4 | \"auto\"",
+          "default": "\"auto\"",
+          "description": "auto = grille intrinsèque — JAMAIS un nombre par appareil."
+        },
+        "separated": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Cartes séparées (gouttières) vs jointives."
+        },
+        "outlined": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Bordure de la collection."
+        },
+        "solo": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Carte unique (désactive la proximité)."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Collection en chargement — porte aria-busy ; les squelettes sont aria-hidden."
+        },
+        "label": {
+          "type": "string",
+          "description": "Étiquette du groupe — la QUESTION quand un régime de sélection est déclaré (exigée alors)."
+        },
+        "value": {
+          "type": "string | null | string[]",
+          "description": "Sous régime : la valeur retenue (single) ou les valeurs retenues (multiple). Le type réel est contraint par `selection` (union discriminée)."
+        },
+        "onValueChange": {
+          "type": "(v: string | null) => void | (v: string[]) => void",
+          "description": "Sous régime : le groupe applique le régime et rend la nouvelle sélection."
+        }
+      },
+      "accessibility": [
+        "role=list / role=listitem posés par la collection (la cellule lui appartient)",
+        "sous régime, le groupe devient une QUESTION : role=radiogroup (single) ou role=group (multiple), les cellules cessent d'être des listitem, et chaque Card prend le rôle nommé par CARD-R25 (radio / checkbox + aria-checked)",
+        "single : un seul arrêt de tabulation (l'option retenue, à défaut la première), flèches circulantes, la sélection suit le focus (APG Radio Group)",
+        "aria-busy au chargement vit sur la collection, les squelettes des cartes sont aria-hidden",
+        "mode selectable : état et bascule portés par chaque Card (aria-pressed, Espace/Entrée)",
+        "une Card `mode=\"static\"` explicite est une carte SANS CIBLE : aucune affordance, le highlight l'ignore"
+      ],
+      "adaptiveBehavior": "Grille intrinsèque repeat(auto-fill, minmax(min(100%, item-min), 1fr)) — jamais de grid-cols par breakpoint.",
+      "antiPatterns": [
+        "Grille de cartes à la main (tablet:grid-cols-*)",
+        "des modes différents carte par carte (le mode appartient à la collection ; une carte sans cible surclasse en static)",
+        "un groupe qui mélange sélection simple et multiple (CARD-R26) — l'union discriminée de `selection` le rend intypable",
+        "la collection qui rend l'intérieur de ses items — l'ex-API CardGroup.Card, une seconde anatomie de carte, a été SUPPRIMÉE le 2026-07-30 : les enfants sont de vraies Card"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Collection cliquable — de vraies Card comme enfants",
+          "code": "<CardGroup mode=\"clickable\" separated label=\"Guides\">\n  <Card.Root>\n    <Card.Body>\n      <Card.Header>\n        <Card.Title><Card.TitleLink href=\"/guides/commencer\">Commencer</Card.TitleLink></Card.Title>\n      </Card.Header>\n      <Card.Description>Installer et brancher le kit.</Card.Description>\n    </Card.Body>\n  </Card.Root>\n  <Card.Root>\n    <Card.Body>\n      <Card.Header>\n        <Card.Title><Card.TitleLink href=\"/guides/theming\">Theming</Card.TitleLink></Card.Title>\n      </Card.Header>\n      <Card.Description>Rayons, relief, sombre.</Card.Description>\n    </Card.Body>\n  </Card.Root>\n</CardGroup>"
+        },
+        {
+          "title": "Choix exclusif — le régime appartient au groupe (CARD-R26)",
+          "code": "<CardGroup mode=\"selectable\" selection=\"single\" separated label=\"Formule\" value=\"annuel\" onValueChange={() => {}}>\n  <Card.Root value=\"mensuel\">\n    <Card.Body>\n      <Card.Header><Card.Title>Mensuel</Card.Title></Card.Header>\n      <Card.Description>Sans engagement.</Card.Description>\n    </Card.Body>\n  </Card.Root>\n  <Card.Root value=\"annuel\">\n    <Card.Body>\n      <Card.Header><Card.Title>Annuel</Card.Title></Card.Header>\n      <Card.Description>Deux mois offerts.</Card.Description>\n    </Card.Body>\n  </Card.Root>\n</CardGroup>"
+        }
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "package": "@fili/react",
+      "import": "import { Checkbox } from \"@fili/react\";",
+      "status": "stable",
+      "category": "champ",
+      "purpose": "Une sélection VALIDÉE À LA SOUMISSION, cumulable — l'autre moitié de la ligne de partage posée par SWITCH-UX. Le switch agit tout de suite ; la case attend l'envoi.",
+      "doctrine": {
+        "ux": "components/CHOICE-UX.md",
+        "ui": "components/CHOICE-UI.md"
+      },
+      "rules": "RULES-choice.md",
+      "anatomy": [
+        "Checkbox",
+        "Checkbox.Group"
+      ],
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Cran de la marque et du libellé — apparié à l'échelle `icon` (CHOICE-UI).",
+          "values": {
+            "sm": "compact (marque icon.sm)",
+            "md": "défaut (marque icon.md)"
+          },
+          "default": "md"
+        },
+        "status": {
+          "kind": "status",
+          "description": "Statut SUBI par la validation, jamais décoratif. Hérité du groupe quand il existe.",
+          "values": {
+            "default": "au repos",
+            "error": "invalidé par la validation (bordure danger + anneau accordé)"
+          },
+          "default": "default"
+        }
+      },
+      "props": {
+        "label": {
+          "type": "ReactNode",
+          "description": "Libellé EMBARQUÉ et cliquable, à droite de la marque (CHOICE-R08)."
+        },
+        "helper": {
+          "type": "ReactNode",
+          "description": "Aide de l'option : une phrase courte, sans lien (CHOICE-R10)."
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Parent partiellement coché — se CALCULE, ne se sélectionne pas (CHOICE-R11)."
+        },
+        "onCheckedChange": {
+          "type": "(checked: boolean) => void",
+          "description": "Bascule de la case (effet différé à la soumission)."
+        },
+        "value": {
+          "type": "string",
+          "description": "Dans un Checkbox.Group : la valeur portée par cette option."
+        },
+        "exclusive": {
+          "type": "boolean",
+          "default": "false",
+          "description": "« Aucune de ces réponses » : la cocher décoche les autres (CHOICE-R18)."
+        },
+        "onValueChange": {
+          "type": "(valeurs: string[]) => void",
+          "description": "Checkbox.Group : l'ensemble des valeurs cochées."
+        },
+        "error": {
+          "type": "ReactNode",
+          "description": "Checkbox.Group : message d'erreur DU GROUPE, jamais de la première case (CHOICE-R17). Mode de PRÉSENTATION — dans un formulaire réel, c'est `verdict` qui porte le message."
+        },
+        "verdict": {
+          "type": "ValidationVerdict",
+          "description": "Le VERDICT — du groupe (requis, cardinalité min/max, combinaison interdite) ou d'une case ISOLÉE (consentement obligatoire). Il l'emporte sur `status` et sur `error`."
+        }
+      },
+      "tokens": [
+        "icon-sm / icon-md (taille de marque)",
+        "radius-sm (case)",
+        "border-strong au repos (3:1)",
+        "primary / on-primary (coché)",
+        "danger (erreur)",
+        "--control-focus-* (anneau unique)"
+      ],
+      "states": [
+        "checked",
+        "indeterminate (propriété DOM, jamais soumise)",
+        "disabled",
+        "error",
+        "focus-visible"
+      ],
+      "accessibility": [
+        "input[type=checkbox] NATIF conservé et focalisable — rôle, état et clavier non réimplémentés (CHOICE-R15)",
+        "libellé embarqué dans le <label> : la marque ET le texte sont cliquables (CHOICE-R08/R16)",
+        "Checkbox.Group en fieldset/legend — la question est le nom accessible du groupe (CHOICE-R06)",
+        "état jamais porté par la seule couleur : le glyphe change (CHOICE-R12)",
+        "message de verdict associé au fieldset (groupe) ou à la case (aria-describedby), avec sa qualification textuelle"
+      ],
+      "validation": {
+        "role": "group",
+        "nativeConstraints": [
+          "aucune — la cardinalité d'un ensemble n'a pas d'équivalent natif"
+        ],
+        "externalConstraints": [
+          "required",
+          "min / max de sélections (Validation.fromSelection)",
+          "combinaison interdite (règle métier)",
+          "verdict serveur"
+        ],
+        "ariaInvalidTarget": "chaque input[type=checkbox] du groupe (le statut descend par contexte) ; le message, lui, appartient au groupe",
+        "messageBinding": "aria-describedby du <fieldset> → le message unique du groupe (CHOICE-R17 : jamais rattaché à la première option)",
+        "focusTarget": "la première option du groupe — un fieldset n'est pas focalisable",
+        "summaryRole": "UNE entrée pour le groupe entier, dont le texte reprend la question",
+        "requiredBehavior": "aucune prop `required` : la contrainte se déclare au contrat (Validation.fromSelection) et revient en verdict",
+        "pendingBehavior": "verdict `validating` — le groupe reste neutre, aucune option n'est marquée",
+        "correctionBehavior": "la signature du verdict est la sélection sérialisée : toute (dé)sélection le périme",
+        "examples": {
+          "valid": "Validation.fromSelection(\"sujets\", [\"design\"], { min: 1 }, MESSAGES) → valid",
+          "invalid": "Validation.fromSelection(\"sujets\", [], { min: 1 }, MESSAGES) → invalid { code: \"valueMissing\" }"
+        }
+      },
+      "antiPatterns": [
+        "S'en servir pour un réglage à effet immédiat (c'est Switch — CHOICE-R01)",
+        "Poser une case unique là où la question n'admet qu'une réponse (ce sont des Radio, même à deux options — CHOICE-R03)",
+        "Pré-cocher un consentement (CHOICE-R13)",
+        "Rendre `indeterminate` cliquable comme troisième état (il se calcule — CHOICE-R11)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Consentement explicite",
+          "code": "<Checkbox label=\"J'accepte les conditions d'utilisation\" onCheckedChange={() => {}} />"
+        },
+        {
+          "title": "Cardinalité du groupe — le message DESCEND du verdict",
+          "imports": [
+            "import { Validation } from \"@fili/react/validation\";"
+          ],
+          "code": "<Checkbox.Group\n  label=\"Centres d'intérêt\"\n  value={[]}\n  onValueChange={() => {}}\n  verdict={Validation.fromSelection(\"sujets\", [], { min: 1 }, {\n    valueMissing: \"Choisissez au moins un centre d'intérêt.\",\n    fallback: \"Cette sélection ne convient pas.\",\n  })}\n>\n  <Checkbox value=\"design\" label=\"Design\" />\n  <Checkbox value=\"code\" label=\"Développement\" />\n</Checkbox.Group>"
+        },
+        {
+          "title": "Options cumulables sous leur question",
+          "code": "<Checkbox.Group label=\"Centres d'intérêt\" value={[\"design\"]} onValueChange={() => {}}>\n  <Checkbox value=\"design\" label=\"Design\" />\n  <Checkbox value=\"code\" label=\"Développement\" helper=\"Front et back\" />\n  <Checkbox value=\"aucun\" label=\"Aucun de ces sujets\" exclusive />\n</Checkbox.Group>"
+        }
+      ]
+    },
+    {
+      "name": "Chip",
+      "package": "@fili/react",
+      "import": "import { Chip } from \"@fili/react\";",
+      "status": "stable",
+      "category": "navigation",
+      "purpose": "Le RENVOI COMPACT en nuée : pointe vers une entité du système (règle, cas, constat) depuis un contexte dense. Destination ou déplacement de vue — jamais une mutation. Premier composant entré par la tranche verticale du MISSING-COMPONENT-PROTOCOL (2026-07-29).",
+      "doctrine": {
+        "ux": "components/CHIP-UX.md",
+        "ui": "components/CHIP-UI.md"
+      },
+      "rules": "RULES-chip.md",
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Facture contenue, calme — pas de relief (un renvoi, pas un objet pressé).",
+          "values": {
+            "outline": "fond de page + filet border (défaut)",
+            "subtle": "fond surface, sans filet — sur zone déjà bordée"
+          },
+          "default": "outline"
+        }
+      },
+      "props": {
+        "mono": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Identifiant technique en chasse fixe (CHIP-R05)."
+        },
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Porte un <a> si la chip NAVIGUE ; sans asChild, <button type=button> (déplacement de vue)."
+        }
+      },
+      "tokens": [
+        "radius-md",
+        "border / surface / surface-hover / primary (survol)",
+        ".ds-focus-ring (--control-focus-color)"
+      ],
+      "accessibility": [
+        "sémantique native suivant la cible (a href / button — CHIP-R06)",
+        "nom accessible = texte visible, flèche comprise",
+        "cible effective ≥ touch.target-min dans la nuée"
+      ],
+      "antiPatterns": [
+        "Porter une mutation (créer/supprimer → Button)",
+        "Servir de filtre à facettes (autre besoin, hors périmètre — CHIP-R03)",
+        "Recomposer la facture en local (c'est exactement la dérive qui a fait naître ce composant)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Nuée de renvois vers des règles",
+          "code": "<div className=\"flex flex-wrap gap-sm\">\n  <Chip mono onClick={() => {}}>BUTTON-R12 →</Chip>\n  <Chip mono onClick={() => {}}>BUTTON-R30 →</Chip>\n  <Chip variant=\"subtle\" onClick={() => {}}>Situations qui l'éprouvent →</Chip>\n</div>"
+        }
+      ]
+    },
+    {
+      "name": "CompactButton",
+      "package": "@fili/react",
+      "import": "import { CompactButton } from \"@fili/react\";",
+      "status": "stable",
+      "category": "contrôle",
+      "purpose": "Bouton icon-only pour les espaces contraints (fermer, développer, action en ligne).",
+      "doctrine": {
+        "ux": "components/BUTTON-UX.md",
+        "ui": "components/BUTTON-UI.md"
+      },
+      "rules": "RULES-button.md",
+      "anatomy": [
+        "CompactButton",
+        "CompactButton.Root",
+        "CompactButton.Icon"
+      ],
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Même facture que Button.",
+          "values": {
+            "filled": "fond plein + texte on-* — l'action qui doit se voir",
+            "stroke": "contour délimitant + texte tone — action secondaire affirmée",
+            "lighter": "lavis (fond doux) — action présente sans crier",
+            "ghost": "sans fond, remplissage léger au survol — action discrète"
+          },
+          "default": "lighter"
+        },
+        "tone": {
+          "kind": "tone",
+          "description": "Même intention que Button — défaut neutral (usage utilitaire).",
+          "values": {
+            "primary": "l'action principale (marque)",
+            "neutral": "l'action ordinaire (haute-contraste, s'inverse en sombre)",
+            "destructive": "l'action irréversible — consomme la famille chromatique danger"
+          },
+          "default": "neutral"
+        },
+        "size": {
+          "kind": "size",
+          "description": "Carré compact — étendre la cible tactile à 44px en usage.",
+          "values": {
+            "sm": "20px",
+            "md": "24px"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "style": {
+          "type": "ButtonVariant",
+          "description": "Ancien nom de variant.",
+          "deprecated": "Utiliser `variant`."
+        },
+        "fullRadius": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Cercle (true) vs arrondi --button-radius (false)."
+        },
+        "aria-label": {
+          "type": "string",
+          "required": true,
+          "description": "OBLIGATOIRE — icône seule, sans exception WCAG."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Squelette de chargement."
+        }
+      },
+      "tokens": [
+        "--button-radius",
+        "--control-focus-*",
+        "mêmes familles de tone que Button"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "focus-visible",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "aria-label requis par le type",
+        "focus ring v2 accordé au tone"
+      ],
+      "antiPatterns": [
+        "S'en servir pour une action principale libellée (→ Button)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Fermer",
+          "code": "<CompactButton aria-label=\"Fermer\">\n  <CompactButton.Icon><svg viewBox=\"0 0 20 20\" /></CompactButton.Icon>\n</CompactButton>"
+        }
+      ]
+    },
+    {
+      "name": "Container",
+      "package": "@fili/react",
+      "import": "import { Container } from \"@fili/react\";",
+      "status": "stable",
+      "category": "gabarit",
+      "purpose": "Cadre de page (max-width + centrage). Le cran suit le CONTEXTE : narrow = formulaire, default = contenu, wide = dashboard.",
+      "doctrine": {
+        "pattern": "foundations/GRID"
+      },
+      "rules": null,
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Largeurs de CONTENU (langue narrow/default/wide/full — jamais sm/md/lg, réservés aux contrôles).",
+          "values": {
+            "narrow": "480px — formulaire, auth",
+            "default": "1024px — page standard",
+            "wide": "1440px — dashboard dense",
+            "full": "pleine largeur"
+          },
+          "default": "default"
+        }
+      },
+      "props": {
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Slot Radix."
+        }
+      },
+      "accessibility": [
+        "Neutre (div de cadrage) — la sémantique vient du contenu"
+      ],
+      "antiPatterns": [
+        "max-w-* arbitraire par page (le cran est un choix de contexte, pas d'esthétique)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Page de formulaire",
+          "code": "<Container size=\"narrow\">\n  <h1>Créer un compte</h1>\n</Container>"
+        }
+      ]
+    },
+    {
+      "name": "DeleteButton",
+      "package": "@fili/react",
+      "import": "import { DeleteButton } from \"@fili/react\";",
+      "status": "expressif",
+      "category": "contrôle",
+      "purpose": "Bouton destructif E-motion (éclatement, état terminal). Réservé aux moments mérités — budget de rareté.",
+      "doctrine": {
+        "ux": "components/BUTTON-UX.md §E-motion"
+      },
+      "rules": null,
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Taille du contrôle expressif.",
+          "values": {
+            "sm": "compact",
+            "md": "standard",
+            "lg": "défaut (moment mérité)"
+          },
+          "default": "lg"
+        }
+      },
+      "props": {
+        "onDelete": {
+          "type": "() => Promise<unknown> | unknown",
+          "description": "Action de suppression (l'animation attend la résolution)."
+        },
+        "doneLabel": {
+          "type": "ReactNode",
+          "default": "\"Supprimé\"",
+          "description": "Libellé de l'état terminal."
+        },
+        "liveMessage": {
+          "type": "string",
+          "default": "\"Élément supprimé.\"",
+          "description": "Annonce aria-live."
+        }
+      },
+      "accessibility": [
+        "aria-live porte le résultat",
+        "reduced-motion = crossfade instantané",
+        "focus ring danger (focus v2)"
+      ],
+      "antiPatterns": [
+        "L'employer pour une suppression banale et fréquente (→ Button destructive)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Suppression méritée",
+          "code": "<DeleteButton onDelete={() => Promise.resolve()}>Supprimer le compte</DeleteButton>"
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "package": "@fili/react",
+      "import": "import { Divider } from \"@fili/react\";",
+      "status": "stable",
+      "category": "structure",
+      "purpose": "Séparation décorative (ou sémantique avec decorative=false). Toujours border — jamais border-strong.",
+      "doctrine": {
+        "pattern": "foundations/BORDER"
+      },
+      "rules": null,
+      "axes": {
+        "orientation": {
+          "kind": "enum",
+          "description": "Sens du filet.",
+          "values": {
+            "horizontal": "pleine largeur",
+            "vertical": "pleine hauteur du conteneur"
+          },
+          "default": "horizontal"
+        }
+      },
+      "props": {
+        "decorative": {
+          "type": "boolean",
+          "default": "true",
+          "description": "false → role=separator + aria-orientation."
+        }
+      },
+      "accessibility": [
+        "décoratif par défaut (ignoré des lecteurs) ; sémantique sur demande"
+      ],
+      "antiPatterns": [
+        "border-t ad hoc là où le composant existe",
+        "s'en servir comme délimitation forte (c'est border, pas border-strong)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Séparation de sections",
+          "code": "<Divider />"
+        }
+      ]
+    },
+    {
+      "name": "Drawer",
+      "package": "@fili/react",
+      "import": "import { Drawer } from \"@fili/react\";",
+      "status": "stable",
+      "category": "superposé",
+      "purpose": "Panneau ancré à un bord (fondation OVERLAY : scrim, focus trap, scroll-lock, Échap). Un « sheet » EST un Drawer top/bottom — pas de composant Sheet séparé.",
+      "doctrine": {
+        "pattern": "foundations/OVERLAY"
+      },
+      "dette": "Paire DRAWER-UX/UI propre à écrire (vague 6) — les arbitrages (side/effect/depth/size à double lecture) sont journalisés dans DECISIONS.md.",
+      "rules": null,
+      "anatomy": [
+        "Drawer",
+        "Drawer.Root",
+        "Drawer.Frame"
+      ],
+      "axes": {
+        "side": {
+          "kind": "enum",
+          "description": "Bord d'ancrage (directions logiques start/end, jamais left/right).",
+          "values": {
+            "start": "rail début",
+            "end": "rail fin",
+            "top": "feuille haute centrée",
+            "bottom": "feuille basse centrée"
+          },
+          "default": "start"
+        },
+        "size": {
+          "kind": "enum",
+          "description": "Double lecture : largeur du panneau (start/end : 280/480/640/≈85%) ou de la feuille centrée (top/bottom : 480/640/1024/pleine). Défaut contextuel : narrow en latéral, full en vertical.",
+          "values": {
+            "narrow": "280 / 480px",
+            "default": "480 / 640px",
+            "wide": "640 / 1024px",
+            "full": "≈85% / pleine largeur"
+          },
+          "default": null
+        },
+        "effect": {
+          "kind": "enum",
+          "description": "push impossible en vertical (repli overlay silencieux) ; push et depth exigent <Drawer.Frame>.",
+          "values": {
+            "overlay": "par-dessus + scrim",
+            "push": "pousse le contenu du Frame"
+          },
+          "default": "overlay"
+        }
+      },
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": true,
+          "description": "Contrôlé."
+        },
+        "onClose": {
+          "type": "() => void",
+          "required": true,
+          "description": "Échap / scrim / bouton."
+        },
+        "depth": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Depth Transition (le fond recule dans le Frame) — combinable avec overlay ET push."
+        }
+      },
+      "accessibility": [
+        "focus trap + retour du focus",
+        "Échap ferme",
+        "panneau tabindex=-1 (exception BORDER-U07 documentée)"
+      ],
+      "antiPatterns": [
+        "Créer un composant Sheet (c'est un Drawer top/bottom)",
+        "push sans Drawer.Frame (repli silencieux)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Rail latéral",
+          "code": "<Drawer open={false} onClose={() => {}} side=\"start\" size=\"narrow\">\n  <p>Navigation secondaire.</p>\n</Drawer>"
+        }
+      ]
+    },
+    {
+      "name": "Dropdown",
+      "package": "@fili/react",
+      "import": "import { Dropdown } from \"@fili/react\";",
+      "status": "stable",
+      "category": "superposé",
+      "purpose": "Menu d'ACTIONS (jamais de valeur — ça, c'est Select). Placement auto par défaut ; Dropdown.Inline = même contenu, à plat, sans déclencheur.",
+      "doctrine": {
+        "pattern": "foundations/OVERLAY"
+      },
+      "dette": "Paire DROPDOWN-UX/UI propre à écrire (vague 6) — le fond de survol glissant (divergence de focus documentée) et la frontière avec Select sont journalisés.",
+      "rules": null,
+      "anatomy": [
+        "Dropdown",
+        "Dropdown.Root",
+        "Dropdown.Trigger",
+        "Dropdown.Content",
+        "Dropdown.Item",
+        "Dropdown.Label",
+        "Dropdown.Separator",
+        "Dropdown.Inline"
+      ],
+      "axes": {
+        "side": {
+          "kind": "enum",
+          "description": "Placement vertical — auto = mesuré face à la fenêtre à l'ouverture ; explicite = forçage.",
+          "values": {
+            "top": "au-dessus",
+            "bottom": "en dessous",
+            "auto": "mesuré (défaut)"
+          },
+          "default": "auto"
+        },
+        "align": {
+          "kind": "enum",
+          "description": "Alignement horizontal sur le déclencheur.",
+          "values": {
+            "start": "début",
+            "center": "centre",
+            "end": "fin",
+            "auto": "mesuré (défaut)"
+          },
+          "default": "auto"
+        }
+      },
+      "accessibility": [
+        "ARIA menu-button",
+        "items = menuitem (menuitemradio si checked)",
+        "signal de survol = fond glissant ≥ 3:1 (divergence de ring documentée)"
+      ],
+      "antiPatterns": [
+        "Y mettre une sélection de valeur (→ Select)",
+        "un Item sans onSelect ni fermeture explicite"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Menu d'actions",
+          "code": "<Dropdown.Root>\n  <Dropdown.Trigger asChild>\n    <CompactButton aria-label=\"Actions\"><CompactButton.Icon><svg viewBox=\"0 0 20 20\" /></CompactButton.Icon></CompactButton>\n  </Dropdown.Trigger>\n  <Dropdown.Content>\n    <Dropdown.Item onSelect={() => {}}>Dupliquer</Dropdown.Item>\n    <Dropdown.Separator />\n    <Dropdown.Item onSelect={() => {}}>Archiver</Dropdown.Item>\n  </Dropdown.Content>\n</Dropdown.Root>"
+        }
+      ]
+    },
+    {
+      "name": "Input",
+      "package": "@fili/react",
+      "import": "import { Input } from \"@fili/react\";",
+      "status": "stable",
+      "category": "champ",
+      "purpose": "La zone réceptive du formulaire (relief creusé). Le BLOC CHAMP — Field > (Label · Root > Wrapper > (Icon · Input · InlineAffix) + Affix · Helper|Error) — porte le câblage exigé par la doctrine : for/id, aria-describedby, indicateur de requis. Root employé seul reste le cadre bordé, inchangé.",
+      "doctrine": {
+        "ux": "components/INPUT-UX.md",
+        "ui": "components/INPUT-UI.md",
+        "pattern": "patterns/FORM"
+      },
+      "rules": "RULES-input.md",
+      "anatomy": [
+        "Input",
+        "Input.Field",
+        "Input.Label",
+        "Input.Helper",
+        "Input.Error",
+        "Input.Root",
+        "Input.Wrapper",
+        "Input.Icon",
+        "Input.Input",
+        "Input.InlineAffix",
+        "Input.Affix",
+        "Input.Password",
+        "Input.Search",
+        "Input.Number",
+        "Input.Textarea"
+      ],
+      "axes": {
+        "status": {
+          "kind": "status",
+          "description": "Statut de validation — SUBI par les données, jamais décoratif. En error, aria-invalid est posé automatiquement. (Renommé depuis `tone`, 2026-07-29.)",
+          "values": {
+            "default": "bordure border-strong (délimitante 3:1)",
+            "error": "bordure danger",
+            "success": "bordure success",
+            "warning": "bordure warning"
+          },
+          "default": "default"
+        },
+        "size": {
+          "kind": "size",
+          "description": "Hauteur du champ (32/40/48px). Le 3e axe est field_type = le type HTML natif.",
+          "values": {
+            "sm": "32px, rayon sm",
+            "md": "40px",
+            "lg": "48px"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "required": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Input.Field : pose l'indicateur visible sur le libellé (INPUT-R30) + aria-required. La CONVENTION requis/optionnel appartient au formulaire entier (FORM-R10)."
+        },
+        "verdict": {
+          "type": "ValidationVerdict",
+          "description": "Input.Field : le VERDICT de validation — statut visuel, aria-invalid, aria-busy et texte du message en descendent. Source de vérité ; `status` devient un mode de présentation."
+        },
+        "confirmValid": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Input.Field : projeter un verdict `valid` en statut success. Faux par défaut — confirmer un succès est un choix de produit (INPUT-R16/R20)."
+        },
+        "controlId": {
+          "type": "string",
+          "description": "Input.Field : identifiant STABLE du contrôle, requis pour qu'un résumé d'erreurs puisse l'ancrer (FORM-R23)."
+        },
+        "clearable": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Croix d'effacement standard (Input.Input)."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Squelette de chargement (Root)."
+        },
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Slot Radix sur Root."
+        }
+      },
+      "tokens": [
+        "--input-radius → --control-radius (md/lg ; sm garde radius-sm)",
+        "--input-border → --field-border ; --field-inset-shadow (relief creusé)",
+        "--input-focus-color → --control-focus-color (anneau unique BORDER)",
+        "bordures de statut : danger / success / warning"
+      ],
+      "states": [
+        "default",
+        "focus-visible (ring accent + bordure d'état ensemble)",
+        "error",
+        "success",
+        "warning",
+        "disabled",
+        "loading"
+      ],
+      "accessibility": [
+        "aria-invalid automatique en error",
+        "Input.Field : liaison for/id du libellé (INPUT-UI T1 — jamais la seule proximité visuelle) et aria-describedby vers le message, posé seulement s'il existe",
+        "Input.Error remplace Input.Helper (INPUT-R26) et se signale par une icône + « Erreur » pour l'AT, jamais par la seule couleur (INPUT-R31)",
+        "dans un Field, Wrapper et Textarea cessent d'être des <label> : un seul étiquetage, celui du libellé visible",
+        "le ring s'ajoute à la bordure d'état (les deux restent lisibles — BORDER-R07)",
+        "Password : aria-pressed sur le toggle œil ; Number : réservé aux quantités (OTP/code postal = text + inputmode)"
+      ],
+      "validation": {
+        "role": "field",
+        "nativeConstraints": [
+          "required",
+          "type (email/url/number/tel)",
+          "min",
+          "max",
+          "step",
+          "minLength",
+          "maxLength",
+          "pattern"
+        ],
+        "externalConstraints": [
+          "schéma applicatif",
+          "règle métier",
+          "verdict serveur (source: server)"
+        ],
+        "ariaInvalidTarget": "l'élément natif (input/textarea), jamais le cadre — posé quand le statut résolu vaut error",
+        "messageBinding": "aria-describedby → Input.Error / Input.Helper, posé SEULEMENT si un message est monté",
+        "focusTarget": "l'élément natif, par son id (Input.Field controlId)",
+        "summaryRole": "une entrée par champ, message issu de la même ValidationIssue",
+        "requiredBehavior": "Input.Field required = indicateur visible (INPUT-R30) + aria-required ; la contrainte native `required` reste passée au champ par l'appelant",
+        "pendingBehavior": "verdict `validating` → aria-busy sur le champ, statut visuel neutre",
+        "correctionBehavior": "Validation.refresh périme le verdict dès que la valeur change (FORM-R51) — le message disparaît sans intervention",
+        "examples": {
+          "valid": "<Input.Field verdict={Validation.valid(\"nom@domaine.fr\")}>…</Input.Field>",
+          "invalid": "<Input.Field verdict={Validation.fromValidity(\"email\", el.validity, el.value, MESSAGES)}>…</Input.Field>"
+        }
+      },
+      "adaptiveBehavior": "Largeur fluide (w-full) — la largeur vient du gabarit de formulaire (container-narrow).",
+      "allowedComposition": [
+        "FORM : Input + Select + Button + Alert",
+        "Affix pour unités/domaines ; Icon pour la nature du champ"
+      ],
+      "antiPatterns": [
+        "<input> natif stylé à la main hors mécanique interne",
+        "libellé écrit à la main à côté du champ (INPUT-R38 : label toujours visible ET lié — c'est le rôle d'Input.Field + Input.Label)",
+        "placeholder tenant lieu de libellé (INPUT-R38)",
+        "status utilisé comme décor (un champ n'est pas « orange » : il est en warning)",
+        "Input.Number pour un code (OTP, postal) — c'est un text + inputmode"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Champ complet — le message DESCEND du verdict (la chaîne câblée)",
+          "imports": [
+            "import { Validation } from \"@fili/react/validation\";"
+          ],
+          "code": "<Input.Field\n  controlId=\"courriel\"\n  required\n  verdict={Validation.invalid({\n    code: \"typeMismatch\",\n    field: \"courriel\",\n    source: \"native\",\n    severity: \"error\",\n    message: \"Saisissez une adresse au format nom@domaine.fr\",\n  })}\n>\n  <Input.Label>Adresse e-mail</Input.Label>\n  <Input.Root>\n    <Input.Wrapper>\n      <Input.Input type=\"email\" placeholder=\"vous@exemple.fr\" autoComplete=\"email\" required />\n    </Input.Wrapper>\n  </Input.Root>\n  <Input.Helper>Nous ne la partagerons jamais.</Input.Helper>\n  <Input.Error />\n</Input.Field>"
+        },
+        {
+          "title": "Fixture de PRÉSENTATION — un état isolé, sans verdict (documentation seulement)",
+          "code": "<Input.Field status=\"error\" required>\n  <Input.Label>Adresse e-mail</Input.Label>\n  <Input.Root>\n    <Input.Wrapper>\n      <Input.Input type=\"email\" placeholder=\"vous@exemple.fr\" autoComplete=\"email\" />\n    </Input.Wrapper>\n  </Input.Root>\n  <Input.Helper>Nous ne la partagerons jamais.</Input.Helper>\n  <Input.Error>Le format attendu est nom@domaine.fr</Input.Error>\n</Input.Field>"
+        },
+        {
+          "title": "Cadre seul, sans bloc champ (usage autonome inchangé)",
+          "code": "<Input.Root status=\"error\">\n  <Input.Wrapper>\n    <Input.Input type=\"email\" placeholder=\"vous@exemple.fr\" aria-label=\"Adresse e-mail\" />\n  </Input.Wrapper>\n</Input.Root>"
+        },
+        {
+          "title": "Recherche effaçable",
+          "code": "<Input.Root>\n  <Input.Wrapper>\n    <Input.Search placeholder=\"Rechercher…\" aria-label=\"Rechercher\" />\n  </Input.Wrapper>\n</Input.Root>"
+        }
+      ]
+    },
+    {
+      "name": "Link",
+      "package": "@fili/react",
+      "import": "import { Link } from \"@fili/react\";",
+      "status": "stable",
+      "category": "contrôle",
+      "purpose": "LA navigation. context règle la présentation sans changer la nature ; current (navigation) = aria-current + signal non chromatique.",
+      "doctrine": {
+        "ux": "components/LINK-UX.md",
+        "ui": "components/LINK-UI.md"
+      },
+      "rules": "RULES-link.md",
+      "anatomy": [
+        "Link",
+        "Link.Root",
+        "Link.Icon"
+      ],
+      "axes": {
+        "context": {
+          "kind": "context",
+          "description": "Environnement d'usage.",
+          "values": {
+            "inline": "dans une phrase (souligné)",
+            "standalone": "isolé (défaut)",
+            "navigation": "dans une nav (supporte current)"
+          },
+          "default": "standalone"
+        }
+      },
+      "props": {
+        "current": {
+          "type": "boolean",
+          "description": "context=navigation seulement — aria-current=page + poids/trait (jamais la couleur seule)."
+        },
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "next/link et routeurs client."
+        }
+      },
+      "accessibility": [
+        "un lien NAVIGUE (jamais de mutation)",
+        "current non chromatique",
+        "focus ring v2 (défaut primary subtil)"
+      ],
+      "antiPatterns": [
+        "Un <button> qui navigue, un Link qui mute",
+        "souligner un lien standalone (le soulignement appartient à inline)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Lien dans une phrase",
+          "code": "<p>Voir la <Link href=\"/doctrine\" context=\"inline\">doctrine complète</Link> pour le raisonnement.</p>"
+        }
+      ]
+    },
+    {
+      "name": "Modal",
+      "package": "@fili/react",
+      "import": "import { Modal } from \"@fili/react\";",
+      "status": "stable",
+      "category": "superposé",
+      "purpose": "Superposé modal centré (fondation OVERLAY). Confirmation = narrow ; wide (1024) = illustration ou tableau court.",
+      "doctrine": {
+        "ux": "components/MODAL-UX.md",
+        "ui": "components/MODAL-UI.md"
+      },
+      "rules": "RULES-modal.md",
+      "anatomy": [
+        "Modal",
+        "Modal.Root",
+        "Modal.Header",
+        "Modal.Body",
+        "Modal.Footer",
+        "Modal.Close"
+      ],
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Largeurs de contenu (narrow/default/wide).",
+          "values": {
+            "narrow": "container-narrow (480) — confirmation, saisie courte",
+            "default": "overlay (640) — détail/lecture",
+            "wide": "container-default (1024) — illustration, tableau court"
+          },
+          "default": "narrow"
+        },
+        "placement": {
+          "kind": "enum",
+          "description": "Position verticale de la surface.",
+          "values": {
+            "center": "centrée (défaut)",
+            "top": "haut (retrait 6vh)",
+            "bottom": "bas"
+          },
+          "default": "center"
+        },
+        "enterFrom": {
+          "kind": "enum",
+          "description": "Direction d'apparition.",
+          "values": {
+            "bottom": "monte (défaut)",
+            "top": "descend",
+            "center": "fond en place"
+          },
+          "default": "bottom"
+        }
+      },
+      "props": {
+        "open": {
+          "type": "boolean",
+          "required": true,
+          "description": "Contrôlé."
+        },
+        "onClose": {
+          "type": "() => void",
+          "required": true,
+          "description": "Fermeture (Échap, scrim si dismissOnScrim, Close)."
+        },
+        "dismissOnScrim": {
+          "type": "boolean",
+          "default": "true",
+          "description": "Clic sur le voile ferme."
+        },
+        "level": {
+          "type": "2 | 3 | 4",
+          "default": "2",
+          "description": "Niveau de heading du Header (nom accessible auto)."
+        }
+      },
+      "accessibility": [
+        "focus trap + aria-labelledby dérivé du Header",
+        "panneau tabindex=-1 (exception BORDER-U07)",
+        "Échap ferme"
+      ],
+      "antiPatterns": [
+        "Une modale > 640 pour du texte (au-delà, c'est une page)",
+        "empiler des modales"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Confirmation destructive",
+          "code": "<Modal.Root open={false} onClose={() => {}} size=\"narrow\">\n  <Modal.Header>Supprimer le projet ?</Modal.Header>\n  <Modal.Body>Cette action est définitive.</Modal.Body>\n  <Modal.Footer>\n    <Button variant=\"stroke\" tone=\"neutral\">Annuler</Button>\n    <Button variant=\"filled\" tone=\"destructive\">Supprimer</Button>\n  </Modal.Footer>\n</Modal.Root>"
+        }
+      ]
+    },
+    {
+      "name": "Nav",
+      "package": "@fili/react",
+      "import": "import { Nav } from \"@fili/react\";",
+      "status": "stable",
+      "category": "navigation",
+      "purpose": "Landmark de navigation (Root label requis) — porte LA facture unique de rangée (navRowClass), consommée aussi par la nav intégrée d'AppLayout. Regroupement repliable = Accordion ; tête simple = Nav.GroupLabel.",
+      "doctrine": {
+        "pattern": "patterns/NAVIGATION"
+      },
+      "rules": null,
+      "anatomy": [
+        "Nav",
+        "Nav.Root",
+        "Nav.List",
+        "Nav.Link",
+        "Nav.GroupLabel"
+      ],
+      "props": {
+        "current": {
+          "type": "boolean",
+          "description": "Page courante — aria-current=page + lavis primary-subtle + poids (un seul à la fois)."
+        },
+        "asChild": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Rend l'enfant à la place du <a> (next/link, bouton de sélection) — l'enfant compose icône + libellé tronqué."
+        },
+        "icon": {
+          "type": "ReactNode",
+          "description": "Slot 16px avant le libellé (hors asChild)."
+        }
+      },
+      "accessibility": [
+        "landmark <nav> étiqueté (label requis)",
+        "aria-current=page sur la rangée courante"
+      ],
+      "antiPatterns": [
+        "Recopier les classes de la rangée à la main (navRowClass est la seule définition)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Navigation latérale",
+          "code": "<Nav.Root label=\"Documentation\">\n  <Nav.GroupLabel>Fondations</Nav.GroupLabel>\n  <Nav.List>\n    <Nav.Link href=\"/couleur\" current>Couleur</Nav.Link>\n    <Nav.Link href=\"/relief\">Relief</Nav.Link>\n  </Nav.List>\n</Nav.Root>"
+        }
+      ]
+    },
+    {
+      "name": "Radio",
+      "package": "@fili/react",
+      "import": "import { Radio } from \"@fili/react\";",
+      "status": "stable",
+      "category": "champ",
+      "purpose": "Un choix EXCLUSIF dans un ensemble borné, validé à la soumission. L'exclusivité appartient au GROUPE : un radio hors Radio.Group est un défaut de conception, pas une variante.",
+      "doctrine": {
+        "ux": "components/CHOICE-UX.md",
+        "ui": "components/CHOICE-UI.md"
+      },
+      "rules": "RULES-choice.md",
+      "anatomy": [
+        "Radio",
+        "Radio.Group"
+      ],
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Cran de la marque et du libellé — apparié à l'échelle `icon` (CHOICE-UI).",
+          "values": {
+            "sm": "compact (marque icon.sm)",
+            "md": "défaut (marque icon.md)"
+          },
+          "default": "md"
+        },
+        "status": {
+          "kind": "status",
+          "description": "Statut SUBI par la validation, jamais décoratif. Hérité du groupe quand il existe.",
+          "values": {
+            "default": "au repos",
+            "error": "invalidé par la validation (bordure danger + anneau accordé)"
+          },
+          "default": "default"
+        }
+      },
+      "props": {
+        "value": {
+          "type": "string",
+          "required": true,
+          "description": "La valeur portée par cette option — c'est ce que le groupe transmet."
+        },
+        "label": {
+          "type": "ReactNode",
+          "description": "Libellé embarqué et cliquable ; il se comprend hors contexte (CHOICE-R09)."
+        },
+        "helper": {
+          "type": "ReactNode",
+          "description": "Aide de l'option : une phrase courte, sans lien (CHOICE-R10)."
+        },
+        "onValueChange": {
+          "type": "(valeur: string) => void",
+          "description": "Radio.Group : la valeur retenue."
+        },
+        "name": {
+          "type": "string",
+          "description": "Radio.Group : nom commun des options, généré si absent — c'est lui qui rend le groupe exclusif."
+        },
+        "error": {
+          "type": "ReactNode",
+          "description": "Radio.Group : message d'erreur DU GROUPE, jamais de la première option (CHOICE-R17). Mode de PRÉSENTATION — dans un formulaire réel, c'est `verdict` qui porte le message."
+        },
+        "verdict": {
+          "type": "ValidationVerdict",
+          "description": "Radio.Group : le VERDICT du groupe — aucune option choisie alors qu'une réponse est obligatoire, valeur devenue indisponible, verdict métier. Il l'emporte sur `status` et sur `error`."
+        }
+      },
+      "tokens": [
+        "icon-sm / icon-md (taille de marque)",
+        "radius-pill (disque)",
+        "border-strong au repos (3:1)",
+        "primary / on-primary (coché)",
+        "danger (erreur)",
+        "--control-focus-* (anneau unique)"
+      ],
+      "states": [
+        "checked",
+        "disabled",
+        "error",
+        "focus-visible"
+      ],
+      "accessibility": [
+        "input[type=radio] NATIFS partageant un `name` : arrêt de tabulation unique, flèches et sélection qui suit le focus, gratuitement (CHOICE-R14)",
+        "Radio.Group en fieldset/legend — la question est le nom accessible du groupe (CHOICE-R06)",
+        "libellé embarqué dans le <label> : la marque ET le texte sont cliquables (CHOICE-R08/R16)",
+        "la forme (disque) porte la cardinalité, pas la seule couleur (CHOICE-R12)",
+        "message de verdict associé au fieldset, avec sa qualification textuelle — jamais rattaché à une option"
+      ],
+      "validation": {
+        "role": "group",
+        "nativeConstraints": [
+          "required (natif) — non consommé par la chaîne : le verdict d'un groupe se calcule sur la valeur retenue"
+        ],
+        "externalConstraints": [
+          "required (Validation.fromSelection)",
+          "valeur devenue indisponible",
+          "règle métier",
+          "verdict serveur"
+        ],
+        "ariaInvalidTarget": "chaque input[type=radio] du groupe (statut hérité) ; le message appartient au groupe",
+        "messageBinding": "aria-describedby du <fieldset> → le message unique du groupe (CHOICE-R17)",
+        "focusTarget": "l'option cochée si elle existe, sinon la première du groupe",
+        "summaryRole": "UNE entrée pour le groupe, dont le texte reprend la question posée",
+        "requiredBehavior": "aucune prop `required` : la contrainte se déclare au contrat et revient en verdict",
+        "pendingBehavior": "verdict `validating` — le groupe reste neutre",
+        "correctionBehavior": "la signature est la valeur retenue : choisir une option périme le verdict",
+        "examples": {
+          "valid": "Validation.fromSelection(\"formule\", [\"annuel\"], { required: true }, MESSAGES) → valid",
+          "invalid": "Validation.fromSelection(\"formule\", [], { required: true }, MESSAGES) → invalid { code: \"valueMissing\" }"
+        }
+      },
+      "antiPatterns": [
+        "Poser un radio hors de son groupe (l'exclusivité appartient au groupe — CHOICE-R05)",
+        "Réimplémenter le clavier en role=radiogroup + tabindex mobile (plus de code, moins de justesse)",
+        "Dépasser le seuil de SELECT-UX — au-delà, la question change de composant (CHOICE-R04)",
+        "Pré-sélectionner une option sans que ce soit une décision assumée (CHOICE-R13)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Choix d'une formule",
+          "code": "<Radio.Group label=\"Formule\" value=\"annuel\" onValueChange={() => {}}>\n  <Radio value=\"mensuel\" label=\"Mensuel\" />\n  <Radio value=\"annuel\" label=\"Annuel\" helper=\"Deux mois offerts\" />\n</Radio.Group>"
+        },
+        {
+          "title": "Réponse obligatoire — le message DESCEND du verdict",
+          "imports": [
+            "import { Validation } from \"@fili/react/validation\";"
+          ],
+          "code": "<Radio.Group\n  label=\"Formule\"\n  value={undefined}\n  onValueChange={() => {}}\n  verdict={Validation.fromSelection(\"formule\", [], { required: true }, {\n    valueMissing: \"Choisissez une formule pour continuer.\",\n    fallback: \"Cette réponse ne convient pas.\",\n  })}\n>\n  <Radio value=\"mensuel\" label=\"Mensuel\" />\n  <Radio value=\"annuel\" label=\"Annuel\" />\n</Radio.Group>"
+        }
+      ]
+    },
+    {
+      "name": "Select",
+      "package": "@fili/react",
+      "import": "import { Select } from \"@fili/react\";",
+      "status": "stable",
+      "category": "champ",
+      "purpose": "Choisir UNE valeur (combobox APG select-only). native=true rend un <select> stylé (menu de l'OS). Un menu d'actions, c'est Dropdown.",
+      "doctrine": {
+        "ux": "components/SELECT-UX.md",
+        "ui": "components/SELECT-UI.md"
+      },
+      "rules": "RULES-select.md",
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Facture du déclencheur.",
+          "values": {
+            "default": "champ bordé (relief creusé sous [data-relief])",
+            "ghost": "sans cadre — barres d'outils"
+          },
+          "default": "default"
+        },
+        "size": {
+          "kind": "size",
+          "description": "Taille du contrôle.",
+          "values": {
+            "sm": "32px",
+            "md": "40px",
+            "lg": "48px"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "options": {
+          "type": "SelectOption[]",
+          "required": true,
+          "description": "Les choix (value/label)."
+        },
+        "value": {
+          "type": "string | null",
+          "required": true,
+          "description": "Contrôlé."
+        },
+        "onValueChange": {
+          "type": "(v: string) => void",
+          "required": true,
+          "description": "Changement."
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "\"Sélectionner…\"",
+          "description": "Libellé sans valeur."
+        },
+        "native": {
+          "type": "boolean",
+          "default": "false",
+          "description": "<select> natif stylé."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Squelette de chargement."
+        },
+        "verdict": {
+          "type": "ValidationVerdict",
+          "description": "Le VERDICT — SEULE voie vers l'état d'erreur (bordure + message, SELECT-R07). Aucun axe `status` décoratif : un select n'est pas « rouge », il est en erreur parce qu'un verdict le dit. Hérité du bloc champ quand il y vit."
+        }
+      },
+      "accessibility": [
+        "APG select-only combobox (aria-activedescendant)",
+        "voiles de débordement + barre native masquée dans la listbox",
+        "dans un Input.Field : id/for du libellé visible (un <button> est étiquetable), aria-describedby vers le message, aria-required — le MÊME bloc champ que l'input, pas un second",
+        "hors bloc champ : le select porte lui-même le message du verdict et son aria-describedby"
+      ],
+      "validation": {
+        "role": "field",
+        "nativeConstraints": [
+          "required — posé sur le <select> seulement en mode `native`, où le placeholder porte une valeur vide (SELECT S4)"
+        ],
+        "externalConstraints": [
+          "required",
+          "option devenue indisponible",
+          "règle métier",
+          "verdict serveur"
+        ],
+        "ariaInvalidTarget": "le déclencheur (button[role=combobox]) ou le <select> natif",
+        "messageBinding": "aria-describedby du déclencheur → le message du bloc champ, ou le message autonome rendu par le select",
+        "focusTarget": "le déclencheur, par son id (hérité du bloc champ)",
+        "summaryRole": "une entrée par select, message issu de la même ValidationIssue",
+        "requiredBehavior": "porté par le bloc champ (indicateur + aria-required) ; le placeholder n'est JAMAIS une valeur valide",
+        "pendingBehavior": "verdict `validating` → aria-busy hérité du bloc champ",
+        "correctionBehavior": "signature = la valeur retenue ; choisir une option périme le verdict",
+        "examples": {
+          "valid": "<Select verdict={Validation.valid(\"fr\")} … />",
+          "invalid": "<Select verdict={Validation.invalid({ code: \"valueMissing\", field: \"langue\", source: \"schema\", severity: \"error\", message: \"…\" })} … />"
+        }
+      },
+      "antiPatterns": [
+        "<select> natif hors prop native",
+        "y mettre des actions (→ Dropdown)",
+        "colorer le déclencheur en rouge sans verdict — l'état d'erreur n'a qu'une entrée, `verdict`"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Choix contrôlé",
+          "code": "<Select options={[{ value: \"fr\", label: \"Français\" }, { value: \"en\", label: \"English\" }]} value={null} onValueChange={() => {}} aria-label=\"Langue\" />"
+        },
+        {
+          "title": "Select obligatoire dans le bloc champ — libellé lié, verdict, message",
+          "imports": [
+            "import { Validation } from \"@fili/react/validation\";"
+          ],
+          "code": "<Input.Field\n  controlId=\"langue\"\n  required\n  verdict={Validation.invalid({\n    code: \"valueMissing\",\n    field: \"langue\",\n    source: \"schema\",\n    severity: \"error\",\n    message: \"Choisissez une langue d'interface.\",\n  })}\n>\n  <Input.Label>Langue de l'interface</Input.Label>\n  <Select options={[{ value: \"fr\", label: \"Français\" }, { value: \"en\", label: \"English\" }]} value={null} onValueChange={() => {}} />\n  <Input.Error />\n</Input.Field>"
+        }
+      ]
+    },
+    {
+      "name": "Skeleton",
+      "package": "@fili/react",
+      "import": "import { Skeleton } from \"@fili/react\";",
+      "status": "stable",
+      "category": "affichage",
+      "purpose": "Squelette de chargement. Autonome, ou via la prop `loading` des composants (à préférer : mêmes dimensions garanties).",
+      "doctrine": null,
+      "dette": "Doctrine à écrire (né du lot 2026-07-29) — l'état d'attente est traité en creux par PERFORMANCE (attentes perçues) ; fiche SKELETON ou absorption à trancher.",
+      "rules": null,
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Forme du fantôme.",
+          "values": {
+            "block": "rectangle",
+            "text": "lignes de texte (dernière raccourcie)",
+            "circle": "cercle (avatar)"
+          },
+          "default": "block"
+        }
+      },
+      "props": {
+        "width": {
+          "type": "number | string",
+          "description": "Largeur (px ou CSS)."
+        },
+        "height": {
+          "type": "number | string",
+          "description": "Hauteur."
+        },
+        "lines": {
+          "type": "number",
+          "description": "variant=text — nombre de lignes."
+        }
+      },
+      "accessibility": [
+        "toujours aria-hidden (l'attente s'annonce via aria-busy du composant porteur)"
+      ],
+      "antiPatterns": [
+        "Recomposer un squelette à la main quand le composant expose loading",
+        "animer autre chose que l'opacité (reduced-motion)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Paragraphe fantôme",
+          "code": "<Skeleton variant=\"text\" lines={3} />"
+        }
+      ]
+    },
+    {
+      "name": "SkipLink",
+      "package": "@fili/react",
+      "import": "import { SkipLink } from \"@fili/react\";",
+      "status": "stable",
+      "category": "navigation",
+      "purpose": "« Aller au contenu » (WCAG 2.4.1) — déplace RÉELLEMENT le focus sur la cible (tabIndex -1 posé au besoin).",
+      "doctrine": {
+        "pattern": "patterns/NAVIGATION"
+      },
+      "rules": null,
+      "props": {
+        "href": {
+          "type": "string",
+          "default": "\"#main\"",
+          "description": "Cible du saut."
+        }
+      },
+      "accessibility": [
+        "premier élément tabbable de la page",
+        "visible au focus",
+        "focus déplacé programmatiquement"
+      ],
+      "antiPatterns": [
+        "Une ancre nue sans déplacement de focus (le lecteur d'écran reste où il était)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "En tête de page",
+          "code": "<SkipLink href=\"#main\" />"
+        }
+      ]
+    },
+    {
+      "name": "SubmitButton",
+      "package": "@fili/react",
+      "import": "import { SubmitButton } from \"@fili/react\";",
+      "status": "expressif",
+      "category": "contrôle",
+      "purpose": "Bouton d'envoi E-motion (avion en papier, GSAP). Un événement, un porteur — moments mérités seulement.",
+      "doctrine": {
+        "ux": "components/BUTTON-UX.md + patterns/FORM (S21)"
+      },
+      "rules": null,
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Taille du contrôle expressif.",
+          "values": {
+            "sm": "compact",
+            "md": "standard",
+            "lg": "défaut (moment mérité)"
+          },
+          "default": "lg"
+        }
+      },
+      "props": {
+        "onSubmit": {
+          "type": "() => Promise<unknown> | unknown",
+          "description": "Envoi (l'animation attend la résolution ; l'échec revient à idle)."
+        },
+        "successLabel": {
+          "type": "ReactNode",
+          "default": "\"Envoyé\"",
+          "description": "Libellé terminal."
+        },
+        "liveMessage": {
+          "type": "string",
+          "default": "\"Message envoyé.\"",
+          "description": "Annonce aria-live."
+        }
+      },
+      "accessibility": [
+        "aria-live porte le résultat",
+        "reduced-motion = repli spinner",
+        "focus ring primary subtil"
+      ],
+      "antiPatterns": [
+        "Le poser sur chaque formulaire (budget de rareté — un moment mérité par parcours)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Envoi d'un message",
+          "code": "<SubmitButton onSubmit={() => Promise.resolve()}>Envoyer</SubmitButton>"
+        }
+      ]
+    },
+    {
+      "name": "Switch",
+      "package": "@fili/react",
+      "import": "import { Switch } from \"@fili/react\";",
+      "status": "stable",
+      "category": "champ",
+      "purpose": "Interrupteur à effet IMMÉDIAT (≠ checkbox). L'état se lit à la position du pouce autant qu'à la couleur.",
+      "doctrine": {
+        "ux": "components/SWITCH-UX.md",
+        "ui": "components/SWITCH-UI.md"
+      },
+      "rules": "RULES-switch.md",
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Taille du contrôle.",
+          "values": {
+            "sm": "compact",
+            "md": "défaut",
+            "lg": "large"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "checked": {
+          "type": "boolean",
+          "required": true,
+          "description": "Contrôlé."
+        },
+        "onCheckedChange": {
+          "type": "(c: boolean) => void",
+          "description": "Bascule (effet immédiat)."
+        },
+        "label": {
+          "type": "ReactNode",
+          "description": "Libellé attaché (sinon aria-label requis)."
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Squelette."
+        }
+      },
+      "accessibility": [
+        "role=switch + aria-checked",
+        "libellé attaché ou aria-label",
+        "état non porté par la seule couleur"
+      ],
+      "validation": {
+        "role": "none",
+        "justification": "Le switch est un réglage à EFFET IMMÉDIAT (CHOICE-R01) : il n'y a pas de soumission à bloquer, donc pas de verdict à porter. Lui greffer un « doit être activé » recréerait une case à cocher sous un autre nom — pour un consentement ou une acceptation obligatoire, c'est Checkbox. La question ne se rouvre que si un cas RÉEL et documenté apparaît ; le rouvrir demanderait une paire UX/UI, pas une prop."
+      },
+      "antiPatterns": [
+        "S'en servir dans un formulaire soumis plus tard (l'effet doit être immédiat)",
+        "Lui ajouter un « obligatoire de l'activer » — c'est une Checkbox (validationRole: none, justifié au manifeste)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Réglage immédiat",
+          "code": "<Switch checked onCheckedChange={() => {}} label=\"Notifications\" />"
+        }
+      ]
+    },
+    {
+      "name": "TableOfContents",
+      "package": "@fili/react",
+      "import": "import { TableOfContents } from \"@fili/react\";",
+      "status": "stable",
+      "category": "navigation",
+      "purpose": "Sommaire scrollspy de page (IntersectionObserver, aria-current=location).",
+      "doctrine": {
+        "pattern": "patterns/NAVIGATION"
+      },
+      "rules": null,
+      "props": {
+        "items": {
+          "type": "TocItem[]",
+          "required": true,
+          "description": "Ancres de la page ({ id, label, level })."
+        },
+        "label": {
+          "type": "string",
+          "default": "\"Sur cette page\"",
+          "description": "Étiquette du landmark."
+        }
+      },
+      "accessibility": [
+        "landmark étiqueté",
+        "aria-current=location sur l'ancre visible"
+      ],
+      "antiPatterns": [
+        "Un sommaire à la main en <ul> + scroll listeners"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Sommaire de page",
+          "code": "<TableOfContents items={[{ id: \"usage\", label: \"Usage\" }, { id: \"api\", label: \"API\" }]} />"
+        }
+      ]
+    },
+    {
+      "name": "Tabs",
+      "package": "@fili/react",
+      "import": "import { Tabs } from \"@fili/react\";",
+      "status": "stable",
+      "category": "navigation",
+      "purpose": "Vues alternatives d'un même sujet (APG Tabs). Le signal de l'onglet courant est non chromatique (poids + trait).",
+      "doctrine": {
+        "ux": "components/TABS-UX.md",
+        "ui": "components/TABS-UI.md"
+      },
+      "rules": "RULES-tabs.md",
+      "anatomy": [
+        "Tabs",
+        "Tabs.Root",
+        "Tabs.List",
+        "Tabs.Tab",
+        "Tabs.Panel"
+      ],
+      "axes": {
+        "variant": {
+          "kind": "variant",
+          "description": "Facture des onglets.",
+          "values": {
+            "line": "trait souligné (défaut)",
+            "pill": "pastilles contenues"
+          },
+          "default": "line"
+        },
+        "activation": {
+          "kind": "enum",
+          "description": "Activation au déplacement du focus ou sur Entrée/Espace.",
+          "values": {
+            "auto": "au focus (défaut)",
+            "manual": "sur activation explicite"
+          },
+          "default": "auto"
+        }
+      },
+      "props": {
+        "value": {
+          "type": "string",
+          "description": "Contrôlé (sinon defaultValue)."
+        },
+        "defaultValue": {
+          "type": "string",
+          "description": "Onglet initial."
+        },
+        "onValueChange": {
+          "type": "(v: string) => void",
+          "description": "Changement."
+        },
+        "label": {
+          "type": "string",
+          "required": true,
+          "description": "Étiquette de la List (tablist)."
+        },
+        "keepMounted": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Panel monté même inactif."
+        }
+      },
+      "accessibility": [
+        "APG Tabs (flèches, Home/End)",
+        "courant non chromatique",
+        "voiles de débordement horizontaux"
+      ],
+      "antiPatterns": [
+        "Des tabs pour une navigation de pages (→ Nav)",
+        "un contenu par onglet sans rapport (les tabs = un même sujet)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Deux vues",
+          "code": "<Tabs.Root defaultValue=\"apercu\">\n  <Tabs.List label=\"Vues du composant\">\n    <Tabs.Tab value=\"apercu\">Aperçu</Tabs.Tab>\n    <Tabs.Tab value=\"code\">Code</Tabs.Tab>\n  </Tabs.List>\n  <Tabs.Panel value=\"apercu\">Le rendu.</Tabs.Panel>\n  <Tabs.Panel value=\"code\">L'extrait.</Tabs.Panel>\n</Tabs.Root>"
+        }
+      ]
+    },
+    {
+      "name": "ThemeToggle",
+      "package": "@fili/react",
+      "import": "import { ThemeToggle } from \"@fili/react\";",
+      "status": "stable",
+      "category": "contrôle",
+      "purpose": "Interrupteur clair/sombre (soleil ↔ lune) — un Switch spécialisé de thème.",
+      "doctrine": null,
+      "dette": "Doctrine à écrire (vague 8) — spécialisation de SWITCH ; à trancher : fiche propre ou section de SWITCH-UX.",
+      "rules": null,
+      "axes": {
+        "size": {
+          "kind": "size",
+          "description": "Taille de la piste.",
+          "values": {
+            "sm": "36px",
+            "md": "44px (défaut)",
+            "lg": "56px"
+          },
+          "default": "md"
+        }
+      },
+      "props": {
+        "checked": {
+          "type": "boolean",
+          "required": true,
+          "description": "true = sombre."
+        },
+        "onCheckedChange": {
+          "type": "(c: boolean) => void",
+          "required": true,
+          "description": "Bascule de thème."
+        },
+        "label": {
+          "type": "ReactNode",
+          "description": "Libellé (sinon aria-label requis)."
+        }
+      },
+      "accessibility": [
+        "checkbox native sous-jacente (clavier gratuit)",
+        "icônes ancrées sur la piste, jamais le label"
+      ],
+      "validation": {
+        "role": "none",
+        "justification": "Il rend bien une checkbox native, mais ce n'est pas une donnée soumise : c'est une PRÉFÉRENCE d'affichage à effet immédiat, comme un Switch. Aucune soumission ne l'attend, aucune contrainte ne peut le rendre fautif. La déclaration est ici parce que la garde structurelle du manifeste l'exige de tout composant qui rend un élément de formulaire — c'est exactement son rôle : forcer la décision, pas la deviner."
+      },
+      "antiPatterns": [
+        "Le rendre décoratif (il doit réellement piloter data-theme)"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Bascule de thème",
+          "code": "<ThemeToggle checked={false} onCheckedChange={() => {}} aria-label=\"Thème sombre\" />"
+        }
+      ]
+    },
+    {
+      "name": "Toast",
+      "package": "@fili/react",
+      "import": "import { Toast, useToast } from \"@fili/react\";",
+      "status": "stable",
+      "category": "message",
+      "purpose": "Notification éphémère, API impérative : useToast().toast({ title }) sous <Toast.Provider>. FIFO max 3, durée calculée, pause au survol/focus.",
+      "doctrine": {
+        "ux": "components/TOAST-UX.md",
+        "ui": "components/TOAST-UI.md"
+      },
+      "rules": "RULES-toast.md",
+      "anatomy": [
+        "Toast",
+        "Toast.Provider"
+      ],
+      "axes": {
+        "tone": {
+          "kind": "tone",
+          "description": "Sémantique du message — neutral (inverse haute-contraste) par défaut. L'anneau des contrôles internes suit le tone (focus v2).",
+          "values": {
+            "info": "information",
+            "success": "confirmation (seul tone à illustration E-motion, seul en pile)",
+            "warning": "avertissement",
+            "danger": "erreur",
+            "neutral": "neutre inverse (défaut)"
+          },
+          "default": "neutral"
+        },
+        "closing": {
+          "kind": "enum",
+          "description": "Mode de fermeture.",
+          "values": {
+            "auto": "timer + croix (défaut)",
+            "close": "croix seule",
+            "timer": "timer seul (barre visible)"
+          },
+          "default": "auto"
+        }
+      },
+      "props": {
+        "title": {
+          "type": "ReactNode",
+          "required": true,
+          "description": "Obligatoire — le message."
+        },
+        "description": {
+          "type": "ReactNode",
+          "description": "Complément."
+        },
+        "action": {
+          "type": "{ label, onClick }",
+          "description": "UNE action tolérée (undo)."
+        },
+        "placement": {
+          "type": "ToastPlacement",
+          "default": "\"bottom\"",
+          "description": "Sur le Provider (bottom | bottom-start/end | top | top-start/end)."
+        }
+      },
+      "accessibility": [
+        "pause au survol ET au focus",
+        "jamais seul porteur d'une condition qui dure (→ Alert)"
+      ],
+      "antiPatterns": [
+        "Toast d'erreur bloquante (→ Alert dans le flux)",
+        "plus d'une action par toast"
+      ],
+      "canonicalExamples": [
+        {
+          "title": "Provider en racine d'app",
+          "code": "<Toast.Provider placement=\"bottom-end\">\n  <p>App.</p>\n</Toast.Provider>"
+        }
+      ]
+    }
+  ]
+}

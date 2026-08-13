@@ -1,0 +1,350 @@
+{
+  "flow": "consentement",
+  "version": "1.1.0",
+  "source": {
+    "fiche": "content/md/flows/CONSENTEMENT-UX.md",
+    "inventaire": "content/md/inventaires/inventaire-cas-usage-consentement.md",
+    "empreinte": "a15d6ba34059bbdb"
+  },
+  "moments": [],
+  "etats": [],
+  "transitions": [],
+  "bifurcations": [],
+  "extensions": [],
+  "frontieres": [
+    {
+      "domaine": "Décision d'afficher ou non un bandeau ; symétrie et libellés des deux issues ; mémorisation ; retour sur le choix",
+      "proprietaire": "CONSENTEMENT-UX",
+      "duFlow": true
+    },
+    {
+      "domaine": "Case à cocher d'acceptation liée à l'envoi d'un formulaire (traitement des données saisies)",
+      "proprietaire": "FORM-UX (form-sensitive-data)",
+      "duFlow": false
+    },
+    {
+      "domaine": "Acceptation des CGU et de la politique de confidentialité à l'inscription",
+      "proprietaire": "CREATION-COMPTE-UX (creation-compte-consentement)",
+      "duFlow": true
+    },
+    {
+      "domaine": "Conteneur du message : structure, tone, icône, persistance, fermeture, tokens",
+      "proprietaire": "ALERT-UX / ALERT-UI",
+      "duFlow": false
+    },
+    {
+      "domaine": "Voile, piège de focus, empilement — si et seulement si le bandeau devient modal",
+      "proprietaire": "OVERLAY-UX / MODAL-UX",
+      "duFlow": false
+    },
+    {
+      "domaine": "Affordance, état de chargement, anti double-activation des deux boutons",
+      "proprietaire": "BUTTON-UX",
+      "duFlow": false
+    },
+    {
+      "domaine": "Contraste, épaisseur, rayon du conteneur",
+      "proprietaire": "COLOR-UI, BORDER-UI, RADIUS-UI",
+      "duFlow": false
+    },
+    {
+      "domaine": "Texte juridique, liste des finalités, durées de conservation, base légale",
+      "proprietaire": "Hors design system — produit et conseil juridique",
+      "duFlow": false
+    }
+  ],
+  "couverture": [
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Aucun stockage",
+      "description": "Site strictement statique, aucune préférence mémorisée",
+      "statut": "Couvert",
+      "proprietaire": "aucun bandeau (R03)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Préférence d'affichage seule",
+      "description": "Thème clair/sombre, taille de texte, langue",
+      "statut": "Couvert",
+      "proprietaire": "exempté, aucun bandeau (R03, S2)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Panier, authentification, session",
+      "description": "Traceurs liés au service explicitement demandé",
+      "statut": "Couvert",
+      "proprietaire": "exempté (R03, S2)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Mémorisation du choix de consentement lui-même",
+      "description": "Le traceur qui retient la réponse au bandeau",
+      "statut": "Couvert",
+      "proprietaire": "exempté, et ne justifie pas le bandeau qui le crée (R05)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Mesure d'audience limitée à l'éditeur",
+      "description": "Statistiques anonymisées, non recoupées, non inter-sites",
+      "statut": "Couvert partiellement",
+      "proprietaire": "l'exemption dépend de conditions à vérifier au cas par cas, remonté en « à trancher » (R04)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Mesure d'audience recoupée ou inter-sites",
+      "description": "Identifiant commun à plusieurs domaines, mesure de couverture",
+      "statut": "Couvert",
+      "proprietaire": "bandeau complet requis (R07 à R16)",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Publicité, personnalisation, reciblage",
+      "description": "Régie, enchères, profilage",
+      "statut": "Couvert",
+      "proprietaire": "bandeau complet requis",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Boutons de partage et embarqués sociaux",
+      "description": "Widgets déposant leurs propres traceurs",
+      "statut": "Couvert",
+      "proprietaire": "bandeau complet requis",
+      "section": null
+    },
+    {
+      "famille": "Par ce que le site dépose",
+      "cas": "Ressource tierce sans traceur",
+      "description": "Police, carte ou vidéo servie par un CDN tiers : aucun cookie, mais transmission d'adresse IP",
+      "statut": "Non couvert",
+      "proprietaire": "ce n'est pas du consentement au sens ePrivacy. Frontière déclarée, cf. « À approfondir »",
+      "section": null
+    },
+    {
+      "famille": "Par forme d'interruption",
+      "cas": "Bandeau dans le flux",
+      "description": "Posé après l'ouverture du corps, non fixé",
+      "statut": "Couvert",
+      "proprietaire": "forme de référence (R12, R13)",
+      "section": null
+    },
+    {
+      "famille": "Par forme d'interruption",
+      "cas": "Bandeau fixé en bas d'écran",
+      "description": "position: fixed, flotte au-dessus du contenu",
+      "statut": "Couvert",
+      "proprietaire": "refusé, masque le focus (R12)",
+      "section": null
+    },
+    {
+      "famille": "Par forme d'interruption",
+      "cas": "Modale bloquante",
+      "description": "Voile, piège de focus, contenu inaccessible",
+      "statut": "Couvert",
+      "proprietaire": "refusé par parti pris (R11), légal en France sous conditions",
+      "section": null
+    },
+    {
+      "famille": "Par forme d'interruption",
+      "cas": "Bandeau différé",
+      "description": "Apparaît après quelques secondes ou au défilement",
+      "statut": "Non couvert",
+      "proprietaire": "aucune règle ; à trancher avec le produit",
+      "section": null
+    },
+    {
+      "famille": "Par forme d'interruption",
+      "cas": "Réaffichage à chaque page",
+      "description": "Le choix n'est pas mémorisé",
+      "statut": "Couvert",
+      "proprietaire": "refusé (R14)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Deux actions symétriques",
+      "description": "Accepter / Refuser, même poids, même niveau",
+      "statut": "Couvert",
+      "proprietaire": "forme de référence (R07, R08)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Acceptation mise en avant",
+      "description": "Refus en lien discret ou en contour",
+      "statut": "Couvert",
+      "proprietaire": "refusé (R08)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Refus derrière un écran de réglages",
+      "description": "Un clic pour accepter, trois pour refuser",
+      "statut": "Couvert",
+      "proprietaire": "refusé (R07)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Fermeture par croix seule",
+      "description": "Aucun bouton de refus, seulement un « × »",
+      "statut": "Couvert",
+      "proprietaire": "la fermeture vaut refus, mais ne dispense pas du bouton (R09)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Poursuite de navigation valant acceptation",
+      "description": "Défilement ou clic ailleurs interprété comme accord",
+      "statut": "Couvert",
+      "proprietaire": "refusé (R09)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Choix fictif",
+      "description": "Aucun dépôt ne change selon la réponse",
+      "statut": "Couvert",
+      "proprietaire": "le bandeau est retiré, pas corrigé (R06)",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Granularité par finalité",
+      "description": "Un réglage par finalité, dans une modale ou une page",
+      "statut": "Non couvert",
+      "proprietaire": "les deux précédents du panel divergent (GOV.UK / DSFR) ; à trancher au premier consommateur ayant plus de deux finalités",
+      "section": null
+    },
+    {
+      "famille": "Par forme du choix",
+      "cas": "Consentement par signal navigateur",
+      "description": "Préférence exprimée hors du site, lue par lui",
+      "statut": "Non couvert",
+      "proprietaire": "dépend de l'adoption de l'article 88b proposé (S6)",
+      "section": null
+    },
+    {
+      "famille": "Par moment",
+      "cas": "Première visite",
+      "description": "Aucun choix mémorisé",
+      "statut": "Couvert",
+      "proprietaire": null,
+      "section": null
+    },
+    {
+      "famille": "Par moment",
+      "cas": "Visite suivante dans les six mois",
+      "description": "Choix mémorisé, aucune sollicitation",
+      "statut": "Couvert",
+      "proprietaire": null,
+      "section": null
+    },
+    {
+      "famille": "Par moment",
+      "cas": "Après expiration",
+      "description": "Nouvelle sollicitation admise",
+      "statut": "Couvert",
+      "proprietaire": null,
+      "section": null
+    },
+    {
+      "famille": "Par moment",
+      "cas": "Retour sur le choix à l'initiative du visiteur",
+      "description": "Depuis n'importe quelle page",
+      "statut": "Couvert",
+      "proprietaire": null,
+      "section": null
+    },
+    {
+      "famille": "Par moment",
+      "cas": "Changement des finalités du site",
+      "description": "Une nouvelle catégorie de traceur apparaît",
+      "statut": "Non couvert",
+      "proprietaire": "quand redemander ? Aucune règle",
+      "section": null
+    },
+    {
+      "famille": "Par état après le choix",
+      "cas": "Confirmation affichée",
+      "description": "Message annoncé, focus déplacé, fermeture possible",
+      "statut": "Couvert",
+      "proprietaire": null,
+      "section": null
+    },
+    {
+      "famille": "Par état après le choix",
+      "cas": "Disparition silencieuse",
+      "description": "Le bandeau s'efface sans retour",
+      "statut": "Couvert",
+      "proprietaire": "refusé (R15)",
+      "section": null
+    },
+    {
+      "famille": "Par état après le choix",
+      "cas": "Service désactivé après refus",
+      "description": "Une carte ou une vidéo ne se charge plus",
+      "statut": "Couvert partiellement",
+      "proprietaire": "le DSFR impose un texte de remplacement avec moyen de consentir ; nous n'avons pas de règle propre",
+      "section": null
+    },
+    {
+      "famille": "Frontières avec les sujets voisins",
+      "cas": "Case « j'accepte le traitement de mes données » dans un formulaire",
+      "description": "Liée à l'envoi, pas au dépôt de traceur",
+      "statut": "Hors périmètre",
+      "proprietaire": "appartient à FORM-UX",
+      "section": null
+    },
+    {
+      "famille": "Frontières avec les sujets voisins",
+      "cas": "Acceptation des CGU à l'inscription",
+      "description": "Contrat, pas consentement au sens ePrivacy",
+      "statut": "Hors périmètre",
+      "proprietaire": "appartient à CREATION-COMPTE-UX",
+      "section": null
+    },
+    {
+      "famille": "Frontières avec les sujets voisins",
+      "cas": "Fusion implicite « en créant un compte, vous acceptez… »",
+      "description": "Consentement noyé dans une action",
+      "statut": "Hors périmètre",
+      "proprietaire": "déjà traité par CREATION-COMPTE-UX",
+      "section": null
+    },
+    {
+      "famille": "Frontières avec les sujets voisins",
+      "cas": "Demande d'autorisation navigateur (notifications, géolocalisation)",
+      "description": "Interruption de même nature, mécanique différente",
+      "statut": "Non couvert",
+      "proprietaire": "sujet voisin, non ouvert",
+      "section": null
+    }
+  ],
+  "transversal": [],
+  "methodes": [],
+  "resume": {
+    "moments": 0,
+    "etats": 0,
+    "transitions": 0,
+    "extensions": 0,
+    "couvert": 23,
+    "partiel": 2,
+    "enAttente": 0,
+    "absent": 6,
+    "horsPerimetre": 3,
+    "momentsAIntervenir": 0
+  },
+  "aArbitrer": [],
+  "nonLu": [
+    "section « Le squelette du parcours » introuvable",
+    "flow non projetable en graphe : pas de § « Machine à états du parcours » dans la fiche",
+    "aucune extension « ## Extension — Titre · `slug` » lue"
+  ]
+}

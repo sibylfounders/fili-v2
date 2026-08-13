@@ -1,0 +1,14 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Fixture basePath — racine servie sous /fili</title>
+<link rel="stylesheet" href="/fili/_tokens.css">
+<!-- C'est CETTE référence que le harnais lit pour déduire le basePath du build.
+     Elle imite la sortie de Next : /<basePath>/_next/static/… -->
+<script src="/fili/_next/static/chunks/main.js"></script>
+</head><body>
+  <h1>Destinations</h1>
+  <!-- CONFORME : l'adresse porte le préfixe que next/link pose seul. -->
+  <p><a href="/fili/md/" class="ds-focus-ring">Doctrine (adresse finale correcte)</a></p>
+  <!-- INCORRECT : la page existe, mais cette adresse pointe hors du site une fois publié.
+       C'est exactement le défaut du 2026-07-30 — un <a href> nu sans basePath. -->
+  <p><a href="/md/" class="ds-focus-ring">Doctrine (a href nu — hors basePath)</a></p>
+</body></html>

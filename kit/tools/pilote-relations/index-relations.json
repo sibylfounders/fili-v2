@@ -1,0 +1,2919 @@
+{
+  "_genere": "ARTEFACT GÉNÉRÉ par genere-index.js — ne pas éditer, régénérer.",
+  "_perimetre_validation": "Périmètre exactement garanti par ces validations : références résolues (relations, cibles de cession, pôles), doublons (relations, IDs de règles, IDs de tensions), cycles derive-de et cede-a, statut « note de méthode » des règles cédantes, champs obligatoires et conséquence observable des tensions, preuve non vide par relation, types au contrat fermé. AUCUNE validation sémantique du contenu des règles ni de la justesse éditoriale des relations.",
+  "tranche": [
+    "interaction",
+    "button",
+    "link",
+    "card",
+    "form",
+    "creation-compte"
+  ],
+  "regles": [
+    {
+      "id": "INTERACTION-R01",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R02",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R03",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R04",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R05",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R06",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R07",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R08",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R09",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R10",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R11",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R12",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R13",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R14",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R15",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R16",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R17",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R18",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R19",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R20",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R21",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "INTERACTION-R22",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R23",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R24",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "INTERACTION-R25",
+      "sujet": "interaction",
+      "fichier": "languages/INTERACTION-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R01",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R02",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R03",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R04",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R05",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R06",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R07",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R08",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R09",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R10",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R11",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R12",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R13",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R14",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R15",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R16",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R17",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R18",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R19",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R20",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R21",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R22",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R23",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R24",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R25",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R26",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R27",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R28",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R29",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R30",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R31",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R32",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R33",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R34",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R35",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R36",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R37",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R38",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R39",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R40",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R41",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R42",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R43",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R44",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R45",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R46",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R47",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R48",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R49",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R50",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R51",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R52",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R53",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R54",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R55",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R56",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R57",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R58",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R59",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R60",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R61",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R62",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R63",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R64",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R65",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R66",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R67",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R68",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R69",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R70",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R71",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R72",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R73",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R74",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R75",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R76",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R77",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R78",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R79",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R80",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R81",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R82",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R83",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R84",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R85",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R86",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R87",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R88",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R89",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R90",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R91",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R92",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R93",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R94",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "BUTTON-R95",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R96",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "BUTTON-R97",
+      "sujet": "button",
+      "fichier": "components/BUTTON-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R01",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R02",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R03",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R04",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R05",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R06",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R07",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R08",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R09",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R10",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R11",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R12",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R13",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R14",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R15",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R16",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R17",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R18",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "LINK-R19",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R20",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "LINK-R21",
+      "sujet": "link",
+      "fichier": "components/LINK-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R01",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R02",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R03",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R04",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R05",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R06",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R07",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R08",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R09",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R10",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R11",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R12",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R13",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R14",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R15",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R16",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R17",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R18",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R19",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R20",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R21",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R22",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R23",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "implémentation de référence",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R24",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R25",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R26",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R27",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R28",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R29",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R30",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R31",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R32",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R33",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R34",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R35",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R36",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R37",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R38",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R39",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R40",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R41",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R42",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R43",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R44",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R45",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R46",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R47",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R48",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R49",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R50",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R51",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R52",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R53",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R54",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R55",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R56",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R57",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R58",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R59",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R60",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R61",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "implémentation de référence",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R62",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R63",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R64",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R65",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R66",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R67",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R68",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R69",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R70",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R71",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R72",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R73",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R74",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CARD-R77",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R75",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CARD-R76",
+      "sujet": "card",
+      "fichier": "components/CARD-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R01",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R02",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R03",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R04",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R05",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R06",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R07",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R08",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R09",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R10",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R11",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R12",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R13",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R14",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R15",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R16",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R17",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R18",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R19",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R20",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R21",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R22",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R23",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R24",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R25",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R26",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R27",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R28",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R29",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R31",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R32",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R33",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R34",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R35",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R36",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R37",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R38",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R39",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R40",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R41",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R42",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R43",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R44",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R45",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R46",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R47",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R48",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R49",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R50",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R51",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R52",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R53",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R54",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R55",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R56",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R57",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R58",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R59",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R60",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R61",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R62",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R64",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R65",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R66",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R67",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R68",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R69",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R70",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R71",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R72",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R73",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R74",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R75",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "FORM-R76",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "FORM-R77",
+      "sujet": "form",
+      "fichier": "patterns/FORM-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R01",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R02",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "implémentation de référence",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R03",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R04",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R05",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R06",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R07",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R08",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R09",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R10",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R11",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R12",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R13",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R14",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R15",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R16",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R17",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R18",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R19",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R20",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R21",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R22",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R23",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R24",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R25",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R26",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R27",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R28",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R29",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R30",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R31",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R32",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R33",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R34",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R35",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R36",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R37",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "note de méthode",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R38",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R39",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R40",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R41",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R42",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R43",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R44",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R45",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R46",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R47",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R48",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R49",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R50",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R51",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R52",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R53",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R54",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": false
+    },
+    {
+      "id": "CREATION-COMPTE-R55",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "parti pris d'identité",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R56",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R57",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R58",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R59",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R60",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R61",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    },
+    {
+      "id": "CREATION-COMPTE-R62",
+      "sujet": "creation-compte",
+      "fichier": "flows/CREATION-COMPTE-UX.md",
+      "statut": "propriété universelle",
+      "mesure": true
+    }
+  ],
+  "relations": [
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R02",
+      "cible": "INTERACTION-R05",
+      "preuve": "BUTTON-R02 interdit le bouton de navigation pure ; INTERACTION-R05 pose que la sémantique native suit l'intention."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R04",
+      "cible": "INTERACTION-R06",
+      "preuve": "BUTTON-R04 : forme, limite et états rendent le bouton identifiable avant lecture — déclinaison de « un contrôle manipulable possède une limite et des états perceptibles »."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R06",
+      "cible": "INTERACTION-R07",
+      "preuve": "BUTTON-R06 : même en ghost, un Button ne devient pas un Link — déclinaison de « une action de faible poids ne devient jamais un faux lien »."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R18",
+      "cible": "INTERACTION-R03",
+      "preuve": "BUTTON-R18 : la dominante porte l'action que le parcours provoque — le rôle précède le style (intention agir)."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R01",
+      "cible": "INTERACTION-R05",
+      "preuve": "LINK-R01 : le Link conduit vers une ressource — la navigation est portée par un lien avec destination."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R02",
+      "cible": "INTERACTION-R03",
+      "preuve": "LINK-R02 : Button quand l'activation modifie l'état — le composant se choisit d'après ce qui se produit."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R04",
+      "cible": "INTERACTION-R12",
+      "preuve": "LINK-R04 : lien identifiable sans dépendre de la couleur seule — action et navigation compréhensibles sans perception de la couleur."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R13",
+      "cible": "INTERACTION-R03",
+      "preuve": "CARD-R13 (rattachement nommé) : la Card statique incarne l'intention « consulter » du § Les six intentions."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R11",
+      "cible": "INTERACTION-R10",
+      "preuve": "CARD-R11 : le mode d'interaction est reconnaissable au repos — une surface cliquable reçoit des signaux réels, une statique reste calme."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R22",
+      "cible": "INTERACTION-R05",
+      "preuve": "CARD-R22 : la cliquabilité vient d'un vrai lien ou bouton sémantique, jamais d'un div cliquable — la sémantique native suit l'intention."
+    },
+    {
+      "type": "exception-de",
+      "source": "BUTTON-R56",
+      "cible": "BUTTON-R19",
+      "preuve": "BUTTON-R56 : menu à choix parallèles — la règle de cardinalité du primary ne s'applique pas."
+    },
+    {
+      "type": "exception-de",
+      "source": "BUTTON-R20",
+      "cible": "BUTTON-R19",
+      "preuve": "BUTTON-R20 : header persistant et contenu comptent comme deux zones — coexistence permise à l'écran."
+    },
+    {
+      "type": "exception-de",
+      "source": "FORM-R29",
+      "cible": "FORM-R28",
+      "preuve": "FORM-R29 : désactiver reste justifié uniquement pendant le traitement asynchrone — borne de « garder le bouton de soumission actif en permanence »."
+    },
+    {
+      "type": "cede-a",
+      "source": "BUTTON-R65",
+      "cible": "FORM-R28",
+      "preuve": "BUTTON-R65 (note de méthode, 2026-07-28) : « autorité cédée à FORM-UX.md — la règle normative, sa mesure et ses sources sont portées par FORM-R28 »."
+    },
+    {
+      "type": "cede-a",
+      "source": "BUTTON-R70",
+      "cible": "CARD-R08",
+      "preuve": "BUTTON-R70 : cardinalité et position des actions régies par CARD-UX.md § Zone d'actions, qui fait autorité."
+    },
+    {
+      "type": "cede-a",
+      "source": "FORM-R06",
+      "cible": "BUTTON-R60",
+      "preuve": "FORM-R06 (note de méthode, 2026-07-28) : « autorité portée par BUTTON-UX.md — un seul bouton de soumission par formulaire, régi par BUTTON-R60 »."
+    }
+  ],
+  "relationsInverses": [
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R05",
+      "cible": "BUTTON-R02",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R06",
+      "cible": "BUTTON-R04",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R07",
+      "cible": "BUTTON-R06",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R03",
+      "cible": "BUTTON-R18",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R05",
+      "cible": "LINK-R01",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R03",
+      "cible": "LINK-R02",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R12",
+      "cible": "LINK-R04",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R03",
+      "cible": "CARD-R13",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R10",
+      "cible": "CARD-R11",
+      "calculee": true
+    },
+    {
+      "type": "est-declinee-par",
+      "source": "INTERACTION-R05",
+      "cible": "CARD-R22",
+      "calculee": true
+    },
+    {
+      "type": "est-bornee-par",
+      "source": "BUTTON-R19",
+      "cible": "BUTTON-R56",
+      "calculee": true
+    },
+    {
+      "type": "est-bornee-par",
+      "source": "BUTTON-R19",
+      "cible": "BUTTON-R20",
+      "calculee": true
+    },
+    {
+      "type": "est-bornee-par",
+      "source": "FORM-R28",
+      "cible": "FORM-R29",
+      "calculee": true
+    },
+    {
+      "type": "recoit-autorite-de",
+      "source": "FORM-R28",
+      "cible": "BUTTON-R65",
+      "calculee": true
+    },
+    {
+      "type": "recoit-autorite-de",
+      "source": "CARD-R08",
+      "cible": "BUTTON-R70",
+      "calculee": true
+    },
+    {
+      "type": "recoit-autorite-de",
+      "source": "BUTTON-R60",
+      "cible": "FORM-R06",
+      "calculee": true
+    }
+  ],
+  "tensions": [
+    {
+      "id": "T-001",
+      "titre": "Visibilité des actions vs hiérarchie du groupe",
+      "statut": "contextuelle",
+      "portee": [
+        "toolbar",
+        "groupe-d-actions",
+        "formulaire"
+      ],
+      "poles": {
+        "a": [
+          "INTERACTION-R06",
+          "INTERACTION-R07",
+          "BUTTON-R04"
+        ],
+        "b": [
+          "BUTTON-R18",
+          "BUTTON-R19",
+          "BUTTON-R23"
+        ]
+      },
+      "provenance": "redaction-deliberee",
+      "confiance": "convergence",
+      "consequence": "Semi-déterministe : au plus un bouton au rang dominant par vue (MESURE BUTTON-R19, convention de harnais). Déterministe : aucune action présentée comme un lien (MESURE INTERACTION-R07) ; contraste 3:1 des limites de contrôle (MESURE INTERACTION-R06). Assisté : l'action attendue du parcours ressort sans lecture ; chaque action du groupe reste identifiable comme un contrôle."
+    }
+  ],
+  "liensTension": [
+    {
+      "regle": "INTERACTION-R06",
+      "tension": "T-001",
+      "pole": "a",
+      "calcule": true
+    },
+    {
+      "regle": "INTERACTION-R07",
+      "tension": "T-001",
+      "pole": "a",
+      "calcule": true
+    },
+    {
+      "regle": "BUTTON-R04",
+      "tension": "T-001",
+      "pole": "a",
+      "calcule": true
+    },
+    {
+      "regle": "BUTTON-R18",
+      "tension": "T-001",
+      "pole": "b",
+      "calcule": true
+    },
+    {
+      "regle": "BUTTON-R19",
+      "tension": "T-001",
+      "pole": "b",
+      "calcule": true
+    },
+    {
+      "regle": "BUTTON-R23",
+      "tension": "T-001",
+      "pole": "b",
+      "calcule": true
+    }
+  ],
+  "impactDirect": {
+    "INTERACTION-R05": [
+      {
+        "touche": "BUTTON-R02",
+        "via": "derive-de",
+        "pourquoi": "BUTTON-R02 interdit le bouton de navigation pure ; INTERACTION-R05 pose que la sémantique native suit l'intention."
+      },
+      {
+        "touche": "LINK-R01",
+        "via": "derive-de",
+        "pourquoi": "LINK-R01 : le Link conduit vers une ressource — la navigation est portée par un lien avec destination."
+      },
+      {
+        "touche": "CARD-R22",
+        "via": "derive-de",
+        "pourquoi": "CARD-R22 : la cliquabilité vient d'un vrai lien ou bouton sémantique, jamais d'un div cliquable — la sémantique native suit l'intention."
+      }
+    ],
+    "INTERACTION-R06": [
+      {
+        "touche": "BUTTON-R04",
+        "via": "derive-de",
+        "pourquoi": "BUTTON-R04 : forme, limite et états rendent le bouton identifiable avant lecture — déclinaison de « un contrôle manipulable possède une limite et des états perceptibles »."
+      },
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "a",
+        "pourquoi": "pôle a de T-001"
+      }
+    ],
+    "INTERACTION-R07": [
+      {
+        "touche": "BUTTON-R06",
+        "via": "derive-de",
+        "pourquoi": "BUTTON-R06 : même en ghost, un Button ne devient pas un Link — déclinaison de « une action de faible poids ne devient jamais un faux lien »."
+      },
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "a",
+        "pourquoi": "pôle a de T-001"
+      }
+    ],
+    "INTERACTION-R03": [
+      {
+        "touche": "BUTTON-R18",
+        "via": "derive-de",
+        "pourquoi": "BUTTON-R18 : la dominante porte l'action que le parcours provoque — le rôle précède le style (intention agir)."
+      },
+      {
+        "touche": "LINK-R02",
+        "via": "derive-de",
+        "pourquoi": "LINK-R02 : Button quand l'activation modifie l'état — le composant se choisit d'après ce qui se produit."
+      },
+      {
+        "touche": "CARD-R13",
+        "via": "derive-de",
+        "pourquoi": "CARD-R13 (rattachement nommé) : la Card statique incarne l'intention « consulter » du § Les six intentions."
+      }
+    ],
+    "INTERACTION-R12": [
+      {
+        "touche": "LINK-R04",
+        "via": "derive-de",
+        "pourquoi": "LINK-R04 : lien identifiable sans dépendre de la couleur seule — action et navigation compréhensibles sans perception de la couleur."
+      }
+    ],
+    "INTERACTION-R10": [
+      {
+        "touche": "CARD-R11",
+        "via": "derive-de",
+        "pourquoi": "CARD-R11 : le mode d'interaction est reconnaissable au repos — une surface cliquable reçoit des signaux réels, une statique reste calme."
+      }
+    ],
+    "BUTTON-R19": [
+      {
+        "touche": "BUTTON-R56",
+        "via": "exception-de",
+        "pourquoi": "BUTTON-R56 : menu à choix parallèles — la règle de cardinalité du primary ne s'applique pas."
+      },
+      {
+        "touche": "BUTTON-R20",
+        "via": "exception-de",
+        "pourquoi": "BUTTON-R20 : header persistant et contenu comptent comme deux zones — coexistence permise à l'écran."
+      },
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "b",
+        "pourquoi": "pôle b de T-001"
+      }
+    ],
+    "FORM-R28": [
+      {
+        "touche": "FORM-R29",
+        "via": "exception-de",
+        "pourquoi": "FORM-R29 : désactiver reste justifié uniquement pendant le traitement asynchrone — borne de « garder le bouton de soumission actif en permanence »."
+      },
+      {
+        "touche": "BUTTON-R65",
+        "via": "cede-a",
+        "pourquoi": "BUTTON-R65 (note de méthode, 2026-07-28) : « autorité cédée à FORM-UX.md — la règle normative, sa mesure et ses sources sont portées par FORM-R28 »."
+      }
+    ],
+    "CARD-R08": [
+      {
+        "touche": "BUTTON-R70",
+        "via": "cede-a",
+        "pourquoi": "BUTTON-R70 : cardinalité et position des actions régies par CARD-UX.md § Zone d'actions, qui fait autorité."
+      }
+    ],
+    "BUTTON-R60": [
+      {
+        "touche": "FORM-R06",
+        "via": "cede-a",
+        "pourquoi": "FORM-R06 (note de méthode, 2026-07-28) : « autorité portée par BUTTON-UX.md — un seul bouton de soumission par formulaire, régi par BUTTON-R60 »."
+      }
+    ],
+    "BUTTON-R04": [
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "a",
+        "pourquoi": "pôle a de T-001"
+      }
+    ],
+    "BUTTON-R18": [
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "b",
+        "pourquoi": "pôle b de T-001"
+      }
+    ],
+    "BUTTON-R23": [
+      {
+        "touche": "T-001",
+        "via": "tension",
+        "pole": "b",
+        "pourquoi": "pôle b de T-001"
+      }
+    ]
+  },
+  "impactTransitif": {}
+}

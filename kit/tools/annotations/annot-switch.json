@@ -1,0 +1,72 @@
+[
+ {
+  "id": "SWITCH-R01",
+  "statut": "universelle",
+  "source": "S2, S4, S5",
+  "enonce": "Un switch est réservé aux bascules binaires dont l'effet est immédiat et n'appelle aucune validation ; une sélection binaire qui n'est appliquée qu'à la soumission d'un formulaire est une case à cocher, et l'un ne se substitue jamais à l'autre.",
+  "mesure": "aucun switch n'est accompagné d'un bouton d'application ou d'enregistrement de son propre état"
+ },
+ {
+  "id": "SWITCH-R02",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le switch n'a rien à soumettre ; le cas d'une bascule qui déclenche un appel distant et peut échouer est hors du périmètre de cette version du composant et se remonte au lieu de s'improviser.",
+  "mesure": ""
+ },
+ {
+  "id": "SWITCH-R03",
+  "statut": "universelle",
+  "source": "S3, S9",
+  "enonce": "L'état d'un switch se lit à un canal non chromatique — la position du pouce sur la piste — en plus de toute variation de couleur, et un libellé d'état accompagne la bascule quand la conséquence de l'état n'est pas évidente.",
+  "mesure": "l'état activé se distingue de l'état désactivé autrement que par la seule couleur"
+ },
+ {
+  "id": "SWITCH-R04",
+  "statut": "universelle",
+  "source": "S7, S8",
+  "enonce": "Un switch porte un libellé qui nomme ce qu'il gouverne ; ce libellé est cliquable, il est contenu dans le nom accessible du contrôle, et les états désactivé et focalisé restent perceptibles.",
+  "mesure": "le nom accessible du switch contient le texte du libellé visible ; un clic sur le libellé bascule le switch"
+ },
+ {
+  "id": "SWITCH-R05",
+  "statut": "universelle",
+  "source": "S1, S7, S8",
+  "enonce": "Un switch expose role=switch et aria-checked, bascule à la barre d'espace, et notifie son changement d'état par aria-checked plutôt que par le seul déplacement visuel du pouce.",
+  "mesure": "le contrôle porte role=switch et aria-checked ; la barre d'espace bascule l'état ; aria-checked change à chaque bascule"
+ },
+ {
+  "id": "SWITCH-R06",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le switch ne redéfinit pas ce qui appartient à ses voisins : la couleur de ses états relève de la couleur, le mouvement du pouce du mouvement, l'anneau de focus de la bordure, le mot du libellé du langage, et une sélection validée à la soumission de la case à cocher et du formulaire.",
+  "mesure": ""
+ },
+ {
+  "id": "SWITCH-U01",
+  "statut": "identite",
+  "source": "T1, T2, T3",
+  "enonce": "La piste d'un switch est une pilule et son pouce un disque inscrit séparé des bords par un retrait constant ; l'état inactif oppose une piste de surface bordée à au moins 3:1 et un pouce de fond, l'état actif une piste primaire et un pouce en couleur sur primaire, la transition empruntant les tokens de mouvement.",
+  "mesure": "aucune valeur brute de rayon, de couleur ou de durée sur le switch ; contraste de la bordure de piste inactive ≥ 3:1"
+ },
+ {
+  "id": "SWITCH-U02",
+  "statut": "methode",
+  "source": "T2",
+  "enonce": "L'anneau de focus du switch n'est pas redéfini localement : il reprend celui de la fondation bordure, et l'état désactivé abaisse l'opacité sans modifier ni le trait ni le rayon.",
+  "mesure": "aucun style de focus propre au switch ; trait et rayon identiques entre l'état normal et l'état désactivé"
+ },
+ {
+  "id": "SWITCH-U03",
+  "statut": "universelle",
+  "source": "T4",
+  "enonce": "Quelle que soit la taille visuelle de la piste, la zone interactive d'un switch — libellé cliquable compris — atteint le seuil de cible renforcé de 44 × 44 px CSS.",
+  "mesure": "cible pointeur du switch ≥ 44 × 44 px CSS, libellé inclus"
+ },
+ {
+  "id": "SWITCH-U04",
+  "statut": "methode",
+  "source": "T5",
+  "enonce": "Aucune couleur, rayon ni durée du switch n'est codé en dur — chacun résout un token de fondation — et le déplacement du pouce devient une bascule instantanée lorsque l'utilisateur a demandé moins de mouvement.",
+  "mesure": "aucune valeur brute dans l'implémentation du switch ; sous prefers-reduced-motion: reduce, le pouce ne glisse pas"
+ }
+]

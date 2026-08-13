@@ -1,0 +1,135 @@
+[
+ {
+  "id": "ELEVATION-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'élévation est une fondation transversale : elle ne se décrit ni par axes ni par assemblage, et sa doctrine peut être écrite après ses tokens.",
+  "mesure": ""
+ },
+ {
+  "id": "ELEVATION-R02",
+  "statut": "identite",
+  "source": "S1, S12",
+  "enonce": "L'élévation ne dit qu'une chose : à quelle couche du flux un élément appartient — à plat, soulevé mais dans le flux, ou au-dessus du flux.",
+  "mesure": "toute élévation résout vers l'un des trois niveaux nommés"
+ },
+ {
+  "id": "ELEVATION-R03",
+  "statut": "identite",
+  "source": "S2, S3",
+  "enonce": "Un élément interactif doit porter un signifiant perceptible de sa nature ; ce système choisit le relief comme signifiant.",
+  "mesure": ""
+ },
+ {
+  "id": "ELEVATION-R04",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "Toute surface est classée dans l'une de trois natures — posé, creusé, plat — et cette classe détermine son relief.",
+  "mesure": "chaque surface documentée est classée posé, creusé ou plat"
+ },
+ {
+  "id": "ELEVATION-R05",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "Un effet de relief qui ne répond à aucune question de matérialité fonctionnelle est décoratif et interdit.",
+  "mesure": ""
+ },
+ {
+  "id": "ELEVATION-R06",
+  "statut": "methode",
+  "source": "S7",
+  "enonce": "Le registre de relief est un parti pris paramétrable : son absence chez un tiers n'est jamais une non-conformité, alors que le relief posé sur du statique en est une.",
+  "mesure": ""
+ },
+ {
+  "id": "ELEVATION-R07",
+  "statut": "universelle",
+  "source": "S11",
+  "enonce": "L'ombrage suppose une source de lumière unique et venue du haut, la perception humaine interprétant toute ombre selon un a priori de lumière d'en haut.",
+  "mesure": "une seule direction de décalage d'ombre portée dans tout le produit"
+ },
+ {
+  "id": "ELEVATION-R08",
+  "statut": "identite",
+  "source": "S6, S12",
+  "enonce": "Un objet posé a trois états dans une seule métaphore : posé au repos, soulevé au survol, enfoncé à l'appui.",
+  "mesure": "l'état d'appui porte une ombre interne et un fond plus sombre que l'état de repos"
+ },
+ {
+  "id": "ELEVATION-R09",
+  "statut": "identite",
+  "source": "S5, S16",
+  "enonce": "En thème sombre les directions de la physique du relief sont conservées et seules les valeurs changent.",
+  "mesure": "le fond de l'état d'appui n'est jamais dérivé du token de survol"
+ },
+ {
+  "id": "ELEVATION-R10",
+  "statut": "identite",
+  "source": "S4, S12",
+  "enonce": "Le repos d'une surface est à plat : l'élévation soulevée n'est accordée qu'au survol des surfaces cliquables.",
+  "mesure": "aucune élévation soulevée au repos sur une surface non actionnable"
+ },
+ {
+  "id": "ELEVATION-R11",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La mise en avant passe par le fond et non par l'ombre : élévation et fond contrasté ne se cumulent pas.",
+  "mesure": "aucune surface ne porte simultanément un token d'élévation et un fond contrasté"
+ },
+ {
+  "id": "ELEVATION-R12",
+  "statut": "identite",
+  "source": "S12, S15",
+  "enonce": "L'échelle d'ombre compte exactement trois niveaux ; l'ombre interne d'enfoncement est un état, pas un palier.",
+  "mesure": "l'échelle expose exactement trois niveaux ; l'ombre interne n'y est pas comptée"
+ },
+ {
+  "id": "ELEVATION-R13",
+  "statut": "identite",
+  "source": "S12",
+  "enonce": "Les ombres sont teintées sur la couleur de texte primaire, jamais en noir pur, et se distinguent par leur portée plutôt que par leur seule opacité.",
+  "mesure": "aucune valeur d'ombre en noir pur ; deux niveaux successifs diffèrent par leur flou ou leur décalage"
+ },
+ {
+  "id": "ELEVATION-R14",
+  "statut": "implementation",
+  "source": "S13, S14",
+  "enonce": "Les ombres se remplacent instantanément et ne sont jamais interpolées ; seules les couleurs transitionnent.",
+  "mesure": "aucune propriété d'ombre déclarée dans une transition ou une animation"
+ },
+ {
+  "id": "ELEVATION-R15",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Un squelette de chargement ne porte jamais de relief : il occupe l'espace du contenu sans promettre d'interaction.",
+  "mesure": "aucun token d'élévation appliqué à un squelette"
+ },
+ {
+  "id": "ELEVATION-R16",
+  "statut": "universelle",
+  "source": "S8, S9, S10",
+  "enonce": "Aucune information ne repose sur la seule ombre ni sur le seul liseré : en mode de couleurs forcées les ombres sont supprimées et les fonds dégradés annulés.",
+  "mesure": "en couleurs forcées, chaque élément reste identifiable par sa bordure, son anneau de focus ou son texte"
+ },
+ {
+  "id": "ELEVATION-R17",
+  "statut": "universelle",
+  "source": "S16, S12",
+  "enonce": "Les valeurs d'élévation et de liseré appartiennent au thème : un thème les redéfinit comme il redéfinit ses couleurs de fond.",
+  "mesure": "aucune valeur d'ombre ou de liseré codée en dur hors de la définition de thème"
+ },
+ {
+  "id": "ELEVATION-R18",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les risques du relief sont recensés et hiérarchisés par sévérité dans une table d'autorité du fichier.",
+  "mesure": ""
+ },
+ {
+  "id": "ELEVATION-R19",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le relief dit la nature d'un élément et jamais son importance, qui passe par la place, le contraste et le nom.",
+  "mesure": "deux composants de même nature et de rangs différents portent la même élévation"
+ }
+]

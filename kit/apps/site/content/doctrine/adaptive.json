@@ -1,0 +1,1738 @@
+{
+ "slug": "adaptive",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"5\" width=\"8\" height=\"14\" rx=\"2.5\" fill=\"#bcb9f5\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"13\" y=\"5\" width=\"9\" height=\"14\" rx=\"2.5\" fill=\"#bcb9f5\" stroke=\"#0891B2\" stroke-width=\"1.5\"/><rect x=\"4\" y=\"8\" width=\"4\" height=\"2\" rx=\"1\" fill=\"#4F46E5\"/><rect x=\"15\" y=\"8\" width=\"5\" height=\"2\" rx=\"1\" fill=\"#0891B2\"/><rect x=\"15\" y=\"12\" width=\"5\" height=\"4\" rx=\"1.5\" fill=\"#F2C744\"/></svg>",
+ "nom": "adaptive",
+ "nature": "Principe",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-20 · confiance globale : established",
+ "confiance": "established",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · adaptive",
+  "question": "Comment un composant reste-t-il juste dans une page large, une sidebar étroite ou une modale ?",
+  "detail": "La page répond à la fenêtre ; le composant répond à l’espace réel de son conteneur. Les états compact, regular et expanded remplacent les étiquettes mobile, tablette et desktop quand la décision appartient au composant.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "La fenêtre définit la page"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Les états se nomment compact"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "L’adaptation réorganise ou condense sans retirer l’intention"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "7",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "19",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "1",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-adaptive.md",
+   "source": "---\nsujet: adaptive\ntype: principe\nresume: \"Architecture adaptative : la page répond au viewport et à l'environnement ; le composant réutilisable répond à l'espace réel de son conteneur\"\nrequires: []\nselon-contexte: []\n---\n# RULES — Principe adaptatif (compilé, condensé)\n\n> Généré depuis `principles/adaptive/ADAPTIVE-UX.md` (v1.1.0) et `ADAPTIVE-UI.md` (v1.1.0).\n> La source fait autorité. Ne pas éditer à la main.\n\n## Principe\n\n- **La fenêtre définit la page ; le conteneur définit le composant.**\n- Structure globale, navigation et régions de page → viewport / layout global.\n- Disposition, densité et divulgation internes d'un composant réutilisable → espace réellement\n  disponible dans son conteneur.\n- Préférences et capacités (`prefers-reduced-motion`, `forced-colors`, impression, couleur,\n  hover/pointer) → Media Queries.\n\n## Choix du mécanisme\n\n| Cause | Outil |\n|---|---|\n| largeur disponible du composant | Size Container Query |\n| structure globale de la page | Media Query ou layout fluide |\n| préférence / capacité | Media Query |\n| retour à la ligne suffisant | Grid/Flex et tailles intrinsèques, sans seuil |\n\n- Container Query par défaut seulement quand la largeur du composant **cause un changement d'état**.\n- Ne pas remplacer un layout intrinsèque qui fonctionne par des seuils.\n\n## États et seuils\n\n- Noms : `compact`, `regular`, `expanded` — jamais mobile/tablet/desktop.\n- Seuil dérivé du contenu : basculer quand labels, actions ou structure cessent de tenir, pas à un\n  breakpoint d'appareil copié.\n- Les seuils peuvent différer entre composants. Limiter leur nombre aux changements structurels réels.\n- CSS de base = plus petit état viable ; les états plus riches sont une amélioration progressive.\n\n## Ce qui peut changer\n\n- disposition interne, densité, espacements, informations secondaires, regroupement accessible\n  d'actions secondaires ;\n- longueur d'un libellé seulement si une alternative validée et un nom accessible complet existent.\n\n## Ce qui ne change jamais\n\n- nature de l'action/navigation, priorité réelle, information nécessaire pour décider, nom\n  accessible, risque, erreur ou obligation légale ;\n- ordre DOM si l'ordre de lecture ou de focus se dégrade ;\n- disponibilité d'une fonction essentielle.\n\n## Implémentation\n\n```css\n.region {\n  container-type: inline-size;\n  container-name: component-region;\n}\n\n@container component-region (min-width: 30rem) {\n  .component { /* état regular/expanded */ }\n}\n```\n\n- Préférer `inline-size` quand seule la largeur logique pilote.\n- Nommer le conteneur en cas d'imbrication.\n- Seuil dans le fichier du composant, avec sa justification ; pas de breakpoint global supplémentaire.\n- Ne pas exposer une prop React si CSS peut calculer l'état à partir de l'espace.\n\n## Tests obligatoires\n\n- même viewport, conteneur étroit puis large ;\n- contenu court, long et traduit ; zoom et texte accru ;\n- juste avant/sur/après chaque seuil ;\n- clavier, toucher, sans hover ; focus et valeur conservés après bascule ;\n- conteneurs imbriqués ; état compact utilisable sans règles `@container`.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Niveau",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Niveau\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"36\" y=\"40\" width=\"112\" height=\"76\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"48\" y=\"52\" width=\"64\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"48\" y=\"68\" width=\"84\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"168\" y=\"46\" width=\"64\" height=\"64\" rx=\"9\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"178\" y=\"56\" width=\"44\" height=\"44\" rx=\"6\" fill=\"#E0E7FF\"/><circle cx=\"276\" cy=\"78\" r=\"18\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M276 54v-6M276 108v-6M252 78h-6M306 78h-6M259 61l-4-4M297 99l-4-4M293 61l4-4M263 99l-4 4\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Sidebar devient drawer",
+     "quand": "Page.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sidebar devient drawer\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"100\" y=\"52\" width=\"220\" height=\"140\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"112\" y=\"64\" width=\"56\" height=\"116\" rx=\"6\" fill=\"#E0E7FF\"/><rect x=\"182\" y=\"80\" width=\"116\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"182\" y=\"102\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><path d=\"M342 122L394 122\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M394 122L386.1 126.3M394 122L386.1 117.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"416\" y=\"52\" width=\"94\" height=\"140\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"416\" y=\"52\" width=\"36\" height=\"140\" rx=\"6\" fill=\"#E0E7FF\"/><path d=\"M466 72h28M466 80h28M466 88h28\" stroke=\"#111827\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « sidebar devient drawer » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Page deux régions devient une",
+     "quand": "Page.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Page deux régions devient une\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"110\" y=\"56\" width=\"200\" height=\"130\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"122\" y=\"68\" width=\"86\" height=\"106\" rx=\"6\" fill=\"#E0E7FF\"/><rect x=\"216\" y=\"68\" width=\"82\" height=\"106\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><path d=\"M330 120L378 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M378 120L370.1 124.3M378 120L370.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"398\" y=\"46\" width=\"112\" height=\"150\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"408\" y=\"56\" width=\"92\" height=\"60\" rx=\"6\" fill=\"#E0E7FF\"/><rect x=\"408\" y=\"126\" width=\"92\" height=\"60\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « page deux régions devient une » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Card change de disposition dans une sidebar",
+     "quand": "Card.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Card change de disposition dans une sidebar\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"70\" y=\"42\" width=\"170\" height=\"156\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"94\" y=\"66\" width=\"122\" height=\"108\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"112\" y=\"86\" width=\"86\" height=\"9\" rx=\"4.5\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"112\" y=\"108\" width=\"72\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"112\" y=\"130\" width=\"86\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"133\" y=\"141\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"286\" y=\"42\" width=\"324\" height=\"156\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"310\" y=\"66\" width=\"276\" height=\"108\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"326\" y=\"82\" width=\"88\" height=\"76\" rx=\"8\" fill=\"#E0E7FF\"/><rect x=\"432\" y=\"86\" width=\"118\" height=\"9\" rx=\"4.5\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"432\" y=\"108\" width=\"104\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"432\" y=\"130\" width=\"110\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"465\" y=\"141\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Card.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « card change de disposition dans une sidebar » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Groupe d'actions se compacte",
+     "quand": "Composant composite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Groupe d'actions se compacte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"80\" width=\"236\" height=\"80\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"132\" y=\"106\" width=\"72\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"146\" y=\"117\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"214\" y=\"106\" width=\"60\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"224\" y=\"117\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"282\" y=\"106\" width=\"48\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"286\" y=\"117\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M366 120L406 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M406 120L398.1 124.3M406 120L398.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"426\" y=\"80\" width=\"146\" height=\"80\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"442\" y=\"106\" width=\"70\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"455\" y=\"117\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"522\" y=\"106\" width=\"32\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><circle cx=\"532\" cy=\"120\" r=\"1.8\" fill=\"#111827\"/><circle cx=\"538\" cy=\"120\" r=\"1.8\" fill=\"#111827\"/><circle cx=\"544\" cy=\"120\" r=\"1.8\" fill=\"#111827\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Composant composite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « groupe d'actions se compacte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Mouvement réduit",
+     "quand": "Environnement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mouvement réduit\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"188\" y=\"92\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#4F46E5\"/><circle cx=\"226\" cy=\"106\" r=\"11\" fill=\"#ffffff\"/><path d=\"M304 106q42-32 84 0\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-dasharray=\"5 6\"/><path d=\"M298 82l96 48\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><circle cx=\"452\" cy=\"106\" r=\"9\" fill=\"#15803D\"/><path d=\"M448 106l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Environnement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « mouvement réduit » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Contraste forcé",
+     "quand": "Environnement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Niveau",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste forcé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"96\" width=\"116\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"246\" y=\"107\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><path d=\"M346 110L388 110\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M388 110L380.1 114.3M388 110L380.1 105.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"408\" y=\"96\" width=\"116\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.4\"/><rect x=\"438\" y=\"107\" width=\"56\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.9\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Environnement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « contraste forcé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Adaptation de contenu",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Adaptation de contenu\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"36\" y=\"46\" width=\"92\" height=\"64\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"48\" y=\"58\" width=\"52\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"48\" y=\"74\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"48\" y=\"88\" width=\"42\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"146\" y=\"58\" width=\"28\" height=\"28\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"154\" cy=\"72\" r=\"1.6\" fill=\"#111827\"/><circle cx=\"160\" cy=\"72\" r=\"1.6\" fill=\"#111827\"/><circle cx=\"166\" cy=\"72\" r=\"1.6\" fill=\"#111827\"/><rect x=\"196\" y=\"52\" width=\"84\" height=\"24\" rx=\"6\" fill=\"#FEE2E2\"/><rect x=\"196\" y=\"52\" width=\"5\" height=\"24\" rx=\"2.5\" fill=\"#B91C1C\"/><circle cx=\"294\" cy=\"64\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M290.5 60.5l7 7M297.5 60.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Réorganiser des métadonnées secondaires",
+     "quand": "Traiter le cas « Réorganiser des métadonnées secondaires ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Réorganiser des métadonnées secondaires\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"170\" y=\"72\" width=\"146\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"186\" y=\"92\" width=\"84\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"186\" y=\"114\" width=\"106\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"186\" y=\"132\" width=\"64\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><path d=\"M330 122L366 122\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M366 122L358.1 126.3M366 122L358.1 117.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"384\" y=\"72\" width=\"124\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"398\" y=\"92\" width=\"72\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"398\" y=\"114\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"398\" y=\"132\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><circle cx=\"538\" cy=\"86\" r=\"9\" fill=\"#15803D\"/><path d=\"M534 86l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Réorganiser des métadonnées secondaires ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « réorganiser des métadonnées secondaires » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Regrouper des actions secondaires dans un menu",
+     "quand": "Traiter le cas « Regrouper des actions secondaires dans un menu ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Regrouper des actions secondaires dans un menu\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"176\" y=\"100\" width=\"66\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"187\" y=\"111\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"250\" y=\"100\" width=\"56\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"258\" y=\"111\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"314\" y=\"100\" width=\"56\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"322\" y=\"111\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M384 114L420 114\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M420 114L412.1 118.3M420 114L412.1 109.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"438\" y=\"80\" width=\"66\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"449\" y=\"91\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"438\" y=\"118\" width=\"90\" height=\"68\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"450\" y=\"132\" width=\"62\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"450\" y=\"148\" width=\"62\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"450\" y=\"164\" width=\"62\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><circle cx=\"556\" cy=\"92\" r=\"9\" fill=\"#15803D\"/><path d=\"M552 92l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Regrouper des actions secondaires dans un menu ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « regrouper des actions secondaires dans un menu » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Masquer l'erreur ou la contrainte nécessaire",
+     "quand": "Traiter le cas « Masquer l'erreur ou la contrainte nécessaire ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Masquer l'erreur ou la contrainte nécessaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"60\" width=\"144\" height=\"120\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"254\" y=\"84\" width=\"110\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><g opacity=\".35\"><rect x=\"254\" y=\"124\" width=\"110\" height=\"30\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"254\" y=\"124\" width=\"6\" height=\"30\" rx=\"3\" fill=\"#B91C1C\"/></g><circle cx=\"424\" cy=\"100\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M420.5 96.5l7 7M427.5 96.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Masquer l'erreur ou la contrainte nécessaire ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « masquer l'erreur ou la contrainte nécessaire » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Transformer un Link en Button",
+     "quand": "Traiter le cas « Transformer un Link en Button ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Transformer un Link en Button\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"196\" y=\"116\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Voir le guide</text><path d=\"M196 124h92\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M314 118L354 118\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M354 118L346.1 122.3M354 118L346.1 113.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"374\" y=\"102\" width=\"112\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"408\" y=\"113\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle cx=\"516\" cy=\"116\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M512.5 112.5l7 7M519.5 112.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Transformer un Link en Button ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « transformer un Link en Button » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Icône seule avec nom accessible",
+     "quand": "Traiter le cas « Icône seule avec nom accessible ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône seule avec nom accessible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"262\" y=\"92\" width=\"46\" height=\"46\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"281\" cy=\"111\" r=\"8\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.2\"/><path d=\"M287 117l9 9\" stroke=\"#111827\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><rect x=\"330\" y=\"102\" width=\"94\" height=\"26\" rx=\"13\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"344\" y=\"119\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">aria-label</text><circle cx=\"452\" cy=\"114\" r=\"9\" fill=\"#15803D\"/><path d=\"M448 114l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Icône seule avec nom accessible ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « icône seule avec nom accessible » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ADAPTIVE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une icône seule n'est pas une abréviation gratuite. Elle exige une icône reconnue dans le",
+       "id": "ADAPTIVE-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Changer l'ordre DOM pour un rendu visuel",
+     "quand": "Traiter le cas « Changer l'ordre DOM pour un rendu visuel ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Adaptation de contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Changer l'ordre DOM pour un rendu visuel\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"222\" y=\"92\" width=\"72\" height=\"58\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"252\" y=\"126\" font-size=\"16\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">1</text><rect x=\"314\" y=\"92\" width=\"72\" height=\"58\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"344\" y=\"126\" font-size=\"16\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">3</text><rect x=\"406\" y=\"92\" width=\"72\" height=\"58\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"436\" y=\"126\" font-size=\"16\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">2</text><circle cx=\"524\" cy=\"120\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M520.5 116.5l7 7M527.5 116.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Changer l'ordre DOM pour un rendu visuel ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « changer l'ordre DOM pour un rendu visuel » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 6 cas",
+   "titre": "Test",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Test\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 34v82\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"56\" y=\"52\" width=\"80\" height=\"48\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"66\" y=\"62\" width=\"58\" height=\"14\" rx=\"4\" fill=\"#E0E7FF\"/><rect x=\"184\" y=\"46\" width=\"98\" height=\"60\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"194\" y=\"56\" width=\"34\" height=\"40\" rx=\"4\" fill=\"#E0E7FF\"/><rect x=\"238\" y=\"64\" width=\"34\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><circle cx=\"288\" cy=\"124\" r=\"9\" fill=\"#15803D\"/><path d=\"M284 124l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "même viewport, conteneur étroit puis large",
+     "quand": "États différents quand nécessaire.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : même viewport, conteneur étroit puis large\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"48\" width=\"440\" height=\"148\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"140\" y=\"68\" width=\"112\" height=\"108\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"152\" y=\"80\" width=\"88\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"162\" y=\"90\" width=\"68\" height=\"34\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"162\" y=\"132\" width=\"58\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"272\" y=\"68\" width=\"268\" height=\"108\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"284\" y=\"86\" width=\"244\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"294\" y=\"94\" width=\"68\" height=\"56\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"374\" y=\"102\" width=\"118\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"374\" y=\"122\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>États différents quand nécessaire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « même viewport, conteneur étroit puis large » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ADAPTIVE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un composant ne suppose pas qu'un viewport large implique un conteneur large. Il doit",
+       "id": "ADAPTIVE-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "texte traduit long",
+     "quand": "Aucune perte de fonction.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : texte traduit long\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"94\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"224\" y=\"105\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"318\" y=\"84\" width=\"184\" height=\"48\" rx=\"9\" fill=\"#4F46E5\"/><rect x=\"334\" y=\"98\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"334\" y=\"112\" width=\"112\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle cx=\"532\" cy=\"108\" r=\"9\" fill=\"#15803D\"/><path d=\"M528 108l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucune perte de fonction.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « texte traduit long » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "zoom / texte agrandi",
+     "quand": "Reflow sans défilement bidimensionnel indu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : zoom / texte agrandi\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"212\" cy=\"100\" r=\"26\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\"/><path d=\"M232 120l20 20\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"308\" y=\"54\" width=\"152\" height=\"132\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"324\" y=\"74\" width=\"116\" height=\"10\" rx=\"5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"324\" y=\"100\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"324\" y=\"120\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"324\" y=\"140\" width=\"92\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.45\"/><g opacity=\".4\"><rect x=\"308\" y=\"196\" width=\"152\" height=\"6\" rx=\"3\" fill=\"#6B7280\"/></g><path d=\"M300 192l166 16\" stroke=\"#B91C1C\" stroke-width=\"2.2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Reflow sans défilement bidimensionnel indu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « zoom / texte agrandi » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "juste avant/après le seuil",
+     "quand": "Bascule stable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : juste avant/après le seuil\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M340 44v152\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"212\" y=\"84\" width=\"104\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"96\" width=\"80\" height=\"22\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"224\" y=\"128\" width=\"58\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"366\" y=\"84\" width=\"142\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"378\" y=\"96\" width=\"46\" height=\"48\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"434\" y=\"104\" width=\"62\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><circle cx=\"548\" cy=\"120\" r=\"9\" fill=\"#15803D\"/><path d=\"M544 120l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Bascule stable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « juste avant/après le seuil » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Container Query absente",
+     "quand": "État compact viable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Container Query absente\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"62\" width=\"144\" height=\"116\" rx=\"12\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><text x=\"258\" y=\"54\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">@container ?</text><rect x=\"252\" y=\"82\" width=\"110\" height=\"78\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"262\" y=\"92\" width=\"90\" height=\"30\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"262\" y=\"132\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><circle cx=\"420\" cy=\"120\" r=\"9\" fill=\"#15803D\"/><path d=\"M416 120l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>État compact viable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « container Query absente » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ADAPTIVE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une Container Query est le mécanisme par défaut quand <strong>la largeur disponible du composant</strong>",
+       "id": "ADAPTIVE-R04"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "conteneurs imbriqués",
+     "quand": "Bon container-name ciblé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Test",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : conteneurs imbriqués\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"52\" width=\"320\" height=\"140\" rx=\"14\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"6 6\" opacity=\".45\"/><rect x=\"220\" y=\"76\" width=\"184\" height=\"92\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><rect x=\"236\" y=\"90\" width=\"152\" height=\"64\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"250\" y=\"108\" width=\"102\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><circle cx=\"404\" cy=\"76\" r=\"4\" fill=\"#0891B2\"/><text x=\"414\" y=\"80\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">container-name</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Bon <code>container-name</code> ciblé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « conteneurs imbriqués » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": ".doctrine-demo :is(.spa-widget){background:#FFFFFF;border:1px solid #E5E7EB;border-radius:8px;padding:16px;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;transition:padding 200ms cubic-bezier(0.4, 0, 0.2, 1);}.doctrine-demo :is(.spa-widget h4){margin:0;font-size:15px;line-height:1.3;letter-spacing:-.01em;color:#111827;}.doctrine-demo :is(.spa-sous){color:#9CA3AF;font-size:12.5px;margin:2px 0 0;}.doctrine-demo :is(.spa-chiffre){font-weight:700;letter-spacing:-.02em;font-size:30px;margin:12px 0 0;color:#111827;}.doctrine-demo :is(.spa-delta){display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:650;color:#15803D;background:#DCFCE7;padding:3px 8px;border-radius:9999px;margin-top:8px;}.doctrine-demo :is(.spa-spark){display:flex;align-items:flex-end;gap:3px;height:0;overflow:hidden;margin-top:0;transition:height 200ms cubic-bezier(0.4, 0, 0.2, 1);}.doctrine-demo :is(.spa-spark i){flex:1;background:#E0E7FF;border-radius:3px 3px 0 0;display:block;}.doctrine-demo :is(.spa-spark i.pic){background:#4F46E5;}.doctrine-demo :is(.spa-detail){display:none;margin-top:16px;padding-top:12px;border-top:1px solid #E5E7EB;color:#4B5563;font-size:13px;}.doctrine-demo :is(.spa-detail ul){margin:0;padding:0;list-style:none;display:grid;gap:6px;}.doctrine-demo :is(.spa-detail li){display:flex;justify-content:space-between;gap:12px;margin:0;}.doctrine-demo :is(.spa-detail li span:last-child){font-weight:650;color:#111827;}.doctrine-demo :is(.spa-etat){float:right;font-size:10px;font-weight:700;line-height:1;letter-spacing:.06em;text-transform:uppercase;color:#9CA3AF;border:1px solid #E5E7EB;border-radius:4px;padding:3px 6px;}.doctrine-demo :is(.spa-etat::after){content:\"compact\";}@container spa-widget (min-width:20rem){.doctrine-demo :is(.spa-spark){height:40px;}.doctrine-demo :is(.spa-etat::after){content:\"regular\";}}@container spa-widget (min-width:30rem){.doctrine-demo :is(.spa-detail){display:block;}.doctrine-demo :is(.spa-etat::after){content:\"expanded\";}.doctrine-demo :is(.spa-widget){padding:24px;}}.doctrine-demo :is(.spa-shell){border:1px solid #E5E7EB;border-radius:12px;background:#F3F4F6;padding:12px 30px 12px 12px;}.doctrine-demo :is(.spa-frame){position:relative;width:min(300px,100%);min-width:0;container-type:inline-size;container-name:spa-widget;}.doctrine-demo :is(.spa-preview){border:1px solid #E5E7EB;border-radius:8px;background:linear-gradient(45deg,#F3F4F6 25%,transparent 25%),linear-gradient(-45deg,#F3F4F6 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#F3F4F6 75%),linear-gradient(-45deg,transparent 75%,#F3F4F6 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;background-color:#FFFFFF;padding:16px;padding-top:44px;}.doctrine-demo :is(.spa-size){position:absolute;z-index:2;top:10px;right:10px;padding:4px 7px;border:1px solid #E5E7EB;border-radius:6px;background:#FFFFFF;color:#4B5563;font:600 11px/1 'ui-monospace', ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;pointer-events:none;}.doctrine-demo :is(.spa-pastille){position:absolute;z-index:2;top:8px;left:10px;font-size:11px;font-weight:700;line-height:1;letter-spacing:.03em;text-transform:uppercase;padding:5px 9px;border-radius:9999px;background:#1C1C1E;color:#FFFFFF;pointer-events:none;}.doctrine-demo :is(.spa-resizer){position:absolute;inset-block:0;left:100%;width:24px;display:flex;align-items:center;justify-content:center;cursor:ew-resize;touch-action:none;user-select:none;outline:none;}.doctrine-demo :is(.spa-grip){width:6px;height:32px;border-radius:9999px;background:#6B7280;box-shadow:0 0 0 1px #FFFFFF;transition:height 100ms cubic-bezier(0.4, 0, 0.2, 1),background-color 100ms cubic-bezier(0.4, 0, 0.2, 1);}.doctrine-demo :is(.spa-resizer:hover .spa-grip), .doctrine-demo :is(.spa-resizer:focus-visible .spa-grip), .doctrine-demo :is(.spa-resizer.spa-drag .spa-grip){height:44px;background:#4F46E5;}.doctrine-demo :is(.spa-resizer:focus-visible .spa-grip){outline:2px solid #0891B2;outline-offset:3px;}.doctrine-demo :is(.spa-zone){container-type:inline-size;container-name:spa-zone;}.doctrine-demo :is(.spa-jumeaux){display:grid;grid-template-columns:minmax(0,1fr) 232px;gap:16px;align-items:start;}.doctrine-demo :is(.spa-jumeau){container-type:inline-size;container-name:spa-widget;min-width:0;}@container spa-zone (max-width:560px){.doctrine-demo :is(.spa-jumeaux){grid-template-columns:1fr;}.doctrine-demo :is(.spa-jumeau.spa-etroit){max-width:232px;}}.doctrine-demo :is(.spa-legende){font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-weight:600;font-size:12px;line-height:1.3;color:#9CA3AF;margin:0 0 8px;}@media (prefers-reduced-motion:reduce){.doctrine-demo :is(.spa-spark), .doctrine-demo :is(.spa-widget), .doctrine-demo :is(.spa-grip){transition:none;}}",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<p class=\"spec-note\">Exemple d’implémentation de référence (DS-UI), non normatif — Container Queries, seuils dérivés du contenu (<code>ADAPTIVE-UI.md</code>). Le référentiel décrit les niveaux d’autorité et les états ; les valeurs vivent dans DESIGN.md, jamais recopiées.</p> <style> .spa-widget{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:8px;padding:16px;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;transition:padding 200ms cubic-bezier(0.4, 0, 0.2, 1);} .spa-widget h4{margin:0;font-size:15px;line-height:1.3;letter-spacing:-.01em;color:#111827;} .spa-sous{color:#9CA3AF;font-size:12.5px;margin:2px 0 0;} .spa-chiffre{font-weight:700;letter-spacing:-.02em;font-size:30px;margin:12px 0 0;color:#111827;} .spa-delta{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:650;color:#15803D;background:#DCFCE7;padding:3px 8px;border-radius:9999px;margin-top:8px;} .spa-spark{display:flex;align-items:flex-end;gap:3px;height:0;overflow:hidden;margin-top:0;transition:height 200ms cubic-bezier(0.4, 0, 0.2, 1);} .spa-spark i{flex:1;background:#E0E7FF;border-radius:3px 3px 0 0;display:block;} .spa-spark i.pic{background:#4F46E5;} .spa-detail{display:none;margin-top:16px;padding-top:12px;border-top:1px solid #E5E7EB;color:#4B5563;font-size:13px;} .spa-detail ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;} .spa-detail li{display:flex;justify-content:space-between;gap:12px;margin:0;} .spa-detail li span:last-child{font-weight:650;color:#111827;} .spa-etat{float:right;font-size:10px;font-weight:700;line-height:1;letter-spacing:.06em;text-transform:uppercase;color:#9CA3AF;border:1px solid #E5E7EB;border-radius:4px;padding:3px 6px;} .spa-etat::after{content:\"compact\";} @container spa-widget (min-width:20rem){ .spa-spark{height:40px;} .spa-etat::after{content:\"regular\";} } @container spa-widget (min-width:30rem){ .spa-detail{display:block;} .spa-etat::after{content:\"expanded\";} .spa-widget{padding:24px;} } .spa-shell{border:1px solid #E5E7EB;border-radius:12px;background:#F3F4F6;padding:12px 30px 12px 12px;} .spa-frame{position:relative;width:min(300px,100%);min-width:0;container-type:inline-size;container-name:spa-widget;} .spa-preview{border:1px solid #E5E7EB;border-radius:8px;background:linear-gradient(45deg,#F3F4F6 25%,transparent 25%),linear-gradient(-45deg,#F3F4F6 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#F3F4F6 75%),linear-gradient(-45deg,transparent 75%,#F3F4F6 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;background-color:#FFFFFF;padding:16px;padding-top:44px;} .spa-size{position:absolute;z-index:2;top:10px;right:10px;padding:4px 7px;border:1px solid #E5E7EB;border-radius:6px;background:#FFFFFF;color:#4B5563;font:600 11px/1 'ui-monospace', ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;pointer-events:none;} .spa-pastille{position:absolute;z-index:2;top:8px;left:10px;font-size:11px;font-weight:700;line-height:1;letter-spacing:.03em;text-transform:uppercase;padding:5px 9px;border-radius:9999px;background:#1C1C1E;color:#FFFFFF;pointer-events:none;} .spa-resizer{position:absolute;inset-block:0;left:100%;width:24px;display:flex;align-items:center;justify-content:center;cursor:ew-resize;touch-action:none;user-select:none;outline:none;} .spa-grip{width:6px;height:32px;border-radius:9999px;background:#6B7280;box-shadow:0 0 0 1px #FFFFFF;transition:height 100ms cubic-bezier(0.4, 0, 0.2, 1),background-color 100ms cubic-bezier(0.4, 0, 0.2, 1);} .spa-resizer:hover .spa-grip,.spa-resizer:focus-visible .spa-grip,.spa-resizer.spa-drag .spa-grip{height:44px;background:#4F46E5;} .spa-resizer:focus-visible .spa-grip{outline:2px solid #0891B2;outline-offset:3px;} .spa-zone{container-type:inline-size;container-name:spa-zone;} .spa-jumeaux{display:grid;grid-template-columns:minmax(0,1fr) 232px;gap:16px;align-items:start;} .spa-jumeau{container-type:inline-size;container-name:spa-widget;min-width:0;} @container spa-zone (max-width:560px){ .spa-jumeaux{grid-template-columns:1fr;} .spa-jumeau.spa-etroit{max-width:232px;} } .spa-legende{font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-weight:600;font-size:12px;line-height:1.3;color:#9CA3AF;margin:0 0 8px;} @media (prefers-reduced-motion:reduce){ .spa-spark,.spa-widget,.spa-grip{transition:none;} } </style> <h3>Le même composant, deux largeurs, un seul viewport</h3> <p class=\"spec-note\">Attrapez la poignée sur le bord droit du cadre — vous ne changez <strong>pas</strong> la taille de la fenêtre, seulement celle du conteneur (flèches ←/→ au clavier, Maj = pas de 40 px, double-clic = pleine largeur). Le widget traverse <code>compact</code> → <code>regular</code> → <code>expanded</code>. Les seuils sont dérivés du <strong>contenu</strong> — quand le sparkline puis le détail cessent de tenir — jamais d’un breakpoint d’appareil ; l’état de base est le plus petit état viable, les états riches sont une amélioration progressive.</p> <div class=\"spa-shell\" id=\"spa-shell\"> <div class=\"spa-frame\" id=\"spa-sonde\"> <div class=\"spa-preview\"><article class=\"spa-widget\"><span class=\"spa-etat\" aria-hidden=\"true\"></span><h4>Revenu net</h4><p class=\"spa-sous\">30 derniers jours</p><div class=\"spa-chiffre\">48 210 €</div><span class=\"spa-delta\">▲ 6,4 % vs période précédente</span><div class=\"spa-spark\" aria-hidden=\"true\"><i style=\"height:40%\"></i><i style=\"height:55%\"></i><i style=\"height:35%\"></i><i style=\"height:70%\"></i><i style=\"height:52%\"></i><i style=\"height:80%\"></i><i class=\"pic\" style=\"height:96%\"></i></div><div class=\"spa-detail\"><ul><li><span>Nouveaux clients</span><span>312</span></li><li><span>Panier moyen</span><span>154 €</span></li><li><span>Taux de retour</span><span>2,1 %</span></li></ul></div></article></div> <span class=\"spa-pastille\" id=\"spa-pastille\" aria-hidden=\"true\">compact</span> <span class=\"spa-size\" id=\"spa-size\" aria-hidden=\"true\">300 px</span> <div class=\"spa-resizer\" id=\"spa-resizer\" role=\"separator\" tabindex=\"0\" aria-label=\"Largeur du conteneur\" aria-orientation=\"vertical\" aria-controls=\"spa-sonde\" aria-keyshortcuts=\"ArrowLeft ArrowRight Home End\" title=\"Glisser pour redimensionner · Double-cliquer pour la pleine largeur\"><span class=\"spa-grip\" aria-hidden=\"true\"></span></div> </div> </div> <h3>La preuve par les jumeaux — même page, même instant</h3> <p class=\"spec-note\">Le même widget, posé simultanément dans une zone large et dans une colonne étroite : à viewport constant, ils prennent des états <strong>différents</strong>. Un layout piloté par media queries leur donnerait le même état — ici, c’est le conteneur qui décide. (Et la bascule des jumeaux en une colonne répond elle-même à leur zone, pas à la fenêtre.)</p> <div class=\"spa-zone\"><div class=\"spa-jumeaux\"> <div class=\"spa-jumeau\"><p class=\"spa-legende\">Zone principale — large → expanded</p><article class=\"spa-widget\"><span class=\"spa-etat\" aria-hidden=\"true\"></span><h4>Revenu net</h4><p class=\"spa-sous\">30 derniers jours</p><div class=\"spa-chiffre\">48 210 €</div><span class=\"spa-delta\">▲ 6,4 % vs période précédente</span><div class=\"spa-spark\" aria-hidden=\"true\"><i style=\"height:40%\"></i><i style=\"height:55%\"></i><i style=\"height:35%\"></i><i style=\"height:70%\"></i><i style=\"height:52%\"></i><i style=\"height:80%\"></i><i class=\"pic\" style=\"height:96%\"></i></div><div class=\"spa-detail\"><ul><li><span>Nouveaux clients</span><span>312</span></li><li><span>Panier moyen</span><span>154 €</span></li><li><span>Taux de retour</span><span>2,1 %</span></li></ul></div></article></div> <div class=\"spa-jumeau spa-etroit\"><p class=\"spa-legende\">Barre latérale — étroite → compact</p><article class=\"spa-widget\"><span class=\"spa-etat\" aria-hidden=\"true\"></span><h4>Revenu net</h4><p class=\"spa-sous\">30 derniers jours</p><div class=\"spa-chiffre\">48 210 €</div><span class=\"spa-delta\">▲ 6,4 % vs période précédente</span><div class=\"spa-spark\" aria-hidden=\"true\"><i style=\"height:40%\"></i><i style=\"height:55%\"></i><i style=\"height:35%\"></i><i style=\"height:70%\"></i><i style=\"height:52%\"></i><i style=\"height:80%\"></i><i class=\"pic\" style=\"height:96%\"></i></div><div class=\"spa-detail\"><ul><li><span>Nouveaux clients</span><span>312</span></li><li><span>Panier moyen</span><span>154 €</span></li><li><span>Taux de retour</span><span>2,1 %</span></li></ul></div></article></div> </div></div> <p class=\"spec-note\">Les états se nomment par leur capacité — <code>compact</code> / <code>regular</code> / <code>expanded</code>, jamais mobile / tablet / desktop. La seule media query de ce spécimen est <code>prefers-reduced-motion</code> : une préférence d’environnement, pas une largeur de composant.</p> </section>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "ADAPTIVE-R01",
+   "couche": "ux",
+   "solution": "**la fenêtre définit la page ; le conteneur définit le composant.**",
+   "enonce": "Une décision de mise en page qui dépend de la fenêtre est portée par la fenêtre, et une décision qui dépend de l'espace reçu par un composant réutilisable est portée par son conteneur : une requête média n'évalue que la fenêtre, une requête de conteneur évalue le conteneur.",
+   "mesure": "toute adaptation causée par la largeur d'un composant réutilisable est exprimée par une requête de conteneur, jamais par une requête média",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+    "liens": [
+     {
+      "label": "MDN — CSS container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R02",
+   "couche": "ux",
+   "solution": "une décision de structure globale répond au viewport ou à l'environnement. Une décision",
+   "enonce": "Une décision de structure globale répond au viewport ou à l'environnement ; une décision interne à un composant réutilisable répond à l'espace réellement disponible dans son conteneur, la largeur de la fenêtre ne décrivant pas cet espace.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "une Card peut être large dans le contenu principal et étroite dans une sidebar sur",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Les requêtes de taille s'appuient sur un conteneur de requête explicite",
+     "liens": [
+      {
+       "label": "CSS Containment Module Level 3",
+       "url": "https://www.w3.org/TR/css-contain-3/"
+      }
+     ],
+     "confiance": "Normatif"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+    "liens": [
+     {
+      "label": "MDN — CSS container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R03",
+   "couche": "ux",
+   "solution": "une Media Query reste légitime pour les préférences et capacités d'environnement :",
+   "enonce": "Les préférences et capacités d'environnement — mouvement réduit, schéma de couleur, contraste préféré, couleurs forcées, impression, survol et type de pointeur — restent exprimées par requête média : elles décrivent l'utilisateur et le mode de rendu, jamais la largeur d'un composant.",
+   "mesure": "aucune de ces préférences n'est exprimée par une requête de conteneur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "prefers-reduced-motion détecte la préférence système pour un mouvement non essentiel réduit",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — Baseline largement disponible depuis janvier 2020"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "forced-colors détecte un mode de couleurs forcées imposant une palette limitée choisie par l'utilisateur (mots-clés système CanvasText, ButtonText, Canvas) ; prefers-contrast détecte une préférence de contraste (no-preference, more, less, custom)",
+     "liens": [
+      {
+       "label": "MDN — forced-colors",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      },
+      {
+       "label": "MDN — prefers-contrast",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast"
+      }
+     ],
+     "confiance": "Établi — Baseline largement disponible depuis septembre 2022 (forced-colors) et mai 2022 (prefers-contrast)"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "pointer (none, coarse, fine) et hover (none, hover) décrivent le mécanisme d'entrée **primaire** seulement ; any-pointer et any-hover portent sur l'ensemble des dispositifs disponibles",
+     "liens": [
+      {
+       "label": "MDN — pointer",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+      },
+      {
+       "label": "MDN — hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi — Baseline largement disponible depuis décembre 2018. **Nuance absente du fichier** : « hover/pointer » ne décrit que le dispositif primaire, un appareil hybride (tactile + souris) n'est pas décrit par ces requêtes"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "prefers-reduced-motion détecte la préférence système pour un mouvement non essentiel réduit",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — Baseline largement disponible depuis janvier 2020"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R04",
+   "couche": "ux",
+   "solution": "une Container Query est le mécanisme par défaut quand **la largeur disponible du composant**",
+   "enonce": "Quand la cause de l'adaptation est la largeur disponible du composant, le mécanisme est la requête de conteneur ; elle n'est pas employée lorsqu'une grille, un retour à la ligne ou une taille intrinsèque résout déjà la disposition.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Une Container Query peut appliquer des styles selon la taille, le style ou l'état de défilement d'un conteneur",
+    "liens": [
+     {
+      "label": "MDN — CSS container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-4",
+     "titre": "Container Query absente",
+     "famille": "Test"
+    }
+   ]
+  },
+  {
+   "id": "ADAPTIVE-R05",
+   "couche": "ux",
+   "solution": "les états adaptatifs se nomment par leur effet ou leur capacité — `compact`, `regular`,",
+   "enonce": "Les états adaptatifs portent des noms de capacité — compact, regular, expanded — et jamais des noms d'appareil comme mobile, tablet ou desktop.",
+   "mesure": "aucun nom d'état, de classe ou de token adaptatif ne contient mobile, tablet ou desktop",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Les classes de taille de fenêtre sont nommées sémantiquement (compact, medium, expanded, large, extra-large) et explicitement pas destinées à une logique de type d'appareil : elles ne sont pas déterminées par la taille de l'écran, et l'écran partagé, le fenêtrage de bureau et les pliables font varier l'espace disponible indépendamment de l'appareil",
+     "liens": [
+      {
+       "label": "Android / Material — Use window size classes",
+       "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+      }
+     ],
+     "confiance": "Établi, documentation de plateforme — soutient l'interdiction des noms d'appareil ; note que le vocabulaire d'Android est compact/medium/expanded, non compact/regular/expanded"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les classes de taille d'Apple emploient le vocabulaire compact et regular, sont des traits assignés aux scènes et aux vues, et changent dynamiquement (rotation, passage en Split View)",
+     "liens": [
+      {
+       "label": "Apple — Auto Layout Guide, Size-Class-Specific Layout",
+       "url": "https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/AutolayoutPG/Size-ClassSpecificLayout.html"
+      }
+     ],
+     "confiance": "Établi pour le vocabulaire (deuxième système public convergent sur des noms de capacité), mais **documentation archivée et vague** : elle ne formule pas explicitement « l'espace disponible, pas l'appareil ». Ne pas s'en servir pour plus que le vocabulaire"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Les classes de taille de fenêtre sont nommées sémantiquement (compact, medium, expanded, large, extra-large) et explicitement pas destinées à une logique de type d'appareil : elles ne sont pas déterminées par la taille de l'écran, et l'écran partagé, le fenêtrage de bureau et les pliables font varier l'espace disponible indépendamment de l'appareil",
+    "liens": [
+     {
+      "label": "Android / Material — Use window size classes",
+      "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+     }
+    ],
+    "confiance": "Établi, documentation de plateforme — soutient l'interdiction des noms d'appareil ; note que le vocabulaire d'Android est compact/medium/expanded, non compact/regular/expanded"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R06",
+   "couche": "ux",
+   "solution": "les seuils viennent du contenu : un état bascule quand le label, les actions ou la mise en",
+   "enonce": "Le seuil d'un état dérive du contenu — le point où le libellé, les actions ou la disposition cessent de tenir correctement — et ne recopie pas un point de rupture global de la fenêtre.",
+   "mesure": "aucun seuil de composant n'est défini par référence à un token de point de rupture global",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Les classes de taille de fenêtre sont nommées sémantiquement (compact, medium, expanded, large, extra-large) et explicitement pas destinées à une logique de type d'appareil : elles ne sont pas déterminées par la taille de l'écran, et l'écran partagé, le fenêtrage de bureau et les pliables font varier l'espace disponible indépendamment de l'appareil",
+     "liens": [
+      {
+       "label": "Android / Material — Use window size classes",
+       "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+      }
+     ],
+     "confiance": "Établi, documentation de plateforme — soutient l'interdiction des noms d'appareil ; note que le vocabulaire d'Android est compact/medium/expanded, non compact/regular/expanded"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Les classes de taille de fenêtre sont nommées sémantiquement (compact, medium, expanded, large, extra-large) et explicitement pas destinées à une logique de type d'appareil : elles ne sont pas déterminées par la taille de l'écran, et l'écran partagé, le fenêtrage de bureau et les pliables font varier l'espace disponible indépendamment de l'appareil",
+    "liens": [
+     {
+      "label": "Android / Material — Use window size classes",
+      "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+     }
+    ],
+    "confiance": "Établi, documentation de plateforme — soutient l'interdiction des noms d'appareil ; note que le vocabulaire d'Android est compact/medium/expanded, non compact/regular/expanded"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R07",
+   "couche": "ux",
+   "solution": "les seuils ne sont pas nécessairement universels. Deux composants peuvent atteindre leur",
+   "enonce": "Les seuils ne sont pas partagés entre composants : deux composants atteignent leur état compact à des largeurs différentes lorsque leur contenu et leur structure diffèrent.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R08",
+   "couche": "ux",
+   "solution": "l'espace peut modifier :",
+   "enonce": "L'espace disponible peut modifier la disposition interne, la densité et les espacements dans les limites du composant, l'ordre visuel tant que l'ordre de lecture reste logique, la longueur d'un libellé lorsqu'une alternative validée existe, la présence d'informations secondaires et le regroupement d'actions secondaires dans un menu accessible.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Lorsque l'ordre de présentation affecte le sens, un ordre de lecture correct doit pouvoir être déterminé programmatiquement ; le repositionnement par CSS est admis tant qu'il ne change pas le sens, et constitue un échec s'il le change",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde la clause « l'ordre visuel peut changer si l'ordre de lecture reste logique »"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Lorsque l'ordre de présentation affecte le sens, un ordre de lecture correct doit pouvoir être déterminé programmatiquement ; le repositionnement par CSS est admis tant qu'il ne change pas le sens, et constitue un échec s'il le change",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A) — fonde la clause « l'ordre visuel peut changer si l'ordre de lecture reste logique »"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R09",
+   "couche": "ux",
+   "solution": "l'espace ne modifie jamais :",
+   "enonce": "L'espace disponible ne modifie jamais la nature d'une action ou d'une navigation, la priorité réelle d'une action, l'information nécessaire pour décider, le nom accessible d'un contrôle, l'ordre de lecture, ni l'énoncé d'une obligation légale, d'un risque ou d'une erreur à corriger.",
+   "mesure": "le nom accessible et l'ordre de lecture d'un composant sont identiques dans tous ses états",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Lorsque l'ordre de présentation affecte le sens, un ordre de lecture correct doit pouvoir être déterminé programmatiquement ; le repositionnement par CSS est admis tant qu'il ne change pas le sens, et constitue un échec s'il le change",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde la clause « l'ordre visuel peut changer si l'ordre de lecture reste logique »"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Le nom et le rôle de tout composant d'interface doivent être programmatiquement déterminables, y compris pour les contrôles personnalisés générés par script",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Lorsque l'ordre de présentation affecte le sens, un ordre de lecture correct doit pouvoir être déterminé programmatiquement ; le repositionnement par CSS est admis tant qu'il ne change pas le sens, et constitue un échec s'il le change",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A) — fonde la clause « l'ordre visuel peut changer si l'ordre de lecture reste logique »"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R10",
+   "couche": "ux",
+   "solution": "le plus petit état viable conserve l'intention principale, le contexte minimal pour la",
+   "enonce": "Le plus petit état viable d'un composant conserve l'intention principale, le contexte minimal pour la comprendre et l'accès à toutes les fonctions essentielles : la réduction de l'espace n'entraîne aucune perte d'information ni de fonctionnalité.",
+   "mesure": "à une largeur équivalente à 320 px CSS (1280 px à 400 % de zoom), aucune perte d'information ni de fonctionnalité et aucun défilement en deux dimensions",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS (soit 1280 px à 400 % de zoom), sauf pour les parties qui exigent une disposition en deux dimensions",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — donne au « plus petit état viable » sa mesure vérifiable, absente du fichier qui n'énonce aucune largeur plancher"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Le contenu et les fonctions restent disponibles au reflow et au zoom",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/TR/WCAG22/#reflow"
+      },
+      {
+       "label": "1.4.4 Resize Text",
+       "url": "https://www.w3.org/TR/WCAG22/#resize-text"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS (soit 1280 px à 400 % de zoom), sauf pour les parties qui exigent une disposition en deux dimensions",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — donne au « plus petit état viable » sa mesure vérifiable, absente du fichier qui n'énonce aucune largeur plancher"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R11",
+   "couche": "ux",
+   "solution": "quand l'espace augmente, le composant peut révéler des descriptions, métadonnées ou actions",
+   "enonce": "Un accroissement de l'espace ne peut que révéler des descriptions, des métadonnées ou des actions secondaires ; une information nécessaire à la décision est présente dès l'état compact et n'est jamais différée à un état plus large.",
+   "mesure": "toute information requise pour agir est présente dans l'état le plus étroit",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS (soit 1280 px à 400 % de zoom), sauf pour les parties qui exigent une disposition en deux dimensions",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — donne au « plus petit état viable » sa mesure vérifiable, absente du fichier qui n'énonce aucune largeur plancher"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS (soit 1280 px à 400 % de zoom), sauf pour les parties qui exigent une disposition en deux dimensions",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — donne au « plus petit état viable » sa mesure vérifiable, absente du fichier qui n'énonce aucune largeur plancher"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R12",
+   "couche": "ux",
+   "solution": "une icône seule n'est pas une abréviation gratuite. Elle exige une icône reconnue dans le",
+   "enonce": "Un contrôle réduit à sa seule icône conserve un nom accessible programmatiquement déterminable et s'appuie sur une icône déjà reconnue dans le système ; l'infobulle qui l'accompagne se déclenche au pointeur comme au focus clavier et reste écartable, survolable et persistante.",
+   "mesure": "tout contrôle en icône seule expose un nom accessible ; toute infobulle apparaît aussi au focus clavier",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Le nom et le rôle de tout composant d'interface doivent être programmatiquement déterminables, y compris pour les contrôles personnalisés générés par script",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A)"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Un contenu additionnel déclenché au survol ou au focus doit être écartable, survolable et persistant ; la note explicite indique qu'un contenu déclenchable au survol du pointeur doit aussi l'être au focus clavier",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde l'exigence d'infobulle au clavier de l'icône seule, que le fichier n'énonce qu'en « si nécessaire »"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Le nom et le rôle de tout composant d'interface doivent être programmatiquement déterminables, y compris pour les contrôles personnalisés générés par script",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Icône seule avec nom accessible",
+     "famille": "Adaptation de contenu"
+    }
+   ]
+  },
+  {
+   "id": "ADAPTIVE-R13",
+   "couche": "ux",
+   "solution": "le composant possède son adaptation. Son consommateur choisit le contexte et la largeur ; il",
+   "enonce": "Le composant possède son adaptation : son consommateur choisit le contexte et la largeur qu'il lui accorde, sans maintenir une série de surcharges propres à chaque page.",
+   "mesure": "aucune surcharge de disposition d'un composant réutilisable dans le code appelant",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R14",
+   "couche": "ux",
+   "solution": "un composant ne suppose pas qu'un viewport large implique un conteneur large. Il doit",
+   "enonce": "Un composant ne présume pas qu'une fenêtre large lui accorde un conteneur large : il reste fonctionnel en barre latérale, en modale, en cellule de grille, en panneau divisé et en pleine largeur, l'espace disponible étant indépendant du type d'appareil et de la taille de l'écran.",
+   "mesure": "chaque composant réutilisable est vérifié dans au moins deux contextes de largeur différents à viewport constant",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Les classes de taille de fenêtre sont nommées sémantiquement (compact, medium, expanded, large, extra-large) et explicitement pas destinées à une logique de type d'appareil : elles ne sont pas déterminées par la taille de l'écran, et l'écran partagé, le fenêtrage de bureau et les pliables font varier l'espace disponible indépendamment de l'appareil",
+     "liens": [
+      {
+       "label": "Android / Material — Use window size classes",
+       "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+      }
+     ],
+     "confiance": "Établi, documentation de plateforme — soutient l'interdiction des noms d'appareil ; note que le vocabulaire d'Android est compact/medium/expanded, non compact/regular/expanded"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+    "liens": [
+     {
+      "label": "MDN — CSS container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+     }
+    ],
+    "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "même viewport, conteneur étroit puis large",
+     "famille": "Test"
+    }
+   ]
+  },
+  {
+   "id": "ADAPTIVE-R15",
+   "couche": "ux",
+   "solution": "les conteneurs sont nommés lorsque plusieurs ancêtres pourraient répondre, afin que le",
+   "enonce": "Un conteneur de requête est nommé dès que plusieurs ancêtres pourraient y répondre : en l'absence de nom, la requête se résout contre l'ancêtre qualifié le plus proche, qui n'est pas nécessairement celui qui porte le contrat.",
+   "mesure": "toute requête de conteneur portant sur un composant imbriquable cite un nom de conteneur explicite",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Les requêtes de taille s'appuient sur un conteneur de requête explicite",
+     "liens": [
+      {
+       "label": "CSS Containment Module Level 3",
+       "url": "https://www.w3.org/TR/css-contain-3/"
+      }
+     ],
+     "confiance": "Normatif"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "En l'absence de nom, une requête de conteneur s'évalue contre l'ancêtre le plus proche portant un container-type correspondant ; nommer le conteneur permet de viser un conteneur précis. Les unités cqw, cqh, cqi, cqb, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête, et retombent sur les unités de petit viewport si aucun conteneur éligible n'existe",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — @container et container-type sont Baseline « largement disponible » depuis février 2023 ; fonde la règle de nommage et les unités de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Les requêtes de taille s'appuient sur un conteneur de requête explicite",
+    "liens": [
+     {
+      "label": "CSS Containment Module Level 3",
+      "url": "https://www.w3.org/TR/css-contain-3/"
+     }
+    ],
+    "confiance": "Normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R16",
+   "couche": "ux",
+   "solution": "un composant adaptatif se teste :",
+   "enonce": "Un composant adaptatif est validé étroit et large dans un même viewport, dans au moins deux contextes réels, avec un contenu court, long et traduit, au zoom et à espacement de texte accru, au clavier, au toucher et sans survol, et de part et d'autre de chacun de ses seuils.",
+   "mesure": "les six vérifications sont exécutées avant livraison d'un composant adaptatif",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S17",
+     "affirmation": "Le texte, contrôles et libellés compris, peut être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — donne sa mesure au point « zoom et taille de texte accrue » du test"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "Aucune perte de contenu ni de fonctionnalité lorsque l'utilisateur porte l'interligne à 1,5 fois la taille de police, l'espace après paragraphe à 2 fois, l'interlettrage à 0,12 fois et l'espace entre mots à 0,16 fois",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.12 Text Spacing",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **critère absent du fichier**, alors qu'il est le stress-test le plus direct d'un seuil dérivé du contenu : l'espacement forcé déborde un composant calé au plus juste"
+    }
+   ],
+   "principale": {
+    "ref": "S17",
+    "affirmation": "Le texte, contrôles et libellés compris, peut être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.4 Resize Text",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — donne sa mesure au point « zoom et taille de texte accrue » du test"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R17",
+   "couche": "ux",
+   "solution": "une capture « mobile » et une capture « desktop » ne suffisent plus à prouver l'adaptation",
+   "enonce": "Une capture en fenêtre étroite et une capture en fenêtre large ne constituent pas une preuve d'adaptation : la preuve porte sur le conteneur, à viewport constant.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R18",
+   "couche": "ux",
+   "solution": "le style de base est le plus petit état viable ; les états plus riches sont une amélioration",
+   "enonce": "Le style de base d'un composant rend son plus petit état viable et les états plus riches sont une amélioration progressive : si le mécanisme d'adaptation n'est pas disponible, le composant reste utilisable.",
+   "mesure": "le composant reste utilisable lorsque les règles de requête de conteneur sont ignorées",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S20",
+     "affirmation": "L'amélioration progressive fournit un socle de contenu et de fonctionnalité au plus grand nombre, les enrichissements n'étant appliqués que si l'agent utilisateur les prend en charge",
+     "liens": [
+      {
+       "label": "MDN — Progressive Enhancement (glossaire)",
+       "url": "https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement"
+      }
+     ],
+     "confiance": "Établi comme pratique documentée — le choix d'en faire notre stratégie de dégradation reste un parti pris interne"
+    }
+   ],
+   "principale": {
+    "ref": "S20",
+    "affirmation": "L'amélioration progressive fournit un socle de contenu et de fonctionnalité au plus grand nombre, les enrichissements n'étant appliqués que si l'agent utilisateur les prend en charge",
+    "liens": [
+     {
+      "label": "MDN — Progressive Enhancement (glossaire)",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement"
+     }
+    ],
+    "confiance": "Établi comme pratique documentée — le choix d'en faire notre stratégie de dégradation reste un parti pris interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-R19",
+   "couche": "ux",
+   "solution": "les adaptations ne provoquent pas de changement inattendu pendant l'interaction. Un panneau",
+   "enonce": "Une bascule d'état adaptative ne constitue pas un changement de contexte : le focus, la valeur saisie et la tâche en cours sont conservés de part et d'autre de la bascule.",
+   "mesure": "après une bascule d'état provoquée par un redimensionnement, l'élément focalisé et les valeurs saisies sont inchangés",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Les changements de contexte ne sont initiés que sur demande de l'utilisateur, ou un mécanisme permet de les désactiver ; l'intention est d'éliminer la confusion causée par des changements inattendus",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.5 Change on Request",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+      }
+     ],
+     "confiance": "Établi, standard — **niveau AAA seulement** : la préservation du focus et de la valeur à travers une bascule est une exigence de robustesse plus qu'une obligation AA"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Les changements de contexte ne sont initiés que sur demande de l'utilisateur, ou un mécanisme permet de les désactiver ; l'intention est d'éliminer la confusion causée par des changements inattendus",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.5 Change on Request",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+     }
+    ],
+    "confiance": "Établi, standard — **niveau AAA seulement** : la préservation du focus et de la valeur à travers une bascule est une exigence de robustesse plus qu'une obligation AA"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U01",
+   "couche": "ui",
+   "solution": "ne pas remplacer un layout intrinsèque qui fonctionne par des seuils. La Container Query",
+   "enonce": "Une requête de conteneur n'intervient que lorsque le composant doit réellement changer d'état ; un layout intrinsèque qui résout déjà la disposition — grille, retour à la ligne, tailles intrinsèques — n'est pas remplacé par des seuils.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U02",
+   "couche": "ui",
+   "solution": "préférer `inline-size` à `size` quand seule la largeur logique pilote le composant. Cela évite",
+   "enonce": "Le type de conteneur est inline-size lorsque seule la largeur logique pilote le composant ; size, qui applique la containment de taille sur les deux axes et fait s'effondrer l'élément sans taille de bloc contextuelle ou explicite, n'est employé que si une condition sur l'axe de bloc est réellement interrogée.",
+   "mesure": "container-type: size n'apparaît qu'accompagné d'une taille de bloc contextuelle ou explicite",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "container-type: inline-size applique la containment de style et de taille sur le seul axe inline ; container-type: size l'applique sur les deux axes et, faute de taille de bloc contextuelle ou explicite, l'élément s'effondre",
+     "liens": [
+      {
+       "label": "MDN — container-type",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/container-type"
+      }
+     ],
+     "confiance": "Établi — Baseline largement disponible depuis février 2023. **Raison plus forte que celle du fichier**, qui invoque seulement « éviter d'isoler inutilement la dimension de bloc » là où le risque réel est l'effondrement de l'élément"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "container-type: inline-size applique la containment de style et de taille sur le seul axe inline ; container-type: size l'applique sur les deux axes et, faute de taille de bloc contextuelle ou explicite, l'élément s'effondre",
+    "liens": [
+     {
+      "label": "MDN — container-type",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/container-type"
+     }
+    ],
+    "confiance": "Établi — Baseline largement disponible depuis février 2023. **Raison plus forte que celle du fichier**, qui invoque seulement « éviter d'isoler inutilement la dimension de bloc » là où le risque réel est l'effondrement de l'élément"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U03",
+   "couche": "ui",
+   "solution": "nommer le conteneur dès qu'un composant peut être imbriqué dans plusieurs conteneurs de",
+   "enonce": "Le conteneur de requête est nommé dès qu'un composant peut être imbriqué dans plusieurs conteneurs de requête, le nom exprimant le contrat et écartant la résolution implicite contre l'ancêtre qualifié le plus proche.",
+   "mesure": "toute règle @container visant un composant imbriquable porte un container-name",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Les conteneurs peuvent être nommés et ciblés par `@container`",
+     "liens": [
+      {
+       "label": "CSS Containment Module Level 3",
+       "url": "https://www.w3.org/TR/css-contain-3/"
+      }
+     ],
+     "confiance": "Normatif"
+    },
+    {
+     "ref": "T5",
+     "affirmation": "Sans container-name, la requête se résout contre l'ancêtre le plus proche ayant un contexte de containment ; les unités cqi, cqb, cqw, cqh, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête et retombent sur les unités de petit viewport en l'absence de conteneur éligible",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — fonde la règle de nommage et l'emploi de cqi comme unité de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Les conteneurs peuvent être nommés et ciblés par `@container`",
+    "liens": [
+     {
+      "label": "CSS Containment Module Level 3",
+      "url": "https://www.w3.org/TR/css-contain-3/"
+     }
+    ],
+    "confiance": "Normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U04",
+   "couche": "ui",
+   "solution": "utiliser les unités logiques et relatives (`rem`, `cqi`, pourcentages) ; le seuil exact se",
+   "enonce": "Les seuils s'expriment en unités logiques et relatives — rem, unités de conteneur, pourcentages — et sont déclarés dans le fichier du composant propriétaire, accompagnés de la raison qui les a fait émerger.",
+   "mesure": "aucun seuil de requête de conteneur exprimé en pixels absolus ; chaque seuil est commenté dans le fichier de son composant",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "Sans container-name, la requête se résout contre l'ancêtre le plus proche ayant un contexte de containment ; les unités cqi, cqb, cqw, cqh, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête et retombent sur les unités de petit viewport en l'absence de conteneur éligible",
+     "liens": [
+      {
+       "label": "MDN — CSS container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — fonde la règle de nommage et l'emploi de cqi comme unité de seuil"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "Sans container-name, la requête se résout contre l'ancêtre le plus proche ayant un contexte de containment ; les unités cqi, cqb, cqw, cqh, cqmin et cqmax valent 1 % de la dimension correspondante du conteneur de requête et retombent sur les unités de petit viewport en l'absence de conteneur éligible",
+    "liens": [
+     {
+      "label": "MDN — CSS container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+     }
+    ],
+    "confiance": "Établi — fonde la règle de nommage et l'emploi de cqi comme unité de seuil"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U05",
+   "couche": "ui",
+   "solution": "le CSS de base rend l'état compact viable. Les requêtes successives enrichissent vers",
+   "enonce": "Le CSS de base rend l'état compact viable et les requêtes successives enrichissent vers regular puis expanded, ces états n'étant déclarés que s'ils existent réellement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Base compacte + enrichissement progressif",
+     "liens": [
+      {
+       "label": "Décision interne de robustesse, cohérente avec progressive enhancement",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme stratégie interne"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Base compacte + enrichissement progressif",
+    "liens": [
+     {
+      "label": "Décision interne de robustesse, cohérente avec progressive enhancement",
+      "url": null
+     }
+    ],
+    "confiance": "Établi comme stratégie interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U06",
+   "couche": "ui",
+   "solution": "limiter le nombre de seuils au nombre de changements structurels observables. Un seuil sans",
+   "enonce": "Le nombre de seuils d'un composant est égal au nombre de changements structurels observables ; un seuil sans changement sémantique ou spatial net est supprimé.",
+   "mesure": "chaque seuil déclaré correspond à un changement de structure observable",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U07",
+   "couche": "ui",
+   "solution": "les noms d'état ne deviennent pas nécessairement des props React. Si l'état dépend uniquement",
+   "enonce": "Un état qui ne dépend que de la place disponible est calculé par CSS et n'est pas exposé en propriété de composant : l'API n'oblige pas le consommateur à synchroniser JavaScript et disposition.",
+   "mesure": "aucune propriété de composant ne duplique un état déjà déterminé par une requête de conteneur",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U08",
+   "couche": "ui",
+   "solution": "`display: none` n'est appliqué qu'à du contenu secondaire dont l'absence a été autorisée dans",
+   "enonce": "Le masquage complet ne s'applique qu'à du contenu secondaire dont l'absence a été autorisée par la couche UX ; une action essentielle reste atteignable dans tous les états, au besoin regroupée dans un menu accessible.",
+   "mesure": "aucune fonctionnalité indisponible dans l'état le plus étroit",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T8",
+     "affirmation": "Aucune perte d'information ni de fonctionnalité et aucun défilement en deux dimensions à une largeur équivalente à 320 px CSS",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — borne l'usage de display: none dans l'état compact"
+    },
+    {
+     "ref": "T7",
+     "affirmation": "Le nom et le rôle de tout composant d'interface sont programmatiquement déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde le maintien du nom accessible en variante icône seule"
+    }
+   ],
+   "principale": {
+    "ref": "T8",
+    "affirmation": "Aucune perte d'information ni de fonctionnalité et aucun défilement en deux dimensions à une largeur équivalente à 320 px CSS",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — borne l'usage de display: none dans l'état compact"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U09",
+   "couche": "ui",
+   "solution": "le DOM conserve un ordre de lecture logique dans tous les états. CSS Grid peut déplacer",
+   "enonce": "L'ordre du DOM porte un ordre de lecture correct dans tous les états : la mise en page peut déplacer visuellement des éléments sans réordonner le sens, et un déplacement qui change le sens impose de repenser la structure.",
+   "mesure": "l'ordre de lecture programmatiquement déterminé est identique dans tous les états du composant",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "Un ordre de lecture correct doit être programmatiquement déterminable lorsque l'ordre affecte le sens ; positionner par CSS au point de changer le sens est un échec documenté",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "Un ordre de lecture correct doit être programmatiquement déterminable lorsque l'ordre affecte le sens ; positionner par CSS au point de changer le sens est un échec documenté",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.2 Meaningful Sequence",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ADAPTIVE-U10",
+   "couche": "ui",
+   "solution": "une version icône seule garde son nom accessible. Le label peut être visuellement masqué avec",
+   "enonce": "Une variante en icône seule conserve son nom accessible : le libellé est masqué visuellement par la technique commune du système, jamais retiré du nom accessible.",
+   "mesure": "le nom accessible d'un contrôle est identique avec et sans libellé visible",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T7",
+     "affirmation": "Le nom et le rôle de tout composant d'interface sont programmatiquement déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde le maintien du nom accessible en variante icône seule"
+    }
+   ],
+   "principale": {
+    "ref": "T7",
+    "affirmation": "Le nom et le rôle de tout composant d'interface sont programmatiquement déterminables",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A) — fonde le maintien du nom accessible en variante icône seule"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

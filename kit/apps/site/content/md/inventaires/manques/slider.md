@@ -1,0 +1,20 @@
+# Manque : slider
+- Statut : proposé
+- Arbitrage : 2026-07-30 (Aurélien) — REPORTÉE, pas refusée : un seul usage, interne à l'atelier, sans besoin produit réel. Le marqueur `FILI-MANQUE: slider` continue de le recenser sans le sanctionner — c'est exactement le contrat du protocole. À rouvrir quand un écran réel en aura besoin.
+- Besoin rencontré : régler une valeur numérique bornée par glissement (nombre de lignes du Skeleton `text` dans le playground de l'atelier).
+- Contexte réel (page, produit, capture) : apps/site/app/ui/controls.tsx (contrôle `range` du playground — entrée Skeleton).
+- Fréquence prévisible : faible aujourd'hui (un seul usage, interne à l'atelier) ; possible dans de futurs réglages produits (densité, seuils d'audit).
+- Autres consommateurs possibles : panneaux de réglage de Fili Audit, futures démos de tokens (rayon, espacement).
+- Composants proches et pourquoi ils ne suffisent pas : Input.Number saisit une valeur exacte au clavier mais ne donne pas la manipulation continue ni la lecture immédiate de la plage ; Select énumère des crans discrets, pas une plage.
+- Pourquoi la composition existante ne suffit pas : aucune primitive du kit ne porte le motif « curseur sur une plage » (rail, poignée, valeur liée) ; le recomposer localement recréerait un contrôle — exactement ce que le validateur traque.
+- Responsabilité proposée (une phrase) : choisir une valeur numérique dans une plage bornée, au pointeur comme au clavier.
+- Limites (ce que le composant ne fera PAS) : pas de double poignée (plage min-max = besoin distinct à qualifier), pas de saisie libre (c'est Input.Number), pas d'axe non linéaire.
+- Anatomie : racine (label + valeur) + rail + piste remplie + poignée focalisable.
+- API candidate (axes du Contract uniquement) : size (sm/md) ; props min/max/step/value/onValueChange, formatage de la valeur annoncée.
+- Tokens nécessaires (rôles existants d'abord) : primary (piste remplie), border/surface (rail), control-focus-* (anneau), touch.target-min (poignée).
+- Langages concernés (interaction, débordement…) : interaction (manipulation continue), motion (transition de la piste).
+- Règles accessibles : rôle slider natif (`input[type=range]` ou ARIA équivalent), flèches/Origine/Fin au clavier, valeur annoncée (`aria-valuetext`), cible ≥ touch.target-min.
+- Comportement adaptatif : largeur fluide du conteneur ; jamais un breakpoint.
+- Coût de maintenance estimé : moyen (styling cross-navigateur du range natif ou primitive Radix Slider).
+- Risque de doublon : aucun composant proche dans le kit ; frontière à écrire avec Input.Number dans la fiche UX.
+- Recommandation : nouveau composant (en attendant l'arbitrage, l'atelier garde un `input[type=range]` natif déclaré `FILI-MANQUE: slider` — recensé par fili-check, jamais silencieux).

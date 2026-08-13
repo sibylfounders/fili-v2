@@ -1,0 +1,512 @@
+{
+ "titre": "Sources",
+ "lead": "Toutes les références citées par le corpus, avec le nombre de règles qui s'y adossent. Les chiffres sont mesurés sur les fichiers eux-mêmes : une source qui n'apparaît nulle part ne figure pas ici, et une source très citée que nous ne saurions pas justifier serait un problème.",
+ "total_citations": 1362,
+ "total_hotes": 86,
+ "familles": [
+  "Normes et spécifications",
+  "Régulateurs",
+  "Plateformes",
+  "Design systems publics",
+  "Design systems produit",
+  "Recherche et analyse"
+ ],
+ "entrees": [
+  {
+   "nom": "W3C — WAI, WCAG, ARIA",
+   "famille": "Normes et spécifications",
+   "url": "https://www.w3.org/WAI/",
+   "description": "L'autorité normative du corpus. Quand une règle est déclarée « loi », c'est le plus souvent ici qu'elle est adossée : critères WCAG avec leur niveau, motifs ARIA, spécifications CSS. Une exigence d'accessibilité qui ne s'y rattache pas n'est pas opposable.",
+   "monogramme": "WW",
+   "logo": "w3c.svg",
+   "citations": 415,
+   "sujets": 34,
+   "hotes": [
+    "w3.org",
+    "drafts.csswg.org"
+   ]
+  },
+  {
+   "nom": "WHATWG — HTML Living Standard",
+   "famille": "Normes et spécifications",
+   "url": "https://html.spec.whatwg.org/",
+   "description": "La spécification du langage lui-même. Elle tranche ce qu'un élément natif garantit déjà — et donc ce qu'un composant maison perd s'il le remplace. C'est l'argument le plus solide contre la réimplémentation gratuite.",
+   "monogramme": "WH",
+   "logo": "whatwg.svg",
+   "citations": 20,
+   "sujets": 5,
+   "hotes": [
+    "html.spec.whatwg.org"
+   ]
+  },
+  {
+   "nom": "NIST",
+   "famille": "Normes et spécifications",
+   "url": "https://pages.nist.gov/800-63-3/",
+   "description": "Référentiel d'authentification. Cité pour les règles de mot de passe du parcours de création de compte, là où l'usage courant est très en retard sur la recommandation.",
+   "monogramme": "NI",
+   "logo": "nist.svg",
+   "citations": 2,
+   "sujets": 1,
+   "hotes": [
+    "pages.nist.gov"
+   ]
+  },
+  {
+   "nom": "IETF",
+   "famille": "Normes et spécifications",
+   "url": "https://www.ietf.org/",
+   "description": "Consultée pour le principe de robustesse, et surtout pour sa révision : la RFC 9413 (2023) retourne un principe que le corpus citait dans sa version de 1980. Une norme peut être révoquée, et il faut le voir.",
+   "monogramme": "IE",
+   "logo": "ietf.svg",
+   "citations": 1,
+   "sujets": 1,
+   "hotes": [
+    "datatracker.ietf.org"
+   ]
+  },
+  {
+   "nom": "CNIL",
+   "famille": "Régulateurs",
+   "url": "https://www.cnil.fr/",
+   "description": "Régulateur français des données personnelles. Cité pour les catégories de traceurs exemptées de consentement et pour la symétrie exigée entre accepter et refuser. Toujours pour le fait, jamais pour qualifier juridiquement un cas particulier — nous ne sommes pas juristes.",
+   "monogramme": "CN",
+   "logo": "cnil.svg",
+   "citations": 22,
+   "sujets": 1,
+   "hotes": [
+    "cnil.fr"
+   ]
+  },
+  {
+   "nom": "CEPD (EDPB)",
+   "famille": "Régulateurs",
+   "url": "https://www.edpb.europa.eu/",
+   "description": "Comité européen de la protection des données. Ses six catégories de conception trompeuse — surcharge, esquive, manipulation, obstruction, incohérence, opacité — donnent un vocabulaire précis à ce qu'on appelle vaguement « dark pattern ».",
+   "monogramme": "CE",
+   "logo": "cepd-edpb.svg",
+   "citations": 4,
+   "sujets": 1,
+   "hotes": [
+    "edpb.europa.eu"
+   ]
+  },
+  {
+   "nom": "MDN Web Docs",
+   "famille": "Plateformes",
+   "url": "https://developer.mozilla.org/",
+   "description": "La référence de comportement réel des navigateurs. C'est elle qui tranche les questions que personne ne pense à poser : ce que le mode de couleurs forcées supprime, ce que `:visited` peut encore styler, ce qu'une ombre coûte à peindre.",
+   "monogramme": "MW",
+   "logo": "mdn-web-docs.svg",
+   "citations": 137,
+   "sujets": 26,
+   "hotes": [
+    "developer.mozilla.org"
+   ]
+  },
+  {
+   "nom": "web.dev — Google",
+   "famille": "Plateformes",
+   "url": "https://web.dev/",
+   "description": "Métriques de performance perçue et seuils associés. Le corpus lui doit la mesure des décalages de mise en page, et son exclusion des décalages consécutifs à une action — la distinction exacte que nos règles posaient à la main.",
+   "monogramme": "WD",
+   "logo": "webdev.svg",
+   "citations": 15,
+   "sujets": 7,
+   "hotes": [
+    "web.dev",
+    "developers.google.com"
+   ]
+  },
+  {
+   "nom": "Android — Google",
+   "famille": "Plateformes",
+   "url": "https://developer.android.com/design",
+   "description": "Même rôle qu'Apple, et la convergence des deux est ce qui rend la règle universelle : quand les deux systèmes interdisent la même zone, ce n'est plus une convention.",
+   "monogramme": "AG",
+   "logo": "android.svg",
+   "citations": 14,
+   "sujets": 7,
+   "hotes": [
+    "developer.android.com"
+   ]
+  },
+  {
+   "nom": "Apple — Human Interface Guidelines",
+   "famille": "Plateformes",
+   "url": "https://developer.apple.com/design/human-interface-guidelines/",
+   "description": "Consultée pour les cibles tactiles et les zones réservées aux gestes système. Une plateforme qui possède le matériel fait autorité sur ce que le doigt peut atteindre.",
+   "monogramme": "AH",
+   "logo": "apple.svg",
+   "citations": 11,
+   "sujets": 4,
+   "hotes": [
+    "developer.apple.com"
+   ]
+  },
+  {
+   "nom": "Microsoft Learn",
+   "famille": "Plateformes",
+   "url": "https://learn.microsoft.com/windows/apps/design/accessibility/high-contrast-themes",
+   "description": "Consultée pour le mode contraste élevé de Windows, que la plupart des systèmes ignorent alors qu'il supprime les fonds et les ombres — donc une partie de ce sur quoi une interface compte.",
+   "monogramme": "ML",
+   "logo": "microsoft-learn.svg",
+   "citations": 9,
+   "sujets": 3,
+   "hotes": [
+    "learn.microsoft.com",
+    "design.learn.microsoft.com"
+   ]
+  },
+  {
+   "nom": "OWASP",
+   "famille": "Plateformes",
+   "url": "https://cheatsheetseries.owasp.org/",
+   "description": "Consultée sur les messages d'erreur d'authentification, là où la règle de sécurité et la règle d'ergonomie se contredisent frontalement.",
+   "monogramme": "OW",
+   "logo": "owasp.svg",
+   "citations": 2,
+   "sujets": 1,
+   "hotes": [
+    "cheatsheetseries.owasp.org"
+   ]
+  },
+  {
+   "nom": "GOV.UK Design System",
+   "famille": "Design systems publics",
+   "url": "https://design-system.service.gov.uk/",
+   "description": "Le système le plus rigoureux du panel, et le seul à documenter systématiquement le DOM, l'ordre de focus et le texte exact. Souvent le seul à écrire noir sur blanc ce que les autres laissent implicite — par exemple qu'un site n'utilisant que des cookies essentiels n'a pas besoin de bandeau.",
+   "monogramme": "GU",
+   "logo": "govuk-design-system.svg",
+   "citations": 75,
+   "sujets": 15,
+   "hotes": [
+    "design-system.service.gov.uk",
+    "gov.uk",
+    "guidance.publishing.service.gov.uk",
+    "brand.design-system.service.gov.uk",
+    "components.publishing.service.gov.uk"
+   ]
+  },
+  {
+   "nom": "U.S. Web Design System",
+   "famille": "Design systems publics",
+   "url": "https://designsystem.digital.gov/",
+   "description": "Système fédéral américain. Utile comme troisième voix quand GOV.UK et le DSFR divergent, et particulièrement précis sur les seuils de bascule entre composants de saisie.",
+   "monogramme": "US",
+   "logo": "us-web-design-system.svg",
+   "citations": 7,
+   "sujets": 2,
+   "hotes": [
+    "designsystem.digital.gov"
+   ]
+  },
+  {
+   "nom": "Scottish Government Design System",
+   "famille": "Design systems publics",
+   "url": "https://designsystem.gov.scot/",
+   "description": "Quatrième référence publique, utile pour vérifier qu'une convergence supposée n'est pas simplement la copie d'un même modèle britannique.",
+   "monogramme": "SG",
+   "logo": "scottish-government-design-system.svg",
+   "citations": 4,
+   "sujets": 2,
+   "hotes": [
+    "designsystem.gov.scot",
+    "design.sis.gov.uk"
+   ]
+  },
+  {
+   "nom": "CMS Design System",
+   "famille": "Design systems publics",
+   "url": "https://design.cms.gov/",
+   "description": "Système de l'administration de santé américaine. Consulté sur les onglets, où il donne un des rares seuils chiffrés publiés.",
+   "monogramme": "CD",
+   "logo": "cms-design-system.svg",
+   "citations": 3,
+   "sujets": 1,
+   "hotes": [
+    "design.cms.gov"
+   ]
+  },
+  {
+   "nom": "GNOME — Human Interface Guidelines",
+   "famille": "Design systems publics",
+   "url": "https://developer.gnome.org/hig/",
+   "description": "Consulté sur la typographie d'interface et la ponctuation des libellés, où il est l'un des rares à énoncer des règles explicites plutôt que des exemples.",
+   "monogramme": "GH",
+   "logo": "gnome.svg",
+   "citations": 3,
+   "sujets": 1,
+   "hotes": [
+    "developer.gnome.org"
+   ]
+  },
+  {
+   "nom": "ONS Design System",
+   "famille": "Design systems publics",
+   "url": "https://service-manual.ons.gov.uk/design-system",
+   "description": "Office for National Statistics. Cité pour les liens de téléchargement, où il impose l'annonce du format et du poids — une convergence avec GOV.UK qui rend la règle opposable.",
+   "monogramme": "OD",
+   "logo": "ons-design-system.svg",
+   "citations": 2,
+   "sujets": 2,
+   "hotes": [
+    "service-manual.ons.gov.uk"
+   ]
+  },
+  {
+   "nom": "DSFR — Système de design de l'État",
+   "famille": "Design systems publics",
+   "url": "https://www.systeme-de-design.gouv.fr/",
+   "description": "Référence française, contrainte par le droit national. Consultée sur le gestionnaire de consentement, dont elle impose la granularité par finalité et l'accès permanent — là où GOV.UK pose d'abord la question de la nécessité.",
+   "monogramme": "DS",
+   "logo": "dsfr.svg",
+   "citations": 1,
+   "sujets": 1,
+   "hotes": [
+    "systeme-de-design.gouv.fr"
+   ]
+  },
+  {
+   "nom": "Carbon — IBM",
+   "famille": "Design systems produit",
+   "url": "https://carbondesignsystem.com/",
+   "description": "Le plus documenté des systèmes produit, et le plus souvent en désaccord avec les autres — ce qui en fait un excellent contradicteur. C'est le seul du panel à ne poser aucune échelle d'ombre, et cette dissidence est plus instructive qu'un accord de plus.",
+   "monogramme": "CI",
+   "logo": "carbon.svg",
+   "citations": 141,
+   "sujets": 21,
+   "hotes": [
+    "carbondesignsystem.com"
+   ]
+  },
+  {
+   "nom": "Polaris — Shopify",
+   "famille": "Design systems produit",
+   "url": "https://polaris-react.shopify.com/",
+   "description": "Cité pour ses tokens publiés et pour la précision de ses consignes de contenu. Réserve connue : plusieurs de ses pages ont migré ou sont marquées dépréciées, et une citation ancienne peut pointer une page qui n'existe plus.",
+   "monogramme": "PS",
+   "logo": "polaris.svg",
+   "citations": 107,
+   "sujets": 17,
+   "hotes": [
+    "polaris-react.shopify.com",
+    "polaris.shopify.com"
+   ]
+  },
+  {
+   "nom": "Atlassian Design System",
+   "famille": "Design systems produit",
+   "url": "https://atlassian.design/",
+   "description": "Longtemps la source la plus citée du corpus, ce qui était un défaut en soi — un contradicteur aurait pu répondre « autant lire Atlassian directement ». Son poids a été volontairement réduit au profit des sources normatives.",
+   "monogramme": "AD",
+   "logo": "atlassian-design-system.svg",
+   "citations": 79,
+   "sujets": 13,
+   "hotes": [
+    "atlassian.design"
+   ]
+  },
+  {
+   "nom": "Material Design — Google",
+   "famille": "Design systems produit",
+   "url": "https://m3.material.io/",
+   "description": "Le plus influent, et le plus difficile à citer : ses pages récentes sont rendues en JavaScript et illisibles en texte. Quand une affirmation ne peut être vérifiée que sur son dépôt de tokens, le corpus le dit plutôt que de faire semblant.",
+   "monogramme": "MD",
+   "logo": "material-design.svg",
+   "citations": 35,
+   "sujets": 9,
+   "hotes": [
+    "m3.material.io",
+    "m2.material.io",
+    "m1.material.io",
+    "materialstyle.github.io",
+    "mui.com"
+   ]
+  },
+  {
+   "nom": "Fluent — Microsoft",
+   "famille": "Design systems produit",
+   "url": "https://fluent2.microsoft.design/",
+   "description": "Consulté pour les rampes d'élévation et de rayon, où il publie des valeurs exploitables. Même réserve de lisibilité que Material sur une partie du site.",
+   "monogramme": "FM",
+   "logo": "fluent.svg",
+   "citations": 19,
+   "sujets": 4,
+   "hotes": [
+    "fluent2.microsoft.design"
+   ]
+  },
+  {
+   "nom": "Pajamas — GitLab",
+   "famille": "Design systems produit",
+   "url": "https://design.gitlab.com/",
+   "description": "Cité pour la confirmation destructive, dont il donne la formulation la plus explicite trouvée : nommer l'objet supprimé plutôt que demander « êtes-vous sûr ? ».",
+   "monogramme": "PG",
+   "logo": "pajamas.svg",
+   "citations": 9,
+   "sujets": 3,
+   "hotes": [
+    "design.gitlab.com"
+   ]
+  },
+  {
+   "nom": "Spectrum — Adobe",
+   "famille": "Design systems produit",
+   "url": "https://spectrum.adobe.com/",
+   "description": "Cité surtout via React Aria, dont les comportements clavier sont documentés avec une précision que peu de systèmes atteignent.",
+   "monogramme": "SA",
+   "logo": "spectrum.svg",
+   "citations": 7,
+   "sujets": 1,
+   "hotes": [
+    "react-aria.adobe.com"
+   ]
+  },
+  {
+   "nom": "Primer — GitHub",
+   "famille": "Design systems produit",
+   "url": "https://primer.style/",
+   "description": "Consulté sur les états de champ et le focus. Sa documentation étant largement en JavaScript, les vérifications se font sur ses feuilles de style publiées.",
+   "monogramme": "PG",
+   "logo": "primer.svg",
+   "citations": 6,
+   "sujets": 3,
+   "hotes": [
+    "primer.style"
+   ]
+  },
+  {
+   "nom": "Radix UI",
+   "famille": "Design systems produit",
+   "url": "https://www.radix-ui.com/",
+   "description": "Bibliothèque de primitives accessibles. Consultée pour les comportements que les systèmes documentent rarement : pause d'un message temporaire, chemin clavier vers une région flottante.",
+   "monogramme": "RU",
+   "logo": "radix-ui.svg",
+   "citations": 3,
+   "sujets": 1,
+   "hotes": [
+    "radix-ui.com"
+   ]
+  },
+  {
+   "nom": "Nielsen Norman Group",
+   "famille": "Recherche et analyse",
+   "url": "https://www.nngroup.com/",
+   "description": "Recherche appliquée en ergonomie. Source précieuse et à manier avec méthode : c'est une autorité de recherche, pas une norme. Une règle appuyée sur NN/g seul reste un parti pris éclairé, pas une loi opposable.",
+   "monogramme": "NN",
+   "logo": "nielsen-norman-group.svg",
+   "citations": 98,
+   "sujets": 17,
+   "hotes": [
+    "nngroup.com",
+    "jnd.org"
+   ]
+  },
+  {
+   "nom": "Presse et praticiens spécialisés",
+   "famille": "Recherche et analyse",
+   "url": "https://www.smashingmagazine.com/",
+   "description": "Sources secondaires, citées quand aucune primaire n'existe et signalées comme telles. Elles ne fondent jamais une règle universelle à elles seules — leur présence dans une bibliographie est un signal de fragilité assumé.",
+   "monogramme": "PE",
+   "logo": "presse-et-praticiens-specialises.svg",
+   "citations": 51,
+   "sujets": 12,
+   "hotes": [
+    "smashingmagazine.com",
+    "css-tricks.com",
+    "adrianroselli.com",
+    "24a11y.com",
+    "practicaltypography.com",
+    "webtypography.net",
+    "livefront.com",
+    "spec.fm",
+    "uxmatters.com",
+    "master.dev",
+    "soliantconsulting.com",
+    "deceptive.design",
+    "lawsofux.com",
+    "styleguide.mailchimp.com",
+    "jlelliotton.blogspot.com"
+   ]
+  },
+  {
+   "nom": "Publications scientifiques",
+   "famille": "Recherche et analyse",
+   "url": "https://dl.acm.org/",
+   "description": "Les articles d'origine des lois UX — Fitts, Hick, Miller, Cowan, Glanzer & Cunitz, Kivetz, et les méta-analyses qui en réfutent certaines. C'est la couche qui a le plus corrigé le corpus : plusieurs lois s'y sont révélées mal citées, et une ne réplique pas du tout.",
+   "monogramme": "PS",
+   "logo": "publications-scientifiques.svg",
+   "citations": 27,
+   "sujets": 4,
+   "hotes": [
+    "dl.acm.org",
+    "journals.sagepub.com",
+    "academic.oup.com",
+    "link.springer.com",
+    "nature.com",
+    "jov.arvojournals.org",
+    "pubmed.ncbi.nlm.nih.gov",
+    "psychclassics.yorku.ca",
+    "labs.la.utexas.edu",
+    "philpapers.org",
+    "memory.psych.missouri.edu",
+    "psychologysorted.blog",
+    "mrbartonmaths.com",
+    "perso.telecom-paristech.fr",
+    "computerhistory.org"
+   ]
+  },
+  {
+   "nom": "Interaction Design Foundation",
+   "famille": "Recherche et analyse",
+   "url": "https://www.interaction-design.org/",
+   "description": "Consultée pour les principes de Gestalt, dont elle donne l'exposé le plus stable et le plus citable — le regroupement perçu est l'un des rares fondements théoriques directement applicables.",
+   "monogramme": "ID",
+   "logo": "interaction-design-foundation.svg",
+   "citations": 7,
+   "sujets": 1,
+   "hotes": [
+    "interaction-design.org"
+   ]
+  },
+  {
+   "nom": "Baymard Institute",
+   "famille": "Recherche et analyse",
+   "url": "https://baymard.com/",
+   "description": "Études quantitatives sur les parcours d'achat. Citée quand une règle a besoin d'un ordre de grandeur mesuré plutôt que d'un raisonnement de mécanisme.",
+   "monogramme": "BI",
+   "logo": "baymard-institute.svg",
+   "citations": 2,
+   "sujets": 1,
+   "hotes": [
+    "baymard.com"
+   ]
+  },
+  {
+   "nom": "Veille juridique",
+   "famille": "Recherche et analyse",
+   "url": "https://www.osborneclarke.com/",
+   "description": "Cabinets consultés uniquement pour suivre l'état d'avancement de textes en cours — la réforme européenne des règles de consentement, notamment. Cités pour dater une évolution, jamais pour donner un avis de droit.",
+   "monogramme": "VJ",
+   "logo": "veille-juridique.svg",
+   "citations": 2,
+   "sujets": 1,
+   "hotes": [
+    "osborneclarke.com",
+    "taylorwessing.com"
+   ]
+  }
+ ],
+ "orphelins": [
+  "articles.centercentre.com",
+  "articles.uie.com",
+  "backstage.io",
+  "cdn.jsdelivr.net",
+  "docusaurus.io",
+  "en.wikipedia.org",
+  "fr.wikipedia.org",
+  "github.com",
+  "raw.githubusercontent.com"
+ ]
+}

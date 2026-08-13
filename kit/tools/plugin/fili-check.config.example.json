@@ -1,0 +1,10 @@
+{
+  "note": "Copier vers .fili/fili-check.config.json à la racine du projet. Toute exclusion et toute permission portent une raison — jamais d'exception silencieuse.",
+  "roots": ["app", "src", "pages", "components"],
+  "exclude": [
+    { "path": "src/legacy", "raison": "code hérité pré-Fili, gelé — migration planifiée T4" }
+  ],
+  "allow": [
+    { "rule": "input-natif", "path": "src/editeur/", "raison": "textarea du moteur d'édition riche — mécanique interne, pas un champ de formulaire" }
+  ]
+}

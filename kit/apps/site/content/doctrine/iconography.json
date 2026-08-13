@@ -1,0 +1,2229 @@
+{
+ "slug": "iconography",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3 l2.2 5.4 5.8 .5 -4.4 3.8 1.3 5.7 -4.9 -3 -4.9 3 1.3 -5.7 L4 8.9 l5.8 -.5 Z\" fill=\"#F2C744\"/><circle cx=\"19\" cy=\"5\" r=\"2\" fill=\"#0891B2\"/></svg>",
+ "nom": "iconography",
+ "nature": "Fondation",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-11 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · iconography",
+  "question": "Quand une icône aide-t-elle vraiment, et comment la garder lisible ?",
+  "detail": "On y décide où une icône clarifie une action ou un statut, et on fixe sa taille, son épaisseur et le texte qui l’accompagne pour qu’elle ne soit jamais devinée.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Une icône clarifie une action ou un statut"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Un sens correspond à une seule icône"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Taille, épaisseur et couleur suivent une grille commune pour rester lisibles"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "28",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "22",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "1",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-iconography.md",
+   "source": "---\nsujet: iconography\ntype: fondation\nresume: \"Le texte d'abord : droit d'exister d'une icône, registre stable, crans icon.*, SVG inline currentColor — pas de bibliothèque imposée\"\nrequires: []\nselon-contexte: [\"motion (spinner : rotation continue linéaire)\"]\n---\n# RULES — Iconography (compilé, condensé)\n\n> Généré depuis `foundations/iconography/ICONOGRAPHY-UX.md` (v1.0.0) et `ICONOGRAPHY-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation. **Pas de bibliothèque d'icônes fournie** : le dessin des glyphes est une décision d'identité (seules les silhouettes des tones de l'alert sont normatives : cercle / cercle-coche / triangle / octogone).\n- **Règle cardinale : l'icône accélère la reconnaissance d'un sens que le produit sait déjà dire autrement — jamais le seul dépositaire du sens.**\n\n## Le droit d'exister\n- **Le texte d'abord** : label visible partout où c'est possible ; pas d'icône non nécessaire.\n- Icône seule = liste fermée : métaphores quasi universelles (loupe, croix, maison, impression) + actions apprises dans CE produit. Le tooltip ne compte pas comme label (invisible au tactile).\n- **Icône seule → `aria-label` obligatoire, sans exception.**\n- Jamais hover-only (invisible au tactile).\n\n## Registre stable\n- Un glyphe = un sens, un sens = un glyphe — constant dans tout le produit. Ne jamais détourner un symbole établi (étoile, corbeille).\n- L'icône sémantique est un canal redondant (1.4.1), jamais décorative — elle ne se retire pas pour alléger.\n\n## Forme\n- **Tailles = crans fermés** : `icon.sm` (chevrons, inline, dense) / `icon.md` (défaut — boutons, alert, input) / `icon.lg` (icon-only lg, media fallback). Jamais de taille libre — jamais redimensionner.\n- Style : **outline**, trait `icon.stroke` constant ; filled réservé aux futurs états actifs/sélectionnés. Pas de 3D/perspective.\n- À côté d'un texte : **centrage vertical** (pas baseline), couleur = celle du texte accompagné (`currentColor`) — jamais de couleur propre hors tone sémantique.\n- Icône informative : 3:1 (1.4.11). Décorative : `aria-hidden=\"true\"`.\n- **Cible ≠ glyphe** : 44px par extension du padding, jamais en gonflant l'icône.\n\n## Implémentation\n- **SVG inline + currentColor. Pas d'icon font** (échec de chargement illisible, AT perturbée).\n- Label : ne pas décrire l'apparence, ne pas répéter le texte adjacent, jamais le mot \"icône\".\n- Icône d'état = même glyphe transformé (chevron tourné, œil barré) + état exposé (`aria-expanded`/`aria-pressed`) — le dessin confirme, il n'informe pas.\n- Spinner : occupe le cran de l'icône remplacée ; rotation continue linéaire (cf. RULES-motion).\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Icône seule sans aria-label | Invisible au lecteur d'écran | Critique |\n| Tone sans forme distincte | Exclusion daltonisme (1.4.1) | Élevée |\n| Métaphore ambiguë sans label | Action introuvable | Élevée |\n| Icon font | Chargement/AT cassés | Moyenne-élevée |\n| Cible réduite au glyphe | < 44px tactile | Moyenne-élevée |\n\nCONFIANCE : label-first, aria, 3:1, cibles = établi (NN/g, WCAG, Carbon, Polaris, Atlassian ; contre-position GOV.UK documentée : quasi-zéro icône). Crans 16/20/24 et stroke = décisions d'identité internes. Si une action n'a pas d'icône évidente en 5 secondes : elle n'a pas d'icône — un mot (et en cas de doute : STOP, remonter le wording).\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 8 cas",
+   "titre": "Rôle d'icône",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle d'icône\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"62\" cy=\"70\" r=\"11\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.2\"/><rect x=\"82\" y=\"66\" width=\"42\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"148\" y=\"55\" width=\"30\" height=\"30\" rx=\"8\" fill=\"#E0E7FF\"/><path d=\"M156 70h14M163 63v14\" stroke=\"#4F46E5\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M226 82l9-16 9 16z\" fill=\"#E5E7EB\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Icône d'action, seule",
+     "quand": "Une action est une icône sans texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône d'action, seule\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M330 120h20M340 110v20\" stroke=\"#111827\" stroke-width=\"2.6\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une action est une icône sans texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>aria-label obligatoire, cible 44px, jamais ambiguë.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une poubelle « Supprimer ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "le droit de paraître seule est <strong>une liste fermée, pas un jugement au cas par cas</strong> : les métaphores quasi universelles (recherche/loupe, fermeture/croix, accueil/maison, impression — NN/g n'en reconnaît que trois ou quatre) plus les actions apprises <em>dans ce produit</em> et confirmées par l'usage. Tout le reste : label visible.",
+       "id": "ICONOGRAPHY-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "icône seule → <strong>aria-label obligatoire sans exception</strong> (règle déjà posée par BUTTON-UI, généralisée) — et le tooltip au survol ne compte pas comme label : invisible au tactile, coûteux à découvrir (NN/g).",
+       "id": "ICONOGRAPHY-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Icône d'action, avec texte",
+     "quand": "Une icône accompagne un label.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône d'action, avec texte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M266 120h20M276 110v20\" stroke=\"#111827\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><text x=\"316\" y=\"126\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Ajouter</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône accompagne un label.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'icône précise, le texte porte (leading/trailing selon l'intention).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une flèche + « Télécharger ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>le texte d'abord</strong> : &quot;utiliser des labels pour soutenir les icônes partout où c'est possible, et éviter les icônes là où elles ne sont pas nécessaires&quot; (Atlassian — repris tel quel). Une icône est un <em>accélérateur de reconnaissance</em>, pas un remplacement du langage.",
+       "id": "ICONOGRAPHY-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "la règle des 5 secondes (NN/g) comme test de conception : si trouver l'icône d'une action prend plus de 5 secondes, cette action n'a pas d'icône — elle a un mot.",
+       "id": "ICONOGRAPHY-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Icône sémantique (canal redondant)",
+     "quand": "Une icône double un état (tone).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône sémantique (canal redondant)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M340 100l20 34h-40z\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/><path d=\"M340 114v10\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><circle cx=\"340\" cy=\"130\" r=\"1.6\" fill=\"#B91C1C\"/><text x=\"372\" y=\"128\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Erreur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône double un état (tone).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Silhouette normative par tone (WCAG 1.4.1).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un triangle « warning ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'icône sémantique est un <strong>canal redondant, pas décoratif</strong> (WCAG 1.4.1) : les icônes de tone de l'alert ne se retirent pas pour alléger, et leurs silhouettes distinctes font le travail que la couleur ne garantit pas (deutéranopie — décision F03).",
+       "id": "ICONOGRAPHY-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Icône d'état/direction",
+     "quand": "Une icône porte un état ou une direction.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône d'état/direction\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M320 108l20 16-20 16\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône porte un état ou une direction.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'orientation porte l'état, jamais un changement de glyphe.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un chevron qui tourne.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Icône décorative",
+     "quand": "Une icône est un pur ornement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône décorative\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M340 100l6 16 16 6-16 6-6 16-6-16-16-6 16-6z\" fill=\"#4F46E5\" opacity=\".4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est un pur ornement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>aria-hidden, et se demander d'abord si elle est nécessaire.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône déco à côté d'un titre.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'icône informative respecte <strong>3:1</strong> (WCAG 1.4.11) comme tout signal visible ; l'icône décorative est exemptée — et cachée (<code>aria-hidden</code>).",
+       "id": "ICONOGRAPHY-R16"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Icône de remplacement de contenu",
+     "quand": "Un media manque dans une carte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône de remplacement de contenu\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M318 138l10-12 8 8 6-7 8 11z\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><circle cx=\"326\" cy=\"110\" r=\"4\" fill=\"#4B5563\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un media manque dans une carte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Icône ou initiales en repli.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un avatar par défaut.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le texte d'abord</strong> : &quot;utiliser des labels pour soutenir les icônes partout où c'est possible, et éviter les icônes là où elles ne sont pas nécessaires&quot; (Atlassian — repris tel quel). Une icône est un <em>accélérateur de reconnaissance</em>, pas un remplacement du langage.",
+       "id": "ICONOGRAPHY-R04"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Logo / marque",
+     "quand": "Un logo produit ou tiers s'affiche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Logo / marque\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"340\" cy=\"120\" r=\"20\" fill=\"#4F46E5\"/><path d=\"M331 120l6 6 12-13\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un logo produit ou tiers s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un logo n'est pas une icône : il relève de la marque.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le logo Google d'un bouton social.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Illustration",
+     "quand": "Un visuel d'empty state ou pédagogique s'affiche.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "01 · Rôle d'icône",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Illustration\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"74\" width=\"160\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M276 158l24-28 18 18 12-14 20 24z\" fill=\"#E0E7FF\"/><circle cx=\"300\" cy=\"104\" r=\"10\" fill=\"#4F46E5\" opacity=\".5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un visuel d'empty state ou pédagogique s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hors périmètre : aucune bibliothèque d'illustrations fournie.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une illustration d'état vide.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un bouton",
+     "quand": "Une icône est dans un bouton.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans un bouton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"104\" width=\"148\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"115\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><path d=\"M292 118h16M300 110v16\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est dans un bouton.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>icon_only (padding carré) vs icon_and_text (gap interne).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton icône seule.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : le <strong>spinner</strong> est une icône animée — sa taille et sa place relèvent de cette fondation (il occupe le cran de l'icône qu'il remplace : le label du bouton loading devient indicateur sans changer la géométrie), sa rotation appartient à la fondation motion (linéaire, la seule rotation continue admise).",
+       "id": "ICONOGRAPHY-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Dans un alert",
+     "quand": "Une icône est dans une alerte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans un alert\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"98\" width=\"200\" height=\"44\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"240\" y=\"98\" width=\"6\" height=\"44\" rx=\"3\" fill=\"#1D4ED8\"/><circle cx=\"262\" cy=\"120\" r=\"9\" fill=\"#1D4ED8\"/><path d=\"M262 116v6\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"262\" cy=\"125\" r=\"1.4\" fill=\"#fff\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est dans une alerte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Alignée sur la première ligne du titre, pas centrée sur le bloc.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'icône d'une alerte multi-lignes.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>ce système ne fournit pas de bibliothèque d'icônes.</strong> Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par <code>icon_shape</code> de l'alert : la <em>silhouette</em> est normative (cercle/triangle/octogone), le <em>dessin</em> est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+       "id": "ICONOGRAPHY-R02"
+      },
+      {
+       "tag": "Règle",
+       "html": "le registre iconographique du produit est <strong>stable</strong> : une fois un glyphe associé à un sens, il ne sert plus à rien d'autre — et le même sens ne change pas de glyphe selon l'écran (précédent : une icône par tone, constante dans tout le produit, ALERT-UX).",
+       "id": "ICONOGRAPHY-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Dans un input",
+     "quand": "Une icône est dans un champ.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans un input\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"102\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"268\" cy=\"114\" r=\"6\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M272 118l5 5\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est dans un champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Prefix/suffix, clear, œil — en text-secondary.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une loupe dans un champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Dans une card",
+     "quand": "Une icône est dans une carte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans une card\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"258\" y=\"72\" width=\"164\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"284\" cy=\"98\" r=\"11\" fill=\"#E0E7FF\"/><rect x=\"304\" y=\"94\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"280\" y=\"124\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est dans une carte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Chevron au coin du header, actions en icônes.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un « … » d'actions.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'iconographie est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+       "id": "ICONOGRAPHY-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Dans du texte courant",
+     "quand": "Une icône est au fil du texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans du texte courant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"110\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><circle cx=\"316\" cy=\"107\" r=\"6\" fill=\"#4F46E5\"/><rect x=\"332\" y=\"110\" width=\"96\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est au fil du texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Centrage vertical sur la ligne.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône inline dans un paragraphe.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "En étiquette (badge/pastille)",
+     "quand": "Une icône est dans un label d'interface.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : En étiquette (badge/pastille)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"104\" width=\"104\" height=\"32\" rx=\"16\" fill=\"#E0E7FF\"/><circle cx=\"308\" cy=\"120\" r=\"6\" fill=\"#4F46E5\"/><text x=\"322\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Actif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est dans un label d'interface.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'icône suit la taille du texte du label.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône dans un badge.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 5 cas",
+   "titre": "Propriété visuelle",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Propriété visuelle\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"54\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M54 44a9 9 0 0 1 9-9h76a9 9 0 0 1 9 9v22H54z\" fill=\"#4F46E5\" opacity=\".18\"/><rect x=\"66\" y=\"78\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"92\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"172\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"172\" y=\"34\" width=\"34\" height=\"82\" rx=\"9\" fill=\"#0891B2\" opacity=\".18\"/><rect x=\"216\" y=\"58\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"216\" y=\"72\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Taille",
+     "quand": "On dimensionne une icône.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Propriété visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Taille\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"252\" cy=\"120\" r=\"12\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"332\" cy=\"120\" r=\"18\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"412\" cy=\"120\" r=\"26\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On dimensionne une icône.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Trois crans mappés sur l'échelle des composants (sm/md/lg).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône md dans un bouton md.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>ce système ne fournit pas de bibliothèque d'icônes.</strong> Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par <code>icon_shape</code> de l'alert : la <em>silhouette</em> est normative (cercle/triangle/octogone), le <em>dessin</em> est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+       "id": "ICONOGRAPHY-R02"
+      },
+      {
+       "tag": "Règle",
+       "html": "contrainte de lisibilité : le trait doit tenir au plus petit cran (<code>icon.sm</code>) — une icône dont les détails se bouchent en petit est une icône trop détaillée, pas un cran trop petit.",
+       "id": "ICONOGRAPHY-R12"
+      },
+      {
+       "tag": "Règle",
+       "html": "les tailles sont <strong>des crans fermés</strong> (<code>icon.sm/md/lg</code>, créés par cette fondation — elles étaient la déduction silencieuse de quatre composants), appariés aux corps de texte et aux hauteurs de composants, jamais des valeurs libres. <strong>Ne jamais redimensionner une icône hors crans</strong> (Polaris : cela détruit la relation établie avec la typographie).",
+       "id": "ICONOGRAPHY-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Style de trait (outline vs filled)",
+     "quand": "On choisit le style du dessin.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Propriété visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Style de trait (outline vs filled)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M300 108c-6-10-22-4-22 8 0 10 22 22 22 22s22-12 22-22c0-12-16-18-22-8z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.2\"/><path d=\"M392 108c-6-10-22-4-22 8 0 10 22 22 22 22s22-12 22-22c0-12-16-18-22-8z\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On choisit le style du dessin.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un seul style par produit (outline par défaut).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des icônes toutes en outline.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>outline par défaut</strong>, trait constant (<code>icon.stroke</code>) sur toute la bibliothèque — le style du trait est le &quot;fallback stack&quot; de l'iconographie : une seule décision, prise une fois, visible partout. Le <strong>filled est réservé aux états actifs/sélectionnés</strong> si le besoin naît (convention Material Symbols et Polaris : fill = transition d'état, pas un second style décoratif).",
+       "id": "ICONOGRAPHY-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Épaisseur de trait",
+     "quand": "On règle le stroke des icônes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Propriété visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Épaisseur de trait\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"120\" r=\"20\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><circle cx=\"392\" cy=\"120\" r=\"20\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"3.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On règle le stroke des icônes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Trait cohérent, lisible en petit.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un stroke régulier partout.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Couleur",
+     "quand": "On colore une icône.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Propriété visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Couleur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"266\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\"/><path d=\"M258 120l6 6 10-12\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"342\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"2.6\"/><path d=\"M334 120l6 6 10-12\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"418\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2.6\"/><path d=\"M410 120l6 6 10-12\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On colore une icône.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hérite de la couleur du texte ; jamais de couleur propre hors tone.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône de la couleur de son label.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'icône sémantique est un <strong>canal redondant, pas décoratif</strong> (WCAG 1.4.1) : les icônes de tone de l'alert ne se retirent pas pour alléger, et leurs silhouettes distinctes font le travail que la couleur ne garantit pas (deutéranopie — décision F03).",
+       "id": "ICONOGRAPHY-R10"
+      },
+      {
+       "tag": "Règle",
+       "html": "à côté d'un texte, l'icône est <strong>centrée verticalement</strong> sur la ligne — pas alignée sur la baseline (Carbon, explicite). Sa couleur est <strong>celle du texte qu'elle accompagne</strong> — jamais de couleur propre hors tone sémantique.",
+       "id": "ICONOGRAPHY-R15"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>SVG inline, pas d'icon font</strong> : une icon font qui échoue au chargement laisse un caractère fantôme ou un carré, se fait lire par certains lecteurs d'écran, et casse à la traduction automatique. Le SVG inline hérite de la couleur du texte (<code>currentColor</code>) et n'a pas d'état de chargement — c'est le pendant iconographique des piles de secours typographiques.",
+       "id": "ICONOGRAPHY-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Grille de construction",
+     "quand": "On dessine un glyphe (keylines).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Propriété visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Grille de construction\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"90\" width=\"60\" height=\"60\" fill=\"none\" stroke=\"#E5E7EB\" stroke-dasharray=\"4 4\"/><circle cx=\"318\" cy=\"120\" r=\"22\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On dessine un glyphe (keylines).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hors périmètre : appartient à la bibliothèque choisie.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La grille d'un jeu d'icônes.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>ce système ne fournit pas de bibliothèque d'icônes.</strong> Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par <code>icon_shape</code> de l'alert : la <em>silhouette</em> est normative (cercle/triangle/octogone), le <em>dessin</em> est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+       "id": "ICONOGRAPHY-R02"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 3 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Icône en attente (spinner/loading)",
+     "quand": "Un bouton attend (loading).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône en attente (spinner/loading)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle class=\"ill-spin\" style=\"transform-origin:340px 120px\" cx=\"340\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"26 50\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bouton attend (loading).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le label devient indicateur ; le spinner tourne (exception au linéaire).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton « … » en chargement.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : le <strong>spinner</strong> est une icône animée — sa taille et sa place relèvent de cette fondation (il occupe le cran de l'icône qu'il remplace : le label du bouton loading devient indicateur sans changer la géométrie), sa rotation appartient à la fondation motion (linéaire, la seule rotation continue admise).",
+       "id": "ICONOGRAPHY-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Chargement de la bibliothèque d'icônes",
+     "quand": "La bibliothèque d'icônes n'arrive pas.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Chargement de la bibliothèque d'icônes\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-pulse\"><rect x=\"262\" y=\"98\" width=\"46\" height=\"46\" rx=\"10\" fill=\"#E5E7EB\"/><rect x=\"324\" y=\"98\" width=\"46\" height=\"46\" rx=\"10\" fill=\"#E5E7EB\"/><rect x=\"386\" y=\"98\" width=\"46\" height=\"46\" rx=\"10\" fill=\"#E5E7EB\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La bibliothèque d'icônes n'arrive pas.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>SVG inline recommandé (pas d'icon font : caractère fantôme).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône manquante en carré.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>ce système ne fournit pas de bibliothèque d'icônes.</strong> Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par <code>icon_shape</code> de l'alert : la <em>silhouette</em> est normative (cercle/triangle/octogone), le <em>dessin</em> est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+       "id": "ICONOGRAPHY-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Icône qui change avec l'état",
+     "quand": "Une icône reflète un état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône qui change avec l'état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M300 106l24 14-24 14z\" fill=\"#4F46E5\"/><path d=\"M338 120L368 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M368 120L360.1 124.3M368 120L360.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"384\" y=\"106\" width=\"9\" height=\"28\" rx=\"2\" fill=\"#4F46E5\"/><rect x=\"400\" y=\"106\" width=\"9\" height=\"28\" rx=\"2\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône reflète un état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rotation/variante du même glyphe, état exposé techniquement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un œil barré/non barré.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le registre iconographique du produit est <strong>stable</strong> : une fois un glyphe associé à un sens, il ne sert plus à rien d'autre — et le même sens ne change pas de glyphe selon l'écran (précédent : une icône par tone, constante dans tout le produit, ALERT-UX).",
+       "id": "ICONOGRAPHY-R08"
+      },
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : le <strong>spinner</strong> est une icône animée — sa taille et sa place relèvent de cette fondation (il occupe le cran de l'icône qu'il remplace : le label du bouton loading devient indicateur sans changer la géométrie), sa rotation appartient à la fondation motion (linéaire, la seule rotation continue admise).",
+       "id": "ICONOGRAPHY-R18"
+      },
+      {
+       "tag": "Règle",
+       "html": "une icône qui change avec l'état est <strong>le même glyphe transformé</strong> (chevron tourné, œil barré) plutôt que deux glyphes — et l'état est toujours exposé techniquement (aria-expanded, aria-pressed) : le dessin confirme, il n'est jamais la source.",
+       "id": "ICONOGRAPHY-R19"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 6 cas",
+   "titre": "Plateforme / enjeu",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / enjeu\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Tactile",
+     "quand": "Une icône est cliquable au doigt.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tactile\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"296\" y=\"94\" width=\"52\" height=\"52\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"310\" y=\"108\" width=\"24\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"336\" cy=\"134\" r=\"10\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône est cliquable au doigt.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Zone 44px même pour un glyphe sm.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une petite croix facile à toucher.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "icône seule → <strong>aria-label obligatoire sans exception</strong> (règle déjà posée par BUTTON-UI, généralisée) — et le tooltip au survol ne compte pas comme label : invisible au tactile, coûteux à découvrir (NN/g).",
+       "id": "ICONOGRAPHY-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>cible tactile ≠ taille d'icône</strong> : le glyphe reste petit, la cible s'étend par le padding — 44px partout (standard du système), ce qui couvre largement le minimum WCAG 2.5.8 (24px, AA).",
+       "id": "ICONOGRAPHY-R17"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Lecteur d'écran",
+     "quand": "Un lecteur d'écran rencontre une icône.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lecteur d'écran\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"292\" cy=\"120\" r=\"14\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><rect x=\"332\" y=\"108\" width=\"80\" height=\"24\" rx=\"6\" fill=\"#F3F4F6\"/><text x=\"342\" y=\"124\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">aria-label</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lecteur d'écran rencontre une icône.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Décorative cachée, informative nommée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône « Supprimer » annoncée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>SVG inline, pas d'icon font</strong> : une icon font qui échoue au chargement laisse un caractère fantôme ou un carré, se fait lire par certains lecteurs d'écran, et casse à la traduction automatique. Le SVG inline hérite de la couleur du texte (<code>currentColor</code>) et n'a pas d'état de chargement — c'est le pendant iconographique des piles de secours typographiques.",
+       "id": "ICONOGRAPHY-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "RTL",
+     "quand": "La langue se lit de droite à gauche.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : RTL\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M360 120l-20-16v10h-24v12h24v10z\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La langue se lit de droite à gauche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : chevrons/flèches en miroir.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une flèche inversée en arabe.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Métaphore ambiguë",
+     "quand": "Une icône seule a un sens non universel.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Métaphore ambiguë\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"333\" y=\"128\" font-size=\"24\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">?</text><circle cx=\"392\" cy=\"98\" r=\"9\" fill=\"#92400E\"/><path d=\"M388.5 94.5l7 7M395.5 94.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône seule a un sens non universel.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservez l'icône seule aux glyphes auto-suffisants (croix, chevron, loupe).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Éviter une icône obscure sans label.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Un sens = une icône",
+     "quand": "La même icône sert deux actions.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Un sens = une icône\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"2.4\"/><path d=\"M292 120l6 6 10-12\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M326 120L356 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M356 120L348.1 124.3M356 120L348.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"366\" y=\"124\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un seul sens</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La même icône sert deux actions.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Registre stable : un sens, une icône.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Ne pas réutiliser un glyphe.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>ce système ne fournit pas de bibliothèque d'icônes.</strong> Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par <code>icon_shape</code> de l'alert : la <em>silhouette</em> est normative (cercle/triangle/octogone), le <em>dessin</em> est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+       "id": "ICONOGRAPHY-R02"
+      },
+      {
+       "tag": "Règle",
+       "html": "le registre iconographique du produit est <strong>stable</strong> : une fois un glyphe associé à un sens, il ne sert plus à rien d'autre — et le même sens ne change pas de glyphe selon l'écran (précédent : une icône par tone, constante dans tout le produit, ALERT-UX).",
+       "id": "ICONOGRAPHY-R08"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>l'icône accélère la reconnaissance d'un sens que le produit sait déjà dire autrement — elle n'est jamais le seul dépositaire du sens.</strong>",
+       "id": "ICONOGRAPHY-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Contraste de l'icône informative",
+     "quand": "Une icône informative est seule.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Plateforme / enjeu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste de l'icône informative\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"2\"/><text x=\"330\" y=\"124\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">trop clair</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône informative est seule.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>≥ 3:1, testé comme tout état visible.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône assez contrastée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ICONOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'icône informative respecte <strong>3:1</strong> (WCAG 1.4.11) comme tout signal visible ; l'icône décorative est exemptée — et cachée (<code>aria-hidden</code>).",
+       "id": "ICONOGRAPHY-R16"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-rang\"><div class=\"spec-item\"><div class=\"icon-boite\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.25\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 3\"/></svg><code>icon.sm</code></div></div><div class=\"spec-item\"><div class=\"icon-boite\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#111827\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 3\"/></svg><code>icon.md</code></div></div><div class=\"spec-item\"><div class=\"icon-boite\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#111827\" stroke-width=\"1.5\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 3\"/></svg><code>icon.lg</code></div></div></div><p class=\"spec-note\">Trait constant <code>icon.stroke</code> — le glyphe est un exemple de géométrie, pas une bibliothèque fournie (le dessin = identité).</p></section>"
+  ],
+  "tokens": [
+   {
+    "token": "tailles.sm",
+    "ref": "icon.sm",
+    "valeur": "16px",
+    "couleur": null
+   },
+   {
+    "token": "tailles.md",
+    "ref": "icon.md",
+    "valeur": "20px",
+    "couleur": null
+   },
+   {
+    "token": "tailles.lg",
+    "ref": "icon.lg",
+    "valeur": "24px",
+    "couleur": null
+   },
+   {
+    "token": "trait.stroke",
+    "ref": "icon.stroke",
+    "valeur": "1.5px",
+    "couleur": null
+   },
+   {
+    "token": "couleur.heritage",
+    "ref": "currentColor",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "cible.min_touch_target",
+    "ref": "44px",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "ICONOGRAPHY-R01",
+   "couche": "ux",
+   "solution": "l'iconographie est une **fondation** — pas d'axes, pas d'assemblage : tous les composants consomment des icônes (tones de l'alert, chevron de la card, actions du bouton, services de l'input).",
+   "enonce": "L'iconographie est une fondation transversale : elle n'expose ni axes ni règles d'assemblage, et tous les composants en consomment les crans, le style et les contraintes.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Icône d'action, seule",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Icône d'action, avec texte",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un bouton",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Dans un alert",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Dans un input",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Dans une card",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R02",
+   "couche": "ux",
+   "solution": "**ce système ne fournit pas de bibliothèque d'icônes.** Le dessin précis des glyphes est une décision d'identité visuelle — précédent posé par `icon_shape` de l'alert : la *silhouette* est normative (cercle/triangle/octogone), le *dessin* est libre. Cette fondation régit tout ce qui ne dépend pas du dessin : rôles, tailles, style, redondance, accessibilité, stabilité du sens. La grille de construction interne (keylines, zone de sécurité) appartient à la bibliothèque choisie.",
+   "enonce": "La fondation normalise les rôles, tailles, style, redondance, accessibilité et stabilité du sens des icônes, mais ne fournit pas de bibliothèque : le dessin des glyphes reste hors périmètre.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Dans un alert",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-2-0",
+     "titre": "Taille",
+     "famille": "Propriété visuelle"
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Grille de construction",
+     "famille": "Propriété visuelle"
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Chargement de la bibliothèque d'icônes",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Un sens = une icône",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R03",
+   "couche": "ux",
+   "solution": "la fondation sépare deux fonctions :",
+   "enonce": "La fondation traite séparément le sens de l'icône, décision de contenu, et sa forme, décision de design ; aucune des deux ne se déduit de l'autre.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "c'est la structure de la typographie (sens vs lisibilité) transposée — et le même garde-fou : aucune des deux fonctions ne se déduit de l'autre.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ICONOGRAPHY-R04",
+   "couche": "ux",
+   "solution": "**le texte d'abord** : \"utiliser des labels pour soutenir les icônes partout où c'est possible, et éviter les icônes là où elles ne sont pas nécessaires\" (Atlassian — repris tel quel). Une icône est un *accélérateur de reconnaissance*, pas un remplacement du langage.",
+   "enonce": "Toute icône est accompagnée d'un libellé textuel partout où c'est possible, et aucune icône n'est ajoutée là où elle n'est pas nécessaire.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+     "liens": [
+      {
+       "label": "NN/g — Icon Usability",
+       "url": "https://www.nngroup.com/articles/icon-usability/"
+      },
+      {
+       "label": "NN/g — Bad Icons",
+       "url": "https://www.nngroup.com/articles/bad-icons/"
+      }
+     ],
+     "confiance": "Établi — littérature de référence"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "\"Labels partout où c'est possible, pas d'icône non nécessaire\"",
+     "liens": [
+      {
+       "label": "Atlassian — Iconography",
+       "url": "https://atlassian.design/foundations/iconography"
+      }
+     ],
+     "confiance": "Établi, citation directe"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Actions universelles tolérées seules (edit, delete, search)",
+     "liens": [
+      {
+       "label": "Polaris — Using icons",
+       "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+      }
+     ],
+     "confiance": "Établi chez Polaris — croisé avec la liste plus stricte de NN/g"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+    "liens": [
+     {
+      "label": "NN/g — Icon Usability",
+      "url": "https://www.nngroup.com/articles/icon-usability/"
+     },
+     {
+      "label": "NN/g — Bad Icons",
+      "url": "https://www.nngroup.com/articles/bad-icons/"
+     }
+    ],
+    "confiance": "Établi — littérature de référence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Icône d'action, avec texte",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Icône de remplacement de contenu",
+     "famille": "Rôle d'icône"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R05",
+   "couche": "ux",
+   "solution": "le droit de paraître seule est **une liste fermée, pas un jugement au cas par cas** : les métaphores quasi universelles (recherche/loupe, fermeture/croix, accueil/maison, impression — NN/g n'en reconnaît que trois ou quatre) plus les actions apprises *dans ce produit* et confirmées par l'usage. Tout le reste : label visible.",
+   "enonce": "Le droit d'une icône à paraître sans libellé visible est défini par une liste fermée et déclarée, non par un jugement au cas par cas.",
+   "mesure": "toute icône sans libellé visible appartient à la liste fermée déclarée",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+     "liens": [
+      {
+       "label": "NN/g — Icon Usability",
+       "url": "https://www.nngroup.com/articles/icon-usability/"
+      },
+      {
+       "label": "NN/g — Bad Icons",
+       "url": "https://www.nngroup.com/articles/bad-icons/"
+      }
+     ],
+     "confiance": "Établi — littérature de référence"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Actions universelles tolérées seules (edit, delete, search)",
+     "liens": [
+      {
+       "label": "Polaris — Using icons",
+       "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+      }
+     ],
+     "confiance": "Établi chez Polaris — croisé avec la liste plus stricte de NN/g"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+    "liens": [
+     {
+      "label": "NN/g — Icon Usability",
+      "url": "https://www.nngroup.com/articles/icon-usability/"
+     },
+     {
+      "label": "NN/g — Bad Icons",
+      "url": "https://www.nngroup.com/articles/bad-icons/"
+     }
+    ],
+    "confiance": "Établi — littérature de référence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Icône d'action, seule",
+     "famille": "Rôle d'icône"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R06",
+   "couche": "ux",
+   "solution": "icône seule → **aria-label obligatoire sans exception** (règle déjà posée par BUTTON-UI, généralisée) — et le tooltip au survol ne compte pas comme label : invisible au tactile, coûteux à découvrir (NN/g).",
+   "enonce": "Tout contrôle réduit à une icône porte un nom accessible non vide décrivant sa fonction ; une info-bulle au survol ne tient jamais lieu de nom accessible.",
+   "mesure": "tout contrôle sans texte visible expose un nom accessible non vide",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Pour tout composant d'interface, le nom et le rôle sont déterminables programmatiquement, et les états modifiables sont exposés aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Le contenu déclenché au survol ou au focus doit être écartable, survolable et persistant ; les info-bulles natives du navigateur sont hors périmètre — **une info-bulle n'est donc pas un substitut de nom accessible**",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Le rôle image fait traiter un SVG inline comme une image unique plutôt que comme un arbre de nœuds lus un à un, et exige un nom accessible",
+     "liens": [
+      {
+       "label": "MDN — rôle img",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/img_role"
+      }
+     ],
+     "confiance": "Établi — documentation de référence"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+     "liens": [
+      {
+       "label": "NN/g — Icon Usability",
+       "url": "https://www.nngroup.com/articles/icon-usability/"
+      },
+      {
+       "label": "NN/g — Bad Icons",
+       "url": "https://www.nngroup.com/articles/bad-icons/"
+      }
+     ],
+     "confiance": "Établi — littérature de référence"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Icône d'action, seule",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-4-0",
+     "titre": "Tactile",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R07",
+   "couche": "ux",
+   "solution": "la règle des 5 secondes (NN/g) comme test de conception : si trouver l'icône d'une action prend plus de 5 secondes, cette action n'a pas d'icône — elle a un mot.",
+   "enonce": "Une action dont l'icône ne se laisse ni concevoir ni trouver en moins de cinq secondes se désigne par un mot et non par un glyphe.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+     "liens": [
+      {
+       "label": "NN/g — Icon Usability",
+       "url": "https://www.nngroup.com/articles/icon-usability/"
+      },
+      {
+       "label": "NN/g — Bad Icons",
+       "url": "https://www.nngroup.com/articles/bad-icons/"
+      }
+     ],
+     "confiance": "Établi — littérature de référence"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+    "liens": [
+     {
+      "label": "NN/g — Icon Usability",
+      "url": "https://www.nngroup.com/articles/icon-usability/"
+     },
+     {
+      "label": "NN/g — Bad Icons",
+      "url": "https://www.nngroup.com/articles/bad-icons/"
+     }
+    ],
+    "confiance": "Établi — littérature de référence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Icône d'action, avec texte",
+     "famille": "Rôle d'icône"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R08",
+   "couche": "ux",
+   "solution": "le registre iconographique du produit est **stable** : une fois un glyphe associé à un sens, il ne sert plus à rien d'autre — et le même sens ne change pas de glyphe selon l'écran (précédent : une icône par tone, constante dans tout le produit, ALERT-UX).",
+   "enonce": "Un glyphe ne désigne qu'un seul sens dans tout le produit, et un sens donné est toujours porté par le même glyphe.",
+   "mesure": "aucun glyphe associé à plus d'un sens et aucun sens porté par plus d'un glyphe",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "\"Labels partout où c'est possible, pas d'icône non nécessaire\"",
+     "liens": [
+      {
+       "label": "Atlassian — Iconography",
+       "url": "https://atlassian.design/foundations/iconography"
+      }
+     ],
+     "confiance": "Établi, citation directe"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Actions universelles tolérées seules (edit, delete, search)",
+     "liens": [
+      {
+       "label": "Polaris — Using icons",
+       "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+      }
+     ],
+     "confiance": "Établi chez Polaris — croisé avec la liste plus stricte de NN/g"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "\"Labels partout où c'est possible, pas d'icône non nécessaire\"",
+    "liens": [
+     {
+      "label": "Atlassian — Iconography",
+      "url": "https://atlassian.design/foundations/iconography"
+     }
+    ],
+    "confiance": "Établi, citation directe"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Dans un alert",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Icône qui change avec l'état",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Un sens = une icône",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R09",
+   "couche": "ux",
+   "solution": "ne jamais détourner un symbole à sens établi ailleurs (l'étoile note, elle ne \"favorise\" pas si le produit note aussi ; la corbeille supprime, elle n'archive pas).",
+   "enonce": "Aucun symbole dont le sens est déjà établi ailleurs n'est réaffecté à un autre sens.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+     "liens": [
+      {
+       "label": "NN/g — Icon Usability",
+       "url": "https://www.nngroup.com/articles/icon-usability/"
+      },
+      {
+       "label": "NN/g — Bad Icons",
+       "url": "https://www.nngroup.com/articles/bad-icons/"
+      }
+     ],
+     "confiance": "Établi — littérature de référence"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Label visible requis, tooltips insuffisants, ~3 icônes universelles, règle des 5s",
+    "liens": [
+     {
+      "label": "NN/g — Icon Usability",
+      "url": "https://www.nngroup.com/articles/icon-usability/"
+     },
+     {
+      "label": "NN/g — Bad Icons",
+      "url": "https://www.nngroup.com/articles/bad-icons/"
+     }
+    ],
+    "confiance": "Établi — littérature de référence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ICONOGRAPHY-R10",
+   "couche": "ux",
+   "solution": "l'icône sémantique est un **canal redondant, pas décoratif** (WCAG 1.4.1) : les icônes de tone de l'alert ne se retirent pas pour alléger, et leurs silhouettes distinctes font le travail que la couleur ne garantit pas (deutéranopie — décision F03).",
+   "enonce": "Une icône porteuse de sens est un canal redondant d'une information déjà exprimée autrement : elle ne se retire pas pour alléger, et sa silhouette distingue le sens sans recours à la couleur.",
+   "mesure": "chaque état sémantique reste distinguable sans la couleur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information — fondement de la redondance icône / forme / texte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information — fondement de la redondance icône / forme / texte",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Icône sémantique (canal redondant)",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Couleur",
+     "famille": "Propriété visuelle"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R11",
+   "couche": "ux",
+   "solution": "**outline par défaut**, trait constant (`icon.stroke`) sur toute la bibliothèque — le style du trait est le \"fallback stack\" de l'iconographie : une seule décision, prise une fois, visible partout. Le **filled est réservé aux états actifs/sélectionnés** si le besoin naît (convention Material Symbols et Polaris : fill = transition d'état, pas un second style décoratif).",
+   "enonce": "La bibliothèque adopte un style de contour unique à trait constant, et réserve la variante pleine à la signalisation d'un état actif.",
+   "mesure": "toutes les icônes partagent la même valeur de trait",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Outline défaut / filled = état ; trait constant (1.5px Atlassian/Polaris, 2dp Material)",
+     "liens": [
+      {
+       "label": "Polaris — Creating icons",
+       "url": "https://polaris-react.shopify.com/design/icons/creating-icons"
+      },
+      {
+       "label": "Material Symbols",
+       "url": "https://developers.google.com/fonts/docs/material_symbols"
+      },
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/iconography"
+      }
+     ],
+     "confiance": "Établi (outline/filled) ; la valeur du trait est un choix d'identité"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Outline défaut / filled = état ; trait constant (1.5px Atlassian/Polaris, 2dp Material)",
+    "liens": [
+     {
+      "label": "Polaris — Creating icons",
+      "url": "https://polaris-react.shopify.com/design/icons/creating-icons"
+     },
+     {
+      "label": "Material Symbols",
+      "url": "https://developers.google.com/fonts/docs/material_symbols"
+     },
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/iconography"
+     }
+    ],
+    "confiance": "Établi (outline/filled) ; la valeur du trait est un choix d'identité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Style de trait (outline vs filled)",
+     "famille": "Propriété visuelle"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R12",
+   "couche": "ux",
+   "solution": "contrainte de lisibilité : le trait doit tenir au plus petit cran (`icon.sm`) — une icône dont les détails se bouchent en petit est une icône trop détaillée, pas un cran trop petit.",
+   "enonce": "Une icône doit rester lisible au plus petit cran ; un glyphe dont les détails se bouchent est simplifié ou retiré, le cran n'est pas augmenté pour lui.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "\"Labels partout où c'est possible, pas d'icône non nécessaire\"",
+     "liens": [
+      {
+       "label": "Atlassian — Iconography",
+       "url": "https://atlassian.design/foundations/iconography"
+      }
+     ],
+     "confiance": "Établi, citation directe"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "\"Labels partout où c'est possible, pas d'icône non nécessaire\"",
+    "liens": [
+     {
+      "label": "Atlassian — Iconography",
+      "url": "https://atlassian.design/foundations/iconography"
+     }
+    ],
+    "confiance": "Établi, citation directe"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Taille",
+     "famille": "Propriété visuelle"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R13",
+   "couche": "ux",
+   "solution": "pas de 3D, pas de perspective, pas de détail intérieur superflu (Atlassian — difficile à décoder, notamment pour les troubles cognitifs).",
+   "enonce": "Les icônes s'en tiennent à des formes simples et frontales, sans perspective, sans volume et sans détail intérieur superflu.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Pas de 3D/perspective",
+     "liens": [
+      {
+       "label": "Atlassian — Iconography",
+       "url": "https://atlassian.design/foundations/iconography"
+      }
+     ],
+     "confiance": "Établi chez Atlassian"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Pas de 3D/perspective",
+    "liens": [
+     {
+      "label": "Atlassian — Iconography",
+      "url": "https://atlassian.design/foundations/iconography"
+     }
+    ],
+    "confiance": "Établi chez Atlassian"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ICONOGRAPHY-R14",
+   "couche": "ux",
+   "solution": "les tailles sont **des crans fermés** (`icon.sm/md/lg`, créés par cette fondation — elles étaient la déduction silencieuse de quatre composants), appariés aux corps de texte et aux hauteurs de composants, jamais des valeurs libres. **Ne jamais redimensionner une icône hors crans** (Polaris : cela détruit la relation établie avec la typographie).",
+   "enonce": "Les tailles d'icône proviennent d'un jeu fermé de crans appariés aux corps de texte ; une icône ne se redimensionne jamais hors de ces crans, elle change de cran.",
+   "mesure": "toute icône rendue utilise une valeur du jeu de crans ; aucune taille libre",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Tailles appariées aux corps de texte (16/20 ↔ 14/16px)",
+     "liens": [
+      {
+       "label": "Carbon — Icons usage",
+       "url": "https://carbondesignsystem.com/elements/icons/usage/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — adopté (icon.md ↔ body 16px)"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Centrage vertical, pas baseline ; jamais redimensionner",
+     "liens": [
+      {
+       "label": "Carbon — Icons usage",
+       "url": "https://carbondesignsystem.com/elements/icons/usage/"
+      },
+      {
+       "label": "Polaris — Using icons",
+       "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Tailles appariées aux corps de texte (16/20 ↔ 14/16px)",
+    "liens": [
+     {
+      "label": "Carbon — Icons usage",
+      "url": "https://carbondesignsystem.com/elements/icons/usage/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — adopté (icon.md ↔ body 16px)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Taille",
+     "famille": "Propriété visuelle"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R15",
+   "couche": "ux",
+   "solution": "à côté d'un texte, l'icône est **centrée verticalement** sur la ligne — pas alignée sur la baseline (Carbon, explicite). Sa couleur est **celle du texte qu'elle accompagne** — jamais de couleur propre hors tone sémantique.",
+   "enonce": "À côté d'un texte, l'icône est centrée verticalement sur la ligne plutôt qu'alignée sur la ligne de base, et prend la couleur du texte qu'elle accompagne.",
+   "mesure": "aucune icône adjacente à du texte n'est alignée sur la ligne de base ; couleur héritée hors tone sémantique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Centrage vertical, pas baseline ; jamais redimensionner",
+     "liens": [
+      {
+       "label": "Carbon — Icons usage",
+       "url": "https://carbondesignsystem.com/elements/icons/usage/"
+      },
+      {
+       "label": "Polaris — Using icons",
+       "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "aria-hidden par défaut / label si porteuse de sens",
+     "liens": [
+      {
+       "label": "Carbon — Icons code",
+       "url": "https://carbondesignsystem.com/elements/icons/code/"
+      },
+      {
+       "label": "Polaris — Icon",
+       "url": "https://polaris-react.shopify.com/components/images-and-icons/icon"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Centrage vertical, pas baseline ; jamais redimensionner",
+    "liens": [
+     {
+      "label": "Carbon — Icons usage",
+      "url": "https://carbondesignsystem.com/elements/icons/usage/"
+     },
+     {
+      "label": "Polaris — Using icons",
+      "url": "https://polaris-react.shopify.com/design/icons/using-icons"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Couleur",
+     "famille": "Propriété visuelle"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R16",
+   "couche": "ux",
+   "solution": "l'icône informative respecte **3:1** (WCAG 1.4.11) comme tout signal visible ; l'icône décorative est exemptée — et cachée (`aria-hidden`).",
+   "enonce": "Une icône porteuse d'information respecte un contraste d'au moins 3:1 avec les couleurs adjacentes ; une icône décorative en est exemptée et est retirée de l'arbre d'accessibilité.",
+   "mesure": "contraste ≥ 3:1 pour toute icône informative ; toute icône décorative porte aria-hidden et n'est pas focalisable",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "3:1 pour les graphiques porteurs de sens",
+     "liens": [
+      {
+       "label": "WCAG 1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      },
+      {
+       "label": "technique G207",
+       "url": "https://www.w3.org/WAI/WCAG21/Techniques/general/G207"
+      }
+     ],
+     "confiance": "Établi (3:1) ; le 4.5:1 de Carbon noté, non adopté"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "aria-hidden est le mécanisme prévu pour retirer de l'arbre d'accessibilité une icône décorative ou redondante, et ne doit jamais être posé sur un élément focalisable ni sur son ancêtre",
+     "liens": [
+      {
+       "label": "MDN — aria-hidden",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden"
+      }
+     ],
+     "confiance": "Établi — documentation de référence"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "3:1 pour les graphiques porteurs de sens",
+    "liens": [
+     {
+      "label": "WCAG 1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     },
+     {
+      "label": "technique G207",
+      "url": "https://www.w3.org/WAI/WCAG21/Techniques/general/G207"
+     }
+    ],
+    "confiance": "Établi (3:1) ; le 4.5:1 de Carbon noté, non adopté"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Icône décorative",
+     "famille": "Rôle d'icône"
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Contraste de l'icône informative",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R17",
+   "couche": "ux",
+   "solution": "**cible tactile ≠ taille d'icône** : le glyphe reste petit, la cible s'étend par le padding — 44px partout (standard du système), ce qui couvre largement le minimum WCAG 2.5.8 (24px, AA).",
+   "enonce": "La cible tactile d'une icône interactive s'obtient par extension du padding et jamais par agrandissement du glyphe.",
+   "mesure": "toute icône interactive a une cible ≥ 44 × 44 px, obtenue sans agrandir le glyphe",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Cible ≥ 24px (AA) / 44px (AAA, HIG)",
+     "liens": [
+      {
+       "label": "WCAG 2.5.8",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      }
+     ],
+     "confiance": "Établi — le 44px interne couvre les deux"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Cible ≥ 24px (AA) / 44px (AAA, HIG)",
+    "liens": [
+     {
+      "label": "WCAG 2.5.8",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     }
+    ],
+    "confiance": "Établi — le 44px interne couvre les deux"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Tactile",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R18",
+   "couche": "ux",
+   "solution": "écrit d'office (prédicteur \"état transitoire\") : le **spinner** est une icône animée — sa taille et sa place relèvent de cette fondation (il occupe le cran de l'icône qu'il remplace : le label du bouton loading devient indicateur sans changer la géométrie), sa rotation appartient à la fondation motion (linéaire, la seule rotation continue admise).",
+   "enonce": "Le spinner est traité comme une icône animée : il occupe le cran de l'icône qu'il remplace sans modifier la géométrie du composant.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un bouton",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-3-0",
+     "titre": "Icône en attente (spinner/loading)",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Icône qui change avec l'état",
+     "famille": "État / comportement dans le temps"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R19",
+   "couche": "ux",
+   "solution": "une icône qui change avec l'état est **le même glyphe transformé** (chevron tourné, œil barré) plutôt que deux glyphes — et l'état est toujours exposé techniquement (aria-expanded, aria-pressed) : le dessin confirme, il n'est jamais la source.",
+   "enonce": "Une icône qui varie avec l'état est le même glyphe transformé plutôt qu'un second glyphe, et l'état reste exposé programmatiquement.",
+   "mesure": "tout contrôle dont l'icône varie selon l'état expose cet état par un attribut ARIA",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S14",
+     "affirmation": "Pour tout composant d'interface, le nom et le rôle sont déterminables programmatiquement, et les états modifiables sont exposés aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "aria-expanded expose l'état déployé ou replié d'un contrôle, indépendamment de toute indication visuelle telle qu'une rotation de chevron",
+     "liens": [
+      {
+       "label": "MDN — aria-expanded",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-expanded"
+      }
+     ],
+     "confiance": "Établi — documentation de référence"
+    }
+   ],
+   "principale": {
+    "ref": "S14",
+    "affirmation": "Pour tout composant d'interface, le nom et le rôle sont déterminables programmatiquement, et les états modifiables sont exposés aux technologies d'assistance",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Icône qui change avec l'état",
+     "famille": "État / comportement dans le temps"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R20",
+   "couche": "ux",
+   "solution": "**SVG inline, pas d'icon font** : une icon font qui échoue au chargement laisse un caractère fantôme ou un carré, se fait lire par certains lecteurs d'écran, et casse à la traduction automatique. Le SVG inline hérite de la couleur du texte (`currentColor`) et n'a pas d'état de chargement — c'est le pendant iconographique des piles de secours typographiques.",
+   "enonce": "Les icônes sont rendues en SVG inline héritant de la couleur du texte, et non par une police d'icônes.",
+   "mesure": "aucune icône rendue via une police d'icônes ou un caractère de pseudo-élément",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "aria-hidden par défaut / label si porteuse de sens",
+     "liens": [
+      {
+       "label": "Carbon — Icons code",
+       "url": "https://carbondesignsystem.com/elements/icons/code/"
+      },
+      {
+       "label": "Polaris — Icon",
+       "url": "https://polaris-react.shopify.com/components/images-and-icons/icon"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S19",
+     "affirmation": "Défauts documentés des polices d'icônes : caractère lu littéralement sans ARIA, disparition sous feuille de style utilisateur — **mais l'auteur conserve néanmoins ses polices d'icônes, faute de meilleur compromis**",
+     "liens": [
+      {
+       "label": "24 Accessibility — SVG, Icon Fonts, and Accessibility",
+       "url": "https://www.24a11y.com/2017/svg-icon-fonts-accessibility-case-study/"
+      }
+     ],
+     "confiance": "Cas d'étude documenté — soutient les risques, **ne soutient pas l'interdiction** : contre-position à noter"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "aria-hidden par défaut / label si porteuse de sens",
+    "liens": [
+     {
+      "label": "Carbon — Icons code",
+      "url": "https://carbondesignsystem.com/elements/icons/code/"
+     },
+     {
+      "label": "Polaris — Icon",
+      "url": "https://polaris-react.shopify.com/components/images-and-icons/icon"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Couleur",
+     "famille": "Propriété visuelle"
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Lecteur d'écran",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  },
+  {
+   "id": "ICONOGRAPHY-R21",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Les défaillances iconographiques connues sont consignées dans une table de risque associant chaque cas à son risque principal et à sa sévérité.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ICONOGRAPHY-R22",
+   "couche": "ux",
+   "solution": "**l'icône accélère la reconnaissance d'un sens que le produit sait déjà dire autrement — elle n'est jamais le seul dépositaire du sens.**",
+   "enonce": "Une icône n'est jamais le seul dépositaire d'un sens : toute information qu'elle porte reste disponible par le texte, le rôle ou la structure.",
+   "mesure": "aucune information ni action disponible uniquement par le dessin d'une icône",
+   "contre": "",
+   "probleme": "c'est 1.4.1 (jamais la couleur seule) élargi : jamais *le dessin* seul. Le texte, le rôle ARIA, la forme, la couleur — l'icône est un canal parmi d'autres, le plus rapide et le moins fiable.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information — fondement de la redondance icône / forme / texte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.1.1 Non-text Content",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-4",
+     "titre": "Un sens = une icône",
+     "famille": "Plateforme / enjeu"
+    }
+   ]
+  }
+ ]
+}

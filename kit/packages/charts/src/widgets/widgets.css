@@ -1,0 +1,63 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   @fili/charts — widgets (StatCard adaptative, KpiGroup, ProgressCircle,
+   UsageSummary). Prefixe sw- pour ne pas heurter les classes de l'app. Tokens.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* StatCard KPI adaptative */
+.sw-cell { container-type: inline-size; container-name: sw-card; min-width: 0; width: 100%; }
+.sw-card { position: relative; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); font-family: var(--font-sans); transition: padding var(--duration-base) var(--ease-in-out); }
+.sw-card-title { margin: 0; font-size: 15px; font-weight: var(--weight-semibold); letter-spacing: -.01em; color: var(--text-primary); line-height: 1.3; }
+.sw-sub { color: var(--text-muted); font-size: 12.5px; margin: 2px 0 0; }
+.sw-figure { font-weight: 700; letter-spacing: -.02em; font-size: 30px; margin: 12px 0 0; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.sw-delta { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: var(--weight-semibold); color: var(--success); background: var(--success-subtle); padding: 3px 8px; border-radius: var(--radius-pill); margin-top: 8px; width: max-content; }
+.sw-delta.is-neg { color: var(--danger); background: var(--danger-subtle); }
+.sw-spark { position: relative; height: 0; margin-top: 10px; overflow: hidden; transition: height var(--duration-base) var(--ease-in-out); }
+.sw-detail { display: none; margin-top: var(--space-md); padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 13px; }
+.sw-detail ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.sw-detail li { display: flex; justify-content: space-between; gap: 12px; }
+.sw-detail li span:last-child { font-weight: var(--weight-semibold); color: var(--text-primary); }
+.sw-state { position: absolute; top: 12px; right: 12px; font-family: var(--font-label, var(--font-mono, var(--font-sans))); font-size: 9px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--text-muted); border: 1px solid var(--border); border-radius: 5px; padding: 3px 6px; pointer-events: none; background: var(--background); }
+.sw-state::after { content: "compact"; }
+@container sw-card (min-width: 20rem) { .sw-spark { height: 52px; } .sw-state::after { content: "regular"; } }
+@container sw-card (min-width: 30rem) { .sw-detail { display: block; } .sw-card { padding: var(--space-lg); } .sw-state::after { content: "expanded"; } }
+@media (prefers-reduced-motion: reduce) { .sw-spark, .sw-card { transition: none; } }
+
+/* KpiGroup */
+.sw-kpiwrap { width: 100%; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.sw-kpihead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: var(--space-md) var(--space-md) calc(var(--space-md) - 2px); }
+.sw-kpihead-title { margin: 0; font-size: 15px; font-weight: var(--weight-semibold); letter-spacing: -.01em; color: var(--text-primary); line-height: 1.3; }
+.sw-kpihead-period { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.sw-kpis { container-type: inline-size; width: 100%; display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--border); border-top: 1px solid var(--border); }
+@container (min-width: 34rem) { .sw-kpis { grid-template-columns: repeat(3, 1fr); } }
+.sw-kpi { background: var(--background); padding: var(--space-md); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sw-kpi-label { font-size: 12.5px; color: var(--text-muted); }
+.sw-kpi-value { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.sw-kpi-spark { height: 34px; margin-top: 8px; }
+
+/* ProgressCircle */
+.sw-ring { position: relative; flex: none; }
+.sw-ring svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+.sw-ring-val { animation: swRing .9s var(--ease-out, ease-out) both; }
+@keyframes swRing { from { stroke-dasharray: 0 100; } }
+.sw-ring-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-primary); }
+@media (prefers-reduced-motion: reduce) { .sw-ring-val { animation: none; } }
+
+/* UsageSummary */
+.sw-usage { width: 100%; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); }
+.sw-usage-head h4 { margin: 0 0 12px; font-size: 15px; font-weight: var(--weight-semibold); color: var(--text-primary); }
+.sw-usage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.sw-usage-list li { display: flex; align-items: center; gap: 12px; }
+.sw-usage-pct { font-variant-numeric: tabular-nums; }
+.sw-usage-pct i { font-style: normal; font-size: 8px; color: var(--text-muted); margin-left: 1px; }
+.sw-usage-meta { display: flex; flex-direction: column; min-width: 0; }
+.sw-usage-label { font-size: 13px; color: var(--text-primary); font-weight: var(--weight-medium, 500); }
+.sw-usage-val { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* ChartCard (conteneur de widget graphe) */
+.sw-chartcard { container-type: inline-size; width: 100%; container-name: sw-card; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-md); font-family: var(--font-sans); }
+.sw-chartcard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+/* compact : le delta passe SOUS le titre (au lieu de rester à droite) */
+@container sw-card (max-width: 20rem) {
+  .sw-chartcard-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .sw-chartcard-head .sw-delta { margin-top: 0; }
+}

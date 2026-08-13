@@ -1,0 +1,51 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S4",
+  "affirmation": "Un accordéon peut afficher plusieurs sections ouvertes à la fois, à la différence des onglets, et propose un « Show all sections » ; il ne doit pas servir à du contenu que tous les utilisateurs doivent voir, car il masque du contenu que tous ne remarquent pas",
+  "source_markdown": "[GOV.UK Design System — Accordion](https://design-system.service.gov.uk/components/accordion/)",
+  "confiance": "Établi par convergence — système public vérifié ; confirme le multi-ouvert comme comportement admis, pas comme prescription"
+ },
+ {
+  "couche": "ux",
+  "ref": "S5",
+  "affirmation": "Changer le réglage d'un composant ne provoque pas automatiquement de changement de contexte non annoncé ; un déplacement de focus ou un réagencement significatif de la page en sont",
+  "source_markdown": "[WCAG 2.2 — 3.2.2 On Input](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html)",
+  "confiance": "Établi, standard (niveau A) — fonde l'interdit de vol de focus à l'ouverture d'une section"
+ },
+ {
+  "couche": "ux",
+  "ref": "S6",
+  "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la valeur reduce de prefers-reduced-motion demande de supprimer ou remplacer le mouvement non essentiel",
+  "source_markdown": "[WCAG 2.2 — 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) ; [MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — 2.3.3 est de niveau AAA et admet plusieurs techniques suffisantes ; la média-requête n'est que l'une d'elles"
+ },
+ {
+  "couche": "ux",
+  "ref": "S7",
+  "affirmation": "Toute fonctionnalité est opérable au clavier sans exiger de rythme de frappe particulier",
+  "source_markdown": "[WCAG 2.2 — 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+  "confiance": "Établi, standard (niveau A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard (niveau A) — donne son URL à S3, cité sans lien dans le fichier"
+ },
+ {
+  "couche": "ui",
+  "ref": "T3",
+  "affirmation": "L'animation déclenchée par interaction doit pouvoir être désactivée ; prefers-reduced-motion: reduce exprime cette demande de l'utilisateur",
+  "source_markdown": "[WCAG 2.2 — 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) ; [MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — niveau AAA, plusieurs techniques suffisantes admises"
+ },
+ {
+  "couche": "ui",
+  "ref": "T4",
+  "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+  "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ; [WCAG 2.2 — 2.5.5 Target Size (Enhanced)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)",
+  "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA, pas le seuil de conformité courant"
+ }
+]

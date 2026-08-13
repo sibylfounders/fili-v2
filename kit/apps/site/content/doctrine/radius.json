@@ -1,0 +1,1232 @@
+{
+ "slug": "radius",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 20 v-5 a11 11 0 0 1 11 -11 h5\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"15\" cy=\"15\" r=\"3\" fill=\"#EE7A66\"/><circle cx=\"15\" cy=\"15\" r=\"1.2\" fill=\"#FFFFFF\"/></svg>",
+ "nom": "radius",
+ "nature": "Fondation",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-11 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · radius",
+  "question": "Quel arrondi donner aux angles pour un style cohérent d’un composant à l’autre ?",
+  "detail": "Cette page fixe une petite échelle d’arrondis à réutiliser partout, pour que boutons, champs et cartes partagent la même douceur sans décision au cas par cas.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Une petite échelle d'arrondis s'applique à tous les composants"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Un conteneur a un rayon supérieur à celui de son contenu"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le même rayon reste constant à travers les états d'un composant"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "18",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "12",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "1",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-radius.md",
+   "source": "---\nsujet: radius\ntype: fondation\nresume: \"Le rayon suit la taille, imbrication concentrique, pill borné au mono-ligne\"\nrequires: []\nselon-contexte: [\"border (focus ring : rayon du composant + offset)\"]\n---\n# RULES — Radius (compilé, condensé)\n\n> Généré depuis `foundations/radius/RADIUS-UX.md` (v1.1.0) et `RADIUS-UI.md` (v1.1.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- La plus petite fondation. **Règle cardinale : le rayon suit la taille et rien d'autre** — ni l'importance, ni l'état, ni le goût de l'écran.\n\n## Application\n- `radius.sm` : petites hauteurs (`scale.compact` — bouton/input sm).\n- `radius.md` : **contrôles** de taille standard (bouton/input md-lg) — le rayon de croisière des contrôles.\n- `radius.lg` : **conteneurs** (card, alert) — cran conteneur (12px), ajouté en 1.1.0 : sépare la courbure d'un conteneur de celle d'un contrôle (une identité peut vouloir carte 12 / contrôle 8). L'imbrication reste concentrique.\n- `radius.pill` : badge/avatar uniquement — forme intrinsèquement pilule. **Un contrôle mono-ligne (bouton, input) ne prend jamais pill** (tranché en 1.1.0). Jamais sur du multiligne (effet stade).\n- Pas de cran 0 (rien n'est carré par défaut — décision) ; pas de rayon en % de la hauteur (pill accidentel).\n- **Cohérence par taille, pas par composant** : les contrôles voisins de même taille partagent le même cran.\n- **Aucun état ne change le rayon.**\n\n## Imbrication (concentricité)\n- Coin interne collé → épouse le rayon externe (media de carte).\n- Élément concentrique interne → rayon externe − écart. Jamais interne plus rond qu'externe (\"oreille\").\n- Anneau externe (focus ring) → rayon du composant **+ offset** (cf. RULES-border).\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Rayons dépareillés dans un groupe | Formulaire perçu cassé | Moyenne |\n| Imbrication non concentrique | \"Oreilles\" dans les coins | Moyenne |\n| Pill multiligne | Contour illisible | Moyenne |\n\nCONFIANCE : échelle croissante avec la taille + pill-valeur-géante = établi (Atlassian, Material, Polaris). Échelle à 4 crans (sm/md/lg/pill, cran conteneur `lg` ajouté 2026-07-17) = choix interne ; si un besoin sort des crans : STOP, remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Rôle de rayon",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle de rayon\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"56\" width=\"56\" height=\"40\" rx=\"4\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"122\" y=\"50\" width=\"72\" height=\"52\" rx=\"14\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"218\" y=\"62\" width=\"60\" height=\"28\" rx=\"14\" fill=\"#E0E7FF\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Rayon des petits composants",
+     "quand": "Un petit composant a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de rayon",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayon des petits composants\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"268\" y=\"100\" width=\"144\" height=\"40\" rx=\"7\" fill=\"#E0E7FF\"/><text x=\"300\" y=\"170\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">petit</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un petit composant a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>radius.sm, proportionné à sa hauteur compacte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un petit bouton.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Rayon standard",
+     "quand": "Un composant de taille normale a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de rayon",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayon standard\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"78\" width=\"90\" height=\"90\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"300\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">standard</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un composant de taille normale a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>radius.md partout : la cohérence prime.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ, une carte, une alerte.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Rayon plein (pill)",
+     "quand": "Une pastille, un badge ou un avatar est rond.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de rayon",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayon plein (pill)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"40\" rx=\"20\" fill=\"#4F46E5\"/><text x=\"316\" y=\"170\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">pill</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une pastille, un badge ou un avatar est rond.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rayon plein, réservé aux contenus mono-ligne.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un badge « 3 ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Angle droit (0)",
+     "quand": "Un élément est volontairement carré.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de rayon",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Angle droit (0)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"78\" width=\"90\" height=\"90\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"302\" y=\"186\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">angle droit</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément est volontairement carré.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Pas de token « none » : décision assumée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bloc à angles droits.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'<strong>angle droit n'a pas de token</strong> — décision, pas oubli : rien dans ce système n'est carré par défaut (Carbon fait le choix inverse — esthétique d'identité, pas une norme). Un besoin réel l'ajouterait en un cran <code>none</code>.",
+       "id": "RADIUS-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Rayon d'un conteneur vs son contenu",
+     "quand": "Un media occupe le coin d'une carte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de rayon",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayon d'un conteneur vs son contenu\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"70\" width=\"180\" height=\"180\" rx=\"100\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"272\" y=\"92\" width=\"136\" height=\"56\" rx=\"8\" fill=\"#E0E7FF\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un media occupe le coin d'une carte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rayon interne ≤ externe, jamais l'inverse.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une image qui épouse le coin de la carte.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 5 cas",
+   "titre": "Contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Bouton",
+     "quand": "Un bouton a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bouton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"276\" y=\"102\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"113\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bouton a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>sm proportionné, md/lg identiques (pas d'effet pilule en lg).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton lg pas en stade.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le cran suit la taille ET le type (contrôle vs conteneur)</strong> : <code>radius.sm</code> pour les petites hauteurs (bouton/input sm), <code>radius.md</code> pour les <strong>contrôles</strong> de taille standard (bouton/input md-lg), <code>radius.lg</code> pour les <strong>conteneurs</strong> (card, alert). C'est la logique croissante convergente des systèmes majeurs (Atlassian : 2px badges → 12px conteneurs → 16px players ; Material : 4 → 28dp), à échelle réduite.",
+       "id": "RADIUS-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "le rayon ne grandit <strong>pas linéairement</strong> avec la taille — le bouton lg garde <code>radius.md</code> (&quot;l'agrandir proportionnellement donnerait un effet pilule non désiré&quot;, BUTTON-UI). Le rayon est un cran choisi, jamais un pourcentage de la hauteur.",
+       "id": "RADIUS-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "la cohérence se joue <strong>par taille, pas par composant</strong> : un input md à côté d'un bouton md partagent <code>radius.md</code> — les contrôles d'un même formulaire ont la même courbure (BUTTON-UI et INPUT-UI le font déjà, la règle est désormais dite).",
+       "id": "RADIUS-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Input",
+     "quand": "Un champ a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Input\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"104\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Mêmes rayons que le bouton par taille (cohérence des contrôles).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ aligné sur le bouton.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le cran suit la taille ET le type (contrôle vs conteneur)</strong> : <code>radius.sm</code> pour les petites hauteurs (bouton/input sm), <code>radius.md</code> pour les <strong>contrôles</strong> de taille standard (bouton/input md-lg), <code>radius.lg</code> pour les <strong>conteneurs</strong> (card, alert). C'est la logique croissante convergente des systèmes majeurs (Atlassian : 2px badges → 12px conteneurs → 16px players ; Material : 4 → 28dp), à échelle réduite.",
+       "id": "RADIUS-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "la cohérence se joue <strong>par taille, pas par composant</strong> : un input md à côté d'un bouton md partagent <code>radius.md</code> — les contrôles d'un même formulaire ont la même courbure (BUTTON-UI et INPUT-UI le font déjà, la règle est désormais dite).",
+       "id": "RADIUS-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<code>radius.pill</code> (valeur géante, convention partagée : 999/9999px) est <strong>réservé aux contenus mono-ligne intrinsèques dont la forme EST la pilule</strong> — pastilles, badges, avatars. <strong>Tranché (1.1.0) : un contrôle mono-ligne (bouton, input) ne prend JAMAIS <code>pill</code></strong> — il est mono-ligne mais pas <em>intrinsèquement pilule</em>, et suit sa taille (sm/md). « Intrinsèque » qualifie la forme du contenu, pas le simple fait de tenir sur une ligne. Jamais sur un contenu qui peut passer en multiligne : la pilule devient un stade.",
+       "id": "RADIUS-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Card / alert",
+     "quand": "Une carte ou une alerte a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Card / alert\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"84\" width=\"90\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"348\" y=\"100\" width=\"110\" height=\"48\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"348\" y=\"100\" width=\"6\" height=\"48\" rx=\"3\" fill=\"#1D4ED8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte ou une alerte a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>radius.md, coins du media imbriqués.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte à coins standard.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le cran suit la taille ET le type (contrôle vs conteneur)</strong> : <code>radius.sm</code> pour les petites hauteurs (bouton/input sm), <code>radius.md</code> pour les <strong>contrôles</strong> de taille standard (bouton/input md-lg), <code>radius.lg</code> pour les <strong>conteneurs</strong> (card, alert). C'est la logique croissante convergente des systèmes majeurs (Atlassian : 2px badges → 12px conteneurs → 16px players ; Material : 4 → 28dp), à échelle réduite.",
+       "id": "RADIUS-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Focus ring",
+     "quand": "L'anneau de focus entoure un composant arrondi.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus ring\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"104\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"98\" width=\"192\" height=\"36\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'anneau de focus entoure un composant arrondi.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le ring épouse le rayon + son offset.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un anneau arrondi autour d'un champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le cas <strong>inversé</strong> existe aussi : un anneau posé <em>à l'extérieur</em> (le focus ring) prend rayon du composant <strong>+ offset</strong> — c'est la même géométrie dans l'autre sens, et Atlassian la tokenise exactement ainsi (radius.focus = rayon de base + 2px).",
+       "id": "RADIUS-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Futur composant superposé (modale, popover)",
+     "quand": "Une surface flottante a des coins.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Futur composant superposé (modale, popover)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"258\" y=\"82\" width=\"164\" height=\"100\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"258\" y=\"74\" width=\"164\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une surface flottante a des coins.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>radius.md attendu, à confirmer.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une modale à coins arrondis.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 2 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Changement d'état",
+     "quand": "Un composant change d'état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Changement d'état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"100\" width=\"60\" height=\"40\" rx=\"10\" fill=\"#4F46E5\"/><rect x=\"312\" y=\"100\" width=\"60\" height=\"40\" rx=\"10\" fill=\"#15803D\"/><rect x=\"394\" y=\"100\" width=\"60\" height=\"40\" rx=\"10\" fill=\"#B91C1C\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un composant change d'état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le rayon ne change jamais : c'est une propriété d'identité.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ en erreur, même rayon.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Skeleton",
+     "quand": "Un squelette s'affiche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Skeleton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-pulse\"><rect x=\"250\" y=\"88\" width=\"180\" height=\"72\" rx=\"12\" fill=\"#E5E7EB\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un squelette s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Il reprend le rayon du composant réel.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bloc gris à coins arrondis.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 2 cas",
+   "titre": "Plateforme / environnement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / environnement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Densités d'écran",
+     "quand": "L'écran est plus ou moins dense.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Densités d'écran\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"90\" width=\"60\" height=\"60\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"330\" y=\"80\" width=\"90\" height=\"90\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'écran est plus ou moins dense.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Les rayons px se rendent uniformément.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un coin net sur Retina.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Zoom",
+     "quand": "L'utilisateur zoome.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zoom\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"96\" width=\"60\" height=\"48\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><path d=\"M312 120L350 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M350 120L342.1 124.3M350 120L342.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"366\" y=\"86\" width=\"90\" height=\"68\" rx=\"12\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur zoome.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>px assumé, comme bordure et espacement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un zoom à 200 %.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 4 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Rayons incohérents entre composants voisins",
+     "quand": "Un champ et un bouton voisins ont des rayons différents.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayons incohérents entre composants voisins\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"220\" y=\"90\" width=\"70\" height=\"60\" rx=\"2\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"306\" y=\"90\" width=\"70\" height=\"60\" rx=\"16\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"392\" y=\"90\" width=\"70\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"66\" r=\"9\" fill=\"#92400E\"/><path d=\"M336.5 62.5l7 7M343.5 62.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ et un bouton voisins ont des rayons différents.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La cohérence se joue par taille, pas par composant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un input et un bouton harmonisés.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Imbrication inversée",
+     "quand": "Un coin interne est plus rond que l'externe.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Imbrication inversée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"78\" width=\"160\" height=\"92\" rx=\"4\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"282\" y=\"98\" width=\"116\" height=\"54\" rx=\"22\" fill=\"#E0E7FF\"/><circle cx=\"432\" cy=\"72\" r=\"9\" fill=\"#92400E\"/><path d=\"M428.5 68.5l7 7M435.5 68.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un coin interne est plus rond que l'externe.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : « l'oreille ». Rayon interne ≤ externe.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un media qui dépasse le coin.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Pill sur du texte multiligne",
+     "quand": "Une pilule enveloppe deux lignes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pill sur du texte multiligne\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"86\" width=\"180\" height=\"72\" rx=\"36\" fill=\"#E0E7FF\"/><rect x=\"276\" y=\"110\" width=\"128\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.55\"/><rect x=\"276\" y=\"132\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.55\"/><circle cx=\"442\" cy=\"86\" r=\"9\" fill=\"#92400E\"/><path d=\"M438.5 82.5l7 7M445.5 82.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une pilule enveloppe deux lignes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservez le pill au mono-ligne (sinon effet stade).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un badge multi-lignes à éviter.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de RADIUS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<code>radius.pill</code> (valeur géante, convention partagée : 999/9999px) est <strong>réservé aux contenus mono-ligne intrinsèques dont la forme EST la pilule</strong> — pastilles, badges, avatars. <strong>Tranché (1.1.0) : un contrôle mono-ligne (bouton, input) ne prend JAMAIS <code>pill</code></strong> — il est mono-ligne mais pas <em>intrinsèquement pilule</em>, et suit sa taille (sm/md). « Intrinsèque » qualifie la forme du contenu, pas le simple fait de tenir sur une ligne. Jamais sur un contenu qui peut passer en multiligne : la pilule devient un stade.",
+       "id": "RADIUS-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Dérive décorative",
+     "quand": "Chaque écran choisit son rayon.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dérive décorative\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"80\" width=\"140\" height=\"92\" rx=\"46\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"420\" cy=\"76\" r=\"9\" fill=\"#92400E\"/><path d=\"M416.5 72.5l7 7M423.5 72.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Chaque écran choisit son rayon.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Échelle fermée, 3 valeurs.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des rayons hétéroclites.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-rang\"><div class=\"spec-item\"><div class=\"radius-boite\" style=\"border-radius:4px;\"><code>sm</code></div></div><div class=\"spec-item\"><div class=\"radius-boite\" style=\"border-radius:8px;\"><code>md</code></div></div><div class=\"spec-item\"><div class=\"radius-boite\" style=\"border-radius:12px;\"><code>lg</code></div></div><div class=\"spec-item\"><div class=\"radius-boite\" style=\"border-radius:9999px;\"><code>pill</code></div></div></div></section>"
+  ],
+  "tokens": [
+   {
+    "token": "crans.petit",
+    "ref": "radius.sm",
+    "valeur": "4px",
+    "couleur": null
+   },
+   {
+    "token": "crans.controle",
+    "ref": "radius.md",
+    "valeur": "8px",
+    "couleur": null
+   },
+   {
+    "token": "crans.conteneur",
+    "ref": "radius.lg",
+    "valeur": "12px",
+    "couleur": null
+   },
+   {
+    "token": "crans.plein",
+    "ref": "radius.pill",
+    "valeur": "9999px",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "RADIUS-R01",
+   "couche": "ux",
+   "solution": "le radius est une **fondation** — la contrainte transversale la plus courte du système, et c'est une propriété du sujet : trois tokens, quatre règles, aucun axe. L'inventaire (17 cas) confirme que la brièveté n'est pas un trou de couverture.",
+   "enonce": "Le radius est une fondation transversale à laquelle le modèle à axes ne s'applique pas ; sa brièveté est une propriété du sujet, pas un défaut de couverture.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "RADIUS-R02",
+   "couche": "ux",
+   "solution": "le rayon est une propriété d'**identité**, pas d'état : il ne change jamais entre repos/hover/focus/error, et il ne porte aucun sens sémantique. Ce qu'il suit, c'est la **taille du composant**.",
+   "enonce": "Le rayon est une propriété d'identité et non d'état : il ne varie jamais entre repos, survol, focus, erreur ou sélection.",
+   "mesure": "rayon identique au repos et dans tous les états d'un même composant",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "RADIUS-R03",
+   "couche": "ux",
+   "solution": "**le cran suit la taille ET le type (contrôle vs conteneur)** : `radius.sm` pour les petites hauteurs (bouton/input sm), `radius.md` pour les **contrôles** de taille standard (bouton/input md-lg), `radius.lg` pour les **conteneurs** (card, alert). C'est la logique croissante convergente des systèmes majeurs (Atlassian : 2px badges → 12px conteneurs → 16px players ; Material : 4 → 28dp), à échelle réduite.",
+   "enonce": "Le cran de rayon se choisit selon la taille et le type du composant, sur une échelle fermée et croissante.",
+   "mesure": "chaque composant résout un cran de l'échelle ; aucune valeur de rayon en dur",
+   "critere": "chaque_valeur(\"border-radius,border-*-radius\") dans(radius.*)",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Échelle croissante avec la taille du composant",
+     "liens": [
+      {
+       "label": "Atlassian — Radius",
+       "url": "https://atlassian.design/foundations/radius"
+      },
+      {
+       "label": "Material 3 — shape scale",
+       "url": "https://m3.material.io/styles/shape/corner-radius-scale"
+      },
+      {
+       "label": "doc Compose",
+       "url": "https://developer.android.com/develop/ui/compose/designsystems/material3"
+      },
+      {
+       "label": "Polaris — border tokens",
+       "url": "https://polaris-react.shopify.com/tokens/border"
+      }
+     ],
+     "confiance": "Établi — convergence des trois échelles"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Relevé du 2026-07-27 : Atlassian expose huit crans (2, 4, 6, 8, 12, 16 px, plein, tuile) avec mapping explicite — medium pour boutons et champs, large pour cartes et menus, xlarge pour conteneurs de page et modales ; anneau de focus tokenisé à base + 2 px ; les badges y prennent 2 px, pas le rayon plein",
+     "liens": [
+      {
+       "label": "Atlassian — Radius",
+       "url": "https://atlassian.design/foundations/radius"
+      }
+     ],
+     "confiance": "Établi — seul système vérifié à documenter le mapping contrôle / conteneur. **Contredit R08 sur les badges**"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Polaris expose une échelle croissante et fermée de 0 à 30 px plus un cran plein ; aucune consigne d'usage par composant n'est publiée : l'échelle est convergente, le mapping ne l'est pas. Le cran nul y est tokenisé",
+     "liens": [
+      {
+       "label": "Polaris — Border tokens",
+       "url": "https://polaris-react.shopify.com/tokens/border"
+      }
+     ],
+     "confiance": "Établi — relevé sur la table de tokens officielle"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Fluent 2 expose un cran nul, puis 2, 4, 6, 8, 12, 16, 24, 32, 40 px et un cran circulaire : échelle croissante, cran nul tokenisé, pilule par valeur géante",
+     "liens": [
+      {
+       "label": "Fluent UI — tokens/borderRadius.ts",
+       "url": "https://raw.githubusercontent.com/microsoft/fluentui/master/packages/tokens/src/global/borderRadius.ts"
+      }
+     ],
+     "confiance": "Établi — source primaire (dépôt de tokens)"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Material 3 définit une échelle de forme nommée et croissante terminée par un cran plein ; les valeurs numériques ne sont pas dans le fichier de tokens et le site n'est pas lisible sans JavaScript",
+     "liens": [
+      {
+       "label": "Material Web — tokens/_md-sys-shape.scss",
+       "url": "https://raw.githubusercontent.com/material-components/material-web/main/tokens/_md-sys-shape.scss"
+      }
+     ],
+     "confiance": "Partiel — noms de crans vérifiés, valeurs non vérifiables"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Échelle croissante avec la taille du composant",
+    "liens": [
+     {
+      "label": "Atlassian — Radius",
+      "url": "https://atlassian.design/foundations/radius"
+     },
+     {
+      "label": "Material 3 — shape scale",
+      "url": "https://m3.material.io/styles/shape/corner-radius-scale"
+     },
+     {
+      "label": "doc Compose",
+      "url": "https://developer.android.com/develop/ui/compose/designsystems/material3"
+     },
+     {
+      "label": "Polaris — border tokens",
+      "url": "https://polaris-react.shopify.com/tokens/border"
+     }
+    ],
+    "confiance": "Établi — convergence des trois échelles"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Bouton",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Input",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Card / alert",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R04",
+   "couche": "ux",
+   "solution": "le rayon ne grandit **pas linéairement** avec la taille — le bouton lg garde `radius.md` (\"l'agrandir proportionnellement donnerait un effet pilule non désiré\", BUTTON-UI). Le rayon est un cran choisi, jamais un pourcentage de la hauteur.",
+   "enonce": "Le rayon n'est jamais dérivé d'un pourcentage ni d'une fraction de la hauteur : c'est un cran choisi, qui ne croît pas proportionnellement à la taille.",
+   "mesure": "aucun rayon exprimé en pourcentage ou calculé depuis la hauteur",
+   "critere": "",
+   "contre": "",
+   "probleme": "dériver le rayon en % de la hauteur — deux composants voisins de hauteurs différentes ont alors des courbures visiblement dissonantes, et le pill apparaît par accident sur les éléments hauts.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Réduction proportionnelle des rayons : si la somme de deux rayons d'un même côté dépasse la longueur de ce côté, tous les rayons sont multipliés par un facteur f < 1. C'est ce mécanisme qui produit la pilule exacte, le stade multiligne et la pilule accidentelle d'un rayon en pourcentage",
+     "liens": [
+      {
+       "label": "CSSWG — CSS Backgrounds 3, Overlapping Curves",
+       "url": "https://drafts.csswg.org/css-backgrounds-3/#corner-overlap"
+      }
+     ],
+     "confiance": "Établi, norme W3C"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Réduction proportionnelle des rayons : si la somme de deux rayons d'un même côté dépasse la longueur de ce côté, tous les rayons sont multipliés par un facteur f < 1. C'est ce mécanisme qui produit la pilule exacte, le stade multiligne et la pilule accidentelle d'un rayon en pourcentage",
+    "liens": [
+     {
+      "label": "CSSWG — CSS Backgrounds 3, Overlapping Curves",
+      "url": "https://drafts.csswg.org/css-backgrounds-3/#corner-overlap"
+     }
+    ],
+    "confiance": "Établi, norme W3C"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Bouton",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R05",
+   "couche": "ux",
+   "solution": "la cohérence se joue **par taille, pas par composant** : un input md à côté d'un bouton md partagent `radius.md` — les contrôles d'un même formulaire ont la même courbure (BUTTON-UI et INPUT-UI le font déjà, la règle est désormais dite).",
+   "enonce": "Deux contrôles de même taille voisins dans une même composition partagent le même cran de rayon.",
+   "mesure": "contrôles de même taille d'un même groupe : même token de rayon",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Bouton",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Input",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R06",
+   "couche": "ux",
+   "solution": "un coin interne n'est jamais plus rond que le coin externe qui le contient. Cas collé (media d'une carte) : le rayon interne épouse l'externe. Cas concentrique idéal : rayon interne = rayon externe − écart.",
+   "enonce": "Un coin intérieur n'est jamais plus rond que le coin extérieur qui le contient : au contact il épouse le rayon extérieur, à distance il vaut le rayon extérieur moins l'écart.",
+   "mesure": "rayon interne ≤ rayon externe ; cas concentrique : rayon interne = rayon externe − écart",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Géométrie des coins concentriques, normative : le rayon du bord intérieur vaut le rayon extérieur moins l'épaisseur correspondante, et zéro si le résultat est négatif ; idem du padding au contenu",
+     "liens": [
+      {
+       "label": "W3C — CSS Backgrounds and Borders Level 3, Corner Shaping",
+       "url": "https://www.w3.org/TR/css-backgrounds-3/"
+      }
+     ],
+     "confiance": "Établi, norme W3C — **contredit la note du fichier qui déclarait l'imbrication « sans source normative unique »**"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Règle du rayon imbriqué telle qu'elle circule dans la littérature de design : rayon extérieur = rayon intérieur + écart ; l'article note la limite quand l'écart dépasse le rayon extérieur",
+     "liens": [
+      {
+       "label": "Frontend Masters — The Classic Border Radius Advice",
+       "url": "https://master.dev/blog/the-classic-border-radius-advice-plus-an-unusual-trick"
+      }
+     ],
+     "confiance": "Convergence de littérature — secondaire ; la version normative est S5"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Géométrie des coins concentriques, normative : le rayon du bord intérieur vaut le rayon extérieur moins l'épaisseur correspondante, et zéro si le résultat est négatif ; idem du padding au contenu",
+    "liens": [
+     {
+      "label": "W3C — CSS Backgrounds and Borders Level 3, Corner Shaping",
+      "url": "https://www.w3.org/TR/css-backgrounds-3/"
+     }
+    ],
+    "confiance": "Établi, norme W3C — **contredit la note du fichier qui déclarait l'imbrication « sans source normative unique »**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "RADIUS-R07",
+   "couche": "ux",
+   "solution": "le cas **inversé** existe aussi : un anneau posé *à l'extérieur* (le focus ring) prend rayon du composant **+ offset** — c'est la même géométrie dans l'autre sens, et Atlassian la tokenise exactement ainsi (radius.focus = rayon de base + 2px).",
+   "enonce": "Un anneau posé à l'extérieur d'un composant prend pour rayon celui du composant augmenté de son écart.",
+   "mesure": "rayon de l'anneau de focus = rayon du composant + écart de focus",
+   "critere": "",
+   "contre": "",
+   "probleme": "deux courbes non concentriques créent une \"oreille\" — un croissant d'espace inégal dans le coin, petit mais immédiatement visible.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Géométrie des coins concentriques, normative : le rayon du bord intérieur vaut le rayon extérieur moins l'épaisseur correspondante, et zéro si le résultat est négatif ; idem du padding au contenu",
+     "liens": [
+      {
+       "label": "W3C — CSS Backgrounds and Borders Level 3, Corner Shaping",
+       "url": "https://www.w3.org/TR/css-backgrounds-3/"
+      }
+     ],
+     "confiance": "Établi, norme W3C — **contredit la note du fichier qui déclarait l'imbrication « sans source normative unique »**"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Rayon du focus = rayon de base + offset (concentrique inversé)",
+     "liens": [
+      {
+       "label": "Atlassian — Radius",
+       "url": "https://atlassian.design/foundations/radius"
+      }
+     ],
+     "confiance": "Établi chez Atlassian — adopté, cf. BORDER-UI"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Relevé du 2026-07-27 : Atlassian expose huit crans (2, 4, 6, 8, 12, 16 px, plein, tuile) avec mapping explicite — medium pour boutons et champs, large pour cartes et menus, xlarge pour conteneurs de page et modales ; anneau de focus tokenisé à base + 2 px ; les badges y prennent 2 px, pas le rayon plein",
+     "liens": [
+      {
+       "label": "Atlassian — Radius",
+       "url": "https://atlassian.design/foundations/radius"
+      }
+     ],
+     "confiance": "Établi — seul système vérifié à documenter le mapping contrôle / conteneur. **Contredit R08 sur les badges**"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Géométrie des coins concentriques, normative : le rayon du bord intérieur vaut le rayon extérieur moins l'épaisseur correspondante, et zéro si le résultat est négatif ; idem du padding au contenu",
+    "liens": [
+     {
+      "label": "W3C — CSS Backgrounds and Borders Level 3, Corner Shaping",
+      "url": "https://www.w3.org/TR/css-backgrounds-3/"
+     }
+    ],
+    "confiance": "Établi, norme W3C — **contredit la note du fichier qui déclarait l'imbrication « sans source normative unique »**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Focus ring",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R08",
+   "couche": "ux",
+   "solution": "`radius.pill` (valeur géante, convention partagée : 999/9999px) est **réservé aux contenus mono-ligne intrinsèques dont la forme EST la pilule** — pastilles, badges, avatars. **Tranché (1.1.0) : un contrôle mono-ligne (bouton, input) ne prend JAMAIS `pill`** — il est mono-ligne mais pas *intrinsèquement pilule*, et suit sa taille (sm/md). « Intrinsèque » qualifie la forme du contenu, pas le simple fait de tenir sur une ligne. Jamais sur un contenu qui peut passer en multiligne : la pilule devient un stade.",
+   "enonce": "Le rayon plein est réservé aux contenus mono-ligne dont la forme est intrinsèquement une pilule ; aucun contrôle ni contenu susceptible de passer en multiligne ne le prend.",
+   "mesure": "aucun composant de type contrôle ni contenu multiligne ne consomme le rayon plein",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Pill par valeur géante",
+     "liens": [
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/radius"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris-react.shopify.com/tokens/border"
+      }
+     ],
+     "confiance": "Établi — convention partagée ; la borne mono-ligne est une formalisation interne"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Réduction proportionnelle des rayons : si la somme de deux rayons d'un même côté dépasse la longueur de ce côté, tous les rayons sont multipliés par un facteur f < 1. C'est ce mécanisme qui produit la pilule exacte, le stade multiligne et la pilule accidentelle d'un rayon en pourcentage",
+     "liens": [
+      {
+       "label": "CSSWG — CSS Backgrounds 3, Overlapping Curves",
+       "url": "https://drafts.csswg.org/css-backgrounds-3/#corner-overlap"
+      }
+     ],
+     "confiance": "Établi, norme W3C"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Relevé du 2026-07-27 : Atlassian expose huit crans (2, 4, 6, 8, 12, 16 px, plein, tuile) avec mapping explicite — medium pour boutons et champs, large pour cartes et menus, xlarge pour conteneurs de page et modales ; anneau de focus tokenisé à base + 2 px ; les badges y prennent 2 px, pas le rayon plein",
+     "liens": [
+      {
+       "label": "Atlassian — Radius",
+       "url": "https://atlassian.design/foundations/radius"
+      }
+     ],
+     "confiance": "Établi — seul système vérifié à documenter le mapping contrôle / conteneur. **Contredit R08 sur les badges**"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Polaris expose une échelle croissante et fermée de 0 à 30 px plus un cran plein ; aucune consigne d'usage par composant n'est publiée : l'échelle est convergente, le mapping ne l'est pas. Le cran nul y est tokenisé",
+     "liens": [
+      {
+       "label": "Polaris — Border tokens",
+       "url": "https://polaris-react.shopify.com/tokens/border"
+      }
+     ],
+     "confiance": "Établi — relevé sur la table de tokens officielle"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Fluent 2 expose un cran nul, puis 2, 4, 6, 8, 12, 16, 24, 32, 40 px et un cran circulaire : échelle croissante, cran nul tokenisé, pilule par valeur géante",
+     "liens": [
+      {
+       "label": "Fluent UI — tokens/borderRadius.ts",
+       "url": "https://raw.githubusercontent.com/microsoft/fluentui/master/packages/tokens/src/global/borderRadius.ts"
+      }
+     ],
+     "confiance": "Établi — source primaire (dépôt de tokens)"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Pill par valeur géante",
+    "liens": [
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/radius"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris-react.shopify.com/tokens/border"
+     }
+    ],
+    "confiance": "Établi — convention partagée ; la borne mono-ligne est une formalisation interne"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Input",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Pill sur du texte multiligne",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R09",
+   "couche": "ux",
+   "solution": "aucun consommateur documenté à ce jour — provision rendue visible (même statut qu'`elevation.overlay`), candidat naturel : badge/tag, dont `typography.label` (Inter, 1.8.0) est l'autre moitié déjà née.",
+   "enonce": "Un token de rayon provisionné sans consommateur documenté est déclaré comme provision explicite, avec son consommateur candidat nommé.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "RADIUS-R10",
+   "couche": "ux",
+   "solution": "l'**angle droit n'a pas de token** — décision, pas oubli : rien dans ce système n'est carré par défaut (Carbon fait le choix inverse — esthétique d'identité, pas une norme). Un besoin réel l'ajouterait en un cran `none`.",
+   "enonce": "L'angle droit n'a pas de token dans l'échelle : rien n'est carré par défaut, et un besoin réel devrait ajouter explicitement un cran nul.",
+   "mesure": "l'échelle de rayon ne comporte aucun cran de valeur 0",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Angle droit comme identité possible",
+     "liens": [
+      {
+       "label": "Carbon",
+       "url": "https://carbondesignsystem.com/components/tag/style/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — choix inverse du nôtre, cité comme preuve que c'est une décision d'identité"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Carbon pose explicitement un rayon nul sur ses boutons via un mixin appliqué à toutes les variantes : l'angle droit y est le défaut voulu. Le Tag, cité comme exception, est spécifié à 16 px et non par un token de pilule",
+     "liens": [
+      {
+       "label": "Carbon — issue #285",
+       "url": "https://github.com/carbon-design-system/carbon/issues/285"
+      },
+      {
+       "label": "Carbon — Tag, style",
+       "url": "https://carbondesignsystem.com/components/tag/style/"
+      }
+     ],
+     "confiance": "Établi — **corrige la sur-interprétation de S4**"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Polaris expose une échelle croissante et fermée de 0 à 30 px plus un cran plein ; aucune consigne d'usage par composant n'est publiée : l'échelle est convergente, le mapping ne l'est pas. Le cran nul y est tokenisé",
+     "liens": [
+      {
+       "label": "Polaris — Border tokens",
+       "url": "https://polaris-react.shopify.com/tokens/border"
+      }
+     ],
+     "confiance": "Établi — relevé sur la table de tokens officielle"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Fluent 2 expose un cran nul, puis 2, 4, 6, 8, 12, 16, 24, 32, 40 px et un cran circulaire : échelle croissante, cran nul tokenisé, pilule par valeur géante",
+     "liens": [
+      {
+       "label": "Fluent UI — tokens/borderRadius.ts",
+       "url": "https://raw.githubusercontent.com/microsoft/fluentui/master/packages/tokens/src/global/borderRadius.ts"
+      }
+     ],
+     "confiance": "Établi — source primaire (dépôt de tokens)"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Angle droit comme identité possible",
+    "liens": [
+     {
+      "label": "Carbon",
+      "url": "https://carbondesignsystem.com/components/tag/style/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — choix inverse du nôtre, cité comme preuve que c'est une décision d'identité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Angle droit (0)",
+     "famille": "Rôle de rayon"
+    }
+   ]
+  },
+  {
+   "id": "RADIUS-R11",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Les risques du rayon sont consignés dans une table de cas, de risque principal et de sévérité.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "RADIUS-R12",
+   "couche": "ux",
+   "solution": "**le rayon suit la taille et rien d'autre** — ni l'importance (BUTTON-UX : \"large ne veut pas dire important\"), ni l'état, ni le goût de l'écran.",
+   "enonce": "Le rayon suit la taille du composant et rien d'autre : ni son importance, ni son état, ni une préférence locale d'écran.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

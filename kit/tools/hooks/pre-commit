@@ -1,0 +1,43 @@
+#!/bin/sh
+# Crochet de pré-commit Fili — versionné dans le dépôt (tools/hooks/), activé par :
+#     git config core.hooksPath tools/hooks
+#
+# Pourquoi ici et pas ESLint : les deux règles qu'on voulait poser à l'écriture
+# (« pas de style inline en dur », « pas de valeur arbitraire ») sont déjà tenues par
+# fili-check et verifie-tokens, qui les tirent du manifeste et des tokens. Les
+# redéclarer dans un second moteur, c'est deux vérités pour une seule règle — la
+# panne exacte que ce chantier combat. Ce crochet ne réécrit rien : il rapproche
+# seulement les gardes existantes du moment où l'on écrit.
+#
+# L'AUTORITÉ RESTE LA CI. Ce crochet est local, contournable (git commit --no-verify),
+# et c'est très bien : il rend service, il ne garde pas la porte.
+
+set -e
+RACINE=$(git rev-parse --show-toplevel)
+cd "$RACINE"
+
+# Rien à faire si le commit ne touche ni le kit ni le site.
+CONCERNES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^(packages/react/src|apps/site/app)/.*\.(tsx?|css)$' || true)
+[ -z "$CONCERNES" ] && exit 0
+
+echo "· Fili — gardes locales sur $(echo "$CONCERNES" | wc -l | tr -d ' ') fichier(s) touché(s)"
+
+ECHEC=0
+node tools/verifie-tokens.mjs --strict > /tmp/fili-tokens.log 2>&1 || { ECHEC=1; echo; sed -n '1,30p' /tmp/fili-tokens.log; }
+node tools/verifie-consommation.mjs --strict > /tmp/fili-conso.log 2>&1 || { ECHEC=1; echo; sed -n '1,30p' /tmp/fili-conso.log; }
+
+if [ "$ECHEC" -ne 0 ]; then
+  cat <<'FIN'
+
+✗ Commit interrompu — un écart de conformité est apparu.
+  Trois issues, dans cet ordre :
+    1. corriger (un rôle de token ou un composant du kit existe presque toujours) ;
+    2. classer l'écart en exception NOMMÉE et justifiée (tools/verifie-tokens.exceptions.json,
+       ou /* fili-check-allow: <règle> — <raison> */ sur la ligne) ;
+    3. déclarer un manque : /* FILI-MANQUE: <slug> */ + sa fiche (MISSING-COMPONENT-PROTOCOL).
+  En dernier recours : git commit --no-verify (la CI, elle, ne se contourne pas).
+FIN
+  exit 1
+fi
+
+echo "· Fili — tokens et consommation conformes."

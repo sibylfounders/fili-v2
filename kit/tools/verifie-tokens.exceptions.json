@@ -1,0 +1,213 @@
+[
+  {
+    "file": "components/button/relief.css",
+    "motif": "rgba(255, 255, 255, 0.95)",
+    "classe": "mécanique-relief",
+    "raison": "Liseré haut du relief lighter au repos : blanc quasi-opaque posé SUR le fond du bouton, pas une couleur de rôle — la grammaire du relief (Figma 128:136) le définit localement."
+  },
+  {
+    "file": "components/submit-button/submit-button.css",
+    "motif": "rgba(79, 70, 229, .35)",
+    "classe": "repli-progressif",
+    "raison": "Première déclaration `stroke` = repli pour navigateurs sans color-mix ; la ligne suivante la remplace par color-mix(var(--primary) 35%). Paire volontaire, à garder tant que color-mix n'est pas universel."
+  },
+  {
+    "file": "components/submit-button/submit-button.css",
+    "motif": "rgba(3, 7, 18, .34)",
+    "classe": "mécanique-emotion",
+    "raison": "Drop-shadow animé du vol de l'avion (GSAP, --pp-sh variable) — ombre de scène chorégraphiée, hors grammaire elevation."
+  },
+  {
+    "file": "components/delete-button/delete-button.css",
+    "motif": "--del-",
+    "classe": "var-locale",
+    "raison": "Variables de la machine d'animation E-motion (géométrie des facettes), fallback = valeur par défaut du composant autonome."
+  },
+  {
+    "file": "components/delete-button/delete-button.css",
+    "motif": "--span-",
+    "classe": "var-locale",
+    "raison": "Variables par-lettre de l'animation d'éclatement — géométrie, pas des tokens."
+  },
+  {
+    "file": "components/delete-button/delete-button.css",
+    "motif": "--dscale",
+    "classe": "var-locale",
+    "raison": "Échelle d'animation locale."
+  },
+  {
+    "file": "components/submit-button/submit-button.css",
+    "motif": "--pp-",
+    "classe": "var-locale",
+    "raison": "Variables de la chorégraphie avion en papier (GSAP) — géométrie locale."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "--grp-cols",
+    "classe": "var-locale",
+    "raison": "Nombre de colonnes injecté par le composant ; fallback 2 = défaut viable sans JS."
+  },
+  {
+    "file": "components/theme-toggle/theme-toggle.css",
+    "motif": "--tt-",
+    "classe": "var-locale",
+    "raison": "Géométrie de la piste/du pouce par taille — dimensionnement local documenté."
+  },
+  {
+    "file": "components/drawer/drawer.css",
+    "motif": "--ds-drawer-w",
+    "classe": "var-locale",
+    "raison": "Largeur réelle du cran courant, posée par le composant pour le push du Frame."
+  },
+  {
+    "file": "components/button/relief.css",
+    "motif": "1px",
+    "classe": "mécanique-relief",
+    "raison": "Facettes du relief : liseré haut inset 1px et filet 0 0 0 1px — géométrie de la grammaire posé/creusé (Figma 128:136), pas des espacements."
+  },
+  {
+    "file": "components/button/relief.css",
+    "motif": "0.5px",
+    "classe": "mécanique-relief",
+    "raison": "Course d'enfoncement du pressé (translateY 0.5px) — géométrie du geste, sous le pas minimal de l'échelle spacing."
+  },
+  {
+    "file": "components/card/card.css",
+    "motif": "24rem",
+    "classe": "géométrie-adaptive",
+    "raison": "Seuil de la container query dérivé du CONTENU RÉEL de la Card (média+titre+description côte à côte), jamais un breakpoint partagé — documenté dans le fichier (ADAPTIVE-UI)."
+  },
+  {
+    "file": "components/skeleton/skeleton.css",
+    "motif": "1.4s",
+    "classe": "mécanique-emotion",
+    "raison": "Pulsation du squelette — rythme d'attente propre au composant, hors des durées d'interaction (fast/base/slow) qui plafonnent à 400ms."
+  },
+  {
+    "file": "lib/interaction.css",
+    "motif": "z-index:0",
+    "classe": "géométrie",
+    "raison": "Empilement LOCAL sous isolation:isolate (ombre pré-rendue derrière la surface) — pas une couche du système --z-*."
+  },
+  {
+    "file": "lib/interaction.css",
+    "motif": "0s",
+    "classe": "accessibilité",
+    "raison": "prefers-reduced-motion : transition coupée net (0s) — la valeur EST la règle d'accessibilité."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "1px",
+    "classe": "géométrie-filets",
+    "raison": "Filets internes de la collection (séparateurs 1px) et couture des coins joints (calc(radius - 1px)) — épaisseur de trait, pas un espacement."
+  },
+  {
+    "file": "lib/choice.css",
+    "motif": "1px",
+    "classe": "géométrie-filets",
+    "raison": "Filet délimitant de la marque de choix (case/disque) au repos — épaisseur de TRAIT, pas un espacement. Même statut que les filets de card-group.css : le système n'émet aucun token de border-width (l'échelle border ne porte que des couleurs), et en inventer un pour un composant serait une décision de fondation, prise ailleurs. Exception nommée plutôt que valeur masquée."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "34rem",
+    "classe": "requête-conteneur",
+    "raison": "Seuil de container query — var() est INTERDIT par CSS dans une condition de requête, la valeur littérale est structurellement forcée."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "46rem",
+    "classe": "requête-conteneur",
+    "raison": "Idem : seuil de container query, littéral forcé par CSS."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "22rem",
+    "classe": "requête-conteneur",
+    "raison": "Idem : seuil de repli inline→empilé, littéral forcé par CSS."
+  },
+  {
+    "file": "components/card-group/card-group.css",
+    "motif": "56.25%",
+    "classe": "géométrie",
+    "raison": "Ratio 16:9 du média (padding-top hack) — géométrie, pas un espacement."
+  },
+  {
+    "file": "components/app-layout/app-layout.css",
+    "motif": "1024px",
+    "classe": "requête-conteneur",
+    "raison": "Seuil de container query du shell — littéral forcé par CSS (aligné sur breakpoint.tablet, à vérifier à chaque changement de DESIGN.md)."
+  },
+  {
+    "file": "components/app-layout/app-layout.css",
+    "motif": "1280px",
+    "classe": "requête-conteneur",
+    "raison": "Seuil de container query du shell — littéral forcé (aligné sur breakpoint.desktop)."
+  },
+  {
+    "file": "components/app-layout/app-layout.css",
+    "motif": "640px",
+    "classe": "requête-conteneur",
+    "raison": "Seuil de container query — littéral forcé par CSS."
+  },
+  {
+    "file": "components/drawer/drawer.css",
+    "motif": "#030712",
+    "classe": "scène-depth",
+    "raison": "Fond de la Depth Transition (le contenu recule sur fond noir froid) — décor de scène du geste, identique clair/sombre par intention."
+  },
+  {
+    "file": "components/theme-toggle/theme-toggle.css",
+    "motif": "rgba(3, 7, 18, .25)",
+    "classe": "mécanique",
+    "raison": "Ombre du pouce (knob) — micro-relief local du contrôle, sous l'échelle elevation."
+  },
+  {
+    "file": "components/app-layout/app-layout.css",
+    "motif": "0s",
+    "contexte": "visibility\\s+0s$",
+    "classe": "bascule-discrète",
+    "raison": "`visibility` est une propriété DISCRÈTE : elle ne s'interpole pas. Ce `0s` n'est donc pas une durée de mouvement mais l'idiome CSS qui rend la bascule instantanée ; la seule durée PERCEPTIBLE du rail est portée par le délai tokenisé var(--duration-base), qui retarde le passage à `hidden` jusqu'à la fin du glissement. La fondation motion (DESIGN.md § motion) n'émet que fast/base/slow et ne parle que de mouvements perçus : lui ajouter un rôle « zéro » serait une décision de fondation, prise ailleurs, pour une valeur qui n'est pas une durée. Périmètre volontairement réduit par `contexte` : toute autre durée nulle de ce fichier reste un constat."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "h-[640px]",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. React Flow exige une hauteur DÉFINIE sur son conteneur : sans elle le canevas s'effondre à zéro et le diagramme n'existe pas. La valeur n'a aucun token vers lequel pointer — le thème n'émet AUCUNE échelle de hauteur (`height` absent de tailwind.theme.cjs), et l'échelle spacing est sémantique (base…section), sans cran de cet ordre. En plein écran, la classe est remplacée par `h-screen` : la valeur ne vaut que pour le cadre inséré dans la page. Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "padding: 0.12",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `fitViewOptions.padding` est un RATIO du viewport (0,12 = 12 % de marge autour du graphe recadré), pas une longueur. Aucun token d'espacement ne peut le porter : ce n'est pas une distance, et la multiplier par une échelle n'aurait pas de sens. Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "fontSize: 12",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `labelStyle` stylise les libellés d'arêtes que React Flow rend en SVG, hors de toute classe. Et surtout : il n'existe AUCUN token vers lequel pointer — le thème n'émet que h1–h6 et `2xs`, les crans de texte courant étant délibérément NON substituables (cf. la note de tête de packages/tokens/build/generate.mjs, arbitrage du 2026-07-31). La couleur du même objet, elle, est tokenisée : `fill: var(--text-secondary)`. Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "width: 20",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `markerEnd.width` dimensionne la pointe de flèche des arêtes de parcours en unités de **viewBox SVG**, où `var()` ne s'applique pas : un marqueur SVG n'est pas stylé par CSS, il est dimensionné par ses attributs. La couleur du même objet est tokenisée (`color: var(--primary)` / la teinte du verdict). Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "height: 20",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `markerEnd.height` dimensionne la pointe de flèche des arêtes de parcours en unités de **viewBox SVG**, où `var()` ne s'applique pas : un marqueur SVG n'est pas stylé par CSS, il est dimensionné par ses attributs. La couleur du même objet est tokenisée (`color: var(--primary)` / la teinte du verdict). Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "width: 18",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `markerEnd.width` dimensionne la pointe de flèche des arêtes d'extension en unités de **viewBox SVG**, où `var()` ne s'applique pas : un marqueur SVG n'est pas stylé par CSS, il est dimensionné par ses attributs. La couleur du même objet est tokenisée (`color: var(--primary)` / la teinte du verdict). Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  },
+  {
+    "file": "app/flows/[slug]/diagramme.tsx",
+    "motif": "height: 18",
+    "classe": "canevas-tiers",
+    "raison": "Le canevas du diagramme est rendu par @xyflow/react : ces valeurs sont des PROPS d'une bibliothèque tierce, pas des propriétés CSS que le kit contrôlerait. `markerEnd.height` dimensionne la pointe de flèche des arêtes d'extension en unités de **viewBox SVG**, où `var()` ne s'applique pas : un marqueur SVG n'est pas stylé par CSS, il est dimensionné par ses attributs. La couleur du même objet est tokenisée (`color: var(--primary)` / la teinte du verdict). Périmètre : `contexte` est INAPPLICABLE ici — le détecteur des styles inline ne passe pas de portée au filtre d'exceptions (verifie-tokens.mjs, `push` sans 6e argument), contrairement au balayage CSS. L'appariement se fait donc sur fichier + motif, et par `includes` : cette entrée couvre aussi, dans ce seul fichier, une valeur dont le motif la contiendrait (ex. « 200 » pour « 20 »). Limite assumée et nommée plutôt que masquée."
+  }
+]

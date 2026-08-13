@@ -1,0 +1,32 @@
+/**
+ * Skeleton — placeholder de chargement aux dimensions du contenu attendu.
+ * Double classe (.ds-skeleton.ds-skeleton) : bat les utilitaires Tailwind à
+ * spécificité égale quel que soit l'ordre des feuilles (piège documenté :
+ * une propriété déjà déclarée par la CSS d'un composant ne se surcharge pas
+ * depuis un utilitaire — ici on veut l'inverse, que le squelette gagne).
+ */
+.ds-skeleton.ds-skeleton {
+  background: var(--surface-hover);
+  color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  pointer-events: none;
+  animation: ds-skeleton-pulse 1.4s var(--ease-in-out) infinite;
+}
+.ds-skeleton.ds-skeleton > * {
+  visibility: hidden;
+}
+@keyframes ds-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-skeleton.ds-skeleton {
+    animation: none;
+  }
+}

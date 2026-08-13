@@ -1,0 +1,142 @@
+[
+  {
+    "id": "PERFORMANCE-R01",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le principe de performance perçue est un principe transversal sans variantes, sans assemblage et sans token propre : il est compilé en un jeu de règles unique et chargé d'office par le routeur pour toute intention.",
+    "mesure": "compilé vers dist/RULES-performance.md et présent dans le socle chargé pour toute intention"
+  },
+  {
+    "id": "PERFORMANCE-R02",
+    "statut": "methode",
+    "source": "S2, interne",
+    "enonce": "Les durées et les courbes des animations appartiennent à la fondation motion ; le contrat des attentes — ce que l'interface montre et promet pendant que le système travaille — appartient à ce principe, et une transition n'est jamais traitée comme une attente.",
+    "mesure": ""
+  },
+  {
+    "id": "PERFORMANCE-R03",
+    "statut": "methode",
+    "source": "S1, S8, S9, interne",
+    "enonce": "Les seuils de perception temporelle restent des bornes de raisonnement rédigées en prose sourcée et ne donnent lieu à aucun token tant qu'aucun consommateur outillé ne les réclame.",
+    "mesure": "aucun token de seuil temporel déclaré au titre de ce principe"
+  },
+  {
+    "id": "PERFORMANCE-R04",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Ce principe pose l'obligation et non la mécanique : chaque comportement d'attente est réglé par le composant qui le possède, et en cas de divergence le propriétaire fait autorité.",
+    "mesure": ""
+  },
+  {
+    "id": "PERFORMANCE-R05",
+    "statut": "methode",
+    "source": "S1, interne",
+    "enonce": "La perception ne remplace jamais la vitesse réelle : quand une attente dépasse régulièrement ses bornes, le constat se remonte comme un problème d'ingénierie ou de conception du parcours au lieu d'être absorbé par un indicateur supplémentaire.",
+    "mesure": ""
+  },
+  {
+    "id": "PERFORMANCE-R06",
+    "statut": "universelle",
+    "source": "S1, S8",
+    "enonce": "Une réponse obtenue en moins de 100 ms n'affiche aucun indicateur d'attente : le feedback d'activation du contrôle suffit, et tout indicateur y fabrique de la lenteur perçue.",
+    "mesure": "aucun indicateur d'attente rendu pour une opération résolue en moins de 100 ms"
+  },
+  {
+    "id": "PERFORMANCE-R07",
+    "statut": "identite",
+    "source": "S1, S9, interne",
+    "enonce": "Entre 100 ms et 1 s, l'attente se signale localement par un changement d'état du seul élément déclencheur, sans indicateur global ni blocage d'écran.",
+    "mesure": "attente inférieure à 1 s : indicateur porté par le contrôle déclencheur, aucun overlay ni indicateur de page"
+  },
+  {
+    "id": "PERFORMANCE-R08",
+    "statut": "universelle",
+    "source": "S1, S3, S10",
+    "enonce": "Toute attente dépassant 1 s est rendue perceptible visuellement et annoncée aux technologies d'assistance par un message d'état programmatiquement déterminable sans prise de focus, l'interface restant utilisable partout où l'attente ne bloque pas réellement.",
+    "mesure": "attente > 1 s : indicateur visible ET message d'état exposé via role=\"status\" ou aria-live, sans déplacement du focus"
+  },
+  {
+    "id": "PERFORMANCE-R09",
+    "statut": "universelle",
+    "source": "S1, S3, S11",
+    "enonce": "Au-delà de 10 s, ou dès que la durée est longue et inconnue, l'attente devient un état à part entière portant une progression réelle ou une estimation honnête, la possibilité de poursuivre une autre tâche quand c'est techniquement vrai, et un délai d'expiration toujours défini.",
+    "mesure": "attente supérieure ou égale à 10 s : indicateur de progression déterminé si l'avancement est mesurable, et délai d'expiration explicite ; aucune attente sans borne de temps"
+  },
+  {
+    "id": "PERFORMANCE-R10",
+    "statut": "universelle",
+    "source": "S7, interne",
+    "enonce": "Un indicateur d'attente n'apparaît pas au premier instant : il est différé d'un court délai afin de laisser passer sans bruit les réponses rapides, et reste affiché une durée minimale perceptible une fois montré.",
+    "mesure": "tout indicateur d'attente déclare un délai d'apparition non nul et une durée d'affichage minimale ; aucun cycle apparition-disparition sous le seuil de perception"
+  },
+  {
+    "id": "PERFORMANCE-R11",
+    "statut": "identite",
+    "source": "S6, interne",
+    "enonce": "Ce qui permet de décider ou d'agir s'affiche en premier — le contenu principal avant l'accessoire, la structure avant le détail — et le squelette de chargement promet exactement la structure qui va arriver, à l'endroit où elle arrivera.",
+    "mesure": "le squelette reprend l'anatomie et l'emplacement du contenu final ; aucun élément accessoire rendu avant le contenu principal"
+  },
+  {
+    "id": "PERFORMANCE-R12",
+    "statut": "universelle",
+    "source": "S6, S12",
+    "enonce": "Un contenu qui arrive tardivement ne déplace jamais ce qui est déjà affiché : son espace est réservé d'avance ou son arrivée est neutre pour la mise en page, afin qu'aucune lecture ne soit perdue et qu'aucun geste déjà engagé ne soit détourné.",
+    "mesure": "CLS inférieur ou égal à 0,1 au 75e centile ; aucun décalage de mise en page non consécutif à une action de l'utilisateur"
+  },
+  {
+    "id": "PERFORMANCE-R13",
+    "statut": "identite",
+    "source": "S4, interne",
+    "enonce": "Une interface ne peut afficher le succès avant confirmation du serveur qu'à trois conditions cumulées : l'action est réversible ou rejouable sans dommage, son succès est très probable, et tout échec éventuel est réparé visiblement.",
+    "mesure": "tout affichage optimiste documente les trois conditions et un chemin de réparation visible en cas d'échec"
+  },
+  {
+    "id": "PERFORMANCE-R14",
+    "statut": "identite",
+    "source": "S4, interne",
+    "enonce": "L'affichage optimiste est interdit sur les actions irréversibles, les paiements, les engagements juridiques et toute action dont l'échec coûterait plus que l'attente économisée : ces actions attendent leur confirmation réelle.",
+    "mesure": "aucun rendu optimiste sur une action irréversible, un paiement ou un engagement juridique"
+  },
+  {
+    "id": "PERFORMANCE-R15",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Un succès affiché de façon optimiste reste, pour le système, un état en cours : il n'est jamais re-présenté comme définitif à un endroit où l'utilisateur fonderait sur lui une décision irréversible.",
+    "mesure": "aucun état optimiste non confirmé utilisé comme condition d'une action irréversible"
+  },
+  {
+    "id": "PERFORMANCE-R16",
+    "statut": "universelle",
+    "source": "S3, interne",
+    "enonce": "Aucune progression affichée n'est déconnectée du travail réel : la barre est déterminée quand l'avancement est mesurable, indéterminée sinon, aucune étape n'est ajoutée au seul bénéfice de l'affichage, et une estimation de durée ne s'affiche que si elle est honnête.",
+    "mesure": "tout indicateur déterminé est piloté par un avancement réellement mesuré ; aucune étape présente uniquement pour alimenter la jauge"
+  },
+  {
+    "id": "PERFORMANCE-R17",
+    "statut": "identite",
+    "source": "S5, interne",
+    "enonce": "Aucune attente n'est fabriquée : quand le système peut répondre instantanément, il répond instantanément, et la mise en scène du travail n'est jamais employée pour augmenter la valeur perçue.",
+    "mesure": "aucun délai artificiel introduit entre la disponibilité de la réponse et son affichage"
+  },
+  {
+    "id": "PERFORMANCE-R18",
+    "statut": "identite",
+    "source": "S1, S3, interne",
+    "enonce": "Une attente qui dépasse la durée attendue le dit explicitement à l'utilisateur et lui ouvre une issue — réessayer, poursuivre ailleurs, être prévenu — plutôt que de laisser un indicateur tourner sans fin.",
+    "mesure": "tout état d'attente prolongée expose un message d'anomalie et au moins une action de sortie"
+  },
+  {
+    "id": "PERFORMANCE-R19",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Ce principe ne mesure pas la performance réelle, ne fixe aucun budget technique, n'ajoute aucun token et ne possède aucune mécanique d'attente : il renvoie à ses propriétaires et remonte les cas où la vitesse réelle est le problème.",
+    "mesure": ""
+  },
+  {
+    "id": "PERFORMANCE-R20",
+    "statut": "identite",
+    "source": "S2, interne",
+    "enonce": "Le temps de l'utilisateur est traité comme la ressource la plus chère que le produit dépense : chaque attente est un emprunt remboursé par un feedback au bon seuil, une structure stable, un optimisme mérité et une honnêteté totale, jamais par une mise en scène.",
+    "mesure": ""
+  }
+]

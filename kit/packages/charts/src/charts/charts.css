@@ -1,0 +1,110 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   @fili/charts — styles des graphes SVG (sur tokens). Trace + grille + axes,
+   couche d'interaction (crosshair, point actif, infobulle), animations d'entree.
+   Les graphes sont dessines en pixels reels (mesure ResizeObserver) : pas de
+   distorsion, trait a epaisseur constante.
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Palette catégorielle des graphes (segments de pie / séries de lignes) — DÉROGATION
+   assumée au theming : on épingle les teintes VIVES de la palette sombre dans les deux
+   thèmes, pour un rendu identique et lisible en clair comme en sombre. */
+:root {
+  --ch-cat-1: #818cf8;  /* primary (sombre) */
+  --ch-cat-2: #60a5fa;  /* info    (sombre) */
+  --ch-cat-3: #4ade80;  /* success (sombre) */
+  --ch-cat-4: #fbbf24;  /* warning (sombre) */
+  --ch-cat-5: #f87171;  /* danger  (sombre) */
+}
+.ch-frame { width: 100%; font-family: var(--font-sans); }
+.ch-plot { position: relative; width: 100%; }
+.ch-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* grille + axes */
+.ch-grid { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 3; }
+.ch-axis-line { stroke: var(--border); stroke-width: 1; }
+.ch-xaxis {
+  display: flex; justify-content: space-between; margin-top: 8px;
+  font: 500 10px/1 var(--font-mono, var(--font-sans)); color: var(--text-muted);
+}
+.ch-xaxis > span { flex: 1; text-align: center; }
+.ch-xaxis > span:first-child { text-align: left; }
+.ch-xaxis > span:last-child { text-align: right; }
+
+/* aire + ligne */
+.ch-line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ch-reveal { transform-box: fill-box; transform-origin: left; }
+.ch-anim .ch-reveal { animation: chReveal .9s var(--ease-out, ease-out) both; }
+@keyframes chReveal { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* point actif (suivi pointeur) */
+.ch-dot {
+  fill: var(--background); stroke: var(--primary); stroke-width: 2;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / .18));
+}
+.ch-cross { stroke: var(--border-strong, var(--border)); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+
+/* barres */
+.ch-bar { fill: var(--primary-subtle); transform-box: fill-box; transform-origin: bottom; }
+.ch-anim .ch-bar { animation: chBar .6s var(--ease-out, ease-out) both; }
+@keyframes chBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.ch-bar--dim { opacity: .45; transition: opacity var(--duration-fast, .12s) var(--ease-out, ease-out); }
+.ch-cline { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ch-anim .ch-cline { animation: chFade .55s .45s var(--ease-out, ease-out) both; }
+@keyframes chFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* couche de capture pointeur (souris + tactile) */
+.ch-overlay { position: absolute; z-index: 2; cursor: crosshair; touch-action: pan-y; }
+
+/* infobulle */
+.ch-tip {
+  position: absolute; z-index: 3; transform: translate(-50%, calc(-100% - 10px));
+  pointer-events: none; background: var(--surface, var(--background));
+  border: 1px solid var(--border); border-radius: var(--radius-md, 8px);
+  box-shadow: var(--elevation-overlay, 0 8px 24px rgb(0 0 0 / .12));
+  padding: 8px 10px; min-width: max-content; max-width: 220px;
+  font-size: 12px; color: var(--text-secondary); white-space: nowrap;
+  animation: chTip .12s var(--ease-out, ease-out) both;
+}
+@keyframes chTip { from { opacity: 0; transform: translate(-50%, calc(-100% - 4px)); } to { opacity: 1; transform: translate(-50%, calc(-100% - 10px)); } }
+.ch-tip-x { display: block; font-weight: var(--weight-semibold, 600); color: var(--text-primary); margin-bottom: 5px; letter-spacing: -.01em; }
+.ch-tip-row { display: flex; align-items: center; gap: 7px; line-height: 1.5; }
+.ch-tip-row + .ch-tip-row { margin-top: 2px; }
+.ch-tip-sw { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.ch-tip-lbl { color: var(--text-secondary); }
+.ch-tip-val { margin-left: auto; padding-left: 14px; color: var(--text-primary); font-weight: var(--weight-semibold, 600); font-variant-numeric: tabular-nums; }
+
+/* donut / camembert */
+.ch-donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.ch-donut { position: relative; width: 148px; flex: none; }
+.ch-donut svg { display: block; width: 100%; height: auto; transform-origin: center; }
+.ch-anim .ch-donut svg { animation: chDonut .8s var(--ease-out, ease-out) both; }
+@keyframes chDonut { from { opacity: 0; transform: rotate(-120deg) scale(.9); } to { opacity: 1; transform: rotate(0) scale(1); } }
+.ch-seg { transition: stroke-width var(--duration-fast, .12s) var(--ease-out, ease-out), opacity var(--duration-fast, .12s) var(--ease-out, ease-out); cursor: pointer; }
+.ch-seg--active { stroke-width: 7; }
+.ch-seg--dim { opacity: .35; }
+.ch-donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; text-align: center; }
+.ch-donut-center b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; color: var(--text-primary); line-height: 1; }
+.ch-donut-center span { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; margin-top: 3px; }
+.ch-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 7px 16px; font-size: 13px; color: var(--text-secondary); }
+.ch-legend li { display: inline-flex; align-items: center; gap: 6px; cursor: default; transition: color var(--duration-fast, .12s) var(--ease-out, ease-out); }
+.ch-legend li:hover, .ch-legend li.is-active { color: var(--text-primary); }
+.ch-legend li.is-dim { opacity: .5; }
+.ch-legend b { color: var(--text-primary); font-weight: var(--weight-semibold, 600); font-variant-numeric: tabular-nums; }
+.ch-sw { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-anim .ch-reveal, .ch-anim .ch-bar, .ch-anim .ch-cline, .ch-anim .ch-donut svg, .ch-tip { animation: none; }
+}
+
+/* portee container pour l'anneau + mini-courbe */
+.ch-card-scope { container-type: inline-size; container-name: ch-card; }
+.ch-spark { position: relative; width: 100%; }
+.ch-spark svg { display: block; width: 100%; height: 100%; }
+.ch-spark--live { pointer-events: auto; }
+.ch-spark-hit { position: absolute; inset: 0; z-index: 2; cursor: crosshair; touch-action: pan-y; }
+.ch-spark-dot { position: absolute; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; border: 1.5px solid var(--background); box-shadow: 0 0 0 1px rgb(0 0 0 / .14); pointer-events: none; z-index: 3; }
+.ch-spark-chip { position: absolute; top: 1px; transform: translateX(-50%); z-index: 4; pointer-events: none; white-space: nowrap; font-size: 10.5px; font-weight: var(--weight-semibold, 600); color: var(--text-primary); background: var(--surface, var(--background)); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-variant-numeric: tabular-nums; box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
+.ch-spark-chip i { font-style: normal; color: var(--text-muted); margin-right: 5px; }
+
+/* legende de series (multi-lignes) */
+.ch-legend-top { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 14px; margin-bottom: 10px; font-size: 12.5px; color: var(--text-secondary); }
+.ch-legend-top-item { display: inline-flex; align-items: center; gap: 6px; }

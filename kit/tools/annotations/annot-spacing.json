@@ -1,0 +1,170 @@
+[
+ {
+  "id": "SPACING-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'espacement est une fondation consommée par tous les composants et composée par tous les patterns : le modèle à axes ne s'y applique pas.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R02",
+  "statut": "methode",
+  "source": "S7",
+  "enonce": "La grille de colonnes n'a pas de fondation propre tant qu'aucun consommateur réel ne l'exige : ses gouttières restent des tokens d'espacement.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R03",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La fondation porte deux fonctions distinctes : la relation, qui est une décision de sens, et le rythme, qui est une décision de système.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R04",
+  "statut": "universelle",
+  "source": "S2",
+  "enonce": "Tout espacement du système est un multiple entier d'une unité de base unique.",
+  "mesure": "toute valeur d'espacement est un multiple entier de spacing.base"
+ },
+ {
+  "id": "SPACING-R05",
+  "statut": "universelle",
+  "source": "S2, S4",
+  "enonce": "L'échelle d'espacement est fermée : on choisit un cran existant sans inventer de valeur intermédiaire ; un besoin répété fait évoluer l'échelle, pas l'écran.",
+  "mesure": "aucune valeur d'espacement en dur hors des crans de l'échelle"
+ },
+ {
+  "id": "SPACING-R06",
+  "statut": "identite",
+  "source": "S2",
+  "enonce": "Chez nous l'échelle est délibérément plus courte que celles des systèmes majeurs et ne s'allonge que sur un besoin réel journalisé.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R07",
+  "statut": "universelle",
+  "source": "S1, S11",
+  "enonce": "L'espace encode la relation : plus deux éléments sont proches, plus leur lien est perçu comme fort, et cette proximité l'emporte sur les autres indices visuels de groupement.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R08",
+  "statut": "universelle",
+  "source": "S1, S11",
+  "enonce": "La hiérarchie de proximité est monotone : l'écart entre éléments liés est inférieur à l'écart entre frères, lui-même inférieur à l'écart entre groupes.",
+  "mesure": "la suite des crans consommés est croissante du plus lié au plus séparé, sans inversion"
+ },
+ {
+  "id": "SPACING-R09",
+  "statut": "universelle",
+  "source": "S1, S11",
+  "enonce": "L'espacement interne d'un composant est toujours inférieur ou égal à son espacement externe.",
+  "mesure": "le plus grand espacement interne est inférieur ou égal au plus petit espacement externe"
+ },
+ {
+  "id": "SPACING-R10",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La séparation entre deux groupes passe par un saut d'échelle franc et non par un cran adjacent.",
+  "mesure": "deux groupes séparés par au moins deux crans, jamais par des crans adjacents"
+ },
+ {
+  "id": "SPACING-R11",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "La séparation se fait d'abord par l'espace, ensuite par le fond, et en dernier recours seulement par un trait dessiné.",
+  "mesure": "aucun séparateur dessiné là où un saut de cran suffit"
+ },
+ {
+  "id": "SPACING-R12",
+  "statut": "identite",
+  "source": "S10",
+  "enonce": "L'empilement vertical est un usage de l'échelle existante et non une seconde échelle.",
+  "mesure": "aucun token d'espacement vertical distinct de l'échelle spacing"
+ },
+ {
+  "id": "SPACING-R13",
+  "statut": "identite",
+  "source": "S10, S12",
+  "enonce": "Un titre est placé plus près de ce qu'il ouvre que de ce qu'il ferme : l'espace au-dessus dépasse l'espace au-dessous d'au moins un cran.",
+  "mesure": "pour tout titre, le cran au-dessus dépasse d'au moins un rang celui au-dessous"
+ },
+ {
+  "id": "SPACING-R14",
+  "statut": "identite",
+  "source": "S2",
+  "enonce": "Toute hauteur posée par le système s'exprime en multiples de la grille de base et s'y justifie.",
+  "mesure": "toute hauteur posée est un multiple entier de spacing.base"
+ },
+ {
+  "id": "SPACING-R15",
+  "statut": "identite",
+  "source": "S10, S16, S13",
+  "enonce": "Les interlignes restent gouvernés par la lisibilité et non par la grille de base : aucun interligne n'est recalé sur la grille sans arbitrage explicite.",
+  "mesure": "interligne du corps de texte ≥ 1,5 ; aucun interligne contraint à tomber sur la grille"
+ },
+ {
+  "id": "SPACING-R16",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La densité d'un composant est un décalage d'exactement un cran sur l'échelle commune, jamais une valeur propre.",
+  "mesure": "padding compact = padding confortable décalé d'exactement un cran"
+ },
+ {
+  "id": "SPACING-R17",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La densité modifie les espacements et jamais la structure : l'ordre des emplacements et la présence des éléments restent identiques.",
+  "mesure": "à densités différentes, ordre et présence des emplacements identiques"
+ },
+ {
+  "id": "SPACING-R18",
+  "statut": "universelle",
+  "source": "S5",
+  "enonce": "Quand l'équilibre mathématique et l'équilibre perçu divergent, l'ajustement optique est légitime s'il reste local, n'est jamais promu en valeur d'échelle, et est commenté là où il vit.",
+  "mesure": "tout ajustement optique est commenté à son point d'usage et n'apparaît dans aucun token"
+ },
+ {
+  "id": "SPACING-R19",
+  "statut": "identite",
+  "source": "S8",
+  "enonce": "Le système ne définit que deux régimes de mise en page, mobile et desktop, séparés par un seuil unique.",
+  "mesure": "un seul seuil de largeur global dans le système"
+ },
+ {
+  "id": "SPACING-R20",
+  "statut": "identite",
+  "source": "S9",
+  "enonce": "Les crans conservent la même valeur de part et d'autre du seuil responsive : ce qui change au mobile est la densité et la disposition, jamais la valeur des crans.",
+  "mesure": "les crans ont la même valeur de part et d'autre du seuil"
+ },
+ {
+  "id": "SPACING-R21",
+  "statut": "identite",
+  "source": "S15",
+  "enonce": "L'espacement s'exprime en pixels et non en unités relatives au texte, la typographie restant seule à suivre l'agrandissement.",
+  "mesure": "tous les tokens d'espacement sont exprimés en px"
+ },
+ {
+  "id": "SPACING-R22",
+  "statut": "universelle",
+  "source": "S18, S19",
+  "enonce": "L'espace occupé par un élément ne dépend pas de son état : la place du contenu attendu ou différé est réservée dès la mise en page initiale.",
+  "mesure": "les dimensions d'un squelette égalent celles du contenu réel ; aucun décalage non provoqué par une action utilisateur"
+ },
+ {
+  "id": "SPACING-R23",
+  "statut": "methode",
+  "source": "S17",
+  "enonce": "La fondation tient une table des cas à risque d'espacement et de leur sévérité, qui sert de grille de relecture avant livraison.",
+  "mesure": ""
+ },
+ {
+  "id": "SPACING-R24",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "L'espace est un canal d'information et non un reste : ce que les distances disent d'une page doit être aussi vrai que ce qu'en dit le texte.",
+  "mesure": ""
+ }
+]

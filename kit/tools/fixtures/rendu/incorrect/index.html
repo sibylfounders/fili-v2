@@ -1,0 +1,37 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Fixture négative — rendu</title><link rel="stylesheet" href="/_tokens.css">
+<style>
+  /* focus supprimé sans remplacement : invisible au clavier */
+  .muet:focus-visible{outline:none}
+  .minuscule{display:inline-block;width:16px;height:16px;padding:0;border:0;background:none}
+</style></head><body>
+  <h1>Titre de la page</h1>
+  <!-- niveau sauté : h1 → h3 -->
+  <h3>Sous-titre qui saute un niveau</h3>
+
+  <!-- anneau de focus du NAVIGATEUR : présent, mais hors des crans du système -->
+  <p><a href="#un">lien à l'anneau du navigateur</a></p>
+
+  <!-- aucun indicateur au clavier -->
+  <p><a href="#deux" class="muet">lien au focus supprimé</a></p>
+
+  <!-- outline TRANSPARENTE (le outline-none de Tailwind) sans porteur d'anneau au-dessus :
+       une outline invisible n'est pas un indicateur — focus-invisible attendu -->
+  <p><input style="outline:2px solid transparent" aria-label="champ à l'outline transparente" value="x"></p>
+
+  <!-- valeur d'échelle arrivée jusqu'au DOM -->
+  <div style="border-radius: 10px; padding: 18px 20px">carte écrite à la main</div>
+
+  <!-- lien vers une page qui n'existe pas : la page est parfaite, sa promesse est fausse -->
+  <p><a href="/page-jamais-construite/">renvoi vers le vide</a></p>
+
+  <!-- message ORPHELIN : le champ désigne un identifiant que personne ne porte.
+       À l'écran, rien ne manque ; pour la technologie d'assistance, le message n'existe pas. -->
+  <p><input aria-label="champ au message fantôme" aria-describedby="message-inexistant" value="x"></p>
+
+  <!-- erreur ANNONCÉE sans message : aria-invalid dit « refusé », jamais pourquoi -->
+  <p><input aria-label="champ en erreur muette" aria-invalid="true" value="x"></p>
+
+  <!-- cible sous le plancher tactile -->
+  <p><button class="minuscule" aria-label="fermer">×</button></p>
+</body></html>

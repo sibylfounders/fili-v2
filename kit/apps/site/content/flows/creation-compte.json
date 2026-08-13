@@ -1,0 +1,744 @@
+{
+  "flow": "creation-compte",
+  "version": "1.4.0",
+  "source": {
+    "fiche": "content/md/flows/CREATION-COMPTE-UX.md",
+    "inventaire": "content/md/inventaires/inventaire-cas-usage-creation-compte.md",
+    "empreinte": "3b81433c41d652df"
+  },
+  "moments": [
+    {
+      "id": "moment-1",
+      "index": 1,
+      "titre": "Choisir une méthode",
+      "conditionnel": false,
+      "precision": null,
+      "texte": "e-mail+mot de passe, un fournisseur tiers (Google, Apple…), ou un lien magique / passkey. Un seul écran, méthodes à poids visuel comparable.",
+      "casRattaches": [
+        "Choix de la méthode"
+      ],
+      "interventions": [],
+      "verdict": "couvert"
+    },
+    {
+      "id": "moment-2",
+      "index": 2,
+      "titre": "Saisir le minimum",
+      "conditionnel": false,
+      "precision": null,
+      "texte": "pour l'e-mail+mot de passe : e-mail + mot de passe (un seul champ, avec bascule d'affichage), rien de plus qu'il ne faille à la création. Cet écran *est* un form — toutes ses règles d'assemblage lui appartiennent.",
+      "casRattaches": [],
+      "interventions": [],
+      "verdict": "sans rattachement"
+    },
+    {
+      "id": "moment-3",
+      "index": 3,
+      "titre": "Vérifier l'e-mail",
+      "conditionnel": true,
+      "precision": "conditionnel — cf. extension",
+      "texte": "avant activation lorsque l'e-mail établit l'identité ou la récupération ; un accès provisoire limité n'est admis que si le risque produit le permet explicitement.",
+      "casRattaches": [],
+      "interventions": [],
+      "verdict": "sans rattachement"
+    },
+    {
+      "id": "moment-4",
+      "index": 4,
+      "titre": "Atterrir",
+      "conditionnel": false,
+      "precision": null,
+      "texte": "le compte existe : déposer la personne devant un premier pas concret, jamais sur une impasse « compte créé ».",
+      "casRattaches": [],
+      "interventions": [],
+      "verdict": "sans rattachement"
+    }
+  ],
+  "etats": [
+    {
+      "id": "inexistant",
+      "libelle": "inexistant",
+      "precision": null,
+      "sousEtats": [],
+      "entree": "inexistant",
+      "sortie": "inexistant"
+    },
+    {
+      "id": "en-cours",
+      "libelle": "en cours",
+      "precision": null,
+      "sousEtats": [
+        {
+          "id": "methode-choisie",
+          "libelle": "méthode choisie"
+        },
+        {
+          "id": "minimum-saisi",
+          "libelle": "minimum saisi"
+        }
+      ],
+      "entree": "methode-choisie",
+      "sortie": "minimum-saisi"
+    },
+    {
+      "id": "cree",
+      "libelle": "créé",
+      "precision": "en attente de vérification",
+      "sousEtats": [],
+      "entree": "cree",
+      "sortie": "cree"
+    },
+    {
+      "id": "verifie",
+      "libelle": "vérifié",
+      "precision": null,
+      "sousEtats": [],
+      "entree": "verifie",
+      "sortie": "verifie"
+    },
+    {
+      "id": "actif",
+      "libelle": "actif",
+      "precision": null,
+      "sousEtats": [],
+      "entree": "actif",
+      "sortie": "actif"
+    }
+  ],
+  "transitions": [
+    {
+      "de": "methode-choisie",
+      "vers": "minimum-saisi",
+      "dans": "en-cours",
+      "nature": "sequence",
+      "visible": "soumission (form), bouton loading",
+      "focus": "maintenu puis résultat",
+      "saisie": "conservée si erreur",
+      "condition": "le serveur accepte",
+      "libelle": "minimum saisi"
+    },
+    {
+      "de": "inexistant",
+      "vers": "methode-choisie",
+      "nature": "sequence",
+      "visible": "l'écran de saisie de la méthode",
+      "focus": "premier champ / bouton fournisseur",
+      "saisie": "—",
+      "condition": "méthode sélectionnée",
+      "libelle": "méthode choisie"
+    },
+    {
+      "de": "minimum-saisi",
+      "vers": "cree",
+      "nature": "sequence",
+      "visible": "écran de vérification ou espace provisoire borné, selon la décision de risque",
+      "focus": "titre de l'écran atteint",
+      "saisie": "—",
+      "condition": "compte créé côté serveur",
+      "libelle": "créé (en attente)"
+    },
+    {
+      "de": "cree",
+      "vers": "verifie",
+      "nature": "sequence",
+      "visible": "activation, ou levée des restrictions provisoires",
+      "focus": "selon le changement de contexte",
+      "saisie": "—",
+      "condition": "possession de l'e-mail confirmée",
+      "libelle": "vérifié / actif"
+    },
+    {
+      "de": "verifie",
+      "vers": "actif",
+      "nature": "sequence",
+      "visible": "activation, ou levée des restrictions provisoires",
+      "focus": "selon le changement de contexte",
+      "saisie": "—",
+      "condition": "possession de l'e-mail confirmée",
+      "libelle": "vérifié / actif"
+    },
+    {
+      "de": null,
+      "vers": "e-mail-deja-utilise",
+      "nature": "bifurcation",
+      "visible": "selon la posture arbitrée — cette cellule ne tranche pas. Défaut NEUTRE (tant que le produit n'a pas arbitré) : aucune confirmation d'existence dans l'interface, le chemin part par e-mail, temps de réponse constants. Posture OUVERTE, seulement si le produit l'a explicitement retenue : « un compte existe déjà avec cet e-mail » + chemin vers la connexion. La saisie est préservée dans les deux cas.",
+      "focus": "neutre → l'alert de confirmation d'envoi ; ouverte → champ e-mail / lien connexion",
+      "saisie": "conservée",
+      "condition": "selon la posture",
+      "libelle": "e-mail déjà utilisé"
+    },
+    {
+      "de": null,
+      "vers": "abandonne",
+      "nature": "bifurcation",
+      "visible": "rien (l'utilisateur part)",
+      "focus": "—",
+      "saisie": "conservée si reprise possible",
+      "condition": "reprise ou purge",
+      "libelle": "abandonné"
+    }
+  ],
+  "bifurcations": [
+    {
+      "id": "e-mail-deja-utilise",
+      "depuis": "e-mail déjà utilisé",
+      "vers": "chemin vers la connexion / récupération"
+    },
+    {
+      "id": "abandonne",
+      "depuis": "abandonné",
+      "vers": "réentrée"
+    }
+  ],
+  "extensions": [
+    {
+      "slug": "creation-compte-verification-email",
+      "titre": "Vérification de l'e-mail",
+      "couverture": [
+        "Vérification de l'e-mail",
+        "Expiration d'un lien ou d'un code",
+        "Renvoi d'un code",
+        "Changement d'adresse e-mail en cours",
+        "Accessibilité de l'e-mail de vérification et de son lien"
+      ],
+      "rattache": null
+    },
+    {
+      "slug": "creation-compte-sso-social",
+      "titre": "SSO et connexion sociale",
+      "couverture": [
+        "Connexion fédérée / SSO / social",
+        "Retour par une autre méthode (même e-mail)",
+        "Prévention des doublons"
+      ],
+      "rattache": null
+    },
+    {
+      "slug": "creation-compte-force-mot-de-passe",
+      "titre": "Force et règles du mot de passe",
+      "couverture": [
+        "Mot de passe à l'inscription",
+        "Force et règles du mot de passe"
+      ],
+      "rattache": null
+    },
+    {
+      "slug": "creation-compte-email-deja-utilise",
+      "titre": "E-mail déjà utilisé",
+      "couverture": [
+        "E-mail déjà utilisé",
+        "Prévention des doublons"
+      ],
+      "rattache": null
+    },
+    {
+      "slug": "creation-compte-consentement",
+      "titre": "Consentement à l'inscription",
+      "couverture": [
+        "Consentements obligatoires et facultatifs",
+        "Acceptation des conditions (CGU)"
+      ],
+      "rattache": null
+    }
+  ],
+  "frontieres": [
+    {
+      "domaine": "Champ e-mail / mot de passe : type, label, helper, valeur, état local, erreur locale, ARIA, bascule d'affichage du mot de passe",
+      "proprietaire": "INPUT-UX / INPUT-UI",
+      "duFlow": false
+    },
+    {
+      "domaine": "Mécanique de validation d'un champ isolé (blur, différé pendant la frappe, wording du message)",
+      "proprietaire": "INPUT-UX",
+      "duFlow": false
+    },
+    {
+      "domaine": "Assemblage d'un écran de saisie : ordre intra-écran, convention requis/optionnel, résumé d'erreurs, focus après échec, cycle de soumission de l'écran",
+      "proprietaire": "FORM-UX / FORM-UI",
+      "duFlow": false
+    },
+    {
+      "domaine": "Mécanique multi-écran : retour sans perte, ne pas redemander (ask-once), récapitulation",
+      "proprietaire": "FORM-UX § multi-étapes (extension form-multi-step) — le flow s'appuie dessus, ne la réécrit pas",
+      "duFlow": false
+    },
+    {
+      "domaine": "Validation asynchrone d'un champ (« cet e-mail est-il pris ? »)",
+      "proprietaire": "FORM-UX § validation asynchrone (extension form-async-validation)",
+      "duFlow": false
+    },
+    {
+      "domaine": "Affordance, label du CTA, loading, anti double-activation, un seul bouton de soumission par écran",
+      "proprietaire": "BUTTON-UX",
+      "duFlow": false
+    },
+    {
+      "domaine": "Message global (bandeau « vérifiez votre e-mail », erreur serveur, succès) : structure, tone, icône, persistance",
+      "proprietaire": "ALERT-UX / ALERT-UI",
+      "duFlow": false
+    },
+    {
+      "domaine": "Ton et wording (bienvenue, erreurs, non-culpabilisation, casse, gabarits de messages)",
+      "proprietaire": "VOICE",
+      "duFlow": false
+    },
+    {
+      "domaine": "Cohérence d'identification d'un même rôle d'un écran à l'autre (CTA de progression, lien « j'ai déjà un compte », retour) ; distinction Agir vs Naviguer à l'échelle de la séquence",
+      "proprietaire": "INTERACTION-UX (INTERACTION-UX.md — le flow applique, ne réinvente pas l'affordance)",
+      "duFlow": false
+    },
+    {
+      "domaine": "Chorégraphie de transition entre écrans du parcours (registre productif : *fade* / *fade through*)",
+      "proprietaire": "MOTION-UX (MOTION-UX.md)",
+      "duFlow": false
+    },
+    {
+      "domaine": "Moment expressif de l'atterrissage (« compte créé ») : quand il se pose, qui le porte, son budget de rareté et son repli",
+      "proprietaire": "EMOTION-UX (EMOTION-UX.md — catalogue fermé ; entrée via DECISIONS.md)",
+      "duFlow": false
+    },
+    {
+      "domaine": "Séquence inter-écrans du parcours : quoi demander, quand, en combien de moments ; ce qui est reporté après la première valeur",
+      "proprietaire": "CREATION-COMPTE",
+      "duFlow": true
+    },
+    {
+      "domaine": "Choix de la méthode d'inscription (e-mail+mot de passe, SSO/social, sans mot de passe) et leur poids relatif",
+      "proprietaire": "CREATION-COMPTE",
+      "duFlow": true
+    },
+    {
+      "domaine": "Stratégie de vérification de l'e-mail (laisser entrer puis vérifier, ou barrer l'accès)",
+      "proprietaire": "CREATION-COMPTE",
+      "duFlow": true
+    },
+    {
+      "domaine": "Posture sur « e-mail déjà utilisé » : bifurcation vers la connexion vs énumération de comptes",
+      "proprietaire": "CREATION-COMPTE (posture sécurité arbitrée avec le produit)",
+      "duFlow": true
+    },
+    {
+      "domaine": "Séquence de consentement à l'inscription : ce qu'on demande, séparé de quoi, dans quel ordre",
+      "proprietaire": "CREATION-COMPTE (le mécanisme de la case : FORM/INPUT ; le fond légal : le produit)",
+      "duFlow": true
+    },
+    {
+      "domaine": "Atterrissage post-inscription : où la personne est déposée une fois le compte créé",
+      "proprietaire": "CREATION-COMPTE",
+      "duFlow": true
+    },
+    {
+      "domaine": "Logique d'authentification serveur, hachage/stockage du mot de passe, envoi réel des e-mails, texte juridique des CGU, base légale RGPD",
+      "proprietaire": "Le produit / le serveur / le juridique — hors design system",
+      "duFlow": false
+    }
+  ],
+  "couverture": [
+    {
+      "famille": "Socle du parcours",
+      "cas": "Point d'entrée et promesse",
+      "description": "Comment la personne arrive à l'inscription, et ce qu'on lui promet",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Préconditions et points d'entrée",
+      "section": "Préconditions et points d'entrée"
+    },
+    {
+      "famille": "Socle du parcours",
+      "cas": "Choix de la méthode",
+      "description": "Offrir e-mail, SSO/social et lien magique sans en piéger aucun",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Choisir une méthode",
+      "section": "Choisir une méthode"
+    },
+    {
+      "famille": "Socle du parcours",
+      "cas": "Saisie du minimum viable",
+      "description": "Ne demander que l'identifiant et le moyen d'auth pour créer le compte",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Le minimum viable + FORM",
+      "section": "Le minimum viable"
+    },
+    {
+      "famille": "Socle du parcours",
+      "cas": "Machine à états du parcours",
+      "description": "La trajectoire du compte entre écrans, de rien à actif",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Machine à états du parcours",
+      "section": "Machine à états du parcours"
+    },
+    {
+      "famille": "Socle du parcours",
+      "cas": "États transitoires",
+      "description": "Les moments d'attente (soumission, création, envoi) et leur sortie de scène",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § États transitoires + BUTTON / ALERT",
+      "section": "États transitoires"
+    },
+    {
+      "famille": "Socle du parcours",
+      "cas": "Atterrissage et prochaine action",
+      "description": "Où la personne est déposée une fois le compte créé",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § L'atterrissage",
+      "section": "L'atterrissage"
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Mot de passe à l'inscription",
+      "description": "Le champ de création du mot de passe",
+      "statut": "Couvert",
+      "proprietaire": "INPUT + extension force-mot-de-passe",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Force et règles du mot de passe",
+      "description": "15 caractères en facteur unique, 8 avec MFA, 64 acceptés, blocklist, pas d'expiration ni de composition arbitraires",
+      "statut": "Couvert",
+      "proprietaire": "extension creation-compte-force-mot-de-passe (NIST SP 800-63B-4)",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Connexion fédérée / SSO / social",
+      "description": "S'inscrire via un fournisseur tiers",
+      "statut": "Couvert",
+      "proprietaire": "extension creation-compte-sso-social",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Retour par une autre méthode (même e-mail)",
+      "description": "Inscrit via un tiers, la personne revient par e-mail",
+      "statut": "Couvert",
+      "proprietaire": "rapprochement après preuve de contrôle uniquement, extension sso-social",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "E-mail déjà utilisé",
+      "description": "L'adresse saisie correspond à un compte existant",
+      "statut": "Couvert",
+      "proprietaire": "extension creation-compte-email-deja-utilise",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Prévention des doublons",
+      "description": "Un même humain ne doit pas produire deux comptes",
+      "statut": "Couvert",
+      "proprietaire": "extensions sso-social + email-deja-utilise",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Anti-robot / captcha",
+      "description": "Bloquer les inscriptions automatisées sans punir l'humain",
+      "statut": "Couvert",
+      "proprietaire": "pas de test cognitif bloquant (WCAG 3.3.8), alternative accessible",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Vérification de l'e-mail",
+      "description": "Vérifier avant activation quand l'adresse porte l'identité ; borner explicitement tout accès provisoire faible risque",
+      "statut": "Couvert",
+      "proprietaire": "extension creation-compte-verification-email",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Invitation / lien magique",
+      "description": "Entrer par un lien reçu plutôt qu'un mot de passe",
+      "statut": "Partiel",
+      "proprietaire": "offert comme méthode, pas de moment dédié ; creation-compte § Points d'entrée",
+      "section": "Points d'entrée"
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Expiration d'un lien ou d'un code",
+      "description": "Le lien ou le code de vérification a expiré",
+      "statut": "Couvert",
+      "proprietaire": "extension verification-email",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Renvoi d'un code",
+      "description": "Redemander un code non reçu",
+      "statut": "Couvert",
+      "proprietaire": "extension verification-email (anti-spam)",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Changement d'adresse e-mail en cours",
+      "description": "Corriger l'e-mail avant de le valider",
+      "statut": "Couvert",
+      "proprietaire": "extension verification-email",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Limitation des tentatives",
+      "description": "Trop d'essais d'inscription ou de vérification",
+      "statut": "Partiel",
+      "proprietaire": "signalement UX = ALERT / VOICE ; mécanique = serveur, hors DS",
+      "section": null
+    },
+    {
+      "famille": "Identité, credential, sécurité",
+      "cas": "Détection de fraude / contrôle supplémentaire",
+      "description": "Un signal de risque impose une vérification en plus",
+      "statut": "En attente",
+      "proprietaire": "sécurité serveur / produit ; le flow expose le point, ne le tranche pas",
+      "section": null
+    },
+    {
+      "famille": "Conformité et contenu",
+      "cas": "Consentements obligatoires et facultatifs",
+      "description": "Séparer le nécessaire (CGU) du facultatif (marketing)",
+      "statut": "Couvert",
+      "proprietaire": "extension creation-compte-consentement (RGPD art. 7)",
+      "section": null
+    },
+    {
+      "famille": "Conformité et contenu",
+      "cas": "Acceptation des conditions (CGU)",
+      "description": "Recueillir l'accord aux conditions d'utilisation",
+      "statut": "Couvert",
+      "proprietaire": "extension consentement, séparée du marketing",
+      "section": null
+    },
+    {
+      "famille": "Conformité et contenu",
+      "cas": "Champ de profil réclamé à l'inscription",
+      "description": "Tentation d'ajouter nom, société, téléphone à l'entrée",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Le minimum viable (profilage progressif)",
+      "section": "Le minimum viable"
+    },
+    {
+      "famille": "Conformité et contenu",
+      "cas": "Âge minimum selon le contexte",
+      "description": "Vérifier un âge plancher quand la loi l'exige",
+      "statut": "En attente",
+      "proprietaire": "décision produit / juridique (COPPA, RGPD art. 8), hors périmètre DS",
+      "section": null
+    },
+    {
+      "famille": "Conformité et contenu",
+      "cas": "Internationalisation (wording, expansion, RTL)",
+      "description": "Adapter le parcours à d'autres langues et sens de lecture",
+      "statut": "En attente",
+      "proprietaire": "VOICE pour le wording ; RTL non traité au niveau flow",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Erreurs locales (champ)",
+      "description": "Une saisie de champ est invalide",
+      "statut": "Couvert",
+      "proprietaire": "INPUT / FORM",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Erreurs serveur",
+      "description": "Le serveur refuse ou échoue",
+      "statut": "Couvert",
+      "proprietaire": "ALERT / FORM + extensions",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Indisponibilité réseau",
+      "description": "La requête ne part pas ou se perd",
+      "statut": "Partiel",
+      "proprietaire": "cycle de soumission = FORM ; message = ALERT / VOICE ; pas de règle flow dédiée",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Chargement et soumission",
+      "description": "Le parcours attend une réponse serveur",
+      "statut": "Couvert",
+      "proprietaire": "BUTTON (loading) / FORM",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Anti-double-activation",
+      "description": "Éviter la double soumission d'un même écran",
+      "statut": "Couvert",
+      "proprietaire": "BUTTON",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Abandon et reprise",
+      "description": "La personne quitte en cours et revient plus tard",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Abandon et réentrée",
+      "section": "Abandon et réentrée"
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Sortie de scène de chaque état transitoire",
+      "description": "Aucun état d'attente ne reste figé sans issue",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § États transitoires",
+      "section": "États transitoires"
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Création partielle du compte",
+      "description": "Compte créé mais non finalisé ou non vérifié",
+      "statut": "En attente",
+      "proprietaire": "produit / serveur ; purge ou complétion à trancher",
+      "section": null
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Échec serveur après création",
+      "description": "Le compte existe mais l'étape suivante échoue",
+      "statut": "Partiel",
+      "proprietaire": "ALERT + creation-compte § États transitoires ; récupération = produit",
+      "section": "États transitoires"
+    },
+    {
+      "famille": "Résilience et sortie",
+      "cas": "Suppression / correction après une erreur",
+      "description": "Annuler ou corriger après un faux départ",
+      "statut": "En attente",
+      "proprietaire": "produit (annulation / rollback), hors périmètre DS",
+      "section": null
+    },
+    {
+      "famille": "Accessibilité du parcours",
+      "cas": "Clavier de bout en bout",
+      "description": "Franchir tout le parcours sans souris",
+      "statut": "Couvert",
+      "proprietaire": "ACCESSIBILITY + creation-compte § Accessibilité du parcours",
+      "section": "Accessibilité du parcours"
+    },
+    {
+      "famille": "Accessibilité du parcours",
+      "cas": "Focus au changement d'écran ou d'étape",
+      "description": "Le focus suit la progression du parcours",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Accessibilité du parcours (WCAG 2.4.3)",
+      "section": "Accessibilité du parcours"
+    },
+    {
+      "famille": "Accessibilité du parcours",
+      "cas": "Annonces de transition et de progression",
+      "description": "Signaler une mise à jour sans changement de contexte, sans doubler une transition déjà portée par le focus",
+      "statut": "Couvert",
+      "proprietaire": "creation-compte § Accessibilité du parcours (WCAG 4.1.3)",
+      "section": "Accessibilité du parcours"
+    },
+    {
+      "famille": "Accessibilité du parcours",
+      "cas": "Gestionnaire de mots de passe / autofill",
+      "description": "Laisser remplir et coller sans entrave",
+      "statut": "Couvert",
+      "proprietaire": "INPUT (collage et gestionnaires autorisés)",
+      "section": null
+    },
+    {
+      "famille": "Accessibilité du parcours",
+      "cas": "Accessibilité de l'e-mail de vérification et de son lien",
+      "description": "Le message et son lien doivent rester utilisables",
+      "statut": "Partiel",
+      "proprietaire": "extension verification-email ; le contenu de l'e-mail sort du rendu web",
+      "section": null
+    }
+  ],
+  "transversal": [
+    {
+      "section": "Préconditions et points d'entrée",
+      "cas": [
+        "Point d'entrée et promesse"
+      ]
+    },
+    {
+      "section": "Le minimum viable",
+      "cas": [
+        "Saisie du minimum viable",
+        "Champ de profil réclamé à l'inscription"
+      ]
+    },
+    {
+      "section": "Machine à états du parcours",
+      "cas": [
+        "Machine à états du parcours"
+      ]
+    },
+    {
+      "section": "États transitoires",
+      "cas": [
+        "États transitoires",
+        "Sortie de scène de chaque état transitoire",
+        "Échec serveur après création"
+      ]
+    },
+    {
+      "section": "L'atterrissage",
+      "cas": [
+        "Atterrissage et prochaine action"
+      ]
+    },
+    {
+      "section": "Points d'entrée",
+      "cas": [
+        "Invitation / lien magique"
+      ]
+    },
+    {
+      "section": "Abandon et réentrée",
+      "cas": [
+        "Abandon et reprise"
+      ]
+    },
+    {
+      "section": "Accessibilité du parcours",
+      "cas": [
+        "Clavier de bout en bout",
+        "Focus au changement d'écran ou d'étape",
+        "Annonces de transition et de progression"
+      ]
+    }
+  ],
+  "methodes": [
+    "e-mail+mot de passe",
+    "un fournisseur tiers (Google, Apple…)",
+    "un lien magique / passkey"
+  ],
+  "resume": {
+    "moments": 4,
+    "etats": 7,
+    "transitions": 7,
+    "extensions": 5,
+    "couvert": 30,
+    "partiel": 5,
+    "enAttente": 5,
+    "absent": 0,
+    "horsPerimetre": 0,
+    "momentsAIntervenir": 3
+  },
+  "aArbitrer": [
+    "bifurcation « e-mail déjà utilisé » : la fiche ne nomme pas l'état d'origine — le graphe la rattache au parcours sans inventer son point de départ",
+    "bifurcation « abandonné » : la fiche ne nomme pas l'état d'origine — le graphe la rattache au parcours sans inventer son point de départ",
+    "extension « Vérification de l'e-mail » (`creation-compte-verification-email`) : la fiche ne nomme pas l'état ou le moment auquel elle se rattache — le graphe l'affiche détachée",
+    "extension « SSO et connexion sociale » (`creation-compte-sso-social`) : la fiche ne nomme pas l'état ou le moment auquel elle se rattache — le graphe l'affiche détachée",
+    "extension « Force et règles du mot de passe » (`creation-compte-force-mot-de-passe`) : la fiche ne nomme pas l'état ou le moment auquel elle se rattache — le graphe l'affiche détachée",
+    "extension « E-mail déjà utilisé » (`creation-compte-email-deja-utilise`) : la fiche ne nomme pas l'état ou le moment auquel elle se rattache — le graphe l'affiche détachée",
+    "extension « Consentement à l'inscription » (`creation-compte-consentement`) : la fiche ne nomme pas l'état ou le moment auquel elle se rattache — le graphe l'affiche détachée",
+    "moment 3 « Vérifier l'e-mail » : renvoie à « conditionnel — cf. extension » sans nommer le slug de l'extension — renvoi non résolvable",
+    "moment 2 « Saisir le minimum » : aucun § de la fiche ne porte cet intitulé, donc aucun cas d'usage ne lui est rattaché — renommer le § ou déclarer le lien",
+    "moment 3 « Vérifier l'e-mail » : aucun § de la fiche ne porte cet intitulé, donc aucun cas d'usage ne lui est rattaché — renommer le § ou déclarer le lien",
+    "moment 4 « Atterrir » : aucun § de la fiche ne porte cet intitulé, donc aucun cas d'usage ne lui est rattaché — renommer le § ou déclarer le lien"
+  ],
+  "nonLu": []
+}

@@ -1,0 +1,1814 @@
+{
+ "slug": "touch",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"9\" r=\"6\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"1.6\" opacity=\"0.55\"/><circle cx=\"9\" cy=\"9\" r=\"2.6\" fill=\"#4F46E5\"/><path d=\"M12 21v-6.2a1.4 1.4 0 0 1 2.8 0v2.2l3.2 1a2.2 2.2 0 0 1 1.5 2.6l-.2 1.4h-5.1z\" fill=\"#F2C744\" stroke=\"#111827\" stroke-width=\"0.6\" stroke-linejoin=\"round\"/></svg>",
+ "nom": "touch",
+ "nature": "Fondation",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-25 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Une cible est-elle assez grande, et assez isolée, pour être touchée du doigt sans se tromper ?",
+  "detail": "Cette fondation tokenise la taille et l’atteinte d’une cible tactile : une cible confortable par défaut, un plancher absolu, un espacement minimal entre voisines. Le doigt est imprécis et masque sa cible — la zone tapable peut déborder le dessin, et l’appui remplace le survol.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "La cible tactile vise le confort (touch.target-comfortable) par défaut"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Deux cibles adjacentes gardent au moins touch.target-spacing"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "L’appui remplace le survol"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "25",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "16",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-touch.md",
+   "source": "---\nsujet: touch\ntype: fondation\nresume: \"Taille et atteinte des cibles tactiles : trois crans (touch.target-min 24 / comfortable 44 / spacing 8), confort par défaut, plancher + exceptions inline/essentiel, l'appui remplace le survol, annulation au relâchement\"\nrequires: []\nselon-contexte: [\"gesture (le mouvement fait SUR la cible : swipe, drag, pinch — langage voisin)\"]\n---\n# RULES — Touch / entrée tactile (compilé, condensé)\n\n> Généré depuis `foundations/touch/TOUCH-UX.md` (v1.0.0) et `TOUCH-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation qui tokenise la **taille** et l'**atteinte** d'une cible tactile. Comble une déduction silencieuse : le « 44px tactile » était cité par `scale.desktop-min` sans jamais être nommé.\n- **Le doigt n'est pas une souris** : imprécis (~9 mm), il masque sa cible, pas de survol fiable. La cible a donc une taille plancher, une taille confortable, un espacement minimal.\n- **Règle cardinale : la cible n'est pas l'icône.** La zone qui reçoit le doigt (hit target) peut déborder le dessin — une icône `icon.md` (20) se touche dans une cible de 44 par le padding. Réduire le dessin ne réduit jamais la cible.\n\n## Les trois crans\n- `touch.target-comfortable` (44) — cible **par défaut** au doigt : toute action principale ou fréquente. Convergence WCAG 2.5.5 AAA + Apple HIG (44 pt).\n- `touch.target-min` (24) — **plancher absolu** (WCAG 2.5.8 AA) : cible dense justifiée seulement. **Sous ce plancher → STOP et remonte**, sauf exception déclarée.\n- `touch.target-spacing` (8) — **écart minimal** entre deux cibles adjacentes. Quand la densité force le plancher, l'espacement n'est **pas** optionnel.\n\n## Les deux exceptions au plancher (déclarées, jamais présumées)\n- **Inline** — cible prise dans le fil d'un texte (lien dans un paragraphe) : suit la ligne, on ne gonfle pas l'interligne.\n- **Essentiel** — la petitesse est intrinsèque à la fonction (point précis sur une carte, poignée fine). Toute autre cible sous le plancher = défaut.\n\n## Atteinte\n- Actions primaires/fréquentes → **zone atteignable** (bas et centre, à une main). Haut d'écran et coins → actions **peu fréquentes** (coût de repositionnement, loi de Fitts).\n- Jamais de cible tapable en conflit avec un **geste système** (bord, encoche, barre d'accueil).\n\n## L'appui remplace le survol\n- Pas de hover au doigt : le **press** est le signal d'affordance. Rien (info ni action) ne vit derrière le seul `:hover` — sous `(hover: none)`, tout reste accessible. Règle partagée avec le langage interaction (affordance) et motion (feedback de press) ; propriétaire ici = entrée physique.\n- Action au **relâchement sur la cible**, jamais au premier contact : glisser hors avant de lever **annule** (WCAG 2.5.2). Un contrôle custom qui agit sur `pointerdown` casse cette issue.\n- **Retour haptique** = supplément facultatif, jamais un canal unique.\n\n## Application (UI)\n- Cible garantie par **`min-height`/`min-width`**, pas la seule hauteur de contenu ; hit-area étendue (padding, `::before`) sans agrandir le dessin.\n- Régime tactile via **`@media (pointer: coarse)`** / `(hover: none)` : cible principale → `touch.target-comfortable`, aucune affordance sur le seul hover. Sur pointeur fin, densité serrée permise, plancher toujours à `touch.target-min`.\n- Consommateurs : button, input/select, switch/checkbox, icon-only, ligne d'action → visent le confort (coarse) ; lien inline exempté.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Cible < `touch.target-min` hors exception | Ratage systématique au doigt | Élevée |\n| Cibles collées sans espacement | Action voisine déclenchée | Élevée |\n| Fonction derrière le seul hover | Invisible au doigt et au clavier | Élevée |\n| Cible = dessin au lieu de zone | Cible réelle trop petite | Élevée |\n| Action fréquente en haut d'écran | Coût d'atteinte répété | Moyenne |\n| Taille figée en px absolu | Ne suit pas le zoom | Moyenne |\n\nCONFIANCE : 24 (AA) et 44 (AAA/HIG) = établi (WCAG 2.5.8 / 2.5.5, Apple HIG, Material 48/8) ; annulation au relâchement = établi (WCAG 2.5.2). Le choix des trois crans (24/44/8) et « confort par défaut » = décision interne datée 2026-07-25. Cible sous le plancher hors exception, ou fonction sans équivalent clavier : STOP, remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Type de pointeur",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Type de pointeur\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M62 50v24l6-7 4 9 4-2-4-9 9-1z\" fill=\"#111827\"/><circle cx=\"158\" cy=\"74\" r=\"15\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"158\" cy=\"74\" r=\"3.5\" fill=\"#0891B2\"/><circle cx=\"158\" cy=\"74\" r=\"9\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.6\"/><path d=\"M232 92l24-24 7 7-24 24-9 2z\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Pointeur fin (souris, trackpad)",
+     "quand": "Curseur précis, hover disponible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de pointeur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pointeur fin (souris, trackpad)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"233\" y=\"103\" width=\"34\" height=\"34\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"281\" y=\"103\" width=\"34\" height=\"34\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"329\" y=\"103\" width=\"34\" height=\"34\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"383\" y=\"103\" width=\"34\" height=\"34\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><path d=\"M392 118l0 30 7-8 5 11 5-2-5-11 11-1z\" fill=\"#111827\" stroke=\"#FFFFFF\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/><text x=\"250\" y=\"182\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">souris : cible dense, visée au pixel</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Curseur précis, hover disponible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « pointeur fin (souris, trackpad) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Pointeur grossier (doigt)",
+     "quand": "Contact ~9 mm, pas de hover fiable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de pointeur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pointeur grossier (doigt)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"322\" cy=\"116\" r=\"30\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"322\" cy=\"116\" r=\"4.5\" fill=\"#0891B2\"/><text x=\"295\" y=\"184\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">doigt : contact large, cible ≥ 44</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contact ~9 mm, pas de hover fiable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « pointeur grossier (doigt) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Stylet",
+     "quand": "Précis mais sans hover garanti.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de pointeur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Stylet\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"312\" y=\"98\" width=\"40\" height=\"40\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M300 86l34-34 9 9-34 34-13 4z\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linejoin=\"round\"/><text x=\"278\" y=\"184\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">stylet : précis, mais sans survol garanti</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Précis mais sans hover garanti.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « stylet » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Pointeur variable / hybride",
+     "quand": "Écran tactile + souris sur la même page.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de pointeur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pointeur variable / hybride\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"96\" width=\"40\" height=\"40\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M246 116l0 30 7-8 5 11 5-2-5-11 11-1z\" fill=\"#111827\" stroke=\"#FFFFFF\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/><rect x=\"390\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"412\" cy=\"116\" r=\"28\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"412\" cy=\"116\" r=\"4.5\" fill=\"#0891B2\"/><text x=\"250\" y=\"186\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">même page : on dimensionne pour le moins précis</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Écran tactile + souris sur la même page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « pointeur variable / hybride » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Pointeur assistif (tête, contacteur, oculaire)",
+     "quand": "Visée lente, coûteuse.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de pointeur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pointeur assistif (tête, contacteur, oculaire)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"318\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M340 76v-14M340 156v14M300 116h-14M380 116h14\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><circle cx=\"340\" cy=\"116\" r=\"9\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><text x=\"272\" y=\"196\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">pointeur assistif : visée lente, marge décisive</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Visée lente, coûteuse.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « pointeur assistif (tête, contacteur, oculaire) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Taille et espacement de la cible",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Taille et espacement de la cible\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"58\" y=\"68\" width=\"24\" height=\"24\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"128\" y=\"52\" width=\"44\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"222\" y=\"52\" width=\"44\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M200 74h14M208 70l-6 4 6 4\" stroke=\"#B91C1C\" stroke-width=\"1.6\" fill=\"none\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Cible confortable",
+     "quand": "Bouton, onglet, ligne d'action.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cible confortable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"84\" width=\"52\" height=\"52\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><text x=\"340\" y=\"116\" font-size=\"20\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">44</text><path d=\"M300 150h80M300 146v8M380 146v8\" stroke=\"#0891B2\" stroke-width=\"2\"/><text x=\"292\" y=\"180\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">touch.target-comfortable — la cible par défaut</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Bouton, onglet, ligne d'action.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « cible confortable » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Plancher absolu",
+     "quand": "Cible dense justifiée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Plancher absolu\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"283\" y=\"97\" width=\"30\" height=\"30\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"298\" y=\"117\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#6B7280\">24</text><rect x=\"390\" y=\"102\" width=\"20\" height=\"20\" rx=\"10\" fill=\"#FEE2E2\" stroke=\"#B91C1C\" stroke-width=\"2\"/><text x=\"392\" y=\"138\" font-size=\"16\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">✗</text><path d=\"M250 152h220\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><text x=\"250\" y=\"182\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">plancher 24 (AA) ; en dessous → STOP</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cible dense justifiée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « plancher absolu » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Espacement entre cibles",
+     "quand": "Cibles adjacentes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Espacement entre cibles\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"263\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"340\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M311 116h25M319 111l-6 5 6 5M328 111l6 5-6 5\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-linecap=\"round\" fill=\"none\"/><text x=\"255\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">écart ≥ touch.target-spacing entre deux cibles</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cibles adjacentes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « espacement entre cibles » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Zone tactile > icône",
+     "quand": "Icône 16–20 dessinée petite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zone tactile &gt; icône\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"302\" y=\"82\" width=\"72\" height=\"72\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"6 5\"/><circle cx=\"338\" cy=\"118\" r=\"11\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.4\"/><path d=\"M338 112v12M332 118h12\" stroke=\"#111827\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><text x=\"265\" y=\"192\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">la cible (zone) déborde l’icône (dessin)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Icône 16–20 dessinée petite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « zone tactile &gt; icône » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TOUCH-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>la cible n'est pas l'icône.</strong> La zone qui reçoit le doigt (le <em>hit target</em>) peut être bien",
+       "id": "TOUCH-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Exception en ligne",
+     "quand": "Lien dans un paragraphe.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Exception en ligne\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"58\" width=\"260\" height=\"124\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"232\" y=\"86\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M232 120h66\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><rect x=\"232\" y=\"108\" width=\"66\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.35\"/><rect x=\"304\" y=\"108\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"232\" y=\"140\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"232\" y=\"170\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un lien dans le fil du texte : exempté</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Lien dans un paragraphe.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « exception en ligne » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Exception essentielle",
+     "quand": "Point d'une carte, poignée précise.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Taille et espacement de la cible",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Exception essentielle\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"64\" width=\"180\" height=\"112\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><path d=\"M250 132l50-30 40 20 40-24 50 20v66h-180z\" fill=\"#E0E7FF\" opacity=\".5\"/><circle cx=\"360\" cy=\"96\" r=\"5\" fill=\"#B91C1C\"/><path d=\"M360 101v22\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><text x=\"276\" y=\"198\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">point précis sur une carte : essentiel (exception)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Point d'une carte, poignée précise.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « exception essentielle » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "Zone d'atteinte",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Zone d'atteinte\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"24\" width=\"80\" height=\"102\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><path d=\"M132 112a44 44 0 0 1 50-58\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"1.8\" stroke-dasharray=\"4 4\"/><rect x=\"147\" y=\"89\" width=\"26\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"150\" y=\"38\" width=\"20\" height=\"20\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Zone du pouce",
+     "quand": "Bas et centre de l'écran, à une main.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Zone d'atteinte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zone du pouce\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"280\" y=\"40\" width=\"120\" height=\"168\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><path d=\"M300 190a70 70 0 0 1 78-96\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><rect x=\"328\" y=\"148\" width=\"40\" height=\"40\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"333\" y=\"59\" width=\"30\" height=\"30\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"250\" y=\"224\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">primaire fréquent → zone du pouce (bas)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Bas et centre de l'écran, à une main.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « zone du pouce » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Haut d'écran / coins",
+     "quand": "En-tête, fermeture, retour.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Zone d'atteinte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Haut d'écran / coins\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"280\" y=\"40\" width=\"120\" height=\"168\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><rect x=\"360\" y=\"52\" width=\"28\" height=\"28\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"374\" cy=\"66\" r=\"18\" fill=\"none\" stroke=\"#92400E\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><text x=\"298\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">coin haut : action peu fréquente seulement</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>En-tête, fermeture, retour.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « haut d'écran / coins » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Bord et geste système",
+     "quand": "Zone de swipe OS, encoche, barre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Zone d'atteinte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bord et geste système\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"280\" y=\"40\" width=\"120\" height=\"168\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><rect x=\"280\" y=\"40\" width=\"16\" height=\"168\" rx=\"8\" fill=\"#92400E\" opacity=\".2\"/><path d=\"M288 92v64\" stroke=\"#92400E\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"330\" y=\"100\" width=\"40\" height=\"40\" rx=\"10\" fill=\"#FEE2E2\" stroke=\"#B91C1C\" stroke-width=\"2\"/><text x=\"256\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">pas de cible dans la zone de geste système</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Zone de swipe OS, encoche, barre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « bord et geste système » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TOUCH-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "on ne place jamais une cible tapable là où elle entre en <strong>conflit avec un geste système</strong>",
+       "id": "TOUCH-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Cible plein-largeur",
+     "quand": "Bouton primaire mobile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Zone d'atteinte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cible plein-largeur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"36\" width=\"120\" height=\"172\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><rect x=\"314\" y=\"176\" width=\"92\" height=\"24\" rx=\"8\" fill=\"#4F46E5\"/><rect x=\"340\" y=\"185\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#fff\" opacity=\"1\"/><text x=\"282\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">mobile : primaire plein-largeur, facile à viser</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Bouton primaire mobile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « cible plein-largeur » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 5 cas",
+   "titre": "État et retour tactile",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État et retour tactile\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"140\" y=\"54\" width=\"40\" height=\"40\" rx=\"7\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"160\" cy=\"74\" r=\"26\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"1.6\" opacity=\".5\"/><circle cx=\"160\" cy=\"74\" r=\"14\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"160\" cy=\"74\" r=\"3.5\" fill=\"#0891B2\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Appui (press)",
+     "quand": "Retour immédiat au contact.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État et retour tactile",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Appui (press)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"318\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle class=\"ill-ripple\" cx=\"340\" cy=\"116\" r=\"30\" fill=\"none\" stroke=\"#4F46E5\"/><circle cx=\"340\" cy=\"116\" r=\"22\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"340\" cy=\"116\" r=\"4.5\" fill=\"#0891B2\"/><text x=\"288\" y=\"188\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">l’appui (press) remplace le survol au doigt</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Retour immédiat au contact.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « appui (press) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TOUCH-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "au doigt, il n'y a <strong>pas de hover</strong> — le <strong>press</strong> (l'appui) est le signal d'affordance. La",
+       "id": "TOUCH-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Absence de hover",
+     "quand": "(hover: none).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État et retour tactile",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Absence de hover\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M320 98l0 30 7-8 5 11 5-2-5-11 11-1z\" fill=\"#111827\" stroke=\"#FFFFFF\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/><circle cx=\"326\" cy=\"112\" r=\"26\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2.4\"/><path d=\"M308 130l36-36\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><text x=\"262\" y=\"188\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">(hover: none) : rien derrière le seul survol</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p><code>(hover: none)</code>.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « absence de hover » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Annulation du pointeur",
+     "quand": "Doigt relâché hors de la cible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État et retour tactile",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Annulation du pointeur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"276\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"394\" cy=\"116\" r=\"20\" fill=\"#0891B2\" opacity=\"0.26\"/><circle cx=\"394\" cy=\"116\" r=\"4.5\" fill=\"#0891B2\"/><path d=\"M342 116L384 116\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M384 116L376.1 120.3M384 116L376.1 111.7\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"258\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">glisser hors avant de lever → annule (2.5.2)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Doigt relâché hors de la cible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « annulation du pointeur » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Retour haptique",
+     "quand": "Vibration à la confirmation.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État et retour tactile",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Retour haptique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"44\" width=\"110\" height=\"160\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><path d=\"M300 96c-10 8-10 40 0 48M290 86c-16 12-16 64 0 76M420 96c10 8 10 40 0 48M430 86c16 12 16 64 0 76\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"280\" y=\"224\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">retour haptique : supplément, jamais seul</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Vibration à la confirmation.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne pas improviser : documenter d’abord la position produit pour ce cas, puis la tester sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « retour haptique » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TOUCH-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>retour haptique</strong> (vibration) est un supplément facultatif, jamais un canal unique : il",
+       "id": "TOUCH-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Cible « morte » au repos",
+     "quand": "Rien ne bouge avant le contact.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · État et retour tactile",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cible « morte » au repos\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"318\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M318 116h44M340 94v44\" stroke=\"#4F46E5\" stroke-width=\"2\" opacity=\".4\"/><text x=\"282\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">cible visible au repos, sans attendre un survol</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Rien ne bouge avant le contact.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « cible « morte » au repos » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 5 cas",
+   "titre": "Accessibilité et robustesse",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Accessibilité et robustesse\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"98\" y=\"52\" width=\"36\" height=\"36\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"146\" cy=\"86\" r=\"18\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><path d=\"M159 99l13 13\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"208\" y=\"60\" width=\"66\" height=\"26\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"218\" y=\"77\" font-size=\"11\" font-family=\"ui-monospace,monospace\" fill=\"#111827\">Tab</text></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Zoom et agrandissement",
+     "quand": "200 %, loupe système.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité et robustesse",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zoom et agrandissement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"308\" y=\"92\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"360\" cy=\"130\" r=\"26\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"3\"/><path d=\"M378 148l18 18\" stroke=\"#6B7280\" stroke-width=\"4\" stroke-linecap=\"round\"/><text x=\"285\" y=\"192\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">la cible reste tapable au zoom</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>200 %, loupe système.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « zoom et agrandissement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Dextérité réduite",
+     "quand": "Tremblements, visée imprécise.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité et robustesse",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dextérité réduite\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"88\" width=\"52\" height=\"52\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M312 90c14 10 6 26 22 30 14 4 10-20 26-14\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"352\" cy=\"122\" r=\"16\" fill=\"#B91C1C\" opacity=\"0.26\"/><circle cx=\"352\" cy=\"122\" r=\"4.5\" fill=\"#B91C1C\"/><text x=\"268\" y=\"192\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">visée qui tremble : la marge EST la rampe</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tremblements, visée imprécise.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « dextérité réduite » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Équivalent clavier",
+     "quand": "Toute cible tactile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité et robustesse",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Équivalent clavier\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"340\" y=\"94\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"240\" y=\"104\" width=\"70\" height=\"30\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"124\" font-size=\"13\" font-family=\"ui-monospace,monospace\" fill=\"#111827\">Tab</text><path d=\"M318 119h26m-8-6 8 6-8 6\" stroke=\"#0891B2\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"338\" y=\"92\" width=\"48\" height=\"48\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.6\"/><text x=\"256\" y=\"192\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">une cible n’existe jamais que pour le doigt</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Toute cible tactile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « équivalent clavier » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Cible vs libellé accessible",
+     "quand": "Icône seule tapable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité et robustesse",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cible vs libellé accessible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"298\" y=\"88\" width=\"44\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"320\" cy=\"110\" r=\"10\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.4\"/><path d=\"M320 105v10M315 110h10\" stroke=\"#111827\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"356\" y=\"98\" width=\"98\" height=\"26\" rx=\"6\" fill=\"#111827\"/><text x=\"368\" y=\"115\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#FFFFFF\">Ajouter</text><text x=\"272\" y=\"184\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">grande cible tactile + nom accessible</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Icône seule tapable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « cible vs libellé accessible » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Densité assumée",
+     "quand": "Tableau, barre d'outils dense.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité et robustesse",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Densité assumée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"98\" width=\"224\" height=\"40\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"243\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"277\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"311\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"345\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"379\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"413\" y=\"105\" width=\"26\" height=\"26\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"248\" y=\"180\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">barre dense : plancher 24 + espacement</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tableau, barre d'outils dense.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « densité assumée » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-rang\" style=\"align-items:flex-end;gap:8px;\"> <div class=\"spec-item\" style=\"align-items:center;gap:8px;\"> <div style=\"position:relative;width:44px;height:44px;min-width:24px;min-height:24px;background:#E0E7FF;border:2px solid #4F46E5;border-radius:10px;display:flex;align-items:center;justify-content:center;\"> <span style=\"width:60%;height:60%;border-radius:50%;background:#0891B2;opacity:.22;\"></span> </div> <span class=\"val-sous\"><code>touch.target-comfortable</code><br><span style=\"color:#4B5563;\">cible par défaut au doigt</span></span> </div> <div class=\"spec-item\" style=\"align-items:center;gap:8px;\"> <div style=\"position:relative;width:24px;height:24px;min-width:24px;min-height:24px;background:#F3F4F6;border:2px solid #6B7280;border-radius:10px;display:flex;align-items:center;justify-content:center;\"> <span style=\"width:60%;height:60%;border-radius:50%;background:#0891B2;opacity:.22;\"></span> </div> <span class=\"val-sous\"><code>touch.target-min</code><br><span style=\"color:#4B5563;\">plancher AA — dense seulement</span></span> </div> </div> <p class=\"spec-note\">La cible tactile vise le <strong>confort</strong> (<code>touch.target-comfortable</code>) par défaut et ne descend au <strong>plancher</strong> (<code>touch.target-min</code>) que pour une densité justifiée ; deux cibles adjacentes gardent au moins <code>touch.target-spacing</code>. Le disque figure le contact du doigt — plus large que le dessin. Les valeurs vivent dans <code>DESIGN.md</code>.</p></section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": [
+   {
+    "token": "cible.plancher",
+    "ref": "touch.target-min",
+    "valeur": "24px",
+    "couleur": null
+   },
+   {
+    "token": "cible.confort",
+    "ref": "touch.target-comfortable",
+    "valeur": "44px",
+    "couleur": null
+   },
+   {
+    "token": "cible.espacement",
+    "ref": "touch.target-spacing",
+    "valeur": "8px",
+    "couleur": null
+   },
+   {
+    "token": "application.hauteur_mini",
+    "ref": "touch.target-comfortable",
+    "valeur": "44px",
+    "couleur": null
+   },
+   {
+    "token": "application.pointeur_grossier",
+    "ref": "@media (pointer: coarse)",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "TOUCH-R01",
+   "couche": "ux",
+   "solution": "le doigt n'est pas une souris. Il est **imprécis** (une empreinte de contact d'environ 9 mm,",
+   "enonce": "Une interface tactile se conçoit pour un doigt imprécis, qui masque sa propre cible et ne survole pas, et non pour un curseur qui vise un pixel : cette différence se traduit en contraintes de taille, d'espacement et d'affordance, pas en ajustements esthétiques.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "Mesures de la surface de contact du doigt (bout du doigt 16 à 20 mm, pouce jusqu'à 25 mm) et taille minimale empirique de 1 × 1 cm ; le problème vient des cibles trop petites, pas des doigts",
+     "liens": [
+      {
+       "label": "Nielsen Norman Group — Touch Targets on Touchscreens",
+       "url": "https://www.nngroup.com/articles/touch-target-size/"
+      }
+     ],
+     "confiance": "Établi — synthèse de recherche (Parhi, Karlson & Bederson). **Contredit partiellement ce fichier**, qui annonce ~9 mm là où NN/g relève 16 à 20 mm : arbitrage à prendre"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Le mécanisme d'entrée principal peut être incapable de survoler ; les effets de survol doivent être une amélioration progressive, et tout contenu déclenché au survol doit l'être aussi au focus",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN, complétée par un critère WCAG (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "Mesures de la surface de contact du doigt (bout du doigt 16 à 20 mm, pouce jusqu'à 25 mm) et taille minimale empirique de 1 × 1 cm ; le problème vient des cibles trop petites, pas des doigts",
+    "liens": [
+     {
+      "label": "Nielsen Norman Group — Touch Targets on Touchscreens",
+      "url": "https://www.nngroup.com/articles/touch-target-size/"
+     }
+    ],
+    "confiance": "Établi — synthèse de recherche (Parhi, Karlson & Bederson). **Contredit partiellement ce fichier**, qui annonce ~9 mm là où NN/g relève 16 à 20 mm : arbitrage à prendre"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R02",
+   "couche": "ux",
+   "solution": "**la cible n'est pas l'icône.** La zone qui reçoit le doigt (le *hit target*) peut être bien",
+   "enonce": "La cible tactile est la région qui accepte l'action du pointeur, pas le dessin visible : réduire une icône ne réduit jamais la zone qui la reçoit.",
+   "mesure": "zone tactile ≥ cran visé, indépendamment des dimensions du dessin",
+   "contre": "",
+   "probleme": "la première cause d'erreur au doigt n'est pas la mauvaise compréhension, c'est le",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Mesures de la surface de contact du doigt (bout du doigt 16 à 20 mm, pouce jusqu'à 25 mm) et taille minimale empirique de 1 × 1 cm ; le problème vient des cibles trop petites, pas des doigts",
+     "liens": [
+      {
+       "label": "Nielsen Norman Group — Touch Targets on Touchscreens",
+       "url": "https://www.nngroup.com/articles/touch-target-size/"
+      }
+     ],
+     "confiance": "Établi — synthèse de recherche (Parhi, Karlson & Bederson). **Contredit partiellement ce fichier**, qui annonce ~9 mm là où NN/g relève 16 à 20 mm : arbitrage à prendre"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Zone tactile > icône",
+     "famille": "Taille et espacement de la cible"
+    }
+   ]
+  },
+  {
+   "id": "TOUCH-R03",
+   "couche": "ux",
+   "solution": "trois valeurs, et une lecture simple — **confort par défaut, plancher en dernier recours,",
+   "enonce": "Le système expose exactement trois crans de cible tactile — une taille confortable par défaut, un plancher absolu, un espacement minimal — et aucune autre valeur.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Trois crans (24 / 44 / 8) et « confort par défaut »",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-25",
+       "url": null
+      }
+     ],
+     "confiance": "Arbitrage interne, aligné sur les seuils sourcés"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Trois crans (24 / 44 / 8) et « confort par défaut »",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-25",
+      "url": null
+     }
+    ],
+    "confiance": "Arbitrage interne, aligné sur les seuils sourcés"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R04",
+   "couche": "ux",
+   "solution": "`touch.target-comfortable` est la valeur qu'on vise sans y penser. On ne descend à",
+   "enonce": "Toute cible vise par défaut la taille confortable ; descendre au plancher exige un besoin de densité réel et documenté, et n'est jamais permis sans respecter l'espacement minimal.",
+   "mesure": "cible par défaut = touch.target-comfortable ; usage de touch.target-min accompagné d'une justification de densité écrite",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Trois crans (24 / 44 / 8) et « confort par défaut »",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-25",
+       "url": null
+      }
+     ],
+     "confiance": "Arbitrage interne, aligné sur les seuils sourcés"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Cible confortable de 44 × 44 px CSS",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/target-size-enhanced"
+      },
+      {
+       "label": "Apple — Human Interface Guidelines, Touchscreen gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi — convergence WCAG AAA + Apple"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Trois crans (24 / 44 / 8) et « confort par défaut »",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-25",
+      "url": null
+     }
+    ],
+    "confiance": "Arbitrage interne, aligné sur les seuils sourcés"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R05",
+   "couche": "ux",
+   "solution": "sous `touch.target-min`, le build **s'arrête et remonte**. Une cible plus petite que le",
+   "enonce": "Quand une cible tomberait sous le plancher hors des deux exceptions nommées, le build s'interrompt et remonte le cas au lieu de livrer.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R06",
+   "couche": "ux",
+   "solution": "une cible peut descendre sous `touch.target-min` dans **deux cas seulement**, tous deux",
+   "enonce": "Une cible ne peut descendre sous le plancher de 24 px CSS que si elle est prise dans le fil d'un texte (inline) ou si sa petitesse est essentielle à sa fonction.",
+   "mesure": "toute cible < 24×24 px CSS relève du cas inline ou du cas essentiel",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R07",
+   "couche": "ux",
+   "solution": "ces deux exceptions se **déclarent**, elles ne se présument pas. Toute autre cible sous le",
+   "enonce": "Les exceptions au plancher se déclarent explicitement au cas par cas ; une cible sous le plancher sans exception déclarée est un défaut, pas un choix.",
+   "mesure": "toute cible sous le plancher porte une déclaration d'exception nommée",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R08",
+   "couche": "ux",
+   "solution": "les actions **primaires et fréquentes** d'un parcours au doigt visent la **zone",
+   "enonce": "Chez nous, les actions primaires et fréquentes d'un parcours au doigt se placent dans la zone atteignable à une main (centre et bas d'écran), et le haut et les coins sont réservés aux actions peu fréquentes.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Cible plus rapide si grande et proche (taille ↔ atteinte)",
+     "liens": [
+      {
+       "label": "Loi de Fitts",
+       "url": "https://lawsofux.com/fittss-law/"
+      }
+     ],
+     "confiance": "Référence établie en design"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Relevé observationnel sur 1 333 personnes : 49 % d'usage à une main, 36 % en berceau, 15 % à deux mains ; les gens touchent le centre de l'écran, pas les coins ni les bords",
+     "liens": [
+      {
+       "label": "Steven Hoober — How Do Users Really Hold Mobile Devices ? (UXmatters, 2013)",
+       "url": "https://www.uxmatters.com/mt/archives/2013/02/how-do-users-really-hold-mobile-devices.php"
+      }
+     ],
+     "confiance": "Recherche observationnelle établie, **mais l'auteur a lui-même désavoué ses schémas d'arc du pouce** ; seul le constat « centre » tient"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Cible plus rapide si grande et proche (taille ↔ atteinte)",
+    "liens": [
+     {
+      "label": "Loi de Fitts",
+      "url": "https://lawsofux.com/fittss-law/"
+     }
+    ],
+    "confiance": "Référence établie en design"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R09",
+   "couche": "ux",
+   "solution": "on ne place jamais une cible tapable là où elle entre en **conflit avec un geste système**",
+   "enonce": "Aucune cible tapable ne se place dans une zone réservée aux gestes système (balayage de bord, barre d'accueil, encoche) : ces régions appartiennent au système d'exploitation.",
+   "mesure": "aucune cible interactive dans les zones d'exclusion de gestes déclarées par la plateforme",
+   "contre": "",
+   "probleme": "la loi de Fitts (cf. `LAWS-UX`) dit qu'une cible est d'autant plus rapide à",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Les gestes système (retour depuis les bords, accueil et bascule en bas d'écran) entrent en conflit avec les contrôles placés dans ces zones ; la recommandation est de n'y placer aucun contrôle permanent",
+     "liens": [
+      {
+       "label": "Android — Gesture navigation",
+       "url": "https://developer.android.com/develop/ui/views/touch-and-input/gestures/gesturenav"
+      }
+     ],
+     "confiance": "Établi, documentation constructeur — converge avec Apple HIG (S2) : deux plateformes, même interdit"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Cible confortable de 44 × 44 px CSS",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/target-size-enhanced"
+      },
+      {
+       "label": "Apple — Human Interface Guidelines, Touchscreen gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi — convergence WCAG AAA + Apple"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Les gestes système (retour depuis les bords, accueil et bascule en bas d'écran) entrent en conflit avec les contrôles placés dans ces zones ; la recommandation est de n'y placer aucun contrôle permanent",
+    "liens": [
+     {
+      "label": "Android — Gesture navigation",
+      "url": "https://developer.android.com/develop/ui/views/touch-and-input/gestures/gesturenav"
+     }
+    ],
+    "confiance": "Établi, documentation constructeur — converge avec Apple HIG (S2) : deux plateformes, même interdit"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Bord et geste système",
+     "famille": "Zone d'atteinte"
+    }
+   ]
+  },
+  {
+   "id": "TOUCH-R10",
+   "couche": "ux",
+   "solution": "au doigt, il n'y a **pas de hover** — le **press** (l'appui) est le signal d'affordance. La",
+   "enonce": "Aucune information ni aucune action ne repose sur le seul survol : sous un pointeur incapable de survoler, la totalité des fonctions reste atteignable, l'appui tenant lieu de signal d'affordance.",
+   "mesure": "sous (hover: none), 100 % des fonctions restent atteignables",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Le mécanisme d'entrée principal peut être incapable de survoler ; les effets de survol doivent être une amélioration progressive, et tout contenu déclenché au survol doit l'être aussi au focus",
+     "liens": [
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN, complétée par un critère WCAG (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Le mécanisme d'entrée principal peut être incapable de survoler ; les effets de survol doivent être une amélioration progressive, et tout contenu déclenché au survol doit l'être aussi au focus",
+    "liens": [
+     {
+      "label": "MDN — @media/hover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+     },
+     {
+      "label": "WCAG 2.2 — 1.4.13 Content on Hover or Focus",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+     }
+    ],
+    "confiance": "Établi — spécification CSS documentée par MDN, complétée par un critère WCAG (AA)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Appui (press)",
+     "famille": "État et retour tactile"
+    }
+   ]
+  },
+  {
+   "id": "TOUCH-R11",
+   "couche": "ux",
+   "solution": "l'action se déclenche au **relâchement sur la cible**, jamais au premier contact. Glisser le",
+   "enonce": "L'action se déclenche au relâchement sur la cible et jamais au premier contact ; glisser le doigt hors de la cible avant de lever annule l'action.",
+   "mesure": "aucune action déclenchée sur l'événement de contact ; sortie de la cible avant relâchement = annulation",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Annulation au relâchement (down-event ≠ déclenchement)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Annulation au relâchement (down-event ≠ déclenchement)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R12",
+   "couche": "ux",
+   "solution": "le **retour haptique** (vibration) est un supplément facultatif, jamais un canal unique : il",
+   "enonce": "Le retour haptique est un supplément facultatif et jamais un canal unique : il est absent de nombreux appareils et navigateurs et reste désactivable par l'utilisateur.",
+   "mesure": "aucune information ni action portée uniquement par le retour haptique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "La vibration n'est disponible que si le matériel existe, ne fait rien sinon, et l'API est en disponibilité limitée (absente de navigateurs largement utilisés)",
+     "liens": [
+      {
+       "label": "MDN — Vibration API",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API"
+      }
+     ],
+     "confiance": "Établi — statut de support documenté par MDN ; fonde l'interdiction du haptique comme canal unique"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "La vibration n'est disponible que si le matériel existe, ne fait rien sinon, et l'API est en disponibilité limitée (absente de navigateurs largement utilisés)",
+    "liens": [
+     {
+      "label": "MDN — Vibration API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API"
+     }
+    ],
+    "confiance": "Établi — statut de support documenté par MDN ; fonde l'interdiction du haptique comme canal unique"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Retour haptique",
+     "famille": "État et retour tactile"
+    }
+   ]
+  },
+  {
+   "id": "TOUCH-R13",
+   "couche": "ux",
+   "solution": "la cible reste tapable **au zoom** (200 %, loupe) — les tailles dérivent de tokens, jamais",
+   "enonce": "Une cible reste atteignable et activable à 200 % d'agrandissement : ses dimensions dérivent de tokens qui suivent le zoom, jamais d'une valeur absolue figée.",
+   "mesure": "toute cible reste ≥ touch.target-min et activable à 200 % de zoom",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Le texte, contrôles et libellés compris, doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — la mention explicite de « controls and labels » couvre la cible, pas seulement le texte"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Le texte, contrôles et libellés compris, doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.4 Resize Text",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — la mention explicite de « controls and labels » couvre la cible, pas seulement le texte"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R14",
+   "couche": "ux",
+   "solution": "la marge de `touch.target-comfortable` et de `touch.target-spacing` **est** l'accessibilité",
+   "enonce": "La taille confortable et l'espacement minimal sont des exigences d'accessibilité motrice — ils protègent les personnes dont la visée tremble ou manque de précision — et ne se négocient pas au nom de la densité visuelle.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Cible confortable de 44 × 44 px CSS",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/target-size-enhanced"
+      },
+      {
+       "label": "Apple — Human Interface Guidelines, Touchscreen gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi — convergence WCAG AAA + Apple"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Cible minimale de 24 × 24 px CSS (avec exceptions inline / essentiel / espacement)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R15",
+   "couche": "ux",
+   "solution": "une cible n'existe **jamais que pour le doigt**. Toute cible tactile est aussi atteignable au",
+   "enonce": "Toute cible tactile est également opérable au clavier, porte un indicateur de focus visible et expose un nom et un rôle accessibles : la taille de la cible ne remplace jamais sa sémantique.",
+   "mesure": "toute cible tactile est focalisable au clavier, montre un focus visible et porte un nom accessible programmatiquement déterminable",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Toute fonctionnalité doit être opérable au clavier, quel que soit le dispositif d'entrée principal — une cible conçue pour le doigt n'est jamais dispensée du clavier",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Le nom et le rôle de tout composant d'interface doivent être programmatiquement déterminables, y compris pour les contrôles générés par script",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Toute fonctionnalité doit être opérable au clavier, quel que soit le dispositif d'entrée principal — une cible conçue pour le doigt n'est jamais dispensée du clavier",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.1.1 Keyboard",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-R16",
+   "couche": "ux",
+   "solution": "toute nouvelle famille de cibles passe ces quatre questions :",
+   "enonce": "Toute nouvelle famille de cibles est soumise aux quatre questions du test tactile (taille, espacement, indépendance au survol, atteignabilité clavier/zoom/nom), et un « non » appelle une cible plus grande, mieux espacée ou mieux placée, jamais plus dense.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U01",
+   "couche": "ui",
+   "solution": "aucun composant ne code une taille de cible en dur — il référence un de ces trois tokens.",
+   "enonce": "Aucun composant ne code une taille de cible en dur : il référence l'un des trois tokens de cible tactile du système.",
+   "mesure": "aucune valeur numérique de hauteur/largeur minimale de cible en dur ; référence à touch.target-min, -comfortable ou -spacing",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U02",
+   "couche": "ui",
+   "solution": "la cible se garantit par **`min-height` et `min-width`**, pas par la seule hauteur de",
+   "enonce": "La cible se garantit par une hauteur et une largeur minimales déclarées, et non par la seule hauteur du contenu ou du padding.",
+   "mesure": "min-height et min-width présents sur toute cible interactive",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      },
+      {
+       "label": "Apple HIG — Gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     },
+     {
+      "label": "Apple HIG — Gestures",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U03",
+   "couche": "ui",
+   "solution": "**la zone tactile peut déborder le dessin.** Une icône de `icon.md` (20) se touche dans une",
+   "enonce": "La zone tactile peut déborder le dessin : le supplément se produit par padding ou par une zone étendue transparente, sans agrandir l'élément visible.",
+   "mesure": "zone tactile ≥ touch.target-comfortable même quand le dessin est plus petit",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      },
+      {
+       "label": "Apple HIG — Gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     },
+     {
+      "label": "Apple HIG — Gestures",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U04",
+   "couche": "ui",
+   "solution": "le régime tactile se déclare par **`@media (pointer: coarse)`** (et/ou `(hover: none)`) : sur",
+   "enonce": "Le régime tactile se déclare par les requêtes de média de pointeur grossier et d'absence de survol : sur pointeur grossier la cible principale passe à la taille confortable et aucune affordance ne dépend du survol ; sur pointeur fin une densité plus serrée reste permise au-dessus du plancher.",
+   "mesure": "sous (pointer: coarse), cible principale ≥ touch.target-comfortable ; sous (hover: none), aucune affordance portée par :hover",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Régime tactile via `pointer: coarse` / `hover: none`",
+     "liens": [
+      {
+       "label": "MDN — pointer",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+      },
+      {
+       "label": "MDN — hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Régime tactile via `pointer: coarse` / `hover: none`",
+    "liens": [
+     {
+      "label": "MDN — pointer",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+     },
+     {
+      "label": "MDN — hover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U05",
+   "couche": "ui",
+   "solution": "deux cibles adjacentes sont séparées d'au moins `touch.target-spacing`. Quand la densité",
+   "enonce": "Deux cibles adjacentes sont séparées d'au moins l'espacement minimal ; lorsque la densité impose le plancher, cet espacement est obligatoire et non optionnel.",
+   "mesure": "écart ≥ touch.target-spacing ; cercle de 24 px de diamètre centré sur chaque cible sans intersection avec une cible voisine",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+      },
+      {
+       "label": "Apple HIG — Gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`min-height`/`min-width` + hit-area étendue pour la cible tactile",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+     },
+     {
+      "label": "Apple HIG — Gestures",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U06",
+   "couche": "ui",
+   "solution": "l'action se lie à l'**événement de relâchement** (`pointerup`/`click`), jamais au",
+   "enonce": "L'action se lie à l'événement de relâchement et jamais à l'événement de contact ; un contrôle personnalisé qui agit au contact supprime l'issue de secours fournie nativement par un bouton ou un lien.",
+   "mesure": "aucun handler d'action attaché à pointerdown, mousedown ou touchstart",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Action au relâchement (pointer cancellation)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Action au relâchement (pointer cancellation)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U07",
+   "couche": "ui",
+   "solution": "sous `forced-colors`, la cible garde sa taille (géométrie, pas couleur) — l'agrandissement",
+   "enonce": "En mode de couleurs forcées, la cible conserve exactement sa taille : sa géométrie ne dépend d'aucun fond, d'aucune image et d'aucune ombre, qui sont supprimés dans ce mode.",
+   "mesure": "taille de cible identique avec et sans forced-colors: active ; aucune zone tactile produite par un box-shadow ou une image de fond",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "Le mode de couleurs forcées force box-shadow, text-shadow et background-image à none et remplace les couleurs, mais ne modifie ni la mise en page ni la géométrie",
+     "liens": [
+      {
+       "label": "MDN — @media/forced-colors",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      }
+     ],
+     "confiance": "Établi — spécification documentée par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "Le mode de couleurs forcées force box-shadow, text-shadow et background-image à none et remplace les couleurs, mais ne modifie ni la mise en page ni la géométrie",
+    "liens": [
+     {
+      "label": "MDN — @media/forced-colors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     }
+    ],
+    "confiance": "Établi — spécification documentée par MDN"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U08",
+   "couche": "ui",
+   "solution": "tailles en unités qui suivent le zoom (le token résout une valeur cohérente au zoom",
+   "enonce": "Les tailles de cible s'expriment dans des unités qui suivent l'agrandissement du navigateur, de sorte qu'aucune cible ne rétrécit relativement au contenu agrandi.",
+   "mesure": "aucune cible dont la taille reste constante alors que le contenu est agrandi à 200 %",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T7",
+     "affirmation": "Agrandissement jusqu'à 200 % sans perte de contenu ni de fonctionnalité, contrôles et libellés compris",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "T7",
+    "affirmation": "Agrandissement jusqu'à 200 % sans perte de contenu ni de fonctionnalité, contrôles et libellés compris",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.4 Resize Text",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TOUCH-U09",
+   "couche": "ui",
+   "solution": "une cible custom (`div`/`span` rendue interactive) ne réduit pas la surface native attendue",
+   "enonce": "Un élément générique rendu interactif conserve la surface attendue d'un contrôle natif et expose un rôle, un nom et des états programmatiquement déterminables : la taille ne compense pas une sémantique manquante.",
+   "mesure": "toute cible custom expose un rôle et un nom accessibles, et une surface ≥ touch.target-min",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "Un contrôle personnalisé doit exposer nom, rôle, états et valeurs de façon programmatiquement déterminable, via les API d'accessibilité ou WAI-ARIA",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "Un contrôle personnalisé doit exposer nom, rôle, états et valeurs de façon programmatiquement déterminable, via les API d'accessibilité ou WAI-ARIA",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

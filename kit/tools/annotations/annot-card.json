@@ -1,0 +1,534 @@
+[
+  {
+    "id": "CARD-R01",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le modèle de variantes de la carte repose sur deux axes seulement — mode d'interaction et densité — et ne transpose pas les trois axes du bouton.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R02",
+    "statut": "methode",
+    "source": "S8, S30",
+    "enonce": "Le style de conteneur (contour, élévation, remplissage) n'est pas un axe de variante de la carte : c'est une décision d'identité visuelle prise une fois pour tout le produit et portée par la couche UI, non un choix par instance.",
+    "mesure": "le style de conteneur n'est pas exposé comme propriété d'instance dans l'API du composant"
+  },
+  {
+    "id": "CARD-R03",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "La carte n'a pas de sémantique propre : la charge sémantique appartient à son contenu, et une surface porteuse d'un sens d'alerte ou d'erreur relève d'un autre composant, pas d'une variante de carte.",
+    "mesure": "aucune variante de carte ne porte un nom de tone sémantique (succès, avertissement, erreur, information)"
+  },
+  {
+    "id": "CARD-R04",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "L'état « sélectionné » d'une carte sélectionnable est un état d'interaction et non une variante sémantique du conteneur.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R05",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "La carte n'a pas d'axe de taille : sa hauteur est dictée par son contenu et sa largeur par la grille ; seule subsiste une densité qui module l'espacement interne.",
+    "mesure": "aucune variante de carte ne fixe de hauteur ni de largeur en dur"
+  },
+  {
+    "id": "CARD-R06",
+    "statut": "methode",
+    "source": "S3",
+    "enonce": "Les deux axes de la carte sont le mode d'interaction — statique, cliquable, sélectionnable, dépliable — qui détermine ce que la carte a le droit de contenir, et la densité.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R07",
+    "statut": "methode",
+    "source": "S5, S29",
+    "enonce": "La présence d'un media, d'un titre ou d'actions n'est pas un axe de variante mais un jeu d'emplacements de composition, optionnels et combinables.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R08",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "L'autorité sur le nombre et la position des actions à l'intérieur d'une carte appartient au document de la carte, pas à celui du bouton.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R09",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "L'autorité sur la zone tactile d'un bouton, y compris en grille dense, reste au document du bouton : la carte n'a pas à connaître les tokens du bouton.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R10",
+    "statut": "methode",
+    "source": "S13, S25",
+    "enonce": "Chaque mode d'interaction de la carte incarne une intention du langage d'interaction — consulter pour la carte statique, naviguer pour la carte cliquable, choisir pour la carte sélectionnable — et la carte cliquable délègue sa cible aux règles du lien plutôt que d'en redéfinir la sémantique.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R11",
+    "statut": "identite",
+    "source": "S13",
+    "enonce": "Le mode d'interaction d'une carte est reconnaissable au repos ; le survol confirme une cible déjà annoncée et ne révèle jamais après coup qu'une carte était cliquable.",
+    "mesure": "aucun signal d'affordance d'une carte n'est porté exclusivement par un sélecteur de survol"
+  },
+  {
+    "id": "CARD-R12",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "L'adaptation d'une carte à la largeur de son conteneur peut changer sa disposition, sa densité et la divulgation d'informations secondaires, jamais son mode d'interaction, son sujet, sa destination ni les informations nécessaires pour décider.",
+    "mesure": "à toutes les largeurs, une carte conserve le même mode d'interaction et la même destination"
+  },
+  {
+    "id": "CARD-R13",
+    "statut": "methode",
+    "source": "S13",
+    "enonce": "Le traitement de la carte se rattache nommément au langage d'interaction : la carte statique y est l'expression canonique de l'intention consulter et organise sans se donner pour une cible.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R14",
+    "statut": "methode",
+    "source": "S13",
+    "enonce": "Deux lois d'affordance gouvernent la carte et sont nommées plutôt que réécrites : une surface organise sans promettre un clic, et la profondeur explique un changement de couche au lieu de décorer.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R15",
+    "statut": "identite",
+    "source": "S1, S29",
+    "enonce": "La carte convient au parcours de contenus hétérogènes dont chaque élément se suffit à lui-même : tableau de bord, flux varié, catalogue où l'image porte l'essentiel de la décision.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R16",
+    "statut": "identite",
+    "source": "S2",
+    "enonce": "La carte ne convient pas à la comparaison ni à la recherche parmi des éléments homogènes, où une liste ou une table est supérieure.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R17",
+    "statut": "identite",
+    "source": "S2",
+    "enonce": "Lorsqu'un même écran peut relever des deux régimes, le critère qui tranche est le mode de lecture dominant : la découverte appelle la carte, l'évaluation comparative appelle la liste ou la table, quitte à offrir les deux modes.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R18",
+    "statut": "identite",
+    "source": "S3",
+    "enonce": "Une carte statique présente un groupe d'informations sans être elle-même une cible ; les seules cibles sont les éléments interactifs placés à l'intérieur.",
+    "mesure": "aucun gestionnaire d'activation n'est posé sur le conteneur d'une carte statique"
+  },
+  {
+    "id": "CARD-R19",
+    "statut": "identite",
+    "source": "S3, S4",
+    "enonce": "Le mode statique est le seul qui accepte librement plusieurs éléments interactifs internes.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R20",
+    "statut": "identite",
+    "source": "S1, S3",
+    "enonce": "Dans une carte cliquable, toute la surface constitue une cible unique, typiquement une navigation vers le détail du sujet.",
+    "mesure": "une carte cliquable n'expose qu'une seule cible d'activation pour l'ensemble de sa surface"
+  },
+  {
+    "id": "CARD-R21",
+    "statut": "methode",
+    "source": "S4, S24",
+    "enonce": "L'interdiction d'imbriquer un élément interactif dans une carte cliquable n'est pas propre à la carte : elle renvoie à la règle du lien, qui interdit tout descendant interactif, et n'est pas réécrite ici.",
+    "mesure": "aucun élément interactif n'est descendant de l'élément qui rend la carte cliquable"
+  },
+  {
+    "id": "CARD-R22",
+    "statut": "methode",
+    "source": "S6, S9",
+    "enonce": "La technique qui rend une carte cliquable renvoie aux règles du lien : la cliquabilité vient d'un élément sémantique réel étendu à la surface, jamais d'un conteneur inerte muni d'un gestionnaire de clic.",
+    "mesure": "aucune surface de carte navigable n'est portée par un élément non interactif muni d'un gestionnaire de clic"
+  },
+  {
+    "id": "CARD-R23",
+    "statut": "implementation",
+    "source": "S6, S9, S27",
+    "enonce": "Quand une carte cliquable doit malgré tout porter des actions, celles-ci sont des éléments frères dans le document, dotés de cibles propres et distinctes, et cette coexistence est arbitrée explicitement plutôt que subie.",
+    "mesure": "les actions d'une carte cliquable ne sont pas descendantes de la cible de surface et disposent chacune d'une cible d'au moins 24 × 24 px CSS"
+  },
+  {
+    "id": "CARD-R24",
+    "statut": "identite",
+    "source": "S3",
+    "enonce": "Une carte sélectionnable représente une option dans un choix : son activation sélectionne, elle ne navigue pas.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R25",
+    "statut": "universelle",
+    "source": "S20, S22",
+    "enonce": "L'état sélectionné d'une carte est signalé autrement que par la couleur seule et est exposé programmatiquement.",
+    "mesure": "l'état sélectionné porte au moins un indice non chromatique et un état programmatique (case, bouton radio ou attribut d'état ARIA)"
+  },
+  {
+    "id": "CARD-R26",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Dans un groupe de cartes sélectionnables, toutes partagent le même mode de sélection — simple ou multiple — et la même structure interne.",
+    "mesure": "un groupe de cartes sélectionnables n'associe pas des sélections simples et multiples"
+  },
+  {
+    "id": "CARD-R27",
+    "statut": "identite",
+    "source": "S3",
+    "enonce": "Une carte dépliable masque puis révèle un contenu secondaire volumineux sans faire quitter le contexte ; elle ne sert pas à dissimuler une information nécessaire à la décision.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R28",
+    "statut": "identite",
+    "source": "S4, S24",
+    "enonce": "Lorsqu'une carte dépliable contient des éléments interactifs, seul un contrôle dédié déclenche le dépliage ; lorsqu'elle n'en contient pas, toute la surface peut le déclencher.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R29",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Une même collection ne mélange jamais plusieurs modes d'interaction de carte.",
+    "mesure": "toutes les cartes d'une collection partagent le même mode d'interaction"
+  },
+  {
+    "id": "CARD-R30",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "La densité confortable est le défaut de la carte : tableaux de bord, pages de contenu, catalogues.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R31",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "La densité compacte est réservée aux contextes denses : panneaux latéraux, listes de cartes à fort volume, widgets.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R32",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "La densité modifie le remplissage interne et les écarts entre emplacements, jamais la structure : une carte compacte a les mêmes emplacements, dans le même ordre, qu'une carte confortable.",
+    "mesure": "une carte compacte et une carte confortable exposent la même liste d'emplacements dans le même ordre"
+  },
+  {
+    "id": "CARD-R33",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Une collection de cartes partage une densité unique.",
+    "mesure": "toutes les cartes d'une collection partagent la même densité"
+  },
+  {
+    "id": "CARD-R34",
+    "statut": "identite",
+    "source": "S5, S29",
+    "enonce": "L'ordre des emplacements d'une carte est canonique — media, en-tête, corps, zone d'actions — chaque emplacement restant facultatif ; cet ordre ne se réinvente pas carte par carte.",
+    "mesure": "l'ordre des emplacements présents est identique sur toutes les cartes d'une collection"
+  },
+  {
+    "id": "CARD-R35",
+    "statut": "identite",
+    "source": "S11",
+    "enonce": "Le media d'une carte porte l'identification visuelle du sujet ; une image qui n'aide ni à identifier ni à décider agrandit la carte sans bénéfice.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R36",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Une collection de cartes emploie un ratio d'image unique et fixe.",
+    "mesure": "toutes les images d'une même collection partagent le même ratio"
+  },
+  {
+    "id": "CARD-R37",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "L'absence de media est un cas normal et non une erreur : elle est traitée par un remplacement délibéré de même encombrement, jamais par une image cassée ni par un effondrement de la carte.",
+    "mesure": "toute carte sans media affiche un bloc de remplacement de même ratio que le media attendu"
+  },
+  {
+    "id": "CARD-R38",
+    "statut": "universelle",
+    "source": "S19",
+    "enonce": "Toute image informative d'une carte porte une alternative textuelle ; une image purement décorative est explicitement marquée comme telle afin d'être ignorée par les technologies d'assistance.",
+    "mesure": "toute image de carte porte une alternative textuelle non vide, ou une alternative vide explicite si elle est décorative"
+  },
+  {
+    "id": "CARD-R39",
+    "statut": "universelle",
+    "source": "S31, S5",
+    "enonce": "Le titre d'une carte nomme le sujet de la carte et en décrit le propos ; il est le point d'entrée de la lecture visuelle comme de la lecture d'écran.",
+    "mesure": "chaque carte porte un titre non vide"
+  },
+  {
+    "id": "CARD-R40",
+    "statut": "universelle",
+    "source": "S18, S29",
+    "enonce": "Le titre d'une carte est un élément de titre sémantique réel, de niveau identique sur toutes les cartes d'une même collection.",
+    "mesure": "le titre de chaque carte d'une collection est un élément de titre (h1–h6) de même niveau"
+  },
+  {
+    "id": "CARD-R41",
+    "statut": "identite",
+    "source": "S1, S29",
+    "enonce": "Le corps d'une carte donne juste assez d'information pour décider d'entrer ou de passer : la carte est un résumé, pas le contenu lui-même.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R42",
+    "statut": "identite",
+    "source": "S16",
+    "enonce": "Le texte d'une carte est tronqué à un nombre de lignes constant plutôt que laissé libre ; la troncature ne masque jamais une information décisive et le texte complet reste accessible.",
+    "mesure": "toutes les cartes d'une collection tronquent leur corps au même nombre de lignes"
+  },
+  {
+    "id": "CARD-R43",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "La sémantique d'état — nouveau, en rupture, urgent — vit dans le contenu de la carte sous forme de badge, jamais sur le conteneur, qui n'a pas de tone.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R44",
+    "statut": "methode",
+    "source": "S16",
+    "enonce": "Le libellé d'un badge de statut n'est pas défini dans le document de la carte : il se rattache au lexique contrôlé du langage de voix, qui impose qu'un même statut porte le même mot d'un écran à l'autre.",
+    "mesure": "un même statut est désigné par un libellé unique dans tout le produit"
+  },
+  {
+    "id": "CARD-R45",
+    "statut": "identite",
+    "source": "S5",
+    "enonce": "Une carte ne porte qu'une seule action principale ; les actions secondaires passent en icônes discrètes ou en menu de débordement, jamais en boutons texte concurrents.",
+    "mesure": "une carte ne contient qu'un seul bouton d'action principal"
+  },
+  {
+    "id": "CARD-R46",
+    "statut": "universelle",
+    "source": "S5, S29",
+    "enonce": "Les actions d'une carte occupent une position constante dans toute la collection : en pied de carte pour les appels à l'action, en coin d'en-tête pour les actions portant sur l'objet entier.",
+    "mesure": "la zone d'actions occupe la même position sur toutes les cartes d'une collection"
+  },
+  {
+    "id": "CARD-R47",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Les actions d'une carte ne sont jamais visibles au seul survol : un menu de débordement permanent est préférable à des icônes qui apparaissent.",
+    "mesure": "aucune action de carte n'est révélée exclusivement par un sélecteur de survol"
+  },
+  {
+    "id": "CARD-R48",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le style, le tone et la taille des boutons internes à une carte ne sont pas définis par le document de la carte : celui-ci fixe le nombre et la position, le document du bouton garde ses propres règles.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R49",
+    "statut": "identite",
+    "source": "S10",
+    "enonce": "Une collection vide affiche un état vide structuré : image facultative, titre court et positif, explication de la cause du vide, et action pour en sortir.",
+    "mesure": "aucune collection vide n'est rendue sans titre, explication et action"
+  },
+  {
+    "id": "CARD-R50",
+    "statut": "identite",
+    "source": "S10, S15",
+    "enonce": "Le texte d'un état vide diffère selon sa cause : première utilisation, absence de résultat, ou erreur.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R51",
+    "statut": "methode",
+    "source": "S15",
+    "enonce": "Le ton des états vides n'est pas redéfini dans le document de la carte : il se rattache au langage de voix, dont la ligne « vide / démarrage » impose de distinguer « rien encore » de « rien trouvé ».",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R52",
+    "statut": "methode",
+    "source": "S15",
+    "enonce": "Le texte d'un état vide d'erreur se rattache à la règle cardinale du langage de voix : on décrit l'écart et la correction sans qualifier l'utilisateur, et le produit prend à son compte la faute qui est la sienne.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R53",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Une carte dont un emplacement est vide relève des données incomplètes et non de l'état vide : elle est traitée emplacement par emplacement, sans casser la structure de la collection.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R54",
+    "statut": "identite",
+    "source": "S8, S9",
+    "enonce": "Le survol d'une carte cliquable confirme son affordance par une élévation ou une bordure renforcée ; une carte statique ne réagit pas au survol.",
+    "mesure": "aucune carte statique ne définit de style de survol"
+  },
+  {
+    "id": "CARD-R55",
+    "statut": "universelle",
+    "source": "S21",
+    "enonce": "Une carte cliquable ou sélectionnable est une cible clavier : elle présente un indicateur de focus visible, portant sur la carte entière, qui n'est jamais supprimé.",
+    "mesure": "aucune règle de style ne supprime l'indicateur de focus d'une carte sans le remplacer par un indicateur visible"
+  },
+  {
+    "id": "CARD-R56",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Le chargement d'une collection est occupé par des cartes squelettes qui reproduisent la structure et les dimensions des cartes réelles, plutôt que par un indicateur global.",
+    "mesure": "l'arrivée des données ne provoque aucun décalage de mise en page de la collection"
+  },
+  {
+    "id": "CARD-R57",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "L'état sélectionné n'est pas redéfini dans la section des états : il est entièrement régi par les règles du mode sélectionnable.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R58",
+    "statut": "methode",
+    "source": "S14",
+    "enonce": "Les micro-mouvements de la carte se rattachent nommément au langage de motion : le survol d'une carte cliquable relève du feedback, la rotation du chevron et le dépliage relèvent de la continuité.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R59",
+    "statut": "identite",
+    "source": "S14",
+    "enonce": "Rien n'anime au chargement initial d'une collection de cartes : seuls les changements réactifs déclenchés par l'utilisateur sont animés, les squelettes occupent l'attente sans entrer en scène.",
+    "mesure": "aucune animation d'entrée n'est déclenchée par le rendu initial d'une collection de cartes"
+  },
+  {
+    "id": "CARD-R60",
+    "statut": "universelle",
+    "source": "S22, S26",
+    "enonce": "Le mouvement d'une carte confirme un changement d'état sans jamais le porter seul : l'état déplié ou replié est exposé programmatiquement, de sorte que la suppression de l'animation ne supprime aucune information.",
+    "mesure": "l'état déplié ou replié est porté par un attribut d'état programmatique et reste déterminable sans animation"
+  },
+  {
+    "id": "CARD-R61",
+    "statut": "implementation",
+    "source": "S14",
+    "enonce": "Sous préférence de mouvement réduit, le chevron d'une carte dépliable saute à son orientation finale sans rotation animée et le contenu révélé apparaît en fondu instantané plutôt qu'en glissement : l'information reste intégrale, seul le déplacement spatial disparaît.",
+    "mesure": "sous prefers-reduced-motion, aucune transition de rotation ni de hauteur n'est appliquée au dépliage, et le contenu révélé reste présent"
+  },
+  {
+    "id": "CARD-R62",
+    "statut": "methode",
+    "source": "S17",
+    "enonce": "La carte ne porte aucun moment d'animation expressive, et cette absence est documentée et raisonnée plutôt que laissée implicite.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R63",
+    "statut": "identite",
+    "source": "S13, S17",
+    "enonce": "Une carte est une surface de consultation calme : un battement expressif sur un conteneur de lecture mentirait sur son rôle, comme le ferait un style cliquable sur une carte statique.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R64",
+    "statut": "identite",
+    "source": "S17",
+    "enonce": "Un composant qui vit en collection est disqualifié d'emblée pour tout moment expressif : ce qui se répète à chaque carte cesse d'être un moment mérité.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R65",
+    "statut": "methode",
+    "source": "S17",
+    "enonce": "L'expression liée au vide et à l'attente n'appartient pas au conteneur mais au contenu qui y est injecté ; le document de la carte renvoie sur ce point au composant réactif concerné.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R66",
+    "statut": "methode",
+    "source": "S15, S17",
+    "enonce": "L'exception chaleureuse du langage expressif ne s'applique ni à un état d'erreur ni à une absence de résultat, qui restent strictement productifs.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R67",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "En grille, les cartes ont des largeurs uniformes et des hauteurs alignées par rangée ; c'est le ratio d'image fixe et la troncature du texte qui rendent cet alignement possible.",
+    "mesure": "toutes les cartes d'une même rangée ont la même largeur"
+  },
+  {
+    "id": "CARD-R68",
+    "statut": "identite",
+    "source": "S5",
+    "enonce": "En grille, chaque emplacement occupe la même position sur toutes les cartes : la répétition visuelle promet la prédictibilité et chaque écart la rompt.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R69",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "En liste verticale, quand la lecture est séquentielle, une carte peut adopter une disposition horizontale plaçant le media à côté du contenu.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R70",
+    "statut": "identite",
+    "source": "S2",
+    "enonce": "Une liste de cartes homogènes comparées entre elles rouvre la question du composant : la liste simple redevient candidate.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R71",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Une carte statistique — un chiffre, un libellé, une tendance — est statique par défaut ; si elle conduit vers un détail, elle devient cliquable et suit toutes les règles de ce mode.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R72",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "La hiérarchie d'un tableau de bord vient de la taille occupée par chaque carte dans la grille, non d'un axe de style porté par la carte.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R73",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Un carrousel de cartes signale son débordement en laissant une carte partiellement visible en bord de zone ; un carrousel dont rien ne dépasse est indistinguable d'une grille complète.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R74",
+    "statut": "universelle",
+    "source": "S7, S23, S28",
+    "enonce": "Toute opération de déplacement offerte au glisser-déposer dispose d'une alternative à pointeur unique réalisant le même déplacement sans maintien ni traînée, et le déplacement effectif est annoncé aux technologies d'assistance.",
+    "mesure": "toute opération de glisser-déposer dispose d'un contrôle équivalent activable par un clic unique et au clavier"
+  },
+  {
+    "id": "CARD-R75",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Les risques de la carte sont recensés dans une table unique du document, ordonnée par sévérité ; elle ne crée aucune règle nouvelle mais qualifie la gravité des manquements aux règles précédentes.",
+    "mesure": ""
+  },
+  {
+    "id": "CARD-R76",
+    "statut": "identite",
+    "source": "S6",
+    "enonce": "L'interactivité d'une carte est univoque : soit la carte est la cible, soit elle contient des cibles, sans ambiguïté possible entre les deux.",
+    "mesure": ""
+  }
+]

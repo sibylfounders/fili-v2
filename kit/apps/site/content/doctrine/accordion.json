@@ -1,0 +1,861 @@
+{
+ "slug": "accordion",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"4.5\" rx=\"1.5\" fill=\"#4F46E5\"/><path d=\"M16.4 6l1.3 1.4L19 6\" stroke=\"white\" stroke-width=\"1.2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"5.2\" y=\"10.4\" width=\"12\" height=\"1.6\" rx=\"0.8\" fill=\"#0891B2\"/><rect x=\"5.2\" y=\"13\" width=\"9\" height=\"1.5\" rx=\"0.75\" fill=\"#0891B2\" opacity=\"0.6\"/><rect x=\"3.5\" y=\"16.8\" width=\"17\" height=\"4.5\" rx=\"1.5\" fill=\"#bcb9f5\"/></svg>",
+ "nom": "accordion",
+ "nature": "Composant",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-24 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · accordion",
+  "question": "Comment regrouper du contenu ou des liens sans tout afficher d'un coup ?",
+  "detail": "Chaque section a un en-tête qui la déplie ou la replie ; on peut en ouvrir plusieurs à la fois, et rien n'est perdu à la fermeture. C'est le repli réutilisable — la nav latérale n'en est qu'un usage.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Chaque section s'ouvre et se referme par son en-tête"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "L'état ouvert ou fermé se lit à un chevron qui pivote"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Ce n'est pas un superposé"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "10",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "7",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-accordion.md",
+   "source": "---\nsujet: accordion\ntype: composant\nresume: \"Disclosure réutilisable : en-tête bouton (aria-expanded) qui révèle/masque une région ; multi-ouvert par défaut (single-open optionnel), état conservé, chevron non chromatique qui pivote, dépliage motion.base, jamais un piège de focus\"\nrequires: []\nselon-contexte: [\"iconography (chevron d'état qui pivote)\", \"motion (dépliage/repliage de la hauteur ; reduced-motion)\", \"link (un lien placé dans une région d'accordion)\"]\n---\n# RULES — Accordion (compilé, condensé)\n\n> Généré depuis `components/accordion/ACCORDION-UX.md` (v1.0.0) et `ACCORDION-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- **Disclosure** : un en-tête révèle/masque une région ; un accordion en empile plusieurs. Réutilisable (nav, FAQ, réglages), pas seulement la nav.\n- Contenu masqué **non détruit** ; le rouvrir retrouve l'état.\n\n## Ouverture\n- **Multi-ouvert par défaut** (plusieurs sections ouvertes) ; single-open = **option**, jamais imposée (elle cache du contenu et surprend).\n\n## Clavier / rôle (ARIA APG)\n- En-tête `button` + `aria-expanded` + `aria-controls` ; région `aria-labelledby`. **Entrée/Espace** basculent. En-tête enveloppé d'un titre (`h2`-`h6`) quand il structure la page.\n- L'ouverture **ne vole pas le focus**, ne déplace pas la page ; **aucun piège de focus** (≠ modal).\n\n## État — jamais la seule couleur\n- Indicateur **non chromatique** (chevron qui pivote, +/−), pas la couleur seule.\n\n## UI (tokens)\n- En-tête : padding `spacing`, survol `surface-hover` en `radius.md`, chevron `icon.sm`/`icon.md` qui pivote en `motion.base`/`motion.ease-in-out`, focus ring `border`, cible 44px.\n- Région : padding `spacing` ; séparateur = `border` mais l'espace d'abord. Dépliage `motion.base`, `prefers-reduced-motion` respecté.\n\n## Frontières\n- Chevron → `iconography` ; durées → `motion` ; lien interne → `link` ; focus ring → `border` ; wording → `voice`. Un disclosure qui recouvre et piège n'est pas un accordion : c'est `overlay`.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Ouverture qui vole le focus / déplace la page | Désorientation, perte de repère | Moyenne |\n| État ouvert/fermé porté par la seule couleur | Illisible sans perception des couleurs (WCAG 1.4.1) | Élevée |\n| Single-open imposé dans une nav | Contenu caché, surprise | Moyenne |\n| Contenu détruit à la fermeture | Perte d'état / de saisie | Moyenne-élevée |\n\nCONFIANCE : motif disclosure/accordion = établi (ARIA APG). Défaut multi-ouvert = convergent (Carbon, GOV.UK details).\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 4 cas",
+   "titre": "Usage",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Usage\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"240\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"40\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M262 39l6 6 6-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"56\" y=\"64\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"56\" y=\"80\" width=\"140\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"40\" y=\"100\" width=\"240\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"110\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M262 108l6 -5 6 5\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"40\" y=\"140\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">groupes de navigation</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Groupes de navigation",
+     "quand": "Replier les sections du rail de nav.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Groupes de navigation\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"40\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"52\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 51l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"82\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"100\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"126\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"138\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 137l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multi-ouvert : plusieurs sections à la fois</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Replier les sections du rail de nav.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « groupes de navigation » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "FAQ",
+     "quand": "Questions/réponses dépliables.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : FAQ\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"50\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"62\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 61l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"92\" width=\"210\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"110\" width=\"170\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"138\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"150\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 148l7 -6 7 6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">FAQ : questions dépliables</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Questions/réponses dépliables.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « fAQ » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Réglages avancés",
+     "quand": "Cacher les options rares jusqu'au besoin.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Réglages avancés\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"40\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"52\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 51l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"82\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"100\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"126\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"138\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 137l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multi-ouvert : plusieurs sections à la fois</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cacher les options rares jusqu'au besoin.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « réglages avancés » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Révéler un détail (disclosure seul)",
+     "quand": "Un seul en-tête + une région.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Révéler un détail (disclosure seul)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"50\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"62\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 61l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"236\" y=\"100\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Un lien</text><path d=\"M236 104h52\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"230\" y=\"116\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">une région peut contenir liens ou champs</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un seul en-tête + une région.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « révéler un détail (disclosure seul) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 3 cas",
+   "titre": "Comportement d'ouverture",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Comportement d'ouverture\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"30\" width=\"240\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"40\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M262 39l6 6 6-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"56\" y=\"64\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"40\" y=\"84\" width=\"240\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"94\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M262 93l6 6 6-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"56\" y=\"118\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"40\" y=\"144\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">multi-ouvert</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Multi-ouvert",
+     "quand": "Plusieurs sections ouvertes à la fois.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Comportement d'ouverture",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Multi-ouvert\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"40\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"52\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 51l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"82\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"100\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"126\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"138\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 137l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multi-ouvert : plusieurs sections à la fois</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plusieurs sections ouvertes à la fois.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « multi-ouvert » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ACCORDION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>plusieurs sections peuvent être ouvertes à la fois</strong> (multi-ouvert par défaut). Le <strong>single-open</strong>",
+       "id": "ACCORDION-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Single-open",
+     "quand": "Ouvrir une section referme les autres.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Comportement d'ouverture",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Single-open\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"46\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"58\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 57l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"88\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"106\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"130\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"142\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 140l7 -6 7 6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"210\" y=\"170\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"182\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 180l7 -6 7 6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">single-open : ouvrir une section referme les autres (option)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Ouvrir une section referme les autres.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « single-open » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ACCORDION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>plusieurs sections peuvent être ouvertes à la fois</strong> (multi-ouvert par défaut). Le <strong>single-open</strong>",
+       "id": "ACCORDION-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "État conservé",
+     "quand": "Le contenu masqué n'est pas détruit.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Comportement d'ouverture",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : État conservé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"40\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"52\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 51l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"82\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"100\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"126\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"138\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 137l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multi-ouvert : plusieurs sections à la fois</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu masqué n'est pas détruit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « état conservé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "Contenu de la région",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contenu de la région\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"240\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"44\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M262 43l6 6 6-6\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"60\" y=\"82\" font-size=\"11\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Un lien</text><path d=\"M60 86h48\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"56\" y=\"96\" width=\"180\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Liens",
+     "quand": "Une région qui contient des liens de nav.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Contenu de la région",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Liens\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"50\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"62\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 61l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"236\" y=\"100\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Un lien</text><path d=\"M236 104h52\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"230\" y=\"116\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">une région peut contenir liens ou champs</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une région qui contient des liens de nav.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « liens » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Formulaire",
+     "quand": "Champs révélés à la demande.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Contenu de la région",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"50\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"62\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 61l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"236\" y=\"100\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Un lien</text><path d=\"M236 104h52\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"230\" y=\"116\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">une région peut contenir liens ou champs</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Champs révélés à la demande.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « formulaire » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Superposé (modal)",
+     "quand": "Un contenu qui recouvre et piège.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "03 · Contenu de la région",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Superposé (modal)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"40\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"52\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 51l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"82\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"230\" y=\"100\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"210\" y=\"126\" width=\"260\" height=\"30\" rx=\"8\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"138\" width=\"110\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><path d=\"M448 137l7 7 7-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"224\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multi-ouvert : plusieurs sections à la fois</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un contenu qui recouvre et piège.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « superposé (modal) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "ACCORDION-R01",
+   "couche": "ux",
+   "solution": "chaque section a un **en-tête cliquable** (un `button`) qui **révèle/masque** sa région. Le contenu",
+   "enonce": "Chaque section d'un accordéon est révélée ou masquée par un en-tête qui est un bouton ; le contenu replié n'est pas détruit et sa réouverture restitue l'état précédent.",
+   "mesure": "l'en-tête de section est un élément bouton ; le contenu replié reste dans le document et retrouve son état à la réouverture",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+     "liens": [
+      {
+       "label": "ARIA APG — Accordion",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+      },
+      {
+       "label": "Disclosure",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+    "liens": [
+     {
+      "label": "ARIA APG — Accordion",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+     },
+     {
+      "label": "Disclosure",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-R02",
+   "couche": "ux",
+   "solution": "**plusieurs sections peuvent être ouvertes à la fois** (multi-ouvert par défaut). Le **single-open**",
+   "enonce": "Plusieurs sections d'un accordéon peuvent être ouvertes simultanément ; la fermeture automatique des autres sections à l'ouverture d'une section est une option demandée explicitement, jamais le comportement par défaut.",
+   "mesure": "par défaut, ouvrir une section ne referme aucune autre section",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+     "liens": [
+      {
+       "label": "ARIA APG — Accordion",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+      },
+      {
+       "label": "Disclosure",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Multi-ouvert par défaut, single-open optionnel",
+     "liens": [
+      {
+       "label": "Convergence des systèmes (Carbon, GOV.UK details)",
+       "url": null
+      }
+     ],
+     "confiance": "Convergent"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Un accordéon peut afficher plusieurs sections ouvertes à la fois, à la différence des onglets, et propose un « Show all sections » ; il ne doit pas servir à du contenu que tous les utilisateurs doivent voir, car il masque du contenu que tous ne remarquent pas",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Accordion",
+       "url": "https://design-system.service.gov.uk/components/accordion/"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié ; confirme le multi-ouvert comme comportement admis, pas comme prescription"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+    "liens": [
+     {
+      "label": "ARIA APG — Accordion",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+     },
+     {
+      "label": "Disclosure",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Multi-ouvert",
+     "famille": "Comportement d'ouverture"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Single-open",
+     "famille": "Comportement d'ouverture"
+    }
+   ]
+  },
+  {
+   "id": "ACCORDION-R03",
+   "couche": "ux",
+   "solution": "l'en-tête est un `button` avec `aria-expanded` (true/false) et `aria-controls` vers sa région ; la",
+   "enonce": "L'en-tête d'une section est un bouton portant aria-expanded et aria-controls vers sa région, laquelle est nommée par cet en-tête ; lorsque les en-têtes structurent la page, le bouton est l'unique enfant d'un élément de titre de niveau cohérent, et Entrée comme Espace basculent l'état.",
+   "mesure": "chaque en-tête porte un bouton avec aria-expanded et aria-controls ; le bouton est l'unique enfant de l'élément de titre ; Entrée et Espace basculent la section",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+     "liens": [
+      {
+       "label": "ARIA APG — Accordion",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+      },
+      {
+       "label": "Disclosure",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+    "liens": [
+     {
+      "label": "ARIA APG — Accordion",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+     },
+     {
+      "label": "Disclosure",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-R04",
+   "couche": "ux",
+   "solution": "l'ouverture d'une section **ne vole pas le focus** et ne déplace pas la page sous le pointeur ; le",
+   "enonce": "L'ouverture ou la fermeture d'une section ne déplace ni le focus ni le contenu déjà sous le pointeur : le focus reste sur l'en-tête activé, la tabulation entre et sort librement, et aucun piège de focus n'est posé.",
+   "mesure": "après activation, le focus reste sur l'en-tête ; Tab et Maj+Tab traversent l'accordéon sans être retenus",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+     "liens": [
+      {
+       "label": "ARIA APG — Accordion",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+      },
+      {
+       "label": "Disclosure",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Changer le réglage d'un composant ne provoque pas automatiquement de changement de contexte non annoncé ; un déplacement de focus ou un réagencement significatif de la page en sont",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.2 On Input",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/on-input.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde l'interdit de vol de focus à l'ouverture d'une section"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Toute fonctionnalité est opérable au clavier sans exiger de rythme de frappe particulier",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "En-tête `button` + `aria-expanded` + région `aria-labelledby` ; Entrée/Espace basculent",
+    "liens": [
+     {
+      "label": "ARIA APG — Accordion",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/"
+     },
+     {
+      "label": "Disclosure",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-R05",
+   "couche": "ux",
+   "solution": "l'état ouvert/fermé se lit à un **indicateur non chromatique** (chevron qui pivote, +/−), pas à la",
+   "enonce": "L'état ouvert ou fermé d'une section se lit à un indicateur non chromatique — chevron orienté, signe plus ou moins — et jamais à la seule couleur.",
+   "mesure": "l'état ouvert se distingue de l'état fermé par au moins un signal non chromatique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "État par indicateur non chromatique (chevron), pas la couleur",
+     "liens": [
+      {
+       "label": "WCAG 1.4.1 (renvoi ACCESSIBILITY)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — donne son URL à S3, cité sans lien dans le fichier"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "État par indicateur non chromatique (chevron), pas la couleur",
+    "liens": [
+     {
+      "label": "WCAG 1.4.1 (renvoi ACCESSIBILITY)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-R06",
+   "couche": "ux",
+   "solution": "le dépliage/repliage anime la **hauteur** en `motion.base` / `motion.ease-in-out` (mouvement sur",
+   "enonce": "Le dépliage et le repliage d'une section sont un mouvement sur place emprunté aux tokens de mouvement, et deviennent une bascule instantanée lorsque l'utilisateur a demandé moins de mouvement, sans jamais escamoter de contenu.",
+   "mesure": "sous prefers-reduced-motion: reduce, la bascule est instantanée ; aucune durée ni courbe en dur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la valeur reduce de prefers-reduced-motion demande de supprimer ou remplacer le mouvement non essentiel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+      },
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — 2.3.3 est de niveau AAA et admet plusieurs techniques suffisantes ; la média-requête n'est que l'une d'elles"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "L'animation de mouvement déclenchée par une interaction peut être désactivée sauf si elle est essentielle ; la valeur reduce de prefers-reduced-motion demande de supprimer ou remplacer le mouvement non essentiel",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+     },
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — 2.3.3 est de niveau AAA et admet plusieurs techniques suffisantes ; la média-requête n'est que l'une d'elles"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-R07",
+   "couche": "ux",
+   "solution": "le **chevron** relève d'`iconography` ; les **durées/courbes** de `motion` ; un **lien** dans une",
+   "enonce": "L'accordéon ne redéfinit pas ce qui appartient à ses voisins : le chevron relève de l'iconographie, les durées et courbes du mouvement, un lien de sa région du composant lien, l'anneau de focus de la bordure, le mot de l'en-tête du langage ; un révélateur modal, qui recouvre et piège le focus, n'est pas un accordéon mais un superposé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-U01",
+   "couche": "ui",
+   "solution": "l'en-tête a un padding pris dans `spacing`, un rayon `radius.md` sur son fond de survol",
+   "enonce": "L'en-tête d'accordéon résout son retrait, le rayon de son fond de survol et sa couleur de texte sur les tokens, et son chevron — icône en couleur courante — pivote à l'ouverture par transformation, aux durées et courbes des tokens de mouvement.",
+   "mesure": "aucune valeur brute sur l'en-tête ; le chevron pivote par transformation, sans substitution d'icône",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Chevron qui pivote comme indicateur d'état, animé en motion",
+     "liens": [
+      {
+       "label": "convergence des systèmes",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "T2",
+     "affirmation": "Espace avant le trait pour séparer les sections",
+     "liens": [
+      {
+       "label": "SPACING-UX / BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Chevron qui pivote comme indicateur d'état, animé en motion",
+    "liens": [
+     {
+      "label": "convergence des systèmes",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-U02",
+   "couche": "ui",
+   "solution": "la région ouverte a un padding `spacing` ; un **séparateur** entre sections, si nécessaire, est un",
+   "enonce": "La région ouverte prend son retrait dans l'échelle d'espacement, et la séparation entre deux sections passe d'abord par l'espace, le trait n'intervenant qu'en dernier recours.",
+   "mesure": "la séparation par défaut entre deux sections est un espacement, non un trait",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Espace avant le trait pour séparer les sections",
+     "liens": [
+      {
+       "label": "SPACING-UX / BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "L'animation déclenchée par interaction doit pouvoir être désactivée ; prefers-reduced-motion: reduce exprime cette demande de l'utilisateur",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+      },
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — niveau AAA, plusieurs techniques suffisantes admises"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Espace avant le trait pour séparer les sections",
+    "liens": [
+     {
+      "label": "SPACING-UX / BORDER-UX (guardrail)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ACCORDION-U03",
+   "couche": "ui",
+   "solution": "aucune couleur, rayon ou durée codés en dur : tout référence `spacing.*`, `radius.md`,",
+   "enonce": "Aucune couleur, rayon ni durée de l'accordéon n'est codé en dur — chacun résout un token de fondation — et la cible pointeur de l'en-tête atteint le seuil de confort retenu par l'accessibilité.",
+   "mesure": "aucune valeur brute dans l'implémentation de l'accordéon ; cible pointeur de l'en-tête ≥ 44 × 44 px CSS",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA, pas le seuil de conformité courant"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     },
+     {
+      "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA, pas le seuil de conformité courant"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

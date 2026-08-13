@@ -1,0 +1,2175 @@
+{
+ "slug": "motion",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"15.5\" cy=\"12\" r=\"6.2\" fill=\"#4F46E5\"/><path d=\"M14 9.4 l4.2 2.6 -4.2 2.6 Z\" fill=\"#FFFFFF\"/><rect x=\"2\" y=\"7.6\" width=\"7\" height=\"2.2\" rx=\"1.1\" fill=\"#F2C744\"/><rect x=\"4.5\" y=\"11.9\" width=\"4.5\" height=\"2.2\" rx=\"1.1\" fill=\"#0891B2\"/><rect x=\"2\" y=\"16.2\" width=\"7\" height=\"2.2\" rx=\"1.1\" fill=\"#bcb9f5\"/></svg>",
+ "nom": "motion",
+ "nature": "Langage",
+ "meta": "UX v1.3.2 · UI v1.1.0 · mis à jour 2026-07-21 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · motion",
+  "question": "Quand une animation guide-t-elle l’utilisateur, et quand le gêne-t-elle ?",
+  "detail": "Cette page réserve le mouvement aux transitions qui aident à comprendre ce qui change, en le gardant bref et en respectant les personnes qui préfèrent réduire les animations.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Le mouvement sert à comprendre ce qui change"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Chaque animation reste brève et suit un vocabulaire cohérent de durées et de courbes"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Toute animation respecte prefers-reduced-motion et ne porte jamais seule une information"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "28",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "25",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "6",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-motion.md",
+   "source": "---\nsujet: motion\ntype: langage\nresume: \"Registre productif : 3 durées / 3 courbes, mapping des micro-interactions, interdits absolus, prefers-reduced-motion obligatoire\"\nrequires: []\nselon-contexte: []\n---\n# RULES — Motion (compilé, condensé)\n\n> Généré depuis `languages/motion/MOTION-UX.md` (v1.3.0) et `MOTION-UI.md` (v1.1.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Langage temporel. Registre **productif seulement** : pas de mouvement décoratif, d'ambiance ou de célébration (pas de bounce, pas de stagger, rien n'anime au chargement de page).\n- **Contrainte ≠ parti pris** : les règles WCAG (reduced-motion, flash < 3/s, transform/opacity, jamais l'info par le mouvement seul) sont non négociables ; le registre « productif seulement » est un **parti pris d'identité paramétrable** — un consommateur expressif peut le relever *sans* toucher aux contraintes (chemin sanctionné, pas une dérogation sauvage). **Lecture d'audit** : seules les contraintes fondent une non-conformité chez un hôte tiers ; le registre se signale comme *divergence*, à part.\n- **Règle cardinale : le mouvement est un commentaire, jamais le texte** — il confirme, relie, occupe l'attente ; il n'informe jamais seul (l'état vit dans l'ARIA/le statique), ne bloque jamais, ne décore pas.\n\n## Vocabulaire\n- Durées : `motion.fast` (feedback : hover, press, couleur/bordure) / `motion.base` (continuité locale : chevron, apparition, dépliage) / `motion.slow` (grandes surfaces — provisionné). Tout le système < ~400ms.\n- **La sortie prend le cran inférieur de son entrée** (entrée base → sortie fast).\n- Courbes : `motion.ease-out` (ce qui entre) / `motion.ease-in` (ce qui sort) / `motion.ease-in-out` (sur place). **Linéaire interdit sauf rotation continue du spinner.**\n\n## Mapping des micro-interactions\n| Interaction | Durée | Courbe | Propriétés |\n|---|---|---|---|\n| Hover bouton (state layer) | fast | ease-out | background-color |\n| Hover carte (élévation) | fast | ease-out | opacité d'un pseudo-élément à ombre pré-rendue — JAMAIS box-shadow interpolé |\n| Bordure d'état input | fast | ease-out | border-color (le message d'erreur apparaît sans délai) |\n| Chevron / dépliage | base | ease-in-out | transform (rotate ; dépliage : grid-rows 0fr→1fr ou mesure+transform — jamais height:auto naïf) |\n| Apparition alert réactif | base | ease-out | opacity — jamais de slide qui pousse le contenu |\n| Disparition alert | fast | ease-in | opacity |\n| Skeleton | boucle lente | — | opacity seule ; coupé sous reduced-motion (reste visible statique) |\n| Spinner | continue | linear | transform: rotate |\n| **Focus ring** | **AUCUNE** | — | apparition instantanée, interdit de transition |\n\n## Interdits absolus\n- Le mouvement ne verrouille jamais l'interaction (aucune action n'attend une fin d'animation).\n- Le contenu ne se déplace jamais sans action utilisateur (réserver l'espace ; insertion sous le point de lecture à défaut).\n- N'animer que **transform et opacity** — jamais width/height/top/margin (layout), jamais box-shadow interpolé (paint).\n- Toute transition est **interruptible et repart de l'état courant** (transitions CSS pour les états ; keyframes réservées aux boucles).\n- Boucle > 5s non arrêtable hors indicateurs de chargement : interdit (WCAG 2.2.2, niveau A).\n- **Flash dangereux interdit** : jamais plus de 3 flashs/s, seuils de flash général et rouge respectés (WCAG 2.3.1) — le registre productif ne flashe pas ; contrat verrouillé pour tout futur consommateur.\n\n## prefers-reduced-motion (obligatoire)\n- Déplacements/rotations/échelles : coupés (bascule instantanée ou crossfade). Opacité/couleur : conservables.\n- Chevron : saute à l'orientation finale. Skeleton : statique, visible. Spinner : indicateur statique ou pulse d'opacité.\n- Un bloc média global, hérité par tous — aucun composant ne le redéclare.\n- Condition remplie par la règle cardinale : couper le mouvement ne coupe jamais d'information.\n\n## Exception documentée\n- Le hack autofill de l'input (`transition: background-color 9999s`) n'est pas une animation — neutralisation technique hors vocabulaire, ne consomme aucun token.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Info portée par le mouvement seul | Perte sous reduced-motion / AT | Critique |\n| Flash > 3/s ou seuil rouge franchi | Crise photosensible (2.3.1) | Critique |\n| reduced-motion ignoré | Troubles vestibulaires (2.3.3) | Élevée |\n| Déplacement non sollicité | Cible mouvante, clics ratés | Élevée |\n| Animation de layout | Saccades | Moyenne-élevée |\n| Durées > ~400ms | Produit perçu lent | Moyenne |\n\nCONFIANCE : plages 50-400ms, courbes, reduced-motion, transform/opacity = établi (Atlassian, Carbon, Material, Polaris, NN/g, MDN/web.dev, WCAG). Valeurs 100/200/300 et registre productif = décisions internes datées 2026-07-11. Toute animation hors mapping ci-dessus : STOP, remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 10 cas",
+   "titre": "Micro-interaction chez les consommateurs actuels",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Micro-interaction chez les consommateurs actuels\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M52 68l8 9 8-9\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M104 78a18 18 0 1 1 6 13\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.2\"/><path d=\"M108 88l-6 5 8 2z\" fill=\"#0891B2\"/><rect x=\"158\" y=\"52\" width=\"54\" height=\"42\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><rect x=\"238\" y=\"56\" width=\"46\" height=\"6\" rx=\"3\" fill=\"#6B7280\" opacity=\"0.8\"/><rect x=\"238\" y=\"72\" width=\"46\" height=\"6\" rx=\"3\" fill=\"#6B7280\" opacity=\"0.5\"/><rect x=\"238\" y=\"88\" width=\"46\" height=\"6\" rx=\"3\" fill=\"#6B7280\" opacity=\"0.25\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Hover du bouton (state layer)",
+     "quand": "Un bouton est survolé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hover du bouton (state layer)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"276\" y=\"100\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"111\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect class=\"ill-pulse\" x=\"276\" y=\"100\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#111827\" opacity=\".14\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bouton est survolé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Transition courte (motion.fast) : le hover confirme, il ne spectacle pas.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un fond qui s'assombrit au survol.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Hover de la carte cliquable",
+     "quand": "Une carte cliquable est survolée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hover de la carte cliquable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-appear\"><rect x=\"258\" y=\"89\" width=\"164\" height=\"84\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"258\" y=\"80\" width=\"164\" height=\"84\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte cliquable est survolée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Même durée que le bouton : un seul vocabulaire de feedback.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une élévation qui apparaît.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Focus ring",
+     "quand": "Un élément prend le focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus ring\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><g class=\"ill-appear\"><rect x=\"244\" y=\"94\" width=\"192\" height=\"36\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément prend le focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais animé : le focus apparaît instantanément.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un anneau net immédiat.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le focus ring n'est jamais animé</strong> — c'est une information de position pour la navigation clavier, pas un effet (règle partagée avec BORDER-UX, qui fait autorité sur le ring).",
+       "id": "MOTION-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Chevron expandable",
+     "quand": "Un chevron indique l'ouverture.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Chevron expandable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-chev\"><path d=\"M326 112l14 16 14-16\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un chevron indique l'ouverture.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rotation 180° (motion.base), transform seul.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un chevron qui pivote.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Expansion de la carte",
+     "quand": "Une carte se déplie.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Expansion de la carte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"66\" width=\"180\" height=\"44\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><g class=\"ill-appear\"><rect x=\"272\" y=\"124\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"272\" y=\"144\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte se déplie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>motion.base ; sous reduced-motion, bascule sans transition.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un contenu qui se révèle.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Apparition de l'alert réactif",
+     "quand": "Une alerte s'injecte après une action.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Apparition de l'alert réactif\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-slide\"><rect x=\"240\" y=\"100\" width=\"200\" height=\"44\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"240\" y=\"100\" width=\"6\" height=\"44\" rx=\"3\" fill=\"#1D4ED8\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une alerte s'injecte après une action.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Apparition par opacité, jamais de slide qui pousse le contenu.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une erreur qui apparaît en fondu.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>rien n'anime au chargement initial</strong> de la page — le contenu proactif est du contenu comme un autre (généralisation de ALERT-UX : &quot;pas d'animation d'entrée nécessaire&quot;) ; les entrées animées sont réservées aux changements <em>réactifs</em> (conséquences d'une action).",
+       "id": "MOTION-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Disparition de l'alert (dismiss/résolution)",
+     "quand": "Une alerte sort de scène.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Disparition de l'alert (dismiss/résolution)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"100\" width=\"200\" height=\"44\" rx=\"8\" fill=\"#DCFCE7\"/><rect x=\"240\" y=\"100\" width=\"6\" height=\"44\" rx=\"3\" fill=\"#15803D\"/><path d=\"M452 122L486 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M486 122L478.1 126.3M486 122L478.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une alerte sort de scène.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Sortie plus courte que l'entrée ; jamais que visuelle (annonce AT).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une alerte qui s'efface.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>la règle cardinale</strong> : toute information portée par un mouvement existe aussi statiquement — l'état du chevron est dans <code>aria-expanded</code>, la résolution de l'alert est annoncée (ALERT-UX), le chargement a son indicateur visible. Le mouvement est une <em>confirmation sensorielle</em>, jamais la <em>source</em> de l'information.",
+       "id": "MOTION-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Skeleton",
+     "quand": "Un squelette attend le contenu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Skeleton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-pulse\"><rect x=\"240\" y=\"86\" width=\"200\" height=\"12\" rx=\"6\" fill=\"#E5E7EB\" opacity=\"1\"/><rect x=\"240\" y=\"110\" width=\"200\" height=\"12\" rx=\"6\" fill=\"#E5E7EB\" opacity=\"1\"/><rect x=\"240\" y=\"134\" width=\"200\" height=\"12\" rx=\"6\" fill=\"#E5E7EB\" opacity=\"1\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un squelette attend le contenu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Pulse lent en boucle, désactivé sous reduced-motion.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bloc gris qui pulse doucement.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "applications concrètes chez les consommateurs : bascules d'état instantanées ou en fondu (hover, élévation), chevron qui <em>saute</em> à son orientation finale, <strong>skeleton sans pulse</strong> (l'attente reste visible, statique — l'indicateur demeure, le mouvement part), spinner remplacé par un indicateur statique ou un pulse d'opacité.",
+       "id": "MOTION-R19"
+      },
+      {
+       "tag": "Règle",
+       "html": "cadre normatif — WCAG 2.3.3 (AAA) : les animations d'interaction doivent pouvoir être désactivées ; WCAG 2.2.2 (A) : tout mouvement automatique de plus de 5 s doit être arrêtable. Le seul mouvement en boucle du système (pulse du skeleton) est un indicateur de chargement — exemption prévue par 2.2.2 — et il est <em>quand même</em> coupé sous reduced-motion, par choix.",
+       "id": "MOTION-R20"
+      },
+      {
+       "tag": "Règle",
+       "html": "le seul mouvement en boucle admis reste l'indicateur de chargement (skeleton, spinner) — il pulse en <strong>opacité douce</strong>, jamais en flash ; un clignotement décoratif, rapide (dangereux) comme lent (bruit), n'existe pas dans le registre.",
+       "id": "MOTION-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-8",
+     "titre": "Bouton loading",
+     "quand": "Un bouton attend une réponse.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bouton loading\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"104\" width=\"148\" height=\"30\" rx=\"7\" fill=\"#4F46E5\"/><circle class=\"ill-spin\" style=\"transform-origin:292px 119px\" cx=\"292\" cy=\"119\" r=\"8\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bouton attend une réponse.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Spinner en rotation continue (seule exception au linéaire).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton « … » qui tourne.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-9",
+     "titre": "Transition d'état de l'input (repos → error)",
+     "quand": "Un champ change d'état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Micro-interaction chez les consommateurs actuels",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Transition d'état de l'input (repos → error)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"102\" width=\"120\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M334 114L372 114\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M372 114L364.1 118.3M372 114L364.1 109.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"384\" y=\"102\" width=\"120\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#B91C1C\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ change d'état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>motion.fast sur la couleur ; le message d'erreur apparaît sans délai.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une bordure qui vire au rouge.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 5 cas",
+   "titre": "Fonction du mouvement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Fonction du mouvement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M44 74h40m-10-10 10 10-10 10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"146\" cy=\"74\" r=\"9\" fill=\"#15803D\"/><path d=\"M142 74l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"210\" cy=\"74\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"264\" cy=\"74\" r=\"7\" fill=\"#4F46E5\"/><path d=\"M217 74h40\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Feedback (confirmer une action)",
+     "quand": "Un mouvement confirme une action.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Fonction du mouvement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Feedback (confirmer une action)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"340\" cy=\"118\" r=\"30\" fill=\"#DCFCE7\"/><path class=\"ill-pop\" d=\"M328 118l8 8 16-18\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un mouvement confirme une action.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Durées courtes : c'est la fonction n°1.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un état de press.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Continuité (relier deux états)",
+     "quand": "Un mouvement relie deux états.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Fonction du mouvement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Continuité (relier deux états)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"96\" width=\"80\" height=\"46\" rx=\"9\" fill=\"#E0E7FF\"/><path d=\"M320 119L368 119\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M368 119L360.1 123.3M368 119L360.1 114.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"380\" y=\"96\" width=\"80\" height=\"46\" rx=\"9\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un mouvement relie deux états.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Il explique d'où vient le changement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un panneau qui se déplie.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le motion est un <strong>langage temporel</strong> — pas d'axes : il exprime tous les changements d'état du système par le feedback et la continuité. Particularité : ce langage est <em>entièrement fait</em> d'états transitoires — le prédicteur &quot;état transitoire&quot; du README ne désigne plus un trou probable mais le sujet lui-même ; son application ici devient : traiter d'office <strong>l'interruption</strong> (l'état transitoire de l'état transitoire, cf. § Interruption).",
+       "id": "MOTION-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Attente (signaler un traitement)",
+     "quand": "Un mouvement signale une attente.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Fonction du mouvement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Attente (signaler un traitement)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle class=\"ill-spin\" style=\"transform-origin:340px 120px\" cx=\"340\" cy=\"120\" r=\"18\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un mouvement signale une attente.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Skeleton ou spinner, discret.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un spinner de chargement.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Attention (attirer l'œil)",
+     "quand": "On veut attirer l'œil par le mouvement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Fonction du mouvement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Attention (attirer l'œil)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"340\" cy=\"120\" r=\"12\" fill=\"#4F46E5\"/><circle class=\"ill-ripple\" cx=\"340\" cy=\"120\" r=\"12\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On veut attirer l'œil par le mouvement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>À éviter : hors registre par défaut, toute exception se journalise.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un pulse d'attention rare.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>aucune séquence ne flashe plus de trois fois par seconde</strong>, et rien ne franchit les seuils de flash général ou de flash rouge (WCAG 2.3.1, niveau A). Le registre productif ne prévoit aucun flash — cette règle <strong>verrouille</strong> l'interdit pour tout futur consommateur (célébration, alerte clignotante, chargement pulsé agressif) : le clignotement rapide « pour attirer l'œil » est proscrit, l'attention se gagne par la place et le mot, jamais par le stroboscope.",
+       "id": "MOTION-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Décoratif (plaisir, marque)",
+     "quand": "On envisage une animation d'ambiance.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Fonction du mouvement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Décoratif (plaisir, marque)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-pulse\"><rect x=\"300\" y=\"106\" width=\"80\" height=\"28\" rx=\"14\" fill=\"#4F46E5\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage une animation d'ambiance.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hors registre par décision (produit sobre).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une animation de célébration.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le registre de ce produit est productif, pas expressif</strong> (dualité Carbon) : documentation, précision, sobriété. Le mouvement décoratif, d'ambiance ou de célébration est hors registre par décision — pas de bounce, pas de stagger d'apparat, pas d'animation de marque. Toute exception se journalise.",
+       "id": "MOTION-R04"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "État / cas limite",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / cas limite\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Interruption (agir pendant la transition)",
+     "quand": "L'utilisateur agit pendant une transition.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / cas limite",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Interruption (agir pendant la transition)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle class=\"ill-spin\" style=\"transform-origin:320px 120px\" cx=\"320\" cy=\"120\" r=\"16\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><path d=\"M366 108l8 8m0-8l-8 8\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur agit pendant une transition.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La transition est interruptible et repart de l'état courant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Re-survol pendant la sortie du hover.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Animations simultanées",
+     "quand": "Plusieurs éléments réagissent ensemble.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / cas limite",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Animations simultanées\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M260 100L260 150\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M260 150L255.7 142.1M260 150L264.3 142.1\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M330 100L330 150\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M330 150L325.7 142.1M330 150L334.3 142.1\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M400 100L400 150\" stroke=\"#92400E\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M400 150L395.7 142.1M400 150L404.3 142.1\" stroke=\"#92400E\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"452\" cy=\"90\" r=\"9\" fill=\"#92400E\"/><path d=\"M448.5 86.5l7 7M455.5 86.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plusieurs éléments réagissent ensemble.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Pas de stagger décoratif : ce qui réagit ensemble bouge ensemble.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Plusieurs cartes qui réagissent.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Contenu qui bouge sans action utilisateur",
+     "quand": "Un contenu s'insère et pousse la page.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / cas limite",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contenu qui bouge sans action utilisateur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"98\" width=\"64\" height=\"44\" rx=\"9\" fill=\"#E0E7FF\"/><rect x=\"312\" y=\"98\" width=\"64\" height=\"44\" rx=\"9\" fill=\"#E0E7FF\"/><rect x=\"392\" y=\"98\" width=\"64\" height=\"44\" rx=\"9\" fill=\"#E0E7FF\"/><path d=\"M300 168L420 168\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M420 168L412.1 172.3M420 168L412.1 163.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"452\" cy=\"88\" r=\"9\" fill=\"#92400E\"/><path d=\"M448.5 84.5l7 7M455.5 84.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un contenu s'insère et pousse la page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservez l'espace : le déplacement non sollicité est le plus hostile.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une insertion sans saut de page.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le contenu ne se déplace jamais sans action de l'utilisateur</strong> : l'insertion dynamique réserve son espace quand c'est possible (ALERT-UX, SPACING-UX) ; à défaut, elle insère sous le point de lecture. Le déplacement non sollicité est le mouvement le plus hostile — il déplace la cible sous le curseur.",
+       "id": "MOTION-R16"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Transition au chargement de page",
+     "quand": "Tout voudrait s'animer à l'arrivée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / cas limite",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Transition au chargement de page\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-appear\"><rect x=\"230\" y=\"68\" width=\"220\" height=\"28\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"250\" y=\"112\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"250\" y=\"134\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tout voudrait s'animer à l'arrivée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rien n'anime au chargement initial.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une page qui s'affiche sans entrée animée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>rien n'anime au chargement initial</strong> de la page — le contenu proactif est du contenu comme un autre (généralisation de ALERT-UX : &quot;pas d'animation d'entrée nécessaire&quot;) ; les entrées animées sont réservées aux changements <em>réactifs</em> (conséquences d'une action).",
+       "id": "MOTION-R15"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 5 cas",
+   "titre": "Plateforme / accessibilité",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / accessibilité\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"118\" cy=\"75\" r=\"30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\"/><circle cx=\"118\" cy=\"75\" r=\"11\" fill=\"#4F46E5\"/><path d=\"M92 75q26-22 52 0q-26 22-52 0z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/><rect x=\"172\" y=\"58\" width=\"80\" height=\"34\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"186\" y=\"80\" font-size=\"13\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">Tab</text><path d=\"M244 66h8v10h-18\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "prefers-reduced-motion",
+     "quand": "L'utilisateur limite les animations.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : prefers-reduced-motion\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"290\" y=\"106\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#15803D\"/><circle cx=\"328\" cy=\"120\" r=\"10\" fill=\"#fff\"/><text x=\"352\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">réduit</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur limite les animations.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Désactivez déplacements/rotations/échelles ; gardez un équivalent statique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une expansion sans glissement.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "sous <code>prefers-reduced-motion: reduce</code> : <strong>les déplacements, rotations, changements d'échelle se désactivent ; les changements d'opacité et de couleur peuvent rester</strong> (la préférence vise le mouvement <em>spatial</em> — troubles vestibulaires : nausées, vertiges — pas le changement visuel). &quot;Reduce&quot; ne veut pas dire zéro : un crossfade remplace un glissement.",
+       "id": "MOTION-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "WCAG 2.2.2 (Pause, Stop, Hide)",
+     "quand": "Un mouvement dure plus de 5 s.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : WCAG 2.2.2 (Pause, Stop, Hide)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"314\" y=\"94\" width=\"52\" height=\"52\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"332\" y=\"108\" width=\"7\" height=\"24\" rx=\"2\" fill=\"#111827\"/><rect x=\"343\" y=\"108\" width=\"7\" height=\"24\" rx=\"2\" fill=\"#111827\"/><text x=\"376\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Pause</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un mouvement dure plus de 5 s.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Seul le skeleton boucle (exemption), désactivé sous reduced-motion.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un chargement long contrôlable.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "WCAG 2.3.3 (Animation from Interactions, AAA)",
+     "quand": "Une animation vient d'une interaction.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : WCAG 2.3.3 (Animation from Interactions, AAA)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"106\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#E5E7EB\"/><circle cx=\"302\" cy=\"120\" r=\"10\" fill=\"#fff\"/><text x=\"352\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">AAA</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une animation vient d'une interaction.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>reduced-motion appliqué systématiquement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un effet désactivable.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>distinguer la contrainte du parti pris (1.2.0).</strong> Deux natures de règles cohabitent dans ce langage et ne se négocient pas de la même façon : les <strong>contraintes</strong> (WCAG — reduced-motion, flash &lt; 3/s, transform/opacity, jamais l'information par le mouvement seul) sont <strong>non négociables</strong> ; le <strong>registre « productif seulement »</strong> est un <strong>parti pris d'identité</strong> (ligne CONFIANCE « décision interne »), donc <strong>paramétrable par un consommateur qui l'assume</strong> — une marque expressive (ex. un hero interactif) peut relever le registre <strong>sans jamais toucher aux contraintes</strong> (mouvement coupé sous reduced-motion, transform/opacity seuls, aucune information portée par le mouvement). Le système encadre la dérogation au lieu de la forcer : relever le registre est un chemin sanctionné, pas une entorse. <strong>Lecture d'audit (pivot 2026-07-21)</strong> : face à une interface tierce, seul le volet <em>contraintes</em> fonde une non-conformité ; une animation expressive chez un hôte au registre assumé est une <em>divergence de registre</em> à signaler à part, pas un défaut.",
+       "id": "MOTION-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "cadre normatif — WCAG 2.3.3 (AAA) : les animations d'interaction doivent pouvoir être désactivées ; WCAG 2.2.2 (A) : tout mouvement automatique de plus de 5 s doit être arrêtable. Le seul mouvement en boucle du système (pulse du skeleton) est un indicateur de chargement — exemption prévue par 2.2.2 — et il est <em>quand même</em> coupé sous reduced-motion, par choix.",
+       "id": "MOTION-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Tactile",
+     "quand": "L'écran est tactile (pas de hover).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tactile\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"330\" cy=\"120\" r=\"12\" fill=\"#4F46E5\"/><circle class=\"ill-ripple\" cx=\"330\" cy=\"120\" r=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'écran est tactile (pas de hover).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le feedback de press remplace le hover.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un retour au toucher.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Performance (jank)",
+     "quand": "Une animation risque de saccader.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Performance (jank)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"120\" width=\"22\" height=\"52\" rx=\"3\" fill=\"#4F46E5\" opacity=\".6\"/><rect x=\"296\" y=\"104\" width=\"22\" height=\"68\" rx=\"3\" fill=\"#4F46E5\" opacity=\".6\"/><rect x=\"332\" y=\"132\" width=\"22\" height=\"40\" rx=\"3\" fill=\"#4F46E5\" opacity=\".6\"/><rect x=\"368\" y=\"110\" width=\"22\" height=\"62\" rx=\"3\" fill=\"#4F46E5\" opacity=\".6\"/><rect x=\"404\" y=\"128\" width=\"22\" height=\"44\" rx=\"3\" fill=\"#4F46E5\" opacity=\".6\"/><text x=\"300\" y=\"190\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">à-coups</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une animation risque de saccader.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>transform et opacity seuls, jamais le layout.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ombre pré-rendue en opacité.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 4 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Mouvement qui bloque",
+     "quand": "L'utilisateur attend la fin d'une animation.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mouvement qui bloque\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle class=\"ill-spin\" style=\"transform-origin:320px 118px\" cx=\"320\" cy=\"118\" r=\"16\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><rect x=\"360\" y=\"104\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"380\" y=\"115\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><circle cx=\"452\" cy=\"96\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M448.5 92.5l7 7M455.5 92.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur attend la fin d'une animation.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le mouvement ne verrouille jamais l'interaction ; durées plafonnées.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un menu utilisable pendant son ouverture.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le mouvement est un commentaire — jamais le texte.</strong> Il confirme, relie, occupe l'attente ; il n'informe pas seul, ne bloque pas, ne décore pas.",
+       "id": "MOTION-R25"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Durées trop longues",
+     "quand": "Le produit paraît lent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Durées trop longues\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"118\" width=\"200\" height=\"10\" rx=\"5\" fill=\"#4F46E5\" opacity=\"0.5\"/><circle cx=\"456\" cy=\"118\" r=\"13\" fill=\"none\" stroke=\"#92400E\" stroke-width=\"2\"/><path d=\"M456 108v10l6 4\" fill=\"none\" stroke=\"#92400E\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le produit paraît lent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Échelle courte plafonnée sous le seuil de perception.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une transition brève.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Vocabulaire incohérent",
+     "quand": "Chaque composant a sa durée et sa courbe.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Vocabulaire incohérent\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M250 110L290 150\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M290 150L281.4 147.5M290 150L287.5 141.4\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M320 150L360 108\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M360 108L357.7 116.7M360 108L351.4 110.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M390 112L430 150\" stroke=\"#92400E\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M430 150L421.3 147.7M430 150L427.2 141.4\" stroke=\"#92400E\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"452\" cy=\"90\" r=\"9\" fill=\"#92400E\"/><path d=\"M448.5 86.5l7 7M455.5 86.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Chaque composant a sa durée et sa courbe.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un vocabulaire commun : c'est la raison des tokens motion.*.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des durées harmonisées.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Mouvement porteur d'information sans équivalent",
+     "quand": "La rotation d'un chevron est le seul indice d'état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mouvement porteur d'information sans équivalent\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M280 120L380 120\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M380 120L372.1 124.3M380 120L372.1 115.7\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"420\" cy=\"120\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M416.5 116.5l7 7M423.5 116.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"268\" y=\"160\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sans alternative</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La rotation d'un chevron est le seul indice d'état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'état est toujours exposé techniquement (aria-expanded) ; le mouvement confirme.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un chevron + aria-expanded.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de MOTION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>distinguer la contrainte du parti pris (1.2.0).</strong> Deux natures de règles cohabitent dans ce langage et ne se négocient pas de la même façon : les <strong>contraintes</strong> (WCAG — reduced-motion, flash &lt; 3/s, transform/opacity, jamais l'information par le mouvement seul) sont <strong>non négociables</strong> ; le <strong>registre « productif seulement »</strong> est un <strong>parti pris d'identité</strong> (ligne CONFIANCE « décision interne »), donc <strong>paramétrable par un consommateur qui l'assume</strong> — une marque expressive (ex. un hero interactif) peut relever le registre <strong>sans jamais toucher aux contraintes</strong> (mouvement coupé sous reduced-motion, transform/opacity seuls, aucune information portée par le mouvement). Le système encadre la dérogation au lieu de la forcer : relever le registre est un chemin sanctionné, pas une entorse. <strong>Lecture d'audit (pivot 2026-07-21)</strong> : face à une interface tierce, seul le volet <em>contraintes</em> fonde une non-conformité ; une animation expressive chez un hôte au registre assumé est une <em>divergence de registre</em> à signaler à part, pas un défaut.",
+       "id": "MOTION-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>la règle cardinale</strong> : toute information portée par un mouvement existe aussi statiquement — l'état du chevron est dans <code>aria-expanded</code>, la résolution de l'alert est annoncée (ALERT-UX), le chargement a son indicateur visible. Le mouvement est une <em>confirmation sensorielle</em>, jamais la <em>source</em> de l'information.",
+       "id": "MOTION-R06"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": ".doctrine-demo :is(.motion-demo:hover .motion-pion){transform:translateX(80px);}",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<style>.motion-demo:hover .motion-pion{transform:translateX(80px);}</style> <div class=\"spec-col\"><div class=\"motion-demo\"><span class=\"motion-pion\" style=\"transition:transform 100ms cubic-bezier(0.4, 0, 0.2, 1);\"></span><code>motion.fast</code></div><div class=\"motion-demo\"><span class=\"motion-pion\" style=\"transition:transform 200ms cubic-bezier(0.4, 0, 0.2, 1);\"></span><code>motion.base</code></div><div class=\"motion-demo\"><span class=\"motion-pion\" style=\"transition:transform 300ms cubic-bezier(0.4, 0, 0.2, 1);\"></span><code>motion.slow</code></div></div> <p class=\"spec-note\">Survolez chaque ligne — la translation utilise la durée du token et <code>ease-in-out</code>. <code>prefers-reduced-motion</code> : voir MOTION-UX.md.</p></section>"
+  ],
+  "tokens": [
+   {
+    "token": "durees.fast",
+    "ref": "motion.fast",
+    "valeur": "100ms",
+    "couleur": null
+   },
+   {
+    "token": "durees.base",
+    "ref": "motion.base",
+    "valeur": "200ms",
+    "couleur": null
+   },
+   {
+    "token": "durees.slow",
+    "ref": "motion.slow",
+    "valeur": "300ms",
+    "couleur": null
+   },
+   {
+    "token": "courbes.entree",
+    "ref": "motion.ease-out",
+    "valeur": "cubic-bezier(0, 0, 0.2, 1)",
+    "couleur": null
+   },
+   {
+    "token": "courbes.sortie",
+    "ref": "motion.ease-in",
+    "valeur": "cubic-bezier(0.4, 0, 1, 1)",
+    "couleur": null
+   },
+   {
+    "token": "courbes.sur_place",
+    "ref": "motion.ease-in-out",
+    "valeur": "cubic-bezier(0.4, 0, 0.2, 1)",
+    "couleur": null
+   },
+   {
+    "token": "regles_de_composition.sortie_plus_courte",
+    "ref": "la sortie prend le cran inférieur de son entrée",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "regles_de_composition.spinner",
+    "ref": "rotation continue linéaire — seule exception au bannissement du linéaire",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-21",
+   "titre": "Statut de frontière : les quatre règles désignées par la mesure M2 sont annotées",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>METHODE.md</code> 1.10.0 (la convention), <code>VOICE-UX.md</code> 1.3.1, <code>MOTION-UX.md</code> 1.3.2, <code>FORM-UX.md</code> 2.3.0, <code>BUTTON-UI.md</code> 1.6.1, + miroirs <code>dist/RULES-voice|motion|form|button.md</code>.</li><li><strong>Contexte</strong> : le dépouillement des findings des huit études (mesure M2 du pivot) donne 95 % de justifications universelles ; les seules exceptions sont trois contrats de registre (voice « pas de ! », motion « productif seulement », label 16 px) et un parti pris contesté (« jamais de disabled comme validation » — Strava-decisions F09, Carbon/iOS documentent l'inverse).</li><li><strong>Décision</strong> : généraliser la distinction « contrainte ≠ parti pris » (stress-test 2026-07-17) en <strong>statut de frontière</strong> à trois valeurs — <strong>propriété universelle / parti pris d'identité / implémentation de référence</strong> — avec sa <strong>lecture d'audit</strong> : seule la propriété universelle fonde une non-conformité chez un hôte tiers ; un parti pris se signale comme <em>divergence de registre</em>, à part ; l'implémentation de référence n'est jamais un critère. L'annotation est progressive, tirée par l'usage des audits — pas de passe de réécriture.</li><li><strong>Pourquoi</strong> : sans ce statut, un audit d'interface tierce requalifie en défaut ce qui n'est qu'une identité maison — trois cas réels dans Passion Courtage site-v2 (F06 « pas de ! », F08 registre motion, F09 label 16 px). La crédibilité du moteur d'audit dépend de cette distinction.</li></ul>"
+  },
+  {
+   "date": "2026-07-21",
+   "titre": "Principe « performance » : le contrat des attentes devient le cinquième RULES du socle universel",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/principles/performance/PERFORMANCE-UX.md</code> (1.0.0, companion: none) ; <code>atelier/inventaires/inventaire-cas-usage-performance.md</code> (3e inventaire transversal, 20 cas) ; <code>dist/RULES-performance.md</code> (maintenu à la main) ; <code>DESIGN.md</code> 1.28.0 (index, aucun token) ; <code>LAWS-UX.md</code> 1.3.1 (Doherty → carte) ; <code>MOTION-UX.md</code> 1.3.1 (frontière nommée) ; <code>tools/genere-routeur.js</code> (socle à 5 RULES) ; contenus éditoriaux du site.</li><li><strong>Constat</strong> : le système possédait les mécaniques d'attente en pièces détachées (cycle de soumission FORM, loading BUTTON, attente par champ INPUT, squelettes CARD/COLLECTION, bornes d'animation MOTION) mais aucun propriétaire du contrat transversal — quel feedback à quel délai, quand l'optimisme est permis, ce que l'honnêteté interdit. Doherty et les seuils NN/g n'existaient qu'en théorie (catalogue) ou en local (MOTION).</li><li><strong>Décisions</strong> :</li><li><strong>Frontière motion / performance</strong> (haute) : motion possède les durées et courbes des ANIMATIONS ; performance possède le contrat des ATTENTES. L'indicateur de chargement appartient aux deux — forme et mouvement chez motion, moment d'apparition et sincérité chez performance.</li><li><strong>Socle universel à cinq</strong> (haute, arbitrage délégué) : toute intention charge et attend — RULES-performance rejoint accessibility/interaction/adaptive/cognitive-load ; coût mesuré à chaque build, clause de réouverture déjà journalisée chez cognitive-load.</li><li><strong>Échelle de l'attente</strong> (haute) : rien sous ~100 ms ; local entre ~100 ms et ~1 s ; visible ET annoncé au-delà ; état à part entière (progression honnête, issue, timeout) au-delà de ~10 s ou en durée inconnue. Anti-scintillement : délai d'apparition + durée minimale, non chiffrés jusqu'au premier consommateur outillé (un chiffre sans besoin réel serait le travers que le système interdit).</li><li><strong>UI optimiste sous trois conditions cumulées</strong> (haute) : réversible/rejouable + très probable + échec réparé visiblement ; interdite sur l'irréversible, le paiement, le légal — alignée sur la réversibilité de cognitive-load.</li><li><strong>Honnêteté renforcée</strong> (haute) : jamais de fausse progression (la frontière Goal-Gradient du catalogue devient un interdit opérationnel) et JAMAIS d'attente artificielle — refus assumé d'exploiter la labor illusion (Buell &amp; Norton), documentée puis écartée, cohérent avec le refus des dark patterns.</li><li><strong>Seuils en prose, aucun token</strong> (moyenne) : les bornes 0,1/1/10 s sont de la psychophysique sourcée, pas des valeurs de design à thématiser.</li><li><strong>Laissé ouvert</strong> : composant de progression déterminée (aucun dans le système — naîtra du besoin, d'ici là remonter) ; chiffrage de l'anti-scintillement ; incarnation de l'optimisme (premier terrain : TOAST porteur d'une annulation) ; valeurs machine des seuils si un harness les consomme un jour.</li><li><strong>Pourquoi</strong> : troisième et dernière absence prioritaire du fil « quatre axes » (2026-07-21 : cognitive-load, collection, performance) — le tout par la voie complète de la méthode, en un jour, sans casser la promesse d'aucun fichier existant.</li></ul>"
+  },
+  {
+   "date": "2026-07-18",
+   "titre": "E-MOTION : la couche d'EXPRESSION (13e fondation)",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/foundations/emotion/EMOTION-UX.md</code> + <code>EMOTION-UI.md</code> (v1.0.0), <code>dist/RULES-emotion.md</code>, <code>atelier/core/DESIGN.md</code> (v1.22.0 — cran motion <code>expressive</code> 700ms / <code>spring</code> overshoot / <code>celebration</code> 1200ms), <code>tools/genere-routeur.js</code> (emotion rattachée aux intentions Formulaire + Feedback). <code>dist/tokens.*</code> régénérés.</li><li><strong>Ancienne règle</strong> : le système n'avait qu'un registre de mouvement PRODUCTIF (&lt; ~400ms, « pas de célébration, pas de bounce »). MOTION-UX 1.2.0 avait déjà noté que ce « productif seulement » était un parti pris d'identité PARAMÉTRABLE, relevable par un « chemin sanctionné » — mais ce chemin n'existait pas encore.</li><li><strong>Nouvelle règle</strong> : E-motion EST ce chemin. Une couche d'expression mince, rare et gouvernée — la « couche humaine/émotionnelle » qui différencie le DS. Elle relève le parti pris (durées &gt; 400ms, courbe à dépassement <code>spring</code>, plafond <code>celebration</code>) pour des moments strictement MÉRITÉS (réussite d'un envoi, première fois, cap franchi, sortie d'erreur, vide avec personnalité), sous <strong>budget de rareté</strong> (un moment qui se répète cesse d'être expressif — miroir de « un seul primary par vue »). Loi cardinale : l'expression est proportionnelle au SENS du moment (miroir de « friction ∝ risque »).</li><li><strong>Ce qui n'est JAMAIS relevé</strong> : le contrat d'accessibilité. E-motion hérite tout WCAG de motion (reduced-motion → version instantanée ; <code>transform</code>/<code>opacity</code> seulement ; pas de flash &gt; 3/s ; jamais d'info par le seul mouvement). Contrat de repli INVIOLABLE : E-motion est toujours une amélioration, jamais un canal d'information.</li><li><strong>Pourquoi</strong> : demande produit explicite (réf. « Paper plane button » d'Aaron Iker) — offrir des moments d'expression qui sortent de la monotonie d'un DS ultra-cadré ; la couche émotionnelle qui différencie. Nom trouvé ensemble : « E-motion » (émotion + motion). Décision de tracer le parti pris DANS le système (fondation gouvernée) plutôt qu'à côté (effet local), pour ne pas introduire de valeur hors-système.</li><li><strong>Premier citoyen</strong> : le SubmitButton « avion en papier » (envoi async → pliage/vol → succès), gabarit de tout futur moment. Quatre instruments : mouvement (premier violon), voix (registre chaleureux autorisé), couleur (empruntée aux tokens), forme.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "DESIGN 1.11.0 : motion.* — un vocabulaire pour des micro-interactions qui existaient déjà",
+   "html": "<ul><li><strong>Fichiers</strong> : DESIGN.md 1.11.0, foundations/motion/*, les 4 <code>*-UI.md</code> composants (mapping)</li><li><strong>Ancien état</strong> : le hover (&quot;principal signal d'affordance&quot;), la rotation du chevron (180°), la disparition du callout et le pulse du skeleton existaient dans les fichiers — sans durée, sans courbe, sans règle reduced-motion. Chaque implémentation aurait inventé les siennes.</li><li><strong>Nouvelle règle</strong> : 3 durées (<code>fast</code> 100ms / <code>base</code> 200ms / <code>slow</code> 300ms — tout sous la borne ~400ms), 3 courbes (ease-out entrée / ease-in sortie / ease-in-out sur place), sortie au cran inférieur de l'entrée, linéaire réservé au spinner. Registre <strong>productif seulement</strong> (dualité Carbon) : pas de mouvement décoratif, rien n'anime au chargement, pas de stagger. Règle cardinale : le mouvement confirme, il n'informe jamais seul — condition qui rend <code>prefers-reduced-motion</code> implémentable sans perte (déplacements coupés, opacité/couleur conservées, skeleton statique).</li><li><strong>Pourquoi</strong> : 5e occurrence du biais &quot;état transitoire&quot;, à l'échelle du système cette fois — la fondation qui <em>est</em> l'état transitoire manquait. Son trou propre (l'interruption : agir pendant la transition) a été écrit d'office, le prédicteur ayant désigné l'endroit exact.</li></ul>"
+  },
+  {
+   "date": "2026-07-14",
+   "titre": "Accessibilité : fondation transversale accessibility (UX-only, compilée, socle universel) + règles chez leurs propriétaires",
+   "html": "<ul><li><strong>Fichiers</strong> : foundations/accessibility/ACCESSIBILITY-UX.md (créé), dist/RULES-accessibility.md (créé), MOTION-UX.md 1.0.0→1.1.0, BORDER-UX.md 1.0.0→1.1.0, BUTTON-UX.md 1.3.2→1.4.0, CARD-UX.md 1.1.2→1.2.0, FORM-UX.md 2.0.0→2.1.0, ALERT-UX.md 1.2.0→1.3.0, INPUT-UX.md 1.4.0→1.5.0, dist/RULES-{motion,border,button,card,form,alert,input}, tools/genere-routeur.js, tools/genere-site.js, DESIGN.md 1.15.0→1.16.0, README.md, METHODE.md 1.4.0→1.5.0, inventaires/inventaire-cas-usage-accessibilite.md.</li><li><strong>Ancien état</strong> : l'inventaire transversal du 2026-07-14 (entrée précédente) avait cartographié l'accessibilité et refusé de fabriquer une fondation orpheline — les trous devaient se combler chez leur propriétaire. Il laissait cinq trous <strong>P1</strong> (modalités concurrentes, focus complet, pointer/motricité, flash, canaux sensoriels) sans contrat consommable par le build, et signalait un risque de lecture : la fondation VOICE pouvait passer pour une couverture de la commande vocale.</li><li><strong>Nouvelle règle — architecture hybride</strong> : (1) une fondation <code>accessibility</code> <strong>UX-only</strong> (<code>companion: none</code>, aucun token, aucune valeur visuelle) pose les <strong>obligations universelles</strong> (clavier ; modalités concurrentes non bloquées ; focus visible/ordonné/non piégé/non masqué ; nom accessible = libellé visible ; jamais un seul canal ; alternative aux gestes complexes et au glisser-déposer ; limites de temps contrôlables ; aucun flash dangereux) et <strong>renvoie aux propriétaires</strong> — elle ne duplique jamais COLOR/BORDER/MOTION/ICONOGRAPHY/VOICE. (2) Chaque règle <em>propre</em> est placée chez son vrai propriétaire : <strong>MOTION</strong> (flash 2.3.1), <strong>BORDER</strong> (focus non masqué 2.4.11), <strong>BUTTON</strong> (annulation du pointeur 2.5.2 + haptique jamais indispensable), <strong>CARD</strong> (alternative au glisser-déposer 2.5.7), <strong>FORM</strong> (limites de temps 2.2.1), <strong>ALERT</strong> (signal sonore toujours doublé du texte, 1.4.1), <strong>INPUT</strong> (dictée + label in name 2.5.3). <strong>Aucune section « accessibilité » générique recopiée</strong> dans chaque fichier — seulement la règle qui décrit le comportement propre du sujet.</li><li><strong>Précédent nouveau</strong> : <code>companion: none</code> <strong>sans</strong> <code>audience: humans</code>. Contrairement à <code>laws</code> (référence humaine, non compilée), <code>accessibility</code> <strong>est compilée</strong> vers <code>dist/RULES-accessibility.md</code> et <strong>intégrée au socle du routeur</strong> (constante <code>SOCLE_FONDATIONS</code> dans genere-routeur.js), donc chargée d'office pour <strong>toute</strong> intention. valide-dossier.js reconnaissait déjà le cas UX-only ; genere-routeur.js a reçu la notion de socle universel (poids mesuré, sujet non-orphelin) ; genere-site.js l'expose comme une fondation à part entière.</li><li><strong>VOICE recadrée explicitement</strong> : VOICE = voix <strong>éditoriale</strong>, jamais commande <strong>vocale</strong>. L'obligation « service utilisable sans parler / nom adressable à la voix » relève de l'interaction (clavier + nom accessible chez INPUT), pas de VOICE. Écrit noir sur blanc dans ACCESSIBILITY-UX et RULES-accessibility.</li><li><strong>Chargement minimal préservé, poids mesuré</strong> : le socle passe de « routeur + tokens.yaml » à « + RULES-accessibility » (~1,3 k). Chaque bundle augmente uniformément de ~1,3 k — Formulaire ~25,1 k, Collection ~18,4 k, Page de contenu ~11,4 k, Feedback ~13,7 k (cf. tools/RAPPORT-ROUTEUR.md). <code>accessibility</code> a <code>requires: []</code> (n'entraîne aucune fondation dans la fermeture) et <code>selon-contexte: [color, border, motion, iconography, voice]</code> (renvois, non chargés d'office).</li><li><strong>En attente (inchangé)</strong> : sous-titres, transcriptions, audiodescriptions, reconnaissance vocale complète — aucun composant audio/vidéo ne les exerce ; position à prendre avant d'en créer un. Dette <strong>P3</strong> : aucun test réel (clavier, lecteur d'écran, dictée, tactile imprécis, zoom/reflow) sur écran assemblé — la couverture est <strong>documentaire, pas éprouvée</strong>.</li><li><strong>Pourquoi</strong> : une somme de règles par composant ne prouve pas une couverture des capacités, et une section accessibilité recopiée partout diverge dès la première évolution. Un contrat unique chargé partout + un renvoi vers le propriétaire réel : la règle ne vit qu'à un seul endroit, et le build la consomme réellement.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "MOTION-R01",
+   "couche": "ux",
+   "solution": "le motion est un **langage temporel** — pas d'axes : il exprime tous les changements d'état du système par le feedback et la continuité. Particularité : ce langage est *entièrement fait* d'états transitoires — le prédicteur \"état transitoire\" du README ne désigne plus un trou probable mais le sujet lui-même ; son application ici devient : traiter d'office **l'interruption** (l'état transitoire de l'état transitoire, cf. § Interruption).",
+   "enonce": "Le motion est un langage temporel sans axes : il couvre tous les changements d'état du système par le feedback et la continuité, et traite l'interruption comme état transitoire de l'état transitoire.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Continuité (relier deux états)",
+     "famille": "Fonction du mouvement"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R02",
+   "couche": "ux",
+   "solution": "le mouvement porte deux fonctions, et seulement deux :",
+   "enonce": "Un mouvement d'interface ne remplit que deux fonctions : confirmer qu'une action a été reçue (feedback, court et discret) ou relier deux états pour expliquer le changement (continuité, plus long mais jamais spectaculaire).",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Dualité productive/expressive",
+     "liens": [
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Dualité productive/expressive",
+    "liens": [
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R03",
+   "couche": "ux",
+   "solution": "**frontière avec le principe `performance`** (2026-07-21) — ce langage possède les durées et courbes des **animations** ; le contrat des **attentes** (quel feedback à quel délai, optimisme, honnêteté de la progression) vit dans PERFORMANCE-UX.md. L'indicateur de chargement appartient aux deux : sa forme et son mouvement ici, son moment d'apparition et sa sincérité là-bas.",
+   "enonce": "Les durées et les courbes relèvent du langage de mouvement ; le contrat des attentes — quel feedback à quel délai, honnêteté de la progression — relève du principe de performance.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R04",
+   "couche": "ux",
+   "solution": "**le registre de ce produit est productif, pas expressif** (dualité Carbon) : documentation, précision, sobriété. Le mouvement décoratif, d'ambiance ou de célébration est hors registre par décision — pas de bounce, pas de stagger d'apparat, pas d'animation de marque. Toute exception se journalise.",
+   "enonce": "Le registre du mouvement est productif et non expressif : aucun mouvement décoratif, d'ambiance, de célébration ou de marque, et toute exception se journalise.",
+   "mesure": "aucun rebond, aucun stagger d'apparat, aucune animation de marque",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Dualité productive/expressive",
+     "liens": [
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Dualité productive/expressive",
+    "liens": [
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Décoratif (plaisir, marque)",
+     "famille": "Fonction du mouvement"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R05",
+   "couche": "ux",
+   "solution": "**distinguer la contrainte du parti pris (1.2.0).** Deux natures de règles cohabitent dans ce langage et ne se négocient pas de la même façon : les **contraintes** (WCAG — reduced-motion, flash < 3/s, transform/opacity, jamais l'information par le mouvement seul) sont **non négociables** ; le **registre « productif seulement »** est un **parti pris d'identité** (ligne CONFIANCE « décision interne »), donc **paramétrable par un consommateur qui l'assume** — une marque expressive (ex. un hero interactif) peut relever le registre **sans jamais toucher aux contraintes** (mouvement coupé sous reduced-motion, transform/opacity seuls, aucune information portée par le mouvement). Le système encadre la dérogation au lieu de la forcer : relever le registre est un chemin sanctionné, pas une entorse. **Lecture d'audit (pivot 2026-07-21)** : face à une interface tierce, seul le volet *contraintes* fonde une non-conformité ; une animation expressive chez un hôte au registre assumé est une *divergence de registre* à signaler à part, pas un défaut.",
+   "enonce": "Les contraintes d'accessibilité du mouvement ne se négocient pas, tandis que le registre productif est un parti pris paramétrable : un écart de registre chez un consommateur tiers se signale comme divergence, jamais comme non-conformité.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "le mouvement est le canal le plus intrusif du système — il capte l'attention de force (la vision périphérique est câblée pour détecter le mouvement). Un produit de documentation qui bouge beaucoup est un produit qui interrompt beaucoup.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Dualité productive/expressive",
+     "liens": [
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Dualité productive/expressive",
+    "liens": [
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "WCAG 2.3.3 (Animation from Interactions, AAA)",
+     "famille": "Plateforme / accessibilité"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Mouvement porteur d'information sans équivalent",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R06",
+   "couche": "ux",
+   "solution": "**la règle cardinale** : toute information portée par un mouvement existe aussi statiquement — l'état du chevron est dans `aria-expanded`, la résolution de l'alert est annoncée (ALERT-UX), le chargement a son indicateur visible. Le mouvement est une *confirmation sensorielle*, jamais la *source* de l'information.",
+   "enonce": "Toute information portée par un mouvement doit exister aussi sans lui : sous forme textuelle ou programmatiquement déterminable, le mouvement n'étant qu'une confirmation sensorielle.",
+   "mesure": "tout état signalé par une animation est exposé dans le DOM ou en texte, et reste lisible mouvement coupé",
+   "contre": "",
+   "probleme": "c'est la condition qui rend `prefers-reduced-motion` implémentable sans perte : si couper le mouvement coupait de l'information, la préférence d'accessibilité deviendrait une dégradation fonctionnelle.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Toute information véhiculée par la présentation doit être programmatiquement déterminable ou disponible en texte — fondement normatif du « jamais l'information par le mouvement seul », qui n'était appuyé sur aucune norme",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.1 Info and Relationships",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "reduced-motion : réduire ≠ supprimer ; opacité conservable, déplacement remplacé",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      },
+      {
+       "label": "web.dev",
+       "url": "https://web.dev/articles/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+     "liens": [
+      {
+       "label": "W3C — Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+      },
+      {
+       "label": "Pause, Stop, Hide",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Toute information véhiculée par la présentation doit être programmatiquement déterminable ou disponible en texte — fondement normatif du « jamais l'information par le mouvement seul », qui n'était appuyé sur aucune norme",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.1 Info and Relationships",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-6",
+     "titre": "Disparition de l'alert (dismiss/résolution)",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Mouvement porteur d'information sans équivalent",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R07",
+   "couche": "ux",
+   "solution": "trois crans (`motion.fast` / `motion.base` / `motion.slow`), et une lecture simple : **petit changement = cran court, grand changement = cran long**. Feedback (hover, couleur) : fast. Continuité locale (chevron, apparition, dépliage) : base. Grandes surfaces (panneaux, futurs superposés) : slow.",
+   "enonce": "L'amplitude du changement décide de la durée : petit changement, cran court ; continuité locale, cran médian ; grande surface, cran long.",
+   "mesure": "toute durée d'animation provient d'un token motion.fast, motion.base ou motion.slow, jamais d'une valeur en dur",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Plages de durées 50-400 ms, petit=court/grand=long",
+     "liens": [
+      {
+       "label": "Atlassian — Motion",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Material — durées",
+       "url": "https://m1.material.io/motion/duration-easing.html"
+      },
+      {
+       "label": "Polaris — tokens",
+       "url": "https://polaris-react.shopify.com/tokens/motion"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Plages de durées 50-400 ms, petit=court/grand=long",
+    "liens": [
+     {
+      "label": "Atlassian — Motion",
+      "url": "https://atlassian.design/foundations/motion"
+     },
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     },
+     {
+      "label": "Material — durées",
+      "url": "https://m1.material.io/motion/duration-easing.html"
+     },
+     {
+      "label": "Polaris — tokens",
+      "url": "https://polaris-react.shopify.com/tokens/motion"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R08",
+   "couche": "ux",
+   "solution": "bornes sourcées — sous ~100 ms, un feedback est perçu comme instantané (Nielsen) ; au-delà de ~400 ms, une transition paraît lente (Material). L'échelle entière de ce système vit dans cette fenêtre, et son cran le plus long reste sous la borne haute.",
+   "enonce": "Un feedback rendu en moins d'environ 100 ms est perçu comme instantané, et une transition d'interface qui dépasse environ 400 ms est perçue comme lente.",
+   "mesure": "aucune durée de transition d'interface supérieure à 400 ms",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "< 100 ms perçu instantané ; 1 s limite du flux de pensée",
+     "liens": [
+      {
+       "label": "NN/g — Response Times",
+       "url": "https://www.nngroup.com/articles/response-times-3-important-limits/"
+      },
+      {
+       "label": "Doherty threshold",
+       "url": "https://lawsofux.com/doherty-threshold/"
+      }
+     ],
+     "confiance": "Établi — littérature fondatrice"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Plages de durées 50-400 ms, petit=court/grand=long",
+     "liens": [
+      {
+       "label": "Atlassian — Motion",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Material — durées",
+       "url": "https://m1.material.io/motion/duration-easing.html"
+      },
+      {
+       "label": "Polaris — tokens",
+       "url": "https://polaris-react.shopify.com/tokens/motion"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "< 100 ms perçu instantané ; 1 s limite du flux de pensée",
+    "liens": [
+     {
+      "label": "NN/g — Response Times",
+      "url": "https://www.nngroup.com/articles/response-times-3-important-limits/"
+     },
+     {
+      "label": "Doherty threshold",
+      "url": "https://lawsofux.com/doherty-threshold/"
+     }
+    ],
+    "confiance": "Établi — littérature fondatrice"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R09",
+   "couche": "ux",
+   "solution": "**la sortie est plus courte que l'entrée** : ce qui part n'a plus besoin d'attention — en pratique, une sortie prend le cran inférieur de son entrée (entrée base → sortie fast).",
+   "enonce": "La sortie d'un élément est plus rapide que son entrée, ce qui part n'ayant plus besoin d'attention.",
+   "mesure": "pour un même élément, durée de sortie strictement inférieure à la durée d'entrée",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Sortie plus courte que l'entrée",
+     "liens": [
+      {
+       "label": "Material v1 — Duration & easing",
+       "url": "https://m1.material.io/motion/duration-easing.html"
+      }
+     ],
+     "confiance": "Établi chez Material, convergent"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "**Relevé de convergence du 2026-07-27 — la sortie est plus rapide que l'entrée.** Atlassian (« make exit motion faster than entrances »), Carbon (easing de sortie accéléré, « its departure from the screen is permanent »), Material v1 (225 ms entrée / 195 ms sortie)",
+     "liens": [
+      {
+       "label": "Atlassian — Motion",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Material v1 — Duration & easing",
+       "url": "https://m1.material.io/motion/duration-easing.html"
+      }
+     ],
+     "confiance": "Établi par convergence — 3 systèmes vérifiés sur source primaire"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Sortie plus courte que l'entrée",
+    "liens": [
+     {
+      "label": "Material v1 — Duration & easing",
+      "url": "https://m1.material.io/motion/duration-easing.html"
+     }
+    ],
+    "confiance": "Établi chez Material, convergent"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R10",
+   "couche": "ux",
+   "solution": "le mouvement **ne verrouille jamais l'interaction** : aucune action n'attend la fin d'une animation pour être disponible ; l'animation accompagne le changement d'état, elle ne le retarde pas.",
+   "enonce": "Le mouvement ne verrouille jamais l'interaction : aucune action n'attend la fin d'une animation pour devenir disponible.",
+   "mesure": "aucune action désactivée ou différée pendant la durée d'une animation",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Plages de durées 50-400 ms, petit=court/grand=long",
+     "liens": [
+      {
+       "label": "Atlassian — Motion",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Material — durées",
+       "url": "https://m1.material.io/motion/duration-easing.html"
+      },
+      {
+       "label": "Polaris — tokens",
+       "url": "https://polaris-react.shopify.com/tokens/motion"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Plages de durées 50-400 ms, petit=court/grand=long",
+    "liens": [
+     {
+      "label": "Atlassian — Motion",
+      "url": "https://atlassian.design/foundations/motion"
+     },
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     },
+     {
+      "label": "Material — durées",
+      "url": "https://m1.material.io/motion/duration-easing.html"
+     },
+     {
+      "label": "Polaris — tokens",
+      "url": "https://polaris-react.shopify.com/tokens/motion"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R11",
+   "couche": "ux",
+   "solution": "trois courbes (`motion.ease-out` / `motion.ease-in` / `motion.ease-in-out`), mappées sur les trois situations : **ce qui entre décélère** (ease-out : arrive vite, se pose), **ce qui sort accélère** (ease-in : s'efface sans traîner), **ce qui bouge sur place fait les deux** (ease-in-out : chevron, dépliage). Consensus explicite des quatre systèmes benchmarkés.",
+   "enonce": "Ce qui entre décélère, ce qui sort accélère, ce qui bouge sur place fait les deux — et le vocabulaire s'arrête à ces trois courbes.",
+   "mesure": "toute animation consomme une des trois courbes motion.ease-out, motion.ease-in ou motion.ease-in-out",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "ease-out entrée / ease-in sortie / ease-in-out sur place ; jamais linéaire sauf spinner",
+     "liens": [
+      {
+       "label": "Carbon",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris-react.shopify.com/tokens/motion"
+      },
+      {
+       "label": "Material 3 — easing & duration",
+       "url": "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+      }
+     ],
+     "confiance": "Établi — consensus fort"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "ease-out entrée / ease-in sortie / ease-in-out sur place ; jamais linéaire sauf spinner",
+    "liens": [
+     {
+      "label": "Carbon",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     },
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/motion"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris-react.shopify.com/tokens/motion"
+     },
+     {
+      "label": "Material 3 — easing & duration",
+      "url": "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+     }
+    ],
+    "confiance": "Établi — consensus fort"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R12",
+   "couche": "ux",
+   "solution": "**jamais de linéaire pour un déplacement** (\"le mouvement strictement linéaire paraît artificiel à l'œil\" — Carbon) — une seule exception : la **rotation continue du spinner** (Polaris la réserve exactement à ça).",
+   "enonce": "Aucun déplacement n'utilise une courbe linéaire ; le linéaire est réservé à la rotation continue d'un indicateur de chargement.",
+   "mesure": "aucune transition sur transform en timing-function linear, hors indicateur de chargement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "ease-out entrée / ease-in sortie / ease-in-out sur place ; jamais linéaire sauf spinner",
+     "liens": [
+      {
+       "label": "Carbon",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      },
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/motion"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris-react.shopify.com/tokens/motion"
+      },
+      {
+       "label": "Material 3 — easing & duration",
+       "url": "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+      }
+     ],
+     "confiance": "Établi — consensus fort"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "ease-out entrée / ease-in sortie / ease-in-out sur place ; jamais linéaire sauf spinner",
+    "liens": [
+     {
+      "label": "Carbon",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     },
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/motion"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris-react.shopify.com/tokens/motion"
+     },
+     {
+      "label": "Material 3 — easing & duration",
+      "url": "https://m3.material.io/styles/motion/easing-and-duration/tokens-specs"
+     }
+    ],
+    "confiance": "Établi — consensus fort"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R13",
+   "couche": "ux",
+   "solution": "toute transition est **interruptible et repart de l'état courant** : un re-hover pendant la sortie du hover inverse la transition là où elle en est ; un double clic sur le chevron ne rejoue pas deux animations. Jamais de file d'attente d'animations, jamais d'état \"en attente de fin d'animation\".",
+   "enonce": "Toute transition est interruptible et repart de la valeur courante : aucune file d'attente d'animations, aucun état d'attente de fin d'animation, aucun rejeu en double.",
+   "mesure": "un re-déclenchement pendant une transition inverse le mouvement depuis l'état courant, sans saut ni verrou",
+   "contre": "",
+   "probleme": "les transitions CSS ont ce comportement nativement — le perdre (animations par keyframes rejouées, verrous JS) est une régression qu'on s'interdit d'introduire.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Le réamorçage d'une transition interrompue est spécifié : la nouvelle transition part de la valeur courante de la propriété (« reversing-adjusted start value »)",
+     "liens": [
+      {
+       "label": "W3C — CSS Transitions Level 1",
+       "url": "https://www.w3.org/TR/css-transitions-1/"
+      }
+     ],
+     "confiance": "Établi, spécification W3C"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Le réamorçage d'une transition interrompue est spécifié : la nouvelle transition part de la valeur courante de la propriété (« reversing-adjusted start value »)",
+    "liens": [
+     {
+      "label": "W3C — CSS Transitions Level 1",
+      "url": "https://www.w3.org/TR/css-transitions-1/"
+     }
+    ],
+    "confiance": "Établi, spécification W3C"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R14",
+   "couche": "ux",
+   "solution": "**le focus ring n'est jamais animé** — c'est une information de position pour la navigation clavier, pas un effet (règle partagée avec BORDER-UX, qui fait autorité sur le ring).",
+   "enonce": "L'indicateur de focus apparaît instantanément : il n'est jamais animé ni retardé, car il porte une information de position clavier et non un effet.",
+   "mesure": "aucune propriété de transition sur l'outline ou le box-shadow de focus",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Focus ring",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R15",
+   "couche": "ux",
+   "solution": "**rien n'anime au chargement initial** de la page — le contenu proactif est du contenu comme un autre (généralisation de ALERT-UX : \"pas d'animation d'entrée nécessaire\") ; les entrées animées sont réservées aux changements *réactifs* (conséquences d'une action).",
+   "enonce": "Rien ne s'anime au chargement initial d'une page : les entrées animées sont réservées aux changements consécutifs à une action de l'utilisateur.",
+   "mesure": "aucune animation d'entrée déclenchée avant la première interaction",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Apparition de l'alert réactif",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Transition au chargement de page",
+     "famille": "État / cas limite"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R16",
+   "couche": "ux",
+   "solution": "**le contenu ne se déplace jamais sans action de l'utilisateur** : l'insertion dynamique réserve son espace quand c'est possible (ALERT-UX, SPACING-UX) ; à défaut, elle insère sous le point de lecture. Le déplacement non sollicité est le mouvement le plus hostile — il déplace la cible sous le curseur.",
+   "enonce": "Le contenu ne se déplace jamais sans action de l'utilisateur : une insertion dynamique réserve son espace, ou à défaut s'insère hors du point de lecture.",
+   "mesure": "CLS ≤ 0,1, les décalages survenant dans les 500 ms suivant une interaction discrète étant exclus",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Les décalages de mise en page non sollicités sont mesurés et pénalisés (seuil « bon » à 0,1) ; les décalages survenant dans les 500 ms suivant une interaction discrète sont explicitement exclus — la distinction exacte que pose R16",
+     "liens": [
+      {
+       "label": "web.dev — Cumulative Layout Shift (CLS)",
+       "url": "https://web.dev/articles/cls"
+      }
+     ],
+     "confiance": "Établi — métrique Core Web Vitals, seuil chiffré"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+     "liens": [
+      {
+       "label": "W3C — Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+      },
+      {
+       "label": "Pause, Stop, Hide",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Les décalages de mise en page non sollicités sont mesurés et pénalisés (seuil « bon » à 0,1) ; les décalages survenant dans les 500 ms suivant une interaction discrète sont explicitement exclus — la distinction exacte que pose R16",
+    "liens": [
+     {
+      "label": "web.dev — Cumulative Layout Shift (CLS)",
+      "url": "https://web.dev/articles/cls"
+     }
+    ],
+    "confiance": "Établi — métrique Core Web Vitals, seuil chiffré"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Contenu qui bouge sans action utilisateur",
+     "famille": "État / cas limite"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R17",
+   "couche": "ux",
+   "solution": "pas de **stagger décoratif** : ce qui réagit ensemble bouge ensemble (des cartes qui apparaissent en cascade, c'est de l'expressif — hors registre).",
+   "enonce": "Les éléments qui réagissent ensemble s'animent ensemble : aucun décalage en cascade décoratif.",
+   "mesure": "aucun delay échelonné entre éléments d'un même groupe",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Dualité productive/expressive",
+     "liens": [
+      {
+       "label": "Carbon — Motion",
+       "url": "https://carbondesignsystem.com/elements/motion/overview/"
+      }
+     ],
+     "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Dualité productive/expressive",
+    "liens": [
+     {
+      "label": "Carbon — Motion",
+      "url": "https://carbondesignsystem.com/elements/motion/overview/"
+     }
+    ],
+    "confiance": "Établi chez Carbon — le \"productif seul\" est un choix d'identité interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R18",
+   "couche": "ux",
+   "solution": "sous `prefers-reduced-motion: reduce` : **les déplacements, rotations, changements d'échelle se désactivent ; les changements d'opacité et de couleur peuvent rester** (la préférence vise le mouvement *spatial* — troubles vestibulaires : nausées, vertiges — pas le changement visuel). \"Reduce\" ne veut pas dire zéro : un crossfade remplace un glissement.",
+   "enonce": "Sous prefers-reduced-motion: reduce, les déplacements, rotations et changements d'échelle sont supprimés ou remplacés ; les changements d'opacité et de couleur peuvent subsister, la préférence visant le mouvement spatial.",
+   "mesure": "sous prefers-reduced-motion: reduce, aucune translation, rotation ni mise à l'échelle animée",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "reduced-motion : réduire ≠ supprimer ; opacité conservable, déplacement remplacé",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      },
+      {
+       "label": "web.dev",
+       "url": "https://web.dev/articles/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Ancrage normatif de la caractéristique média prefers-reduced-motion et de sa valeur reduce",
+     "liens": [
+      {
+       "label": "W3C — Media Queries Level 5, prefers-reduced-motion",
+       "url": "https://www.w3.org/TR/mediaqueries-5/#prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, spécification W3C"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "reduced-motion : réduire ≠ supprimer ; opacité conservable, déplacement remplacé",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     },
+     {
+      "label": "web.dev",
+      "url": "https://web.dev/articles/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "prefers-reduced-motion",
+     "famille": "Plateforme / accessibilité"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R19",
+   "couche": "ux",
+   "solution": "applications concrètes chez les consommateurs : bascules d'état instantanées ou en fondu (hover, élévation), chevron qui *saute* à son orientation finale, **skeleton sans pulse** (l'attente reste visible, statique — l'indicateur demeure, le mouvement part), spinner remplacé par un indicateur statique ou un pulse d'opacité.",
+   "enonce": "Sous mouvement réduit, les bascules d'état sont instantanées ou en fondu, le chevron saute à son orientation finale, le squelette reste visible sans pulsation et l'indicateur de chargement cède la place à un rendu statique.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "reduced-motion : réduire ≠ supprimer ; opacité conservable, déplacement remplacé",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      },
+      {
+       "label": "web.dev",
+       "url": "https://web.dev/articles/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "reduced-motion : réduire ≠ supprimer ; opacité conservable, déplacement remplacé",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     },
+     {
+      "label": "web.dev",
+      "url": "https://web.dev/articles/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Skeleton",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R20",
+   "couche": "ux",
+   "solution": "cadre normatif — WCAG 2.3.3 (AAA) : les animations d'interaction doivent pouvoir être désactivées ; WCAG 2.2.2 (A) : tout mouvement automatique de plus de 5 s doit être arrêtable. Le seul mouvement en boucle du système (pulse du skeleton) est un indicateur de chargement — exemption prévue par 2.2.2 — et il est *quand même* coupé sous reduced-motion, par choix.",
+   "enonce": "Une animation déclenchée par une interaction doit pouvoir être désactivée, et tout mouvement automatique qui dure plus de cinq secondes et se présente en parallèle d'autre contenu doit offrir un moyen de le mettre en pause, de l'arrêter ou de le masquer.",
+   "mesure": "aucune animation en boucle de plus de 5 s présentée en parallèle d'autre contenu sans mécanisme de pause, d'arrêt ou de masquage",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+     "liens": [
+      {
+       "label": "W3C — Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+      },
+      {
+       "label": "Pause, Stop, Hide",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+    "liens": [
+     {
+      "label": "W3C — Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+     },
+     {
+      "label": "Pause, Stop, Hide",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "établi (WCAG, MDN/web.dev, convergence des systèmes) ; le sur-respect du skeleton est une décision interne.",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Skeleton",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "WCAG 2.3.3 (Animation from Interactions, AAA)",
+     "famille": "Plateforme / accessibilité"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R21",
+   "couche": "ux",
+   "solution": "**aucune séquence ne flashe plus de trois fois par seconde**, et rien ne franchit les seuils de flash général ou de flash rouge (WCAG 2.3.1, niveau A). Le registre productif ne prévoit aucun flash — cette règle **verrouille** l'interdit pour tout futur consommateur (célébration, alerte clignotante, chargement pulsé agressif) : le clignotement rapide « pour attirer l'œil » est proscrit, l'attention se gagne par la place et le mot, jamais par le stroboscope.",
+   "enonce": "Aucune séquence ne flashe plus de trois fois par seconde, et aucune ne franchit les seuils de flash général ou de flash rouge.",
+   "mesure": "≤ 3 flashs par seconde ; seuils de flash général et de flash rouge non franchis",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Flash ≤ 3/s, seuils général et rouge (WCAG 2.3.1)",
+     "liens": [
+      {
+       "label": "W3C — Three Flashes or Below Threshold",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Flash ≤ 3/s, seuils général et rouge (WCAG 2.3.1)",
+    "liens": [
+     {
+      "label": "W3C — Three Flashes or Below Threshold",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Attention (attirer l'œil)",
+     "famille": "Fonction du mouvement"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R22",
+   "couche": "ux",
+   "solution": "le seul mouvement en boucle admis reste l'indicateur de chargement (skeleton, spinner) — il pulse en **opacité douce**, jamais en flash ; un clignotement décoratif, rapide (dangereux) comme lent (bruit), n'existe pas dans le registre.",
+   "enonce": "Le seul mouvement en boucle admis est l'indicateur de chargement, qui pulse en opacité douce ; aucun clignotement décoratif n'existe dans le système.",
+   "mesure": "aucune animation en boucle hors indicateur de chargement",
+   "contre": "",
+   "probleme": "c'est le seul risque du langage qui ne dégrade pas le confort mais peut **déclencher une crise** (épilepsie photosensible). Contrairement à une durée trop longue (agaçante) ou à un layout animé (saccadé), un flash au-dessus du seuil est un danger physiologique sans contrepartie ergonomique négociable — d'où l'interdit dur, distinct du reste du registre.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+     "liens": [
+      {
+       "label": "W3C — Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+      },
+      {
+       "label": "Pause, Stop, Hide",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "WCAG 2.3.3 (AAA) et 2.2.2 (A, exemption des indicateurs de progression)",
+    "liens": [
+     {
+      "label": "W3C — Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions"
+     },
+     {
+      "label": "Pause, Stop, Hide",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "établi — WCAG 2.3.1 (seuil des trois flashs) et 2.3.2 sont un standard d'accessibilité.",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Skeleton",
+     "famille": "Micro-interaction chez les consommateurs actuels"
+    }
+   ]
+  },
+  {
+   "id": "MOTION-R23",
+   "couche": "ux",
+   "solution": "n'animer que **`transform` et `opacity`** (étape composite — pas de layout, pas de paint) ; jamais width/height/top/margin (layout) ni box-shadow interpolé (paint) — les techniques concrètes (ombre par pseudo-élément, dépliage) vivent dans MOTION-UI.",
+   "enonce": "Les animations portent sur des propriétés composites — transform et opacity — et jamais sur des propriétés qui déclenchent le layout ou un repaint coûteux.",
+   "mesure": "aucune propriété de layout dans les transitions",
+   "contre": "",
+   "probleme": "une animation qui saccade est pire que pas d'animation — elle transforme le feedback en bruit. La contrainte technique rejoint le registre sobre : ce qui est cher à animer est précisément ce qu'on ne veut pas animer.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "transform/opacity seuls (composite)",
+     "liens": [
+      {
+       "label": "web.dev — Animations guide",
+       "url": "https://web.dev/articles/animations-guide"
+      }
+     ],
+     "confiance": "Établi — littérature performance"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "transform et opacity ne déclenchent qu'une recomposition ; les propriétés géométriques déclenchent layout puis repaint, et les propriétés colorimétriques déclenchent un repaint",
+     "liens": [
+      {
+       "label": "MDN — Animation performance and frame rate",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Animation_performance_and_frame_rate"
+      }
+     ],
+     "confiance": "Établi, documentation de référence — **contredit le tableau de mapping de MOTION-UI**, qui qualifie background-color de « composite-friendly »"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "transform/opacity seuls (composite)",
+    "liens": [
+     {
+      "label": "web.dev — Animations guide",
+      "url": "https://web.dev/articles/animations-guide"
+     }
+    ],
+    "confiance": "Établi — littérature performance"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R24",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Le langage tient une table des risques du mouvement, de leur nature et de leur sévérité.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "MOTION-R25",
+   "couche": "ux",
+   "solution": "**le mouvement est un commentaire — jamais le texte.** Il confirme, relie, occupe l'attente ; il n'informe pas seul, ne bloque pas, ne décore pas.",
+   "enonce": "Le mouvement est un commentaire et jamais le texte : il confirme, relie et occupe l'attente, mais n'informe pas seul, ne bloque pas et ne décore pas.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison temporelle du principe des canaux (COLOR-UX : jamais la couleur seule ; ICONOGRAPHY-UX : jamais le dessin seul) — le mouvement est le troisième canal non fiable : le plus rapide à percevoir, le premier à disparaître (reduced-motion, AT, captures).",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Toute information véhiculée par la présentation doit être programmatiquement déterminable ou disponible en texte — fondement normatif du « jamais l'information par le mouvement seul », qui n'était appuyé sur aucune norme",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.1 Info and Relationships",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Toute information véhiculée par la présentation doit être programmatiquement déterminable ou disponible en texte — fondement normatif du « jamais l'information par le mouvement seul », qui n'était appuyé sur aucune norme",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.3.1 Info and Relationships",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Mouvement qui bloque",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  }
+ ]
+}

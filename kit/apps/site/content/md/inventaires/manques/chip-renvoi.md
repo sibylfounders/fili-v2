@@ -1,0 +1,20 @@
+# Manque : chip-renvoi
+- Statut : résolu
+- Promotion : Chip  <!-- tranche verticale livrée le 2026-07-29 soir : CHIP-UX/UI 1.0.0, composant, manifeste, atelier, catalogue, tests — les deux implémentations locales des grilles consomment Chip -->
+- Besoin rencontré : renvoi compact et cliquable vers une règle (`BUTTON-R12 →`) ou un cas d'usage, en nuée dense dans les volets de la Doctrine.
+- Contexte réel : apps/site/app/md/[slug]/cas-grille.tsx et decisions-grille.tsx (volets « Règle qui tranche ce cas », « Situations qui l'éprouvent »).
+- Fréquence prévisible : élevée dans les surfaces documentaires ; probable dans Fili Audit (renvois de constats vers les règles).
+- Autres consommateurs possibles : site Audit (constats→règles), atelier (renvois doctrine), futures pages de patterns.
+- Composants proches et pourquoi ils ne suffisent pas : Button sm est un contrôle d'ACTION (hauteur 32px, poids visuel) — la chip est un renvoi de LECTURE, plus dense (py-1, text-xs, mono pour les IDs) ; Link n'a pas de facture contenue.
+- Pourquoi la composition existante ne suffit pas : aucun composant ne porte la facture « pastille bordée dense » ; la recomposer en local par page = la dérive exacte que le validateur traque.
+- Responsabilité proposée : porter un renvoi compact (ID ou libellé court) vers une entité du système, en nuée.
+- Limites : jamais une action de mutation ; jamais un champ de filtre (ça, c'est un futur Chip de sélection, autre besoin).
+- Anatomie : racine cliquable (a ou button selon cible) + libellé + flèche optionnelle.
+- API candidate : variant (outline/subtle) × size (sm seul au départ) ; asChild pour next/link.
+- Tokens nécessaires : rôles existants (border, surface, primary, radius-md) — aucun nouveau token pressenti.
+- Langages concernés : interaction (affordance hover), motion (transition-colors fast).
+- Règles accessibles : cible ≥ 24px de haut effectifs dans la nuée, focus ring standard.
+- Comportement adaptatif : flex-wrap naturel, troncature interdite sur les IDs.
+- Coût de maintenance estimé : faible (composant feuille).
+- Risque de doublon : futur Badge (affichage pur) — frontière à écrire dans la fiche UX.
+- Recommandation : nouveau composant — VALIDÉE le 2026-07-29 (arbitrage Aurélien). Tranche verticale en cours ; les implémentations locales des deux grilles seront remplacées à la livraison, puis Statut → résolu avec `- Promotion : Chip`.

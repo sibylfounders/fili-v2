@@ -1,0 +1,17 @@
+/* Import unique des tokens (variables CSS clair + sombre) puis Tailwind. */
+@import "@fili/tokens/css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--background);
+    color: var(--text-primary);
+  }
+}

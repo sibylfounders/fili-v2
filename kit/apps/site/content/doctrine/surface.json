@@ -1,0 +1,1109 @@
+{
+ "slug": "surface",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"7.5\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M6 4.5h15a1.5 1.5 0 0 1 1.5 1.5v11\"/></svg>",
+ "nom": "surface",
+ "nature": "Fondation",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-27 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · surface",
+  "question": "Quand un plan mérite-t-il d'exister — et que promet-il quand il apparaît ?",
+  "detail": "Une surface est un plan qui porte du contenu et se détache de ce qui l'entoure.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Une surface est un plan qui porte du contenu et se détache de son entourage ; l'espace suffit tant qu'il n'y a rien à séparer"
+   },
+   {
+    "num": "02 / SIGNAL",
+    "texte": "Gagner une surface dit « visé », le relief dit « pressable » — deux signaux distincts qui ne se remplacent pas"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Un plan qui n'existe que par son remplissage disparaît en couleurs forcées : le trait est ce qui survit"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "17",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "34",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "6/6",
+    "libelle": "systèmes exposent une échelle de plans"
+   }
+  ],
+  "rules": {
+   "nom": "",
+   "source": ""
+  }
+ },
+ "cas": [],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "L'inventaire déclare 9 cas non couverts sur 34 — dont les plans imbriqués, qui est le trou structurel du sujet."
+ },
+ "specs": {
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "La fondation ne crée aucun jeton : elle nomme ce que background, surface, surface-hover et surface-inverse veulent dire, et qui a le droit de les poser.",
+  "css": "",
+  "specimens": [],
+  "tokens": [
+   {
+    "token": "fond_de_page",
+    "ref": "background",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "plan_qui_porte",
+    "ref": "surface",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "plan_vise",
+    "ref": "surface-hover",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "plan_inverse",
+    "ref": "surface-inverse",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "trait_du_plan",
+    "ref": "border — ce qui survit en couleurs forcées",
+    "valeur": "1px",
+    "couleur": null
+   },
+   {
+    "token": "relief",
+    "ref": "elevation.* — signal distinct, propriété d'ELEVATION",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-27",
+   "titre": "SURFACE naît : la notion existait dans les jetons et dans cinq sujets, sans propriétaire",
+   "html": "<ul><li><strong>Déclencheur</strong> : en corrigeant le survol des cartes du volet Règles, le CSS a montré trois signaux distincts là où la doctrine n'en nommait que deux — une carte au repos porte <code>background</code>, une carte visée porte <code>surface</code>, et le relief (<code>elevation-raised</code>) est encore autre chose. La règle COLLECTION-R33 avait été écrite avec le mot « relief » là où le mécanisme est une surface.</li><li><strong>Le trou</strong> : ELEVATION mentionnait la surface 20 fois, CARD 19, MODAL 27 à elles deux — et aucun sujet ne disait ce qu'elle est. ELEVATION possédait la grammaire des plans, COLOR les jetons, personne le plan lui-même.</li><li><strong>Benchmark</strong> : 6 systèmes sur 6 nomment le plan et exposent une échelle (Fluent 6, Material 6+, Carbon 4, Atlassian 4, Polaris 3, Primer 3). <strong>Aucun ne tient un cran unique comme nous</strong> — position isolée, assumée et écrite en CONTRE.</li><li><strong>Contradiction majeure</strong> : Atlassian impose d'apparier systématiquement le plan et l'ombre, ce qui contredit frontalement notre dissociation des deux signaux. C'est le seul système vérifié qui se prononce sur la question, et il tranche contre nous.</li><li><strong>Correction d'une formule fausse du corpus</strong> : « en couleurs forcées les fonds disparaissent » est inexact. Ils sont <em>forcés aux couleurs système</em>, ce qui fait fusionner deux plans adjacents. Le trait reste le seul séparateur fiable.</li><li><strong>Mesure gênante</strong> : notre <code>surface</code> atteint 1,10:1 contre le fond de page, là où 3:1 est requis pour identifier seul un composant. Une surface ne peut donc jamais porter seule cette charge — et l'ombre ne rattrape rien, WCAG la considérant absorbée dans la couleur voisine.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "SURFACE-R01",
+   "couche": "ux",
+   "solution": "la surface est une **fondation** — pas d'axes, pas d'assemblage : une contrainte transversale. Particularité de trajectoire : elle naît **par diagnostic d'absence**, et non d'un composant ni d'un guardrail. Le mot « surface » est employé 20 fois par `ELEVATION-UX`, 19 fois par `CARD-UX`, 27 fois par `MODAL-UX` et `MODAL-UI` réunis, 15 fois par `OVERLAY-UI` — et quatre jetons le portaient (`background`, `surface`, `surface-hover`, `surface-inverse`) sans qu'aucun sujet ne dise **ce que c'est**. Cette fondation ne prend rien à personne : elle ramasse ce que personne n'avait pris.",
+   "enonce": "La surface est une fondation transversale née d'un diagnostic d'absence : la notion était employée partout et définie nulle part.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R02",
+   "couche": "ux",
+   "solution": "une **surface est un plan qui porte du contenu et se détache de ce qui l'entoure**. Trois conditions, toutes nécessaires : (1) une **étendue** — un plan, pas un trait ni un point ; (2) un **contenu porté** — elle existe pour ce qu'elle tient, jamais pour elle-même ; (3) une **distinction perceptible** d'avec son voisinage. Un aplat coloré sans contenu est un décor, pas une surface. Un contenu sans distinction d'avec la page n'est pas sur une surface — il est sur la page, et c'est très souvent la bonne réponse.",
+   "enonce": "Une surface est un plan étendu qui porte du contenu et se distingue de son voisinage ; un aplat sans contenu est un décor et non une surface.",
+   "mesure": "tout plan documenté comme surface nomme le contenu qu'il porte et le voisinage dont il se distingue",
+   "contre": "",
+   "probleme": "sans cette définition, « surface » devient un synonyme mou de « fond », et l'on tokenise des couleurs de remplissage au lieu de nommer des plans. Six systèmes sur six vérifiés le 2026-07-27 nomment ce plan explicitement et lui donnent une échelle — c'est le concept le mieux établi de cette fondation, et c'est précisément celui qui nous manquait.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Modèle de couches : `background` puis `layer-01/02/03` — chaque changement de couleur d'interface est une couche et appelle un jeu de jetons distinct ; jeux identiques d'un thème à l'autre ; un survol par couche (`layer-hover-01/02/03`) ; plan inversé nommé (`background-inverse`, avec `background-inverse-hover`)",
+     "liens": [
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "Carbon — Color tokens",
+       "url": "https://carbondesignsystem.com/elements/color/tokens/"
+      }
+     ],
+     "confiance": "Établi — pages chargées et lues. Le modèle le plus proche de ce que nous n'avons pas."
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Quatre surfaces d'élévation (`elevation.surface.sunken`, `elevation.surface`, `.raised`, `.overlay`) ; **appairage obligatoire surface + ombre** — « always pair `elevation.surface.raised` with `elevation.shadow.raised` », l'appairage rompu figurant parmi les interdits",
+     "liens": [
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue. **Contredit frontalement R04** : c'est la source qui rend notre dissociation surface/relief minoritaire et déclarée."
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Jetons de plan : `surface`, `surface-container` et ses quatre variantes (*lowest*, *low*, *high*, *highest*), `surface-dim`, `surface-bright`, `on-surface`, `on-surface-variant`",
+     "liens": [
+      {
+       "label": "Material Web — Theming color",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/theming/color.md"
+      }
+     ],
+     "confiance": "Établi — source primaire (dépôt) chargée. **La page `m3.material.io/styles/color/roles` est rendue en JavaScript et illisible en texte : déclarée non vérifiable et non citée.**"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Trois niveaux de proéminence de plan (`bg-surface`, `-secondary`, `-tertiary`), chacun avec ses états (`-hover`, `-active`, `-selected`), plus des variantes spécialisées dont *inverse* et *emphasis*",
+     "liens": [
+      {
+       "label": "Polaris — Color tokens",
+       "url": "https://polaris-react.shopify.com/tokens/color"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Six niveaux `colorNeutralBackground1…6`, les niveaux 1 à 5 déclinés en *Rest / Hover / Pressed / Selected* ; plan inversé nommé `colorNeutralBackgroundInverted`",
+     "liens": [
+      {
+       "label": "Fluent 2 — Color tokens",
+       "url": "https://fluent2.microsoft.design/color-tokens"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Trois plans neutres (`bgColor-default`, `-muted`, `-inset`), plus `bgColor-emphasis` (plan à fort contraste) et `overlay-bgColor` ; **aucun jeton de survol universel de plan** — le survol est porté par des jetons de motif (`control-bgColor-hover`)",
+     "liens": [
+      {
+       "label": "Primer — Color primitives",
+       "url": "https://primer.style/foundations/primitives/color"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue. Le seul système vérifié qui, comme nous, ne tokenise pas le survol au niveau du plan."
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R03",
+   "couche": "ux",
+   "solution": "ce système nomme **quatre rôles de plan**, et un seul cran de profondeur :",
+   "enonce": "Le système expose quatre rôles de plan — fond de page, surface, surface visée, surface inversée — et un seul cran de profondeur entre le fond de page et la surface.",
+   "mesure": "aucun plan neutre hors des quatre rôles nommés ; aucune surface imbriquée dans une autre surface avec un remplissage différent",
+   "contre": "**six systèmes sur six vérifiés exposent une échelle de plans empilables, aucun ne tient un cran unique.** Carbon empile quatre niveaux (`background`, `layer-01/02/03`) ; Material Web expose `surface` plus cinq conteneurs (`surface-container` et ses variantes *lowest/low/high/highest*) plus `surface-dim` et `surface-bright` ; Fluent 2 aligne six `colorNeutralBackground` ; Atlassian quatre surfaces d'élévation (*sunken*, défaut, *raised*, *overlay*) ; Polaris trois niveaux de proéminence ; Primer trois plans neutres (*default*, *muted*, *inset*). Notre cran unique est une position **isolée**, tenue parce qu'aucun de nos écrans n'imbrique aujourd'hui deux plans neutres — et non parce que le secteur nous suivrait.",
+   "probleme": "la conséquence directe du cran unique est qu'**une surface dans une surface est indiscernable chez nous**. C'est un manque assumé, pas un oubli : le jour où un panneau contient une zone qui contient une carte, il faudra soit un second cran, soit un trait, soit une décision de ne pas imbriquer. L'inventaire le porte en tête de ses cas non couverts.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+    },
+    {
+     "ref": "S13",
+     "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R04",
+   "couche": "ux",
+   "solution": "**gagner une surface est un signal d'interaction, et ce n'est pas le relief.** Le fait déclencheur est vérifiable dans `card-group.css` : une carte **au repos** porte `var(--background)` — le fond de la page, donc aucun plan propre ; une carte **visée par le pointeur** porte `var(--surface)` ; et le **relief** (`var(--elevation-raised)`, sur une couche `.cg-lift` distincte) est un **troisième signal encore différent**, qui n'apparaît que sur les cartes cliquables ou sélectionnables. Les deux disent deux choses différentes : la surface dit « c'est cet élément-là que tu vises », le relief dit « et celui-là, on peut le presser ». **« Visé » n'est pas « soulevé, donc pressable ».**",
+   "enonce": "Le remplissage d'un plan au survol signale la visée, et le relief signale la pressabilité : ce sont deux signaux distincts, jamais synonymes.",
+   "mesure": "un plan qui gagne un remplissage au survol sans être actionnable ne gagne aucune élévation",
+   "contre": "**Atlassian impose l'inverse** — sa documentation d'élévation prescrit explicitement d'apparier toujours `elevation.surface.raised` avec `elevation.shadow.raised`, et `elevation.surface.overlay` avec `elevation.shadow.overlay`, l'appairage rompu figurant parmi ses interdits. Chez eux, surface et ombre sont **un seul** signal indissociable. Notre dissociation est un choix ; sur le seul système vérifié qui se prononce sur la question, elle est contredite.",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Quatre surfaces d'élévation (`elevation.surface.sunken`, `elevation.surface`, `.raised`, `.overlay`) ; **appairage obligatoire surface + ombre** — « always pair `elevation.surface.raised` with `elevation.shadow.raised` », l'appairage rompu figurant parmi les interdits",
+     "liens": [
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue. **Contredit frontalement R04** : c'est la source qui rend notre dissociation surface/relief minoritaire et déclarée."
+    },
+    {
+     "ref": "S13",
+     "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Quatre surfaces d'élévation (`elevation.surface.sunken`, `elevation.surface`, `.raised`, `.overlay`) ; **appairage obligatoire surface + ombre** — « always pair `elevation.surface.raised` with `elevation.shadow.raised` », l'appairage rompu figurant parmi les interdits",
+    "liens": [
+     {
+      "label": "Atlassian — Elevation",
+      "url": "https://atlassian.design/foundations/elevation"
+     }
+    ],
+    "confiance": "Établi — page chargée et lue. **Contredit frontalement R04** : c'est la source qui rend notre dissociation surface/relief minoritaire et déclarée."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R05",
+   "couche": "ux",
+   "solution": "le **survol d'un plan est exempté du seuil de contraste, mais pas de la lisibilité**. Le *Understanding* de WCAG 1.4.11 est explicite : les traitements visuels supplémentaires apportés par l'auteur pour le survol ne sont pas « requis pour identifier » l'état de survol, ils sont supplémentaires et n'ont pas à atteindre 3:1. Nous testons quand même les couples texte/fond sur chaque plan de survol — même position que `COLOR-R11` : un survol illisible reste un survol raté, même conforme.",
+   "enonce": "Le remplissage de survol d'un plan n'est pas soumis au seuil de 3:1, mais les couples texte/fond qu'il crée sont vérifiés au même seuil que le repos.",
+   "mesure": "contraste texte / remplissage de survol vérifié à 4,5:1 pour tout texte fonctionnel posé dessus",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Un remplissage peut identifier un composant : « a flat design where the status indicator fills the component and does not contrast with the component, but does contrast with the colors adjacent to the component » satisfait le critère au seuil 3:1 ; les traitements de **survol** ne sont pas « requis pour identifier » et sont exemptés ; une ombre portée en relief, comme un trait sombre entre deux fonds contrastés, est « subsumed into the color closest in brightness » et **ne compte pas**",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — Understanding 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité — page chargée et lue. Fonde R08 et R05."
+    },
+    {
+     "ref": "S9",
+     "affirmation": "4,5:1 pour le texte courant ; le fond de référence est « the specified color of content over which the text is to be rendered in normal usage », la conformité s'évaluant sur les paires de couleurs que l'auteur prévoit adjacentes en présentation typique",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — Understanding 1.4.3 Contrast (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard — page chargée et lue. C'est la raison pour laquelle un plan de survol crée une **nouvelle** paire à vérifier (R05, SURFACE-U04)."
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Un remplissage peut identifier un composant : « a flat design where the status indicator fills the component and does not contrast with the component, but does contrast with the colors adjacent to the component » satisfait le critère au seuil 3:1 ; les traitements de **survol** ne sont pas « requis pour identifier » et sont exemptés ; une ombre portée en relief, comme un trait sombre entre deux fonds contrastés, est « subsumed into the color closest in brightness » et **ne compte pas**",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — Understanding 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité — page chargée et lue. Fonde R08 et R05."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R06",
+   "couche": "ux",
+   "solution": "une surface se distingue par **quatre canaux, et seulement quatre** — le **remplissage**, le **trait**, le **rayon**, l'**élévation**. Aucun n'est obligatoire ; **au moins un doit être un choix**, et le choix se déclare. Si aucun des quatre n'est nécessaire, ce n'est pas une surface : c'est du contenu correctement espacé, et c'est le cas nominal.",
+   "enonce": "Une surface se distingue par son remplissage, son trait, son rayon ou son élévation ; l'absence des quatre signifie que le plan n'a pas lieu d'exister.",
+   "mesure": "tout plan documenté comme surface déclare lequel ou lesquels des quatre canaux le distingue",
+   "contre": "",
+   "probleme": "la fondation ne possède aucun de ces quatre canaux — elle possède la question « lequel, et pourquoi ». Sans elle, chaque composant rejoue le choix en silence, et l'on obtient quatre cartes distinguées de quatre manières.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R07",
+   "couche": "ux",
+   "solution": "**en mode de couleurs forcées, le remplissage cesse de distinguer et le trait reste.** Formulation exacte, parce que la formulation courante est fausse : les fonds ne « disparaissent » pas — `background-color` et `border-color` sont **forcés aux couleurs système** (leurs valeurs d'auteur sont ignorées au moment du rendu), `box-shadow` est forcé à `none`, et `background-image` est forcé à `none` pour toute valeur non fondée sur `url()` — donc les dégradés. Le résultat pratique est plus dur qu'une disparition : **deux plans adjacents reçoivent la même couleur système et fusionnent**. Une surface qui ne se distinguait que par son remplissage n'existe plus ; le trait, lui, est recoloré et survit.",
+   "enonce": "En mode de couleurs forcées, les remplissages de deux plans adjacents sont ramenés à la même couleur système et cessent de les distinguer, les ombres sont supprimées, et seul le trait survit en étant recoloré.",
+   "mesure": "toute surface dont la frontière porte de l'information reste identifiable en couleurs forcées par un trait ou par son contenu",
+   "contre": "la nuance corrige un raccourci répandu — et le nôtre. Dire « les fonds disparaissent » laisserait croire qu'une surface deviendrait transparente sur son voisin ; c'est l'**uniformisation**, pas la suppression, qui la fait disparaître. La conséquence est la même, la mesure ne l'est pas : on ne vérifie pas qu'un fond a disparu, on vérifie que la frontière reste lisible sans lui.",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "En mode de couleurs forcées, `background-color` et `border-color` sont traités comme dépourvus de valeurs d'auteur et reçoivent les couleurs système au moment du rendu ; `box-shadow` est forcé à `none` ; `background-image` est forcé à `none` pour les valeurs non fondées sur `url()`. L'exemple de la page remplace explicitement une ombre par une bordure en couleur système",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme — page chargée et lue. **Source décisive de la fondation** : c'est elle qui rend le remplissage fragile et le trait survivant."
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Liste normative des propriétés dont la couleur est forcée : `accent-color`, `background-color`, `border-color`, `caret-color`, `color` ; `box-shadow` et `text-shadow` calculent à `none` ; `background-image` calcule à `none` sauf s'il contient une fonction `url()`",
+     "liens": [
+      {
+       "label": "W3C — CSS Color Adjust Level 1",
+       "url": "https://www.w3.org/TR/css-color-adjust-1/"
+      }
+     ],
+     "confiance": "Établi, spécification — page chargée et lue. Confirme mot pour mot la formulation de R07 et écarte le raccourci « les fonds disparaissent »."
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "En mode de couleurs forcées, `background-color` et `border-color` sont traités comme dépourvus de valeurs d'auteur et reçoivent les couleurs système au moment du rendu ; `box-shadow` est forcé à `none` ; `background-image` est forcé à `none` pour les valeurs non fondées sur `url()`. L'exemple de la page remplace explicitement une ombre par une bordure en couleur système",
+    "liens": [
+     {
+      "label": "MDN — @media (forced-colors)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme — page chargée et lue. **Source décisive de la fondation** : c'est elle qui rend le remplissage fragile et le trait survivant."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R08",
+   "couche": "ux",
+   "solution": "**une surface qui identifie seule un composant atteint 3:1 avec ce qui l'entoure — et l'ombre ne compte pas dans ce calcul.** WCAG 1.4.11 admet explicitement le cas du remplissage identifiant : un aplat qui ne contraste pas avec le composant mais contraste avec les couleurs adjacentes satisfait le critère. Le même *Understanding* précise en revanche qu'une ombre portée en relief, comme un trait sombre entre deux fonds contrastés, est **absorbée dans la couleur voisine la plus proche en luminosité** : le relief ne rattrape jamais un plan sous le seuil. Constat mesuré chez nous : `surface` (#F3F4F6) sur `background` (#FFFFFF) tient **1,10:1** — délibérément subtil, documenté comme tel dans `DESIGN.md`, et **très en dessous de 3:1**. Conséquence directe et non négociable : **notre `surface` n'identifie jamais seule un composant d'interface.** Elle groupe, elle situe, elle accuse réception d'une visée. Elle ne délimite pas.",
+   "enonce": "Un plan qui constitue le seul signal d'identification d'un composant d'interface atteint 3:1 avec les couleurs adjacentes, et aucune ombre n'est comptée dans ce calcul.",
+   "mesure": "contraste plan / voisinage ≥ 3:1 dès que le plan est le seul signal d'identification ; aucune ombre incluse dans la mesure",
+   "contre": "",
+   "probleme": "promouvoir `surface` en délimitant parce qu'« on le voit bien sur la maquette ». On le voit bien à 1,10:1 sur un écran calibré, en pleine lumière, avec une bonne vue. Le seuil existe pour les trois autres cas. Le rôle délimitant appartient au trait (`border-strong`, BORDER-R02) ; c'est la seule bonne réponse.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Un remplissage peut identifier un composant : « a flat design where the status indicator fills the component and does not contrast with the component, but does contrast with the colors adjacent to the component » satisfait le critère au seuil 3:1 ; les traitements de **survol** ne sont pas « requis pour identifier » et sont exemptés ; une ombre portée en relief, comme un trait sombre entre deux fonds contrastés, est « subsumed into the color closest in brightness » et **ne compte pas**",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — Understanding 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité — page chargée et lue. Fonde R08 et R05."
+    },
+    {
+     "ref": "S13",
+     "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Un remplissage peut identifier un composant : « a flat design where the status indicator fills the component and does not contrast with the component, but does contrast with the colors adjacent to the component » satisfait le critère au seuil 3:1 ; les traitements de **survol** ne sont pas « requis pour identifier » et sont exemptés ; une ombre portée en relief, comme un trait sombre entre deux fonds contrastés, est « subsumed into the color closest in brightness » et **ne compte pas**",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — Understanding 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité — page chargée et lue. Fonde R08 et R05."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R09",
+   "couche": "ux",
+   "solution": "un plan mérite de devenir une surface quand **au moins une** de ces quatre conditions est vraie — et le test se fait dans cet ordre :",
+   "enonce": "Un plan devient une surface s'il porte un contenu nommable et autonome, si sa frontière doit être perçue, s'il change d'état, ou s'il vit sur une autre couche du flux.",
+   "mesure": "toute surface documentée cite laquelle des quatre conditions la justifie",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R10",
+   "couche": "ux",
+   "solution": "**l'espace d'abord, le plan ensuite, le trait en dernier.** La hiérarchie est celle que SPACING-UX a posée et que BORDER-R02 reprend pour le trait ; la surface s'y insère au milieu et non en tête. Un plan est un moyen **coûteux** : il ajoute une couleur, une frontière, un rayon à accorder, un jeu de paires texte/fond à revérifier, et un canal de plus à tenir en couleurs forcées. Le repos de nos cartes ne porte **aucun** remplissage propre — `.cg-card::before` peint `var(--background)`, c'est-à-dire le fond de la page — et c'est le cas **nominal**, pas une négligence : l'espace suffisait.",
+   "enonce": "L'espace est essayé avant le plan, et le plan avant le trait ; un plan qui ne fait rien que l'espace ne ferait pas n'est pas créé.",
+   "mesure": "aucun plan créé là où une modification d'espacement produit la même lecture",
+   "contre": "",
+   "probleme": "donner un fond gris à un bloc « pour qu'on le voie ». À 1,10:1, on ne le voit pas — on le devine ; et sur dix blocs devinés, l'écran devient un damier sans hiérarchie. Le remède est presque toujours de l'espace, parfois un titre, rarement un plan.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+    "liens": [
+     {
+      "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R11",
+   "couche": "ux",
+   "solution": "**une surface ne porte aucune sémantique.** Les quatre rôles de plan appartiennent au registre des **neutres** (COLOR-R03) : ils structurent la page, ils ne portent ni identité ni état. Les fonds `*-subtle` sémantiques (`danger-subtle`, `success-subtle`…) ne sont **pas** des surfaces : ce sont des *tones*, propriété du registre sémantique, et un plan qui porte un sens d'alerte relève d'un autre composant — pas d'une variante de surface (position déjà tenue par CARD-UX pour la carte, généralisée ici au plan).",
+   "enonce": "Les rôles de plan appartiennent au registre neutre : un plan neutre ne porte jamais d'état sémantique, et un fond sémantique n'est pas un rôle de plan.",
+   "mesure": "aucun jeton sémantique employé comme rôle de plan neutre, et réciproquement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R12",
+   "couche": "ux",
+   "solution": "la **surface inversée est un rôle, pas un thème**. `surface-inverse` renverse localement le rapport texte/fond sans faire basculer le thème : elle exige donc son **couple complet** (`text-inverse`, `border-inverse`) et ne se dérive **jamais** en réutilisant les jetons de texte prévus pour fond clair. Le rôle existe chez quatre des six systèmes vérifiés — Carbon (`background-inverse`, avec son survol), Fluent 2 (`colorNeutralBackgroundInverted`), Primer (`bgColor-emphasis`), Polaris (variante *inverse*) : c'est un rôle nommé du secteur, pas une commodité locale.",
+   "enonce": "Le plan inversé est un rôle nommé qui se consomme avec son couple de texte et de trait, et jamais en réutilisant les jetons prévus pour fond clair.",
+   "mesure": "tout usage du plan inversé consomme les jetons de texte et de trait inversés associés",
+   "contre": "**le système se contredit lui-même sur ce rôle, et cette fondation ne tranche pas.** `DESIGN.md` documente `surface-contrast` (#1C1C1E), présenté comme un panneau sombre de **mise en avant**, explicitement « jamais la surface de repos », sans consommateur à ce jour. Les jetons construits exposent, eux, `surface-inverse` (#111827 en clair, #FFFFFF en sombre), décrit dans la source comme la « surface neutre inversée (bouton neutral plein) » et qualifié d'extension DS-UI. **Deux noms, deux valeurs, deux rôles voisins mais distincts** — mise en avant d'un côté, inversion d'un remplissage de contrôle de l'autre. La divergence est déjà connue et tracée (`ds-md.contract.mjs`, entrée `colors.surface-contrast`, arbitrage C2 ouvert dans `mapping-autorite.md`) ; la nommer ici est le travail de cette fondation, la résoudre ne l'est pas.",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Modèle de couches : `background` puis `layer-01/02/03` — chaque changement de couleur d'interface est une couche et appelle un jeu de jetons distinct ; jeux identiques d'un thème à l'autre ; un survol par couche (`layer-hover-01/02/03`) ; plan inversé nommé (`background-inverse`, avec `background-inverse-hover`)",
+     "liens": [
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "Carbon — Color tokens",
+       "url": "https://carbondesignsystem.com/elements/color/tokens/"
+      }
+     ],
+     "confiance": "Établi — pages chargées et lues. Le modèle le plus proche de ce que nous n'avons pas."
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Trois niveaux de proéminence de plan (`bg-surface`, `-secondary`, `-tertiary`), chacun avec ses états (`-hover`, `-active`, `-selected`), plus des variantes spécialisées dont *inverse* et *emphasis*",
+     "liens": [
+      {
+       "label": "Polaris — Color tokens",
+       "url": "https://polaris-react.shopify.com/tokens/color"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Six niveaux `colorNeutralBackground1…6`, les niveaux 1 à 5 déclinés en *Rest / Hover / Pressed / Selected* ; plan inversé nommé `colorNeutralBackgroundInverted`",
+     "liens": [
+      {
+       "label": "Fluent 2 — Color tokens",
+       "url": "https://fluent2.microsoft.design/color-tokens"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Trois plans neutres (`bgColor-default`, `-muted`, `-inset`), plus `bgColor-emphasis` (plan à fort contraste) et `overlay-bgColor` ; **aucun jeton de survol universel de plan** — le survol est porté par des jetons de motif (`control-bgColor-hover`)",
+     "liens": [
+      {
+       "label": "Primer — Color primitives",
+       "url": "https://primer.style/foundations/primitives/color"
+      }
+     ],
+     "confiance": "Établi — page chargée et lue. Le seul système vérifié qui, comme nous, ne tokenise pas le survol au niveau du plan."
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Divergence de rôle inversé : `colors.surface-contrast` #1C1C1E côté DS-MD (panneau sombre de mise en avant, « jamais la surface de repos », aucun consommateur documenté) contre `surface-inverse` neutral.900/neutral.0 côté DS-UI (« surface neutre inversée (bouton neutral plein) — extension DS-UI »), avec ses compagnons `text-inverse` et `border-inverse`",
+     "liens": [
+      {
+       "label": "`packages/tokens/src/ds-md.contract.mjs` (entrée `acknowledged`, arbitrage C2 ouvert dans `mapping-autorite.md`) ; `DESIGN.md` § surfaces ; `DECISIONS.md` 2026-07-06 (import Auralis : « la valeur est importée mais pas le rôle »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — divergence déjà tracée, **nommée** ici et non résolue. Hors périmètre de cette fondation."
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — échelles de plans.** Question 1 : le système nomme-t-il explicitement un plan porteur de contenu ? Question 2 : expose-t-il une échelle de plusieurs niveaux ? Question 3 : y a-t-il un survol par niveau ? Question 4 : un plan inversé nommé ? Six systèmes chargés et lus sur source primaire. Résultat : **6/6 nomment le plan et exposent une échelle** ; **3/6 exposent un survol par niveau** ; **4/6 nomment un plan inversé** ; **0/6 tiennent un cran unique**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur documentations officielles chargées le 2026-07-27",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. C'est le relevé qui fonde R02 (convergence) et qui contredit R03 (notre cran unique)."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R13",
+   "couche": "ux",
+   "solution": "**la direction d'un plan n'est pas « plus sombre », c'est « plus loin du fond de page ».** En thème clair, la surface s'assombrit par rapport au fond ; en thème sombre, elle s'**éclaircit**. Vérifiable dans nos jetons : en clair `background` = neutral.0 et `surface` = neutral.100 ; en sombre `background` = neutral.950 et `surface` = neutral.800 — le sens du décalage s'inverse, l'écart reste. Un thème redéfinit les quatre rôles comme il redéfinit ses couleurs ; aucun remplissage n'est écrit en dur hors de la définition de thème.",
+   "enonce": "Un plan s'écarte du fond de page dans la direction que le thème impose — plus sombre en thème clair, plus clair en thème sombre — et les valeurs de plan appartiennent au thème.",
+   "mesure": "aucune valeur de remplissage de plan écrite hors de la définition de thème ; l'écart entre fond de page et surface est conservé dans les deux thèmes",
+   "contre": "",
+   "probleme": "c'est la même mécanique que ELEVATION-R09 pour le relief, et elle a la même raison — en thème sombre, l'ombre ne porte plus la profondeur, c'est le plan qui la porte. Carbon organise d'ailleurs tout son modèle de couches sur ce principe, avec des jeux de jetons identiques d'un thème à l'autre.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Modèle de couches : `background` puis `layer-01/02/03` — chaque changement de couleur d'interface est une couche et appelle un jeu de jetons distinct ; jeux identiques d'un thème à l'autre ; un survol par couche (`layer-hover-01/02/03`) ; plan inversé nommé (`background-inverse`, avec `background-inverse-hover`)",
+     "liens": [
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "Carbon — Color tokens",
+       "url": "https://carbondesignsystem.com/elements/color/tokens/"
+      }
+     ],
+     "confiance": "Établi — pages chargées et lues. Le modèle le plus proche de ce que nous n'avons pas."
+    },
+    {
+     "ref": "S13",
+     "affirmation": "**Constat d'implémentation, 2026-07-27.** Carte au repos : `.cg-card::before { background: var(--background) }` — aucun plan propre. Carte visée : `.cg-hl { background: var(--surface) }`. Relief : `.cg-lift { box-shadow: var(--elevation-raised) }`, couche distincte, réservée aux cartes cliquables ou sélectionnables et **désactivée en mode solo**. Valeurs : `background` #FFFFFF, `surface` #F3F4F6 (1,10:1), `surface-hover` #E5E7EB, `surface-inverse` #111827 clair / #FFFFFF sombre ; en sombre `background` neutral.950 et `surface` neutral.800",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` ; `packages/tokens/src/tokens.source.mjs` ; `packages/tokens/dist/tokens.css` ; `DESIGN.md` (recalibrage de `surface` à 1,10:1, « volontairement subtile »)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le code. C'est le **fait déclencheur** de la fondation : trois signaux distincts sur un même composant, aucun propriétaire pour les départager."
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Modèle de couches : `background` puis `layer-01/02/03` — chaque changement de couleur d'interface est une couche et appelle un jeu de jetons distinct ; jeux identiques d'un thème à l'autre ; un survol par couche (`layer-hover-01/02/03`) ; plan inversé nommé (`background-inverse`, avec `background-inverse-hover`)",
+    "liens": [
+     {
+      "label": "Carbon — Color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     },
+     {
+      "label": "Carbon — Color tokens",
+      "url": "https://carbondesignsystem.com/elements/color/tokens/"
+     }
+    ],
+    "confiance": "Établi — pages chargées et lues. Le modèle le plus proche de ce que nous n'avons pas."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R14",
+   "couche": "ux",
+   "solution": "**`prefers-contrast: more` n'est pas traité, et c'est déclaré.** La préférence existe, elle est largement disponible depuis mai 2022, elle a quatre valeurs (`no-preference`, `more`, `less`, `custom`) et sa valeur `custom` correspond aux utilisateurs en `forced-colors: active`. Nos plans sont **volontairement subtils** (1,10:1) : sous `more`, ils le restent — nous ne renforçons rien. Position ouverte, non une omission : le jour où elle sera traitée, la réponse ne sera pas « assombrir la surface » mais « ajouter le trait », parce que c'est le canal qui tient dans tous les modes dégradés.",
+   "enonce": "Le système ne renforce aujourd'hui aucun plan sous la préférence de contraste élevé ; cette absence est une position déclarée et non un oubli.",
+   "mesure": "aucune règle de plan conditionnée à prefers-contrast à ce jour",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "`prefers-contrast` a quatre valeurs (`no-preference`, `more`, `less`, `custom`) ; `custom` correspond à la palette des utilisateurs en `forced-colors: active` ; largement disponible depuis mai 2022",
+     "liens": [
+      {
+       "label": "MDN — prefers-contrast",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme — page chargée et lue. Fonde R14 (position ouverte déclarée)."
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "`prefers-contrast` a quatre valeurs (`no-preference`, `more`, `less`, `custom`) ; `custom` correspond à la palette des utilisateurs en `forced-colors: active` ; largement disponible depuis mai 2022",
+    "liens": [
+     {
+      "label": "MDN — prefers-contrast",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme — page chargée et lue. Fonde R14 (position ouverte déclarée)."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R15",
+   "couche": "ux",
+   "solution": "la fondation SURFACE **ne redéfinit rien** de ce que les fondations voisines possèdent déjà. Elle dit **ce qu'est un plan et quand il existe** ; tout le reste appartient à quelqu'un d'autre. Cette table est le cœur du fichier : elle est faite pour être opposée à cette fondation le jour où elle voudra déborder.",
+   "enonce": "SURFACE possède l'existence et la justification d'un plan ; le relief, la valeur, le trait, le rayon, le voile et l'espace appartiennent chacun à une autre fondation, qu'elle ne redéfinit jamais.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R16",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Les risques propres au plan sont recensés et hiérarchisés par sévérité dans une table d'autorité du fichier.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-R17",
+   "couche": "ux",
+   "solution": "**une surface dit où l'on est, jamais ce qu'on peut faire.** Le remplissage situe — voici un plan, voici son étendue, voici celui que tu vises. L'affordance vient d'ailleurs : du relief, du trait, du curseur, de la sémantique de l'élément. Le survol est la seule inflexion, et il ne dit encore que « je t'ai vu », jamais « presse-moi ».",
+   "enonce": "Un plan situe le contenu et ne promet aucune action ; la promesse d'action vient du relief, du trait, du curseur et de la sémantique.",
+   "mesure": "aucun plan non actionnable ne se distingue par un canal réservé aux éléments actionnables",
+   "contre": "",
+   "probleme": "c'est le pendant exact de ELEVATION-R19 (« le relief dit la nature, jamais l'importance ») et de « niveau ≠ taille » (TYPOGRAPHY-UX). Chaque canal a un sens propre, et aucun ne réquisitionne celui d'un autre. Le plan rejoint la liste des canaux protégés — et il rejoint aussi la liste des canaux **fragiles** : c'est le seul dont le mode dégradé annule intégralement la fonction.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U01",
+   "couche": "ui",
+   "solution": "chaque plan référence **un** des quatre rôles, et le rôle décide de ce qui est permis dessus.",
+   "enonce": "Tout plan référence l'un des quatre rôles nommés, qui détermine son usage, son seuil et les textes admis dessus.",
+   "mesure": "aucun remplissage de plan hors des quatre rôles",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U02",
+   "couche": "ui",
+   "solution": "un plan se peint sur une **couche dédiée**, jamais sur l'élément qui porte le contenu. L'implémentation de référence utilise un pseudo-élément en `position: absolute; inset: 0; border-radius: inherit`, sous le contenu (`z-index: 0`, le contenu remontant en `z-index: 2`). Trois bénéfices, et ce sont les trois raisons de la règle : le remplissage se transitionne sans repeindre le contenu ; un **plan unique** peut glisser d'un élément à l'autre dans une collection (un seul rectangle animé plutôt qu'un fondu par carte) ; et le relief vit sur **sa propre** couche, ce qui rend la dissociation de SURFACE-R04 littérale dans le code plutôt que déclarative.",
+   "enonce": "Le remplissage d'un plan est peint sur une couche dédiée placée sous le contenu, et non sur l'élément porteur.",
+   "mesure": "aucun remplissage de plan appliqué directement sur l'élément qui porte le contenu d'une surface à états",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Technique de la couche dédiée : pseudo-élément `inset: 0` sous le contenu ; plan de visée unique déplacé en transformation ; relief isolé sur sa propre couche et révélé en opacité ; suppression du déplacement sous mouvement réduit",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` (couches `.cg-card::before`, `.cg-hl`, `.cg-lift` ; bloc `@media (prefers-reduced-motion: reduce)`)",
+       "url": null
+      }
+     ],
+     "confiance": "Implémentation de référence — lue le 2026-07-27. Constat, pas prescription : un seul composant l'emploie aujourd'hui."
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Technique de la couche dédiée : pseudo-élément `inset: 0` sous le contenu ; plan de visée unique déplacé en transformation ; relief isolé sur sa propre couche et révélé en opacité ; suppression du déplacement sous mouvement réduit",
+    "liens": [
+     {
+      "label": "`packages/react/src/components/card-group/card-group.css` (couches `.cg-card::before`, `.cg-hl`, `.cg-lift` ; bloc `@media (prefers-reduced-motion: reduce)`)",
+      "url": null
+     }
+    ],
+    "confiance": "Implémentation de référence — lue le 2026-07-27. Constat, pas prescription : un seul composant l'emploie aujourd'hui."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U03",
+   "couche": "ui",
+   "solution": "seul le **remplissage** d'un plan se transitionne, sur `motion.fast`. L'**ombre ne se transitionne jamais** (interdit hérité de `ELEVATION-R14` — elle se révèle en opacité sur sa propre couche, elle n'est pas interpolée). Sous `prefers-reduced-motion: reduce`, le **déplacement** d'un plan glissant est supprimé et seule son opacité subsiste ; l'état final, lui, n'est jamais supprimé.",
+   "enonce": "Le remplissage d'un plan se transitionne sur le cran rapide, l'ombre ne s'interpole jamais, et la préférence de mouvement réduit supprime le déplacement sans supprimer l'état final.",
+   "mesure": "aucune propriété d'ombre dans une transition de plan ; sous mouvement réduit, aucune transformation de plan restante",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Technique de la couche dédiée : pseudo-élément `inset: 0` sous le contenu ; plan de visée unique déplacé en transformation ; relief isolé sur sa propre couche et révélé en opacité ; suppression du déplacement sous mouvement réduit",
+     "liens": [
+      {
+       "label": "`packages/react/src/components/card-group/card-group.css` (couches `.cg-card::before`, `.cg-hl`, `.cg-lift` ; bloc `@media (prefers-reduced-motion: reduce)`)",
+       "url": null
+      }
+     ],
+     "confiance": "Implémentation de référence — lue le 2026-07-27. Constat, pas prescription : un seul composant l'emploie aujourd'hui."
+    },
+    {
+     "ref": "T2",
+     "affirmation": "La préférence de mouvement réduit demande de supprimer, réduire ou remplacer les animations non essentielles sans perte d'information",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Technique de la couche dédiée : pseudo-élément `inset: 0` sous le contenu ; plan de visée unique déplacé en transformation ; relief isolé sur sa propre couche et révélé en opacité ; suppression du déplacement sous mouvement réduit",
+    "liens": [
+     {
+      "label": "`packages/react/src/components/card-group/card-group.css` (couches `.cg-card::before`, `.cg-hl`, `.cg-lift` ; bloc `@media (prefers-reduced-motion: reduce)`)",
+      "url": null
+     }
+    ],
+    "confiance": "Implémentation de référence — lue le 2026-07-27. Constat, pas prescription : un seul composant l'emploie aujourd'hui."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U04",
+   "couche": "ui",
+   "solution": "un couple texte/fond se vérifie **par plan**, pas par jeton — un plan nouveau crée une paire nouvelle. WCAG 1.4.3 mesure le contraste contre « the specified color of content over which the text is to be rendered in normal usage » : un plan de survol qui apparaît sous un texte est ce fond-là, et il doit être testé comme tel. **Trou déclaré** : `COLOR-UI` garantit `text-primary` sur `background`, `surface` et `surface-hover`, mais `text-secondary` seulement sur `background` et `surface` — **pas sur `surface-hover`**. Aucun composant ne franchit ce trou aujourd'hui (le survol des collections peint `surface`, pas `surface-hover`), mais rien ne l'en empêche. Tant que la paire n'est pas déclarée et mesurée, **aucun texte secondaire ne se pose sur `surface-hover`**.",
+   "enonce": "Chaque plan crée ses propres paires texte/fond, qui sont mesurées avant usage ; un texte secondaire ne se pose pas sur le plan de survol tant que la paire n'est pas déclarée.",
+   "mesure": "toute paire texte / plan consommée figure dans la table des paires garanties de COLOR-UI et passe validate-contrast",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Le contraste se mesure contre « the specified color of content over which the text is to be rendered in normal usage », sur les paires que l'auteur prévoit adjacentes en présentation typique",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — Understanding 1.4.3 Contrast (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard — page chargée et lue. Fonde la vérification **par plan** plutôt que par jeton."
+    },
+    {
+     "ref": "T4",
+     "affirmation": "Trou de paire : `text-primary` garanti sur `background`, `surface` et `surface-hover` ; `text-secondary` garanti sur `background` et `surface` **seulement**",
+     "liens": [
+      {
+       "label": "`COLOR-UI.md` § Paires texte/fond garanties",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — lu dans le fichier. Trou déclaré, non comblé ici : combler une paire appartient à COLOR."
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Le contraste se mesure contre « the specified color of content over which the text is to be rendered in normal usage », sur les paires que l'auteur prévoit adjacentes en présentation typique",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — Understanding 1.4.3 Contrast (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     }
+    ],
+    "confiance": "Établi, standard — page chargée et lue. Fonde la vérification **par plan** plutôt que par jeton."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U05",
+   "couche": "ui",
+   "solution": "le **plan inversé ne se consomme jamais seul**. `color.surface-inverse` s'accompagne obligatoirement de `color.text-inverse` et, s'il porte un trait, de `color.border-inverse`. Aucun jeton `text-*` prévu pour fond clair n'y est admis. La paire `text-inverse` / `surface-inverse` est vérifiée à 4,5:1 par `packages/tokens/build/validate-contrast.mjs`, dans les deux modes.",
+   "enonce": "Le plan inversé se consomme avec son texte et son trait inversés, jamais avec les jetons prévus pour fond clair.",
+   "mesure": "aucune occurrence de surface-inverse sans text-inverse dans le même bloc de style",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "La paire texte inversé / plan inversé est mesurée à 4,5:1 dans les deux modes",
+     "liens": [
+      {
+       "label": "`packages/tokens/build/validate-contrast.mjs` (`text-inverse / surface-inverse`, seuil 4.5)",
+       "url": null
+      }
+     ],
+     "confiance": "Vérifié numériquement à la génération"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "La paire texte inversé / plan inversé est mesurée à 4,5:1 dans les deux modes",
+    "liens": [
+     {
+      "label": "`packages/tokens/build/validate-contrast.mjs` (`text-inverse / surface-inverse`, seuil 4.5)",
+      "url": null
+     }
+    ],
+    "confiance": "Vérifié numériquement à la génération"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U06",
+   "couche": "ui",
+   "solution": "toute surface **dont la frontière porte de l'information** déclare un trait sous `@media (forced-colors: active)`. En couleurs forcées, `background-color` reçoit une couleur système : deux plans adjacents deviennent identiques, et la frontière disparaît avec la distinction. Le trait, lui, est recoloré et survit. Le remède est celui que MDN donne en exemple : remplacer le canal perdu par une bordure en mot-clé de couleur système, jamais par une valeur d'auteur.",
+   "enonce": "Une surface dont la frontière porte de l'information déclare une bordure en couleur système sous le mode de couleurs forcées.",
+   "mesure": "chaque surface porteuse de frontière signifiante possède une règle forced-colors déclarant un trait",
+   "contre": "",
+   "probleme": "c'est le seul canal des quatre dont le mode dégradé annule complètement la fonction. Une collection dont les cartes ne se distinguent que par leur remplissage devient, en contraste forcé, une seule masse de texte.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "En couleurs forcées, `background-color` et `border-color` reçoivent les couleurs système, `box-shadow` est forcé à `none`, `background-image` non fondé sur `url()` également ; le remède documenté est de déclarer une bordure en mot-clé de couleur système",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      },
+      {
+       "label": "W3C — CSS Color Adjust Level 1",
+       "url": "https://www.w3.org/TR/css-color-adjust-1/"
+      }
+     ],
+     "confiance": "Établi, spécification et comportement plateforme — pages chargées et lues"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "En couleurs forcées, `background-color` et `border-color` reçoivent les couleurs système, `box-shadow` est forcé à `none`, `background-image` non fondé sur `url()` également ; le remède documenté est de déclarer une bordure en mot-clé de couleur système",
+    "liens": [
+     {
+      "label": "MDN — @media (forced-colors)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     },
+     {
+      "label": "W3C — CSS Color Adjust Level 1",
+      "url": "https://www.w3.org/TR/css-color-adjust-1/"
+     }
+    ],
+    "confiance": "Établi, spécification et comportement plateforme — pages chargées et lues"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U07",
+   "couche": "ui",
+   "solution": "**aucun remplissage de plan écrit en dur** — pas d'hexadécimal, pas de `rgba()`, pas de dégradé maison à la place d'un rôle. Un thème doit pouvoir inverser la direction du plan (SURFACE-R13) sans code conditionnel ; une valeur en dur le lui interdit. **Exception nommée** : un dégradé de **substitut de média** (le placeholder d'une vignette absente) n'est pas un plan au sens de cette fondation — il ne porte pas de contenu, il tient la place d'une image. Il reste soumis à `SPACING` et `RADIUS`, pas à SURFACE.",
+   "enonce": "Tout remplissage de plan référence un rôle de jeton ; les substituts de média ne sont pas des plans et sortent du périmètre.",
+   "mesure": "aucune valeur de couleur littérale en propriété de fond dans une feuille de style de composant",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SURFACE-U08",
+   "couche": "ui",
+   "solution": "la frontière du calculable est nette, et il faut la dire.",
+   "enonce": "Les ratios de paires et l'absence de valeurs en dur sont vérifiables automatiquement ; la légitimité d'un plan et le respect de la table d'autorité relèvent de la revue humaine.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

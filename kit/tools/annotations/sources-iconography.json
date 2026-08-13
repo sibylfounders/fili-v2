@@ -1,0 +1,58 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Tout contenu non textuel a une alternative textuelle équivalente ; si c'est un contrôle, il porte un nom décrivant sa fonction ; s'il est décoratif, il est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+  "source_markdown": "[WCAG 2.2 — 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+  "confiance": "Établi, standard (A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information — fondement de la redondance icône / forme / texte",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard (A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Pour tout composant d'interface, le nom et le rôle sont déterminables programmatiquement, et les états modifiables sont exposés aux technologies d'assistance",
+  "source_markdown": "[WCAG 2.2 — 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+  "confiance": "Établi, standard (A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "aria-hidden est le mécanisme prévu pour retirer de l'arbre d'accessibilité une icône décorative ou redondante, et ne doit jamais être posé sur un élément focalisable ni sur son ancêtre",
+  "source_markdown": "[MDN — aria-hidden](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden)",
+  "confiance": "Établi — documentation de référence"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "Le contenu déclenché au survol ou au focus doit être écartable, survolable et persistant ; les info-bulles natives du navigateur sont hors périmètre — **une info-bulle n'est donc pas un substitut de nom accessible**",
+  "source_markdown": "[WCAG 2.2 — 1.4.13 Content on Hover or Focus](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)",
+  "confiance": "Établi, standard (AA)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Le rôle image fait traiter un SVG inline comme une image unique plutôt que comme un arbre de nœuds lus un à un, et exige un nom accessible",
+  "source_markdown": "[MDN — rôle img](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/img_role)",
+  "confiance": "Établi — documentation de référence"
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "aria-expanded expose l'état déployé ou replié d'un contrôle, indépendamment de toute indication visuelle telle qu'une rotation de chevron",
+  "source_markdown": "[MDN — aria-expanded](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-expanded)",
+  "confiance": "Établi — documentation de référence"
+ },
+ {
+  "couche": "ux",
+  "ref": "S19",
+  "affirmation": "Défauts documentés des polices d'icônes : caractère lu littéralement sans ARIA, disparition sous feuille de style utilisateur — **mais l'auteur conserve néanmoins ses polices d'icônes, faute de meilleur compromis**",
+  "source_markdown": "[24 Accessibility — SVG, Icon Fonts, and Accessibility](https://www.24a11y.com/2017/svg-icon-fonts-accessibility-case-study/)",
+  "confiance": "Cas d'étude documenté — soutient les risques, **ne soutient pas l'interdiction** : contre-position à noter"
+ }
+]

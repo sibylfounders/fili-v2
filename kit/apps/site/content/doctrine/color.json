@@ -1,0 +1,2604 @@
+{
+ "slug": "color",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"8.5\" cy=\"9.5\" r=\"5.5\" fill=\"#EE7A66\"/><circle cx=\"15.5\" cy=\"9.5\" r=\"5.5\" fill=\"#31A06E\"/><circle cx=\"12\" cy=\"15.5\" r=\"5.5\" fill=\"#4F46E5\"/></svg>",
+ "nom": "color",
+ "nature": "Fondation",
+ "meta": "UX v1.2.0 · UI v1.2.0 · mis à jour 2026-07-20 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Quelle couleur pour quel rôle, pour que chaque teinte veuille dire quelque chose ?",
+  "detail": "On y sépare les couleurs de marque des couleurs qui portent un sens — succès, erreur, avertissement — et on garde des contrastes lisibles pour tout le monde, y compris les personnes daltoniennes.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Chaque couleur a un rôle"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Les valeurs vivent dans DESIGN.md et sont réutilisées par leur nom de token"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Toute information portée par la couleur est doublée d'un autre signal"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "34",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "25",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "4",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-color.md",
+   "source": "---\nsujet: color\ntype: fondation\nresume: \"Trois registres étanches (marque/sémantique/neutres), paires texte/fond garanties, seuils de contraste testés, états interactifs, positions dark mode & forced-colors\"\nrequires: []\nselon-contexte: []\n---\n# RULES — Color (compilé, condensé)\n\n> Généré depuis `foundations/color/COLOR-UX.md` (v1.1.0) et `COLOR-UI.md` (v1.0.1). Règles condensées pour le build — la source fait autorité en cas de doute. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation : contrainte transversale, pas d'axes. Les valeurs (hex) vivent dans les tokens — ce fichier régit leur usage.\n- **Règle cardinale : la couleur s'applique par rôle, jamais par valeur — et un rôle ne porte jamais deux sens.**\n\n## Les trois registres (étanches)\n- **Marque** : `primary` (action), `accent` (focus ring, touches secondaires). Jamais pour un état sémantique.\n- **Sémantique** : `danger`/`success`/`warning`/`info`, chacun en couple texte + fond `-subtle`. Jamais pour décorer. Jamais `accent` à leur place (même si info et accent sont deux bleus).\n- **Neutres** : `text-*`, `background`/`surface*`, `border*`. Ni identité ni état.\n- Aucune couleur ne change de registre selon le contexte.\n\n## Jamais la couleur seule (WCAG 1.4.1)\n- Tout usage sémantique déclare son canal redondant : icône par tone (silhouettes distinctes), mot \"Erreur\", coche de sélection. Le canal redondant ne se retire pas.\n- Le contraste ne remplace pas la redondance : 1.4.3 rend lisible, 1.4.1 rend distinguable — deux exigences indépendantes.\n\n## Contraste — seuils testés\n- **4.5:1** texte courant, **3:1** tout état visible et composant (bordures délimitantes, focus ring). Vérifié à chaque build par `tools/test-rendu.js` (mainteneur) ; un consommateur qui re-thématise dispose de `dist/theme-gate.mjs` (mêmes seuils/paires) qui refuse un thème non conforme avant application.\n- Le contraste se vérifie **par paire** — paires garanties :\n\n| Texte | Fonds garantis (≥ 4.5:1) |\n|---|---|\n| `text-primary` | background, surface, surface-hover, fonds *-subtle |\n| `text-secondary` | background, surface, fonds *-subtle |\n| `text-muted` | AUCUN au seuil texte — métadonnées accessoires uniquement, jamais du texte fonctionnel |\n| `on-primary` | primary, primary-hover, neutral-strong, neutral-strong-hover, danger, danger-hover, warning, warning-hover |\n| `danger` / `success` / `warning` / `info` | background + leur fond -subtle (+ danger sur danger-subtle-hover ; warning tient AUSSI en fond plein depuis DESIGN 1.21.0 — cf. on-primary) |\n| `background` / `on-primary` | surface-contrast (seuls textes admis dessus, + text-muted en métadonnée) |\n\n- Tout texte fonctionnel sur un fond non listé : STOP, remonter (ou re-tester avant usage).\n\n## États interactifs\n- Hover : famille `*-hover` (fond assombri d'un cran) ou `surface-hover` (remplissage apparaissant sur les styles sans fond au repos, stroke/ghost). Focus : `accent`.\n- **Disabled : pas de tokens** — dette assumée documentée (WCAG exempte les composants inactifs). Si un vrai besoin naît : STOP, remonter — le couple complet sera créé d'un coup.\n\n## Positions explicites (décisions, pas des oublis)\n- **Dark mode : non couvert** (décision produit). L'architecture par rôles est prête, **mais la table des paires porte une hypothèse de thème clair** : `surface-contrast` doit tenir 4.5:1 avec `background` ET `on-primary` à la fois. Règle dérivée (démontrée) : en sombre, `background` devient sombre → `on-primary` aussi → **`primary` doit être clair** ; un primary sombre est insatisfiable (aucun neutre ne tient 4.5:1 à la fois avec un quasi-noir et un blanc). `surface-contrast` n'est PAS un dark mode local — panneau de mise en avant uniquement.\n- **forced-colors (contraste élevé)** : ne jamais neutraliser (`forced-color-adjust: none` interdit) — s'appuyer sur ce qui survit : sémantique HTML, bordures, texte.\n- **Texte sur image : interdit nu.** Voile de contraste ou texte hors du media. Le voile est un **calcul**, pas un réglage à l'œil : échantillonner le pire pixel derrière le texte, calculer l'alpha pour 4.5:1, revérifier à plusieurs formats (le cadrage déplace le pire pixel).\n- **Link** : `color.primary` au repos, `color.primary-hover` au survol ; le soulignement persistant dans le texte courant est le signal non chromatique. Aucun token Link dédié.\n- Sans consommateur, donc sans token (ne pas improviser — STOP si le cas se présente) : scrim de modale, ::selection, dataviz.\n- **Teinte des neutres : méthode bénie.** Teinter un neutre à **luminance WCAG constante** (OKLCh + recalage de L) n'altère aucun contraste — gratuit côté accessibilité. C'est une transformation de valeurs (DESIGN.md), aucun nom ne bouge.\n- **Marque : trois rôles (primary/secondary/accent), pas de slot décoratif.** Une teinte de marque supplémentaire sans rôle fonctionnel n'a pas de place — les identités multi-teintes décoratives sont hors périmètre (un token naît d'un besoin réel).\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Couleur seule porteuse d'information | Exclusion daltonisme (1.4.1) | Critique |\n| Texte courant < 4.5:1 | Illisible (1.4.3) | Critique |\n| État visible / bordure délimitante < 3:1 | Composant invisible (1.4.11) | Élevée |\n| Marque ↔ sémantique confondues | Vocabulaire chromatique détruit | Élevée |\n| Hex hors tokens | Rebranding impossible | Élevée |\n| text-muted en texte fonctionnel | Information illisible | Moyenne |\n\nCONFIANCE : registres, 1.4.1, seuils = établi (WCAG + convergence Atlassian/Carbon/Polaris/Material/GOV.UK). Dark mode / forced-colors = décisions internes datées 2026-07-11 ; règle dérivée dark mode, méthodes teinte-neutres & voile, marque sans décor = passe stress-test 2026-07-17 (la règle dark mode est démontrée, pas une préférence).\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 10 cas",
+   "titre": "Rôle de couleur",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle de couleur\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"74\" r=\"14\" fill=\"#4F46E5\"/><circle cx=\"84\" cy=\"74\" r=\"14\" fill=\"#0891B2\" opacity=\".85\"/><path d=\"M112 52v44\" stroke=\"#E5E7EB\" stroke-width=\"1.6\"/><circle cx=\"136\" cy=\"74\" r=\"9\" fill=\"#B91C1C\"/><circle cx=\"158\" cy=\"74\" r=\"9\" fill=\"#15803D\"/><circle cx=\"180\" cy=\"74\" r=\"9\" fill=\"#92400E\"/><circle cx=\"202\" cy=\"74\" r=\"9\" fill=\"#1D4ED8\"/><path d=\"M224 52v44\" stroke=\"#E5E7EB\" stroke-width=\"1.6\"/><rect x=\"242\" y=\"60\" width=\"13\" height=\"28\" rx=\"4\" fill=\"#111827\"/><rect x=\"259\" y=\"60\" width=\"13\" height=\"28\" rx=\"4\" fill=\"#4B5563\"/><rect x=\"276\" y=\"60\" width=\"13\" height=\"28\" rx=\"4\" fill=\"#E5E7EB\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Action de marque (primary)",
+     "quand": "Une action principale ou une sélection porte l'identité.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Action de marque (primary)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"214\" y=\"84\" width=\"120\" height=\"50\" rx=\"9\" fill=\"#4F46E5\"/><text x=\"232\" y=\"115\" font-size=\"14\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">Action</text><rect x=\"360\" y=\"78\" width=\"110\" height=\"80\" rx=\"12\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\"/><text x=\"366\" y=\"172\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">sélection</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une action principale ou une sélection porte l'identité.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Primary pour l'action de marque ; jamais pour un état sémantique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le fond d'un bouton primaire.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le registre marque tient en trois rôles fonctionnels — <code>primary</code>, <code>secondary</code>, <code>accent</code> — et pas un de plus par simple envie de décor.</strong> Une identité traversée d'une teinte supplémentaire purement décorative (le magenta d'une maquette, sans rôle d'action ni de focus) n'a <strong>pas</strong> de slot, et n'en reçoit pas un : un token naît d'un besoin réel, jamais d'une couleur « à caser » (ce serait la porte ouverte au « primary partout » que le système s'interdit). <strong>Position (1.1.0) : les identités multi-teintes décoratives sortent du périmètre.</strong> Le jour où une teinte de marque supplémentaire porte un vrai rôle fonctionnel récurrent, elle entrera comme rôle nommé (avec son couple on-*), pas comme aplat libre.",
+       "id": "COLOR-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Accent (focus, touches secondaires)",
+     "quand": "Un focus ou une touche secondaire distincte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Accent (focus, touches secondaires)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"94\" width=\"192\" height=\"36\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/><text x=\"250\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">focus · accent</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il faut un focus ou une touche secondaire distincte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Accent, distinct des états sémantiques, contraste ≥ 3:1.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'anneau de focus d'un champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le registre marque tient en trois rôles fonctionnels — <code>primary</code>, <code>secondary</code>, <code>accent</code> — et pas un de plus par simple envie de décor.</strong> Une identité traversée d'une teinte supplémentaire purement décorative (le magenta d'une maquette, sans rôle d'action ni de focus) n'a <strong>pas</strong> de slot, et n'en reçoit pas un : un token naît d'un besoin réel, jamais d'une couleur « à caser » (ce serait la porte ouverte au « primary partout » que le système s'interdit). <strong>Position (1.1.0) : les identités multi-teintes décoratives sortent du périmètre.</strong> Le jour où une teinte de marque supplémentaire porte un vrai rôle fonctionnel récurrent, elle entrera comme rôle nommé (avec son couple on-*), pas comme aplat libre.",
+       "id": "COLOR-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "les états interactifs sont <strong>tokenisés, pas improvisés</strong> : famille <code><em>-hover</code> (fond assombri d'un cran pour les fonds pleins, <code>surface-hover</code> apparaissant pour les styles sans fond au repos, stroke et ghost), <code>accent</code> pour le focus ring — mapping par composant dans les <code></em>-UI.md</code>.",
+       "id": "COLOR-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "États sémantiques (danger/success/warning/info)",
+     "quand": "Un état a un sens (erreur, succès, alerte, info).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : États sémantiques (danger/success/warning/info)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"80\" width=\"60\" height=\"60\" rx=\"9\" fill=\"#B91C1C\"/><text x=\"200\" y=\"158\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">danger</text><rect x=\"272\" y=\"80\" width=\"60\" height=\"60\" rx=\"9\" fill=\"#15803D\"/><text x=\"276\" y=\"158\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">success</text><rect x=\"348\" y=\"80\" width=\"60\" height=\"60\" rx=\"9\" fill=\"#92400E\"/><text x=\"352\" y=\"158\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">warning</text><rect x=\"424\" y=\"80\" width=\"60\" height=\"60\" rx=\"9\" fill=\"#1D4ED8\"/><text x=\"428\" y=\"158\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">info</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un état a un sens (erreur, succès, alerte, info).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le rôle sémantique dédié : texte plein + fond subtil de même teinte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le rouge d'un message d'erreur.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>4.5:1</strong> pour le texte courant (WCAG 1.4.3), <strong>3:1</strong> pour tout état visible et composant d'interface (WCAG 1.4.11) — seuils déjà inscrits dans DESIGN.md, appliqués par quatre recalibrages successifs (accent, danger, warning, border-strong en 1.3.0 ; success en 1.4.0), vérifiés par <code>tools/test-rendu.js</code> à chaque régénération.",
+       "id": "COLOR-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Neutres de texte (primary/secondary/muted)",
+     "quand": "Du texte courant a une hiérarchie.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Neutres de texte (primary/secondary/muted)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"92\" font-size=\"17\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Titre principal</text><text x=\"250\" y=\"122\" font-size=\"14\" font-weight=\"400\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Texte courant</text><text x=\"250\" y=\"150\" font-size=\"12\" font-weight=\"400\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#9CA3AF\">métadonnée</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Du texte courant a une hiérarchie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Trois niveaux ; muted réservé aux métadonnées, jamais du texte fonctionnel.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Titre foncé, légende grise.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "chaque registre a son niveau d'expression — les sémantiques existent en <strong>couple</strong> texte/fond subtil (<code>danger</code>/<code>danger-subtle</code>), les neutres en <strong>échelle</strong> (primary &gt; secondary &gt; muted pour le texte). Toute nouvelle valeur sémantique fournit son couple complet d'emblée (règle héritée de BUTTON-UI : <code>_bg</code>/<code>_text</code>/<code>_fg</code> dès la création).",
+       "id": "COLOR-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Surfaces (background/surface/surface-hover/surface-contrast)",
+     "quand": "Poser un plan (page, zone, mise en avant).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Surfaces (background/surface/surface-hover/surface-contrast)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"58\" width=\"320\" height=\"126\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"214\" y=\"84\" width=\"252\" height=\"82\" rx=\"9\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"106\" width=\"100\" height=\"44\" rx=\"9\" fill=\"#111827\"/><text x=\"262\" y=\"133\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">contrast</text><text x=\"190\" y=\"176\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">background</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il faut poser un plan (page, zone, mise en avant).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Chaque surface a son rôle ; contrast = mise en avant, jamais le repos.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte sur un fond de collection.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le mode sombre n'est pas couvert — par décision, pas par oubli.</strong> Le jour venu : les rôles ne bougent pas, DESIGN.md gagne une seconde table de valeurs, et les seuils de contraste se re-vérifient intégralement (les ombres et surfaces se repensent aussi, cf. ELEVATION-UX).",
+       "id": "COLOR-R16"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>contrainte dérivée (dark mode) — un thème sombre ne peut pas avoir un primary sombre.</strong> Les deux seuls textes admis sur <code>surface-contrast</code> sont <code>background</code> et <code>on-primary</code> (paires garanties). Pour qu'un même fond les porte tous deux à 4.5:1, ils doivent tomber du même côté de l'échelle de luminance. En thème clair c'est trivial (les deux valent ~blanc). En thème sombre, <code>background</code> devient sombre → <code>on-primary</code> doit l'être aussi → <strong><code>primary</code> doit être clair</strong> (un <code>on-primary</code> sombre suppose un fond d'action clair). Corollaire démontré : avec un primary sombre, aucun neutre représentable ne tient 4.5:1 à la fois avec un fond quasi-noir et avec le blanc — la fenêtre théorique fait ~8 % d'un cran 8-bit (le meilleur compromis plafonne à 4.50:1 des deux côtés). <code>surface-contrast</code> devient alors un panneau <em>clair</em> de mise en avant. La table des paires (COLOR-UI) n'est « prête pour N thèmes » qu'assortie de cette règle dérivée — sinon chaque consommateur la redécouvre par l'échec.",
+       "id": "COLOR-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Bordures (border/border-strong)",
+     "quand": "Un trait sépare ou délimite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordures (border/border-strong)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"214\" y=\"80\" width=\"96\" height=\"74\" rx=\"10\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><text x=\"226\" y=\"172\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">border</text><rect x=\"360\" y=\"80\" width=\"96\" height=\"74\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.5\"/><text x=\"362\" y=\"172\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">border-strong</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un trait sépare ou délimite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Décorative (border) vs délimitante seule (border-strong, 3:1).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le contour d'un champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>4.5:1</strong> pour le texte courant (WCAG 1.4.3), <strong>3:1</strong> pour tout état visible et composant d'interface (WCAG 1.4.11) — seuils déjà inscrits dans DESIGN.md, appliqués par quatre recalibrages successifs (accent, danger, warning, border-strong en 1.3.0 ; success en 1.4.0), vérifiés par <code>tools/test-rendu.js</code> à chaque régénération.",
+       "id": "COLOR-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Couleur désactivée (disabled)",
+     "quand": "Un contrôle est désactivé.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Couleur désactivée (disabled)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"258\" y=\"96\" width=\"168\" height=\"48\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><text x=\"298\" y=\"125\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#9CA3AF\">Indisponible</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un contrôle est désactivé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : dette assumée, jamais le gris comme seul signal.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton grisé et non focusable.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Lien dans le texte courant",
+     "quand": "Un lien apparaît dans du texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lien dans le texte courant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"238\" y=\"112\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Voir les</text><text x=\"298\" y=\"112\" font-size=\"14\" fill=\"#4F46E5\" font-family=\"Inter,sans-serif\">conditions</text><path d=\"M298 118h74\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lien apparaît dans du texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Utiliser Link avec un soulignement persistant ; l’état visité dépend du contexte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un mot souligné qui mène vers une destination.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>4.5:1</strong> pour le texte courant (WCAG 1.4.3), <strong>3:1</strong> pour tout état visible et composant d'interface (WCAG 1.4.11) — seuils déjà inscrits dans DESIGN.md, appliqués par quatre recalibrages successifs (accent, danger, warning, border-strong en 1.3.0 ; success en 1.4.0), vérifiés par <code>tools/test-rendu.js</code> à chaque régénération.",
+       "id": "COLOR-R09"
+      },
+      {
+       "tag": "Règle",
+       "html": "<code>text-muted</code> (2.54:1 sur blanc) est <strong>réservé aux métadonnées accessoires</strong> — jamais du texte fonctionnel courant. Précédent journalisé : le compteur de caractères de l'input a dû quitter text-muted (F01).",
+       "id": "COLOR-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-8",
+     "titre": "Scrim / voile de superposition",
+     "quand": "Un fond s'assombrit derrière une modale.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Scrim / voile de superposition\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect width=\"680\" height=\"240\" fill=\"#111827\" opacity=\".5\"/><rect x=\"250\" y=\"64\" width=\"180\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"288\" y=\"124\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">modale</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un fond s'assombrit derrière une modale.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : provisionné avec elevation.overlay.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le voile derrière une pop-in.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-9",
+     "titre": "Couleur de sélection (texte surligné, item sélectionné)",
+     "quand": "Du texte ou un item est sélectionné.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Rôle de couleur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Couleur de sélection (texte surligné, item sélectionné)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"98\" width=\"150\" height=\"22\" rx=\"3\" fill=\"#E0E7FF\"/><text x=\"256\" y=\"114\" font-size=\"13\" fill=\"#4F46E5\" font-family=\"Inter,sans-serif\">texte surligné</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Du texte ou un item est sélectionné.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : la card selected utilise primary.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Du texte surligné.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "chaque usage sémantique de la couleur déclare son <strong>canal redondant</strong> : l'icône par tone de l'alert (silhouettes distinctes), le mot &quot;Erreur&quot; de l'input, la coche de l'état sélectionné de la card. Le canal redondant ne se retire pas pour alléger.",
+       "id": "COLOR-R08"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'état <strong>disabled n'a pas de tokens</strong> — dette assumée, désormais documentée <em>ici</em> plutôt qu'en marge de BUTTON-UI : WCAG exempte les composants inactifs du contraste minimum (exception explicite de 1.4.3), et aucun consommateur n'a encore de vrai besoin (FORM-UX a même retiré le disabled de la validation). Conditions de sortie de la dette : le jour où un composant documente un état désactivé légitime (traitement asynchrone), créer le couple complet (fond, texte, bordure) en une fois.",
+       "id": "COLOR-R14"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 7 cas",
+   "titre": "Contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Bouton (16 combinaisons style × tone)",
+     "quand": "Un bouton combine style (remplissage) et tone (couleur).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bouton (16 combinaisons style × tone)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"252\" y=\"72\" width=\"52\" height=\"28\" rx=\"9\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"72\" width=\"52\" height=\"28\" rx=\"7\" fill=\"#4F46E5\" opacity=\".2\"/><rect x=\"384\" y=\"72\" width=\"52\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"252\" y=\"112\" width=\"52\" height=\"28\" rx=\"9\" fill=\"#15803D\"/><rect x=\"318\" y=\"112\" width=\"52\" height=\"28\" rx=\"7\" fill=\"#15803D\" opacity=\".2\"/><rect x=\"384\" y=\"112\" width=\"52\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"2\"/><rect x=\"252\" y=\"152\" width=\"52\" height=\"28\" rx=\"9\" fill=\"#B91C1C\"/><rect x=\"318\" y=\"152\" width=\"52\" height=\"28\" rx=\"7\" fill=\"#B91C1C\" opacity=\".2\"/><rect x=\"384\" y=\"152\" width=\"52\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bouton combine style (remplissage) et tone (couleur).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Mapping documenté, contrastes testés.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un « ghost destructive ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Input (4 tones de bordure)",
+     "quand": "Un champ change d'état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Input (4 tones de bordure)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"56\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"250\" y=\"90\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#B91C1C\"/><rect x=\"250\" y=\"124\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#15803D\"/><rect x=\"250\" y=\"158\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#92400E\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ change d'état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La bordure porte l'état par la couleur, pas l'épaisseur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une bordure rouge en erreur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Alert (4 tones en couple texte/fond)",
+     "quand": "Une alerte a un tone.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Alert (4 tones en couple texte/fond)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"52\" width=\"200\" height=\"30\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"240\" y=\"52\" width=\"6\" height=\"30\" rx=\"3\" fill=\"#B91C1C\"/><rect x=\"240\" y=\"90\" width=\"200\" height=\"30\" rx=\"8\" fill=\"#DCFCE7\"/><rect x=\"240\" y=\"90\" width=\"6\" height=\"30\" rx=\"3\" fill=\"#15803D\"/><rect x=\"240\" y=\"128\" width=\"200\" height=\"30\" rx=\"8\" fill=\"#FEF3C7\"/><rect x=\"240\" y=\"128\" width=\"6\" height=\"30\" rx=\"3\" fill=\"#92400E\"/><rect x=\"240\" y=\"166\" width=\"200\" height=\"30\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"240\" y=\"166\" width=\"6\" height=\"30\" rx=\"3\" fill=\"#1D4ED8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une alerte a un tone.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Couple texte/fond complet de même teinte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Texte danger sur fond danger-subtle.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>aucune couleur ne change de registre selon le contexte.</strong> Jamais <code>primary</code> ou <code>accent</code> pour un état sémantique (guardrail fondateur de DESIGN.md) ; jamais <code>danger</code> pour &quot;du rouge décoratif&quot; ; l'inverse aussi — le tone info de l'alert a reçu son propre <code>info</code> plutôt que d'emprunter <code>accent</code>, alors que les deux sont des bleus.",
+       "id": "COLOR-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "chaque registre a son niveau d'expression — les sémantiques existent en <strong>couple</strong> texte/fond subtil (<code>danger</code>/<code>danger-subtle</code>), les neutres en <strong>échelle</strong> (primary &gt; secondary &gt; muted pour le texte). Toute nouvelle valeur sémantique fournit son couple complet d'emblée (règle héritée de BUTTON-UI : <code>_bg</code>/<code>_text</code>/<code>_fg</code> dès la création).",
+       "id": "COLOR-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'état <strong>disabled n'a pas de tokens</strong> — dette assumée, désormais documentée <em>ici</em> plutôt qu'en marge de BUTTON-UI : WCAG exempte les composants inactifs du contraste minimum (exception explicite de 1.4.3), et aucun consommateur n'a encore de vrai besoin (FORM-UX a même retiré le disabled de la validation). Conditions de sortie de la dette : le jour où un composant documente un état désactivé légitime (traitement asynchrone), créer le couple complet (fond, texte, bordure) en une fois.",
+       "id": "COLOR-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Card (fond vs zone de collection)",
+     "quand": "Des cartes vivent sur une zone de collection.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Card (fond vs zone de collection)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"190\" y=\"58\" width=\"300\" height=\"126\" rx=\"9\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"82\" width=\"120\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"350\" y=\"82\" width=\"120\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des cartes vivent sur une zone de collection.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Distinction background/surface, volontairement subtile.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Cartes blanches sur fond gris clair.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'information ne repose <strong>jamais sur la couleur seule</strong> — WCAG 1.4.1, la règle d'accessibilité cardinale de cette fondation.",
+       "id": "COLOR-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Panneau sombre (surface-contrast)",
+     "quand": "Un panneau sombre met en avant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Panneau sombre (surface-contrast)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"70\" width=\"220\" height=\"102\" rx=\"9\" fill=\"#111827\"/><text x=\"256\" y=\"114\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">Console</text><rect x=\"256\" y=\"132\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#fff\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un panneau sombre met en avant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Texte dessus : background/on-primary uniquement, jamais muted.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un encart console sombre.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<code>surface-contrast</code> n'est <strong>pas</strong> un début de dark mode — c'est un panneau de mise en avant sur page claire (cf. DESIGN.md 1.7.0). Ne pas généraliser son usage en &quot;thème sombre local&quot;.",
+       "id": "COLOR-R17"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>contrainte dérivée (dark mode) — un thème sombre ne peut pas avoir un primary sombre.</strong> Les deux seuls textes admis sur <code>surface-contrast</code> sont <code>background</code> et <code>on-primary</code> (paires garanties). Pour qu'un même fond les porte tous deux à 4.5:1, ils doivent tomber du même côté de l'échelle de luminance. En thème clair c'est trivial (les deux valent ~blanc). En thème sombre, <code>background</code> devient sombre → <code>on-primary</code> doit l'être aussi → <strong><code>primary</code> doit être clair</strong> (un <code>on-primary</code> sombre suppose un fond d'action clair). Corollaire démontré : avec un primary sombre, aucun neutre représentable ne tient 4.5:1 à la fois avec un fond quasi-noir et avec le blanc — la fenêtre théorique fait ~8 % d'un cran 8-bit (le meilleur compromis plafonne à 4.50:1 des deux côtés). <code>surface-contrast</code> devient alors un panneau <em>clair</em> de mise en avant. La table des paires (COLOR-UI) n'est « prête pour N thèmes » qu'assortie de cette règle dérivée — sinon chaque consommateur la redécouvre par l'échec.",
+       "id": "COLOR-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Texte sur photo/media",
+     "quand": "Du texte se pose sur une image imprévisible.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte sur photo/media\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"58\" width=\"200\" height=\"122\" rx=\"9\" fill=\"#4B5563\"/><rect x=\"240\" y=\"58\" width=\"200\" height=\"122\" rx=\"9\" fill=\"#111827\" opacity=\".42\"/><text x=\"262\" y=\"128\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">Titre lisible</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Du texte se pose sur une image imprévisible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : voile obligatoire ou texte hors du media.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un titre sur une photo de hero.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "règle-frontière, aucun consommateur à ce jour (la card interdit le texte dans le media) : du texte posé sur une image <strong>imprévisible</strong> ne peut garantir aucun contraste. Deux issues admises le jour venu : un voile de contraste entre l'image et le texte, ou le texte hors du media. Jamais de texte nu sur image libre.",
+       "id": "COLOR-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-6",
+     "titre": "Dataviz / graphiques",
+     "quand": "Une palette de graphiques.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dataviz / graphiques\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"252\" y=\"134\" width=\"26\" height=\"28\" rx=\"4\" fill=\"#4F46E5\"/><rect x=\"292\" y=\"121\" width=\"26\" height=\"41\" rx=\"4\" fill=\"#0891B2\"/><rect x=\"332\" y=\"108\" width=\"26\" height=\"54\" rx=\"4\" fill=\"#15803D\"/><rect x=\"372\" y=\"95\" width=\"26\" height=\"67\" rx=\"4\" fill=\"#92400E\"/><rect x=\"412\" y=\"82\" width=\"26\" height=\"80\" rx=\"4\" fill=\"#B91C1C\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il faut une palette de graphiques.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : hors périmètre produit à ce jour.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un histogramme multi-séries.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 5 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Hover (state layers)",
+     "quand": "Un élément est survolé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hover (state layers)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"276\" y=\"94\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"105\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"276\" y=\"94\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#111827\" opacity=\".14\"/><text x=\"300\" y=\"152\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">survol</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément est survolé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Fond assombri d'un cran ou remplissage léger (famille -hover).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton plus foncé au survol.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Focus",
+     "quand": "Un élément a le focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"94\" width=\"192\" height=\"36\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/><text x=\"250\" y=\"150\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">focus ring</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément a le focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Anneau accent, jamais supprimé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ focalisé au clavier.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le registre marque tient en trois rôles fonctionnels — <code>primary</code>, <code>secondary</code>, <code>accent</code> — et pas un de plus par simple envie de décor.</strong> Une identité traversée d'une teinte supplémentaire purement décorative (le magenta d'une maquette, sans rôle d'action ni de focus) n'a <strong>pas</strong> de slot, et n'en reçoit pas un : un token naît d'un besoin réel, jamais d'une couleur « à caser » (ce serait la porte ouverte au « primary partout » que le système s'interdit). <strong>Position (1.1.0) : les identités multi-teintes décoratives sortent du périmètre.</strong> Le jour où une teinte de marque supplémentaire porte un vrai rôle fonctionnel récurrent, elle entrera comme rôle nommé (avec son couple on-*), pas comme aplat libre.",
+       "id": "COLOR-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "les états interactifs sont <strong>tokenisés, pas improvisés</strong> : famille <code><em>-hover</code> (fond assombri d'un cran pour les fonds pleins, <code>surface-hover</code> apparaissant pour les styles sans fond au repos, stroke et ghost), <code>accent</code> pour le focus ring — mapping par composant dans les <code></em>-UI.md</code>.",
+       "id": "COLOR-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Transition entre états",
+     "quand": "Un élément passe repos → hover → focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Transition entre états\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"92\" width=\"80\" height=\"46\" rx=\"9\" fill=\"#E0E7FF\"/><path d=\"M322 115L372 115\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M372 115L364.1 119.3M372 115L364.1 110.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"384\" y=\"92\" width=\"80\" height=\"46\" rx=\"9\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément passe repos → hover → focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Motion règle la transition ; la couleur donne les deux bornes.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une bordure qui change en douceur.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les états interactifs sont <strong>tokenisés, pas improvisés</strong> : famille <code><em>-hover</code> (fond assombri d'un cran pour les fonds pleins, <code>surface-hover</code> apparaissant pour les styles sans fond au repos, stroke et ghost), <code>accent</code> pour le focus ring — mapping par composant dans les <code></em>-UI.md</code>.",
+       "id": "COLOR-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Selected",
+     "quand": "Un élément est sélectionné.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Selected\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"268\" y=\"72\" width=\"144\" height=\"92\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"264\" y=\"68\" width=\"152\" height=\"100\" rx=\"14\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\"/><circle cx=\"392\" cy=\"94\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M388 94l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément est sélectionné.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bordure primary + un indicateur non chromatique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte cochée.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Chargement / skeleton",
+     "quand": "Une zone attend son contenu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Chargement / skeleton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><g class=\"ill-pulse\"><rect x=\"262\" y=\"92\" width=\"150\" height=\"10\" rx=\"5\" fill=\"#E5E7EB\" opacity=\"1\"/><rect x=\"262\" y=\"114\" width=\"110\" height=\"10\" rx=\"5\" fill=\"#E5E7EB\" opacity=\"1\"/><rect x=\"262\" y=\"136\" width=\"134\" height=\"10\" rx=\"5\" fill=\"#E5E7EB\" opacity=\"1\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une zone attend son contenu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Fond surface en attente.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bloc gris de skeleton.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 5 cas",
+   "titre": "Plateforme / environnement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / environnement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Écran standard sRGB",
+     "quand": "L'affichage est un écran standard.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Écran standard sRGB\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"58\" width=\"220\" height=\"118\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"252\" y=\"82\" width=\"44\" height=\"44\" rx=\"9\" fill=\"#4F46E5\"/><rect x=\"312\" y=\"82\" width=\"44\" height=\"44\" rx=\"9\" fill=\"#15803D\"/><rect x=\"372\" y=\"82\" width=\"44\" height=\"44\" rx=\"9\" fill=\"#B91C1C\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'affichage est un écran standard.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence des valeurs hex.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un écran d'ordinateur classique.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mode sombre (dark mode)",
+     "quand": "L'interface passe en thème sombre.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mode sombre (dark mode)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"70\" width=\"140\" height=\"98\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"344\" y=\"70\" width=\"140\" height=\"98\" rx=\"9\" fill=\"#111827\"/><text x=\"212\" y=\"184\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">clair</text><text x=\"360\" y=\"184\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sombre</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'interface passe en thème sombre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : décision produit non prise, architecture prête.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un thème nuit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<code>surface-contrast</code> n'est <strong>pas</strong> un début de dark mode — c'est un panneau de mise en avant sur page claire (cf. DESIGN.md 1.7.0). Ne pas généraliser son usage en &quot;thème sombre local&quot;.",
+       "id": "COLOR-R17"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>contrainte dérivée (dark mode) — un thème sombre ne peut pas avoir un primary sombre.</strong> Les deux seuls textes admis sur <code>surface-contrast</code> sont <code>background</code> et <code>on-primary</code> (paires garanties). Pour qu'un même fond les porte tous deux à 4.5:1, ils doivent tomber du même côté de l'échelle de luminance. En thème clair c'est trivial (les deux valent ~blanc). En thème sombre, <code>background</code> devient sombre → <code>on-primary</code> doit l'être aussi → <strong><code>primary</code> doit être clair</strong> (un <code>on-primary</code> sombre suppose un fond d'action clair). Corollaire démontré : avec un primary sombre, aucun neutre représentable ne tient 4.5:1 à la fois avec un fond quasi-noir et avec le blanc — la fenêtre théorique fait ~8 % d'un cran 8-bit (le meilleur compromis plafonne à 4.50:1 des deux côtés). <code>surface-contrast</code> devient alors un panneau <em>clair</em> de mise en avant. La table des paires (COLOR-UI) n'est « prête pour N thèmes » qu'assortie de cette règle dérivée — sinon chaque consommateur la redécouvre par l'échec.",
+       "id": "COLOR-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Contraste élevé forcé (forced-colors / high contrast)",
+     "quand": "L'OS force ses propres couleurs.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste élevé forcé (forced-colors / high contrast)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"78\" width=\"180\" height=\"84\" rx=\"10\" fill=\"none\" stroke=\"#111827\" stroke-width=\"3\"/><text x=\"272\" y=\"126\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">forced-colors</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'OS force ses propres couleurs.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne neutralisez jamais forced-colors ; appuyez-vous sur le sémantique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le contraste élevé de Windows.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "quand l'OS force ses couleurs (mode contraste élevé Windows), les tokens sont <strong>remplacés d'office</strong> — fonds subtils aplatis, la palette disparaît. Règle minimale de ce système : ne jamais neutraliser ce mode (<code>forced-color-adjust: none</code> interdit par défaut), et s'appuyer sur ce qui <strong>survit</strong> — la sémantique HTML, les bordures, le texte. C'est une raison de plus pour les canaux redondants : l'icône et le mot restent quand la couleur tombe.",
+       "id": "COLOR-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Daltonisme (deutéranopie/protanopie)",
+     "quand": "La couleur seule serait ambiguë.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Daltonisme (deutéranopie/protanopie)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"276\" cy=\"110\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M272.5 106.5l7 7M279.5 106.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"296\" y=\"115\" font-size=\"13\" fill=\"#B91C1C\" font-family=\"Inter,sans-serif\">Erreur</text><text x=\"276\" y=\"150\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">couleur + icône + mot</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La couleur seule serait ambiguë.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Canal redondant systématique (icône, mot, forme).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une croix en plus du rouge.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Impression",
+     "quand": "Le contenu est imprimé.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Impression\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"64\" width=\"180\" height=\"114\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"270\" y=\"90\" width=\"140\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.85\"/><rect x=\"270\" y=\"110\" width=\"110\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"270\" y=\"130\" width=\"130\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu est imprimé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : probablement hors périmètre.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une page imprimée en noir.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 7 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Information portée par la couleur seule",
+     "quand": "Un sens repose sur la seule couleur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Information portée par la couleur seule\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"108\" r=\"15\" fill=\"#15803D\"/><circle cx=\"356\" cy=\"108\" r=\"15\" fill=\"#B91C1C\"/><text x=\"292\" y=\"158\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">couleur seule</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un sens repose sur la seule couleur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : ajoutez toujours un second canal.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Rouge + icône, pas rouge seul.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'information ne repose <strong>jamais sur la couleur seule</strong> — WCAG 1.4.1, la règle d'accessibilité cardinale de cette fondation.",
+       "id": "COLOR-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Contraste texte insuffisant",
+     "quand": "Du texte risque d'être peu lisible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste texte insuffisant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"78\" width=\"200\" height=\"82\" rx=\"9\" fill=\"#E0E7FF\"/><text x=\"262\" y=\"126\" font-size=\"14\" fill=\"#9CA3AF\" font-family=\"Inter,sans-serif\">texte trop clair</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Du texte risque d'être peu lisible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>≥ 4.5:1, testé automatiquement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Éviter du gris clair sur blanc.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le contraste se vérifie <strong>par paire</strong> — un token de texte n'est pas &quot;conforme&quot; dans l'absolu, il l'est <em>sur un fond donné</em>. Chaque token de texte de ce système déclare ses fonds d'usage (le mapping vit dans COLOR-UI.md).",
+       "id": "COLOR-R10"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'état <strong>disabled n'a pas de tokens</strong> — dette assumée, désormais documentée <em>ici</em> plutôt qu'en marge de BUTTON-UI : WCAG exempte les composants inactifs du contraste minimum (exception explicite de 1.4.3), et aucun consommateur n'a encore de vrai besoin (FORM-UX a même retiré le disabled de la validation). Conditions de sortie de la dette : le jour où un composant documente un état désactivé légitime (traitement asynchrone), créer le couple complet (fond, texte, bordure) en une fois.",
+       "id": "COLOR-R14"
+      },
+      {
+       "tag": "Règle",
+       "html": "quand l'OS force ses couleurs (mode contraste élevé Windows), les tokens sont <strong>remplacés d'office</strong> — fonds subtils aplatis, la palette disparaît. Règle minimale de ce système : ne jamais neutraliser ce mode (<code>forced-color-adjust: none</code> interdit par défaut), et s'appuyer sur ce qui <strong>survit</strong> — la sémantique HTML, les bordures, le texte. C'est une raison de plus pour les canaux redondants : l'icône et le mot restent quand la couleur tombe.",
+       "id": "COLOR-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Contraste non textuel insuffisant",
+     "quand": "Une bordure, un focus ou un état porte l'info.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste non textuel insuffisant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"78\" width=\"180\" height=\"82\" rx=\"10\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"266\" y=\"174\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">bordure < 3:1</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une bordure, un focus ou un état porte l'info.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>≥ 3:1 (WCAG 1.4.11).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un contour de champ assez foncé.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Marque utilisée comme sémantique",
+     "quand": "On envisage un « bleu de succès ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Marque utilisée comme sémantique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"256\" y=\"90\" width=\"164\" height=\"50\" rx=\"9\" fill=\"#4F46E5\"/><text x=\"282\" y=\"121\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">Succès</text><circle cx=\"432\" cy=\"98\" r=\"9\" fill=\"#92400E\"/><path d=\"M428.5 94.5l7 7M435.5 94.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage un « bleu de succès ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : ne confondez jamais marque et état.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un succès en primary est à bannir.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le registre marque tient en trois rôles fonctionnels — <code>primary</code>, <code>secondary</code>, <code>accent</code> — et pas un de plus par simple envie de décor.</strong> Une identité traversée d'une teinte supplémentaire purement décorative (le magenta d'une maquette, sans rôle d'action ni de focus) n'a <strong>pas</strong> de slot, et n'en reçoit pas un : un token naît d'un besoin réel, jamais d'une couleur « à caser » (ce serait la porte ouverte au « primary partout » que le système s'interdit). <strong>Position (1.1.0) : les identités multi-teintes décoratives sortent du périmètre.</strong> Le jour où une teinte de marque supplémentaire porte un vrai rôle fonctionnel récurrent, elle entrera comme rôle nommé (avec son couple on-*), pas comme aplat libre.",
+       "id": "COLOR-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Valeur brute hors DESIGN.md",
+     "quand": "On tente une couleur en dur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Valeur brute hors DESIGN.md\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"258\" y=\"112\" font-size=\"16\" fill=\"#B91C1C\" font-family=\"ui-monospace,monospace\">#3A7BD5</text><path d=\"M254 107h94\" stroke=\"#B91C1C\" stroke-width=\"2\"/><text x=\"258\" y=\"140\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">hors DESIGN.md</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On tente une couleur en dur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : toute valeur vient de DESIGN.md.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un #FF0000 codé en dur.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le mode sombre n'est pas couvert — par décision, pas par oubli.</strong> Le jour venu : les rôles ne bougent pas, DESIGN.md gagne une seconde table de valeurs, et les seuils de contraste se re-vérifient intégralement (les ombres et surfaces se repensent aussi, cf. ELEVATION-UX).",
+       "id": "COLOR-R16"
+      },
+      {
+       "tag": "Règle",
+       "html": "mise en œuvre — convertir en OKLCh, fixer L, poser la teinte cible (reprise d'une couleur du thème : surface, accent), puis <strong>recaler L par dichotomie</strong> jusqu'à retrouver la luminance WCAG d'origine (l'aller-retour d'espace introduit une dérive infime, à corriger). C'est une transformation des <strong>valeurs</strong> dans DESIGN.md — aucun nom, aucune règle ne bouge. Vérifiée sur le stress-test 2026-07-17 : les trois thèmes restent conformes après teinte.",
+       "id": "COLOR-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Multiplication des tokens de même valeur",
+     "quand": "Deux noms désignent le même rôle.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Multiplication des tokens de même valeur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"88\" width=\"100\" height=\"54\" rx=\"9\" fill=\"#4F46E5\"/><rect x=\"360\" y=\"88\" width=\"100\" height=\"54\" rx=\"9\" fill=\"#4F46E5\"/><text x=\"250\" y=\"166\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">token-a</text><text x=\"372\" y=\"166\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">token-b</text><circle cx=\"348\" cy=\"78\" r=\"9\" fill=\"#92400E\"/><path d=\"M344.5 74.5l7 7M351.5 74.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Deux noms désignent le même rôle.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un seul token par rôle.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Éviter un doublon de spacing.lg.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'état <strong>disabled n'a pas de tokens</strong> — dette assumée, désormais documentée <em>ici</em> plutôt qu'en marge de BUTTON-UI : WCAG exempte les composants inactifs du contraste minimum (exception explicite de 1.4.3), et aucun consommateur n'a encore de vrai besoin (FORM-UX a même retiré le disabled de la validation). Conditions de sortie de la dette : le jour où un composant documente un état désactivé légitime (traitement asynchrone), créer le couple complet (fond, texte, bordure) en une fois.",
+       "id": "COLOR-R14"
+      },
+      {
+       "tag": "Règle",
+       "html": "un token = potentiellement N valeurs (une par thème) — c'est la mécanique standard des systèmes à thèmes (Atlassian, Carbon : &quot;impossible d'implémenter un dark mode sans tokens partout&quot;). Ce système n'a qu'un thème ; l'architecture est prête, la décision de produit n'est pas prise.",
+       "id": "COLOR-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-6",
+     "titre": "Sémantique divergente entre produits (rouge = danger vs solde négatif)",
+     "quand": "Un métier détourne le rouge.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sémantique divergente entre produits (rouge = danger vs solde négatif)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"86\" width=\"96\" height=\"54\" rx=\"9\" fill=\"#B91C1C\"/><text x=\"236\" y=\"172\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">= danger</text><rect x=\"360\" y=\"86\" width=\"96\" height=\"54\" rx=\"9\" fill=\"#B91C1C\"/><text x=\"366\" y=\"172\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">= négatif</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un métier détourne le rouge.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : un seul produit à ce jour.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Rouge = perte en finance.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COLOR-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>aucune couleur ne change de registre selon le contexte.</strong> Jamais <code>primary</code> ou <code>accent</code> pour un état sémantique (guardrail fondateur de DESIGN.md) ; jamais <code>danger</code> pour &quot;du rouge décoratif&quot; ; l'inverse aussi — le tone info de l'alert a reçu son propre <code>info</code> plutôt que d'emprunter <code>accent</code>, alors que les deux sont des bleus.",
+       "id": "COLOR-R04"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"specimen-color\"><p class=\"note-agnostique\">Design System MD décrit des <strong>rôles</strong> et leurs contraintes — pas des valeurs. Les couleurs réelles vivent dans <code>DESIGN.md</code> (l’implémentation de référence), consommées par le nom du token, jamais recopiées.</p><section class=\"usage-couleur\"><header><h3>Action &amp; marque</h3><p>Les couleurs qui portent une action ou l’identité. Jamais un état sémantique.</p></header><ul class=\"roles-liste\"><li><code>color.primary</code></li><li><code>color.primary-hover</code></li><li><code>color.on-primary</code></li><li><code>color.secondary</code></li><li><code>color.secondary-hover</code></li><li><code>color.on-secondary</code></li><li><code>color.accent</code></li></ul></section><section class=\"usage-couleur\"><header><h3>États sémantiques</h3><p>Un rôle = un sens. Le fond « -subtle » porte le texte plein de même teinte (≥ 4.5:1).</p></header><ul class=\"roles-liste\"><li><code>color.danger</code></li><li><code>color.danger-hover</code></li><li><code>color.danger-subtle</code></li><li><code>color.success</code></li><li><code>color.success-subtle</code></li><li><code>color.warning</code></li><li><code>color.warning-subtle</code></li><li><code>color.warning-subtle-hover</code></li><li><code>color.info</code></li><li><code>color.info-subtle</code></li></ul></section><section class=\"usage-couleur\"><header><h3>Surfaces</h3><p>Les plans du produit, du repos à la mise en avant. « contrast » = panneau sombre, jamais le repos.</p></header><ul class=\"roles-liste\"><li><code>color.background</code></li><li><code>color.surface</code></li><li><code>color.surface-hover</code></li><li><code>color.surface-contrast</code></li></ul></section><section class=\"usage-couleur\"><header><h3>Texte</h3><p>Trois niveaux de hiérarchie, plus les couleurs de texte sur fond coloré.</p></header><ul class=\"roles-liste\"><li><code>color.text-primary</code></li><li><code>color.text-secondary</code></li><li><code>color.text-muted</code></li><li><code>color.on-primary</code></li><li><code>color.on-secondary</code></li></ul></section><section class=\"usage-couleur\"><header><h3>Bordures</h3><p>La bordure qui délimite seule un composant tient 3:1 (WCAG 1.4.11).</p></header><ul class=\"roles-liste\"><li><code>color.border</code></li><li><code>color.border-strong</code></li></ul></section></div></section>"
+  ],
+  "tokens": [
+   {
+    "token": "registres.marque",
+    "ref": "color.primary, color.primary-hover, color.on-primary, color.accent",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "registres.semantique",
+    "ref": "color.danger, color.danger-hover, color.danger-subtle, color.success, color.success-subtle, color.warning, color.warning-subtle, color.warning-subtle-hover, color.info, color.info-subtle",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "registres.neutres_texte",
+    "ref": "color.text-primary, color.text-secondary, color.text-muted",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "registres.neutres_surfaces",
+    "ref": "color.background, color.surface, color.surface-hover, color.surface-contrast",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "registres.neutres_bordures",
+    "ref": "color.border, color.border-strong",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-19",
+   "titre": "Propagation du modèle STYLE × TONE dans les renvois croisés",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>COLOR-UI.md</code> (v1.1.0 — paires garanties étendues aux nouveaux fonds pleins, « warning jamais un fond plein » levé aussi ici, table de consommation du bouton réécrite en rôles par tone) et <code>dist/RULES-color.md</code> (mêmes tables) ; bumps de vocabulaire sans changement de règle : COLOR-UX 1.1.1, ALERT-UX 1.3.1, CARD-UX 1.2.1, INPUT-UX 1.5.1, INPUT-UI 1.4.2, FORM-UX 2.1.3, CREATION-COMPTE-UX 1.2.2, TYPOGRAPHY-UX 1.1.2, GRID-UX 1.0.1, METHODE 1.8.1, inventaire couleur (9 → 16 combinaisons), RULES-alert/card/input/creation-compte(-sso-social), <code>tools/genere-site.js</code> + <code>tools/methode-contenu.js</code> (deux textes du site).</li><li><strong>Ancienne situation</strong> : la décision BUTTON du 2026-07-18 avait renommé l'axe <code>emphasis</code> → <code>style</code> dans BUTTON-* et DESIGN.md, mais l'ancien nom restait vivant dans les notes de transposition et les renvois des autres sujets — et COLOR-UI garantissait encore « warning : jamais un fond plein » alors que le garde-fou était levé, sans mentionner <code>neutral-strong(-hover)</code>, <code>warning-hover</code> ni <code>danger-subtle-hover</code>.</li><li><strong>Nouvelle situation</strong> : plus aucune occurrence normative d'<code>emphasis</code> ; les mentions restantes sont historiques (ce journal, la note de vocabulaire BUTTON-UX 1.5.0, les récits du site). La formule des notes de transposition devient « l'axe <code>style</code> n'existe pas ici ». La table des paires garanties dit les paires réelles : <code>on-primary</code> sur <code>neutral-strong(-hover)</code> et <code>warning(-hover)</code>, <code>danger</code> sur <code>danger-subtle-hover</code>.</li><li><strong>Pourquoi</strong> : un renvoi normatif vers un axe qui n'existe plus est un défaut de doc du même ordre qu'un token fantôme ; et la table des paires garanties est le contrat que <code>test-rendu.js</code> vérifie — elle doit dire ce qui est vrai, ni plus ni moins.</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-TEST F05 : la couleur du texte saisi de l'input devient explicite",
+   "html": "<ul><li><strong>Fichier</strong> : components/input/INPUT-UI.md 1.3.0</li><li><strong>Ancienne règle</strong> : aucune — la couleur du texte saisi était déduite implicitement (<code>text-primary</code> supposé).</li><li><strong>Nouvelle règle</strong> : <code>value_text: color.text-primary</code>.</li><li><strong>Pourquoi</strong> : même famille de &quot;déduction silencieuse&quot; que <code>tone.destructive_text</code> sur le bouton — une déduction correcte reste une déduction non documentée.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "COLOR : audit — rien ne manque pour les consommateurs actuels, les dettes deviennent visibles",
+   "html": "<ul><li><strong>Fichiers</strong> : foundations/color/*, DESIGN.md (aucun token couleur ajouté ni modifié)</li><li><strong>Question posée</strong> : &quot;les couleurs sont partiellement dans DESIGN.md — peut-être il en manque.&quot;</li><li><strong>Réponse d'audit</strong> : les 23 tokens couvrent les 9 combinaisons du bouton, les tones input/callout en couples complets, les surfaces de la card et les états hover/focus (résolution test-rendu.js). Les manques sont tous des <strong>contextes sans consommateur</strong> : lien dans le texte (2e signalement), scrim, ::selection, disabled (dette héritée de BUTTON-UI, conditions de sortie désormais écrites), dark mode (position explicite : non couvert par décision, architecture par rôles prête). Aucun token provisionné — principe &quot;un token naît d'un besoin réel&quot; maintenu.</li><li><strong>Apport propre</strong> : la fondation consolide en un lieu les règles éparses (registres étanches marque/sémantique/neutres, paires texte/fond garanties, canal redondant 1.4.1) que DESIGN.md portait en guardrails courts — DESIGN.md garde valeurs et guardrails, COLOR-UX le raisonnement.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "COLOR-R01",
+   "couche": "ux",
+   "solution": "la couleur est une **fondation** — pas de variantes propres, pas d'assemblage : une contrainte transversale que tous les composants consomment. Le modèle à axes ne s'applique pas.",
+   "enonce": "La couleur est une fondation transversale consommée par tous les composants : elle n'a ni variantes ni assemblage, et le modèle à axes ne lui est pas applicable.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R02",
+   "couche": "ux",
+   "solution": "la fondation sépare deux choses qui ne doivent jamais se confondre — c'est la structure de ce fichier :",
+   "enonce": "Le rôle d'une couleur et sa valeur sont deux décisions distinctes : les composants référencent le rôle, et la valeur vit dans une source unique dont elle peut changer entièrement sans qu'aucune règle d'usage bouge.",
+   "mesure": "aucune valeur hexadécimale hors du fichier de valeurs unique",
+   "critere": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison couleur du principe fondateur (niveau ≠ taille chez la typographie) : les systèmes majeurs nomment leurs tokens par usage, jamais par teinte — \"on-primary plutôt que on-blue\" (Material). Un composant qui référence un rôle survit au rebranding ; un composant qui référence un bleu meurt avec lui.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+     "liens": [
+      {
+       "label": "Material 3 — color roles",
+       "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+      },
+      {
+       "label": "Atlassian — color foundations",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "GOV.UK — colour",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Interdiction outillée des hex en dur",
+     "liens": [
+      {
+       "label": "Polaris — stylelint color-no-hex",
+       "url": "https://polaris.shopify.com/tools/stylelint-polaris/rules/color-color-no-hex"
+      },
+      {
+       "label": "GOV.UK brand",
+       "url": "https://brand.design-system.service.gov.uk/colour/web/"
+      }
+     ],
+     "confiance": "Établi — deux systèmes l'imposent par l'outil, comme valide-dossier.js ici"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+    "liens": [
+     {
+      "label": "Material 3 — color roles",
+      "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+     },
+     {
+      "label": "Atlassian — color foundations",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Carbon — color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     },
+     {
+      "label": "GOV.UK — colour",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R03",
+   "couche": "ux",
+   "solution": "la palette se lit en **trois registres étanches** :",
+   "enonce": "La palette se répartit en trois registres étanches — marque, sémantique, neutres — et chaque token appartient à un seul d'entre eux.",
+   "mesure": "chaque token couleur est rattaché à exactement un registre",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Registres étanches marque/sémantique/neutres",
+     "liens": [
+      {
+       "label": "Structure convergente (Atlassian brand/semantic/neutral/accent, Polaris sens fixes sur fond neutre) + guardrail interne préexistant",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence, formalisation propre à ce système"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Sémantique ≠ accent, chaque couleur un sens fixe",
+     "liens": [
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris.shopify.com/design/colors"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+     "liens": [
+      {
+       "label": "Material 3 — color roles",
+       "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+      },
+      {
+       "label": "Atlassian — color foundations",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "GOV.UK — colour",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Registres étanches marque/sémantique/neutres",
+    "liens": [
+     {
+      "label": "Structure convergente (Atlassian brand/semantic/neutral/accent, Polaris sens fixes sur fond neutre) + guardrail interne préexistant",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence, formalisation propre à ce système"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R04",
+   "couche": "ux",
+   "solution": "**aucune couleur ne change de registre selon le contexte.** Jamais `primary` ou `secondary` pour un état sémantique (guardrail fondateur de DESIGN.md) ; jamais `danger` pour \"du rouge décoratif\" ; l'inverse aussi — le tone info de l'alert a reçu son propre `info` plutôt que d'emprunter la marque, alors que primary et info étaient deux bleus.",
+   "enonce": "Une couleur ne change jamais de registre selon le contexte : un token de marque ne porte jamais un état, un token sémantique ne sert jamais de décor.",
+   "mesure": "aucun token de marque employé pour un tone sémantique, et réciproquement",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Sémantique ≠ accent, chaque couleur un sens fixe",
+     "liens": [
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris.shopify.com/design/colors"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Registres étanches marque/sémantique/neutres",
+     "liens": [
+      {
+       "label": "Structure convergente (Atlassian brand/semantic/neutral/accent, Polaris sens fixes sur fond neutre) + guardrail interne préexistant",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence, formalisation propre à ce système"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Sémantique ≠ accent, chaque couleur un sens fixe",
+    "liens": [
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris.shopify.com/design/colors"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Alert (4 tones en couple texte/fond)",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-4-6",
+     "titre": "Sémantique divergente entre produits (rouge = danger vs solde négatif)",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R05",
+   "couche": "ux",
+   "solution": "**le registre marque tient en deux rôles fonctionnels — `primary`, `secondary` — et pas un de plus par simple envie de décor.** (La règle a été APPLIQUÉE à la sortie autant qu'à l'entrée : `accent`, né en 1.33.0 pour le focus ring, est sorti en 1.34.0 le jour où le focus v2 lui a repris sa mission — un rôle sans consommateur ne reste pas.) Une identité traversée d'une teinte supplémentaire purement décorative (le magenta d'une maquette, sans rôle d'action ni de focus) n'a **pas** de slot, et n'en reçoit pas un : un token naît d'un besoin réel, jamais d'une couleur « à caser » (ce serait la porte ouverte au « primary partout » que le système s'interdit). **Position (1.1.0) : les identités multi-teintes décoratives sortent du périmètre.** Le jour où une teinte de marque supplémentaire porte un vrai rôle fonctionnel récurrent, elle entrera comme rôle nommé (avec son couple on-*), pas comme aplat libre.",
+   "enonce": "Le registre marque se limite aux rôles fonctionnels existants : une teinte purement décorative ne reçoit pas de token.",
+   "mesure": "tout token de marque est référencé par au moins un rôle fonctionnel documenté",
+   "critere": "",
+   "contre": "",
+   "probleme": "un utilisateur apprend le vocabulaire chromatique du produit en quelques écrans. Un bleu qui signifie tantôt \"action de marque\" tantôt \"information\" détruit cet apprentissage — c'est la même inflation que le primary partout (BUTTON-UX) : si une couleur dit deux choses, elle ne dit plus rien.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "décision interne datée (2026-07-17) — cohérente avec « un token naît d'un besoin réel » et l'interdit du décor par token de marque.",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R06",
+   "couche": "ux",
+   "solution": "chaque registre a son niveau d'expression — les sémantiques existent en **couple** texte/fond subtil (`danger`/`danger-subtle`), les neutres en **échelle** (primary > secondary > muted pour le texte). Toute nouvelle valeur sémantique fournit son couple complet d'emblée (règle héritée de BUTTON-UI : `_bg`/`_text`/`_fg` dès la création).",
+   "enonce": "Chaque registre a son niveau d'expression — les couleurs sémantiques existent en couple texte/fond subtil, les neutres en échelle — et toute nouvelle valeur sémantique fournit son couple complet dès sa création.",
+   "mesure": "tout token sémantique possède son couple texte/fond dès son introduction",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+     "liens": [
+      {
+       "label": "Material 3 — color roles",
+       "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+      },
+      {
+       "label": "Atlassian — color foundations",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "GOV.UK — colour",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+    "liens": [
+     {
+      "label": "Material 3 — color roles",
+      "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+     },
+     {
+      "label": "Atlassian — color foundations",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Carbon — color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     },
+     {
+      "label": "GOV.UK — colour",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Neutres de texte (primary/secondary/muted)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Alert (4 tones en couple texte/fond)",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R07",
+   "couche": "ux",
+   "solution": "l'information ne repose **jamais sur la couleur seule** — WCAG 1.4.1, la règle d'accessibilité cardinale de cette fondation.",
+   "enonce": "Aucune information ne repose sur la couleur seule.",
+   "mesure": "aucune information portée par la couleur seule",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Jamais la couleur seule comme signal",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris.shopify.com/design/colors"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Jamais la couleur seule comme signal",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris.shopify.com/design/colors"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Card (fond vs zone de collection)",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-4-0",
+     "titre": "Information portée par la couleur seule",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R08",
+   "couche": "ux",
+   "solution": "chaque usage sémantique de la couleur déclare son **canal redondant** : l'icône par tone de l'alert (silhouettes distinctes), le mot \"Erreur\" de l'input, la coche de l'état sélectionné de la card. Le canal redondant ne se retire pas pour alléger.",
+   "enonce": "Chaque usage sémantique de la couleur déclare un canal redondant non chromatique — icône, mot ou forme — qui ne peut être retiré pour alléger.",
+   "mesure": "chaque tone sémantique porte au moins un signal non chromatique déclaré",
+   "critere": "",
+   "contre": "",
+   "probleme": "~8 % des hommes ont une déficience rouge-vert — et `warning` (ambre profond) et `danger` (rouge sombre) de cette palette sont chromatiquement proches (distance RGB 55, cas documenté par le F03 du RAPPORT-TEST). La forme fait le travail que la couleur ne peut pas garantir.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Jamais la couleur seule comme signal",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris.shopify.com/design/colors"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Jamais la couleur seule comme signal",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris.shopify.com/design/colors"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-9",
+     "titre": "Couleur de sélection (texte surligné, item sélectionné)",
+     "famille": "Rôle de couleur"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R09",
+   "couche": "ux",
+   "solution": "**4.5:1** pour le texte courant (WCAG 1.4.3), **3:1** pour tout état visible et composant d'interface (WCAG 1.4.11) — seuils déjà inscrits dans DESIGN.md, appliqués par quatre recalibrages successifs (accent, danger, warning, border-strong en 1.3.0 ; success en 1.4.0), vérifiés par `tools/test-rendu.js` à chaque régénération.",
+   "enonce": "Le texte courant atteint 4,5:1 avec son fond, et tout composant d'interface ou état requis pour l'identifier atteint 3:1 avec les couleurs adjacentes.",
+   "mesure": "contraste texte / fond ≥ 4,5:1 ; contraste composant ou état / fond ≥ 3:1",
+   "critere": "chaque(\"body *\") contraste(color) >= 4.5 ou mesure(font-size) >= 24 et contraste(color) >= 3 ou mesure(font-size) >= 18.66 et mesure(font-weight) >= 700 et contraste(color) >= 3",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "États sémantiques (danger/success/warning/info)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Bordures (border/border-strong)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Lien dans le texte courant",
+     "famille": "Rôle de couleur"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R10",
+   "couche": "ux",
+   "solution": "le contraste se vérifie **par paire** — un token de texte n'est pas \"conforme\" dans l'absolu, il l'est *sur un fond donné*. Chaque token de texte de ce système déclare ses fonds d'usage (le mapping vit dans COLOR-UI.md).",
+   "enonce": "La conformité au contraste s'établit par paire et non par token isolé : chaque couleur de texte déclare les fonds sur lesquels elle est vérifiée.",
+   "mesure": "chaque token de texte déclare la liste des fonds vérifiés ; tout fond non déclaré est interdit",
+   "critere": "",
+   "contre": "",
+   "probleme": "poser un token de texte conforme sur blanc sur un fond subtil sans revérifier — c'est exactement l'histoire de `success` (5.02:1 sur blanc, mais il a fallu le recalibrer pour tenir 4.57:1 sur `success-subtle`).",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Le rapport de contraste vaut (L1 + 0,05) / (L2 + 0,05) où L1 et L2 sont les luminances relatives : il ne dépend que de la luminance, ni de la teinte ni de la saturation prises isolément",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — définitions « contrast ratio » et « relative luminance »",
+       "url": "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio"
+      }
+     ],
+     "confiance": "Établi, définition normative — fonde R10, R18, R19 et R20, qui s'appuyaient dessus sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Contraste texte insuffisant",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R11",
+   "couche": "ux",
+   "solution": "nuance sourcée — WCAG 1.4.11 **exempte le hover** (\"l'état hover n'est pas requis pour identifier le composant\") ; ce système teste quand même ses couples au hover, par choix : un hover illisible reste un hover raté, même conforme.",
+   "enonce": "Les couples texte/fond des états de survol sont vérifiés au même seuil que l'état de repos, bien que la norme en exempte le survol.",
+   "mesure": "contraste texte / fond ≥ 4,5:1 également à l'état hover",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "établi (seuils WCAG) ; le sur-test du hover est une exigence interne, pas une obligation normative.",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R12",
+   "couche": "ux",
+   "solution": "`text-muted` (2.54:1 sur blanc) est **réservé aux métadonnées accessoires** — jamais du texte fonctionnel courant. Précédent journalisé : le compteur de caractères de l'input a dû quitter text-muted (F01).",
+   "enonce": "Le token de texte le plus faible est réservé aux métadonnées accessoires et n'est jamais employé pour du texte fonctionnel.",
+   "mesure": "aucun texte fonctionnel ne consomme un token de texte sous 4,5:1",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Lien dans le texte courant",
+     "famille": "Rôle de couleur"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R13",
+   "couche": "ux",
+   "solution": "les états interactifs sont **tokenisés, pas improvisés** : famille `*-hover` (fond assombri d'un cran pour les fonds pleins, `surface-hover` apparaissant pour les styles sans fond au repos, stroke et ghost), `accent` pour le focus ring — mapping par composant dans les `*-UI.md`.",
+   "enonce": "Les états interactifs sont portés par des tokens dédiés et jamais calculés à la volée dans les composants.",
+   "mesure": "aucune couleur d'état produite hors token (ni filtre, ni assombrissement calculé en feuille de style)",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+     "liens": [
+      {
+       "label": "Material 3 — color roles",
+       "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+      },
+      {
+       "label": "Atlassian — color foundations",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "GOV.UK — colour",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+    "liens": [
+     {
+      "label": "Material 3 — color roles",
+      "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+     },
+     {
+      "label": "Atlassian — color foundations",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Carbon — color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     },
+     {
+      "label": "GOV.UK — colour",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Accent (focus, touches secondaires)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Focus",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Transition entre états",
+     "famille": "État / comportement dans le temps"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R14",
+   "couche": "ux",
+   "solution": "l'état **disabled n'a pas de tokens** — dette assumée, désormais documentée *ici* plutôt qu'en marge de BUTTON-UI : WCAG exempte les composants inactifs du contraste minimum (exception explicite de 1.4.3), et aucun consommateur n'a encore de vrai besoin (FORM-UX a même retiré le disabled de la validation). Conditions de sortie de la dette : le jour où un composant documente un état désactivé légitime (traitement asynchrone), créer le couple complet (fond, texte, bordure) en une fois.",
+   "enonce": "L'état désactivé n'a pas de tokens dédiés tant qu'aucun composant ne documente un état désactivé légitime ; le jour venu, le couple complet fond/texte/bordure est créé en une seule fois.",
+   "mesure": "aucun token disabled dans la table de valeurs",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-9",
+     "titre": "Couleur de sélection (texte surligné, item sélectionné)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Alert (4 tones en couple texte/fond)",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Contraste texte insuffisant",
+     "famille": "Enjeu / risque"
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Multiplication des tokens de même valeur",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R15",
+   "couche": "ux",
+   "solution": "un token = potentiellement N valeurs (une par thème) — c'est la mécanique standard des systèmes à thèmes (Atlassian, Carbon : \"impossible d'implémenter un dark mode sans tokens partout\"). Ce système n'a qu'un thème ; l'architecture est prête, la décision de produit n'est pas prise.",
+   "enonce": "Dans un système à thèmes, un token de couleur résout une valeur par thème : l'architecture par tokens est la condition d'existence d'un second thème.",
+   "mesure": "chaque token couleur résout une valeur pour chaque thème déclaré",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un token = N valeurs par thème ; pas de dark mode sans tokens partout",
+     "liens": [
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — themes",
+       "url": "https://carbondesignsystem.com/elements/themes/overview/"
+      }
+     ],
+     "confiance": "Établi chez les systèmes à thèmes ; l'absence de thème sombre ici est une décision interne"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Le système d'exploitation expose une préférence de thème clair/sombre que la page peut lire (prefers-color-scheme) et à laquelle elle déclare les schémas qu'elle sait rendre (color-scheme)",
+     "liens": [
+      {
+       "label": "MDN — prefers-color-scheme",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme"
+      },
+      {
+       "label": "MDN — color-scheme",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme"
+      }
+     ],
+     "confiance": "Établi, mécanisme plateforme — le non-support du thème sombre reste une décision interne"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un token = N valeurs par thème ; pas de dark mode sans tokens partout",
+    "liens": [
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Carbon — themes",
+      "url": "https://carbondesignsystem.com/elements/themes/overview/"
+     }
+    ],
+    "confiance": "Établi chez les systèmes à thèmes ; l'absence de thème sombre ici est une décision interne"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-5",
+     "titre": "Multiplication des tokens de même valeur",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R16",
+   "couche": "ux",
+   "solution": "**le mode sombre n'est pas couvert — par décision, pas par oubli.** Le jour venu : les rôles ne bougent pas, DESIGN.md gagne une seconde table de valeurs, et les seuils de contraste se re-vérifient intégralement (les ombres et surfaces se repensent aussi, cf. ELEVATION-UX).",
+   "enonce": "Le mode sombre n'est pas couvert par décision explicite ; son adoption ajouterait une table de valeurs sans déplacer les rôles, et imposerait une re-vérification intégrale des seuils de contraste.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Surfaces (background/surface/surface-hover/surface-contrast)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Valeur brute hors DESIGN.md",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R17",
+   "couche": "ux",
+   "solution": "`surface-contrast` n'est **pas** un début de dark mode — c'est un panneau de mise en avant sur page claire (cf. DESIGN.md 1.7.0). Ne pas généraliser son usage en \"thème sombre local\".",
+   "enonce": "La surface sombre de mise en avant est un panneau local sur page claire et ne constitue pas l'amorce d'un thème sombre ; son usage ne se généralise pas.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Panneau sombre (surface-contrast)",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mode sombre (dark mode)",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R18",
+   "couche": "ux",
+   "solution": "**contrainte dérivée (dark mode) — un thème sombre ne peut pas avoir un primary sombre.** Les deux seuls textes admis sur `surface-contrast` sont `background` et `on-primary` (paires garanties). Pour qu'un même fond les porte tous deux à 4.5:1, ils doivent tomber du même côté de l'échelle de luminance. En thème clair c'est trivial (les deux valent ~blanc). En thème sombre, `background` devient sombre → `on-primary` doit l'être aussi → **`primary` doit être clair** (un `on-primary` sombre suppose un fond d'action clair). Corollaire démontré : avec un primary sombre, aucun neutre représentable ne tient 4.5:1 à la fois avec un fond quasi-noir et avec le blanc — la fenêtre théorique fait ~8 % d'un cran 8-bit (le meilleur compromis plafonne à 4.50:1 des deux côtés). `surface-contrast` devient alors un panneau *clair* de mise en avant. La table des paires (COLOR-UI) n'est « prête pour N thèmes » qu'assortie de cette règle dérivée — sinon chaque consommateur la redécouvre par l'échec.",
+   "enonce": "Deux textes garantis sur un même fond ne peuvent tous deux atteindre 4,5:1 que s'ils tombent du même côté de l'échelle de luminance.",
+   "mesure": "contraste ≥ 4,5:1 vérifié simultanément pour les deux textes garantis sur un même fond",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Le rapport de contraste vaut (L1 + 0,05) / (L2 + 0,05) où L1 et L2 sont les luminances relatives : il ne dépend que de la luminance, ni de la teinte ni de la saturation prises isolément",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — définitions « contrast ratio » et « relative luminance »",
+       "url": "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio"
+      }
+     ],
+     "confiance": "Établi, définition normative — fonde R10, R18, R19 et R20, qui s'appuyaient dessus sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+    "liens": [
+     {
+      "label": "WCAG — 1.4.3",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     },
+     {
+      "label": "1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "contrainte dérivée, démontrée par calcul WCAG (rapport stress-test 2026-07-17) — établie, pas une préférence.",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Surfaces (background/surface/surface-hover/surface-contrast)",
+     "famille": "Rôle de couleur"
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Panneau sombre (surface-contrast)",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mode sombre (dark mode)",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R19",
+   "couche": "ux",
+   "solution": "une identité peut vouloir des neutres **teintés** (gris chauds, gris bleutés) accordés à sa marque plutôt que des gris purs. Le système bénit une méthode sûre : **teinter un neutre à luminance WCAG constante**. Le contraste ne dépendant que de la luminance relative, déplacer uniquement la teinte (et la saturation) en gardant la luminance identique ne change **aucun** rapport de contraste — l'opération est gratuite côté accessibilité, et la barrière reste verte par construction.",
+   "enonce": "Le rapport de contraste ne dépendant que de la luminance relative, teinter un neutre en conservant sa luminance ne modifie aucun rapport de contraste et reste sûr par construction.",
+   "mesure": "rapport de contraste identique avant et après teinte, à luminance relative inchangée",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Le rapport de contraste vaut (L1 + 0,05) / (L2 + 0,05) où L1 et L2 sont les luminances relatives : il ne dépend que de la luminance, ni de la teinte ni de la saturation prises isolément",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — définitions « contrast ratio » et « relative luminance »",
+       "url": "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio"
+      }
+     ],
+     "confiance": "Établi, définition normative — fonde R10, R18, R19 et R20, qui s'appuyaient dessus sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Le rapport de contraste vaut (L1 + 0,05) / (L2 + 0,05) où L1 et L2 sont les luminances relatives : il ne dépend que de la luminance, ni de la teinte ni de la saturation prises isolément",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — définitions « contrast ratio » et « relative luminance »",
+      "url": "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio"
+     }
+    ],
+    "confiance": "Établi, définition normative — fonde R10, R18, R19 et R20, qui s'appuyaient dessus sans la citer"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R20",
+   "couche": "ux",
+   "solution": "mise en œuvre — convertir en OKLCh, fixer L, poser la teinte cible (reprise d'une couleur du thème : surface, accent), puis **recaler L par dichotomie** jusqu'à retrouver la luminance WCAG d'origine (l'aller-retour d'espace introduit une dérive infime, à corriger). C'est une transformation des **valeurs** dans DESIGN.md — aucun nom, aucune règle ne bouge. Vérifiée sur le stress-test 2026-07-17 : les trois thèmes restent conformes après teinte.",
+   "enonce": "Le teintage d'un neutre s'opère en espace OKLCh — lightness figée, teinte cible posée — puis la luminance relative d'origine est recalée par dichotomie pour absorber la dérive de conversion.",
+   "mesure": "luminance relative recalculée identique à l'originale après conversion aller-retour",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "oklch() spécifie une couleur par lightness perceptuelle, chroma et teinte dans un espace indépendant du périphérique — l'espace de travail du teintage à luminance constante",
+     "liens": [
+      {
+       "label": "CSS Color Module Level 4 — oklch()",
+       "url": "https://www.w3.org/TR/css-color-4/"
+      }
+     ],
+     "confiance": "Établi, spécification W3C"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Le rapport de contraste vaut (L1 + 0,05) / (L2 + 0,05) où L1 et L2 sont les luminances relatives : il ne dépend que de la luminance, ni de la teinte ni de la saturation prises isolément",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — définitions « contrast ratio » et « relative luminance »",
+       "url": "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio"
+      }
+     ],
+     "confiance": "Établi, définition normative — fonde R10, R18, R19 et R20, qui s'appuyaient dessus sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "oklch() spécifie une couleur par lightness perceptuelle, chroma et teinte dans un espace indépendant du périphérique — l'espace de travail du teintage à luminance constante",
+    "liens": [
+     {
+      "label": "CSS Color Module Level 4 — oklch()",
+      "url": "https://www.w3.org/TR/css-color-4/"
+     }
+    ],
+    "confiance": "Établi, spécification W3C"
+   },
+   "confiance": "établi — le contraste WCAG est fonction de la seule luminance relative ; l'invariance est mathématique, pas empirique.",
+   "cas": [
+    {
+     "id": "cas-4-4",
+     "titre": "Valeur brute hors DESIGN.md",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R21",
+   "couche": "ux",
+   "solution": "quand l'OS force ses couleurs (mode contraste élevé Windows), les tokens sont **remplacés d'office** — fonds subtils aplatis, la palette disparaît. Règle minimale de ce système : ne jamais neutraliser ce mode (`forced-color-adjust: none` interdit par défaut), et s'appuyer sur ce qui **survit** — la sémantique HTML, les bordures, le texte. C'est une raison de plus pour les canaux redondants : l'icône et le mot restent quand la couleur tombe.",
+   "enonce": "En mode de couleurs forcées par le système, la palette est remplacée d'office et les fonds et ombres disparaissent : ce mode n'est jamais neutralisé, et l'interface s'appuie sur ce qui survit — sémantique, bordures, texte.",
+   "mesure": "aucune déclaration forced-color-adjust: none hors correctif d'accessibilité justifié",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "En mode de couleurs forcées, l'agent utilisateur impose ses couleurs système : box-shadow et text-shadow forcés à none, background-image non-url à none, couleurs d'auteur ignorées — les fonds subtils sont aplatis, les traits et le texte survivent",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme documenté"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "forced-color-adjust: none ne doit servir qu'à améliorer l'expérience en contraste forcé, jamais à empêcher le respect des choix de l'utilisateur",
+     "liens": [
+      {
+       "label": "MDN — forced-color-adjust",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust"
+      }
+     ],
+     "confiance": "Établi — transforme l'interdiction de R21, donnée comme décision interne, en application d'une recommandation documentée"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "En mode de couleurs forcées, l'agent utilisateur impose ses couleurs système : box-shadow et text-shadow forcés à none, background-image non-url à none, couleurs d'auteur ignorées — les fonds subtils sont aplatis, les traits et le texte survivent",
+    "liens": [
+     {
+      "label": "MDN — @media (forced-colors)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme documenté"
+   },
+   "confiance": "convergence (comportement plateforme documenté) ; la règle d'interdiction est une décision interne.",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Contraste élevé forcé (forced-colors / high contrast)",
+     "famille": "Plateforme / environnement"
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Contraste texte insuffisant",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R22",
+   "couche": "ux",
+   "solution": "règle-frontière, aucun consommateur à ce jour (la card interdit le texte dans le media) : du texte posé sur une image **imprévisible** ne peut garantir aucun contraste. Deux issues admises le jour venu : un voile de contraste entre l'image et le texte, ou le texte hors du media. Jamais de texte nu sur image libre.",
+   "enonce": "Du texte posé sur une image imprévisible ne garantit aucun contraste : il est soit adossé à un voile de contraste, soit sorti du média, jamais laissé nu.",
+   "mesure": "contraste texte / pixel de fond le plus défavorable ≥ 4,5:1",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Sur fond non uniforme, le contraste se mesure contre les pixels immédiatement derrière chaque lettre ; la technique admise consiste à assombrir, ombrer ou poser un voile localisé pour maintenir 4,5:1",
+     "liens": [
+      {
+       "label": "WCAG — Technique G18",
+       "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G18"
+      }
+     ],
+     "confiance": "Établi, technique référencée — fonde R22 et R23, jusque-là données comme décisions internes"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Sur fond non uniforme, le contraste se mesure contre les pixels immédiatement derrière chaque lettre ; la technique admise consiste à assombrir, ombrer ou poser un voile localisé pour maintenir 4,5:1",
+    "liens": [
+     {
+      "label": "WCAG — Technique G18",
+      "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G18"
+     }
+    ],
+    "confiance": "Établi, technique référencée — fonde R22 et R23, jusque-là données comme décisions internes"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-5",
+     "titre": "Texte sur photo/media",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "COLOR-R23",
+   "couche": "ux",
+   "solution": "**le voile n'est pas un effet, c'est un calcul (méthode bénie, 1.1.0).** L'obligation « voile de contraste » ne se règle pas à l'œil (trop de voile tue l'image, trop peu casse le texte à certains formats seulement). Méthode : (1) échantillonner le **pire pixel** derrière chaque zone de texte (canvas) ; (2) calculer l'alpha de voile minimal pour que le texte tienne 4.5:1 sur ce pixel ; (3) **revérifier à plusieurs formats de viewport** — le cadrage (`background-position`, recadrage responsive) déplace le pire pixel et peut faire passer le voile requis du simple au double. Le cadrage, pas le voile, est souvent le vrai problème : un viewport court peut recadrer une crête claire pile derrière le titre.",
+   "enonce": "Le voile de contraste se calcule et ne s'ajuste pas à l'œil : le pixel le plus défavorable est échantillonné derrière chaque zone de texte, l'opacité minimale nécessaire est calculée pour atteindre 4,5:1, et le résultat est revérifié à plusieurs formats de viewport.",
+   "mesure": "opacité du voile calculée sur le pixel le plus défavorable et revérifiée à chaque point de rupture",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Sur fond non uniforme, le contraste se mesure contre les pixels immédiatement derrière chaque lettre ; la technique admise consiste à assombrir, ombrer ou poser un voile localisé pour maintenir 4,5:1",
+     "liens": [
+      {
+       "label": "WCAG — Technique G18",
+       "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G18"
+      }
+     ],
+     "confiance": "Établi, technique référencée — fonde R22 et R23, jusque-là données comme décisions internes"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Seuils 4.5:1 texte / 3:1 non-texte, y compris les états ; exemption du hover ; exemption des composants inactifs",
+     "liens": [
+      {
+       "label": "WCAG — 1.4.3",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      {
+       "label": "1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Sur fond non uniforme, le contraste se mesure contre les pixels immédiatement derrière chaque lettre ; la technique admise consiste à assombrir, ombrer ou poser un voile localisé pour maintenir 4,5:1",
+    "liens": [
+     {
+      "label": "WCAG — Technique G18",
+      "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G18"
+     }
+    ],
+    "confiance": "Établi, technique référencée — fonde R22 et R23, jusque-là données comme décisions internes"
+   },
+   "confiance": "décision interne datée (2026-07-17, stress-test) ; le calcul d'alpha découle directement du seuil WCAG 1.4.3.",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R24",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "La fondation tient une table des risques associant chaque cas de mauvais usage de la couleur à son risque principal et à sa sévérité.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COLOR-R25",
+   "couche": "ux",
+   "solution": "**la couleur s'applique par rôle, jamais par valeur — et un rôle ne porte jamais deux sens.**",
+   "enonce": "La couleur s'applique par rôle et jamais par valeur, et un rôle ne porte jamais deux sens.",
+   "mesure": "aucune valeur hexadécimale hors du fichier de valeurs unique ; un rôle correspond à un sens unique",
+   "critere": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison couleur du principe du système : comme le niveau d'un titre ne dit rien de sa taille, la teinte d'une couleur ne dit rien de son rôle. Chaque fois qu'une valeur est choisie \"parce qu'elle est jolie ici\", c'est le signe qu'un rôle manque ou qu'un registre fuit.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+     "liens": [
+      {
+       "label": "Material 3 — color roles",
+       "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+      },
+      {
+       "label": "Atlassian — color foundations",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Carbon — color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      },
+      {
+       "label": "GOV.UK — colour",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      }
+     ],
+     "confiance": "Établi — convergence des quatre systèmes"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Sémantique ≠ accent, chaque couleur un sens fixe",
+     "liens": [
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/color"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris.shopify.com/design/colors"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Registres étanches marque/sémantique/neutres",
+     "liens": [
+      {
+       "label": "Structure convergente (Atlassian brand/semantic/neutral/accent, Polaris sens fixes sur fond neutre) + guardrail interne préexistant",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence, formalisation propre à ce système"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Tokens de rôle plutôt que valeurs (\"on-primary rather than on-blue\")",
+    "liens": [
+     {
+      "label": "Material 3 — color roles",
+      "url": "https://developer.android.com/design/ui/mobile/guides/styles/color"
+     },
+     {
+      "label": "Atlassian — color foundations",
+      "url": "https://atlassian.design/foundations/color"
+     },
+     {
+      "label": "Carbon — color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     },
+     {
+      "label": "GOV.UK — colour",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     }
+    ],
+    "confiance": "Établi — convergence des quatre systèmes"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

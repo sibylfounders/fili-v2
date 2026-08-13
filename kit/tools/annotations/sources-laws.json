@@ -1,0 +1,142 @@
+[
+  {
+    "couche": "ux",
+    "ref": "S15",
+    "affirmation": "Sweller (1988) fonde la théorie de la charge cognitive : une présentation qui impose au penseur un traitement mental sans rapport avec l'apprentissage visé consomme la capacité de travail et dégrade le résultat — c'est la charge extrinsèque.",
+    "source_markdown": "[Sweller, J. (1988). *Cognitive Load During Problem Solving: Effects on Learning*, Cognitive Science 12, 257–285](https://mrbartonmaths.com/resourcesnew/8.%20Research/Explicit%20Instruction/Cognitive%20Load%20during%20problem%20solving.pdf)",
+    "confiance": "Établi — article original, théorie massivement répliquée. Réserve : le corpus est celui de la psychologie de l'apprentissage (résolution de problèmes, instruction) ; la transposition à l'interface est une extension par analogie, pas un résultat de Sweller."
+  },
+  {
+    "couche": "ux",
+    "ref": "S16",
+    "affirmation": "Miller (1956) sépare explicitement deux limites qui partagent par coïncidence le chiffre 7 : l'empan du jugement absolu (limité par la quantité d'information, en bits) et l'empan de mémoire immédiate (limité par le nombre d'unités, en chunks). Il écrit lui-même que ce sont « des sortes de limitations tout à fait différentes », ouvre par « j'ai été persécuté par un entier », et ne prescrit AUCUNE limite de menu, de liste ou de champ.",
+    "source_markdown": "[Miller, G. A. (1956). *The Magical Number Seven, Plus or Minus Two*, Psychological Review 63(2), 81–97 — texte intégral](https://labs.la.utexas.edu/gilden/files/2016/04/MagicNumberSeven-Miller1956.pdf)",
+    "confiance": "Établi — source primaire lue. **Corrige le fichier LAWS-UX lui-même** : LAWS-R07 attribue à Miller « la capacité de la mémoire de travail sur des unités non structurées ». C'est encore la lecture populaire : Miller distingue jugement absolu et empan mnésique et refuse de les confondre. La réfutation du mythe est bonne, sa reformulation ne l'est pas."
+  },
+  {
+    "couche": "ux",
+    "ref": "S17",
+    "affirmation": "Cowan (2001) réexamine la capacité de stockage à court terme : quand le regroupement et la répétition subvocale sont empêchés, la limite centrale se situe autour de **quatre** unités, pas sept.",
+    "source_markdown": "[Cowan, N. (2001). *The magical number 4 in short-term memory: a reconsideration of mental storage capacity*, Behavioral and Brain Sciences 24(1), 87–114](https://philpapers.org/rec/COWTMN)",
+    "confiance": "Établi — article de référence avec commentaires par les pairs. Renforce la réfutation de LAWS-R07/R34 et **contredit la valeur de 7** que le fichier laisse implicitement subsister."
+  },
+  {
+    "couche": "ux",
+    "ref": "S18",
+    "affirmation": "La sixième heuristique de Nielsen (« Recognition rather than recall ») pose que l'interface doit minimiser la charge mnésique en rendant visibles éléments, actions et options plutôt qu'en exigeant leur rappel.",
+    "source_markdown": "[Nielsen, J. — *10 Usability Heuristics for User Interface Design* (heuristiques 4 et 6), NN/g, 1994](https://www.nngroup.com/articles/ten-usability-heuristics/)",
+    "confiance": "Établi — jeu d'heuristiques publié en 1994 après analyse factorielle de 249 problèmes d'utilisabilité, adopté comme norme de fait dans toute la profession. Fonde LAWS-R09 mieux que Miller ne le ferait."
+  },
+  {
+    "couche": "ux",
+    "ref": "S19",
+    "affirmation": "La cécité aux bannières est documentée par dix ans d'oculométrie : les gens ne regardent presque jamais ce qui a l'apparence d'une publicité, que ce soit une publicité ou non ; l'exception éthiquement problématique est la publicité déguisée en contenu éditorial, qui capte des fixations.",
+    "source_markdown": "[NN/g — *Banner Blindness: Old and New Findings* / the original eyetracking research (recherche menée depuis 1997)](https://www.nngroup.com/articles/banner-blindness-original-eyetracking/)",
+    "confiance": "Établi — programme oculométrique longitudinal. Fonde directement l'interdiction anti-camouflage de LAWS-R11."
+  },
+  {
+    "couche": "ux",
+    "ref": "S20",
+    "affirmation": "La loi de Hick est très largement mal appliquée en IHM : dans les tâches d'interface, très compatibles stimulus-réponse et sur-apprises, le temps de réaction au choix peut souvent être considéré comme constant. Le caractère logarithmique de la recherche dans un menu hiérarchique vient de la recherche visuelle (Landauer & Nachbar 1985), pas de Hick. Les auteurs montrent même que, prise au pied de la lettre, la loi de Hick suggère d'afficher **le plus d'items possible** — l'inverse du « moins, c'est mieux » qu'on lui fait dire.",
+    "source_markdown": "[Liu, W., Gori, J., Rioul, O., Beaudouin-Lafon, M. & Guiard, Y. (2020). *How Relevant is Hick's Law for HCI ?*, CHI '20](https://perso.telecom-paristech.fr/rioul/publis/202001liugoririoulbeaudouinlafonguiard.pdf)",
+    "confiance": "Établi — article de conférence majeure (CHI), analyse formelle. **Contredit frontalement l'usage que LAWS-R12 fait de Hick** : Hick (1952) et Hyman (1953) existent bien, mais ils ne fondent ni « un seul primary par vue » ni la réduction du nombre d'options en interface."
+  },
+  {
+    "couche": "ux",
+    "ref": "S21",
+    "affirmation": "La méta-analyse de la surcharge de choix couvre 63 conditions expérimentales, 50 études et 5 036 participants : la taille d'effet moyenne est **quasiment nulle**, avec une variance considérable entre études, et les auteurs ne parviennent pas à identifier de conditions suffisantes de son apparition.",
+    "source_markdown": "[Scheibehenne, B., Greifeneder, R. & Todd, P. M. (2010). *Can There Ever Be Too Many Options? A Meta-Analytic Review of Choice Overload*, Journal of Consumer Research 37(3), 409–425](https://academic.oup.com/jcr/article-abstract/37/3/409/1827647)",
+    "confiance": "Établi — méta-analyse revue par les pairs (contestée par Chernev et al. 2010, ce qui laisse au mieux un effet conditionnel). **Interdit de traiter LAWS-R13 comme universel** : la « surcharge de choix » n'est pas un effet robuste."
+  },
+  {
+    "couche": "ux",
+    "ref": "S22",
+    "affirmation": "Méta-analyse 2025 de l'effet Zeigarnik : le rapport des tâches interrompues rappelées sur les tâches achevées rappelées est de **0,99** — aucun avantage mnésique pour l'inachevé. Les auteurs concluent que l'effet « manque de validité universelle » et « ne peut simplement pas être répliqué de manière fiable ». L'effet Ovsiankina (reprise de la tâche interrompue, 67 %) tient, lui.",
+    "source_markdown": "[Ghibellini, R. & Meier, B. (2025). *Interruption, recall and resumption: a meta-analysis of the Zeigarnik and Ovsiankina effects*, Humanities and Social Sciences Communications](https://www.nature.com/articles/s41599-025-05000-w)",
+    "confiance": "Établi — méta-analyse revue par les pairs. **Contredit LAWS-R10** : la barre de progression et l'autosave restent de bonnes idées, mais Zeigarnik ne les justifie pas ; c'est la reprise (Ovsiankina) qui est étayée, pas la rémanence mnésique."
+  },
+  {
+    "couche": "ux",
+    "ref": "S23",
+    "affirmation": "Kivetz, Urminsky & Zheng (2006) ressuscitent l'hypothèse du gradient de but chez l'humain — et documentent en même temps la **progression illusoire** : les clients qui reçoivent une carte de 12 cases dont 2 sont pré-tamponnées achèvent leurs 10 achats plus vite que ceux qui reçoivent une carte de 10 cases vierges.",
+    "source_markdown": "[Kivetz, R., Urminsky, O. & Zheng, Y. (2006). *The Goal-Gradient Hypothesis Resurrected: Purchase Acceleration, Illusionary Goal Progress, and Customer Retention*, Journal of Marketing Research 43(1), 39–58](https://journals.sagepub.com/doi/abs/10.1509/jmkr.43.1.39)",
+    "confiance": "Établi — article original revu par les pairs. **Contredit la frontière posée par LAWS-R15** (« une fausse jauge trahit l'effet ») : empiriquement, la jauge gonflée fonctionne mieux. L'objection à la progression truquée est **éthique**, pas empirique — et le fichier doit le dire ainsi, sous peine d'être réfuté en revue par la source qu'il invoque."
+  },
+  {
+    "couche": "ux",
+    "ref": "S24",
+    "affirmation": "L'IETF a explicitement révisé le principe de robustesse de Postel : tolérer les entrées inattendues « n'est plus considéré comme une bonne pratique dans tous les scénarios », parce que les conséquences négatives sur l'interopérabilité s'accumulent quand une implémentation accepte silencieusement une entrée défectueuse, et qu'un défaut toléré devient un standard de fait.",
+    "source_markdown": "[RFC 9413 — *Maintaining Robust Protocols*, M. Thomson & D. Schinazi, IAB, juin 2023 (issu du draft « The Harmful Consequences of the Robustness Principle »)](https://datatracker.ietf.org/doc/html/rfc9413)",
+    "confiance": "Établi — RFC de l'IAB. **Rend caduque la source réseau invoquée par LAWS-R17** (RFC 760/761) : citer « Postel » comme norme est aujourd'hui faux côté protocoles. La pratique UI (tolérance de saisie) reste valide, mais elle doit être sourcée sur les design systems, pas sur les RFC."
+  },
+  {
+    "couche": "ux",
+    "ref": "S25",
+    "affirmation": "GOV.UK impose la tolérance de saisie : « Allow users enter phone numbers in whatever format is familiar to them. Allow for additional spaces, hyphens, dashes and brackets » ; et pour les cartes : « Let users enter payment card numbers in whatever format is familiar to them. Allow additional spaces, hyphens and dashes. »",
+    "source_markdown": "[GOV.UK Design System — Phone numbers](https://design-system.service.gov.uk/patterns/phone-numbers/) ; [GOV.UK Design System — Payment card details](https://design-system.service.gov.uk/patterns/payment-card-details/)",
+    "confiance": "Établi — design system public d'État, guidance normative explicite sur deux patterns distincts."
+  },
+  {
+    "couche": "ux",
+    "ref": "S26",
+    "affirmation": "Le design system de l'ONS pose la même exigence : le champ téléphone « doit accommoder toutes les variations de numéro pour que l'utilisateur saisisse dans le format dont il a l'habitude », espaces, parenthèses, tirets et indicatifs compris.",
+    "source_markdown": "[ONS Service Manual — Design system, Ask users for: Phone numbers](https://service-manual.ons.gov.uk/design-system/patterns/phone-numbers)",
+    "confiance": "Établi — second design system public. Réserve : l'ONS prescrit l'acceptation, pas explicitement la normalisation en interne. Avec GOV.UK (S25), la convergence sur la tolérance de saisie est acquise ; la normalisation reste un choix interne."
+  },
+  {
+    "couche": "ux",
+    "ref": "S27",
+    "affirmation": "Hunt (1995) revient à ce que von Restorff a réellement montré : la saillance perceptive **n'est pas nécessaire** à l'effet d'isolation, et la différence entre l'item isolé et son entourage n'y suffit pas — elle ne produit l'effet que rapportée à un contexte de similarité. La distinctivité est un construit théorique sur la mémoire, pas un synonyme de « ça saute aux yeux ».",
+    "source_markdown": "[Hunt, R. R. (1995). *The subtlety of distinctiveness: What von Restorff really did*, Psychonomic Bulletin & Review 2(1), 105–112](https://link.springer.com/article/10.3758/BF03214414)",
+    "confiance": "Établi — article de revue revu par les pairs. **Nuance LAWS-R27** : von Restorff mesure de la **mémorisation**, pas de l'attraction de l'action ; « l'élément isolé attire l'action » est une extrapolation non sourcée. En revanche la frontière du fichier (« l'effet s'annule si tout se distingue ») est exactement ce que Hunt établit."
+  },
+  {
+    "couche": "ux",
+    "ref": "S28",
+    "affirmation": "Glanzer & Cunitz (1966) dissocient les deux moitiés de la courbe de position sérielle : après une tâche interférente de 30 secondes, l'effet de récence disparaît alors que l'effet de primauté subsiste — deux mécanismes de stockage distincts.",
+    "source_markdown": "[Glanzer, M. & Cunitz, A. R. (1966). *Two storage mechanisms in free recall*, Journal of Verbal Learning and Verbal Behavior 5(4), 351–360](https://psychologysorted.blog/wp-content/uploads/2019/07/glanzer-and-cunitz_1966.pdf)",
+    "confiance": "Établi — un des effets les mieux répliqués de la psychologie de la mémoire (avec Murdock 1962). Réserve pour l'UI : l'effet est mesuré en **rappel libre de listes de mots mémorisées**, pas en lecture d'une liste qui reste affichée — la transposition à une navigation visible relève de la convergence, pas de la démonstration."
+  },
+  {
+    "couche": "ux",
+    "ref": "S29",
+    "affirmation": "Doherty & Thadhani (1982) mesurent la productivité de programmeurs et d'ingénieurs selon le temps de réponse du système : le nombre de transactions par heure croît nettement sous la seconde, et passer de 3 s à 0,3 s fait passer un programmeur de 180 à 371 transactions par heure (+106 %).",
+    "source_markdown": "[Doherty, W. J. & Thadhani, A. J. (1982). *The Economic Value of Rapid Response Time*, IBM (novembre 1982) — notice du Computer History Museum](https://www.computerhistory.org/collections/catalog/102751398) ; [texte intégral repris](https://jlelliotton.blogspot.com/p/the-economic-value-of-rapid-response.html)",
+    "confiance": "Établi comme source primaire réelle — mais **c'est une étude de productivité industrielle, pas une expérience psychologique contrôlée**, et le seuil de 400 ms popularisé sous le nom de « Doherty Threshold » est une lecture postérieure : le document argumente le passage sous la seconde et illustre à 300 ms. Sa transposition en plafond de **durée d'animation** est une extension du système, légitime mais nôtre."
+  },
+  {
+    "couche": "ux",
+    "ref": "S30",
+    "affirmation": "Sonderegger & Sauer (2010) testent 60 adolescents sur deux simulations de téléphone fonctionnellement identiques ne différant que par l'apparence : l'appareil attrayant produit **à la fois** des temps de tâche réduits et une utilisabilité perçue supérieure.",
+    "source_markdown": "[Sonderegger, A. & Sauer, J. (2010). *The influence of design aesthetics in usability testing: effects on user performance and perceived usability*, Applied Ergonomics 41(3), 403–410](https://pubmed.ncbi.nlm.nih.gov/19892317/)",
+    "confiance": "Établi — expérience contrôlée revue par les pairs. **Nuance LAWS-R30** : la formule « le beau paraît utilisable même quand il ne l'est pas » est trop tranchée ; l'esthétique influe fortement sur le perçu et de façon variable sur la performance réelle. La règle de revue (vérifier séparément) reste bonne, sa justification doit être reformulée."
+  },
+  {
+    "couche": "ux",
+    "ref": "S31",
+    "affirmation": "L'effet esthétique-utilisabilité a pour source primaire Kurosu & Kashimura, *Apparent usability vs. inherent usability*, dans les actes compagnons de CHI '95 (ACM, p. 292–293), sur des distributeurs automatiques ; l'utilisabilité apparente y est moins corrélée à l'utilisabilité inhérente qu'à la beauté apparente. Tractinsky (2000) prolonge ce résultat.",
+    "source_markdown": "[Aesthetic–usability effect — citation exacte de Kurosu & Kashimura (1995) et de Tractinsky (2000)](https://en.wikipedia.org/wiki/Aesthetic%E2%80%93usability_effect)",
+    "confiance": "Convergence — la référence primaire est identifiée et vérifiable (CHI '95 companion), mais consultée ici via une source secondaire, l'original étant sous paywall ACM. À remplacer par la référence ACM le jour d'un accès."
+  },
+  {
+    "couche": "ux",
+    "ref": "S32",
+    "affirmation": "WCAG 2.2, critère 3.2.5 « Change on Request » (AAA) : « Changes of context are initiated only by user request or a mechanism is available to turn off such changes. »",
+    "source_markdown": "[W3C — Understanding SC 3.2.5 Change on Request (WCAG 2.2)](https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html)",
+    "confiance": "Établi — norme W3C. Fonde LAWS-R20 bien plus solidement que le concept de flow, qui n'a jamais été mesuré sur une interface."
+  },
+  {
+    "couche": "ux",
+    "ref": "S33",
+    "affirmation": "WCAG 2.2, critère 2.2.2 « Pause, Stop, Hide » (niveau A) : tout contenu qui bouge, clignote, défile ou se met à jour automatiquement pendant plus de cinq secondes en parallèle d'un autre contenu doit pouvoir être mis en pause, arrêté ou masqué, sauf si le mouvement est essentiel.",
+    "source_markdown": "[W3C — Understanding SC 2.2.2 Pause, Stop, Hide (WCAG 2.2)](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)",
+    "confiance": "Établi — norme W3C, niveau A. Seconde jambe normative de LAWS-R20."
+  },
+  {
+    "couche": "ux",
+    "ref": "S34",
+    "affirmation": "L'étude qui réfute la règle des 3 clics porte sur 44 participants, 620 tâches et plus de 8 000 clics : la probabilité d'abandon après trois clics n'est pas supérieure à celle après douze, des participants poursuivent au-delà de 25 clics, et la satisfaction varie peu (46 % à 61 %) quelle que soit la longueur du parcours. L'auteur conclut que la plainte porte sur l'échec à trouver, pas sur le nombre de clics.",
+    "source_markdown": "[Porter, J. (2003). *Testing the Three-Click Rule*, User Interface Engineering — URL actuelle (l'adresse articles.uie.com citée en S7 redirige désormais ici)](https://articles.centercentre.com/three_click_rule)",
+    "confiance": "Établi comme réfutation, avec une réserve à porter : **étude industrielle, non revue par les pairs, un seul protocole**. Elle suffit à retirer tout fondement à la règle des 3 clics (qui n'en a jamais eu), pas à établir une loi inverse. À noter aussi : l'URL de S7 est morte et doit être mise à jour."
+  }
+]

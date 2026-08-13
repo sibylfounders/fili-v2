@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Navigation par paliers — prototype interactif</title>
+<style>
+:root{
+ --txt:#16191d;--sub:#5b6470;--faint:#8e97a1;--line:#dde2e8;--map:#e9edf1;--road:#d5dce3;
+ --blue:#1f6feb;--blue-soft:#e8f0fe;--card:#fff;--radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;padding:26px 16px 60px;background:#fff;color:var(--txt);
+ font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.page{max-width:960px;margin:0 auto}
+h1{font-size:22px;margin:0 0 6px;letter-spacing:-.01em}
+.dek{color:var(--sub);margin:0 0 22px;max-width:64ch;font-size:14px}
+.dek .warn{color:#b4231b}
+.stage{display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap}
+
+/* ---------- téléphone ---------- */
+.phone{width:340px;flex:0 0 340px;border:1px solid var(--line);border-radius:26px;overflow:hidden;
+ background:var(--map);box-shadow:0 2px 14px rgba(16,25,35,.10);position:relative;height:640px}
+@media(max-width:740px){.phone{width:100%;flex:1 1 100%;height:600px}}
+
+/* barre de niveau */
+.bar{position:absolute;left:12px;right:12px;top:12px;z-index:6;background:#fff;border:1px solid var(--line);
+ border-radius:var(--radius);box-shadow:0 1px 5px rgba(16,25,35,.09)}
+.bar-btn{display:flex;width:100%;align-items:center;gap:10px;background:none;border:0;padding:10px 12px;
+ font:inherit;text-align:left;cursor:pointer;border-radius:var(--radius);min-height:56px}
+.bar-btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.bar-txt{flex:1;min-width:0}
+.fil{font-size:14px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fil .seg{color:var(--sub);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.fil .seg:hover{color:var(--blue)}
+.fil .sep{color:#b8c0c9;padding:0 3px}
+.fil .cur{font-weight:700;color:var(--txt)}
+.cnt{display:block;font-size:12px;color:var(--sub);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{width:20px;height:20px;flex:0 0 20px;color:var(--sub);transition:transform .16s ease}
+.open .chev{transform:rotate(180deg);color:var(--blue)}
+
+/* panneau */
+.scrim{position:absolute;inset:0;background:#0d1116;opacity:0;pointer-events:none;transition:opacity .16s ease;z-index:4}
+.open .scrim{opacity:.22;pointer-events:auto}
+.panel{position:absolute;left:12px;right:12px;top:80px;max-height:calc(100% - 196px);z-index:5;background:#fff;border:1px solid var(--line);
+ border-radius:var(--radius);box-shadow:0 6px 24px rgba(16,25,35,.16);overflow:auto;
+ opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s ease,transform .16s ease}
+.open .panel{opacity:1;transform:none;pointer-events:auto}
+.sec{padding:12px 14px 4px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--faint)}
+.sec-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.tri{font-size:10.5px;font-weight:700;letter-spacing:0;color:var(--blue);background:none;border:0;cursor:pointer;padding:0}
+.item{display:flex;width:100%;align-items:center;gap:11px;background:none;border:0;padding:9px 14px;font:inherit;
+ text-align:left;cursor:pointer;border-top:1px solid #eef1f4}
+.item:first-of-type{border-top:0}
+.item:hover{background:#f6f8fa}
+.item:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.item.here{background:var(--blue-soft)}
+.pin{flex:0 0 26px;height:26px;border-radius:50%;background:var(--blue-soft);display:grid;place-items:center}
+.pin i{width:8px;height:8px;border-radius:50%;background:var(--blue);display:block}
+.i-txt{flex:1;min-width:0}
+.i-nom{display:block;font-size:13.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.i-sub{display:block;font-size:11.5px;color:var(--sub)}
+.i-n{font-size:11.5px;color:var(--sub);font-variant-numeric:tabular-nums}
+.vide{padding:14px;font-size:12.5px;color:var(--sub)}
+
+/* carte */
+.map{position:absolute;inset:0}
+.map svg{width:100%;height:100%;display:block}
+.bulle{cursor:pointer}
+.bulle circle{fill:#2b7fd4;transition:r .18s ease}
+.bulle:hover circle{fill:#1a5fb4}
+.bulle text{fill:#fff;font-weight:700;font-family:-apple-system,sans-serif;text-anchor:middle;pointer-events:none}
+.bulle:focus-visible circle{stroke:#0d1116;stroke-width:2.5}
+.etiq{font:600 2.7px/1 -apple-system,sans-serif;fill:#48525d;text-anchor:middle;pointer-events:none;paint-order:stroke;stroke:#f4f7f9;stroke-width:.9px}
+.spot{cursor:pointer}
+.spot circle{fill:#2b7fd4;stroke:#fff;stroke-width:2.5}
+.spot:hover circle{fill:#0d4a9e}
+.moi circle{fill:#111;stroke:#fff;stroke-width:2.5}
+
+/* feuille basse */
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:3;padding-bottom:8px;background:#fff;border-radius:18px 18px 0 0;
+ box-shadow:0 -3px 16px rgba(16,25,35,.13);max-height:52%;overflow:auto;transform:translateY(101%);transition:transform .2s ease}
+.sheet.on{transform:none}
+.open .sheet{transform:translateY(101%)}
+.grip{width:34px;height:4px;border-radius:2px;background:#ccd3da;margin:9px auto 3px}
+
+/* fiche spot */
+.fiche{position:absolute;left:12px;right:12px;bottom:12px;z-index:7;background:#fff;border:1px solid var(--line);
+ border-radius:var(--radius);box-shadow:0 6px 24px rgba(16,25,35,.18);padding:13px 14px;
+ transform:translateY(130%);transition:transform .2s ease}
+.fiche.on{transform:none}
+.fiche h3{margin:0 0 2px;font-size:15px}
+.fiche p{margin:0;font-size:12.5px;color:var(--sub)}
+.fiche .x{position:absolute;top:8px;right:9px;border:0;background:none;font-size:17px;color:var(--sub);cursor:pointer;line-height:1;padding:4px}
+
+/* compteur d'appuis */
+.taps{position:absolute;left:12px;bottom:12px;z-index:2;background:#fff;border:1px solid var(--line);
+ border-radius:20px;padding:5px 11px;font-size:11.5px;color:var(--sub);box-shadow:0 1px 4px rgba(16,25,35,.08)}
+.taps b{color:var(--txt);font-variant-numeric:tabular-nums}
+
+/* colonne droite */
+.side{flex:1 1 260px;min-width:250px}
+.side h2{font-size:15px;margin:0 0 8px}
+.side ol{margin:0 0 18px;padding-left:19px;font-size:13.5px;color:var(--sub)}
+.side ol li{margin-bottom:5px}
+.side ol b{color:var(--txt)}
+.box{border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;font-size:13px;margin-bottom:14px}
+.box h3{margin:0 0 6px;font-size:13px}
+.box p{margin:0 0 9px;color:var(--sub)}
+.box p:last-child{margin:0}
+.reset{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 13px;font:inherit;font-size:13px;cursor:pointer}
+.reset:hover{background:#f6f8fa}
+.sansjs{border:1px solid #f0c9a8;background:#fdf6ef;border-radius:12px;padding:11px 14px;font-size:13px;color:#7a4a1c;margin:0 0 20px;max-width:64ch}
+.sansjs b{color:#5c3512}
+</style></head><body><div class="page">
+
+<h1>Navigation par paliers nommés — prototype</h1>
+<p class="dek">Prototype d'explication : le chevron ouvre un menu dont le contenu change à chaque cran. Appuyez sur une grappe, sur une entrée du menu, ou sur un segment du fil d'Ariane. <span class="warn">Données d'illustration — le site n'expose pas de compte par région ni par ville.</span></p>
+
+<p class="sansjs" id="sansjs"><b>Aperçu statique.</b> Cette page est interactive, mais l'aperçu intégré de votre application n'exécute pas les scripts : seul l'écran d'accueil s'affiche. Téléchargez le fichier et ouvrez-le dans Safari ou Chrome pour parcourir les crans.</p>
+
+<div class="stage">
+
+ <div class="phone" id="tel">
+  <div class="map" id="carte"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><rect width="100" height="100" fill="#e9edf1"></rect>
+   <path d="M46 3 L62 6 L74 14 L79 26 L76 34 L80 44 L74 56 L79 66 L72 76 L60 74 L52 80 L42 78 L32 70 L24 72 L20 62 L26 52 L20 44 L10 38 L14 28 L26 20 L34 10 Z" fill="#f4f7f9" stroke="#cfd7de" stroke-width=".7"></path>
+   <ellipse cx="87" cy="84" rx="4.5" ry="7" fill="#f4f7f9" stroke="#cfd7de" stroke-width=".7"></ellipse><g class="bulle" data-act="region:Île-de-France" tabindex="0" role="button" aria-label="Île-de-France, 264 spots">
+       <circle cx="49" cy="22.166666666666668" r="6.02"></circle>
+       <text x="49" y="23.47" style="font-size:3.73px">264</text></g><g class="bulle" data-act="region:Auvergne-Rhône-Alpes" tabindex="0" role="button" aria-label="Auvergne-Rhône-Alpes, 242 spots">
+       <circle cx="61.833333333333336" cy="50" r="5.91"></circle>
+       <text x="61.833333333333336" y="51.30" style="font-size:3.66px">242</text></g><g class="bulle" data-act="region:Occitanie" tabindex="0" role="button" aria-label="Occitanie, 205 spots">
+       <circle cx="49.125" cy="69.25" r="5.71"></circle>
+       <text x="49.125" y="70.55" style="font-size:3.54px">205</text></g><g class="bulle" data-act="region:Provence-Alpes-Côte d'Azur" tabindex="0" role="button" aria-label="Provence-Alpes-Côte d'Azur, 194 spots">
+       <circle cx="69" cy="69.16666666666667" r="5.65"></circle>
+       <text x="69" y="70.47" style="font-size:3.50px">194</text></g><g class="bulle" data-act="region:Nouvelle-Aquitaine" tabindex="0" role="button" aria-label="Nouvelle-Aquitaine, 192 spots">
+       <circle cx="29.166666666666668" cy="53.166666666666664" r="5.63"></circle>
+       <text x="29.166666666666668" y="54.47" style="font-size:3.49px">192</text></g><g class="bulle" data-act="region:Hauts-de-France" tabindex="0" role="button" aria-label="Hauts-de-France, 170 spots">
+       <circle cx="50.8" cy="8" r="5.50"></circle>
+       <text x="50.8" y="9.30" style="font-size:3.41px">170</text></g><g class="bulle" data-act="region:Grand Est" tabindex="0" role="button" aria-label="Grand Est, 164 spots">
+       <circle cx="71" cy="23.2" r="5.47"></circle>
+       <text x="71" y="24.50" style="font-size:3.39px">164</text></g><g class="bulle" data-act="region:Pays de la Loire" tabindex="0" role="button" aria-label="Pays de la Loire, 136 spots">
+       <circle cx="26.75" cy="33.5" r="5.28"></circle>
+       <text x="26.75" y="34.80" style="font-size:3.27px">136</text></g><g class="bulle" data-act="region:Bretagne" tabindex="0" role="button" aria-label="Bretagne, 126 spots">
+       <circle cx="14.2" cy="27.6" r="5.21"></circle>
+       <text x="14.2" y="28.90" style="font-size:3.23px">126</text></g><g class="bulle" data-act="region:Normandie" tabindex="0" role="button" aria-label="Normandie, 110 spots">
+       <circle cx="35" cy="16.25" r="5.09"></circle>
+       <text x="35" y="17.55" style="font-size:3.16px">110</text></g><g class="bulle" data-act="region:Centre-Val de Loire" tabindex="0" role="button" aria-label="Centre-Val de Loire, 94 spots">
+       <circle cx="42" cy="32.5" r="4.96"></circle>
+       <text x="42" y="33.80" style="font-size:3.08px">94</text></g><g class="bulle" data-act="region:Bourgogne-Franche-Comté" tabindex="0" role="button" aria-label="Bourgogne-Franche-Comté, 86 spots">
+       <circle cx="67" cy="35.5" r="4.90"></circle>
+       <text x="67" y="36.80" style="font-size:3.04px">86</text></g><g class="bulle" data-act="region:Corse" tabindex="0" role="button" aria-label="Corse, 16 spots">
+       <circle cx="87" cy="83" r="4.05"></circle>
+       <text x="87" y="84.30" style="font-size:2.51px">16</text></g></svg></div>
+
+  <div class="sheet" id="sheet"><div class="grip"></div><div id="sheet-corps"></div></div>
+
+  <div class="bar">
+   <button class="bar-btn" id="barbtn" aria-expanded="false" aria-controls="panel">
+    <span class="bar-txt"><span class="fil" id="fil"><span class="cur">France</span></span><span class="cnt" id="cnt">1 999 spots</span></span>
+    <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 7 6-7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+   </button>
+  </div>
+
+  <div class="scrim" id="scrim"></div>
+  <div class="panel" id="panel" role="group" aria-label="Choisir un niveau"></div>
+
+  <div class="fiche" id="fiche"><button class="x" id="fx" aria-label="Fermer">&times;</button><h3 id="f-nom"></h3><p id="f-sub"></p></div>
+
+  <div class="taps">appuis&nbsp;: <b id="ntaps">0</b></div>
+ </div>
+
+ <div class="side">
+  <h2>Le parcours à faire</h2>
+  <ol>
+   <li>Appuyez sur la grappe <b>Occitanie</b> au sud, ou ouvrez le chevron et choisissez-la.</li>
+   <li>Appuyez sur <b>Montpellier</b>.</li>
+   <li>Appuyez sur un point : la fiche s'ouvre.</li>
+  </ol>
+  <p style="font-size:13.5px;color:var(--sub);margin:-8px 0 18px">Le compteur en bas à gauche tient le total. <b style="color:var(--txt)">Trois appuis</b>, contre huit pincements aujourd'hui.</p>
+
+  <div class="box">
+   <h3>Ce que le menu fait à chaque cran</h3>
+   <p><b>France</b> — « autour de toi » (les villes les plus proches, en kilomètres) puis la liste des régions.</p>
+   <p><b>Région</b> — les spots proches, puis la liste de ses villes.</p>
+   <p><b>Ville</b> — les <b>villes voisines</b>, en kilomètres, puis toutes celles de la région. Au dernier cran le chevron ne répète pas la feuille du bas : il sert à changer d'endroit. C'est le déplacement latéral qui manquait.</p>
+  </div>
+
+  <div class="box">
+   <h3>L'arbitrage à trancher</h3>
+   <p>Le bouton <b>trier</b> en haut de chaque liste bascule entre <b>par nombre</b> et <b>alphabétique</b>. Essayez les deux : le nombre met en avant les grosses villes, l'alphabet rend le balayage visuel prévisible. Aucune règle ne tranche — c'est une décision de produit.</p>
+  </div>
+
+  <button class="reset" id="reset">Recommencer</button>
+ </div>
+</div>
+
+<script>
+// ───────── données d'illustration ─────────
+// x,y = position sur une carte de France normalisée 0-100 ; 1 unité ≈ 10 km
+const V = (nom,x,y,n)=>({nom,x,y,n});
+const REGIONS = [
+ {nom:"Hauts-de-France", villes:[V("Lille",54,9,84),V("Amiens",48,15,31),V("Dunkerque",50,4,19),V("Calais",46,4,14),V("Roubaix",56,8,22)]},
+ {nom:"Normandie", villes:[V("Rouen",42,17,44),V("Caen",33,18,29),V("Le Havre",37,16,26),V("Cherbourg",28,14,11)]},
+ {nom:"Île-de-France", villes:[V("Paris",50,22,127),V("Boulogne-Billancourt",48,23,38),V("Saint-Denis",51,21,33),V("Créteil",52,23,27),V("Versailles",46,23,21),V("Nanterre",47,21,18)]},
+ {nom:"Grand Est", villes:[V("Strasbourg",78,24,61),V("Reims",60,19,34),V("Nancy",70,23,28),V("Metz",71,19,24),V("Mulhouse",76,31,17)]},
+ {nom:"Bretagne", villes:[V("Rennes",23,27,52),V("Brest",8,26,27),V("Lorient",14,31,19),V("Quimper",9,30,16),V("Saint-Brieuc",17,24,12)]},
+ {nom:"Pays de la Loire", villes:[V("Nantes",24,36,66),V("Angers",29,33,31),V("Le Mans",34,29,24),V("Saint-Nazaire",20,36,15)]},
+ {nom:"Centre-Val de Loire", villes:[V("Tours",37,34,35),V("Orléans",44,29,29),V("Bourges",46,35,17),V("Blois",41,32,13)]},
+ {nom:"Bourgogne-Franche-Comté", villes:[V("Dijon",63,35,37),V("Besançon",69,36,24),V("Belfort",73,32,13),V("Chalon-sur-Saône",63,39,12)]},
+ {nom:"Nouvelle-Aquitaine", villes:[V("Bordeaux",27,54,79),V("La Rochelle",23,44,28),V("Poitiers",33,41,26),V("Limoges",40,45,23),V("Pau",29,68,19),V("Bayonne",23,67,17)]},
+ {nom:"Auvergne-Rhône-Alpes", villes:[V("Lyon",62,48,96),V("Grenoble",68,53,44),V("Saint-Étienne",59,51,31),V("Clermont-Ferrand",50,47,29),V("Annecy",70,46,24),V("Valence",62,55,18)]},
+ {nom:"Occitanie", villes:[V("Montpellier",54,68,58),V("Toulouse",40,67,51),V("Nîmes",58,65,24),V("Perpignan",47,77,21),V("Béziers",50,70,17),V("Sète",55,71,14),V("Carcassonne",45,72,11),V("Albi",44,64,9)]},
+ {nom:"Provence-Alpes-Côte d'Azur", villes:[V("Marseille",65,71,73),V("Nice",78,68,41),V("Toulon",69,74,26),V("Aix-en-Provence",65,68,23),V("Avignon",61,65,18),V("Antibes",76,69,13)]},
+ {nom:"Corse", villes:[V("Ajaccio",86,86,9),V("Bastia",88,80,7)]},
+];
+const TYPES=["Skatepark","Street","Bowl","Pumptrack","DIY"];
+const NOMS=["Skatepark municipal","Long flat ledge","Le bowl","Pumptrack des berges","Spot du parking","Les marches de la gare","DIY sous le pont","Curb du lycée","La banque","Plaza du centre"];
+REGIONS.forEach(r=>{ r.n = r.villes.reduce((a,v)=>a+v.n,0);
+  r.x = r.villes.reduce((a,v)=>a+v.x,0)/r.villes.length;
+  r.y = r.villes.reduce((a,v)=>a+v.y,0)/r.villes.length;
+  r.villes.forEach((v,i)=>{ // spots déterministes
+    const k=(v.nom.charCodeAt(0)*7 + v.nom.length*13 + i*29);
+    const nb=Math.min(6,3+(k%4)), a0=(k%36)*0.174;
+    v.spots = Array.from({length:nb},(_,j)=>{ const a=a0+j*2.3999, r=10+j*4.6;
+      return { nom: NOMS[(k+j*3)%NOMS.length], type: TYPES[(k+j*2)%TYPES.length],
+               px: 50+r*Math.cos(a), py: 52+r*Math.sin(a)*0.86 }; });
+  });
+});
+const FRANCE = {nom:"France", n:REGIONS.reduce((a,r)=>a+r.n,0)};
+const MOI = REGIONS.find(r=>r.nom==="Occitanie").villes.find(v=>v.nom==="Montpellier"); // position simulée
+const TOUTES_VILLES = REGIONS.flatMap(r=>r.villes.map(v=>({...v, region:r})));
+const km = (a,b)=>Math.round(Math.hypot(a.x-b.x,a.y-b.y)*10);
+
+// ───────── état ─────────
+let etat = {niveau:0, region:null, ville:null, ouvert:false, tri:"nombre", taps:0};
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function tap(){ etat.taps++; $("#ntaps").textContent=etat.taps; }
+
+function courant(){ return etat.niveau===0?FRANCE : etat.niveau===1?etat.region : etat.ville; }
+
+// ───────── rendu ─────────
+function rendreFil(){
+ const c=courant(); let h="";
+ if(etat.niveau===0) h=`<span class="cur">France</span>`;
+ if(etat.niveau===1) h=`<span class="seg" data-go="0">France</span><span class="sep">›</span><span class="cur">${esc(etat.region.nom)}</span>`;
+ if(etat.niveau===2) h=`<span class="seg" data-go="1">${esc(etat.region.nom)}</span><span class="sep">›</span><span class="cur">${esc(etat.ville.nom)}</span>`;
+ $("#fil").innerHTML=h;
+ const n = c.n;
+ $("#cnt").textContent = n.toLocaleString("fr-FR")+" spot"+(n>1?"s":"")
+   + (etat.niveau===2 ? " · "+etat.ville.spots.length+" dans la vue" : "");
+ $("#fil").querySelectorAll(".seg").forEach(s=>s.onclick=e=>{
+   e.stopPropagation(); tap(); const g=+s.dataset.go;
+   etat.niveau=g; if(g===0)etat.region=null; etat.ville=null; etat.ouvert=false; rendre(); });
+}
+
+function listeTriee(arr){
+ const a=[...arr];
+ if(etat.tri==="nombre") a.sort((x,y)=>(y.n??y.spots?.length??0)-(x.n??x.spots?.length??0));
+ else a.sort((x,y)=>x.nom.localeCompare(y.nom,"fr"));
+ return a;
+}
+
+function rendrePanneau(){
+ const p=$("#panel"); let h="";
+ // ── section « autour de toi »
+ if(etat.niveau===0){
+   const proches = [...TOUTES_VILLES].sort((a,b)=>km(a,MOI)-km(b,MOI)).slice(0,3);
+   h += `<div class="sec">AUTOUR DE TOI</div>`;
+   h += proches.map(v=>ligne(v.nom, km(v,MOI)+" km · "+v.n+" spots", "", `ville:${v.region.nom}|${v.nom}`)).join("");
+   h += `<div class="sec sec-row"><span>RÉGIONS</span><button class="tri" data-tri>trier : ${etat.tri==="nombre"?"par nombre":"alphabétique"}</button></div>`;
+   h += listeTriee(REGIONS).map(r=>ligneSimple(r.nom, r.n, `region:${r.nom}`)).join("");
+ }
+ if(etat.niveau===1){
+   const proches = [...etat.region.villes].sort((a,b)=>km(a,MOI)-km(b,MOI)).slice(0,2);
+   h += `<div class="sec">AUTOUR DE TOI</div>`;
+   h += proches.map(v=>ligne(v.nom, km(v,MOI)+" km · "+v.n+" spots","",`ville:${etat.region.nom}|${v.nom}`)).join("");
+   h += `<div class="sec sec-row"><span>VILLES · ${esc(etat.region.nom).toUpperCase()}</span><button class="tri" data-tri>trier : ${etat.tri==="nombre"?"par nombre":"alphabétique"}</button></div>`;
+   h += listeTriee(etat.region.villes).map(v=>ligneSimple(v.nom, v.n, `ville:${etat.region.nom}|${v.nom}`)).join("");
+ }
+ if(etat.niveau===2){
+   const voisines = [...etat.region.villes].filter(v=>v.nom!==etat.ville.nom).sort((a,b)=>km(a,etat.ville)-km(b,etat.ville)).slice(0,3);
+   h += `<div class="sec">VILLES VOISINES</div>`;
+   h += voisines.map(v=>ligne(v.nom, km(v,etat.ville)+" km · "+v.n+" spots","",`ville:${etat.region.nom}|${v.nom}`)).join("");
+   h += `<div class="sec sec-row"><span>TOUTES · ${esc(etat.region.nom).toUpperCase()}</span><button class="tri" data-tri>trier : ${etat.tri==="nombre"?"par nombre":"alphabétique"}</button></div>`;
+   h += listeTriee(etat.region.villes).map(v=>ligneSimple(v.nom, v.n, `ville:${etat.region.nom}|${v.nom}`)).join("");
+   h += `<div class="vide">Les spots de ${esc(etat.ville.nom)} sont dans la feuille du bas — le chevron sert à changer d'endroit, pas à répéter ce qui est déjà à l'écran.</div>`;
+ }
+ p.innerHTML=h;
+ p.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>agir(b.dataset.act));
+ const t=p.querySelector("[data-tri]"); if(t) t.onclick=()=>{ etat.tri = etat.tri==="nombre"?"alpha":"nombre"; rendrePanneau(); };
+}
+function ligne(nom,sub,extra,act){
+ return `<button class="item" data-act="${esc(act)}"><span class="pin"><i></i></span>
+  <span class="i-txt"><span class="i-nom">${esc(nom)}</span><span class="i-sub">${esc(sub)}</span></span>${extra}</button>`;
+}
+function ligneSimple(nom,n,act){
+ const ici = (etat.niveau===0 && etat.region?.nom===nom) || (etat.niveau===2 && etat.ville?.nom===nom);
+ return `<button class="item${ici?" here":""}" data-act="${esc(act)}">
+  <span class="i-txt"><span class="i-nom">${esc(nom)}</span></span><span class="i-n">${n.toLocaleString("fr-FR")}</span></button>`;
+}
+
+function agir(act){
+ tap();
+ const [k,v]=act.split(":");
+ if(k==="region"){ etat.region=REGIONS.find(r=>r.nom===v); etat.niveau=1; etat.ville=null; }
+ if(k==="ville"){ const [rn,vn]=v.split("|"); etat.region=REGIONS.find(r=>r.nom===rn);
+   etat.ville=etat.region.villes.find(x=>x.nom===vn); etat.niveau=2; }
+ if(k==="spot"){ ouvrirFiche(etat.ville.spots[+v], +v); etat.ouvert=false; rendre(); return; }
+ etat.ouvert=false; rendre();
+}
+
+function ouvrirFiche(s,i){
+ $("#f-nom").textContent=s.nom;
+ $("#f-sub").textContent=`${s.type} · ${etat.ville.nom} · ${(0.4+i*0.9).toFixed(1).replace(".",",")} km`;
+ $("#fiche").classList.add("on");
+}
+
+function rendreCarte(){
+ const c=$("#carte"); let g="";
+ const fond = `<rect width="100" height="100" fill="#e9edf1"/>
+   <path d="M46 3 L62 6 L74 14 L79 26 L76 34 L80 44 L74 56 L79 66 L72 76 L60 74 L52 80 L42 78 L32 70 L24 72 L20 62 L26 52 L20 44 L10 38 L14 28 L26 20 L34 10 Z"
+     fill="#f4f7f9" stroke="#cfd7de" stroke-width=".7"/>
+   <ellipse cx="87" cy="84" rx="4.5" ry="7" fill="#f4f7f9" stroke="#cfd7de" stroke-width=".7"/>`;
+ if(etat.niveau===0){
+   g = listeTriee(REGIONS).map(r=>{
+     const rad = 3.4+Math.sqrt(r.n)/6.2;
+     return `<g class="bulle" data-act="region:${esc(r.nom)}" tabindex="0" role="button" aria-label="${esc(r.nom)}, ${r.n} spots">
+       <circle cx="${r.x}" cy="${r.y}" r="${rad.toFixed(2)}"/>
+       <text x="${r.x}" y="${(r.y+1.3).toFixed(2)}" style="font-size:${(rad*.62).toFixed(2)}px">${r.n}</text></g>`;
+   }).join("");
+ }
+ if(etat.niveau===1){
+   const vs=etat.region.villes, xs=vs.map(v=>v.x), ys=vs.map(v=>v.y);
+   const cx=(Math.min(...xs)+Math.max(...xs))/2, cy=(Math.min(...ys)+Math.max(...ys))/2;
+   const sp=Math.max(Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys),9);
+   const k=62/sp, T=(v)=>({x:50+(v.x-cx)*k, y:50+(v.y-cy)*k});
+   g = vs.map(v=>{ const p=T(v), rad=3.6+Math.sqrt(v.n)/3.1;
+     return `<g class="bulle" data-act="ville:${esc(etat.region.nom)}|${esc(v.nom)}" tabindex="0" role="button" aria-label="${esc(v.nom)}, ${v.n} spots">
+       <circle cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="${rad.toFixed(2)}"/>
+       <text x="${p.x.toFixed(2)}" y="${(p.y+1.3).toFixed(2)}" style="font-size:${(rad*.6).toFixed(2)}px">${v.n}</text>
+       <text class="etiq" x="${p.x.toFixed(2)}" y="${(p.y+rad+4).toFixed(2)}">${esc(v.nom)}</text></g>`;
+   }).join("");
+ }
+ if(etat.niveau===2){
+   g = `<g class="moi"><circle cx="50" cy="52" r="2.6"/></g>
+     <text class="etiq" x="50" y="59">vous</text>` +
+     etat.ville.spots.map((s,i)=>`<g class="spot" data-act="spot:${i}" tabindex="0" role="button" aria-label="${esc(s.nom)}">
+       <circle cx="${s.px.toFixed(1)}" cy="${s.py.toFixed(1)}" r="3.1"/></g>`).join("");
+ }
+ c.innerHTML=`<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">${fond}${g}</svg>`;
+ c.querySelectorAll("[data-act]").forEach(el=>{
+   el.onclick=()=>agir(el.dataset.act);
+   el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();agir(el.dataset.act);} };
+ });
+}
+
+function rendreSheet(){
+ const s=$("#sheet");
+ if(etat.niveau!==2){ s.classList.remove("on"); return; }
+ $("#sheet-corps").innerHTML = `<div class="sec">LES PLUS PROCHES</div>` +
+   etat.ville.spots.map((x,i)=>ligne(x.nom, x.type+" · "+(0.4+i*0.9).toFixed(1).replace(".",",")+" km","",`spot:${i}`)).join("")
+   + `<div class="vide">… et ${etat.ville.n-etat.ville.spots.length} autres hors de la vue.</div>`;
+ $("#sheet-corps").querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>agir(b.dataset.act));
+ s.classList.add("on");
+}
+
+function rendre(){
+ $("#tel").classList.toggle("open",etat.ouvert);
+ $("#barbtn").setAttribute("aria-expanded",String(etat.ouvert));
+ rendreFil(); rendrePanneau(); rendreCarte(); rendreSheet();
+}
+
+// ───────── événements ─────────
+$("#barbtn").onclick=()=>{ tap(); etat.ouvert=!etat.ouvert; $("#fiche").classList.remove("on"); rendre(); };
+$("#scrim").onclick=()=>{ etat.ouvert=false; rendre(); };
+$("#fx").onclick=()=>$("#fiche").classList.remove("on");
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ etat.ouvert=false; $("#fiche").classList.remove("on"); rendre(); }});
+$("#reset").onclick=()=>{ etat={niveau:0,region:null,ville:null,ouvert:false,tri:etat.tri,taps:0}; $("#ntaps").textContent="0";
+  $("#fiche").classList.remove("on"); rendre(); };
+
+document.getElementById("sansjs").remove();
+rendre();
+</script>
+</div></body></html>

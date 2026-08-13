@@ -1,0 +1,1995 @@
+{
+ "slug": "grid",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"6\" y=\"4.5\" width=\"12\" height=\"4\" rx=\"1.7\" fill=\"#4F46E5\"/><rect x=\"4\" y=\"10\" width=\"16\" height=\"4\" rx=\"1.7\" fill=\"#F2C744\"/><rect x=\"2\" y=\"15.5\" width=\"20\" height=\"4\" rx=\"1.7\" fill=\"#0891B2\"/></svg>",
+ "nom": "grid",
+ "nature": "Fondation",
+ "meta": "UX v1.2.0 · UI v1.2.0 · mis à jour 2026-07-21 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · grid",
+  "question": "Jusqu'où une page doit-elle s'étendre avant de cesser d'être lisible ?",
+  "detail": "On y fixe les quelques largeurs de conteneur qui cadrent une page — un formulaire tenu en une colonne étroite, un tableau de bord qui respire large — pour que rien ne s'étale au hasard ni ne détourne un point de rupture faute de repère.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Chaque conteneur borné choisit une des trois largeurs nommées (étroite"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La largeur d'un texte à lire ne dépend pas du conteneur mais de la mesure de lecture"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "La grille de colonnes attend un vrai besoin"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "15",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "17",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "4",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-grid.md",
+   "source": "---\nsujet: grid\ntype: fondation\nresume: \"Largeurs de conteneur structurelles (narrow/default/wide), full-bleed, centrage, marges dérivées de spacing ; grille de colonnes différée ; shell applicatif à 3 régions (rails grid.rail-*, off-canvas piloté par breakpoint.tablet/desktop)\"\nrequires: []\nselon-contexte: [\"spacing (marges et gouttières = tokens spacing, jamais des valeurs propres)\", \"typography (mesure de lecture d'un texte = measure.reading-max : frontière, ce n'est pas une largeur de conteneur)\"]\n---\n# RULES — Grille & layout (compilé, condensé)\n\n> Généré depuis `foundations/grid/GRID-UX.md` (v1.0.0) et `GRID-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`. Section « Shell applicatif » alignée sur GRID 1.2.0 / DESIGN 1.29.0 (2026-07-24) ; le reste du cadre de page reste à resynchroniser (dérive antérieure : item-min 1.27.0, clause collection 1.1.0).\n\n## Nature\n- Fondation **sans axes**. Elle porte le **cadre de page** : jusqu'où un conteneur s'étend, quand le borner, quand le laisser déborder.\n- Portée de cette version : **largeurs de conteneur** uniquement. La **grille de colonnes** (12 colonnes, gouttières inter-colonnes) est **hors périmètre — différée** jusqu'au pattern collection. Un build qui a besoin d'une grille multi-colonnes s'arrête et remonte.\n\n## Largeurs de conteneur\n- Tout conteneur borné référence une largeur `grid.container-*`, jamais une valeur brute ni un `breakpoint.*` détourné (le breakpoint est un point de bascule, pas une max-width).\n\n| Cran | Contexte |\n|---|---|\n| `grid.container-narrow` | formulaire, auth, création de compte — saisie mono-colonne focalisée |\n| `grid.container-default` | page de contenu ou d'app à colonne unique |\n| `grid.container-wide` | dashboard, collection, tableau large |\n\n- Le cran suit le contexte, pas l'esthétique : un formulaire reste `narrow` même s'il « aurait la place » en `default`.\n- Application : `max-width: grid.container-*` **+** `margin-inline: auto` (centrage). Conteneur imbriqué : n'additionne ni max-width ni marge — la largeur vient du parent.\n\n## Full-bleed\n- Un élément décoratif/immersif (hero, bandeau, image de fond, séparateur) peut prendre 100 % de la fenêtre — intention, pas oubli. Le contenu **lisible ou actionnable** à l'intérieur se re-borne sur un `grid.container-*`.\n\n## Marges et régime responsive\n- Marge de page = padding horizontal pris dans `spacing` : `spacing.md` en régime mobile, `spacing.lg` en desktop. Jamais une valeur propre à la grille.\n- Sous `breakpoint.mobile`, le max-width **ne mord pas** : conteneur en pleine largeur moins la marge. Au-dessus, il borne et centre.\n- La bascule change la largeur du conteneur, jamais la nature du contenu.\n\n## Frontières (ce que la grille ne fait pas)\n- Largeur d'un **texte courant** → `measure.reading-max` (typographie), pas un conteneur. Densité, gouttières, proximité → `spacing`. Ratio d'un média → `media_ratio`.\n- **Grille de colonnes** → différée : STOP et remonter si le build en exige une.\n\n## Shell applicatif — régions\n- Un shell (doc, dashboard, back-office) ajoute autour du contenu **trois régions** : **rail de navigation** (`grid.rail-nav`, début), **colonne de contenu** (applique le cadre de page ci-dessus), **rail d'outils** (`grid.rail-tools`, fin). Le rail d'outils est **secondaire** (theming, playground, sommaire de page).\n- Rails à **largeur fixe** en token (`grid.rail-nav` / `grid.rail-tools`), jamais un pourcentage ; la colonne de contenu prend le reste.\n- **Ordre de dégradation** : au-dessus de `breakpoint.desktop`, les trois régions coexistent ; entre `breakpoint.tablet` et `breakpoint.desktop`, le **rail d'outils cède le premier** (panneau invocable) ; sous `breakpoint.tablet`, le **rail de nav** passe en off-canvas. La navigation (repère permanent) survit aux outils (confort).\n- Ces paliers pilotent la **présence des rails**, pas les régimes du conteneur (toujours deux : borné sous `breakpoint.mobile`, borné-centré au-dessus). Trois paliers de shell, deux régimes de contenu — deux échelles distinctes, pas une contradiction avec « deux régimes réels ».\n- **Off-canvas = overlay** : une région hors flux recouvre le contenu (scrim, focus trap, scroll-lock, retour du focus au déclencheur). Comportement **hors périmètre** (sujet overlay/drawer) : un build qui l'implémente **STOP et remonte**.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Largeur en dur / breakpoint détourné comme max-width | Cadre non tokenisé, dérive | Élevée |\n| Conteneur mono-colonne étalé sans max-width | Regard dispersé, formulaire illisible | Moyenne-élevée |\n| Texte courant borné par un conteneur au lieu de `measure` | Mesure de lecture cassée sur grand écran | Moyenne |\n| Grille de colonnes improvisée | Système inventé hors périmètre | Élevée |\n| Rail d'outils qui survit à la nav quand la place manque | Confort priorisé sur le repère | Moyenne |\n| Région off-canvas codée hors du sujet overlay | Focus/scroll non maîtrisés, a11y cassée | Élevée |\n\nCONFIANCE : largeurs de conteneur nommées + marges dérivées de l'espacement = établi par convergence (Carbon 2x-grid, GOV.UK, Material). Le choix de **trois** crans (480/1024/1440) est un arbitrage interne daté 2026-07-16, réversible.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Type de conteneur",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Type de conteneur\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"36\" width=\"80\" height=\"24\" rx=\"6\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"85\" y=\"70\" width=\"150\" height=\"24\" rx=\"6\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><rect x=\"45\" y=\"104\" width=\"230\" height=\"24\" rx=\"6\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><path d=\"M120 66h80 M120 62v8 M200 62v8\" stroke=\"#6B7280\" stroke-width=\"1\" opacity=\".55\"/><path d=\"M85 100h150 M85 96v8 M235 96v8\" stroke=\"#6B7280\" stroke-width=\"1\" opacity=\".55\"/><path d=\"M45 134h230 M45 130v8 M275 130v8\" stroke=\"#6B7280\" stroke-width=\"1\" opacity=\".55\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Conteneur mono-colonne étroit",
+     "quand": "Formulaire, auth, saisie focalisée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de conteneur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Conteneur mono-colonne étroit\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"281\" y=\"72\" width=\"118\" height=\"116\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"293\" y=\"84\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"293\" y=\"92\" width=\"94\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"293\" y=\"124\" width=\"60\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"293\" y=\"132\" width=\"94\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"293\" y=\"166\" width=\"66\" height=\"20\" rx=\"6\" fill=\"#4F46E5\"/><path d=\"M202.5 122L127 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M127 122L134.9 117.7M127 122L134.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M202.5 122L278 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M278 122L270.1 126.3M278 122L270.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M477.5 122L402 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M402 122L409.9 117.7M402 122L409.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M477.5 122L553 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M553 122L545.1 126.3M553 122L545.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Formulaire, auth, saisie focalisée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « conteneur mono-colonne étroit » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>narrow</strong> — saisie mono-colonne focalisée : formulaire, écran d'authentification, création de",
+       "id": "GRID-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Conteneur de contenu standard",
+     "quand": "Page de contenu, article, réglages, app à colonne unique.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de conteneur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Conteneur de contenu standard\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"215\" y=\"72\" width=\"250\" height=\"116\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"233\" y=\"92\" width=\"214\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"233\" y=\"108\" width=\"214\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"233\" y=\"124\" width=\"214\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"233\" y=\"140\" width=\"214\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"233\" y=\"156\" width=\"128\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M169.5 122L127 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M127 122L134.9 117.7M127 122L134.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M169.5 122L212 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M212 122L204.1 126.3M212 122L204.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M510.5 122L468 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M468 122L475.9 117.7M468 122L475.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M510.5 122L553 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M553 122L545.1 126.3M553 122L545.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Page de contenu, article, réglages, app à colonne unique.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « conteneur de contenu standard » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la bascule mobile/desktop change la <strong>largeur</strong> du conteneur, jamais la nature de son contenu —",
+       "id": "GRID-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Conteneur large",
+     "quand": "Dashboard, collection dense, tableau large.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de conteneur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Conteneur large\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"140\" y=\"72\" width=\"400\" height=\"116\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"156\" y=\"86\" width=\"368\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"164\" y=\"94\" width=\"70\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"288\" y=\"94\" width=\"60\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"410\" y=\"94\" width=\"100\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"156\" y=\"111\" width=\"368\" height=\"18\" rx=\"3\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"164\" y=\"119\" width=\"70\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"288\" y=\"119\" width=\"60\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"410\" y=\"119\" width=\"100\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"156\" y=\"136\" width=\"368\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"164\" y=\"144\" width=\"70\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"288\" y=\"144\" width=\"60\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"410\" y=\"144\" width=\"100\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"156\" y=\"161\" width=\"368\" height=\"18\" rx=\"3\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"164\" y=\"169\" width=\"70\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"288\" y=\"169\" width=\"60\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"410\" y=\"169\" width=\"100\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.35\"/><path d=\"M132 122L127 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M127 122L134.9 117.7M127 122L134.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M132 122L137 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M137 122L129.1 126.3M137 122L129.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M548 122L543 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M543 122L550.9 117.7M543 122L550.9 126.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M548 122L553 122\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M553 122L545.1 126.3M553 122L545.1 117.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Dashboard, collection dense, tableau large.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « conteneur large » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "tout conteneur de page borné référence une largeur de <code>grid.container-*</code>, jamais une valeur brute",
+       "id": "GRID-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "sous <code>breakpoint.mobile</code>, le max-width <strong>ne mord pas</strong> — le conteneur prend la pleine largeur",
+       "id": "GRID-R10"
+      },
+      {
+       "tag": "Règle",
+       "html": "la bascule mobile/desktop change la <strong>largeur</strong> du conteneur, jamais la nature de son contenu —",
+       "id": "GRID-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Pleine largeur (full-bleed)",
+     "quand": "Hero, bandeau, image de fond, séparateur visuel.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de conteneur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Pleine largeur (full-bleed)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"113\" y=\"64\" width=\"454\" height=\"68\" fill=\"#4F46E5\" opacity=\".14\"/><text x=\"120\" y=\"82\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">bord</text><text x=\"528\" y=\"82\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">bord</text><rect x=\"255\" y=\"76\" width=\"170\" height=\"44\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"273\" y=\"95\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Hero, bandeau, image de fond, séparateur visuel.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « pleine largeur (full-bleed) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le contenu <em>lisible ou actionnable</em> à l'intérieur d'un full-bleed reste, lui, borné par un",
+       "id": "GRID-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "sous <code>breakpoint.mobile</code>, le max-width <strong>ne mord pas</strong> — le conteneur prend la pleine largeur",
+       "id": "GRID-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Conteneur imbriqué",
+     "quand": "Un conteneur dans un autre (carte dans une grille).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de conteneur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Conteneur imbriqué\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"210\" y=\"66\" width=\"260\" height=\"122\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><text x=\"226\" y=\"90\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">parent borné</text><rect x=\"226\" y=\"98\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"210\" y=\"120\" width=\"260\" height=\"66\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#0891B2\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/><text x=\"226\" y=\"144\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">enfant imbriqué</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un conteneur dans un autre (carte dans une grille).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « conteneur imbriqué » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 4 cas",
+   "titre": "Relation au contenu",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Relation au contenu\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"45\" y=\"34\" width=\"230\" height=\"84\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"62\" y=\"50\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"62\" y=\"64\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"62\" y=\"78\" width=\"86\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M62 98h120 M62 94v8 M182 94v8\" stroke=\"#0891B2\" stroke-width=\"1.4\"/><rect x=\"210\" y=\"50\" width=\"50\" height=\"42\" rx=\"6\" fill=\"#E0E7FF\"/><circle cx=\"225\" cy=\"65\" r=\"5\" fill=\"#4F46E5\"/><path d=\"M210 88l16-13 12 10 22-17v20z\" fill=\"#4F46E5\" opacity=\".55\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Texte courant (prose)",
+     "quand": "Paragraphes longs à lire.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Relation au contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte courant (prose)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"158\" y=\"66\" width=\"364\" height=\"104\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"178\" y=\"86\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"178\" y=\"102\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"178\" y=\"118\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"178\" y=\"134\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><path d=\"M178 156H358 M178 152v8 M358 152v8\" stroke=\"#0891B2\" stroke-width=\"1.6\"/><text x=\"190\" y=\"148\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">measure</text><path d=\"M158 182H522 M158 178v8 M522 178v8\" stroke=\"#6B7280\" stroke-width=\"1.4\"/><text x=\"304\" y=\"176\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">conteneur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Paragraphes longs à lire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « texte courant (prose) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la largeur d'un <strong>texte courant</strong> relève de <code>measure.reading-max</code> (typographie), pas d'un",
+       "id": "GRID-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Champs de formulaire",
+     "quand": "Saisie mono-colonne.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Relation au contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champs de formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"276\" y=\"66\" width=\"128\" height=\"124\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"290\" y=\"80\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"290\" y=\"90\" width=\"100\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"290\" y=\"124\" width=\"62\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"290\" y=\"134\" width=\"100\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"290\" y=\"168\" width=\"72\" height=\"20\" rx=\"6\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Saisie mono-colonne.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « champs de formulaire » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Collection d'items",
+     "quand": "Cartes, lignes, vignettes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Relation au contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Collection d'items\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"150\" y=\"66\" width=\"380\" height=\"122\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"166\" y=\"80\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"176\" y=\"112\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"256\" y=\"80\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"266\" y=\"112\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"346\" y=\"80\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"356\" y=\"112\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"436\" y=\"80\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"446\" y=\"112\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"166\" y=\"134\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"176\" y=\"166\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"256\" y=\"134\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"266\" y=\"166\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"346\" y=\"134\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"356\" y=\"166\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/><rect x=\"436\" y=\"134\" width=\"74\" height=\"44\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.2\"/><rect x=\"446\" y=\"166\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4F46E5\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cartes, lignes, vignettes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « collection d'items » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Média",
+     "quand": "Image, vidéo, ratio fixe.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Relation au contenu",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Média\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"215\" y=\"66\" width=\"250\" height=\"124\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"231\" y=\"82\" width=\"218\" height=\"76\" rx=\"6\" fill=\"#F3F4F6\"/><circle cx=\"266\" cy=\"104\" r=\"10\" fill=\"#E5E7EB\"/><path d=\"M231 156l42-32 28 22 34-30 44 40H231z\" fill=\"#E5E7EB\"/><rect x=\"392\" y=\"120\" width=\"48\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"400\" y=\"134\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">16/9</text><rect x=\"231\" y=\"170\" width=\"130\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Image, vidéo, ratio fixe.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « média » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>ratio</strong> d'un média relève de <code>media_ratio</code>. La grille donne la largeur disponible, pas la",
+       "id": "GRID-R14"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "Régime responsive",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Régime responsive\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"70\" height=\"84\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M40 48h70\" stroke=\"#E5E7EB\"/><rect x=\"48\" y=\"54\" width=\"54\" height=\"58\" rx=\"5\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.3\"/><path d=\"M120 76h22m-6-5 6 5-6 5\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"152\" y=\"40\" width=\"128\" height=\"72\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M152 54h128\" stroke=\"#E5E7EB\"/><rect x=\"192\" y=\"60\" width=\"48\" height=\"46\" rx=\"5\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.3\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Sous le breakpoint mobile",
+     "quand": "Écran étroit.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Régime responsive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sous le breakpoint mobile\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"24\" width=\"140\" height=\"192\" rx=\"16\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M270 46h140\" stroke=\"#E5E7EB\"/><rect x=\"282\" y=\"58\" width=\"116\" height=\"150\" rx=\"7\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"294\" y=\"74\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"294\" y=\"90\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"294\" y=\"106\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"294\" y=\"122\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"294\" y=\"138\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"294\" y=\"154\" width=\"55\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M277 133L273 133\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M273 133L280.9 128.7M273 133L280.9 137.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M277 133L281 133\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M281 133L273.1 137.3M281 133L273.1 128.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M403 133L399 133\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M399 133L406.9 128.7M399 133L406.9 137.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M403 133L407 133\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M407 133L399.1 137.3M407 133L399.1 128.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Écran étroit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « sous le breakpoint mobile » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "sous <code>breakpoint.mobile</code>, le max-width <strong>ne mord pas</strong> — le conteneur prend la pleine largeur",
+       "id": "GRID-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Au-dessus du breakpoint",
+     "quand": "Écran large.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Régime responsive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Au-dessus du breakpoint\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"120\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"258\" y=\"88\" width=\"164\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"104\" width=\"164\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"120\" width=\"164\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"136\" width=\"164\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"152\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M182 128L127 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M127 128L134.9 123.7M127 128L134.9 132.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M182 128L237 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M237 128L229.1 132.3M237 128L229.1 123.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M498 128L443 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M443 128L450.9 123.7M443 128L450.9 132.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M498 128L553 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M553 128L545.1 132.3M553 128L545.1 123.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Écran large.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « au-dessus du breakpoint » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Bascule mobile/desktop",
+     "quand": "Même conteneur, deux régimes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Régime responsive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bascule mobile/desktop\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"46\" width=\"120\" height=\"150\" rx=\"14\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M120 66h120\" stroke=\"#E5E7EB\"/><rect x=\"130\" y=\"76\" width=\"100\" height=\"112\" rx=\"6\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><path d=\"M250 120L288 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M288 120L280.1 124.3M288 120L280.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"300\" y=\"46\" width=\"260\" height=\"150\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M300 66h260\" stroke=\"#E5E7EB\"/><rect x=\"360\" y=\"76\" width=\"140\" height=\"112\" rx=\"6\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.4\"/><path d=\"M334 132L311 132\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M311 132L318.9 127.7M311 132L318.9 136.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M334 132L357 132\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M357 132L349.1 136.3M357 132L349.1 127.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M526 132L503 132\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M503 132L510.9 127.7M503 132L510.9 136.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M526 132L549 132\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M549 132L541.1 136.3M549 132L541.1 127.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Même conteneur, deux régimes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « bascule mobile/desktop » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la bascule mobile/desktop change la <strong>largeur</strong> du conteneur, jamais la nature de son contenu —",
+       "id": "GRID-R11"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 3 cas",
+   "titre": "Marge et gouttière",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Marge et gouttière\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"34\" width=\"228\" height=\"84\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"47\" y=\"35\" width=\"34\" height=\"82\" fill=\"#E0E7FF\"/><rect x=\"239\" y=\"35\" width=\"34\" height=\"82\" fill=\"#E0E7FF\"/><rect x=\"92\" y=\"54\" width=\"136\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"92\" y=\"68\" width=\"136\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"92\" y=\"82\" width=\"100\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><path d=\"M47 104h34 M47 100v8 M81 100v8\" stroke=\"#6B7280\" stroke-width=\"1.3\"/><path d=\"M239 104h34 M239 100v8 M273 100v8\" stroke=\"#6B7280\" stroke-width=\"1.3\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Marge de page",
+     "quand": "Espace entre le conteneur et le bord de l'écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Marge et gouttière",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Marge de page\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"113\" y=\"57\" width=\"46\" height=\"131\" fill=\"#E0E7FF\"/><rect x=\"521\" y=\"57\" width=\"46\" height=\"131\" fill=\"#E0E7FF\"/><rect x=\"159\" y=\"57\" width=\"362\" height=\"131\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"179\" y=\"80\" width=\"322\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"179\" y=\"96\" width=\"322\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"179\" y=\"112\" width=\"322\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"179\" y=\"128\" width=\"322\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"179\" y=\"144\" width=\"193\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><path d=\"M136 196L114 196\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M114 196L121.9 191.7M114 196L121.9 200.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M136 196L158 196\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M158 196L150.1 200.3M158 196L150.1 191.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M544 196L522 196\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M522 196L529.9 191.7M522 196L529.9 200.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M544 196L566 196\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M566 196L558.1 200.3M566 196L558.1 191.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Espace entre le conteneur et le bord de l'écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « marge de page » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>marge de page</strong> (espace entre le conteneur et le bord de l'écran) dérive de l'échelle",
+       "id": "GRID-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Gouttière entre colonnes",
+     "quand": "Espace entre items d'une future grille.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Marge et gouttière",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Gouttière entre colonnes\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"150\" y=\"72\" width=\"76\" height=\"108\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\" opacity=\".85\"/><rect x=\"250\" y=\"72\" width=\"76\" height=\"108\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\" opacity=\".85\"/><rect x=\"350\" y=\"72\" width=\"76\" height=\"108\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\" opacity=\".85\"/><rect x=\"450\" y=\"72\" width=\"76\" height=\"108\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-width=\"1.2\" stroke-dasharray=\"5 4\" opacity=\".85\"/><rect x=\"226\" y=\"72\" width=\"24\" height=\"108\" fill=\"#4B5563\" opacity=\".16\"/><path d=\"M238 190L227 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M227 190L234.9 185.7M227 190L234.9 194.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M238 190L249 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M249 190L241.1 194.3M249 190L241.1 185.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"326\" y=\"72\" width=\"24\" height=\"108\" fill=\"#4B5563\" opacity=\".16\"/><path d=\"M338 190L327 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M327 190L334.9 185.7M327 190L334.9 194.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M338 190L349 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M349 190L341.1 194.3M349 190L341.1 185.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"426\" y=\"72\" width=\"24\" height=\"108\" fill=\"#4B5563\" opacity=\".16\"/><path d=\"M438 190L427 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M427 190L434.9 185.7M427 190L434.9 194.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M438 190L449 190\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M449 190L441.1 194.3M449 190L441.1 185.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"466\" y=\"46\" width=\"90\" height=\"22\" rx=\"11\" fill=\"#F3F4F6\" stroke=\"#6B7280\" stroke-dasharray=\"4 3\"/><text x=\"479\" y=\"61\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">différé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Espace entre items d'une future grille.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « gouttière entre colonnes » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GRID-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>grille de colonnes</strong> (nombre de colonnes, gouttières inter-colonnes d'une collection)",
+       "id": "GRID-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Centrage du conteneur",
+     "quand": "Conteneur borné centré dans la fenêtre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Marge et gouttière",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Centrage du conteneur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"112\" y=\"34\" width=\"456\" height=\"172\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 56h456\" stroke=\"#E5E7EB\"/><circle cx=\"127\" cy=\"45\" r=\"3\" fill=\"#6B7280\"/><circle cx=\"138\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><circle cx=\"149\" cy=\"45\" r=\"3\" fill=\"#E5E7EB\"/><rect x=\"250\" y=\"68\" width=\"180\" height=\"120\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"1.5\"/><rect x=\"268\" y=\"90\" width=\"144\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"106\" width=\"144\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"122\" width=\"144\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"268\" y=\"138\" width=\"86\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M188 128L129 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M129 128L136.9 123.7M129 128L136.9 132.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M188 128L247 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M247 128L239.1 132.3M247 128L239.1 123.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M492 128L433 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M433 128L440.9 123.7M433 128L440.9 132.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M492 128L551 128\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M551 128L543.1 132.3M551 128L543.1 123.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"156\" y=\"116\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">auto</text><text x=\"494\" y=\"116\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">auto</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Conteneur borné centré dans la fenêtre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « centrage du conteneur » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-col\" style=\"gap:16px;\"><div class=\"spec-item\" style=\"width:100%;align-items:stretch;\"> <div style=\"position:relative;height:38px;background:#F3F4F6;border-radius:6px;display:flex;justify-content:center;align-items:center;overflow:hidden;\"> <div style=\"width:33.3%;height:24px;background:#E0E7FF;border:1.5px solid #4F46E5;border-radius:5px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;\"><code style=\"color:#3730A3;font-size:.72em;\">narrow</code></div> </div> <span class=\"val-sous\"><code>grid.container-narrow</code> — <span style=\"color:#4B5563;\">formulaire · auth</span></span> </div><div class=\"spec-item\" style=\"width:100%;align-items:stretch;\"> <div style=\"position:relative;height:38px;background:#F3F4F6;border-radius:6px;display:flex;justify-content:center;align-items:center;overflow:hidden;\"> <div style=\"width:71.1%;height:24px;background:#E0E7FF;border:1.5px solid #4F46E5;border-radius:5px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;\"><code style=\"color:#3730A3;font-size:.72em;\">default</code></div> </div> <span class=\"val-sous\"><code>grid.container-default</code> — <span style=\"color:#4B5563;\">contenu · app</span></span> </div><div class=\"spec-item\" style=\"width:100%;align-items:stretch;\"> <div style=\"position:relative;height:38px;background:#F3F4F6;border-radius:6px;display:flex;justify-content:center;align-items:center;overflow:hidden;\"> <div style=\"width:100.0%;height:24px;background:#E0E7FF;border:1.5px solid #4F46E5;border-radius:5px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;\"><code style=\"color:#3730A3;font-size:.72em;\">wide</code></div> </div> <span class=\"val-sous\"><code>grid.container-wide</code> — <span style=\"color:#4B5563;\">dashboard · collection</span></span> </div></div> <p class=\"spec-note\">Une page a quelques largeurs nommées, pas une largeur libre : chaque conteneur borné choisit l'un de ces trois crans en <code>max-width</code> et se centre par marges automatiques (la fenêtre grise autour montre les marges latérales). Les valeurs viennent de <code>GRID-UI.md</code> → <code>DESIGN.md</code>.</p></section>"
+  ],
+  "tokens": []
+ },
+ "evolution": [
+  {
+   "date": "2026-07-21",
+   "titre": "Pattern « collection » : la grille de colonnes naît chez son consommateur, intrinsèque et sans N canonique",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/patterns/collection/COLLECTION-UX.md</code> + <code>COLLECTION-UI.md</code> (1.0.0) ; <code>atelier/inventaires/inventaire-cas-usage-collection.md</code> (31 cas) ; <code>dist/RULES-collection.md</code> (maintenu à la main) ; <code>DESIGN.md</code> 1.27.0 (token <code>grid.item-min</code>) ; <code>GRID-UX.md</code> 1.1.0 + <code>GRID-UI.md</code> 1.1.0 (clause de naissance levée) ; <code>SPACING-UX.md</code> 1.2.1 (note de transposition réalisée) ; <code>CARD-UX.md</code> 1.4.1 + <code>CARD-UI.md</code> 1.5.1 (transfert <code>grid_gap</code>) ; <code>tools/genere-routeur.js</code> (l'intention Collection charge le pattern) ; contenus éditoriaux du site.</li><li><strong>Constat</strong> : GRID-UX (2026-07-16) et SPACING-UX avaient écrit une clause de naissance explicite — « la grille de colonnes naîtra avec le pattern collection/grille ». L'intention « Collection » du routeur existait sans pattern propriétaire ; CARD portait un <code>grid_gap</code> d'attente et promettait un « pattern collection dédié » pour le Kanban.</li><li><strong>Décisions</strong> :</li><li><strong>Grille intrinsèque</strong> (haute) : les colonnes émergent de <code>grid.item-min</code> (256px, seul token nouveau — 64 × la grille de base) et de l'espace réel via <code>repeat(auto-fill, minmax(min(100%, item-min), 1fr))</code> — jamais « 4 desktop / 2 tablette / 1 mobile ». Divergence assumée vs Carbon (16 col) / Material (window classes) : pas de multi-produits qui justifie un N canonique, et un viewport large ne garantit pas un conteneur large (cohérence adaptive). <code>auto-fill</code> jamais <code>auto-fit</code> (dernière rangée non déformée).</li><li><strong>Régime composé</strong> (moyenne) : dashboard en grille explicite, spans en cellules entières, colonnes choisies par le contenu — pas de 12 copié ; à éprouver au premier dashboard réel.</li><li><strong>Croissance</strong> (haute) : « charger plus » par défaut ; pagination quand la position est adressable ; scroll infini jamais seul (NN/g) ; état restauré au retour ; échec d'une page suivante = erreur locale, l'acquis reste.</li><li><strong>Transfert d'autorité</strong> (moyenne) : <code>CARD-UI.collection.grid_gap</code> devient un alias — le gap appartient au pattern (mapping par densité : compact = spacing.md, comfortable = spacing.lg). Même mécanisme que le transfert INPUT→FORM.</li><li><strong>Défauts de collection</strong> (moyenne) : tri par défaut annoncé, filtre d'office déclaré — le cas « En attente » de l'inventaire charge-cognitive trouve son propriétaire le jour même.</li><li><strong>Laissé ouvert</strong> : extension <code>collection-kanban</code> (promise par CARD-UX) ; virtualisation ; contrôles de barre d'outils (select, chips — composants à naître, tout build qui en a besoin remonte) ; N canonique du composé si un dashboard réel le réclame ; mécanique de la région live du compteur à éprouver.</li><li><strong>Pourquoi</strong> : deuxième absence du fil « quatre axes » intégrée, par la voie complète de la méthode — et la clause écrite le 2026-07-16 est honorée telle quelle : le système a tenu sa propre promesse de ne documenter la grille qu'avec son premier consommateur.</li></ul>"
+  },
+  {
+   "date": "2026-07-19",
+   "titre": "Propagation du modèle STYLE × TONE dans les renvois croisés",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>COLOR-UI.md</code> (v1.1.0 — paires garanties étendues aux nouveaux fonds pleins, « warning jamais un fond plein » levé aussi ici, table de consommation du bouton réécrite en rôles par tone) et <code>dist/RULES-color.md</code> (mêmes tables) ; bumps de vocabulaire sans changement de règle : COLOR-UX 1.1.1, ALERT-UX 1.3.1, CARD-UX 1.2.1, INPUT-UX 1.5.1, INPUT-UI 1.4.2, FORM-UX 2.1.3, CREATION-COMPTE-UX 1.2.2, TYPOGRAPHY-UX 1.1.2, GRID-UX 1.0.1, METHODE 1.8.1, inventaire couleur (9 → 16 combinaisons), RULES-alert/card/input/creation-compte(-sso-social), <code>tools/genere-site.js</code> + <code>tools/methode-contenu.js</code> (deux textes du site).</li><li><strong>Ancienne situation</strong> : la décision BUTTON du 2026-07-18 avait renommé l'axe <code>emphasis</code> → <code>style</code> dans BUTTON-* et DESIGN.md, mais l'ancien nom restait vivant dans les notes de transposition et les renvois des autres sujets — et COLOR-UI garantissait encore « warning : jamais un fond plein » alors que le garde-fou était levé, sans mentionner <code>neutral-strong(-hover)</code>, <code>warning-hover</code> ni <code>danger-subtle-hover</code>.</li><li><strong>Nouvelle situation</strong> : plus aucune occurrence normative d'<code>emphasis</code> ; les mentions restantes sont historiques (ce journal, la note de vocabulaire BUTTON-UX 1.5.0, les récits du site). La formule des notes de transposition devient « l'axe <code>style</code> n'existe pas ici ». La table des paires garanties dit les paires réelles : <code>on-primary</code> sur <code>neutral-strong(-hover)</code> et <code>warning(-hover)</code>, <code>danger</code> sur <code>danger-subtle-hover</code>.</li><li><strong>Pourquoi</strong> : un renvoi normatif vers un axe qui n'existe plus est un défaut de doc du même ordre qu'un token fantôme ; et la table des paires garanties est le contrat que <code>test-rendu.js</code> vérifie — elle doit dire ce qui est vrai, ni plus ni moins.</li></ul>"
+  },
+  {
+   "date": "2026-07-16",
+   "titre": "Fondation grid : naissance par le besoin de largeur de conteneur",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/foundations/grid/GRID-UX.md</code> + <code>GRID-UI.md</code> (1.0.0), <code>atelier/inventaires/inventaire-cas-usage-grid.md</code>, <code>DESIGN.md</code> (1.18.0, groupe <code>grid</code>), <code>SPACING-UX.md</code> (1.1.0), <code>dist/RULES-grid.md</code> (condensation) + routeur (grid ajouté aux bundles Formulaire/Collection/Page de contenu/Création de compte), outillage (<code>genere-tokens</code>, <code>valide-dossier</code>, <code>garden</code>).</li><li><strong>Ancienne règle</strong> : SPACING avait différé la fondation grid <em>entière</em> en l'absence de consommateur ; un écran mono-colonne n'avait donc aucun token de largeur (détour de <code>breakpoint.mobile</code>).</li><li><strong>Nouvelle règle</strong> : la fondation <code>grid</code> naît avec le <strong>besoin prouvé</strong> — les largeurs de conteneur (<code>container-narrow</code> 480 / <code>-default</code> 1024 / <code>-wide</code> 1440), trou confirmé par deux pilotes indépendants le 2026-07-16. La <strong>grille de colonnes</strong> (12 colonnes, gouttières inter-colonnes) reste différée jusqu'au pattern collection/grille.</li><li><strong>Pourquoi</strong> : un token de largeur bolté seul aurait été une fondation orpheline ; le faire naître avec sa fiche, son inventaire et son benchmark (Carbon, GOV.UK, Material) respecte la méthode. Frontières posées : <code>grid</code> ≠ <code>measure</code> (lecture) ≠ <code>spacing</code> (proximité) ≠ <code>media_ratio</code> (ratio). RULES-spacing mis à jour (le cadre de page a quitté spacing).</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "GRID-R01",
+   "couche": "ux",
+   "solution": "tout conteneur de page borné référence une largeur de `grid.container-*`, jamais une valeur brute",
+   "enonce": "Tout conteneur de page borné tire sa largeur maximale d'un token de conteneur nommé, jamais d'une valeur brute ni d'un point de rupture détourné en largeur.",
+   "mesure": "aucune largeur maximale littérale ni token de point de rupture dans une déclaration de largeur de conteneur",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Nombre exact de crans de conteneur (trois)",
+     "liens": [
+      {
+       "label": "Arbitrage interne au produit",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — à éprouver, ajustable sur besoin réel"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Conteneur large",
+     "famille": "Type de conteneur"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R02",
+   "couche": "ux",
+   "solution": "**narrow** — saisie mono-colonne focalisée : formulaire, écran d'authentification, création de",
+   "enonce": "Un écran de saisie mono-colonne focalisée applique le cran de conteneur le plus étroit et se centre.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Le composant Page de Polaris expose deux largeurs nommées : pleine largeur et largeur étroite, cette dernière explicitement destinée aux dispositions mono-colonne",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Page",
+       "url": "https://polaris-react.shopify.com/components/layout-and-structure/page"
+      }
+     ],
+     "confiance": "Établi — un troisième système public converge sur un petit jeu fermé de largeurs nommées"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Conteneur mono-colonne étroit",
+     "famille": "Type de conteneur"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R03",
+   "couche": "ux",
+   "solution": "**default** — page de contenu ou d'application à colonne unique : réglages, article, tableau de",
+   "enonce": "Une page de contenu ou d'application à colonne unique applique le cran de conteneur intermédiaire.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Le composant Page de Polaris expose deux largeurs nommées : pleine largeur et largeur étroite, cette dernière explicitement destinée aux dispositions mono-colonne",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Page",
+       "url": "https://polaris-react.shopify.com/components/layout-and-structure/page"
+      }
+     ],
+     "confiance": "Établi — un troisième système public converge sur un petit jeu fermé de largeurs nommées"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R04",
+   "couche": "ux",
+   "solution": "**wide** — surface dense assumée : dashboard, collection, tableau large. Largeur maximale haute ;",
+   "enonce": "Une surface dense assumée applique le cran de conteneur le plus large, qui reste borné au lieu de suivre la fenêtre indéfiniment.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les classes de taille de fenêtre sont définies en largeur (compact, medium, expanded, large, extra-large) et servent aux décisions de disposition de haut niveau",
+     "liens": [
+      {
+       "label": "Android / Material — Use window size classes",
+       "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+      }
+     ],
+     "confiance": "Établi — **remplace le lien Material 2 de S2, qui documente une grille 12 colonnes et non des classes de taille**"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R05",
+   "couche": "ux",
+   "solution": "un élément décoratif ou immersif (hero, bandeau, image de fond, séparateur de section) peut",
+   "enonce": "Un élément décoratif ou immersif peut délibérément déborder le conteneur, ce débordement étant déclaré comme une intention et non subi.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R06",
+   "couche": "ux",
+   "solution": "le contenu *lisible ou actionnable* à l'intérieur d'un full-bleed reste, lui, borné par un",
+   "enonce": "Le contenu lisible ou actionnable placé dans un bloc pleine largeur se re-borne sur un conteneur nommé et ne s'étale jamais d'un bord à l'autre.",
+   "mesure": "aucun texte ni contrôle plus large que le cran de conteneur le plus large dans un bloc pleine largeur",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Mesure de lecture ≈ 45-75 caractères, ≤ 80 (distincte de la largeur de conteneur)",
+     "liens": [
+      {
+       "label": "Baymard — Line length",
+       "url": "https://baymard.com/blog/line-length-readability"
+      }
+     ],
+     "confiance": "Établi — c'est l'argument de la frontière grid ≠ measure"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Mesure de lecture ≈ 45-75 caractères, ≤ 80 (distincte de la largeur de conteneur)",
+    "liens": [
+     {
+      "label": "Baymard — Line length",
+      "url": "https://baymard.com/blog/line-length-readability"
+     }
+    ],
+    "confiance": "Établi — c'est l'argument de la frontière grid ≠ measure"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Pleine largeur (full-bleed)",
+     "famille": "Type de conteneur"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R07",
+   "couche": "ux",
+   "solution": "un conteneur borné se **centre** dans la fenêtre (marges automatiques) ; il ne s'aligne pas à",
+   "enonce": "Un conteneur borné se centre par marges automatiques symétriques dès que la fenêtre dépasse sa borne.",
+   "mesure": "marges horizontales gauche et droite égales au-dessus de la borne",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un conteneur de page a une largeur maximale nommée (petit jeu fermé)",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R08",
+   "couche": "ux",
+   "solution": "la **marge de page** (espace entre le conteneur et le bord de l'écran) dérive de l'échelle",
+   "enonce": "La marge entre le conteneur et le bord de la fenêtre est prise dans l'échelle d'espacement et n'introduit aucune valeur propre à la grille.",
+   "mesure": "toute marge de page résout vers un token de l'échelle d'espacement",
+   "contre": "",
+   "probleme": "sur mobile, une marge trop large mange la surface utile ; sur desktop, une marge nulle",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Gouttières et marges dérivées de l'échelle d'espacement",
+     "liens": [
+      {
+       "label": "Atlassian — Grid",
+       "url": "https://atlassian.design/foundations/grid-beta"
+      },
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      }
+     ],
+     "confiance": "Établi — cohérent avec le cadrage SPACING"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Gouttières et marges dérivées de l'échelle d'espacement",
+    "liens": [
+     {
+      "label": "Atlassian — Grid",
+      "url": "https://atlassian.design/foundations/grid-beta"
+     },
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     }
+    ],
+    "confiance": "Établi — cohérent avec le cadrage SPACING"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Marge de page",
+     "famille": "Marge et gouttière"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R09",
+   "couche": "ux",
+   "solution": "un conteneur dans un conteneur (une carte dans une page bornée) **n'additionne pas** les",
+   "enonce": "Un conteneur imbriqué dans un conteneur déjà borné hérite de la largeur du parent et n'applique ni seconde largeur maximale ni seconde marge de page.",
+   "mesure": "aucune chaîne d'ancêtres ne porte deux largeurs maximales de conteneur ni deux marges de page",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "La largeur maximale ne fait qu'empêcher la largeur utilisée de dépasser la valeur donnée : l'élément peut être plus étroit. Une note d'accessibilité demande qu'un élément ainsi borné ne soit ni tronqué ni masquant au zoom",
+     "liens": [
+      {
+       "label": "MDN — max-width",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width"
+      }
+     ],
+     "confiance": "Établi — fonde « la borne ne mord pas » et la borne unique par conteneur"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Les requêtes de conteneur permettent à un composant de réagir à la taille de son conteneur plutôt qu'à celle de la fenêtre ; les requêtes média ne connaissent que la fenêtre",
+     "liens": [
+      {
+       "label": "MDN — Container queries",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      }
+     ],
+     "confiance": "Établi — **mécanisme absent du fichier, dont tout le récit responsive est fondé sur la fenêtre**"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "La largeur maximale ne fait qu'empêcher la largeur utilisée de dépasser la valeur donnée : l'élément peut être plus étroit. Une note d'accessibilité demande qu'un élément ainsi borné ne soit ni tronqué ni masquant au zoom",
+    "liens": [
+     {
+      "label": "MDN — max-width",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width"
+     }
+    ],
+    "confiance": "Établi — fonde « la borne ne mord pas » et la borne unique par conteneur"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R10",
+   "couche": "ux",
+   "solution": "sous `breakpoint.mobile`, le max-width **ne mord pas** — le conteneur prend la pleine largeur",
+   "enonce": "En dessous de sa borne, un conteneur occupe la largeur disponible moins la marge de page, et aucun contenu ne provoque de défilement horizontal à 320 px CSS de large.",
+   "mesure": "aucun défilement horizontal à 320 px CSS de large",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS, soit 1280 px à 400 % de zoom",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **la seule norme qui contraigne directement le cadre de page, absente du fichier**"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "La largeur maximale ne fait qu'empêcher la largeur utilisée de dépasser la valeur donnée : l'élément peut être plus étroit. Une note d'accessibilité demande qu'un élément ainsi borné ne soit ni tronqué ni masquant au zoom",
+     "liens": [
+      {
+       "label": "MDN — max-width",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width"
+      }
+     ],
+     "confiance": "Établi — fonde « la borne ne mord pas » et la borne unique par conteneur"
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Le texte peut être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS, soit 1280 px à 400 % de zoom",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — **la seule norme qui contraigne directement le cadre de page, absente du fichier**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Conteneur large",
+     "famille": "Type de conteneur"
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Pleine largeur (full-bleed)",
+     "famille": "Type de conteneur"
+    },
+    {
+     "id": "cas-2-0",
+     "titre": "Sous le breakpoint mobile",
+     "famille": "Régime responsive"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R11",
+   "couche": "ux",
+   "solution": "la bascule mobile/desktop change la **largeur** du conteneur, jamais la nature de son contenu —",
+   "enonce": "Le passage d'un régime de largeur à l'autre ne retire ni n'altère aucune information ni fonctionnalité, et ne restreint pas l'usage à une seule orientation.",
+   "mesure": "à 320 px CSS de large, la totalité du contenu et des fonctions reste disponible, en portrait comme en paysage",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS, soit 1280 px à 400 % de zoom",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **la seule norme qui contraigne directement le cadre de page, absente du fichier**"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Le contenu ne restreint pas son affichage à une seule orientation, sauf si une orientation est essentielle",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.3.4 Orientation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/orientation.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS, soit 1280 px à 400 % de zoom",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — **la seule norme qui contraigne directement le cadre de page, absente du fichier**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Conteneur de contenu standard",
+     "famille": "Type de conteneur"
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Conteneur large",
+     "famille": "Type de conteneur"
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Bascule mobile/desktop",
+     "famille": "Régime responsive"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R12",
+   "couche": "ux",
+   "solution": "la largeur d'un **texte courant** relève de `measure.reading-max` (typographie), pas d'un",
+   "enonce": "La largeur maximale d'un texte courant relève du token de mesure de lecture de la typographie et non d'un conteneur de grille.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Mesure de lecture ≈ 45-75 caractères, ≤ 80 (distincte de la largeur de conteneur)",
+     "liens": [
+      {
+       "label": "Baymard — Line length",
+       "url": "https://baymard.com/blog/line-length-readability"
+      }
+     ],
+     "confiance": "Établi — c'est l'argument de la frontière grid ≠ measure"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Mesure de lecture ≈ 45-75 caractères, ≤ 80 (distincte de la largeur de conteneur)",
+    "liens": [
+     {
+      "label": "Baymard — Line length",
+      "url": "https://baymard.com/blog/line-length-readability"
+     }
+    ],
+    "confiance": "Établi — c'est l'argument de la frontière grid ≠ measure"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Texte courant (prose)",
+     "famille": "Relation au contenu"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R13",
+   "couche": "ux",
+   "solution": "la **densité**, les **gouttières** et la **proximité** relèvent de `spacing`. La grille compose",
+   "enonce": "La densité, les gouttières et la proximité relèvent de l'échelle d'espacement ; la grille compose ces tokens et n'en crée aucun.",
+   "mesure": "aucun token d'espacement défini dans le groupe grille",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Gouttières et marges dérivées de l'échelle d'espacement",
+     "liens": [
+      {
+       "label": "Atlassian — Grid",
+       "url": "https://atlassian.design/foundations/grid-beta"
+      },
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      }
+     ],
+     "confiance": "Établi — cohérent avec le cadrage SPACING"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Gouttières et marges dérivées de l'échelle d'espacement",
+    "liens": [
+     {
+      "label": "Atlassian — Grid",
+      "url": "https://atlassian.design/foundations/grid-beta"
+     },
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     }
+    ],
+    "confiance": "Établi — cohérent avec le cadrage SPACING"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R14",
+   "couche": "ux",
+   "solution": "le **ratio** d'un média relève de `media_ratio`. La grille donne la largeur disponible, pas la",
+   "enonce": "Le rapport de forme d'un média relève de son propre sujet ; la grille ne fournit que la largeur disponible.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Média",
+     "famille": "Relation au contenu"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R15",
+   "couche": "ux",
+   "solution": "la **grille de colonnes** (nombre de colonnes, gouttières inter-colonnes d'une collection)",
+   "enonce": "La grille de colonnes d'une collection appartient au pattern collection ; la fondation grille ne porte que le cadre de page.",
+   "mesure": "un build multi-colonnes charge les règles du pattern collection",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Gouttière entre colonnes",
+     "famille": "Marge et gouttière"
+    }
+   ]
+  },
+  {
+   "id": "GRID-R16",
+   "couche": "ux",
+   "solution": "le shell a **trois régions** — un **rail de navigation** (début / gauche en LTR), la **colonne de",
+   "enonce": "Un shell applicatif se compose d'un rail de navigation, d'une colonne de contenu qui applique le cadre de page, et d'un rail d'outils secondaire.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Shell d'app/doc à trois régions (nav + contenu + outils/aside)",
+     "liens": [
+      {
+       "label": "Carbon — UI Shell",
+       "url": "https://carbondesignsystem.com/"
+      },
+      {
+       "label": "Docusaurus — doc + TOC",
+       "url": "https://docusaurus.io/"
+      },
+      {
+       "label": "Backstage — Layout",
+       "url": "https://backstage.io/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Le shell de Carbon distingue un en-tête, un panneau gauche fixé sous l'en-tête et un panneau droit optionnel de largeur constante et pleine hauteur, ces panneaux flottant toujours au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell left panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-left-panel/usage/"
+      },
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **remplace un lien vers une page d'accueil. Contredit partiellement le fichier : en-tête omis, et rail secondaire toujours en superposition chez Carbon**"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Shell d'app/doc à trois régions (nav + contenu + outils/aside)",
+    "liens": [
+     {
+      "label": "Carbon — UI Shell",
+      "url": "https://carbondesignsystem.com/"
+     },
+     {
+      "label": "Docusaurus — doc + TOC",
+      "url": "https://docusaurus.io/"
+     },
+     {
+      "label": "Backstage — Layout",
+      "url": "https://backstage.io/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R17",
+   "couche": "ux",
+   "solution": "le rail de navigation référence `grid.rail-nav`, le rail d'outils `grid.rail-tools` — largeurs fixes,",
+   "enonce": "Chaque rail tire sa largeur d'un token dédié à largeur fixe, la colonne de contenu prenant l'espace restant.",
+   "mesure": "largeur de chaque rail = token dédié, jamais une unité relative à la fenêtre",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Seuils exacts 1024 / 1280 et largeurs de rails 280 / 320 px",
+     "liens": [
+      {
+       "label": "Arbitrage interne au produit (grille de 4px)",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — à éprouver"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Le shell de Carbon distingue un en-tête, un panneau gauche fixé sous l'en-tête et un panneau droit optionnel de largeur constante et pleine hauteur, ces panneaux flottant toujours au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell left panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-left-panel/usage/"
+      },
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **remplace un lien vers une page d'accueil. Contredit partiellement le fichier : en-tête omis, et rail secondaire toujours en superposition chez Carbon**"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Seuils exacts 1024 / 1280 et largeurs de rails 280 / 320 px",
+    "liens": [
+     {
+      "label": "Arbitrage interne au produit (grille de 4px)",
+      "url": null
+     }
+    ],
+    "confiance": "Non formalisé — à éprouver"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R18",
+   "couche": "ux",
+   "solution": "**ordre de dégradation** (de la plus grande à la plus petite fenêtre) :",
+   "enonce": "Quand la largeur se raréfie, les régions du shell quittent le flux dans l'ordre inverse de leur priorité, la colonne de contenu ne cédant jamais.",
+   "mesure": "à toute largeur de fenêtre, la colonne de contenu est présente dans le flux",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "La région secondaire cède avant la primaire quand la place manque",
+     "liens": [
+      {
+       "label": "Raisonnement de hiérarchie (repère permanent > confort) ; convergence des shells responsives",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (mécanisme)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les classes de taille de fenêtre sont définies en largeur (compact, medium, expanded, large, extra-large) et servent aux décisions de disposition de haut niveau",
+     "liens": [
+      {
+       "label": "Android / Material — Use window size classes",
+       "url": "https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes"
+      }
+     ],
+     "confiance": "Établi — **remplace le lien Material 2 de S2, qui documente une grille 12 colonnes et non des classes de taille**"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Le shell de Carbon distingue un en-tête, un panneau gauche fixé sous l'en-tête et un panneau droit optionnel de largeur constante et pleine hauteur, ces panneaux flottant toujours au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell left panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-left-panel/usage/"
+      },
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **remplace un lien vers une page d'accueil. Contredit partiellement le fichier : en-tête omis, et rail secondaire toujours en superposition chez Carbon**"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "La région secondaire cède avant la primaire quand la place manque",
+    "liens": [
+     {
+      "label": "Raisonnement de hiérarchie (repère permanent > confort) ; convergence des shells responsives",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (mécanisme)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R19",
+   "couche": "ux",
+   "solution": "**off-canvas = overlay** : une région retirée du flux recouvre le contenu au lieu de le pousser ; elle",
+   "enonce": "Une région retirée du flux relève du registre overlay — voile, confinement du focus, verrouillage du défilement, retour du focus — comportement que la grille ne spécifie pas.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Contrat d'un dialogue modal : focus déplacé à l'intérieur, tabulation confinée, contenu extérieur inerte et visuellement obscurci, focus rendu au déclencheur à la fermeture",
+     "liens": [
+      {
+       "label": "W3C — ARIA APG, Dialog (Modal) Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi, note du W3C — source du contrat overlay que la grille délègue"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Le shell de Carbon distingue un en-tête, un panneau gauche fixé sous l'en-tête et un panneau droit optionnel de largeur constante et pleine hauteur, ces panneaux flottant toujours au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell left panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-left-panel/usage/"
+      },
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **remplace un lien vers une page d'accueil. Contredit partiellement le fichier : en-tête omis, et rail secondaire toujours en superposition chez Carbon**"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Contrat d'un dialogue modal : focus déplacé à l'intérieur, tabulation confinée, contenu extérieur inerte et visuellement obscurci, focus rendu au déclencheur à la fermeture",
+    "liens": [
+     {
+      "label": "W3C — ARIA APG, Dialog (Modal) Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi, note du W3C — source du contrat overlay que la grille délègue"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-R20",
+   "couche": "ux",
+   "solution": "**frontière contenu vs shell** : les paliers `breakpoint.tablet` / `breakpoint.desktop` pilotent la",
+   "enonce": "Les paliers de bascule du shell pilotent la présence des rails et non les régimes du conteneur de contenu : deux échelles distinctes.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U01",
+   "couche": "ui",
+   "solution": "un conteneur borné applique en `max-width` l'un des trois tokens (`grid.container-narrow`, `grid.container-default`, `grid.container-wide`) **et** `margin-inline: auto` (centrage).",
+   "enonce": "Un conteneur borné applique un token de largeur en largeur maximale et des marges logiques automatiques pour le centrage.",
+   "mesure": "largeur maximale résolue vers un token de conteneur, marges logiques automatiques, aucune valeur littérale",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+     "liens": [
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T6",
+     "affirmation": "Les marges logiques en ligne sont mappées sur des marges physiques selon le mode d'écriture et la direction du texte, et acceptent la valeur automatique",
+     "liens": [
+      {
+       "label": "MDN — margin-inline",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline"
+      }
+     ],
+     "confiance": "Établi — justifie le centrage par propriété logique"
+    },
+    {
+     "ref": "T8",
+     "affirmation": "La largeur maximale plafonne sans fixer ; note d'accessibilité MDN sur la troncature au zoom",
+     "liens": [
+      {
+       "label": "MDN — max-width",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+    "liens": [
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U02",
+   "couche": "ui",
+   "solution": "le choix du cran suit le contexte de GRID-UX (narrow/default/wide), pas l'esthétique — un",
+   "enonce": "Le cran de conteneur se choisit sur le contexte fonctionnel documenté en couche UX, non sur l'espace disponible.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+     "liens": [
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "Valeurs exactes des trois conteneurs (480 / 1024 / 1440 px)",
+     "liens": [
+      {
+       "label": "Arbitrage interne, calé sur la grille de 8 px et la fourchette des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — ajustable sur besoin réel"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+    "liens": [
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U03",
+   "couche": "ui",
+   "solution": "la marge entre le conteneur et le bord de la fenêtre est un padding horizontal pris dans",
+   "enonce": "La marge entre le conteneur et le bord de la fenêtre est un remplissage horizontal pris dans l'échelle d'espacement.",
+   "mesure": "remplissage horizontal du conteneur résolu vers un token d'espacement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Marges/paddings de page pris dans l'échelle d'espacement",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "Material — Layout",
+       "url": "https://m2.material.io/design/layout/understanding-layout.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Marges/paddings de page pris dans l'échelle d'espacement",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "Material — Layout",
+      "url": "https://m2.material.io/design/layout/understanding-layout.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U04",
+   "couche": "ui",
+   "solution": "sous `breakpoint.mobile`, le conteneur est en pleine largeur moins `page_margin.mobile` de chaque",
+   "enonce": "En régime étroit, le conteneur occupe la pleine largeur moins la marge de page, la largeur maximale restant sans effet.",
+   "mesure": "aucun défilement horizontal à 320 px CSS de large",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T7",
+     "affirmation": "Aucun défilement en deux dimensions ni perte d'information à une largeur équivalente à 320 px CSS",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.10 Reflow",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — donne au régime étroit sa mesure vérifiable"
+    },
+    {
+     "ref": "T8",
+     "affirmation": "La largeur maximale plafonne sans fixer ; note d'accessibilité MDN sur la troncature au zoom",
+     "liens": [
+      {
+       "label": "MDN — max-width",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/max-width"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T7",
+    "affirmation": "Aucun défilement en deux dimensions ni perte d'information à une largeur équivalente à 320 px CSS",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — donne au régime étroit sa mesure vérifiable"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U05",
+   "couche": "ui",
+   "solution": "un élément full-bleed retire le `max-width` et la marge (largeur = 100 % de la fenêtre) ; le",
+   "enonce": "Un élément pleine largeur neutralise la largeur maximale et la marge de page, tandis que le contenu lisible qu'il abrite se re-borne sur un token de conteneur.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+     "liens": [
+      {
+       "label": "GOV.UK — Layout",
+       "url": "https://design-system.service.gov.uk/styles/layout/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`max-width` + marges auto pour borner et centrer un conteneur",
+    "liens": [
+     {
+      "label": "GOV.UK — Layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U06",
+   "couche": "ui",
+   "solution": "**toujours aucun token de gouttière ici** — la grille de colonnes vit dans le pattern",
+   "enonce": "Le groupe de tokens de la grille ne contient aucun token de gouttière : les gouttières appartiennent au pattern collection.",
+   "mesure": "aucune clé de gouttière dans le groupe grille",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U07",
+   "couche": "ui",
+   "solution": "les rails appliquent `grid.rail-nav` / `grid.rail-tools` en largeur fixe (`flex: 0 0 <token>`), jamais",
+   "enonce": "Chaque rail est un élément non flexible dont la base est un token de largeur de rail, la colonne de contenu étant le seul élément flexible.",
+   "mesure": "aucune croissance ni rétrécissement sur les rails, base = token de rail",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Rails à largeur fixe + contenu flexible dans un shell",
+     "liens": [
+      {
+       "label": "Carbon — UI Shell",
+       "url": "https://carbondesignsystem.com/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "T9",
+     "affirmation": "Les panneaux droits du shell de Carbon ont une largeur constante, occupent toute la hauteur et flottent au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **nuance le modèle « rail secondaire dans le flux » du fichier**"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Rails à largeur fixe + contenu flexible dans un shell",
+    "liens": [
+     {
+      "label": "Carbon — UI Shell",
+      "url": "https://carbondesignsystem.com/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U08",
+   "couche": "ui",
+   "solution": "les seuils de bascule sont des `breakpoint.*`, jamais une largeur en dur — `breakpoint.desktop` fait",
+   "enonce": "Les seuils de bascule des régions du shell sont des tokens de point de rupture, jamais des largeurs en dur.",
+   "mesure": "toute requête média du shell référence un token de point de rupture",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "Largeurs de rails et seuils du shell (grid.rail-nav, grid.rail-tools, breakpoint.tablet, breakpoint.desktop)",
+     "liens": [
+      {
+       "label": "Arbitrage interne, aligné sur la grille de base",
+       "url": null
+      }
+     ],
+     "confiance": "Non formalisé — ajustable"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "Largeurs de rails et seuils du shell (grid.rail-nav, grid.rail-tools, breakpoint.tablet, breakpoint.desktop)",
+    "liens": [
+     {
+      "label": "Arbitrage interne, aligné sur la grille de base",
+      "url": null
+     }
+    ],
+    "confiance": "Non formalisé — ajustable"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U09",
+   "couche": "ui",
+   "solution": "une région hors flux (panneau invocable) relève du registre overlay (`elevation.overlay`, scrim, focus",
+   "enonce": "Une région hors flux relève du registre overlay — élévation dédiée, voile, confinement du focus, verrouillage du défilement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T10",
+     "affirmation": "Contrat d'un dialogue modal : focus confiné, contenu extérieur inerte, focus rendu au déclencheur",
+     "liens": [
+      {
+       "label": "W3C — ARIA APG, Dialog (Modal) Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+      }
+     ],
+     "confiance": "Établi, note du W3C"
+    },
+    {
+     "ref": "T9",
+     "affirmation": "Les panneaux droits du shell de Carbon ont une largeur constante, occupent toute la hauteur et flottent au-dessus du contenu",
+     "liens": [
+      {
+       "label": "Carbon — UI shell right panel",
+       "url": "https://carbondesignsystem.com/components/UI-shell-right-panel/usage/"
+      }
+     ],
+     "confiance": "Établi — **nuance le modèle « rail secondaire dans le flux » du fichier**"
+    }
+   ],
+   "principale": {
+    "ref": "T10",
+    "affirmation": "Contrat d'un dialogue modal : focus confiné, contenu extérieur inerte, focus rendu au déclencheur",
+    "liens": [
+     {
+      "label": "W3C — ARIA APG, Dialog (Modal) Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+     }
+    ],
+    "confiance": "Établi, note du W3C"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GRID-U10",
+   "couche": "ui",
+   "solution": "la **marge de page** interne à la colonne de contenu reste celle du cadre de page (`spacing.md`/`spacing.lg`",
+   "enonce": "La marge de page s'applique dans la colonne de contenu, tandis que chaque rail porte son propre remplissage et n'hérite pas de la marge de page.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Marges/paddings de page pris dans l'échelle d'espacement",
+     "liens": [
+      {
+       "label": "Carbon — 2x Grid",
+       "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+      },
+      {
+       "label": "Material — Layout",
+       "url": "https://m2.material.io/design/layout/understanding-layout.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Marges/paddings de page pris dans l'échelle d'espacement",
+    "liens": [
+     {
+      "label": "Carbon — 2x Grid",
+      "url": "https://carbondesignsystem.com/elements/2x-grid/overview/"
+     },
+     {
+      "label": "Material — Layout",
+      "url": "https://m2.material.io/design/layout/understanding-layout.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

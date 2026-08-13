@@ -1,0 +1,212 @@
+[
+ {
+  "id": "GRID-R01",
+  "statut": "identite",
+  "source": "S1, S5",
+  "enonce": "Tout conteneur de page borné tire sa largeur maximale d'un token de conteneur nommé, jamais d'une valeur brute ni d'un point de rupture détourné en largeur.",
+  "mesure": "aucune largeur maximale littérale ni token de point de rupture dans une déclaration de largeur de conteneur"
+ },
+ {
+  "id": "GRID-R02",
+  "statut": "identite",
+  "source": "S1, S12",
+  "enonce": "Un écran de saisie mono-colonne focalisée applique le cran de conteneur le plus étroit et se centre.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R03",
+  "statut": "identite",
+  "source": "S1, S12",
+  "enonce": "Une page de contenu ou d'application à colonne unique applique le cran de conteneur intermédiaire.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R04",
+  "statut": "identite",
+  "source": "S1, S13",
+  "enonce": "Une surface dense assumée applique le cran de conteneur le plus large, qui reste borné au lieu de suivre la fenêtre indéfiniment.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R05",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Un élément décoratif ou immersif peut délibérément déborder le conteneur, ce débordement étant déclaré comme une intention et non subi.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R06",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le contenu lisible ou actionnable placé dans un bloc pleine largeur se re-borne sur un conteneur nommé et ne s'étale jamais d'un bord à l'autre.",
+  "mesure": "aucun texte ni contrôle plus large que le cran de conteneur le plus large dans un bloc pleine largeur"
+ },
+ {
+  "id": "GRID-R07",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "Un conteneur borné se centre par marges automatiques symétriques dès que la fenêtre dépasse sa borne.",
+  "mesure": "marges horizontales gauche et droite égales au-dessus de la borne"
+ },
+ {
+  "id": "GRID-R08",
+  "statut": "identite",
+  "source": "S4",
+  "enonce": "La marge entre le conteneur et le bord de la fenêtre est prise dans l'échelle d'espacement et n'introduit aucune valeur propre à la grille.",
+  "mesure": "toute marge de page résout vers un token de l'échelle d'espacement"
+ },
+ {
+  "id": "GRID-R09",
+  "statut": "identite",
+  "source": "S10, S16",
+  "enonce": "Un conteneur imbriqué dans un conteneur déjà borné hérite de la largeur du parent et n'applique ni seconde largeur maximale ni seconde marge de page.",
+  "mesure": "aucune chaîne d'ancêtres ne porte deux largeurs maximales de conteneur ni deux marges de page"
+ },
+ {
+  "id": "GRID-R10",
+  "statut": "universelle",
+  "source": "S9, S10, S17",
+  "enonce": "En dessous de sa borne, un conteneur occupe la largeur disponible moins la marge de page, et aucun contenu ne provoque de défilement horizontal à 320 px CSS de large.",
+  "mesure": "aucun défilement horizontal à 320 px CSS de large"
+ },
+ {
+  "id": "GRID-R11",
+  "statut": "universelle",
+  "source": "S9, S11",
+  "enonce": "Le passage d'un régime de largeur à l'autre ne retire ni n'altère aucune information ni fonctionnalité, et ne restreint pas l'usage à une seule orientation.",
+  "mesure": "à 320 px CSS de large, la totalité du contenu et des fonctions reste disponible, en portrait comme en paysage"
+ },
+ {
+  "id": "GRID-R12",
+  "statut": "methode",
+  "source": "S3",
+  "enonce": "La largeur maximale d'un texte courant relève du token de mesure de lecture de la typographie et non d'un conteneur de grille.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R13",
+  "statut": "methode",
+  "source": "S4",
+  "enonce": "La densité, les gouttières et la proximité relèvent de l'échelle d'espacement ; la grille compose ces tokens et n'en crée aucun.",
+  "mesure": "aucun token d'espacement défini dans le groupe grille"
+ },
+ {
+  "id": "GRID-R14",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le rapport de forme d'un média relève de son propre sujet ; la grille ne fournit que la largeur disponible.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R15",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La grille de colonnes d'une collection appartient au pattern collection ; la fondation grille ne porte que le cadre de page.",
+  "mesure": "un build multi-colonnes charge les règles du pattern collection"
+ },
+ {
+  "id": "GRID-R16",
+  "statut": "identite",
+  "source": "S6, S14",
+  "enonce": "Un shell applicatif se compose d'un rail de navigation, d'une colonne de contenu qui applique le cadre de page, et d'un rail d'outils secondaire.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R17",
+  "statut": "identite",
+  "source": "S8, S14",
+  "enonce": "Chaque rail tire sa largeur d'un token dédié à largeur fixe, la colonne de contenu prenant l'espace restant.",
+  "mesure": "largeur de chaque rail = token dédié, jamais une unité relative à la fenêtre"
+ },
+ {
+  "id": "GRID-R18",
+  "statut": "identite",
+  "source": "S7, S13, S14",
+  "enonce": "Quand la largeur se raréfie, les régions du shell quittent le flux dans l'ordre inverse de leur priorité, la colonne de contenu ne cédant jamais.",
+  "mesure": "à toute largeur de fenêtre, la colonne de contenu est présente dans le flux"
+ },
+ {
+  "id": "GRID-R19",
+  "statut": "methode",
+  "source": "S15, S14",
+  "enonce": "Une région retirée du flux relève du registre overlay — voile, confinement du focus, verrouillage du défilement, retour du focus — comportement que la grille ne spécifie pas.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-R20",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les paliers de bascule du shell pilotent la présence des rails et non les régimes du conteneur de contenu : deux échelles distinctes.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-U01",
+  "statut": "implementation",
+  "source": "T1, T6, T8",
+  "enonce": "Un conteneur borné applique un token de largeur en largeur maximale et des marges logiques automatiques pour le centrage.",
+  "mesure": "largeur maximale résolue vers un token de conteneur, marges logiques automatiques, aucune valeur littérale"
+ },
+ {
+  "id": "GRID-U02",
+  "statut": "identite",
+  "source": "T1, T3",
+  "enonce": "Le cran de conteneur se choisit sur le contexte fonctionnel documenté en couche UX, non sur l'espace disponible.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-U03",
+  "statut": "identite",
+  "source": "T2",
+  "enonce": "La marge entre le conteneur et le bord de la fenêtre est un remplissage horizontal pris dans l'échelle d'espacement.",
+  "mesure": "remplissage horizontal du conteneur résolu vers un token d'espacement"
+ },
+ {
+  "id": "GRID-U04",
+  "statut": "implementation",
+  "source": "T7, T8",
+  "enonce": "En régime étroit, le conteneur occupe la pleine largeur moins la marge de page, la largeur maximale restant sans effet.",
+  "mesure": "aucun défilement horizontal à 320 px CSS de large"
+ },
+ {
+  "id": "GRID-U05",
+  "statut": "implementation",
+  "source": "T1",
+  "enonce": "Un élément pleine largeur neutralise la largeur maximale et la marge de page, tandis que le contenu lisible qu'il abrite se re-borne sur un token de conteneur.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-U06",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le groupe de tokens de la grille ne contient aucun token de gouttière : les gouttières appartiennent au pattern collection.",
+  "mesure": "aucune clé de gouttière dans le groupe grille"
+ },
+ {
+  "id": "GRID-U07",
+  "statut": "implementation",
+  "source": "T4, T9",
+  "enonce": "Chaque rail est un élément non flexible dont la base est un token de largeur de rail, la colonne de contenu étant le seul élément flexible.",
+  "mesure": "aucune croissance ni rétrécissement sur les rails, base = token de rail"
+ },
+ {
+  "id": "GRID-U08",
+  "statut": "identite",
+  "source": "T5",
+  "enonce": "Les seuils de bascule des régions du shell sont des tokens de point de rupture, jamais des largeurs en dur.",
+  "mesure": "toute requête média du shell référence un token de point de rupture"
+ },
+ {
+  "id": "GRID-U09",
+  "statut": "methode",
+  "source": "T10, T9",
+  "enonce": "Une région hors flux relève du registre overlay — élévation dédiée, voile, confinement du focus, verrouillage du défilement.",
+  "mesure": ""
+ },
+ {
+  "id": "GRID-U10",
+  "statut": "identite",
+  "source": "T2",
+  "enonce": "La marge de page s'applique dans la colonne de contenu, tandis que chaque rail porte son propre remplissage et n'hérite pas de la marge de page.",
+  "mesure": ""
+ }
+]

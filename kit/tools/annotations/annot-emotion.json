@@ -1,0 +1,79 @@
+[
+ {
+  "id": "EMOTION-R01",
+  "statut": "identite",
+  "source": "S3",
+  "enonce": "Le recours à un moment expressif se justifie par le poids du moment pour l'utilisateur et jamais par une intention décorative : l'intensité de l'expression est proportionnelle à l'importance de l'instant.",
+  "mesure": ""
+ },
+ {
+  "id": "EMOTION-R02",
+  "statut": "universelle",
+  "source": "S3, S10, S11",
+  "enonce": "Un moment expressif ne se déclenche jamais sur une action réflexe ou à haute fréquence, et ne se répète pas plus d'une fois par séquence utile : au-delà, l'animation cesse d'être un signal et devient un obstacle qui allonge la tâche.",
+  "mesure": "aucun moment expressif déclenché sur une action répétée à l'intérieur d'une même séquence (frappe, survol, item de liste) ; une occurrence au plus par séquence utile"
+ },
+ {
+  "id": "EMOTION-R03",
+  "statut": "identite",
+  "source": "S4, S12",
+  "enonce": "Un moment expressif ne se place que sur un moment inscrit au catalogue des moments mérités — réussite d'un envoi, franchissement d'une première fois, cap atteint, sortie d'erreur, vide ou attente assumés — et nulle part ailleurs.",
+  "mesure": "tout moment expressif livré correspond à une entrée nommée du catalogue"
+ },
+ {
+  "id": "EMOTION-R04",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'ajout d'une entrée au catalogue des moments mérités est une décision de design tranchée et consignée, jamais une initiative prise au moment de l'implémentation.",
+  "mesure": "toute entrée du catalogue renvoie à une décision datée dans DECISIONS.md"
+ },
+ {
+  "id": "EMOTION-R05",
+  "statut": "universelle",
+  "source": "S7, S8",
+  "enonce": "Un moment expressif est toujours une amélioration et jamais un canal d'information : l'état qu'il célèbre est exposé indépendamment sous forme statique et programmatiquement déterminable, de sorte que la suppression de l'animation ne retire aucune information.",
+  "mesure": "animation désactivée : l'état (succès, envoi, accomplissement) reste exposé en texte et annoncé par un rôle de message de statut"
+ },
+ {
+  "id": "EMOTION-R06",
+  "statut": "universelle",
+  "source": "S5, S6",
+  "enonce": "Sous une préférence utilisateur de mouvement réduit, un moment expressif dégrade vers sa version productive ou instantanée — l'état final s'installe sans déplacement — et jamais vers l'absence d'état.",
+  "mesure": "sous prefers-reduced-motion: reduce, aucune animation de célébration ne se déclenche et l'état final reste atteint et annoncé"
+ },
+ {
+  "id": "EMOTION-R07",
+  "statut": "universelle",
+  "source": "S5, S8, S9, S14",
+  "enonce": "Le registre expressif relève le parti pris d'identité mais ne relâche aucune contrainte d'accessibilité : pas plus de trois flashs par seconde, aucun verrouillage de l'action par l'animation, et aucune information portée par le seul mouvement.",
+  "mesure": "aucune séquence expressive ne dépasse trois flashs par seconde, ne bloque une action en cours, ni ne porte une information absente de l'état statique"
+ },
+ {
+  "id": "EMOTION-R08",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Un moment expressif joue sur quatre instruments — mouvement, voix, couleur, forme — dont la couleur puise exclusivement dans les rôles de couleur existants du système, sans jamais introduire de valeur nouvelle.",
+  "mesure": "aucune valeur de couleur en dur dans un moment expressif : toute couleur provient d'un rôle de couleur existant"
+ },
+ {
+  "id": "EMOTION-R09",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Les instruments d'un moment expressif se résolvent de manière accordée : la fin du mouvement, le changement de voix et l'installation de la couleur convergent sur le même temps plutôt que de se succéder indépendamment.",
+  "mesure": ""
+ },
+ {
+  "id": "EMOTION-R10",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Tout moment expressif est un composant ou un comportement catalogué, versionné et soumis à un budget, déclaré comme exception documentée ; un effet d'animation défini localement dans un écran n'est pas un moment expressif.",
+  "mesure": "tout moment expressif possède une entrée de catalogue versionnée ; aucun effet expressif défini au niveau d'un écran"
+ },
+ {
+  "id": "EMOTION-R11",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le SubmitButton « avion en papier » fait office de gabarit de référence : tout nouveau moment expressif reprend son anatomie en trois actes et son contrat de repli.",
+  "mesure": ""
+ }
+]

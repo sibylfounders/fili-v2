@@ -1,0 +1,135 @@
+[
+  {
+    "couche": "ux",
+    "ref": "S1",
+    "affirmation": "La charge extrinsèque est la charge mentale imposée au-delà de la tâche elle-même, donc du gaspillage ; le système absorbe la complexité plutôt que de la déléguer à l'utilisateur (Tesler).",
+    "source_markdown": "[Sweller, *Cognitive Load During Problem Solving: Effects on Learning*, Cognitive Science, 12(2), 1988, p. 257-285](https://philpapers.org/rec/SWECLD) ; Tesler — via `LAWS-UX.md` (S11)",
+    "confiance": "Établi (publication primaire identifiée). CORRECTION : le fichier délègue Sweller à `LAWS-UX.md`, dont la table de sources ne comporte AUCUNE entrée Sweller — la chaîne de délégation était rompue, la référence primaire est ajoutée ici."
+  },
+  {
+    "couche": "ux",
+    "ref": "S2",
+    "affirmation": "Divulgation progressive : ne montrer d'abord que les quelques options les plus importantes, et offrir l'ensemble spécialisé sur demande.",
+    "source_markdown": "[NN/g — Progressive Disclosure (Nielsen, 2006)](https://www.nngroup.com/articles/progressive-disclosure/)",
+    "confiance": "Établi — article de référence daté et identifiable ; concept classique en IHM. URL vérifiée."
+  },
+  {
+    "couche": "ux",
+    "ref": "S3",
+    "affirmation": "Découper un formulaire en pages ne contenant qu'une seule chose (une information, une décision, une question) ; la recherche utilisateur dit quand fusionner des pages.",
+    "source_markdown": "[GOV.UK Service Manual — Structuring forms](https://www.gov.uk/service-manual/design/form-structure)",
+    "confiance": "Convergence FAIBLE — un seul design system public, et la source elle-même porte sur les FORMULAIRES, pas sur tout écran. La généralisation à toute vue assemblée est un choix du système, pas la source."
+  },
+  {
+    "couche": "ux",
+    "ref": "S4",
+    "affirmation": "Heuristiques d'utilisabilité n°1 (visibility of system status), n°3 (user control and freedom : sortie de secours clairement signalée, undo), n°5 (error prevention) et n°6 (recognition rather than recall).",
+    "source_markdown": "[NN/g — 10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/)",
+    "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées. CORRECTION : le fichier ne cite que n°3, 5 et 6 ; la règle R18 (« montrer l'état ») repose en réalité sur l'heuristique n°1, non citée."
+  },
+  {
+    "couche": "ux",
+    "ref": "S5",
+    "affirmation": "Les utilisateurs s'appuient massivement sur ce qui leur est proposé par défaut et utilisent rarement les fonctions de personnalisation.",
+    "source_markdown": "[NN/g — The Power of Defaults (Nielsen, 2005)](https://www.nngroup.com/articles/the-power-of-defaults/)",
+    "confiance": "Établi comme observation, mais À NUANCER : l'article documente surtout le biais de position dans les résultats de recherche (42 % de clics sur le premier résultat, 34 % même après inversion) ; il ne chiffre pas « on ne change jamais un défaut » pour les champs de formulaire. Le fichier écrit « la plupart des utilisateurs ne changent jamais un défaut » — l'ampleur n'est pas dans la source."
+  },
+  {
+    "couche": "ux",
+    "ref": "S6",
+    "affirmation": "Le consentement est un acte positif : une case pré-cochée ne constitue pas un consentement valide.",
+    "source_markdown": "[RGPD art. 4(11)](https://gdpr-info.eu/art-4-gdpr/) (« indication de volonté libre, spécifique, éclairée et univoque… par une déclaration ou par un acte positif clair ») ; [RGPD art. 7](https://gdpr-info.eu/art-7-gdpr/) ; [CJUE, C-673/17 Planet49, 1er octobre 2019](https://curia.europa.eu/juris/liste.jsf?num=C-673%2F17)",
+    "confiance": "Établi — normatif et jurisprudentiel. CORRECTION : le fichier citait ces références sans aucune URL ; les liens sont ajoutés et vérifiés (date d'arrêt confirmée : 1er octobre 2019, Grande chambre)."
+  },
+  {
+    "couche": "ux",
+    "ref": "S7",
+    "affirmation": "Catalogue de référence des patterns trompeurs (dissimulation, pré-cochage, interférence visuelle, fausse urgence) et de leur contentieux.",
+    "source_markdown": "[Deceptive Patterns — Harry Brignull](https://www.deceptive.design/)",
+    "confiance": "Établi comme catalogue de référence (18 types de patterns, base de cas d'application légale). Ce n'est pas une norme : il fonde une position éthique, pas une obligation opposable."
+  },
+  {
+    "couche": "ux",
+    "ref": "S8",
+    "affirmation": "Banner blindness : un contenu placé et stylé comme une publicité est filtré avant lecture, y compris lorsqu'il porte une information utile.",
+    "source_markdown": "[NN/g — Banner Blindness: Old and New Findings (Pernice, 2018)](https://www.nngroup.com/articles/banner-blindness-old-and-new-findings/)",
+    "confiance": "Établi — recherche observationnelle (placement type publicité, animation, contamination par voisinage). L'interdit opérationnel qu'en tire le fichier reste une formalisation interne."
+  },
+  {
+    "couche": "ux",
+    "ref": "S9",
+    "affirmation": "La capacité pure de la mémoire à court terme est d'environ QUATRE chunks (fourchette 3 à 5), et non sept ; le « nombre magique sept » de Miller relevait selon Cowan d'un procédé rhétorique et d'estimations composites gonflées par la mémoire à long terme, la répétition et le chunking.",
+    "source_markdown": "[Cowan, *The magical number 4 in short-term memory: A reconsideration of mental storage capacity*, Behavioral and Brain Sciences, 24, 2001, p. 87-185](https://memory.psych.missouri.edu/assets/doc/articles/2001/cowan-bbs-2001.pdf)",
+    "confiance": "Établi — article cible de BBS, publication primaire vérifiée. AJOUT : aucune référence de mémoire de travail n'était sourcée ni dans ce fichier ni dans `LAWS-UX.md`."
+  },
+  {
+    "couche": "ux",
+    "ref": "S10",
+    "affirmation": "Le « 7 ± 2 » ne s'applique pas au nombre d'éléments d'une interface : un menu repose sur la reconnaissance et non sur la mémorisation, donc il n'est pas à limiter à sept entrées.",
+    "source_markdown": "[NN/g — Short-Term Memory and Web Usability (Nielsen, 2009)](https://www.nngroup.com/articles/short-term-memory-and-web-usability)",
+    "confiance": "Établi pour la réfutation de l'usage UI. ATTENTION : cet article continue lui-même d'avancer « environ 7 chunks » pour la mémoire à court terme et ne cite pas Cowan — il réfute l'application au menu, pas le chiffre. Le chiffre corrigé est en S9. Par ailleurs le lien Miller primaire retenu par `LAWS-UX.md` (psychclassics.yorku.ca/Miller/) est INACCESSIBLE (boucle de redirections) au 2026-07-27 : à remplacer."
+  },
+  {
+    "couche": "ux",
+    "ref": "S11",
+    "affirmation": "Loi de Hick : le temps de réaction de choix croît avec l'incertitude informationnelle des alternatives (gain d'information à débit approximativement constant).",
+    "source_markdown": "[Hick, *On the Rate of Gain of Information*, Quarterly Journal of Experimental Psychology, 4(1), 1952, p. 11-26](https://journals.sagepub.com/doi/10.1080/17470215208416600)",
+    "confiance": "Établi — publication primaire vérifiée. AJOUT : le fichier invoque Hick (R06, R09) sans référence propre, en déléguant à `LAWS-UX.md`, qui ne fournit pour Hick qu'un lien de vulgarisation (lawsofux.com). Portée réelle : temps de réaction en tâche de choix simple — l'extrapolation au nombre de décisions d'un écran n'est pas dans la source."
+  },
+  {
+    "couche": "ux",
+    "ref": "S12",
+    "affirmation": "Les mécanismes de navigation répétés sur plusieurs pages d'un ensemble apparaissent dans le même ordre relatif à chaque répétition, sauf changement initié par l'utilisateur.",
+    "source_markdown": "[WCAG 2.2 — 3.2.3 Consistent Navigation](https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT : critère explicitement motivé par la réduction de charge cognitive, absent du fichier."
+  },
+  {
+    "couche": "ux",
+    "ref": "S13",
+    "affirmation": "Des composants ayant la même fonctionnalité dans un ensemble de pages sont identifiés de manière cohérente.",
+    "source_markdown": "[WCAG 2.2 — 3.2.4 Consistent Identification](https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT — fonde normativement l'anti-camouflage (R19) : un même rôle garde une même identification."
+  },
+  {
+    "couche": "ux",
+    "ref": "S14",
+    "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu requiert une saisie de l'utilisateur.",
+    "source_markdown": "[WCAG 2.2 — 3.3.2 Labels or Instructions](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancrage normatif de R12 : une valeur pré-remplie non annoncée prive l'utilisateur de l'instruction requise. Ancrage INDIRECT : le critère ne nomme pas le pré-remplissage."
+  },
+  {
+    "couche": "ux",
+    "ref": "S15",
+    "affirmation": "Toute limite de temps fixée par le contenu est désactivable, ajustable (jusqu'à dix fois la durée par défaut) ou prolongeable (avertissement puis au moins 20 secondes pour prolonger, au moins dix fois), hors exceptions temps réel, essentielle et au-delà de 20 heures.",
+    "source_markdown": "[WCAG 2.2 — 2.2.1 Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancre R15, que le fichier renvoyait à `accessibility` sans citer le critère."
+  },
+  {
+    "couche": "ux",
+    "ref": "S16",
+    "affirmation": "Une aide contextuelle est disponible.",
+    "source_markdown": "[WCAG 2.2 — 3.3.5 Help](https://www.w3.org/WAI/WCAG22/Understanding/help.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AAA). AJOUT — référence disponible pour le helper persistant renvoyé à `INPUT` ; non mobilisée par une règle de ce fichier."
+  },
+  {
+    "couche": "ux",
+    "ref": "S17",
+    "affirmation": "Quand un texte exige un niveau de lecture supérieur au premier cycle du secondaire, un contenu supplémentaire ou une version plus simple est disponible.",
+    "source_markdown": "[WCAG 2.2 — 3.1.5 Reading Level](https://www.w3.org/WAI/WCAG22/Understanding/reading-level.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AAA). AJOUT — référence disponible pour « mots simples » renvoyé à `VOICE` ; non mobilisée par une règle de ce fichier."
+  },
+  {
+    "couche": "ux",
+    "ref": "S18",
+    "affirmation": "Pour toute page entraînant un engagement juridique, une transaction financière, la modification ou la suppression de données contrôlées par l'utilisateur, la soumission est réversible, OU vérifiée avec possibilité de correction, OU confirmée par un mécanisme de revue avant finalisation.",
+    "source_markdown": "[WCAG 2.2 — 3.3.4 Error Prevention (Legal, Financial, Data)](https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT MAJEUR — c'est l'ancrage normatif direct de la doctrine réversibilité/confirmation (R13, R14), que le fichier ne fondait que sur une heuristique NN/g. Le critère valide la structure « réversible OU confirmé », pas la préférence pour l'undo, qui reste un parti pris."
+  },
+  {
+    "couche": "ux",
+    "ref": "S19",
+    "affirmation": "Les utilisateurs sont avertis de la durée d'inactivité pouvant entraîner une perte de données, sauf si les données sont conservées plus de 20 heures en l'absence d'action.",
+    "source_markdown": "[WCAG 2.2 — 2.2.6 Timeouts](https://www.w3.org/WAI/WCAG22/Understanding/timeouts.html)",
+    "confiance": "Établi, standard d'accessibilité (niveau AAA). AJOUT — donne à R15 (« quitter n'est pas perdre ») un seuil mesurable (20 heures) que le fichier n'avait pas."
+  }
+]

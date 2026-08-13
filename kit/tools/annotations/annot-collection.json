@@ -1,0 +1,303 @@
+[
+ {
+  "id": "COLLECTION-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Un pattern de composition ne se décrit pas avec le modèle de variantes d'un composant atomique : ses variables sont ses régimes de composition et la densité de ses items, non des axes de style.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R02",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La grille de colonnes appartient au pattern de collection, qui la fait naître ; les fondations de mise en page et d'espacement qui en avaient différé la définition gardent l'autorité sur le cadre de page et sur l'échelle des valeurs.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R03",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le nombre de colonnes et la gouttière d'une collection sont détenus par le pattern de collection, non par le composant d'item qu'elle dispose.",
+  "mesure": "aucun token de gouttière de grille défini dans le composant d'item"
+ },
+ {
+  "id": "COLLECTION-R04",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "Une collection d'items homogènes présente des items de même poids et de même largeur, disposés sur une grille dont les colonnes émergent d'une largeur minimale d'item.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R05",
+  "statut": "identite",
+  "source": "S4",
+  "enonce": "Une collection composée dispose des blocs de tailles différentes sur une grille explicite à colonnes égales, chaque bloc occupant un nombre entier de cellules, le nombre de colonnes se choisissant sur le contenu plutôt que sur un nombre canonique repris d'un autre système.",
+  "mesure": "toute portée de bloc s'exprime en nombre entier de colonnes"
+ },
+ {
+  "id": "COLLECTION-R06",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Une même collection n'applique qu'un seul régime de grille ; une collection composée peut contenir une collection d'items homogènes, jamais l'inverse.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R07",
+  "statut": "identite",
+  "source": "S1, S2, S4",
+  "enonce": "Le nombre de colonnes d'une collection se déduit de la largeur minimale d'un item et de l'espace réellement disponible dans son conteneur, jamais d'une classe d'appareil ni d'un point de rupture intermédiaire.",
+  "mesure": "aucune requête média ne fixe un nombre de colonnes de collection"
+ },
+ {
+  "id": "COLLECTION-R08",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Sous le point de rupture mobile, la collection s'affiche en colonne unique occupant toute la largeur disponible.",
+  "mesure": "une seule colonne d'items en dessous du point de rupture mobile"
+ },
+ {
+  "id": "COLLECTION-R09",
+  "statut": "identite",
+  "source": "S1",
+  "enonce": "La dernière rangée incomplète conserve la largeur d'item des rangées pleines : aucun item ne s'étire pour combler l'espace restant.",
+  "mesure": "la largeur d'item de la dernière rangée est égale à celle des rangées précédentes"
+ },
+ {
+  "id": "COLLECTION-R10",
+  "statut": "universelle",
+  "source": "S8, S9, S2",
+  "enonce": "Le passage d'un nombre de colonnes à un autre préserve l'ordre de lecture, l'ordre du document et l'ordre de focus ; la mise en avant d'un item se décide par son rang, jamais par une réorganisation visuelle qui contredit l'ordre programmatique.",
+  "mesure": "l'ordre visuel des items est identique à l'ordre du document à toutes les largeurs ; aucune propriété d'ordre CSS sur les items"
+ },
+ {
+  "id": "COLLECTION-R11",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Une collection réduite à un ou deux items conserve la grille et les largeurs de la collection pleine, sans mise en scène particulière du petit nombre.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R12",
+  "statut": "identite",
+  "source": "S5",
+  "enonce": "Une collection n'utilise qu'une seule valeur de gouttière, identique entre colonnes et rangées, prise dans l'échelle d'espacement du système et appariée à la densité de la collection.",
+  "mesure": "gouttière horizontale égale à la gouttière verticale, résolue vers un token d'espacement"
+ },
+ {
+  "id": "COLLECTION-R13",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La zone de collection peut se distinguer du fond de page par une surface propre, qui englobe la grille et ses outils comme une seule région perçue.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R14",
+  "statut": "identite",
+  "source": "S16",
+  "enonce": "Les outils portant sur l'ensemble de la collection — tri, filtres, recherche, compteur — occupent une position constante au-dessus de la grille ; un contrôle qui ne porte que sur un item appartient à cet item.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R15",
+  "statut": "identite",
+  "source": "S18",
+  "enonce": "Le tri appliqué par défaut est visible et nommé dans l'interface : une collection n'arrive jamais triée silencieusement.",
+  "mesure": "un libellé de tri est affiché à l'arrivée sur la collection"
+ },
+ {
+  "id": "COLLECTION-R16",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Un filtre actif dès l'arrivée sur la collection est déclaré visiblement : aucune restriction du jeu de résultats n'est appliquée sans que l'utilisateur puisse la constater.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R17",
+  "statut": "universelle",
+  "source": "S16, S17, S7",
+  "enonce": "Les filtres actifs restent affichés, chacun retirable d'un seul geste, et le compteur de résultats reflète le jeu filtré à chaque changement.",
+  "mesure": "chaque filtre actif est affiché avec un moyen de retrait direct ; le nombre affiché par le compteur correspond au jeu de résultats filtré"
+ },
+ {
+  "id": "COLLECTION-R18",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Ce document pose les obligations de la barre d'outils sans définir les contrôles qui la composent : un besoin de contrôle absent du système suspend l'implémentation et est remonté.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R19",
+  "statut": "identite",
+  "source": "S3, S15",
+  "enonce": "Par défaut, une collection longue s'étend sur demande explicite de l'utilisateur, sans déplacer sa position de lecture ni éloigner le pied de page.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R20",
+  "statut": "identite",
+  "source": "S15, S3",
+  "enonce": "La pagination remplace l'extension à la demande lorsque la position d'un résultat doit être adressable — citée, retrouvée ou comparée.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R21",
+  "statut": "identite",
+  "source": "S3, S15",
+  "enonce": "Le défilement infini n'est jamais le seul moyen de parcourir une collection : il est doublé d'un chemin fini, et il est exclu d'un écran dont le pied de page doit rester atteignable.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R22",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le retour à une collection déjà consultée en restaure la position, le tri et les filtres.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R23",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "L'échec du chargement d'un incrément laisse en place les items déjà affichés et propose une reprise locale de la seule opération échouée.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R24",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Au chargement initial, les marques d'attente occupent un nombre de cellules stable, de sorte que l'arrivée du contenu ne déplace pas la grille, et rien ne s'anime.",
+  "mesure": "aucun décalage de mise en page mesurable entre l'état d'attente et l'état chargé"
+ },
+ {
+  "id": "COLLECTION-R25",
+  "statut": "universelle",
+  "source": "S11, S10",
+  "enonce": "Un tri ou un filtrage réorganise la grille sobrement et sans changement de contexte — ni déplacement du focus, ni changement de vue imposé ; sous préférence de mouvement réduit, le nouveau résultat remplace l'ancien sans transition.",
+  "mesure": "sous préférence de mouvement réduit, aucune transition ni animation au changement de tri ou de filtre"
+ },
+ {
+  "id": "COLLECTION-R26",
+  "statut": "universelle",
+  "source": "S7",
+  "enonce": "Tout changement du jeu de résultats est annoncé aux technologies d'assistance par un message de statut déterminable programmatiquement, qui ne prend pas le focus.",
+  "mesure": "le compteur de résultats est exposé dans une région live polie et sa valeur change à chaque changement de résultats"
+ },
+ {
+  "id": "COLLECTION-R27",
+  "statut": "methode",
+  "source": "S12, S13, S14",
+  "enonce": "Les états vide, sans résultat et en erreur sont rendus par le composant d'état vide et par le langage éditorial ; la collection garantit seulement qu'ils prennent la place de la grille et ne sont jamais éphémères.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R28",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le mode d'interaction des items relève du composant d'item et le budget d'actions de l'écran du principe de charge cognitive ; la barre d'outils d'une collection n'introduit pas d'action principale concurrente.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R29",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le registre de mouvement d'une collection est celui du langage de motion : rien au chargement, sobriété au changement, aucune animation décorative.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R30",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La formulation des compteurs, des libellés de tri et des états sans résultat relève du langage éditorial, qui décrit et propose sans blâmer.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R31",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'expression émotionnelle est sans objet au niveau du conteneur de collection : ce qui se répète à chaque item est exclu par le budget de rareté et appartient au contenu injecté.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-R32",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "L'uniformité de largeur, de rythme, d'ordre et de règles est le contrat d'une collection : la mise en avant d'un item passe par son rang, par sa taille en cellules ou par son contenu, jamais par une exception locale à ce contrat.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-U01",
+  "statut": "implementation",
+  "source": "T1, T2",
+  "enonce": "La grille d'items se déclare par une répétition de colonnes bornées par une largeur minimale d'item et une fraction de l'espace restant, sans requête média ; la largeur minimale est plafonnée par la largeur du conteneur, et le mode de répétition retenu ne remplit pas les colonnes manquantes de la dernière rangée.",
+  "mesure": "aucune requête média ne définit le nombre de colonnes ; la largeur minimale d'item est bornée par la largeur du conteneur"
+ },
+ {
+  "id": "COLLECTION-U02",
+  "statut": "implementation",
+  "source": "T1",
+  "enonce": "Sous le point de rupture mobile, la colonne unique n'est forcée par une requête média que lorsqu'elle n'émerge pas déjà du plafonnement de la largeur minimale d'item.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-U03",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La gouttière d'une collection est un token d'espacement unique par niveau de densité, appliqué identiquement aux colonnes et aux rangées.",
+  "mesure": "une seule déclaration d'espacement de grille par collection, résolue vers un token d'espacement"
+ },
+ {
+  "id": "COLLECTION-U04",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le token de gouttière autrefois porté par le composant d'item devient un alias de compatibilité renvoyant au pattern de collection, sans changement de valeur pour l'existant.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-U05",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le cadre de page d'une collection est le conteneur borné défini par les fondations de grille ; la grille de collection remplit ce cadre et ne se re-borne pas.",
+  "mesure": "aucune largeur maximale déclarée sur la grille elle-même"
+ },
+ {
+  "id": "COLLECTION-U06",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La zone de collection peut porter un fond de surface distinct du fond de page et un remplissage pris dans l'échelle d'espacement, les items conservant le fond de base.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-U07",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "La grille du régime composé se déclare en colonnes égales, les blocs s'y étendant par portées de cellules entières.",
+  "mesure": "toute portée de bloc est un nombre entier de colonnes"
+ },
+ {
+  "id": "COLLECTION-U08",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "L'espace entre blocs appartient à la grille : aucun bloc ne déclare de marge externe.",
+  "mesure": "aucune marge externe déclarée sur les éléments de la grille"
+ },
+ {
+  "id": "COLLECTION-U09",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "Le déclencheur d'extension à la demande est un bouton secondaire placé dans le flux sous la grille, jamais flottant, et il suit le cycle d'action en cours avec protection contre la double activation.",
+  "mesure": ""
+ },
+ {
+  "id": "COLLECTION-U10",
+  "statut": "implementation",
+  "source": "interne",
+  "enonce": "Les marques d'attente occupent un nombre de cellules fixe, au moins une rangée pleine, et sont remplacées en place par les cellules réelles.",
+  "mesure": "hauteur de grille identique entre l'état d'attente et l'état chargé d'une rangée"
+ },
+ {
+  "id": "COLLECTION-U11",
+  "statut": "universelle",
+  "source": "T3, T5",
+  "enonce": "Le compteur de résultats est la seule région live de la collection et son annonce est polie ; la grille elle-même n'est jamais déclarée région live.",
+  "mesure": "exactement un élément à annonce polie dans la collection, portant le compteur de résultats"
+ }
+]

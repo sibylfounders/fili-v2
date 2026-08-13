@@ -1,0 +1,13 @@
+/* Focus v2 (arbitrage 2026-07-29 après-midi) : anneau outline UNIQUE en géométrie
+   (--control-focus-width/offset, :focus-visible — BORDER-U05), couleur SUBTILE accordée
+   à la bordure d'état : défaut primary éclairci, error→danger, success→success,
+   warning→warning (crans --control-focus-*). L'anneau s'ajoute à la bordure (BORDER-R07).
+   NB : on consomme --control-focus-color DIRECTEMENT (une surcharge de variable sur
+   l'élément ne se propage pas à un alias résolu à :root). */
+[data-slot="input"]:has(:is(input, textarea, select):focus-visible) {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+[data-slot="input"][data-status="error"]   { --control-focus-color: var(--control-focus-danger); }
+[data-slot="input"][data-status="success"] { --control-focus-color: var(--control-focus-success); }
+[data-slot="input"][data-status="warning"] { --control-focus-color: var(--control-focus-warning); }

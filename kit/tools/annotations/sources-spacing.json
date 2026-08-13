@@ -1,0 +1,65 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Les éléments proches sont perçus comme appartenant au même groupe, et la proximité l'emporte sur les indices concurrents de couleur ou de forme",
+  "source_markdown": "[Nielsen Norman Group — Proximity Principle in Visual Design](https://www.nngroup.com/articles/gestalt-proximity/)",
+  "confiance": "Établi — principe Gestalt documenté par NN/g"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "L'espace sous un titre doit être plus petit que l'espace au-dessus, pour que le titre soit visuellement plus proche du texte qu'il introduit",
+  "source_markdown": "[Butterick — Space above & below](https://practicaltypography.com/space-above-and-below.html)",
+  "confiance": "Établi comme convention typographique — ni norme ni design system : soutient R13 sans en faire une loi"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "Aucune perte de contenu ni de fonctionnalité lorsque l'utilisateur impose interligne 1,5×, espacement de paragraphe 2×, interlettrage 0,12× et intermots 0,16×",
+  "source_markdown": "[WCAG 2.2 — 1.4.12 Text Spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)",
+  "confiance": "Établi, standard (AA) — critère littéralement homonyme du sujet, **absent du fichier**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Le contenu se présente sans perte ni défilement bidimensionnel à une largeur équivalente à 320 px CSS",
+  "source_markdown": "[WCAG 2.2 — 1.4.10 Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+  "confiance": "Établi, standard (AA) — la contrainte normative réelle du régime mobile, absente du fichier"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "Le texte peut être agrandi jusqu'à 200 % sans perte ; le Understanding précise que les conteneurs de texte doivent s'agrandir avec lui",
+  "source_markdown": "[WCAG 2.2 — 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html)",
+  "confiance": "Établi, standard (AA) — **nuance la lecture faite par R21**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "Un mécanisme doit permettre un interligne d'au moins 1,5 et un espacement de paragraphe au moins 1,5 fois supérieur à l'interligne",
+  "source_markdown": "[WCAG 2.2 — 1.4.8 Visual Presentation](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html)",
+  "confiance": "Établi — **mais niveau AAA et conditionné à un mécanisme** : le fichier le citait comme un plancher applicable"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Les cibles de moins de 24 × 24 px doivent être positionnées de sorte qu'un cercle de 24 px centré sur chacune n'en intersecte aucune autre : l'espacement est le critère de rattrapage normatif",
+  "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+  "confiance": "Établi, standard (AA) — **donne le seuil réel (24) là où la table de risque annonçait 44**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "Les décalages de mise en page s'évitent en réservant la place du contenu tardif dès la mise en page initiale, et en ne repliant pas cette réserve",
+  "source_markdown": "[web.dev — Optimize Cumulative Layout Shift](https://web.dev/articles/optimize-cls)",
+  "confiance": "Établi — référence d'implémentation de l'équipe Chrome"
+ },
+ {
+  "couche": "ux",
+  "ref": "S19",
+  "affirmation": "Un décalage se produit dès qu'un élément visible change de position entre deux images ; ces éléments sont dits instables et mesurables par l'API Layout Instability",
+  "source_markdown": "[MDN — LayoutShift](https://developer.mozilla.org/en-US/docs/Web/API/LayoutShift)",
+  "confiance": "Établi — fonde la mesurabilité de R22"
+ }
+]

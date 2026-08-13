@@ -1,0 +1,107 @@
+# Déploiement du site de doctrine (apps/site) sur GitHub Pages.
+# Se déclenche à chaque push sur main. Le build tourne chez GitHub —
+# c'est aussi notre seul environnement capable de faire un `next build` complet.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Injecte automatiquement basePath: "/fili" dans next.config.mjs
+      # (le site sera servi sous https://<user>.github.io/fili/)
+      # et active Pages sur le dépôt au premier passage.
+      - uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+          generator_config_file: apps/site/next.config.mjs
+          enablement: true
+
+      - run: npm ci
+
+      # ── Chaîne de vérification COMPLÈTE avant toute publication (chantier cohérence).
+      # La CI ne publie JAMAIS une version qui n'a passé que le build visuel du site :
+      # tokens (garde de fidélité + contrastes), fraîcheur du manifeste, cohérence des
+      # couches, tokens stricts (pilote + baseline), consommation, exemples canoniques,
+      # projections de parcours, TypeScript, tests, paquet agents — puis seulement le
+      # build Next. Cette liste est le miroir EXACT du script `verifie` de package.json :
+      # une étape ajoutée là et oubliée ici publierait sans elle.
+      - run: npm run tokens:build
+      - run: npm run manifeste:check
+      - run: npm run verifie:manifeste
+      - run: npm run verifie:tokens
+      - run: npm run verifie:consommation
+      - run: npm run verifie:exemples
+
+      # Les projections de parcours (`content/flows/*.json`) sont GÉNÉRÉES depuis les fiches
+      # et versionnées : `--check` échoue si le JSON commité a divergé de sa source, et
+      # l'épreuve confronte la projection à la fiche dans les DEUX sens (complétude et
+      # fidélité littérale). Aucun navigateur requis, aucun site construit requis.
+      - run: npm run verifie:flows
+
+      - run: npm run verifie:tsc
+      - run: npm test
+      - run: npm run plugin:build
+
+      - run: npm run build --workspace @fili/site
+
+      # ── Le navigateur s'installe ici et nulle part ailleurs — ~40 s de plus par run.
+      # Il sert TROIS gardes, pas une seule : les deux harnais de prédicats du corpus
+      # (contraste, couche UX) et la garde de rendu. Il doit donc être posé AVANT elles,
+      # pas juste avant `verifie:rendu` — sinon les deux harnais sortent en code 2
+      # (« aucun Chromium exécutable »), qui est un échec, pas un contournement.
+      - run: npx playwright install --with-deps chromium
+
+      # ── Les CRITÈRES du corpus, exécutés. `verifie:criteres` rejoue sur les pages
+      # CONSTRUITES (apps/site/out) les contrôles que `verifie-rendu.mjs` tient en dur, et
+      # échoue sur toute divergence entre les deux : c'est la garde qui empêche une règle
+      # du corpus de dériver de son implémentation. `verifie:contraste` et `verifie:ux`
+      # éprouvent les prédicats eux-mêmes sur des cas construits (Chromium, `setContent`),
+      # y compris les cas où le prédicat DOIT refuser de conclure.
+      - run: npm run verifie:criteres
+      - run: npm run verifie:contraste
+      - run: npm run verifie:ux
+
+      # ── Le RENDU : la seule garde qui voie le résultat plutôt que l'intention.
+      # Elle ouvre les pages CONSTRUITES dans Chromium et interroge le DOM calculé
+      # (anneau de focus du système, hiérarchie de titres, plancher de cible tactile,
+      # liens morts confrontés à l'inventaire construit, messages désignés dans le vide,
+      # aria-invalid sans message, erreurs JavaScript).
+      # L'inventaire des pages se dérive du dossier construit : une page créée demain
+      # est vérifiée sans que personne ne l'inscrive. La détection des valeurs source
+      # reste au validateur AST (verifie:consommation / verifie:tokens) — pas de redite.
+      - run: npm run verifie:rendu
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/site/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

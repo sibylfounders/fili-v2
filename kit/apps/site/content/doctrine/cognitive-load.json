@@ -1,0 +1,1714 @@
+{
+ "slug": "cognitive-load",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"12\" r=\"7.2\" fill=\"#4F46E5\"/><path d=\"M6.2 12.2l2 2 3.6-4.2\" stroke=\"#FFFFFF\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"17.6\" y=\"5\" width=\"4.2\" height=\"4.2\" rx=\"1.2\" fill=\"#bcb9f5\"/><rect x=\"17.6\" y=\"11\" width=\"4.2\" height=\"4.2\" rx=\"1.2\" fill=\"#bcb9f5\"/><rect x=\"17.6\" y=\"17\" width=\"4.2\" height=\"4.2\" rx=\"1.2\" fill=\"#F2C744\"/></svg>",
+ "nom": "cognitive-load",
+ "nature": "Principe",
+ "meta": "UX v1.0.0 · mis à jour 2026-07-21 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · cognitive-load",
+  "question": "Combien de décisions un écran a-t-il le droit d’exiger — et que doit-il montrer avant qu’on s’engage ?",
+  "detail": "Ce principe borne l’effort mental que l’interface impose : une décision principale par moment, l’essentiel avant le détail (jamais un coût caché), des valeurs par défaut qui n’engagent pas à l’insu, l’annulation plutôt que la confirmation, et la mémoire laissée au système plutôt qu’à l’utilisateur.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un écran déclare une décision principale"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La divulgation progressive allège sans jamais cacher un coût"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le réversible s’exécute avec une annulation visible"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "26",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "17",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "1",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-cognitive-load.md",
+   "source": "---\nsujet: cognitive-load\ntype: principe\nresume: \"Contrat de charge cognitive chargé pour TOUTE intention : une décision principale par moment, divulgation progressive (jamais un coût caché), défauts intelligents (jamais d'engagement pré-coché), réversibilité (undo > confirmation, « Annuler » = promesse tenue), reconnaissance plutôt que rappel, anti-camouflage — pose l'obligation et renvoie au propriétaire, ne duplique rien\"\nrequires: []\nselon-contexte: [\"button\", \"form\", \"form-multi-step\", \"form-autosave\", \"form-sensitive-data\", \"creation-compte-consentement\", \"input\", \"adaptive\", \"alert\", \"toast\", \"motion\", \"voice\", \"accessibility\"]\n---\n# RULES — Charge cognitive (compilé, condensé)\n\n> Généré depuis `principles/cognitive-load/COGNITIVE-LOAD-UX.md` (v1.0.0). **Socle universel** : ce fichier est chargé d'office avec le routeur pour toute intention. Il pose le contrat minimal et **renvoie au propriétaire** — il ne réécrit ni mécanique de formulaire, ni destructive, ni wording. Ne pas éditer à la main. La source fait autorité.\n\n## Nature\n- Principe transversal, **sans token, sans valeur visuelle**. Il pose l'obligation ; le propriétaire pose la mécanique. En cas de divergence, le propriétaire a raison (ce n'est pas une source de substitution).\n- Pendant **opérationnel** du catalogue des lois (`laws`, référence humaine, jamais chargée au build) : le catalogue explique, ce fichier contraint.\n- **Aucun plafond numérique** : jamais « max N choix » (Miller « 7 items » et la règle des 3 clics sont des mythes réfutés au catalogue). La contrainte porte sur la structure, pas sur un nombre.\n\n## Obligations universelles (tout écran généré en hérite)\n- **Budget de décision** : un écran/vue déclare UNE décision principale ; le reste lui est subordonné visuellement et structurellement. Le nombre de choix simultanés se justifie par le besoin de la décision présente, jamais par l'espace disponible.\n- **Divulgation progressive** : l'essentiel pour décider d'abord ; l'avancé, le rare et le détail sur demande explicite. **Frontière dure : jamais cacher un coût, un engagement, une obligation ou un risque** — ce qui engage se voit avant l'engagement. Réduire ≠ enfouir : une fonction essentielle reste découvrable.\n- **Défauts intelligents** : tout choix à réponse majoritaire sensée porte un défaut ; un défaut se distingue toujours d'une valeur saisie. **Frontière dure : jamais d'engagement pré-coché** (consentement actif — mécanique chez RULES-form-sensitive-data / RULES-creation-compte-consentement).\n- **Réversibilité** : le réversible s'exécute immédiatement avec une annulation visible ; la confirmation bloquante est réservée à l'irréversible et au coûteux-à-défaire (la banaliser désarme le garde-fou). L'irréversible se déclare AVANT (portée, non-retour). Quitter n'est pas perdre (autosave, limites de temps). **Un « Annuler » affiché est une promesse tenue** — sinon ne pas l'afficher.\n- **Reconnaissance plutôt que rappel** : jamais faire retenir une info d'un écran à l'autre — re-présenter le contexte là où la décision se prend ; montrer l'état (progression, statut) plutôt que le faire mémoriser.\n- **Anti-camouflage** : une information critique (erreur, coût, sécurité, obligation) ne ressemble jamais à du décor ou de la promotion — elle serait filtrée avant lecture.\n\n## Tensions — rendre visible, ne pas trancher seul\n| Tension | Règle de conduite |\n|---|---|\n| Réduire ↔ découvrir (Hick vs découvrabilité) | Par cas — remonter |\n| Une décision par moment ↔ conservation de la complexité | Un écran par décision, pas un écran par champ — l'émiettement déplace la complexité au lieu de la réduire |\n| Undo ↔ friction protectrice | Jamais les deux absents sur une action à conséquence |\n| Divulgation ↔ transparence | La frontière « coût jamais caché » est non négociable |\n\n## Qui porte quoi (renvois — charger le propriétaire pour le détail)\n| Besoin | Propriétaire |\n|---|---|\n| Primary unique, hiérarchie des actions, mécanique destructive | `RULES-button` |\n| Une décision par étape, ask-once, récap, progression | `RULES-form` (+ `RULES-form-multi-step`) |\n| Survie de la saisie | `RULES-form-autosave` |\n| Consentement actif, données sensibles | `RULES-form-sensitive-data`, `RULES-creation-compte-consentement` |\n| Défaut ≠ valeur saisie, helper persistant | `RULES-input` |\n| Divulgation par l'espace (compact → expanded) | `RULES-adaptive` |\n| Rareté des interruptions ; toast porteur d'une annulation | `RULES-alert`, `RULES-toast` |\n| Budget d'attention du mouvement | `RULES-motion` |\n| Mots simples, ton des moments critiques | `RULES-voice` |\n| Limites de temps contrôlables | `RULES-accessibility` |\n\nCONFIANCE : fondements établis ou convergents (divulgation progressive et défauts NN/g, « one thing per page » GOV.UK — avec sa nuance : regrouper quand la recherche le justifie —, heuristiques de Nielsen 3/5/6, consentement actif RGPD/CJUE Planet49). Les règles internes renforcées (coût jamais caché, jamais d'engagement pré-coché, undo = promesse tenue, anti-camouflage) sont des positions du système. Décision non tranchée par une règle (découpage d'un parcours en moments, undo vs confirmation d'un cas précis, wording) : STOP — remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Budget de décision",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Budget de décision\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"44\" y=\"58\" width=\"92\" height=\"32\" rx=\"8\" fill=\"#4F46E5\"/><rect x=\"62\" y=\"70\" width=\"56\" height=\"8\" rx=\"4\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"152\" y=\"58\" width=\"70\" height=\"32\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"166\" y=\"70\" width=\"42\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"238\" y=\"58\" width=\"70\" height=\"32\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\"/><rect x=\"252\" y=\"70\" width=\"42\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.35\"/><circle cx=\"44\" cy=\"52\" r=\"11\" fill=\"#E0E7FF\"/><text x=\"44\" y=\"56\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\" fill=\"#4F46E5\">1</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Écran avec une action dominante",
+     "quand": "Une vue porte plusieurs actions qui se disputent l'attention.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Budget de décision",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Écran avec une action dominante\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"54\" width=\"248\" height=\"132\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"240\" y=\"82\" width=\"160\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"240\" y=\"104\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"240\" y=\"142\" width=\"120\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"278\" y=\"153\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"374\" y=\"142\" width=\"72\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"390\" y=\"153\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une vue porte plusieurs actions qui se disputent l'attention.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Déclarez LA décision principale ; subordonnez tout le reste.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un seul bouton primary, les autres en retrait.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Étape de formulaire mono-décision",
+     "quand": "Un parcours empile plusieurs sujets sur un même écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Budget de décision",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Étape de formulaire mono-décision\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"252\" cy=\"66\" r=\"7\" fill=\"#E5E7EB\"/><circle cx=\"288\" cy=\"66\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"324\" cy=\"66\" r=\"7\" fill=\"#E5E7EB\"/><rect x=\"232\" y=\"86\" width=\"216\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"254\" y=\"106\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"254\" y=\"118\" width=\"172\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"265\" y=\"127\" width=\"77\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"254\" y=\"152\" width=\"96\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"280\" y=\"163\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un parcours empile plusieurs sujets sur un même écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Une décision par étape — un écran par décision, pas par champ.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'adresse à une étape, le paiement à la suivante.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Dashboard dense multi-widgets",
+     "quand": "Une vue montre beaucoup d'informations à la fois.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Budget de décision",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dashboard dense multi-widgets\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"64\" width=\"88\" height=\"64\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"296\" y=\"64\" width=\"88\" height=\"64\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"396\" y=\"64\" width=\"88\" height=\"64\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"210\" y=\"86\" width=\"56\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"310\" y=\"86\" width=\"56\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"410\" y=\"86\" width=\"56\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"196\" y=\"140\" width=\"288\" height=\"44\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"500\" y=\"148\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"524\" y=\"159\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"214\" y=\"166\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">une seule action de vue</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une vue montre beaucoup d'informations à la fois.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrer beaucoup, faire décider peu : hiérarchisez l'écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des cartes consultables, une seule action de vue.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Page marketing multi-CTA",
+     "quand": "Plusieurs appels à l'action se concurrencent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Budget de décision",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Page marketing multi-CTA\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"74\" width=\"118\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"275\" y=\"85\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"238\" y=\"112\" width=\"118\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"277\" y=\"123\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"238\" y=\"150\" width=\"118\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"277\" y=\"161\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/><path d=\"M392 112L428 112\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M428 112L420.1 116.3M428 112L420.1 107.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"438\" y=\"116\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">un seul primary</text><circle cx=\"544\" cy=\"74\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M540.5 70.5l7 7M547.5 70.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plusieurs appels à l'action se concurrencent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un seul CTA dominant par vue ; les autres deviennent secondaires.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Essayer » en primary, « En savoir plus » en lien.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Densité justifiée par l'espace",
+     "quand": "Un grand écran donne envie d'ajouter des options.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Budget de décision",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Densité justifiée par l'espace\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"196\" y=\"54\" width=\"180\" height=\"130\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"216\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"234\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"420\" y=\"54\" width=\"120\" height=\"130\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/><rect x=\"436\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"454\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"220\" y=\"80\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">large</text><text x=\"440\" y=\"80\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">étroit</text><text x=\"224\" y=\"110\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">même décision</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un grand écran donne envie d'ajouter des options.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le besoin justifie un choix, jamais la place disponible.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un conteneur large révèle du contenu, pas des décisions.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 4 cas",
+   "titre": "Divulgation progressive",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Divulgation progressive\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"34\" width=\"150\" height=\"84\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"50\" width=\"90\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"58\" y=\"68\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"58\" y=\"84\" width=\"74\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"212\" y=\"58\" width=\"92\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"68\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><path d=\"M284 66l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"212\" y=\"106\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">sur demande</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Détail avancé sur demande",
+     "quand": "Options rares ou réglages pointus encombrent l'écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Divulgation progressive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Détail avancé sur demande\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"60\" width=\"216\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"254\" y=\"84\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"254\" y=\"106\" width=\"130\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"254\" y=\"134\" width=\"150\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"268\" y=\"151\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Options avancées</text><path d=\"M384 145l6 7 6-7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Options rares ou réglages pointus encombrent l'écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'essentiel d'abord ; l'avancé derrière une demande explicite.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bloc « Options avancées » replié.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "par défaut, une interface montre ce qui est nécessaire à la décision présente ; l'avancé, le rare et le détail se révèlent <strong>sur demande explicite</strong>. La cause est ici la complexité — distincte de la divulgation par l'espace, qui appartient à <code>adaptive</code> et répond à la largeur du conteneur.",
+       "id": "COGNITIVE-LOAD-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Coût visible avant l'engagement",
+     "quand": "Une action engage (prix, abonnement, portée).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Divulgation progressive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Coût visible avant l'engagement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"58\" width=\"228\" height=\"124\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"248\" y=\"80\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"248\" y=\"100\" width=\"150\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.6\"/><text x=\"248\" y=\"134\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Total : 12 €/mois</text><rect x=\"248\" y=\"148\" width=\"110\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"281\" y=\"159\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle cx=\"492\" cy=\"90\" r=\"9\" fill=\"#15803D\"/><path d=\"M488 90l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une action engage (prix, abonnement, portée).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrez le coût AVANT le geste — jamais après.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« 12 €/mois » lisible avant « S'abonner ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une action <strong>réversible</strong> s'exécute immédiatement, avec un chemin d'annulation visible et un délai raisonnable. La <strong>confirmation bloquante</strong> est réservée à l'irréversible et au coûteux-à-défaire — la banaliser en détruit la valeur (fatigue de confirmation : cliquer « oui » devient un réflexe, et le garde-fou ne protège plus l'irréversible).",
+       "id": "COGNITIVE-LOAD-R13"
+      },
+      {
+       "tag": "Règle",
+       "html": "une information critique (erreur, coût, sécurité, obligation légale) ne prend <strong>jamais</strong> la forme d'un élément décoratif ou promotionnel — ce qui ressemble à de la publicité est filtré avant lecture (banner blindness, cf. LAWS § Selective Attention). Ce fichier <strong>promeut en RÈGLE</strong> le trou que <code>LAWS-UX.md</code> signalait comme « candidate » dans son À approfondir. La forme du message reste chez ses propriétaires (<code>ALERT</code> pour les tones, <code>VOICE</code> pour le mot) ; l'interdit du déguisement est l'obligation transversale posée ici.",
+       "id": "COGNITIVE-LOAD-R19"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Fonction essentielle découvrable",
+     "quand": "Réduire les choix risque d'enfouir une fonction clé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Divulgation progressive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Fonction essentielle découvrable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"64\" width=\"200\" height=\"112\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"252\" y=\"88\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.55\"/><rect x=\"252\" y=\"112\" width=\"130\" height=\"24\" rx=\"6\" fill=\"#E0E7FF\"/><text x=\"264\" y=\"128\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Fonction clé</text><circle cx=\"500\" cy=\"84\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M496.5 80.5l7 7M503.5 80.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"474\" y=\"112\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">enfouie ?</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Réduire les choix risque d'enfouir une fonction clé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réduire n'est pas enfouir : l'essentiel reste découvrable — au doute, remontez.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'export visible, pas caché à trois niveaux.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "réduire n'est pas enfouir — une fonction essentielle reste découvrable sans connaissance préalable. La tension Hick ↔ découvrabilité (cf. LAWS) ne se tranche pas par principe : au doute, remonter.",
+       "id": "COGNITIVE-LOAD-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Information nécessaire jamais retardée",
+     "quand": "Une info utile à la décision arriverait après coup.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Divulgation progressive",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Information nécessaire jamais retardée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"212\" y=\"66\" width=\"150\" height=\"108\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"232\" y=\"100\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">avant</text><text x=\"232\" y=\"126\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#92400E\">frais : 4,90 €</text><path d=\"M372 120L404 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M404 120L396.1 124.3M404 120L396.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"414\" y=\"66\" width=\"150\" height=\"108\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"489\" cy=\"108\" r=\"9\" fill=\"#15803D\"/><path d=\"M485 108l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une info utile à la décision arriverait après coup.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ce qu'il faut savoir pour décider se voit avant de décider.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Les frais de livraison avant la validation.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ne jamais exiger de retenir une information d'un écran à l'autre — le contexte nécessaire est <strong>re-présenté là où la décision se prend</strong>. Mécaniques propriétaires déjà en place : ask-once et récapitulation (<code>FORM</code> multi-step), helper persistant plutôt qu'aide qui disparaît (<code>INPUT</code>).",
+       "id": "COGNITIVE-LOAD-R17"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "Défauts intelligents",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Défauts intelligents\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"44\" width=\"40\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"46\" y=\"56\" width=\"110\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"56\" y=\"70\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#111827\">France</text><circle cx=\"176\" cy=\"66\" r=\"9\" fill=\"#15803D\"/><path d=\"M172 66l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"212\" y=\"52\" width=\"16\" height=\"16\" rx=\"4\" fill=\"#4F46E5\"/><path d=\"M215 60l4 4 7-8\" stroke=\"#fff\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><circle cx=\"280\" cy=\"60\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M276.5 56.5l7 7M283.5 56.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"212\" y=\"96\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#B91C1C\">jamais pré-coché</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Choix avec réponse majoritaire",
+     "quand": "Un champ a une valeur sensée pour la plupart des gens.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Défauts intelligents",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Choix avec réponse majoritaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"84\" width=\"64\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"238\" y=\"94\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"250\" y=\"110\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">France</text><text x=\"430\" y=\"110\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">← défaut proposé</text><circle cx=\"560\" cy=\"106\" r=\"9\" fill=\"#15803D\"/><path d=\"M556 106l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ a une valeur sensée pour la plupart des gens.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Proposez-la d'office : corriger un défaut coûte moins que partir de zéro.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le pays pré-sélectionné d'après la langue.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "tout choix qui admet une réponse majoritaire sensée porte un <strong>défaut</strong> ; l'utilisateur corrige un défaut plutôt qu'il ne construit une réponse à vide. C'est la forme la plus directe d'absorption de complexité par le système (Tesler, cf. LAWS § 2) — et la plus puissante : la plupart des utilisateurs ne changent jamais un défaut (NN/g), ce qui en fait une responsabilité autant qu'un levier.",
+       "id": "COGNITIVE-LOAD-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Consentement jamais pré-coché",
+     "quand": "Une case engage l'utilisateur (consentement, achat, partage).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Défauts intelligents",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Consentement jamais pré-coché\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"88\" width=\"20\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"280\" y=\"102\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">newsletter — décochée</text><circle cx=\"508\" cy=\"72\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M504.5 68.5l7 7M511.5 68.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"484\" y=\"112\" width=\"20\" height=\"20\" rx=\"5\" fill=\"#4F46E5\"/><path d=\"M488 122l4 4 8-9\" stroke=\"#fff\" stroke-width=\"2.4\" fill=\"none\" stroke-linecap=\"round\"/><text x=\"452\" y=\"156\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">jamais pré-coché</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une case engage l'utilisateur (consentement, achat, partage).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais cochée d'avance — le consentement est un geste actif.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La newsletter décochée par défaut.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Défaut distinct d'une valeur saisie",
+     "quand": "L'utilisateur pourrait confondre proposé et choisi.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Défauts intelligents",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Défaut distinct d'une valeur saisie\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"78\" width=\"56\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"232\" y=\"88\" width=\"160\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"244\" y=\"104\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">jj/mm/aaaa</text><rect x=\"424\" y=\"78\" width=\"56\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"424\" y=\"88\" width=\"160\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"436\" y=\"104\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">12/04/1988</text><text x=\"232\" y=\"140\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">proposé</text><text x=\"424\" y=\"140\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">saisi</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur pourrait confondre proposé et choisi.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un défaut se distingue toujours d'une saisie réelle.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Placeholder grisé ≠ valeur entrée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un défaut se distingue toujours d'une valeur saisie — l'utilisateur sait ce qu'il a choisi et ce qui a été choisi pour lui. La mécanique (placeholder ≠ valeur, pré-remplissage annoncé) appartient à <code>INPUT</code>.",
+       "id": "COGNITIVE-LOAD-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Tri / filtre par défaut d'une collection",
+     "quand": "Une liste arrive triée ou filtrée d'office.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Défauts intelligents",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tri / filtre par défaut d'une collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"58\" width=\"204\" height=\"124\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"258\" y=\"76\" width=\"96\" height=\"22\" rx=\"11\" fill=\"#E0E7FF\"/><text x=\"270\" y=\"91\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Récents ↓</text><rect x=\"258\" y=\"116\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"136\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"258\" y=\"156\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"462\" y=\"120\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">défaut annoncé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une liste arrive triée ou filtrée d'office.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Pas de propriétaire aujourd'hui : documentez la position avant d'improviser.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Récents d'abord » — annoncé, jamais silencieux.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 5 cas",
+   "titre": "Réversibilité",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Réversibilité\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"56\" width=\"132\" height=\"30\" rx=\"8\" fill=\"#111827\"/><text x=\"54\" y=\"75\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#FFFFFF\">Envoyé ·</text><text x=\"104\" y=\"75\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#0891B2\">Annuler</text><rect x=\"200\" y=\"44\" width=\"104\" height=\"24\" rx=\"6\" fill=\"#FEE2E2\"/><rect x=\"200\" y=\"44\" width=\"5\" height=\"24\" rx=\"2.5\" fill=\"#B91C1C\"/><text x=\"212\" y=\"92\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#B91C1C\">l'irréversible se déclare</text></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Action destructive déclarée avant",
+     "quand": "Une action détruit quelque chose d'irrécupérable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Réversibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Action destructive déclarée avant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"70\" width=\"220\" height=\"60\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"232\" y=\"70\" width=\"6\" height=\"60\" rx=\"3\" fill=\"#B91C1C\"/><text x=\"254\" y=\"96\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Supprime 12 fichiers</text><text x=\"254\" y=\"114\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">définitivement</text><rect x=\"232\" y=\"150\" width=\"110\" height=\"28\" rx=\"7\" fill=\"#B91C1C\"/><rect x=\"265\" y=\"161\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"356\" y=\"150\" width=\"80\" height=\"28\" rx=\"7\" fill=\"none\" stroke=\"#6B7280\"/><rect x=\"376\" y=\"161\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.55\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une action détruit quelque chose d'irrécupérable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Dites quoi, combien et le non-retour AVANT d'exécuter.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Supprime 12 fichiers définitivement ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'irréversible <strong>se déclare avant</strong> l'exécution : ce que l'action détruit, sa portée, l'absence de retour. La mécanique destructive (styles, garde-fous, friction proportionnelle) appartient à <code>BUTTON</code> ; le cas DeleteButton reste OUVERT au journal et n'est pas tranché ici.",
+       "id": "COGNITIVE-LOAD-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Action réversible exécutée sans friction",
+     "quand": "L'action peut se défaire sans dommage.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Réversibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Action réversible exécutée sans friction\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"72\" width=\"110\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"265\" y=\"83\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle cx=\"372\" cy=\"86\" r=\"9\" fill=\"#15803D\"/><path d=\"M368 86l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"404\" y=\"140\" width=\"180\" height=\"34\" rx=\"9\" fill=\"#111827\"/><text x=\"420\" y=\"161\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#FFFFFF\">Envoyé ·</text><text x=\"478\" y=\"161\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">Annuler</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'action peut se défaire sans dommage.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Exécutez immédiatement, offrez une annulation visible.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Envoyé — Annuler » pendant quelques secondes.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'irréversible <strong>se déclare avant</strong> l'exécution : ce que l'action détruit, sa portée, l'absence de retour. La mécanique destructive (styles, garde-fous, friction proportionnelle) appartient à <code>BUTTON</code> ; le cas DeleteButton reste OUVERT au journal et n'est pas tranché ici.",
+       "id": "COGNITIVE-LOAD-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Confirmation réservée à l'irréversible",
+     "quand": "Un « êtes-vous sûr ? » s'installe sur un geste anodin.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Réversibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Confirmation réservée à l'irréversible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"64\" width=\"170\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"232\" y=\"96\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">renommer ?</text><circle cx=\"348\" cy=\"84\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M344.5 80.5l7 7M351.5 80.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M390 120L422 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M422 120L414.1 124.3M422 120L414.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"432\" y=\"64\" width=\"170\" height=\"110\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"454\" y=\"96\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">supprimer ?</text><circle cx=\"568\" cy=\"84\" r=\"9\" fill=\"#15803D\"/><path d=\"M564 84l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un « êtes-vous sûr ? » s'installe sur un geste anodin.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservez la confirmation à l'irréversible — la banaliser désarme le garde-fou.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Renommer : direct. Supprimer un compte : confirmé.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une action <strong>réversible</strong> s'exécute immédiatement, avec un chemin d'annulation visible et un délai raisonnable. La <strong>confirmation bloquante</strong> est réservée à l'irréversible et au coûteux-à-défaire — la banaliser en détruit la valeur (fatigue de confirmation : cliquer « oui » devient un réflexe, et le garde-fou ne protège plus l'irréversible).",
+       "id": "COGNITIVE-LOAD-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Saisie qui survit à l'interruption",
+     "quand": "L'utilisateur quitte, expire ou est interrompu en pleine saisie.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Réversibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Saisie qui survit à l'interruption\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"84\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"249\" y=\"93\" width=\"81\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"452\" cy=\"96\" r=\"9\" fill=\"#DCFCE7\"/><path d=\"M448 96l3 3 5.5-6\" stroke=\"#15803D\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><text x=\"470\" y=\"100\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">brouillon enregistré</text><rect x=\"238\" y=\"132\" width=\"160\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur quitte, expire ou est interrompu en pleine saisie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Quitter n'est pas perdre : préservez le travail accompli.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un brouillon repris là où il s'était arrêté.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>quitter n'est pas perdre</strong> — une saisie en cours survit à la navigation, à l'interruption et à l'expiration quand c'est techniquement possible (propriétaires : <code>FORM</code> autosave ; <code>accessibility</code> pour les limites de temps).",
+       "id": "COGNITIVE-LOAD-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Anti-double-soumission",
+     "quand": "L'impatience fait cliquer deux fois.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Réversibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Anti-double-soumission\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"244\" y=\"84\" width=\"120\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"282\" y=\"95\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><circle class=\"ill-spin\" style=\"transform-origin:304px 132px\" cx=\"304\" cy=\"132\" r=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><text x=\"330\" y=\"136\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">envoi en cours — bouton neutralisé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'impatience fait cliquer deux fois.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Neutralisez l'envoi pendant le traitement, montrez l'état.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Bouton en état « envoi… », une seule requête.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 5 cas",
+   "titre": "Reconnaissance plutôt que rappel — l'écran intermédiaire",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Reconnaissance plutôt que rappel — l'écran intermédiaire\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"42\" width=\"94\" height=\"68\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"54\" y=\"56\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"54\" y=\"68\" width=\"64\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M146 76h26m-8-8 8 8-8 8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"186\" y=\"42\" width=\"94\" height=\"68\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"200\" y=\"56\" width=\"60\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"200\" y=\"72\" width=\"50\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><circle cx=\"258\" cy=\"94\" r=\"9\" fill=\"#15803D\"/><path d=\"M254 94l3 3 5.5-6.5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"186\" y=\"126\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">re-présenté, jamais à retenir</text></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Ne jamais redemander (ask-once)",
+     "quand": "Une info déjà fournie serait redemandée plus loin.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Reconnaissance plutôt que rappel — l'écran intermédiaire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ne jamais redemander (ask-once)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"64\" width=\"160\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"228\" y=\"84\" width=\"54\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"228\" y=\"96\" width=\"120\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"239\" y=\"105\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M378 116L410 116\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M410 116L402.1 120.3M410 116L402.1 111.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"420\" y=\"64\" width=\"160\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"440\" y=\"100\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">e-mail déjà connu</text><circle cx=\"548\" cy=\"86\" r=\"9\" fill=\"#15803D\"/><path d=\"M544 86l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une info déjà fournie serait redemandée plus loin.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Demandez une fois ; le système retient, pas l'utilisateur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'e-mail saisi à l'étape 1 n'est jamais re-saisi.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ne jamais exiger de retenir une information d'un écran à l'autre — le contexte nécessaire est <strong>re-présenté là où la décision se prend</strong>. Mécaniques propriétaires déjà en place : ask-once et récapitulation (<code>FORM</code> multi-step), helper persistant plutôt qu'aide qui disparaît (<code>INPUT</code>).",
+       "id": "COGNITIVE-LOAD-R17"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Récapitulation avant l'engagement",
+     "quand": "La décision finale dépend de ce qui a été saisi avant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Reconnaissance plutôt que rappel — l'écran intermédiaire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Récapitulation avant l'engagement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"222\" y=\"52\" width=\"200\" height=\"136\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"242\" y=\"72\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"242\" y=\"88\" width=\"140\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"242\" y=\"108\" width=\"58\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"242\" y=\"124\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><path d=\"M436 120L470 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M470 120L462.1 124.3M470 120L462.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"482\" y=\"106\" width=\"110\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"515\" y=\"117\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La décision finale dépend de ce qui a été saisi avant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Re-présentez le contexte au moment de s'engager.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un récapitulatif avant « Confirmer la commande ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Aide persistante plutôt qu'éphémère",
+     "quand": "Une aide disparaît au moment où on en a besoin.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Reconnaissance plutôt que rappel — l'écran intermédiaire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Aide persistante plutôt qu'éphémère\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"244\" y=\"74\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"244\" y=\"86\" width=\"190\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><text x=\"244\" y=\"132\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">8 caractères minimum, dont un chiffre</text><circle cx=\"478\" cy=\"96\" r=\"9\" fill=\"#15803D\"/><path d=\"M474 96l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une aide disparaît au moment où on en a besoin.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'aide reste visible pendant la saisie.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Les règles du mot de passe affichées en continu.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "ne jamais exiger de retenir une information d'un écran à l'autre — le contexte nécessaire est <strong>re-présenté là où la décision se prend</strong>. Mécaniques propriétaires déjà en place : ask-once et récapitulation (<code>FORM</code> multi-step), helper persistant plutôt qu'aide qui disparaît (<code>INPUT</code>).",
+       "id": "COGNITIVE-LOAD-R17"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Progression visible",
+     "quand": "Un parcours a plusieurs étapes.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Reconnaissance plutôt que rappel — l'écran intermédiaire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Progression visible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"234\" y=\"108\" width=\"212\" height=\"14\" rx=\"7\" fill=\"#E5E7EB\"/><rect x=\"234\" y=\"108\" width=\"128\" height=\"14\" rx=\"7\" fill=\"#4F46E5\"/><text x=\"462\" y=\"120\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">étape 2 sur 3</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un parcours a plusieurs étapes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrez où on en est — jamais à mémoriser, jamais faussé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Étape 2 sur 3 », réelle.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "État système visible hors formulaire",
+     "quand": "Un traitement, une synchro ou un mode actif est en cours.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Reconnaissance plutôt que rappel — l'écran intermédiaire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : État système visible hors formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"64\" width=\"204\" height=\"112\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle class=\"ill-spin\" style=\"transform-origin:272px 104px\" cx=\"272\" cy=\"104\" r=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><text x=\"296\" y=\"108\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">synchronisation…</text><rect x=\"262\" y=\"140\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un traitement, une synchro ou un mode actif est en cours.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'état se montre au lieu de se deviner.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Synchronisation… » pendant l'opération.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "06 · 3 cas",
+   "titre": "Anti-camouflage",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Anti-camouflage\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"52\" width=\"112\" height=\"44\" rx=\"10\" fill=\"#E0E7FF\"/><text x=\"56\" y=\"78\" font-size=\"11\" font-weight=\"700\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">-50 %</text><circle cx=\"140\" cy=\"58\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M136.5 54.5l7 7M143.5 54.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"190\" y=\"60\" width=\"114\" height=\"24\" rx=\"6\" fill=\"#FEE2E2\"/><rect x=\"190\" y=\"60\" width=\"5\" height=\"24\" rx=\"2.5\" fill=\"#B91C1C\"/><text x=\"200\" y=\"112\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">le critique ne mime pas la promo</text></svg>",
+   "cas": [
+    {
+     "id": "cas-5-0",
+     "titre": "Information critique jamais déguisée",
+     "quand": "Une info vitale risque de ressembler à une pub ou un décor.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Anti-camouflage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Information critique jamais déguisée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"212\" y=\"70\" width=\"180\" height=\"52\" rx=\"10\" fill=\"#E0E7FF\"/><text x=\"230\" y=\"100\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">-50 % PROMO</text><circle cx=\"370\" cy=\"64\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M366.5 60.5l7 7M373.5 60.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"420\" y=\"70\" width=\"170\" height=\"52\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"420\" y=\"70\" width=\"6\" height=\"52\" rx=\"3\" fill=\"#B91C1C\"/><text x=\"440\" y=\"100\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Erreur de paiement</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une info vitale risque de ressembler à une pub ou un décor.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le critique ne prend jamais la forme du promotionnel — il serait filtré.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une erreur en alert sobre, pas en bannière colorée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de COGNITIVE-LOAD-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une information critique (erreur, coût, sécurité, obligation légale) ne prend <strong>jamais</strong> la forme d'un élément décoratif ou promotionnel — ce qui ressemble à de la publicité est filtré avant lecture (banner blindness, cf. LAWS § Selective Attention). Ce fichier <strong>promeut en RÈGLE</strong> le trou que <code>LAWS-UX.md</code> signalait comme « candidate » dans son À approfondir. La forme du message reste chez ses propriétaires (<code>ALERT</code> pour les tones, <code>VOICE</code> pour le mot) ; l'interdit du déguisement est l'obligation transversale posée ici.",
+       "id": "COGNITIVE-LOAD-R19"
+      }
+     ]
+    },
+    {
+     "id": "cas-5-1",
+     "titre": "Erreur reconnaissable entre toutes",
+     "quand": "Un message d'erreur doit être identifié en un regard.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Anti-camouflage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Erreur reconnaissable entre toutes\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"80\" width=\"200\" height=\"64\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"240\" y=\"80\" width=\"6\" height=\"64\" rx=\"3\" fill=\"#B91C1C\"/><circle cx=\"266\" cy=\"112\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M262.5 108.5l7 7M269.5 108.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"286\" y=\"108\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Carte refusée —</text><text x=\"286\" y=\"124\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">vérifiez le numéro</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un message d'erreur doit être identifié en un regard.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Tone, mot et forme convergent : une erreur ressemble à une erreur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Alert danger + message qui diagnostique.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-5-2",
+     "titre": "Contenu promotionnel identifiable",
+     "quand": "Du contenu promotionnel côtoie l'interface.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Anti-camouflage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contenu promotionnel identifiable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"64\" width=\"216\" height=\"112\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"252\" y=\"82\" width=\"70\" height=\"18\" rx=\"9\" fill=\"#FEF3C7\"/><text x=\"261\" y=\"94\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#92400E\">Sponsorisé</text><rect x=\"252\" y=\"116\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"252\" y=\"136\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Du contenu promotionnel côtoie l'interface.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Pas de composant marketing aujourd'hui : position à documenter avant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un encart « Sponsorisé » signalé comme tel.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "",
+  "titre": "",
+  "lead": "",
+  "specimens": [],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "COGNITIVE-LOAD-R01",
+   "couche": "ux",
+   "solution": "la charge cognitive est un **principe transversal** — ni variantes (composant), ni assemblage (pattern), ni token ; le modèle à axes ne s'applique pas. Comme `accessibility` : `companion: none` **sans** `audience: humans` — compilé vers `dist/RULES-cognitive-load.md` et **chargé d'office par le routeur pour toute intention** (socle universel, arbitré le 2026-07-21 ; le coût en tokens du socle est mesuré à chaque build dans RAPPORT-ROUTEUR).",
+   "enonce": "La charge cognitive est un principe transversal : elle n'a ni variantes de composant, ni assemblage de pattern, ni token propre, et elle est compilée en règles chargées d'office par le routeur pour toute intention, au titre de socle universel.",
+   "mesure": "un fichier de règles compilé existe pour le sujet et le routeur le charge pour 100 % des intentions",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R02",
+   "couche": "ux",
+   "solution": "**frontière avec `laws`** — les lois éclairent, ce principe contraint. `LAWS-UX.md` reste le seul endroit où une loi est énoncée, sourcée et bornée ; chaque règle ici **cite** sa loi sans la réécrire. Si une règle opérationnelle de ce fichier semble contredire la portée d'une loi du catalogue, le catalogue a raison sur la loi, ce fichier a raison sur l'obligation — et l'écart se remonte.",
+   "enonce": "Une loi UX n'est énoncée, sourcée et bornée que dans le catalogue des lois ; ce principe cite la loi sans la réécrire, le catalogue fait autorité sur la loi, le principe fait autorité sur l'obligation, et tout écart se remonte.",
+   "mesure": "aucune mention de loi dans ce fichier n'en redonne l'énoncé ; chacune renvoie au catalogue",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R03",
+   "couche": "ux",
+   "solution": "ce principe **ne fait pas autorité sur un comportement précis** — il pose l'obligation, le propriétaire pose la mécanique (`FORM` pour le multi-step, `BUTTON` pour le destructive, `INPUT` pour les défauts de saisie…). En cas de divergence, le propriétaire a raison. Même clause qu'`accessibility` : pas une source normative de substitution.",
+   "enonce": "Ce principe pose l'obligation et jamais la mécanique : en cas de divergence avec le composant, la fondation ou le flow propriétaire, le propriétaire fait autorité.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R04",
+   "couche": "ux",
+   "solution": "ce principe **ne quantifie aucun plafond**. Aucune règle ne dira « maximum N choix » — le plafond numérique est le mythe que `LAWS-UX.md` réfute (Miller « 7 items », règle des 3 clics). La contrainte porte sur la **structure** (hiérarchie, divulgation, défauts), jamais sur un nombre magique.",
+   "enonce": "Aucune règle de charge cognitive ne fixe de plafond numérique d'options, d'étapes ou de clics : la contrainte porte sur la structure — hiérarchie, divulgation, défauts — et jamais sur un nombre.",
+   "mesure": "aucune règle du sujet ne comporte de seuil numérique d'options, d'étapes ou de clics",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "La capacité pure de la mémoire à court terme est d'environ QUATRE chunks (fourchette 3 à 5), et non sept ; le « nombre magique sept » de Miller relevait selon Cowan d'un procédé rhétorique et d'estimations composites gonflées par la mémoire à long terme, la répétition et le chunking.",
+     "liens": [
+      {
+       "label": "Cowan, *The magical number 4 in short-term memory: A reconsideration of mental storage capacity*, Behavioral and Brain Sciences, 24, 2001, p. 87-185",
+       "url": "https://memory.psych.missouri.edu/assets/doc/articles/2001/cowan-bbs-2001.pdf"
+      }
+     ],
+     "confiance": "Établi — article cible de BBS, publication primaire vérifiée. AJOUT : aucune référence de mémoire de travail n'était sourcée ni dans ce fichier ni dans `LAWS-UX.md`."
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Le « 7 ± 2 » ne s'applique pas au nombre d'éléments d'une interface : un menu repose sur la reconnaissance et non sur la mémorisation, donc il n'est pas à limiter à sept entrées.",
+     "liens": [
+      {
+       "label": "NN/g — Short-Term Memory and Web Usability (Nielsen, 2009)",
+       "url": "https://www.nngroup.com/articles/short-term-memory-and-web-usability"
+      }
+     ],
+     "confiance": "Établi pour la réfutation de l'usage UI. ATTENTION : cet article continue lui-même d'avancer « environ 7 chunks » pour la mémoire à court terme et ne cite pas Cowan — il réfute l'application au menu, pas le chiffre. Le chiffre corrigé est en S9. Par ailleurs le lien Miller primaire retenu par `LAWS-UX.md` (psychclassics.yorku.ca/Miller/) est INACCESSIBLE (boucle de redirections) au 2026-07-27 : à remplacer."
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "La capacité pure de la mémoire à court terme est d'environ QUATRE chunks (fourchette 3 à 5), et non sept ; le « nombre magique sept » de Miller relevait selon Cowan d'un procédé rhétorique et d'estimations composites gonflées par la mémoire à long terme, la répétition et le chunking.",
+    "liens": [
+     {
+      "label": "Cowan, *The magical number 4 in short-term memory: A reconsideration of mental storage capacity*, Behavioral and Brain Sciences, 24, 2001, p. 87-185",
+      "url": "https://memory.psych.missouri.edu/assets/doc/articles/2001/cowan-bbs-2001.pdf"
+     }
+    ],
+    "confiance": "Établi — article cible de BBS, publication primaire vérifiée. AJOUT : aucune référence de mémoire de travail n'était sourcée ni dans ce fichier ni dans `LAWS-UX.md`."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R05",
+   "couche": "ux",
+   "solution": "tout écran ou toute vue déclare **une décision principale**, et une seule. Tout le reste — choix secondaires, réglages, chemins alternatifs — lui est subordonné visuellement et structurellement. Le système l'applique déjà localement (primary unique de `BUTTON`, une décision par étape du `FORM` multi-step) ; l'obligation devient ici celle de **l'écran assemblé**, pas seulement du composant.",
+   "enonce": "Tout écran ou toute vue déclare une décision principale et une seule ; les choix secondaires, réglages et chemins alternatifs lui sont subordonnés visuellement et structurellement.",
+   "mesure": "une seule décision principale déclarée par écran ou vue ; une seule action de rang primaire rendue",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Une décision principale par page/moment — et regrouper quand la recherche le justifie",
+     "liens": [
+      {
+       "label": "GOV.UK Service Manual — Structuring forms",
+       "url": "https://www.gov.uk/service-manual/design/form-structure"
+      }
+     ],
+     "confiance": "Convergence — pattern documenté d'un système majeur, nuance d'origine incluse"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Loi de Hick : le temps de réaction de choix croît avec l'incertitude informationnelle des alternatives (gain d'information à débit approximativement constant).",
+     "liens": [
+      {
+       "label": "Hick, *On the Rate of Gain of Information*, Quarterly Journal of Experimental Psychology, 4(1), 1952, p. 11-26",
+       "url": "https://journals.sagepub.com/doi/10.1080/17470215208416600"
+      }
+     ],
+     "confiance": "Établi — publication primaire vérifiée. AJOUT : le fichier invoque Hick (R06, R09) sans référence propre, en déléguant à `LAWS-UX.md`, qui ne fournit pour Hick qu'un lien de vulgarisation (lawsofux.com). Portée réelle : temps de réaction en tâche de choix simple — l'extrapolation au nombre de décisions d'un écran n'est pas dans la source."
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Une décision principale par page/moment — et regrouper quand la recherche le justifie",
+    "liens": [
+     {
+      "label": "GOV.UK Service Manual — Structuring forms",
+      "url": "https://www.gov.uk/service-manual/design/form-structure"
+     }
+    ],
+    "confiance": "Convergence — pattern documenté d'un système majeur, nuance d'origine incluse"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R06",
+   "couche": "ux",
+   "solution": "le nombre de choix simultanés se justifie par le besoin de la décision présente, jamais par l'espace disponible. Un conteneur large peut révéler du contenu secondaire (cf. `adaptive`, divulgation par l'espace) — il n'autorise pas des décisions nouvelles.",
+   "enonce": "Le nombre de choix simultanés se justifie par le besoin de la décision présente et jamais par la place disponible : un conteneur plus large peut révéler du contenu secondaire, il n'autorise aucune décision nouvelle.",
+   "mesure": "aucune décision nouvelle introduite par un palier de largeur ; les paliers ne font varier que la révélation de contenu",
+   "contre": "",
+   "probleme": "Hick — le temps de décision croît avec le nombre *et* la complexité des options (cf. LAWS § 2) ; « one thing per page » du GOV.UK Service Manual — « commencer par découper le formulaire en pages ne contenant qu'une seule chose », avec sa nuance d'origine : c'est la recherche utilisateur qui dit quand regrouper (usage interne intensif, allers-retours rapides entre tâches).",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Une décision principale par page/moment — et regrouper quand la recherche le justifie",
+     "liens": [
+      {
+       "label": "GOV.UK Service Manual — Structuring forms",
+       "url": "https://www.gov.uk/service-manual/design/form-structure"
+      }
+     ],
+     "confiance": "Convergence — pattern documenté d'un système majeur, nuance d'origine incluse"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Loi de Hick : le temps de réaction de choix croît avec l'incertitude informationnelle des alternatives (gain d'information à débit approximativement constant).",
+     "liens": [
+      {
+       "label": "Hick, *On the Rate of Gain of Information*, Quarterly Journal of Experimental Psychology, 4(1), 1952, p. 11-26",
+       "url": "https://journals.sagepub.com/doi/10.1080/17470215208416600"
+      }
+     ],
+     "confiance": "Établi — publication primaire vérifiée. AJOUT : le fichier invoque Hick (R06, R09) sans référence propre, en déléguant à `LAWS-UX.md`, qui ne fournit pour Hick qu'un lien de vulgarisation (lawsofux.com). Portée réelle : temps de réaction en tâche de choix simple — l'extrapolation au nombre de décisions d'un écran n'est pas dans la source."
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Une décision principale par page/moment — et regrouper quand la recherche le justifie",
+    "liens": [
+     {
+      "label": "GOV.UK Service Manual — Structuring forms",
+      "url": "https://www.gov.uk/service-manual/design/form-structure"
+     }
+    ],
+    "confiance": "Convergence — pattern documenté d'un système majeur, nuance d'origine incluse"
+   },
+   "confiance": "convergence — « one thing per page » est documenté par un système majeur et largement observé ; le découpage exact d'un parcours en « moments » reste un arbitrage par cas (voir Tensions : un émiettement mécanique déplace la complexité au lieu de la réduire — GOV.UK lui-même regroupe quand la recherche le justifie).",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R07",
+   "couche": "ux",
+   "solution": "par défaut, une interface montre ce qui est nécessaire à la décision présente ; l'avancé, le rare et le détail se révèlent **sur demande explicite**. La cause est ici la complexité — distincte de la divulgation par l'espace, qui appartient à `adaptive` et répond à la largeur du conteneur.",
+   "enonce": "Une interface montre par défaut ce qui est nécessaire à la décision présente ; l'avancé, le rare et le détail ne se révèlent que sur demande explicite de l'utilisateur.",
+   "mesure": "aucun contenu classé avancé ou rare n'est rendu à l'état initial de la vue",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Divulgation progressive : l'essentiel d'abord, le détail sur demande",
+     "liens": [
+      {
+       "label": "NN/g — Progressive Disclosure",
+       "url": "https://www.nngroup.com/articles/progressive-disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Divulgation progressive : l'essentiel d'abord, le détail sur demande",
+    "liens": [
+     {
+      "label": "NN/g — Progressive Disclosure",
+      "url": "https://www.nngroup.com/articles/progressive-disclosure/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Détail avancé sur demande",
+     "famille": "Divulgation progressive"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R08",
+   "couche": "ux",
+   "solution": "(frontière dure) la divulgation **ne cache jamais** l'information nécessaire pour décider — un coût, un engagement, une obligation, un risque **se voient avant** l'action qui engage. C'est l'extension transversale du « ne révèle pas tardivement une information nécessaire » d'`adaptive`, et la ligne qui sépare la divulgation progressive de la dissimulation.",
+   "enonce": "La divulgation progressive ne masque jamais une information nécessaire pour décider : un coût, un engagement, une obligation ou un risque est visible avant l'action qui engage.",
+   "mesure": "toute information de coût, d'engagement, d'obligation ou de risque est rendue dans la même vue que l'action qui engage, sans interaction de révélation préalable",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Frontières éthiques (dissimulation, pré-cochage, pression)",
+     "liens": [
+      {
+       "label": "Deceptive Patterns — Brignull",
+       "url": "https://www.deceptive.design/"
+      }
+     ],
+     "confiance": "Établi comme catalogue de référence"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Divulgation progressive : l'essentiel d'abord, le détail sur demande",
+     "liens": [
+      {
+       "label": "NN/g — Progressive Disclosure",
+       "url": "https://www.nngroup.com/articles/progressive-disclosure/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Frontières éthiques (dissimulation, pré-cochage, pression)",
+    "liens": [
+     {
+      "label": "Deceptive Patterns — Brignull",
+      "url": "https://www.deceptive.design/"
+     }
+    ],
+    "confiance": "Établi comme catalogue de référence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R09",
+   "couche": "ux",
+   "solution": "réduire n'est pas enfouir — une fonction essentielle reste découvrable sans connaissance préalable. La tension Hick ↔ découvrabilité (cf. LAWS) ne se tranche pas par principe : au doute, remonter.",
+   "enonce": "Une fonction essentielle reste découvrable sans connaissance préalable : réduire le nombre de choix visibles ne justifie jamais d'enfouir une fonction, et le doute se remonte au lieu de se trancher par principe.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+     "liens": [
+      {
+       "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Loi de Hick : le temps de réaction de choix croît avec l'incertitude informationnelle des alternatives (gain d'information à débit approximativement constant).",
+     "liens": [
+      {
+       "label": "Hick, *On the Rate of Gain of Information*, Quarterly Journal of Experimental Psychology, 4(1), 1952, p. 11-26",
+       "url": "https://journals.sagepub.com/doi/10.1080/17470215208416600"
+      }
+     ],
+     "confiance": "Établi — publication primaire vérifiée. AJOUT : le fichier invoque Hick (R06, R09) sans référence propre, en déléguant à `LAWS-UX.md`, qui ne fournit pour Hick qu'un lien de vulgarisation (lawsofux.com). Portée réelle : temps de réaction en tâche de choix simple — l'extrapolation au nombre de décisions d'un écran n'est pas dans la source."
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+    "liens": [
+     {
+      "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+     }
+    ],
+    "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+   },
+   "confiance": "établi — progressive disclosure documentée (NN/g). La frontière « jamais un coût caché » est une **règle interne renforcée** à portée éthique, convergente avec le corpus deceptive patterns (Brignull).",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Fonction essentielle découvrable",
+     "famille": "Divulgation progressive"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R10",
+   "couche": "ux",
+   "solution": "tout choix qui admet une réponse majoritaire sensée porte un **défaut** ; l'utilisateur corrige un défaut plutôt qu'il ne construit une réponse à vide. C'est la forme la plus directe d'absorption de complexité par le système (Tesler, cf. LAWS § 2) — et la plus puissante : la plupart des utilisateurs ne changent jamais un défaut (NN/g), ce qui en fait une responsabilité autant qu'un levier.",
+   "enonce": "Tout choix qui admet une réponse majoritaire sensée porte une valeur par défaut, afin que l'utilisateur corrige une proposition plutôt qu'il ne construise une réponse à vide.",
+   "mesure": "tout champ ou réglage dont une réponse majoritaire est identifiée expose une valeur par défaut",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Les utilisateurs changent rarement les valeurs par défaut",
+     "liens": [
+      {
+       "label": "NN/g — The Power of Defaults",
+       "url": "https://www.nngroup.com/articles/the-power-of-defaults/"
+      }
+     ],
+     "confiance": "Établi (observation robuste)"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Charge extrinsèque = gaspillage ; le système absorbe la complexité",
+     "liens": [
+      {
+       "label": "Sweller (cognitive load theory) ; Tesler — via `LAWS-UX.md` (le catalogue fait autorité sur les lois)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (théorie) ; transposition UI par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Les utilisateurs changent rarement les valeurs par défaut",
+    "liens": [
+     {
+      "label": "NN/g — The Power of Defaults",
+      "url": "https://www.nngroup.com/articles/the-power-of-defaults/"
+     }
+    ],
+    "confiance": "Établi (observation robuste)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Choix avec réponse majoritaire",
+     "famille": "Défauts intelligents"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R11",
+   "couche": "ux",
+   "solution": "(frontière dure) un défaut **n'engage jamais à l'insu** — jamais de consentement, d'achat, d'abonnement ou de partage pré-coché. Le consentement est **actif** ; sa mécanique appartient à `FORM-sensitive-data` et au flow `creation-compte-consentement`, qui font autorité.",
+   "enonce": "Aucune valeur par défaut n'engage l'utilisateur à son insu : consentement, achat, abonnement et partage ne sont jamais pré-cochés, le consentement résultant toujours d'un acte positif de l'utilisateur.",
+   "mesure": "aucune case de consentement, d'achat, d'abonnement ou de partage n'est cochée à l'état initial",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "La case pré-cochée n'est pas un consentement",
+     "liens": [
+      {
+       "label": "RGPD art. 4(11) et 7 ; CJUE C-673/17 (Planet49, 2019)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — normatif"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "La case pré-cochée n'est pas un consentement",
+    "liens": [
+     {
+      "label": "RGPD art. 4(11) et 7 ; CJUE C-673/17 (Planet49, 2019)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R12",
+   "couche": "ux",
+   "solution": "un défaut se distingue toujours d'une valeur saisie — l'utilisateur sait ce qu'il a choisi et ce qui a été choisi pour lui. La mécanique (placeholder ≠ valeur, pré-remplissage annoncé) appartient à `INPUT`.",
+   "enonce": "Une valeur par défaut se distingue toujours d'une valeur saisie par l'utilisateur : le pré-remplissage est annoncé et un texte indicatif ne tient jamais lieu de valeur.",
+   "mesure": "tout champ pré-rempli porte une indication de pré-remplissage ; aucune valeur portée par le seul texte indicatif",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S14",
+     "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu requiert une saisie de l'utilisateur.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancrage normatif de R12 : une valeur pré-remplie non annoncée prive l'utilisateur de l'instruction requise. Ancrage INDIRECT : le critère ne nomme pas le pré-remplissage."
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Les utilisateurs changent rarement les valeurs par défaut",
+     "liens": [
+      {
+       "label": "NN/g — The Power of Defaults",
+       "url": "https://www.nngroup.com/articles/the-power-of-defaults/"
+      }
+     ],
+     "confiance": "Établi (observation robuste)"
+    }
+   ],
+   "principale": {
+    "ref": "S14",
+    "affirmation": "Des étiquettes ou des instructions sont fournies lorsque le contenu requiert une saisie de l'utilisateur.",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.3.2 Labels or Instructions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancrage normatif de R12 : une valeur pré-remplie non annoncée prive l'utilisateur de l'instruction requise. Ancrage INDIRECT : le critère ne nomme pas le pré-remplissage."
+   },
+   "confiance": "établi pour l'effet des défauts (NN/g, « The Power of Defaults » : les utilisateurs gardent massivement les valeurs proposées) ; établi **normativement** pour la frontière du consentement (RGPD ; CJUE C-673/17 « Planet49 » : la case pré-cochée n'est pas un consentement).",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Défaut distinct d'une valeur saisie",
+     "famille": "Défauts intelligents"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R13",
+   "couche": "ux",
+   "solution": "une action **réversible** s'exécute immédiatement, avec un chemin d'annulation visible et un délai raisonnable. La **confirmation bloquante** est réservée à l'irréversible et au coûteux-à-défaire — la banaliser en détruit la valeur (fatigue de confirmation : cliquer « oui » devient un réflexe, et le garde-fou ne protège plus l'irréversible).",
+   "enonce": "Une action réversible s'exécute immédiatement et offre un chemin d'annulation visible pendant un délai raisonnable ; la confirmation bloquante est réservée à l'action irréversible ou coûteuse à défaire.",
+   "mesure": "aucune confirmation bloquante sur une action réversible ; toute action réversible expose une commande d'annulation visible",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+     "liens": [
+      {
+       "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "Pour toute page entraînant un engagement juridique, une transaction financière, la modification ou la suppression de données contrôlées par l'utilisateur, la soumission est réversible, OU vérifiée avec possibilité de correction, OU confirmée par un mécanisme de revue avant finalisation.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.4 Error Prevention (Legal, Financial, Data)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT MAJEUR — c'est l'ancrage normatif direct de la doctrine réversibilité/confirmation (R13, R14), que le fichier ne fondait que sur une heuristique NN/g. Le critère valide la structure « réversible OU confirmé », pas la préférence pour l'undo, qui reste un parti pris."
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+    "liens": [
+     {
+      "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+     }
+    ],
+    "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Coût visible avant l'engagement",
+     "famille": "Divulgation progressive"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Confirmation réservée à l'irréversible",
+     "famille": "Réversibilité"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R14",
+   "couche": "ux",
+   "solution": "l'irréversible **se déclare avant** l'exécution : ce que l'action détruit, sa portée, l'absence de retour. La mécanique destructive (styles, garde-fous, friction proportionnelle) appartient à `BUTTON` ; le cas DeleteButton reste OUVERT au journal et n'est pas tranché ici.",
+   "enonce": "Une action irréversible déclare avant son exécution ce qu'elle détruit, sa portée et l'absence de retour ; à défaut d'être réversible, elle est vérifiée et confirmée avant d'être finalisée.",
+   "mesure": "toute action qui engage juridiquement, engage financièrement ou détruit des données est réversible, vérifiée, ou confirmée avant finalisation",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S18",
+     "affirmation": "Pour toute page entraînant un engagement juridique, une transaction financière, la modification ou la suppression de données contrôlées par l'utilisateur, la soumission est réversible, OU vérifiée avec possibilité de correction, OU confirmée par un mécanisme de revue avant finalisation.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.3.4 Error Prevention (Legal, Financial, Data)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT MAJEUR — c'est l'ancrage normatif direct de la doctrine réversibilité/confirmation (R13, R14), que le fichier ne fondait que sur une heuristique NN/g. Le critère valide la structure « réversible OU confirmé », pas la préférence pour l'undo, qui reste un parti pris."
+    },
+    {
+     "ref": "S4",
+     "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+     "liens": [
+      {
+       "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+    }
+   ],
+   "principale": {
+    "ref": "S18",
+    "affirmation": "Pour toute page entraînant un engagement juridique, une transaction financière, la modification ou la suppression de données contrôlées par l'utilisateur, la soumission est réversible, OU vérifiée avec possibilité de correction, OU confirmée par un mécanisme de revue avant finalisation.",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.3.4 Error Prevention (Legal, Financial, Data)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT MAJEUR — c'est l'ancrage normatif direct de la doctrine réversibilité/confirmation (R13, R14), que le fichier ne fondait que sur une heuristique NN/g. Le critère valide la structure « réversible OU confirmé », pas la préférence pour l'undo, qui reste un parti pris."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Action destructive déclarée avant",
+     "famille": "Réversibilité"
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Action réversible exécutée sans friction",
+     "famille": "Réversibilité"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R15",
+   "couche": "ux",
+   "solution": "**quitter n'est pas perdre** — une saisie en cours survit à la navigation, à l'interruption et à l'expiration quand c'est techniquement possible (propriétaires : `FORM` autosave ; `accessibility` pour les limites de temps).",
+   "enonce": "Une saisie en cours survit à la navigation, à l'interruption et à l'expiration : quand la conservation n'est pas garantie, l'utilisateur est averti de la durée d'inactivité qui entraînerait la perte, et toute limite de temps reste ajustable.",
+   "mesure": "données conservées au-delà de 20 heures d'inactivité, ou avertissement explicite de la durée entraînant la perte ; toute limite de temps désactivable, ajustable ou prolongeable",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Toute limite de temps fixée par le contenu est désactivable, ajustable (jusqu'à dix fois la durée par défaut) ou prolongeable (avertissement puis au moins 20 secondes pour prolonger, au moins dix fois), hors exceptions temps réel, essentielle et au-delà de 20 heures.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.2.1 Timing Adjustable",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancre R15, que le fichier renvoyait à `accessibility` sans citer le critère."
+    },
+    {
+     "ref": "S19",
+     "affirmation": "Les utilisateurs sont avertis de la durée d'inactivité pouvant entraîner une perte de données, sauf si les données sont conservées plus de 20 heures en l'absence d'action.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.2.6 Timeouts",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/timeouts.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AAA). AJOUT — donne à R15 (« quitter n'est pas perdre ») un seuil mesurable (20 heures) que le fichier n'avait pas."
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Toute limite de temps fixée par le contenu est désactivable, ajustable (jusqu'à dix fois la durée par défaut) ou prolongeable (avertissement puis au moins 20 secondes pour prolonger, au moins dix fois), hors exceptions temps réel, essentielle et au-delà de 20 heures.",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.2.1 Timing Adjustable",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A). AJOUT — ancre R15, que le fichier renvoyait à `accessibility` sans citer le critère."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Saisie qui survit à l'interruption",
+     "famille": "Réversibilité"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R16",
+   "couche": "ux",
+   "solution": "(frontière dure) un « Annuler » affiché est une **promesse tenue** — si l'annulation n'est pas techniquement garantie, ne pas l'afficher ; une confirmation honnête vaut mieux qu'un undo fictif.",
+   "enonce": "Une commande d'annulation n'est affichée que si l'annulation est techniquement garantie ; à défaut, le système demande une confirmation honnête plutôt que de proposer une annulation fictive.",
+   "mesure": "toute commande d'annulation exposée est adossée à une opération d'annulation effective",
+   "contre": "",
+   "probleme": "« User control and freedom » (Nielsen, heuristique n°3) — l'utilisateur a besoin d'une sortie de secours clairement signalée ; l'undo encourage l'exploration là où la confirmation punit l'essai.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "établi pour l'heuristique et le pattern (undo largement observé en production : messageries, corbeilles) ; la répartition undo / confirmation par cas d'usage reste à éprouver composant par composant — premier terrain concret : le `TOAST` porteur d'une action d'annulation.",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R17",
+   "couche": "ux",
+   "solution": "ne jamais exiger de retenir une information d'un écran à l'autre — le contexte nécessaire est **re-présenté là où la décision se prend**. Mécaniques propriétaires déjà en place : ask-once et récapitulation (`FORM` multi-step), helper persistant plutôt qu'aide qui disparaît (`INPUT`).",
+   "enonce": "Aucune information nécessaire à une décision n'est à retenir d'un écran à l'autre : le contexte requis est re-présenté là où la décision se prend.",
+   "mesure": "toute donnée nécessaire à une étape est affichée dans cette étape, sans dépendance à la mémorisation d'un écran précédent",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+     "liens": [
+      {
+       "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "La capacité pure de la mémoire à court terme est d'environ QUATRE chunks (fourchette 3 à 5), et non sept ; le « nombre magique sept » de Miller relevait selon Cowan d'un procédé rhétorique et d'estimations composites gonflées par la mémoire à long terme, la répétition et le chunking.",
+     "liens": [
+      {
+       "label": "Cowan, *The magical number 4 in short-term memory: A reconsideration of mental storage capacity*, Behavioral and Brain Sciences, 24, 2001, p. 87-185",
+       "url": "https://memory.psych.missouri.edu/assets/doc/articles/2001/cowan-bbs-2001.pdf"
+      }
+     ],
+     "confiance": "Établi — article cible de BBS, publication primaire vérifiée. AJOUT : aucune référence de mémoire de travail n'était sourcée ni dans ce fichier ni dans `LAWS-UX.md`."
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+    "liens": [
+     {
+      "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+     }
+    ],
+    "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Information nécessaire jamais retardée",
+     "famille": "Divulgation progressive"
+    },
+    {
+     "id": "cas-4-0",
+     "titre": "Ne jamais redemander (ask-once)",
+     "famille": "Reconnaissance plutôt que rappel — l'écran intermédiaire"
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Aide persistante plutôt qu'éphémère",
+     "famille": "Reconnaissance plutôt que rappel — l'écran intermédiaire"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R18",
+   "couche": "ux",
+   "solution": "l'interface **montre l'état** plutôt qu'elle ne le fait mémoriser — où j'en suis, ce qui est fait, ce qui reste (progression du `FORM` multi-step, statut d'autosave).",
+   "enonce": "L'interface montre l'état plutôt qu'elle ne le fait mémoriser : où l'utilisateur en est, ce qui est fait et ce qui reste sont visibles à tout moment.",
+   "mesure": "tout parcours à plusieurs étapes affiche l'étape courante, les étapes faites et les étapes restantes",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+     "liens": [
+      {
+       "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "User control and freedom (sortie de secours, undo) ; error prevention ; recognition rather than recall",
+    "liens": [
+     {
+      "label": "NN/g — 10 Usability Heuristics (n°3, 5, 6)",
+      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+     }
+    ],
+    "confiance": "Établi comme heuristiques de référence — pas des lois quantifiées"
+   },
+   "confiance": "établi — « Recognition rather than recall » (Nielsen, heuristique n°6) ; Working Memory (cf. LAWS § 1). Cette section n'ajoute aucune mécanique : elle élève en obligation universelle ce que `FORM` et `INPUT` possèdent déjà.",
+   "cas": []
+  },
+  {
+   "id": "COGNITIVE-LOAD-R19",
+   "couche": "ux",
+   "solution": "une information critique (erreur, coût, sécurité, obligation légale) ne prend **jamais** la forme d'un élément décoratif ou promotionnel — ce qui ressemble à de la publicité est filtré avant lecture (banner blindness, cf. LAWS § Selective Attention). Ce fichier **promeut en RÈGLE** le trou que `LAWS-UX.md` signalait comme « candidate » dans son À approfondir. La forme du message reste chez ses propriétaires (`ALERT` pour les tones, `VOICE` pour le mot) ; l'interdit du déguisement est l'obligation transversale posée ici.",
+   "enonce": "Une information critique — erreur, coût, sécurité, obligation légale — ne prend jamais la forme d'un élément décoratif ou promotionnel, sous peine d'être filtrée avant lecture.",
+   "mesure": "aucun message critique rendu avec les styles, placements ou composants réservés au contenu promotionnel ou décoratif",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Banner blindness / attention sélective",
+     "liens": [
+      {
+       "label": "NN/g — Banner Blindness",
+       "url": "https://www.nngroup.com/articles/banner-blindness-old-and-new-findings/"
+      }
+     ],
+     "confiance": "Établi (observation robuste)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Des composants ayant la même fonctionnalité dans un ensemble de pages sont identifiés de manière cohérente.",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.4 Consistent Identification",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA). AJOUT — fonde normativement l'anti-camouflage (R19) : un même rôle garde une même identification."
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Banner blindness / attention sélective",
+    "liens": [
+     {
+      "label": "NN/g — Banner Blindness",
+      "url": "https://www.nngroup.com/articles/banner-blindness-old-and-new-findings/"
+     }
+    ],
+    "confiance": "Établi (observation robuste)"
+   },
+   "confiance": "convergence — la banner blindness est documentée (NN/g) ; la formulation opérationnelle est une formalisation interne, première rédaction.",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Coût visible avant l'engagement",
+     "famille": "Divulgation progressive"
+    },
+    {
+     "id": "cas-5-0",
+     "titre": "Information critique jamais déguisée",
+     "famille": "Anti-camouflage"
+    }
+   ]
+  },
+  {
+   "id": "COGNITIVE-LOAD-R20",
+   "couche": "ux",
+   "solution": "il ne possède **aucune mécanique** (table de renvois ci-dessous), ne fixe **aucun nombre**, et ne tranche **aucune tension** — il les rend visibles et l'arbitrage remonte, à la vitesse calibrée par les lignes CONFIANCE.",
+   "enonce": "Ce principe ne possède aucune mécanique, ne fixe aucun nombre et ne tranche aucune tension : il rend les tensions visibles et fait remonter l'arbitrage à la vitesse calibrée par ses lignes de confiance.",
+   "mesure": "aucun token ni valeur définis dans le fichier ; chaque obligation renvoie à un propriétaire nommé",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "les fondements de chaque section sont établis ou convergents et cités depuis leur propriétaire théorique (`LAWS-UX.md`) ou leur source primaire ; aucune règle de ce fichier n'introduit de mécanique nouvelle. Les **règles internes renforcées** (coût jamais caché, jamais d'engagement pré-coché, undo = promesse tenue, anti-camouflage) sont identifiées comme telles. Toute obligation qui semble entrer en conflit avec une règle propriétaire : le propriétaire tranche — STOP, remonter si l'ambiguïté persiste.",
+   "cas": []
+  }
+ ]
+}

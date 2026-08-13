@@ -1,0 +1,1609 @@
+{
+  "note": "Baseline de dette tokens — versionnée. Toute AUGMENTATION ou tout NOUVEL écart échoue en --strict ; les réductions s'acceptent via --update-baseline. Ajouter une entrée est une DÉCISION (édition manuelle justifiée).",
+  "creee": "2026-07-29 — bootstrap --init-baseline (usage unique)",
+  "entries": [
+    {
+      "file": "apps/site/app/audit/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[820px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/audit/page.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[820px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/components/shell.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": ".07em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": ".85em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": ".8em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": ".92em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": ".9em",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "1.06rem",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "11px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "1220px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "130px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "16px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "1px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "20px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "2px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "3px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "4px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "6px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "7px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "8px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/doctrine-demo.css",
+      "type": "dimension-en-dur",
+      "motif": "90px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "fallback-dupliquant",
+      "motif": "--radius-pill",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "fallback-dupliquant",
+      "motif": "--text-h3",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": ".02em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": ".08em",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": ".1em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": ".35em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": ".875em",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "duree-en-dur",
+      "motif": "0.001s",
+      "occurrences": 2,
+      "nature": "duree-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "duree-en-dur",
+      "motif": "0s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "duree-en-dur",
+      "motif": "1.4s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "1.5px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "105px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "10px",
+      "occurrences": 8,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "11px",
+      "occurrences": 6,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "126px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "12px",
+      "occurrences": 15,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "13px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "140px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "14px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "15px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "16px",
+      "occurrences": 12,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "176px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "17px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "18px",
+      "occurrences": 6,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "1px",
+      "occurrences": 14,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "200px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "20px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "21px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "22px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "23px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "24px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "26px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "280px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "28px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "2px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "32px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "36px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "38px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "3px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "40px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "430px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "44px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "45px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "4px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "52px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "58px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "5px",
+      "occurrences": 5,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "duree-en-dur",
+      "motif": "5s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "60rem",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "680px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "6px",
+      "occurrences": 6,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "72px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "76px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "7px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "duree-en-dur",
+      "motif": "7s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "80px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "84px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "88px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "8px",
+      "occurrences": 9,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "900px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "92px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "dimension-en-dur",
+      "motif": "9px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:1",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/globals.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:2",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/cas-grille.tsx",
+      "type": "arbitraire",
+      "motif": "scroll-mt-[72px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/cas-grille.tsx",
+      "type": "arbitraire",
+      "motif": "text-[10px]",
+      "occurrences": 2,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/cas-grille.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/decisions-grille.tsx",
+      "type": "arbitraire",
+      "motif": "scroll-mt-[72px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/decisions-grille.tsx",
+      "type": "arbitraire",
+      "motif": "text-[10px]",
+      "occurrences": 3,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/decisions-grille.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 2,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/decisions-grille.tsx",
+      "type": "arbitraire",
+      "motif": "text-[12px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "max-h-[28rem]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 2,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "text-[13px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "w-[20rem]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/[slug]/regles-cles.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/grille-sujets.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/methode/[slug]/page.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[820px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/methode/sources/vue.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[980px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "apps/site/app/md/socle/page.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette constatée à l'ADOPTION de la racine « apps/site/app/ » par la garde (2026-07-30, cf. DECISIONS.md) — antérieure à l'élargissement, aucune augmentation tolérée",
+      "vague": "vague 9 (site)"
+    },
+    {
+      "file": "components/app-layout/app-layout.css",
+      "type": "fallback-dupliquant",
+      "motif": "--elevation-overlay",
+      "occurrences": 2,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/app-layout/app-layout.css",
+      "type": "dimension-en-dur",
+      "motif": "92px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/app-layout/app-layout.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:40",
+      "occurrences": 3,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/app-layout/app-layout.tsx",
+      "type": "arbitraire",
+      "motif": "h-[52px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/app-layout/app-layout.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[880px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/app-layout/app-layout.tsx",
+      "type": "arbitraire",
+      "motif": "w-[52px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 7 (gabarits)"
+    },
+    {
+      "file": "components/card-group/card-group.css",
+      "type": "dimension-en-dur",
+      "motif": "340px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 5 (CardGroup)"
+    },
+    {
+      "file": "components/card-group/card-group.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:0",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 5 (CardGroup)"
+    },
+    {
+      "file": "components/card-group/card-group.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:1",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 5 (CardGroup)"
+    },
+    {
+      "file": "components/card-group/card-group.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:2",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 5 (CardGroup)"
+    },
+    {
+      "file": "components/card-group/card-group.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:3",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 5 (CardGroup)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "fallback-dupliquant",
+      "motif": "--crump-r",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "fallback-dupliquant",
+      "motif": "--crump-x",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "fallback-dupliquant",
+      "motif": "--crump-y",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".18s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".25s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".2s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".32s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".3s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".42s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".4s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": ".7s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "16px",
+      "occurrences": 4,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "19px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "1px",
+      "occurrences": 8,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "duree-en-dur",
+      "motif": "2400ms",
+      "occurrences": 2,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "24px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "2px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "48px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "4px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "6px",
+      "occurrences": 3,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "8px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "dimension-en-dur",
+      "motif": "96px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:1",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:2",
+      "occurrences": 2,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/delete-button/delete-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:3",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/drawer/drawer.tsx",
+      "type": "fallback-dupliquant",
+      "motif": "--container-narrow",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 6 (superposés)"
+    },
+    {
+      "file": "components/drawer/drawer.tsx",
+      "type": "fallback-dupliquant",
+      "motif": "--overlay",
+      "occurrences": 1,
+      "nature": "fallback-dupliquant",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 6 (superposés)"
+    },
+    {
+      "file": "components/dropdown/dropdown.tsx",
+      "type": "arbitraire",
+      "motif": "text-[11px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 6 (superposés)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "duree-en-dur",
+      "motif": ".18s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "duree-en-dur",
+      "motif": ".42s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "duree-en-dur",
+      "motif": ".7s",
+      "occurrences": 1,
+      "nature": "duree-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "0.5px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "1.3px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "100px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "14px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "16px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "17px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "1px",
+      "occurrences": 15,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "20px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "24px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "2px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "33px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "34px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "40px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "4px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "50px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "57px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "64px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "6px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "dimension-en-dur",
+      "motif": "8px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:1",
+      "occurrences": 2,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:2",
+      "occurrences": 2,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:4",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:5",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/submit-button/submit-button.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:6",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (expressifs)"
+    },
+    {
+      "file": "components/tabs/tabs.tsx",
+      "type": "arbitraire",
+      "motif": "p-[3px]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 3 (Tabs/Accordion)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "dimension-en-dur",
+      "motif": "14px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "dimension-en-dur",
+      "motif": "16px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "dimension-en-dur",
+      "motif": "1px",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "dimension-en-dur",
+      "motif": "2px",
+      "occurrences": 2,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:1",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/theme-toggle/theme-toggle.css",
+      "type": "z-index-en-dur",
+      "motif": "z-index:2",
+      "occurrences": 1,
+      "nature": "z-index-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 8 (spécialisés)"
+    },
+    {
+      "file": "components/toast/toast.css",
+      "type": "dimension-en-dur",
+      "motif": "24rem",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 4 (Alert/Toast)"
+    },
+    {
+      "file": "components/toast/toast.css",
+      "type": "dimension-en-dur",
+      "motif": "28rem",
+      "occurrences": 1,
+      "nature": "dimension-en-dur",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 4 (Alert/Toast)"
+    },
+    {
+      "file": "components/toast/toast.tsx",
+      "type": "arbitraire",
+      "motif": "max-w-[24rem]",
+      "occurrences": 1,
+      "nature": "arbitraire",
+      "justification": "dette pré-existante au chantier cohérence (constat 2026-07-29) — aucune augmentation tolérée",
+      "vague": "vague 4 (Alert/Toast)"
+    }
+  ],
+  "maj": "verifie-tokens --update-baseline (réductions uniquement)"
+}

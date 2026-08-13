@@ -1,0 +1,2561 @@
+{
+ "slug": "tabs",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"8\" width=\"20\" height=\"12\" rx=\"2\" fill=\"#C7D2FE\" opacity=\"0.55\"/><rect x=\"2\" y=\"4\" width=\"7\" height=\"5.6\" rx=\"1.6\" fill=\"#4F46E5\"/><rect x=\"10\" y=\"5.4\" width=\"6\" height=\"4.2\" rx=\"1.4\" fill=\"#0891B2\" opacity=\"0.55\"/><rect x=\"17\" y=\"5.4\" width=\"5\" height=\"4.2\" rx=\"1.4\" fill=\"#F2C744\" opacity=\"0.75\"/><rect x=\"4.6\" y=\"12\" width=\"10\" height=\"1.8\" rx=\"0.9\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"4.6\" y=\"15.6\" width=\"14\" height=\"1.8\" rx=\"0.9\" fill=\"#4B5563\" opacity=\"0.2\"/></svg>",
+ "nom": "tabs",
+ "nature": "Composant",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-26 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · tabs",
+  "question": "Comment découper un même contenu en vues exclusives sans mentir sur ce qui est caché ?",
+  "detail": "Un onglet révèle un seul volet à la fois parmi plusieurs vues du même objet — jamais des sujets distincts, jamais un contenu à comparer ou à chercher au Cmd+F. La frontière avec l'Accordion (exclusif vs multi-ouvert) et avec la Navigation (changer de vue vs changer de page) fixe où le composant s'arrête.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un seul volet visible à la fois, toujours le même objet vu sous plusieurs angles"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Un seul onglet dans l'ordre de tabulation, les flèches circulent, le volet reste focalisable"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Jamais deux lignes d'onglets, jamais un contenu à comparer ou à chercher au Cmd+F"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "31",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "30",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "",
+   "source": ""
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Usage légitime",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Fiche de doctrine",
+     "quand": "Volets « essentiel / cas d'usage / spécifications » d'un même composant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Volets « essentiel / cas d'usage / spécifications » d'un même composant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Fiche de doctrine » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les onglets s'appliquent à un seul objet dont les volets sont des vues alternatives, jamais des sujets distincts.</p>",
+       "id": "TABS-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Réglages d'un compte",
+     "quand": "Général / sécurité / facturation d'un même compte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Général / sécurité / facturation d'un même compte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Réglages d'un compte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le test : peut-on dire « voici le même compte, vu sous l'angle A, B, C » — si oui, les onglets sont légitimes.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Détail produit",
+     "quand": "Description / caractéristiques / avis d'un même produit.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Description / caractéristiques / avis d'un même produit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Détail produit » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Chaque volet décrit la même chose sous un angle différent : c'est la définition même d'un jeu d'onglets légitime.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Dossier client",
+     "quand": "Résumé / documents / historique d'un même dossier.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Résumé / documents / historique d'un même dossier.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Dossier client » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les onglets s'appliquent à un seul objet dont les volets sont des vues alternatives.</p>",
+       "id": "TABS-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Bascule courte d'atelier",
+     "quand": "Aperçu / code d'un même composant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aperçu / code d'un même composant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Bascule courte d'atelier » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Deux vues concurrentes d'un même objet — regarder l'une OU l'autre, jamais les deux à la fois : c'est le cas d'usage moteur des onglets.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Comparateur de plans tarifaires",
+     "quand": "Deux offres à regarder en même temps, pas l'une après l'autre.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage légitime",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Deux offres à regarder en même temps, pas l'une après l'autre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Comparateur de plans tarifaires » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les onglets mentent quand le contenu de deux volets doit être comparé côte à côte : un onglet masque ce qu'on veut voir en même temps que l'autre.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Cas où les onglets mentent",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Formulaire long découpé en onglets",
+     "quand": "Champs d'une même soumission répartis en volets exclusifs.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Champs d'une même soumission répartis en volets exclusifs.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Formulaire long découpé en onglets » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les champs d'un même formulaire ne sont pas des vues exclusives d'un objet — ils sont tous nécessaires à la même soumission.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Deux volets à comparer côte à côte",
+     "quand": "Le contenu masqué est précisément ce qu'on veut voir en même temps.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu masqué est précisément ce qu'on veut voir en même temps.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Deux volets à comparer côte à côte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un onglet promet « ce que tu ne vois pas est ailleurs, à un clic » — une promesse fausse quand le contenu masqué doit être comparé.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Contenu cherché au Cmd+F",
+     "quand": "Le volet non monté ou masqué échappe à la recherche de page.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le volet non monté ou masqué échappe à la recherche de page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Contenu cherché au Cmd+F » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un moteur de recherche de page ne voit pas le contenu des volets non montés, et même monté-masqué il reste invisible.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Un seul volet disponible",
+     "quand": "Un onglet unique n'est pas un choix — habillage inutile.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un onglet unique n'est pas un choix — habillage inutile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Un seul volet disponible » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Il n'y a qu'un seul volet : supprimer la tablist et afficher le contenu directement.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Étapes d'un parcours imposé",
+     "quand": "Ordre contraint, pas de bascule libre — c'est un stepper.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Ordre contraint, pas de bascule libre — c'est un stepper.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Étapes d'un parcours imposé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les « volets » sont en réalité des étapes d'un parcours : c'est alors un stepper, pas des onglets — l'ordre est imposé, pas la liberté de bascule.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Sujets sans rapport logés côte à côte",
+     "quand": "Les volets ne décrivent pas le même objet.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Cas où les onglets mentent",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Les volets ne décrivent pas le même objet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Sujets sans rapport logés côte à côte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si les volets parlent de choses différentes, ce ne sont pas des vues — c'est un découpage arbitraire qui emprunte la forme visuelle des onglets.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 7 cas",
+   "titre": "Activation et clavier",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Volets déjà en mémoire",
+     "quand": "Contenu statique, bon marché à afficher : activation automatique.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contenu statique, bon marché à afficher : activation automatique.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Volets déjà en mémoire » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si les volets sont déjà en mémoire ou bon marché à afficher, l'activation automatique est le défaut.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Volet coûteux à monter",
+     "quand": "Requête réseau ou calcul lourd déclenché à l'affichage : activation manuelle.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Requête réseau ou calcul lourd déclenché à l'affichage : activation manuelle.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Volet coûteux à monter » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si monter un volet déclenche un coût réel, l'activation manuelle évite de déclencher ce coût à chaque frappe de flèche.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Balayage aux flèches",
+     "quand": "← → circulent entre onglets, retour au premier après le dernier.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>← → circulent entre onglets, retour au premier après le dernier.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Balayage aux flèches » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les flèches gauche/droite déplacent le focus d'onglet en onglet, avec retour au premier après le dernier.</p>",
+       "id": "TABS-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Origine / Fin",
+     "quand": "Sauter directement au premier ou au dernier onglet.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Sauter directement au premier ou au dernier onglet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Origine / Fin » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Origine (Home) va au premier onglet, Fin (End) au dernier.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Un seul onglet tabbable",
+     "quand": "Tab entre et sort de la tablist en une seule étape.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tab entre et sort de la tablist en une seule étape.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Un seul onglet tabbable » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un seul onglet est dans l'ordre de tabulation normal — Tab entre et sort de la tablist en une seule étape, jamais un Tab par onglet.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "Volet focalisable même vide",
+     "quand": "tabindex=\"0\" sur le panneau, atteignable après l'onglet.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>tabindex=\"0\" sur le panneau, atteignable après l'onglet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Volet focalisable même vide » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le volet est focalisable même s'il ne contient aucun élément interactif, sans quoi Tab depuis l'onglet saute directement au contenu suivant.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-6",
+     "titre": "Onglet désactivé",
+     "quand": "Fonctionnalité verrouillée (plan, permission) rendue non activable.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Activation et clavier",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Fonctionnalité verrouillée (plan, permission) rendue non activable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Onglet désactivé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Aucun token de couleur désactivée n'est formalisé pour Tabs — dette assumée comme le disabled de BUTTON-UI.md.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 6 cas",
+   "titre": "Contenu du volet",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Formulaire en cours de saisie",
+     "quand": "La bascule ne doit pas effacer un brouillon : keepMounted.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La bascule ne doit pas effacer un brouillon : keepMounted.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Formulaire en cours de saisie » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si un volet contient une saisie utilisateur que la bascule ne doit pas perdre, il doit rester monté et seulement masqué.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Contenu statique texte",
+     "quand": "Aucun état à préserver : démonté par défaut.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucun état à préserver : démonté par défaut.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Contenu statique texte » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Par défaut, le volet non courant est démonté, pas seulement masqué — démonter simplifie le DOM et évite qu'un contenu invisible reste interactif.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Widget avec scroll interne à préserver",
+     "quand": "Position de défilement à conserver entre deux visites du volet.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Position de défilement à conserver entre deux visites du volet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Widget avec scroll interne à préserver » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le choix entre garder le volet monté et restaurer sa position n'est pas encore tranché par la doctrine.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Contenu lourd (vidéo, graphique)",
+     "quand": "Montage à la demande, pas au chargement de la page.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Montage à la demande, pas au chargement de la page.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Contenu lourd (vidéo, graphique) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si monter un volet déclenche un coût réel, l'activation manuelle évite de déclencher ce coût prématurément.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Filtre de recherche par onglet",
+     "quand": "État de filtre propre à chaque volet.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>État de filtre propre à chaque volet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Filtre de recherche par onglet » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un volet qui porte un état de saisie doit rester monté et seulement masqué pour ne pas perdre ce filtre à la bascule.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-5",
+     "titre": "Badge de compteur sur un onglet",
+     "quand": "Ex. « Messages (3) » — affichage d'un nombre sur le libellé.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Contenu du volet",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Ex. « Messages (3) » — affichage d'un nombre sur le libellé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Badge de compteur sur un onglet » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>L'API actuelle de Tabs.Tab ne prévoit pas de slot dédié à un compteur — le libellé reste un nom simple, sans décoration additionnelle formalisée.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 6 cas",
+   "titre": "Frontière avec d'autres composants",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Regroupement multi-ouvert",
+     "quand": "Plusieurs sections ouvertes à la fois.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plusieurs sections ouvertes à la fois.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Regroupement multi-ouvert » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Tabs = un seul volet monté à l'écran, choix exclusif. Accordion = plusieurs sections peuvent être ouvertes à la fois : ce n'est pas le même composant.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Deep-link à l'ouverture",
+     "quand": "Un paramètre d'URL lu au montage positionne l'onglet initial.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un paramètre d'URL lu au montage positionne l'onglet initial.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Deep-link à l'ouverture » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le deep-link positionne l'état initial ; il ne transforme pas Tabs en navigation à chaque interaction.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Bascule partageable par URL à chaque clic",
+     "quand": "Historique poussé à chaque changement de volet.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Historique poussé à chaque changement de volet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Bascule partageable par URL à chaque clic » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Si un produit a besoin que chaque volet soit partageable par URL ou revenable au Retour, ce n'est plus un choix de vue interne — c'est une navigation.</p>",
+       "id": "TABS-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Superposé qui recouvre et piège",
+     "quand": "Contenu qui masque le reste de l'écran.",
+     "statut": "non couvert",
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Contenu qui masque le reste de l'écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Superposé qui recouvre et piège » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le superposé qui recouvre et piège n'est pas un onglet, c'est overlay.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Onglets qui retombent sur deux lignes",
+     "quand": "Jeu d'onglets trop nombreux pour la largeur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Jeu d'onglets trop nombreux pour la largeur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Onglets qui retombent sur deux lignes » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Jamais d'onglets sur deux lignes : un jeu qui retombe à la ligne perd l'exclusivité visuelle et casse la navigation clavier.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Jeu d'onglets qui déborde",
+     "quand": "Plus d'onglets que la largeur ne peut afficher sur une ligne.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Frontière avec d'autres composants",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Plus d'onglets que la largeur ne peut afficher sur une ligne.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l'inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « Jeu d'onglets qui déborde » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TABS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Deux issues seulement quand le jeu déborde : le défilement horizontal de la tablist, ou une refonte du contenu.</p>"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d'usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "css": "",
+  "specimens": [],
+  "tokens": [
+   {
+    "token": "onglet.texte_repos",
+    "ref": "color.text-secondary",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.texte_survol",
+    "ref": "color.text-primary",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.texte_courant",
+    "ref": "color.text-primary",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.trait_courant_line",
+    "ref": "color.primary",
+    "valeur": "#4F46E5",
+    "couleur": "#4F46E5"
+   },
+   {
+    "token": "onglet.trait_survol_line",
+    "ref": "color.border-strong",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.fond_courant_pill",
+    "ref": "color.surface",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.relief_courant_pill",
+    "ref": "elevation.raised",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.piste_pill",
+    "ref": "color.background",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.bordure_pill",
+    "ref": "color.border",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.rayon_pill",
+    "ref": "radius.pill",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.poids_courant",
+    "ref": "typography.display.fontWeight",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.espacement_line",
+    "ref": "spacing.lg",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.espacement_pill",
+    "ref": "spacing.xs",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.padding_line",
+    "ref": "spacing.sm",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.padding_pill",
+    "ref": "spacing.md",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.transition",
+    "ref": "motion.fast",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "onglet.courbe",
+    "ref": "motion.ease-out",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "focus.couleur",
+    "ref": "color.accent",
+    "valeur": "#0891B2",
+    "couleur": "#0891B2"
+   },
+   {
+    "token": "focus.largeur",
+    "ref": "border.focus-width",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "focus.ecart",
+    "ref": "border.focus-offset",
+    "valeur": "2px",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-26",
+   "titre": "Naissance du composant Tabs — vues exclusives d'un même objet",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>components/TABS-UX.md</code> 1.0.0, <code>TABS-UI.md</code> 1.0.0, <code>inventaires/inventaire-cas-usage-tabs.md</code> ; implémentation de référence <code>packages/react/src/components/tabs/tabs.tsx</code>.</li><li><strong>Contexte</strong> : les fiches de doctrine du site (essentiel / cas d'usage / spécifications) et les bascules courtes d'un atelier avaient besoin d'un motif de vues exclusives — jusqu'ici assemblé au cas par cas sans règle écrite.</li><li><strong>Décision</strong> : Tabs découpe un même objet en vues exclusives, un seul volet monté à la fois. Frontière tranchée avec Accordion (exclusif vs multi-ouvert) et avec Navigation (changer de vue interne, jamais une entrée d'historique par bascule). Motif clavier ARIA APG Tabs : tablist/tab/tabpanel, un seul onglet tabbable, flèches + Origine/Fin, activation auto par défaut (manuelle si le volet coûte à monter).</li><li><strong>Pourquoi</strong> : sans cette doctrine, chaque écran réinventait son propre découpage en onglets — avec des dérives fréquentes (formulaires découpés en onglets, contenu à comparer masqué). La frontière explicite avec Accordion et Navigation évite ces deux confusions les plus coûteuses.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "TABS-R01",
+   "couche": "ux",
+   "solution": "les onglets s'appliquent à un **seul objet** dont les volets sont des **vues alternatives**,",
+   "enonce": "Un jeu d'onglets s'applique à un seul objet dont les volets sont des vues alternatives du même sujet, et non à des sujets distincts regroupés par commodité de mise en page.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Tabs",
+       "url": "https://polaris-react.shopify.com/components/navigation/tabs"
+      }
+     ],
+     "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les onglets montrent une section de contenu à la fois au sein d'un ensemble apparenté ; les libellés sont concis et décrivent le volet associé, les libellés longs étant tronqués avec info-bulle ; chaque onglet de premier niveau devrait avoir sa propre URL unique, et pour les onglets imbriqués il faut se demander si l'utilisateur voudrait mettre le contenu en signet",
+     "liens": [
+      {
+       "label": "GitLab Design System — Tabs",
+       "url": "https://design.gitlab.com/components/tabs"
+      }
+     ],
+     "confiance": "Établi — cinquième design system public vérifié. Contre-exemple direct à R05/R20 : GitLab prescrit une URL propre par onglet de premier niveau, là où le fichier interdit toute liaison à l'URL hors initialisation"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Fiche de doctrine",
+     "famille": "Usage légitime"
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Dossier client",
+     "famille": "Usage légitime"
+    }
+   ]
+  },
+  {
+   "id": "TABS-R02",
+   "couche": "ux",
+   "solution": "les onglets **mentent** dans quatre cas fréquents — ne pas les utiliser quand :",
+   "enonce": "Les onglets sont écartés lorsque deux volets doivent être comparés simultanément, lorsque leur contenu doit rester trouvable par la recherche dans la page, lorsqu'il n'existe qu'un seul volet, ou lorsque les volets sont en réalité les étapes ordonnées d'un parcours.",
+   "mesure": "aucun jeu d'onglets ne comporte un seul onglet",
+   "contre": "",
+   "probleme": "un onglet promet à l'utilisateur « ce que tu ne vois pas est ailleurs, à un clic »",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+     "liens": [
+      {
+       "label": "NN/g — Tabs, Used Right",
+       "url": null
+      }
+     ],
+     "confiance": "Cas isolé (une source, raisonnement transposable)"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Tabs",
+       "url": "https://design-system.service.gov.uk/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+    },
+    {
+     "ref": "S17",
+     "affirmation": "L'attribut hidden ne doit pas servir à masquer un contenu pour une seule présentation : un élément masqué l'est pour toutes, y compris les lecteurs d'écran ; la valeur until-found place l'élément dans un état masqué où son contenu reste accessible à la recherche dans la page et à la navigation par fragment, le navigateur émettant alors beforematch, retirant l'attribut hidden et faisant défiler jusqu'à l'élément",
+     "liens": [
+      {
+       "label": "MDN — attribut global hidden",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden"
+      }
+     ],
+     "confiance": "Normatif — donne son ancrage technique à la limite « contenu non cherchable au Cmd+F » de R02, et révèle que hidden=\"until-found\" lève précisément cette limite : le fichier ne mentionne pas cette valeur"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+    "liens": [
+     {
+      "label": "NN/g — Tabs, Used Right",
+      "url": null
+     }
+    ],
+    "confiance": "Cas isolé (une source, raisonnement transposable)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R03",
+   "couche": "ux",
+   "solution": "Tabs et Accordion partagent la disclosure ; ils divergent sur l'**exclusivité**. Tabs = **un",
+   "enonce": "Des onglets n'affichent qu'un seul volet à la fois ; l'exclusivité est le critère qui les sépare d'un accordéon, dont plusieurs sections peuvent être ouvertes simultanément et lues à la suite.",
+   "mesure": "un seul volet d'un même jeu d'onglets est affiché à un instant donné",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Tabs",
+       "url": "https://polaris-react.shopify.com/components/navigation/tabs"
+      }
+     ],
+     "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Les onglets servent quand une page a des sous-sections dont une seule doit être visible à la fois ; au-delà de quatre onglets, envisager un autre motif ; il faut éviter que les onglets débordent sur plusieurs rangées sur petit écran ; les libellés ne dépassent pas deux mots ; les flèches gauche/droite naviguent entre onglets et les rôles tablist/tab/tabpanel sont employés",
+     "liens": [
+      {
+       "label": "CMS Design System — Tabs",
+       "url": "https://design.cms.gov/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — quatrième design system public vérifié ; seule source consultée à donner un seuil numérique explicite (quatre), ce qui confirme qu'aucun seuil ne fait consensus (Carbon : quatre ou moins pour une variante ; GitLab : deux à trois)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R04",
+   "couche": "ux",
+   "solution": "un signe de mauvais choix : l'utilisateur qui ouvre systématiquement tous les onglets un par",
+   "enonce": "Lorsque l'usage réel conduit les utilisateurs à ouvrir successivement tous les onglets pour tout lire, le contenu relève d'un composant multi-ouvert et non d'un jeu d'onglets.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "l'exclusivité de Tabs a un coût — chaque bascule est une perte de contexte visuel",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+     "liens": [
+      {
+       "label": "NN/g — Tabs, Used Right",
+       "url": null
+      }
+     ],
+     "confiance": "Cas isolé (une source, raisonnement transposable)"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Tabs",
+       "url": "https://design-system.service.gov.uk/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+    "liens": [
+     {
+      "label": "NN/g — Tabs, Used Right",
+      "url": null
+     }
+    ],
+    "confiance": "Cas isolé (une source, raisonnement transposable)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R05",
+   "couche": "ux",
+   "solution": "Tabs change de **vue**, pas de **page** — même URL (sauf deep-link explicite, voir plus",
+   "enonce": "Une bascule d'onglet change de vue à l'intérieur de la même page : elle ne modifie pas l'URL et n'ajoute pas d'entrée dans l'historique, de sorte que le bouton Retour du navigateur ne défait jamais un changement d'onglet.",
+   "mesure": "une bascule d'onglet n'ajoute aucune entrée à l'historique du navigateur",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Tabs",
+       "url": "https://polaris-react.shopify.com/components/navigation/tabs"
+      }
+     ],
+     "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+    "liens": [
+     {
+      "label": "Carbon Design System — Tabs, usage",
+      "url": "https://carbondesignsystem.com/components/tabs/usage/"
+     }
+    ],
+    "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R06",
+   "couche": "ux",
+   "solution": "si un produit a besoin que chaque volet soit **partageable par URL**, **indexable** ou",
+   "enonce": "Un jeu de volets qui doit être partageable par URL, indexable ou atteignable par le bouton Retour relève de la navigation : ses déclencheurs deviennent des liens et la sémantique de tablist est abandonnée au profit d'une navigation étiquetée, l'apparence visuelle des onglets pouvant être conservée.",
+   "mesure": "aucun élément portant role=tab n'expose une destination href",
+   "contre": "",
+   "probleme": "implémenter des onglets qui poussent une entrée d'historique à chaque",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Tabs",
+       "url": "https://polaris-react.shopify.com/components/navigation/tabs"
+      }
+     ],
+     "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Tabs",
+       "url": "https://design-system.service.gov.uk/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+    "liens": [
+     {
+      "label": "Carbon Design System — Tabs, usage",
+      "url": "https://carbondesignsystem.com/components/tabs/usage/"
+     }
+    ],
+    "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-2",
+     "titre": "Bascule partageable par URL à chaque clic",
+     "famille": "Frontière avec d'autres composants"
+    }
+   ]
+  },
+  {
+   "id": "TABS-R07",
+   "couche": "ux",
+   "solution": "le nombre d'onglets reste **restreint** — au-delà d'un jeu qui tient sur une seule ligne dans",
+   "enonce": "Le nombre d'onglets reste restreint à ce qui tient sur une seule ligne dans la largeur disponible, aucun seuil numérique absolu n'étant fixé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Les onglets servent quand une page a des sous-sections dont une seule doit être visible à la fois ; au-delà de quatre onglets, envisager un autre motif ; il faut éviter que les onglets débordent sur plusieurs rangées sur petit écran ; les libellés ne dépassent pas deux mots ; les flèches gauche/droite naviguent entre onglets et les rôles tablist/tab/tabpanel sont employés",
+     "liens": [
+      {
+       "label": "CMS Design System — Tabs",
+       "url": "https://design.cms.gov/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — quatrième design system public vérifié ; seule source consultée à donner un seuil numérique explicite (quatre), ce qui confirme qu'aucun seuil ne fait consensus (Carbon : quatre ou moins pour une variante ; GitLab : deux à trois)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les onglets montrent une section de contenu à la fois au sein d'un ensemble apparenté ; les libellés sont concis et décrivent le volet associé, les libellés longs étant tronqués avec info-bulle ; chaque onglet de premier niveau devrait avoir sa propre URL unique, et pour les onglets imbriqués il faut se demander si l'utilisateur voudrait mettre le contenu en signet",
+     "liens": [
+      {
+       "label": "GitLab Design System — Tabs",
+       "url": "https://design.gitlab.com/components/tabs"
+      }
+     ],
+     "confiance": "Établi — cinquième design system public vérifié. Contre-exemple direct à R05/R20 : GitLab prescrit une URL propre par onglet de premier niveau, là où le fichier interdit toute liaison à l'URL hors initialisation"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+    "liens": [
+     {
+      "label": "Carbon Design System — Tabs, usage",
+      "url": "https://carbondesignsystem.com/components/tabs/usage/"
+     }
+    ],
+    "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R08",
+   "couche": "ux",
+   "solution": "**jamais d'onglets sur deux lignes.** Un jeu d'onglets qui retombe à la ligne perd",
+   "enonce": "Un jeu d'onglets ne se répartit jamais sur deux lignes : en cas de débordement, la liste d'onglets défile horizontalement ou le contenu est refondu.",
+   "mesure": "la liste d'onglets ne présente jamais plus d'une ligne, quelle que soit la largeur du conteneur",
+   "contre": "",
+   "probleme": "la tablist sert de carte de la totalité des vues disponibles. Une carte qui déborde",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Tabs",
+       "url": "https://design-system.service.gov.uk/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Les onglets servent quand une page a des sous-sections dont une seule doit être visible à la fois ; au-delà de quatre onglets, envisager un autre motif ; il faut éviter que les onglets débordent sur plusieurs rangées sur petit écran ; les libellés ne dépassent pas deux mots ; les flèches gauche/droite naviguent entre onglets et les rôles tablist/tab/tabpanel sont employés",
+     "liens": [
+      {
+       "label": "CMS Design System — Tabs",
+       "url": "https://design.cms.gov/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — quatrième design system public vérifié ; seule source consultée à donner un seuil numérique explicite (quatre), ce qui confirme qu'aucun seuil ne fait consensus (Carbon : quatre ou moins pour une variante ; GitLab : deux à trois)"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+    "liens": [
+     {
+      "label": "Carbon Design System — Tabs, usage",
+      "url": "https://carbondesignsystem.com/components/tabs/usage/"
+     }
+    ],
+    "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R09",
+   "couche": "ux",
+   "solution": "le libellé d'un onglet est **court**, **nominal** — un nom, jamais une phrase complète et",
+   "enonce": "Le libellé d'un onglet est court et nominal — un ou deux mots — et n'est jamais une phrase complète ni un verbe d'action, un onglet ouvrant une vue et ne déclenchant pas une opération.",
+   "mesure": "aucun libellé d'onglet ne commence par un verbe à l'infinitif ou à l'impératif",
+   "contre": "",
+   "probleme": "un libellé d'onglet qui commence par un verbe (« Modifier le profil »,",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+     "liens": [
+      {
+       "label": "NN/g — Tabs, Used Right",
+       "url": null
+      }
+     ],
+     "confiance": "Cas isolé (une source, raisonnement transposable)"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+     "liens": [
+      {
+       "label": "Carbon Design System — Tabs, usage",
+       "url": "https://carbondesignsystem.com/components/tabs/usage/"
+      }
+     ],
+     "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+     "liens": [
+      {
+       "label": "Shopify Polaris — Tabs",
+       "url": "https://polaris-react.shopify.com/components/navigation/tabs"
+      }
+     ],
+     "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les onglets montrent une section de contenu à la fois au sein d'un ensemble apparenté ; les libellés sont concis et décrivent le volet associé, les libellés longs étant tronqués avec info-bulle ; chaque onglet de premier niveau devrait avoir sa propre URL unique, et pour les onglets imbriqués il faut se demander si l'utilisateur voudrait mettre le contenu en signet",
+     "liens": [
+      {
+       "label": "GitLab Design System — Tabs",
+       "url": "https://design.gitlab.com/components/tabs"
+      }
+     ],
+     "confiance": "Établi — cinquième design system public vérifié. Contre-exemple direct à R05/R20 : GitLab prescrit une URL propre par onglet de premier niveau, là où le fichier interdit toute liaison à l'URL hors initialisation"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Contenu de volet non cherchable au Cmd+F comme limite structurelle",
+    "liens": [
+     {
+      "label": "NN/g — Tabs, Used Right",
+      "url": null
+     }
+    ],
+    "confiance": "Cas isolé (une source, raisonnement transposable)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R10",
+   "couche": "ux",
+   "solution": "l'onglet courant se signale par un **canal non chromatique** en plus de la couleur — poids",
+   "enonce": "L'onglet courant se distingue par au moins un canal non chromatique en plus de la couleur — poids typographique et trait ou fond porteur — et jamais par la couleur seule.",
+   "mesure": "l'onglet courant se distingue des autres par au moins une propriété visuelle non chromatique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "État courant par canal non chromatique, pas la seule couleur",
+     "liens": [
+      {
+       "label": "WCAG 1.4.1 (renvoi ACCESSIBILITY-UX.md)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "L'information visuelle nécessaire à identifier les composants d'interface et leurs états présente un contraste d'au moins 3:1, sauf composant inactif ou apparence déterminée par le navigateur ; le critère n'exige pas ce ratio entre deux états qui n'apparaissent pas côte à côte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — réponse à la question posée : le trait de l'onglet courant, en tant qu'information visuelle identifiant l'état sélectionné, doit atteindre 3:1 contre son fond adjacent ; en revanche l'écart entre onglet courant et onglet au repos n'est pas soumis au ratio tant qu'ils ne sont pas contigus"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "État courant par canal non chromatique, pas la seule couleur",
+    "liens": [
+     {
+      "label": "WCAG 1.4.1 (renvoi ACCESSIBILITY-UX.md)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R11",
+   "couche": "ux",
+   "solution": "`aria-selected` porte l'état programmatique — le canal visuel n'est pas la seule source de",
+   "enonce": "L'état sélectionné de l'onglet courant est exposé programmatiquement par aria-selected, redondant avec le signal visuel : ni l'un ni l'autre n'est seul porteur de l'information.",
+   "mesure": "exactement un onglet du jeu porte aria-selected=true, tous les autres aria-selected=false",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Pour tout composant d'interface, le nom et le rôle sont programmatiquement déterminables, et les états, propriétés et valeurs modifiables par l'utilisateur sont programmatiquement définissables, la notification de leurs changements étant disponible aux technologies d'assistance ; pour un contrôle personnalisé, l'exposition de l'état passe par les attributs WAI-ARIA",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — donne l'ancrage normatif de aria-selected invoqué par R11, que le fichier n'attachait à aucune norme"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R12",
+   "couche": "ux",
+   "solution": "deux modes d'activation coexistent (ARIA APG) — **automatique** (le volet suit le focus : se",
+   "enonce": "Deux modes d'activation d'un onglet coexistent : l'activation automatique, où le volet suit le focus, et l'activation manuelle, où les flèches ne déplacent que le focus et où Entrée ou Espace active l'onglet focalisé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Activation automatique par défaut, manuelle si coût de montage",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs, Note on tab activation",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R13",
+   "couche": "ux",
+   "solution": "le critère de choix est le **coût de montage du volet**. Si les volets sont déjà en mémoire",
+   "enonce": "L'activation automatique est le mode par défaut tant que le volet associé s'affiche sans latence perceptible, ce qui suppose son contenu déjà disponible ; dès que l'affichage d'un volet engage une requête, un calcul ou un rendu coûteux, l'activation manuelle s'impose.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "en activation automatique, un utilisateur qui balaie les onglets aux flèches pour",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Activation automatique par défaut, manuelle si coût de montage",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs, Note on tab activation",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S19",
+     "affirmation": "Dans l'exemple de référence à activation automatique, le tabpanel porte tabindex=\"0\" afin de faciliter le passage d'un onglet au début du contenu du volet actif ; les flèches bouclent du dernier au premier onglet ; Origine et Fin portent le focus au premier et au dernier onglet et les activent",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs with Automatic Activation (exemple)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/"
+      }
+     ],
+     "confiance": "Établi (pratique de référence W3C) — nuance importante : dans le motif, Origine et Fin sont déclarées « Optional » et tabindex=0 sur le tabpanel est conditionné à l'absence d'élément focalisable en tête de volet ; l'exemple, lui, les applique inconditionnellement"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Activation automatique par défaut, manuelle si coût de montage",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs, Note on tab activation",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R14",
+   "couche": "ux",
+   "solution": "la tablist porte `role=\"tablist\"`, chaque onglet `role=\"tab\"`, chaque volet",
+   "enonce": "La liste porte role=tablist, chaque onglet role=tab et chaque volet role=tabpanel, et un seul onglet — le courant — reste dans l'ordre de tabulation avec tabindex 0, les autres en étant retirés avec tabindex -1, de sorte que la tabulation entre et sort de la liste en une étape.",
+   "mesure": "un seul élément role=tab d'un même jeu porte tabindex=0",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Un seul onglet dans l'ordre de tabulation, volet focalisable",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs, Keyboard Interaction",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/#keyboardinteractionfortabs"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R15",
+   "couche": "ux",
+   "solution": "à l'intérieur de la tablist, les **flèches gauche/droite** déplacent le focus d'onglet en",
+   "enonce": "À l'intérieur de la liste d'onglets, les flèches gauche et droite déplacent le focus d'onglet en onglet avec bouclage du dernier au premier, Origine porte le focus au premier onglet et Fin au dernier ; le mode d'activation détermine si ce déplacement change aussi le volet affiché.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Un seul onglet dans l'ordre de tabulation, volet focalisable",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs, Keyboard Interaction",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/#keyboardinteractionfortabs"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S19",
+     "affirmation": "Dans l'exemple de référence à activation automatique, le tabpanel porte tabindex=\"0\" afin de faciliter le passage d'un onglet au début du contenu du volet actif ; les flèches bouclent du dernier au premier onglet ; Origine et Fin portent le focus au premier et au dernier onglet et les activent",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs with Automatic Activation (exemple)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/"
+      }
+     ],
+     "confiance": "Établi (pratique de référence W3C) — nuance importante : dans le motif, Origine et Fin sont déclarées « Optional » et tabindex=0 sur le tabpanel est conditionné à l'absence d'élément focalisable en tête de volet ; l'exemple, lui, les applique inconditionnellement"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Balayage aux flèches",
+     "famille": "Activation et clavier"
+    }
+   ]
+  },
+  {
+   "id": "TABS-R16",
+   "couche": "ux",
+   "solution": "le **volet est focalisable** (`tabindex=\"0\"` sur le conteneur du volet) même s'il ne",
+   "enonce": "Le conteneur du volet est inclus dans l'ordre de tabulation avec tabindex 0 lorsqu'il ne commence pas par un élément focalisable, et le couple onglet/volet se relie dans les deux sens par aria-controls et aria-labelledby.",
+   "mesure": "chaque role=tab porte un aria-controls résolvant vers son tabpanel, et chaque tabpanel un aria-labelledby résolvant vers son tab",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S19",
+     "affirmation": "Dans l'exemple de référence à activation automatique, le tabpanel porte tabindex=\"0\" afin de faciliter le passage d'un onglet au début du contenu du volet actif ; les flèches bouclent du dernier au premier onglet ; Origine et Fin portent le focus au premier et au dernier onglet et les activent",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs with Automatic Activation (exemple)",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/"
+      }
+     ],
+     "confiance": "Établi (pratique de référence W3C) — nuance importante : dans le motif, Origine et Fin sont déclarées « Optional » et tabindex=0 sur le tabpanel est conditionné à l'absence d'élément focalisable en tête de volet ; l'exemple, lui, les applique inconditionnellement"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R17",
+   "couche": "ux",
+   "solution": "par défaut, le volet **non courant est démonté** (retiré du DOM), pas seulement masqué —",
+   "enonce": "Par défaut, le volet non courant est retiré du DOM plutôt que masqué, son maintien en mémoire devant être demandé explicitement.",
+   "mesure": "en l'absence de demande explicite de maintien, aucun volet non courant n'est présent dans le DOM",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R18",
+   "couche": "ux",
+   "solution": "si un volet contient une **saisie utilisateur** (formulaire, filtre, brouillon) que la",
+   "enonce": "Un volet contenant une saisie utilisateur que la bascule ne doit pas perdre reste monté et seulement masqué, au lieu d'être démonté : le coût de le garder en mémoire est inférieur au coût d'une saisie effacée silencieusement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "démonter par défaut un volet qui contient un formulaire en cours de",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S17",
+     "affirmation": "L'attribut hidden ne doit pas servir à masquer un contenu pour une seule présentation : un élément masqué l'est pour toutes, y compris les lecteurs d'écran ; la valeur until-found place l'élément dans un état masqué où son contenu reste accessible à la recherche dans la page et à la navigation par fragment, le navigateur émettant alors beforematch, retirant l'attribut hidden et faisant défiler jusqu'à l'élément",
+     "liens": [
+      {
+       "label": "MDN — attribut global hidden",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden"
+      }
+     ],
+     "confiance": "Normatif — donne son ancrage technique à la limite « contenu non cherchable au Cmd+F » de R02, et révèle que hidden=\"until-found\" lève précisément cette limite : le fichier ne mentionne pas cette valeur"
+    }
+   ],
+   "principale": {
+    "ref": "S17",
+    "affirmation": "L'attribut hidden ne doit pas servir à masquer un contenu pour une seule présentation : un élément masqué l'est pour toutes, y compris les lecteurs d'écran ; la valeur until-found place l'élément dans un état masqué où son contenu reste accessible à la recherche dans la page et à la navigation par fragment, le navigateur émettant alors beforematch, retirant l'attribut hidden et faisant défiler jusqu'à l'élément",
+    "liens": [
+     {
+      "label": "MDN — attribut global hidden",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden"
+     }
+    ],
+    "confiance": "Normatif — donne son ancrage technique à la limite « contenu non cherchable au Cmd+F » de R02, et révèle que hidden=\"until-found\" lève précisément cette limite : le fichier ne mentionne pas cette valeur"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R19",
+   "couche": "ux",
+   "solution": "sans valeur initiale explicite, **le premier onglet monté prend la main** — un jeu",
+   "enonce": "Un jeu d'onglets n'a jamais d'état sans onglet sélectionné : en l'absence de valeur initiale explicite, le premier onglet monté devient courant, et il existe toujours un volet visible.",
+   "mesure": "à tout instant, exactement un onglet du jeu est sélectionné",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`tablist`/`tab`/`tabpanel`, `aria-selected`, `aria-controls`, tabindex mouvant, flèches, Origine/Fin",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R20",
+   "couche": "ux",
+   "solution": "quand un onglet précis doit être atteint depuis l'extérieur de la page (lien externe,",
+   "enonce": "L'atteinte d'un onglet précis depuis l'extérieur de la page passe par un paramètre d'URL ou un fragment lu au montage pour initialiser la valeur, et non par une entrée d'historique poussée à chaque bascule.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Tabs",
+       "url": "https://design-system.service.gov.uk/components/tabs/"
+      }
+     ],
+     "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Les onglets montrent une section de contenu à la fois au sein d'un ensemble apparenté ; les libellés sont concis et décrivent le volet associé, les libellés longs étant tronqués avec info-bulle ; chaque onglet de premier niveau devrait avoir sa propre URL unique, et pour les onglets imbriqués il faut se demander si l'utilisateur voudrait mettre le contenu en signet",
+     "liens": [
+      {
+       "label": "GitLab Design System — Tabs",
+       "url": "https://design.gitlab.com/components/tabs"
+      }
+     ],
+     "confiance": "Établi — cinquième design system public vérifié. Contre-exemple direct à R05/R20 : GitLab prescrit une URL propre par onglet de premier niveau, là où le fichier interdit toute liaison à l'URL hors initialisation"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Tabs",
+      "url": "https://design-system.service.gov.uk/components/tabs/"
+     }
+    ],
+    "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-R21",
+   "couche": "ux",
+   "solution": "le **survol/repos/courant** relève de `color` (rôles), le **poids et le trait** de",
+   "enonce": "Le composant onglets ne redéfinit ni les rôles de couleur, ni le poids typographique, ni l'anneau de focus, ni les durées de transition, ni le vocabulaire des libellés : il les emprunte aux fondations correspondantes et renvoie à l'accordéon, au superposé ou à la navigation les cas qui sortent de son périmètre.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U01",
+   "couche": "ui",
+   "solution": "la structure est `Tabs.Root` (contexte + valeur contrôlée/non contrôlée) > `Tabs.List`",
+   "enonce": "La structure du composant est une racine porteuse du contexte, une liste portant role=tablist et son orientation, des onglets portant role=tab, et des volets portant role=tabpanel placés en frères de la liste ; la liste porte une étiquette accessible obligatoire sans laquelle aucun jeu d'onglets ne s'affiche.",
+   "mesure": "tout élément role=tablist porte un nom accessible non vide",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`label` obligatoire sur la tablist (nom accessible du groupe)",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T7",
+     "affirmation": "Si la liste d'onglets possède une étiquette visible, l'élément role=tablist la référence par aria-labelledby ; c'est seulement à défaut d'étiquette visible qu'il porte un aria-label",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi (pratique de référence W3C) — divergence relevée : U01 impose une prop label rendue en aria-label et n'ouvre aucune voie vers aria-labelledby, ce qui inverse l'ordre de préférence du motif et duplique l'étiquette quand un titre visible coiffe déjà la liste"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`label` obligatoire sur la tablist (nom accessible du groupe)",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U02",
+   "couche": "ui",
+   "solution": "`Tabs.Root` accepte `value`/`onValueChange` (contrôlé) ou `defaultValue` (non contrôlé) —",
+   "enonce": "La racine accepte soit une valeur contrôlée assortie de son gestionnaire de changement, soit une valeur initiale non contrôlée, jamais les deux logiques mêlées ; la variante visuelle et le mode d'activation sont des propriétés explicites dont les valeurs par défaut sont la variante ligne et l'activation automatique.",
+   "mesure": "aucune instance ne fournit simultanément une valeur contrôlée et une valeur initiale non contrôlée",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U03",
+   "couche": "ui",
+   "solution": "`Tabs.Tab` et `Tabs.Panel` partagent le même `value` — l'implémentation dérive",
+   "enonce": "Un onglet et son volet se relient par une valeur partagée dont l'implémentation dérive les identifiants ainsi que les attributs aria-controls et aria-labelledby, à partir d'un identifiant de base unique généré au montage et jamais codé en dur.",
+   "mesure": "aucun identifiant d'onglet ou de volet n'est écrit en clair dans le composant",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U04",
+   "couche": "ui",
+   "solution": "le conteneur défile horizontalement (`overflow-x-auto`) — jamais de retour à la ligne",
+   "enonce": "La liste d'onglets défile horizontalement et ne revient jamais à la ligne ; la variante ligne repose sur un séparateur bas de rôle délimitant, la variante pastille sur une piste au rayon plein bordée, et les espacements des deux variantes proviennent de l'échelle d'espacement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "L'information visuelle nécessaire à identifier un composant d'interface et son état atteint un contraste de 3:1, un contour n'étant pas exigé lorsque le composant présente un contenu visible suffisamment contrasté",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — arbitre la dispense de seuil que U04 accorde au séparateur bas de la variante ligne (délimitation de groupe, non porteuse d'état : dispense recevable) mais pas au trait de l'onglet courant, qui identifie l'état sélectionné et reste soumis au 3:1 ; le fichier UI ne pose ce seuil nulle part"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "L'information visuelle nécessaire à identifier un composant d'interface et son état atteint un contraste de 3:1, un contour n'étant pas exigé lorsque le composant présente un contenu visible suffisamment contrasté",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau AA) — arbitre la dispense de seuil que U04 accorde au séparateur bas de la variante ligne (délimitation de groupe, non porteuse d'état : dispense recevable) mais pas au trait de l'onglet courant, qui identifie l'état sélectionné et reste soumis au 3:1 ; le fichier UI ne pose ce seuil nulle part"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U05",
+   "couche": "ui",
+   "solution": "le texte de l'onglet suit `typography.body` ; la variante `line` compose en corps réduit",
+   "enonce": "Le texte d'un onglet reprend la famille et la graisse de base du corps de texte, seul le cran de taille variant avec la densité de la variante, et ses paddings proviennent de l'échelle d'espacement plutôt que d'une valeur en pixels.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U06",
+   "couche": "ui",
+   "solution": "le **canal non chromatique** de l'onglet courant (renvoi TABS-UX) est porté par la paire",
+   "enonce": "Le signal de l'onglet courant est porté par deux propriétés simultanées — le poids typographique renforcé et un trait ou un fond porteur — dont au moins une est non chromatique, et jamais par la seule couleur du texte.",
+   "mesure": "l'onglet courant diffère des autres par au moins deux propriétés visuelles, dont une non chromatique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Poids + trait/fond comme canal non chromatique de l'onglet courant",
+     "liens": [
+      {
+       "label": "convergence avec `LINK-UI.md` (état courant de navigation)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "T5",
+     "affirmation": "L'information visuelle nécessaire à identifier un composant d'interface et son état atteint un contraste de 3:1, un contour n'étant pas exigé lorsque le composant présente un contenu visible suffisamment contrasté",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — arbitre la dispense de seuil que U04 accorde au séparateur bas de la variante ligne (délimitation de groupe, non porteuse d'état : dispense recevable) mais pas au trait de l'onglet courant, qui identifie l'état sélectionné et reste soumis au 3:1 ; le fichier UI ne pose ce seuil nulle part"
+    },
+    {
+     "ref": "T8",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — la couche UI invoquait le « canal non chromatique » par renvoi à la couche UX sans référence normative propre ; à noter, le document d'explication de 1.4.1 ne traite pas explicitement le cas des onglets"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Poids + trait/fond comme canal non chromatique de l'onglet courant",
+    "liens": [
+     {
+      "label": "convergence avec `LINK-UI.md` (état courant de navigation)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U07",
+   "couche": "ui",
+   "solution": "les transitions (couleur du texte, trait) utilisent `motion.fast` / `motion.ease-out` — un",
+   "enonce": "Les transitions d'état d'un onglet empruntent la durée courte et la courbe sortante du mouvement, et l'anneau de focus n'est jamais animé.",
+   "mesure": "aucune propriété de l'anneau de focus n'apparaît dans une transition ou une animation",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U08",
+   "couche": "ui",
+   "solution": "le volet est focalisable (`tabindex=\"0\"`) — il reçoit donc un anneau de focus visible à",
+   "enonce": "Le volet inclus dans l'ordre de tabulation reçoit un anneau de focus visible à l'arrivée au clavier, y compris lorsqu'il est vide, et le volet non courant maintenu monté est masqué par l'attribut natif hidden.",
+   "mesure": "tout tabpanel de tabindex=0 présente un indicateur de focus visible à la prise de focus clavier",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "`label` obligatoire sur la tablist (nom accessible du groupe)",
+     "liens": [
+      {
+       "label": "ARIA APG — Tabs",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T2",
+     "affirmation": "Anneau de focus dû sur un tabpanel `tabindex=\"0\"`, même vide",
+     "liens": [
+      {
+       "label": "`BORDER-UI.md` § Focus ring — exception cible programmatique",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T6",
+     "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — donne son ancrage normatif à l'exception interne de BORDER-UI invoquée par U08 (anneau dû sur un tabpanel focalisable, même vide)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "`label` obligatoire sur la tablist (nom accessible du groupe)",
+    "liens": [
+     {
+      "label": "ARIA APG — Tabs",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TABS-U09",
+   "couche": "ui",
+   "solution": "tout référence un token existant : couleurs par rôle (`color.text-secondary`,",
+   "enonce": "Toute valeur de couleur, d'espacement, de rayon, de relief, de mouvement, de focus et de typographie du composant référence un token existant, aucune valeur brute n'étant écrite dans le composant.",
+   "mesure": "aucune valeur littérale de couleur, de durée, de rayon ou d'espacement n'apparaît dans le code du composant",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

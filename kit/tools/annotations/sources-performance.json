@@ -1,0 +1,93 @@
+[
+  {
+    "couche": "ux",
+    "ref": "S1",
+    "affirmation": "Trois limites de temps de réponse : 0,1 s (le système paraît réagir instantanément, aucun feedback particulier nécessaire), 1 s (limite du flux de pensée ininterrompu), 10 s (limite de l'attention maintenue sur le dialogue). L'article est une reprise : il attribue explicitement ces seuils à Miller 1968 et à Card, Robertson & Mackinlay 1991 (cf. S8, S9).",
+    "source_markdown": "[Nielsen Norman Group — Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/)",
+    "confiance": "Établi — synthèse de référence, mais source secondaire : citer S8/S9 pour l'attribution primaire"
+  },
+  {
+    "couche": "ux",
+    "ref": "S2",
+    "affirmation": "Seuil de Doherty : la productivité s'envole lorsque l'échange homme-machine tient sous 400 ms, aucun des deux n'attendant l'autre. Origine : Walter J. Doherty et Ahrvind J. Thadani, IBM Systems Journal, 1982.",
+    "source_markdown": "[Laws of UX — Doherty Threshold](https://lawsofux.com/doherty-threshold/) (relayé par `LAWS-UX.md`, qui fait autorité sur la loi)",
+    "confiance": "Établi — loi documentée, origine primaire nommée (Doherty & Thadani, IBM Systems Journal, 1982)"
+  },
+  {
+    "couche": "ux",
+    "ref": "S3",
+    "affirmation": "Un indicateur de progression est requis pour toute action dépassant environ 1 s. NN/g fixe le choix du type par la DURÉE et non par la mesurabilité : indicateur en boucle (indéterminé) pour 2 à 9 s, indicateur percent-done (déterminé) à partir de 10 s. Aucune durée minimale d'affichage ni délai anti-scintillement n'y est prescrit.",
+    "source_markdown": "[Nielsen Norman Group — Progress Indicators Make a Slow System Less Insufferable](https://www.nngroup.com/articles/progress-indicators/)",
+    "confiance": "Établi — mais le critère réel est la durée ; le critère « déterminé si mesurable » retenu par le système est une position interne plus stricte"
+  },
+  {
+    "couche": "ux",
+    "ref": "S4",
+    "affirmation": "UI optimiste : n'est légitime que si la réponse serveur est un succès dans 97 à 99 % des cas, sur des éléments simples de type binaire, avec une API stable et prévisible, et l'échec doit être communiqué dans les 2 s du flux.",
+    "source_markdown": "[Smashing Magazine — True Lies Of Optimistic User Interfaces (Denys Mishunov, 2016)](https://www.smashingmagazine.com/2016/11/true-lies-of-optimistic-user-interfaces/)",
+    "confiance": "Convergence — les conditions cumulées retenues par le système (réversibilité, réparation visible) sont une position interne alignée sur cette source"
+  },
+  {
+    "couche": "ux",
+    "ref": "S5",
+    "affirmation": "Labor illusion : rendre le travail visible pendant l'attente augmente la valeur perçue. Expérience 2 — entre un résultat instantané et une attente de 30 à 60 s montrant le travail, 62 à 63 % des participants préfèrent l'attente transparente (contre 23 à 42 % pour une attente sans transparence). L'effet est documenté ET refusé par ce système.",
+    "source_markdown": "[Ryan W. Buell & Michael I. Norton — The Labor Illusion: How Operational Transparency Increases Perceived Value, *Management Science* 57(9), 2011, p. 1564-1579](https://www.hbs.edu/ris/Publication%20Files/Norton_Michael_The%20labor%20illusion%20How%20operational_f4269b70-3732-4fc4-8113-72d0c47533e0.pdf)",
+    "confiance": "Établi (l'effet, revue à comité de lecture) ; le refus de l'exploiter est une règle interne renforcée, assumée contre la littérature"
+  },
+  {
+    "couche": "ux",
+    "ref": "S6",
+    "affirmation": "Stabilité visuelle : les décalages de mise en page inattendus perturbent la lecture et provoquent des clics accidentels. Le CLS mesure la plus grande rafale de décalages sur la durée de vie de la page et exclut délibérément les décalages consécutifs à une interaction (dans les 500 ms).",
+    "source_markdown": "[web.dev — Cumulative Layout Shift (CLS)](https://web.dev/articles/cls) ; règles internes SPACING / MOTION / COLLECTION généralisées",
+    "confiance": "Établi — métrique publiée avec seuil chiffré, convergente avec les règles internes"
+  },
+  {
+    "couche": "ux",
+    "ref": "S7",
+    "affirmation": "Anti-scintillement : convergence d'au moins deux systèmes de design publics. GitLab Pajamas applique un délai de 100 ms avant l'affichage du spinner « pour éviter les spinners inutiles quand les temps de chargement sont minimes » ; le Component Library de la Commission européenne interdit d'afficher l'indicateur pour une opération résolue en moins d'une seconde, « le flash de l'indicateur étant plus désorientant que la brève attente ».",
+    "source_markdown": "[GitLab Pajamas — Spinner](https://design.gitlab.com/components/spinner) ; [European Commission Component Library — Loading indicator, usage](https://ec.europa.eu/component-library/ec/components/loading-indicator/usage)",
+    "confiance": "Convergence établie sur le DÉLAI D'APPARITION ; la DURÉE MINIMALE d'affichage n'est documentée par aucune des deux sources — c'est une position interne non chiffrée"
+  },
+  {
+    "couche": "ux",
+    "ref": "S8",
+    "affirmation": "Source primaire des seuils de réponse : Miller établit les paliers de temps de réponse acceptables dans les transactions conversationnelles homme-machine, dont le seuil de réaction perçue comme immédiate.",
+    "source_markdown": "[Robert B. Miller — Response Time in Man-Computer Conversational Transactions, *Proc. AFIPS Fall Joint Computer Conference* vol. 33, 1968, p. 267-277](https://dl.acm.org/doi/10.1145/1476589.1476628)",
+    "confiance": "Établi — source primaire, relevée dans la section Références de S1 (URL ACM DOI ; le serveur ACM renvoie 403 aux robots, la référence bibliographique fait foi)"
+  },
+  {
+    "couche": "ux",
+    "ref": "S9",
+    "affirmation": "Source primaire du seuil du flux de pensée (1 s) et des constantes temporelles de l'interaction, reprises ensuite par la littérature de vulgarisation.",
+    "source_markdown": "[S. K. Card, G. G. Robertson & J. D. Mackinlay — The Information Visualizer, an Information Workspace, *Proc. ACM CHI'91*, p. 181-188](https://dl.acm.org/doi/10.1145/108844.108874)",
+    "confiance": "Établi — source primaire, relevée dans la section Références de S1 (URL ACM DOI ; le serveur ACM renvoie 403 aux robots, la référence bibliographique fait foi)"
+  },
+  {
+    "couche": "ux",
+    "ref": "S10",
+    "affirmation": "Les messages d'état doivent être programmatiquement déterminables par un rôle ou une propriété, afin d'être présentés par les technologies d'assistance SANS recevoir le focus. La définition normative de « status message » couvre explicitement « l'état d'attente d'une application » et « la progression d'un processus » (Situation C des techniques suffisantes).",
+    "source_markdown": "[WCAG 2.2 — 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+    "confiance": "Établi — standard d'accessibilité (niveau AA), couvrant nommément l'attente et la progression"
+  },
+  {
+    "couche": "ux",
+    "ref": "S11",
+    "affirmation": "Toute limite de temps posée par le contenu doit pouvoir être désactivée, ajustée sur au moins dix fois sa durée par défaut, ou prolongée après un avertissement laissant au moins 20 s pour agir. Exceptions : événements en temps réel, contrainte essentielle, limite supérieure à 20 heures.",
+    "source_markdown": "[WCAG 2.2 — 2.2.1 Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html)",
+    "confiance": "Établi — standard d'accessibilité (niveau A) ; encadre l'obligation de timeout défini"
+  },
+  {
+    "couche": "ux",
+    "ref": "S12",
+    "affirmation": "Seuils « bons » en vigueur des Core Web Vitals, mesurés au 75e centile : LCP inférieur ou égal à 2,5 s, INP inférieur ou égal à 200 ms, CLS inférieur ou égal à 0,1. INP est devenu Core Web Vital stable en 2024, en remplacement de First Input Delay (FID) — toute règle encore adossée au FID est périmée.",
+    "source_markdown": "[web.dev — Web Vitals](https://web.dev/articles/vitals)",
+    "confiance": "Établi — métriques publiées avec seuils chiffrés et versionnés"
+  },
+  {
+    "couche": "ux",
+    "ref": "S13",
+    "affirmation": "INP évalue la réactivité de l'interaction sur toute la vie de la page ; une valeur inférieure ou égale à 200 ms vaut « bonne réactivité ». Le navigateur restitue un retour visuel à la frame suivante, et fournir vite ce retour visuel — même pour une interaction complexe — évite que la page soit perçue comme non réactive.",
+    "source_markdown": "[web.dev — Interaction to Next Paint (INP)](https://web.dev/articles/inp)",
+    "confiance": "Établi — métrique publiée ; borne haute chiffrée du registre « feedback local » du § 1"
+  }
+]

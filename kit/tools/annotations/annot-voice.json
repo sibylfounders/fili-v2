@@ -1,0 +1,310 @@
+[
+ {
+  "id": "VOICE-R01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La voix est un langage de contenu, sans variante visuelle ni token de valeur, scindé en deux couches : un principe de voix stable et un lexique de mécaniques appelé à changer avec la marque ou le produit.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R02",
+  "statut": "universelle",
+  "source": "S2, S15",
+  "enonce": "La voix du produit reste constante d'une surface à l'autre tandis que le ton s'ajuste à l'état de la personne qui lit (routine, erreur, panne, succès, attente, destruction).",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R03",
+  "statut": "identite",
+  "source": "S6",
+  "enonce": "Le registre du produit est productif et non expressif : clarté, précision et sobriété, sans humour d'apparat, superlatif marketing ni sur-célébration.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R04",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Les contraintes d'accessibilité et d'anti-blâme ne se négocient pas, tandis que le registre est un paramètre d'identité : en audit d'une interface tierce, un écart de registre se signale comme divergence paramétrable et jamais comme non-conformité.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R05",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "L'unique relèvement autorisé du registre est le catalogue de moments E-motion, et cette autorisation est énoncée dans les deux fichiers qu'elle relie afin de ne pas dépendre de l'ordre de chargement des documents.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R06",
+  "statut": "identite",
+  "source": "S6, S3",
+  "enonce": "Le relèvement de registre ne s'étend jamais à une erreur, à une action destructive ni à une action fréquente ou réflexe : ces cas restent strictement productifs.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R07",
+  "statut": "universelle",
+  "source": "S10, S11",
+  "enonce": "Le texte est le canal d'information de dernier recours du système : toute information portée par la couleur, le mouvement ou la forme reste disponible en mots, car le mot survit à la couleur coupée, au mouvement coupé, à l'icône incomprise et au lecteur d'écran.",
+  "mesure": "toute information portée par la couleur, le mouvement ou l'icône dispose d'un équivalent textuel"
+ },
+ {
+  "id": "VOICE-R08",
+  "statut": "universelle",
+  "source": "S4, S17",
+  "enonce": "Le libellé d'un lien ou d'un bouton se comprend hors de son contexte : il nomme la destination ou la conséquence de l'action, jamais une formule générique.",
+  "mesure": "aucun libellé de lien ou de bouton réduit à une formule générique (« cliquez ici », « en savoir plus », « OK »)"
+ },
+ {
+  "id": "VOICE-R09",
+  "statut": "universelle",
+  "source": "S1, S18",
+  "enonce": "L'écriture d'interface dit la chose la plus simple qui soit vraie : phrases courtes, voix active, un sujet par phrase, le mot courant plutôt que le mot savant.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R10",
+  "statut": "universelle",
+  "source": "S3, S1",
+  "enonce": "Aucun jargon technique, code d'erreur ni sigle interne n'est exposé à l'utilisateur, et un acronyme inévitable est développé à sa première occurrence.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R11",
+  "statut": "universelle",
+  "source": "S1, S18",
+  "enonce": "La concision retire les mots vides et jamais l'information nécessaire : elle ne justifie pas de supprimer la cause d'un problème ni le moyen de le corriger.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R12",
+  "statut": "identite",
+  "source": "S2, S6",
+  "enonce": "Le système tient une table de correspondance entre l'état de la personne et le ton employé, qui fixe notamment un succès routinier bref et factuel, sans félicitation ni célébration.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R13",
+  "statut": "universelle",
+  "source": "S3, S13",
+  "enonce": "Un message d'erreur ne qualifie jamais la personne : il décrit en texte l'écart constaté et la correction attendue, et le produit prend à son compte les défaillances système.",
+  "mesure": "toute erreur détectée est décrite en texte ; aucun message n'emploie de terme qualifiant la personne ou sa saisie (invalide, incorrect, illégal)"
+ },
+ {
+  "id": "VOICE-R14",
+  "statut": "universelle",
+  "source": "S2, S15",
+  "enonce": "La voix ne change pas d'un écran à l'autre : ni familiarité soudaine, ni formalisme intermittent.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R15",
+  "statut": "universelle",
+  "source": "S8, S14",
+  "enonce": "Un concept est désigné par un seul mot dans toute l'interface, et ce mot ne désigne pas un autre concept ailleurs.",
+  "mesure": "chaque concept du lexique n'apparaît que sous le mot retenu, à l'exclusion de ses synonymes écartés"
+ },
+ {
+  "id": "VOICE-R16",
+  "statut": "universelle",
+  "source": "S5, S18",
+  "enonce": "Le niveau de lecture visé reste bas, au service de l'accessibilité cognitive et des personnes non natives ; aucun seuil chiffré n'est fixé à ce jour, et cette absence est une position assumée.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R17",
+  "statut": "universelle",
+  "source": "S7, S16, S19",
+  "enonce": "Le texte d'interface s'écrit traduisible : aucune phrase construite par concaténation de fragments à l'exécution, aucune longueur codée en dur, et pas d'idiome ni de jeu de mots qui ne franchisse pas les langues.",
+  "mesure": "aucune chaîne d'interface assemblée par concaténation ; les variables passent par des paramètres nommés dans une chaîne complète"
+ },
+ {
+  "id": "VOICE-R18",
+  "statut": "universelle",
+  "source": "S11, S12",
+  "enonce": "Le mot descriptif porte l'accessibilité non visuelle — texte alternatif utile, nom accessible qui dit l'action, texte de lien signifiant — et le nom accessible d'un contrôle contient le texte visible de son libellé.",
+  "mesure": "le nom accessible contient le texte visible du libellé"
+ },
+ {
+  "id": "VOICE-R19",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le langage tient une table des risques de wording associant chaque cas de mauvais usage du mot à son risque principal et à sa sévérité.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-R20",
+  "statut": "universelle",
+  "source": "S3, S4, S10",
+  "enonce": "Le mot porte l'information quand les autres canaux tombent : il l'énonce sans blâmer, dans un vocabulaire constant, la clarté primant sur l'élégance.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U01",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le langage fournit la mécanique commune d'écriture — casse, ponctuation, gabarits — sans redéfinir le wording des composants : en cas de divergence, le composant fait autorité sur son libellé et le langage sur la mécanique.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U02",
+  "statut": "universelle",
+  "source": "T1, T9, T10, T18",
+  "enonce": "Les titres, boutons, labels et menus s'écrivent en sentence case : une majuscule au premier mot, le reste en minuscules hors noms propres.",
+  "mesure": "aucun libellé ne porte de majuscule initiale sur un mot autre que le premier, hors nom propre et sigle"
+ },
+ {
+  "id": "VOICE-U03",
+  "statut": "identite",
+  "source": "T10, interne",
+  "enonce": "Les capitales sont réservées aux étiquettes rendues avec le style de label (pastilles, badges, kickers) et ne portent jamais une phrase ni un libellé d'action.",
+  "mesure": "aucune phrase ni libellé d'action rendu en capitales"
+ },
+ {
+  "id": "VOICE-U04",
+  "statut": "universelle",
+  "source": "T3, T11, T18",
+  "enonce": "Un libellé court, un label, un titre ou un bouton ne se termine pas par un point ; la ponctuation finale revient dès qu'il y a une phrase complète d'aide ou d'erreur, ou au moins deux phrases.",
+  "mesure": "aucun point final sur un libellé d'une seule phrase courte"
+ },
+ {
+  "id": "VOICE-U05",
+  "statut": "universelle",
+  "source": "T3, T18",
+  "enonce": "Les points de suspension signalent une action qui demande une étape supplémentaire avant de s'exécuter et ne figurent jamais sur une action qui agit immédiatement.",
+  "mesure": "les points de suspension n'apparaissent que sur les actions différées"
+ },
+ {
+  "id": "VOICE-U06",
+  "statut": "universelle",
+  "source": "T4",
+  "enonce": "La ponctuation suit la norme typographique française — espace insécable avant les deux-points, le point-virgule, le point d'exclamation et le point d'interrogation, guillemets français en contenu — la ponctuation ASCII n'étant conservée que dans les blocs de code et de données.",
+  "mesure": "aucun guillemet droit en contenu ; espace insécable avant : ; ! ? hors blocs de code"
+ },
+ {
+  "id": "VOICE-U07",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "Le point d'exclamation est proscrit dans l'interface produit, hors message de bienvenue rare et hors microcopy de résolution d'un moment E-motion catalogué.",
+  "mesure": "aucun point d'exclamation hors des exceptions déclarées"
+ },
+ {
+  "id": "VOICE-U08",
+  "statut": "universelle",
+  "source": "T2, T9, T19",
+  "enonce": "Toute donnée numérique s'écrit en chiffres et non en lettres, les lettres restant réservées à un usage rhétorique hors données.",
+  "mesure": "toute valeur de donnée est rendue en chiffres"
+ },
+ {
+  "id": "VOICE-U09",
+  "statut": "universelle",
+  "source": "T8, T12",
+  "enonce": "Les nombres suivent le format de la locale — séparateur de milliers par espace insécable, virgule décimale, espace insécable avant l'unité et le symbole — et ce format n'est jamais codé en dur dans une chaîne : il est délégué au formatage sensible à la locale.",
+  "mesure": "aucun format de nombre codé en dur dans une chaîne d'interface"
+ },
+ {
+  "id": "VOICE-U10",
+  "statut": "universelle",
+  "source": "T20",
+  "enonce": "Une date affichée n'est jamais ambiguë entre les conventions de locale, et le format long avec le mois nommé est préféré partout où la place le permet.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U11",
+  "statut": "universelle",
+  "source": "T13, T20",
+  "enonce": "Le temps relatif n'est employé qu'en deçà de 24 à 48 heures, au-delà desquelles la date absolue s'affiche, et tout horodatage relatif est doublé de la date absolue dans sa valeur machine.",
+  "mesure": "tout horodatage relatif porte la date absolue en attribut datetime ou title"
+ },
+ {
+  "id": "VOICE-U12",
+  "statut": "identite",
+  "source": "interne",
+  "enonce": "La prose de lecture ne dépasse pas la mesure de lecture maximale du système, les libellés d'action restent courts, et une troncature ne masque jamais une information décisive, dont la version complète reste accessible.",
+  "mesure": "la prose de lecture ne dépasse pas measure.reading-max ; le texte tronqué reste disponible en entier via title ou tooltip"
+ },
+ {
+  "id": "VOICE-U13",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "Le lexique du produit fixe un mot unique par concept, l'engagement portant sur le fait de ne pas mélanger deux désignations pour la même action plutôt que d'interdire des synonymes en soi.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U14",
+  "statut": "universelle",
+  "source": "T6, T16",
+  "enonce": "Un message d'erreur ne porte ni interjection de fausse légèreté, ni emoji, ni point d'exclamation : un incident se traite avec calme et ne se minimise pas.",
+  "mesure": "aucun emoji, interjection (« Oups », « Aïe ») ni point d'exclamation dans un message d'erreur"
+ },
+ {
+  "id": "VOICE-U15",
+  "statut": "universelle",
+  "source": "T6, T15",
+  "enonce": "Un message d'erreur énonce ce qui s'est passé, pourquoi et comment corriger, sans attribuer de faute à la personne, et fournit la correction dès qu'elle est connue.",
+  "mesure": "tout état d'erreur est décrit en texte et propose la correction attendue quand elle est connue"
+ },
+ {
+  "id": "VOICE-U16",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "Un succès routinier se confirme brièvement et au passé accompli, sans félicitation ni point d'exclamation.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U17",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "Le microcopy de résolution d'un moment E-motion catalogué est la seule exception au gabarit de succès et peut se réchauffer d'un cran, jamais par défaut.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U18",
+  "statut": "universelle",
+  "source": "T14",
+  "enonce": "Un état vide énonce la situation et pointe la première action qui la comble, en distinguant l'absence de résultat d'une recherche de l'absence de contenu encore créé.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U19",
+  "statut": "universelle",
+  "source": "T11, T17",
+  "enonce": "Une confirmation destructive nomme la conséquence exacte de l'action, et son bouton porte le verbe de cette action plutôt qu'une formule générique.",
+  "mesure": "aucun bouton de confirmation destructive libellé « OK » ou « Oui »"
+ },
+ {
+  "id": "VOICE-U20",
+  "statut": "identite",
+  "source": "T7",
+  "enonce": "Un état d'attente énonce au présent progressif ce qui est en train de se passer, le mot doublant l'indicateur visuel sans le remplacer.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U21",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La couche mécanique du langage n'introduit aucune valeur brute : tout besoin de valeur nouvelle passe d'abord par le fichier de tokens, avec montée de version.",
+  "mesure": "aucune valeur brute (hex, px, ch) définie dans ce fichier"
+ },
+ {
+  "id": "VOICE-U22",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Chaque composant applique la mécanique du langage et conserve l'autorité sur son propre wording.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U23",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "La conformité de la voix relève de la revue humaine et non du test automatique ; seuls quelques marqueurs — mots bannis, point final sur libellé court, guillemets droits — sont candidats à un lint de contenu.",
+  "mesure": ""
+ },
+ {
+  "id": "VOICE-U24",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le lexique publié est un noyau limité aux concepts déjà consommés par les surfaces existantes, et il s'étend au fil des besoins réels plutôt que par anticipation.",
+  "mesure": ""
+ }
+]

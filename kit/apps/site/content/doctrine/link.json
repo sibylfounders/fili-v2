@@ -1,0 +1,2034 @@
+{
+ "slug": "link",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M9.2 14.8l-1.4 1.4a4 4 0 0 1-5.7-5.7l3.2-3.2A4 4 0 0 1 11 7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M14.8 9.2l1.4-1.4a4 4 0 0 1 5.7 5.7l-3.2 3.2A4 4 0 0 1 13 17\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M8.5 12h7\" stroke=\"#F2C744\" stroke-width=\"2.2\" stroke-linecap=\"round\"/></svg>",
+ "nom": "link",
+ "nature": "Composant",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-21 · confiance globale : established",
+ "confiance": "established",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Quand faut-il proposer un lien plutôt qu’un bouton, et comment rendre sa destination évidente ?",
+  "detail": "Cette page distingue navigation et action, puis couvre les liens dans le texte, les destinations externes, les téléchargements et les cartes cliquables sans dépendre de la seule couleur.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un Link promet une destination"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Un lien inline reste identifiable sans dépendre de la couleur seule"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Son texte décrit la destination"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "—",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "21",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-link.md",
+   "source": "---\nsujet: link\ntype: composant\nresume: \"Navigation : lien inline, autonome ou de navigation ; destination explicite, états, téléchargements et changement de contexte\"\nrequires: [\"interaction\"]\nselon-contexte: [\"card (si le lien étend une carte cliquable)\", \"iconography (si icône)\", \"voice (texte de lien signifiant = cadre unificateur)\", \"motion (feedback d'état, focus ring non animé)\"]\n---\n# RULES — Link (compilé, condensé)\n\n> Généré depuis `components/link/LINK-UX.md` (v1.0.0) et `LINK-UI.md` (v1.0.0).\n> La source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Usage\n\n- **Un Link dit “aller”, un Button dit “faire”.**\n- Link = autre page, ressource, section ou URL. Button = modifier l'état, soumettre, créer, supprimer,\n  ouvrir une action ou déclencher un traitement.\n- Une SPA ne change pas la frontière : le résultat perçu décide.\n- Navigation = `<a href>` réel. JavaScript peut enrichir, pas remplacer la destination native.\n\n## Contextes\n\n- **Inline** : souligné au repos ; identifiable sans couleur.\n- **Standalone** : texte + éventuelle icône directionnelle ; plus léger qu'un Button adjacent.\n- **Navigation** : destination courante signalée sans couleur seule + `aria-current`.\n- **Téléchargement** : annoncer le type et, si utile, la taille.\n- **Nouvel onglet** : exceptionnel et annoncé dans le libellé ou l'indication accessible cohérente.\n- **Card cliquable** : vrai Link dont le texte accessible est le titre ; actions internes hors du lien.\n\n## Wording\n\n- Décrire la destination ou la ressource : « Voir les factures », « Documentation de l'API », pas\n  « En savoir plus » répété ni URL brute quand un nom humain existe.\n- Le but du lien reste compréhensible depuis son texte ou son contexte accessible.\n\n## États\n\n- default : `color.primary` + soulignement selon contexte ;\n- hover : `color.primary-hover`, soulignement maintenu ;\n- focus : `color.accent` + `border.focus-width` + `border.focus-offset` ;\n- active : feedback immédiat sans déplacement du layout ;\n- visited : `color.text-secondary` seulement quand l'historique aide (collections de contenu).\n- Pas de Link disabled : retirer la cible ou expliquer l'indisponibilité.\n\n## Icônes et cible\n\n- Inline : `icon.sm` ; standalone : `icon.md`.\n- Icône seule : nom accessible obligatoire + zone tactile commune de 44px.\n- Une icône externe/directionnelle complète le texte ; elle ne porte pas seule un changement de\n  contexte non établi.\n\n## Risques\n\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Link utilisé pour une action | attente, clavier et sémantique incohérents | Élevée |\n| Button utilisé pour naviguer | comportements natifs du lien perdus | Élevée |\n| couleur seule / soulignement hover-only | lien invisible | Élevée |\n| nouvel onglet non annoncé | changement de contexte inattendu | Moyenne |\n\n## Application des Languages\n\n- **Interaction** : **un Link dit « aller », un Button dit « faire »** — Link = expression de la navigation dans `INTERACTION-UX` ; c'est le résultat perçu qui décide, pas la technique (SPA incluse).\n- **Voice** : le wording est la déclinaison locale de `VOICE-UX` (cadre unificateur) — texte de lien **signifiant hors contexte** (WCAG 2.4.4), un concept = un mot ; pas d'« En savoir plus » répété ni d'URL brute quand un nom humain existe.\n- **Motion** : la transition d'état (couleur) est du **feedback** (`motion.fast`/`ease-out`, `MOTION-UX`), supprimable sans perte sous `prefers-reduced-motion` ; le **focus ring n'est jamais animé** (information de position clavier, pas un effet).\n- **E-motion** : **aucun instrument** — un clic de navigation est une action à haute fréquence, hors du catalogue des moments mérités (`EMOTION-UX` § budget de rareté) ; son seul besoin temporel est le feedback d'état.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 8 cas",
+   "titre": "Contexte",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"40\" width=\"240\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"40\" y=\"58\" width=\"64\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><text x=\"114\" y=\"65\" font-size=\"11\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">documentation</text><path d=\"M114 68h78\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><rect x=\"202\" y=\"58\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"40\" y=\"76\" width=\"210\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"40\" y=\"98\" width=\"240\" height=\"28\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"56\" y=\"116\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">Accueil</text><text x=\"112\" y=\"116\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Guides</text><path d=\"M112 119h36\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><text x=\"170\" y=\"116\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">Tokens</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Lien inline dans un paragraphe",
+     "quand": "Souligné au repos, sens hors couleur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lien inline dans un paragraphe\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"160\" y=\"72\" width=\"360\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"160\" y=\"98\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><text x=\"296\" y=\"106\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">la documentation</text><path d=\"M296 113h118\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"430\" y=\"98\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"160\" y=\"124\" width=\"340\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"160\" y=\"150\" width=\"240\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Souligné au repos, sens hors couleur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « lien inline dans un paragraphe » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Lien autonome",
+     "quand": "Destination explicite, plus léger qu'un Button.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lien autonome\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"124\" font-size=\"16\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Consulter le guide</text><path d=\"M240 131h146\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M410 118L452 118\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M452 118L444.1 122.3M452 118L444.1 113.7\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Destination explicite, plus léger qu'un Button.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « lien autonome » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Navigation principale",
+     "quand": "Destination courante annoncée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Navigation principale\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"140\" y=\"76\" width=\"400\" height=\"48\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"170\" y=\"105\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Accueil</text><text x=\"258\" y=\"105\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Guides</text><path d=\"M258 112h50\" stroke=\"#4F46E5\" stroke-width=\"2\"/><text x=\"348\" y=\"105\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Tokens</text><text x=\"436\" y=\"105\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Blog</text><circle cx=\"283\" cy=\"68\" r=\"4\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Destination courante annoncée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « navigation principale » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Ancre dans la page",
+     "quand": "Destination interne et focus cohérent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ancre dans la page\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"220\" y=\"36\" width=\"240\" height=\"176\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"244\" y=\"68\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Aller aux détails</text><path d=\"M244 75h112\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M340 84L340 138\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M340 138L335.7 130.1M340 138L344.3 130.1\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"238\" y=\"146\" width=\"204\" height=\"36\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\"/><rect x=\"252\" y=\"160\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Destination interne et focus cohérent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « ancre dans la page » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Lien externe",
+     "quand": "Nouvel onglet exceptionnel et annoncé.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lien externe\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"200\" y=\"120\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Documentation externe</text><path d=\"M200 127h162\" stroke=\"#4F46E5\" stroke-width=\"2\"/><g transform=\"translate(386,100)\"><rect width=\"26\" height=\"26\" rx=\"5\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M10 16 20 6M13 6h7v7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/></g><rect x=\"452\" y=\"66\" width=\"96\" height=\"70\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"452\" y=\"66\" width=\"96\" height=\"16\" rx=\"8\" fill=\"#F3F4F6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Nouvel onglet exceptionnel et annoncé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « lien externe » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Téléchargement",
+     "quand": "Type et taille annoncés quand utiles.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Téléchargement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"206\" y=\"118\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Rapport annuel</text><path d=\"M206 125h112\" stroke=\"#4F46E5\" stroke-width=\"2\"/><g transform=\"translate(344,98)\"><path d=\"M13 2v14m0 0-6-6m6 6 6-6\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M3 21h20\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><rect x=\"396\" y=\"102\" width=\"86\" height=\"24\" rx=\"12\" fill=\"#E0E7FF\"/><text x=\"410\" y=\"118\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">PDF · 2 Mo</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Type et taille annoncés quand utiles.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « téléchargement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un téléchargement annonce la nature du fichier et, quand elle est utile, sa taille.",
+       "id": "LINK-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Card cliquable",
+     "quand": "Vrai lien étendu portant le titre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Card cliquable\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"220\" y=\"46\" width=\"240\" height=\"148\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"62\" width=\"84\" height=\"56\" rx=\"8\" fill=\"#E0E7FF\"/><text x=\"236\" y=\"146\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Titre de la carte</text><path d=\"M236 153h118\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"236\" y=\"164\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"206\" y=\"34\" width=\"268\" height=\"172\" rx=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 6\" opacity=\".7\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Vrai lien étendu portant le titre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « card cliquable » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une Card cliquable vers un détail contient un vrai Link dont le texte accessible est le titre",
+       "id": "LINK-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Icône seule",
+     "quand": "Nom accessible + cible tactile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Contexte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône seule\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"298\" y=\"86\" width=\"64\" height=\"64\" rx=\"12\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"5 5\"/><g transform=\"translate(316,104)\"><path d=\"M12 17a6 6 0 0 1-1-9l4-4a6 6 0 0 1 9 9l-2 2\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M16 11a6 6 0 0 1 1 9l-4 4a6 6 0 0 1-9-9l2-2\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><rect x=\"402\" y=\"104\" width=\"96\" height=\"26\" rx=\"13\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"416\" y=\"121\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">aria-label</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Nom accessible + cible tactile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « icône seule » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un lien icône seule conserve une cible tactile suffisante et un nom accessible. Sa forme ne",
+       "id": "LINK-R14"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "État",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><text x=\"44\" y=\"60\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Repos</text><path d=\"M44 64h38\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><text x=\"124\" y=\"60\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Survol</text><path d=\"M124 64h42\" stroke=\"#4F46E5\" stroke-width=\"3\"/><rect x=\"204\" y=\"40\" width=\"76\" height=\"32\" rx=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><text x=\"218\" y=\"60\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Focus</text><path d=\"M218 64h38\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/><text x=\"44\" y=\"108\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">Visité</text><path d=\"M44 112h38\" stroke=\"#4B5563\" stroke-width=\"1.6\"/><circle cx=\"232\" cy=\"104\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M228.5 100.5l7 7M235.5 100.5l-7 7\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Default",
+     "quand": "Identifiable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Default\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"272\" y=\"124\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Lien au repos</text><path d=\"M272 131h104\" stroke=\"#4F46E5\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Identifiable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « default » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+       "id": "LINK-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Hover",
+     "quand": "Renforcement, jamais révélation.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hover\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"196\" y=\"124\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Lien</text><path d=\"M196 131h36\" stroke=\"#4F46E5\" stroke-width=\"2\"/><text x=\"372\" y=\"124\" font-size=\"15\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4338CA\">Lien</text><path d=\"M372 131h40\" stroke=\"#4338CA\" stroke-width=\"2\"/><path d=\"M372 134h40\" stroke=\"#4338CA\" stroke-width=\"3.4\"/><path d=\"M424 140l13 32 4-12 12-4z\" fill=\"#111827\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Renforcement, jamais révélation.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « hover » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+       "id": "LINK-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Focus",
+     "quand": "Outline visible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"262\" y=\"98\" width=\"158\" height=\"42\" rx=\"9\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"3\"/><text x=\"282\" y=\"124\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Lien focalisé</text><path d=\"M282 131h102\" stroke=\"#4F46E5\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Outline visible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « focus » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+       "id": "LINK-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Active",
+     "quand": "Feedback immédiat.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Active\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"282\" y=\"124\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4338CA\">Lien activé</text><path d=\"M282 131h88\" stroke=\"#4338CA\" stroke-width=\"2\"/><path d=\"M270 104l-9-9M392 104l9-9M270 144l-9 9M392 144l9 9\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Feedback immédiat.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « active » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+       "id": "LINK-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Visited",
+     "quand": "Réservé aux contextes où l'historique aide.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Visited\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"100\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Résultat consulté</text><path d=\"M250 107h124\" stroke=\"#4B5563\" stroke-width=\"2\"/><text x=\"250\" y=\"146\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Résultat suivant</text><path d=\"M250 153h118\" stroke=\"#4F46E5\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Réservé aux contextes où l'historique aide.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « visited » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+       "id": "LINK-R10"
+      },
+      {
+       "tag": "Règle",
+       "html": "<code>visited</code> sert surtout aux collections de contenu où se souvenir des pages consultées aide la",
+       "id": "LINK-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Disabled",
+     "quand": "Traiter le cas « Disabled ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Disabled\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"160\" y=\"120\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Action indisponible</text><path d=\"M160 127h144\" stroke=\"#4B5563\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"114\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M336.5 110.5l7 7M343.5 110.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M374 116L414 116\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M414 116L406.1 120.3M414 116L406.1 111.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"430\" y=\"120\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">texte simple</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Traiter le cas « Disabled ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « disabled » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LINK-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un lien n'a normalement pas d'état disabled. Si la destination n'est pas disponible, le lien",
+       "id": "LINK-R12"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": [
+   {
+    "token": "typography.font",
+    "ref": "typography.body",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "typography.fallback",
+    "ref": "typography.fallback.sans",
+    "valeur": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "couleur": null
+   },
+   {
+    "token": "colors.default",
+    "ref": "color.primary",
+    "valeur": "#4F46E5",
+    "couleur": "#4F46E5"
+   },
+   {
+    "token": "colors.hover",
+    "ref": "color.primary-hover",
+    "valeur": "#4338CA",
+    "couleur": "#4338CA"
+   },
+   {
+    "token": "colors.visited",
+    "ref": "color.text-secondary",
+    "valeur": "#4B5563",
+    "couleur": "#4B5563"
+   },
+   {
+    "token": "focus.color",
+    "ref": "color.accent",
+    "valeur": "#0891B2",
+    "couleur": "#0891B2"
+   },
+   {
+    "token": "focus.width",
+    "ref": "border.focus-width",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "focus.offset",
+    "ref": "border.focus-offset",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "icon.inline",
+    "ref": "icon.sm",
+    "valeur": "16px",
+    "couleur": null
+   },
+   {
+    "token": "icon.standalone",
+    "ref": "icon.md",
+    "valeur": "20px",
+    "couleur": null
+   },
+   {
+    "token": "motion.state.duration",
+    "ref": "motion.fast",
+    "valeur": "100ms",
+    "couleur": null
+   },
+   {
+    "token": "motion.state.easing",
+    "ref": "motion.ease-out",
+    "valeur": "cubic-bezier(0, 0, 0.2, 1)",
+    "couleur": null
+   },
+   {
+    "token": "axes.context",
+    "ref": "inline, standalone, navigation",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "axes.icon",
+    "ref": "none, leading, trailing, only",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "LINK-R01",
+   "couche": "ux",
+   "solution": "utiliser un Link pour conduire vers une autre page, ressource, section ou URL.",
+   "enonce": "Un déclencheur qui conduit l'utilisateur vers une autre page, ressource, section ou URL est un lien.",
+   "mesure": "toute navigation est portée par un élément de type lien, jamais par un bouton",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Séparation lien/navigation et bouton/action",
+     "liens": [
+      {
+       "label": "Sémantique HTML + convergence des design systems majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Séparation lien/navigation et bouton/action",
+    "liens": [
+     {
+      "label": "Sémantique HTML + convergence des design systems majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R02",
+   "couche": "ux",
+   "solution": "utiliser un Button quand l'activation modifie l'état courant, soumet, crée, supprime, ouvre",
+   "enonce": "Un déclencheur dont l'activation modifie l'état courant, soumet, crée, supprime ou lance un traitement est un bouton, y compris dans une application monopage : c'est le résultat perçu qui décide, pas la technologie de routage.",
+   "mesure": "aucun lien ne déclenche une action sans changement de destination",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Séparation lien/navigation et bouton/action",
+     "liens": [
+      {
+       "label": "Sémantique HTML + convergence des design systems majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Séparation lien/navigation et bouton/action",
+    "liens": [
+     {
+      "label": "Sémantique HTML + convergence des design systems majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R03",
+   "couche": "ux",
+   "solution": "un lien qui ouvre une modale d'action est une mauvaise promesse ; un bouton qui conduit vers",
+   "enonce": "Un lien qui ouvre une modale d'action et un bouton qui conduit vers une page sont l'un et l'autre des promesses fausses ; toute exception se justifie par le parcours, jamais par un besoin de style.",
+   "mesure": "aucun lien n'ouvre une modale d'action ; aucun bouton ne provoque un changement de page",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Séparation lien/navigation et bouton/action",
+     "liens": [
+      {
+       "label": "Sémantique HTML + convergence des design systems majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Séparation lien/navigation et bouton/action",
+    "liens": [
+     {
+      "label": "Sémantique HTML + convergence des design systems majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R04",
+   "couche": "ux",
+   "solution": "dans un paragraphe, le lien reste identifiable sans dépendre de la couleur seule. Le",
+   "enonce": "Un lien placé dans un bloc de texte reste identifiable sans dépendre de la couleur seule, le soulignement étant le signal par défaut.",
+   "mesure": "un lien dans un bloc de texte est distingué autrement que par la seule couleur, au repos",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "La couleur ne suffit pas à identifier un lien inline",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "La couleur ne suffit pas à identifier un lien inline",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R05",
+   "couche": "ux",
+   "solution": "le libellé garde du sens hors contexte immédiat. « En savoir plus » seul est évité quand",
+   "enonce": "Le libellé d'un lien garde son sens hors de son contexte immédiat ; un libellé générique répété est proscrit dès que plusieurs occurrences mènent à des destinations différentes.",
+   "mesure": "deux liens de même libellé dans une même page ne mènent pas à des destinations différentes",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+       "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte seul, hors contexte environnant",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.9 Link Purpose (Link Only)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA) — complète S1 (2.4.4, niveau A, qui n'exige que le contexte)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+      "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R06",
+   "couche": "ux",
+   "solution": "un lien placé seul peut associer texte et icône directionnelle. Il reste plus léger qu'un",
+   "enonce": "Un lien autonome peut associer texte et icône directionnelle ; il reste plus léger qu'un bouton adjacent et ne concurrence pas l'action dominante de l'écran.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R07",
+   "couche": "ux",
+   "solution": "les liens de navigation identifient la destination courante avec un signal non chromatique",
+   "enonce": "Dans un ensemble de navigation, la destination courante est signalée par un indice non chromatique et par l'état programmatique correspondant, et n'est pas présentée comme une action.",
+   "mesure": "la destination courante porte aria-current et un signal non chromatique",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "La couleur ne suffit pas à identifier un lien inline",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "L'élément courant d'un ensemble (navigation, pagination, fil d'Ariane) se déclare par aria-current",
+     "liens": [
+      {
+       "label": "WAI-ARIA 1.2 — aria-current",
+       "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-current"
+      }
+     ],
+     "confiance": "Normatif — la couche UX invoquait « l'état programmatique approprié » sans le nommer"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "La couleur ne suffit pas à identifier un lien inline",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R08",
+   "couche": "ux",
+   "solution": "un téléchargement annonce la nature du fichier et, quand elle est utile, sa taille.",
+   "enonce": "Un lien de téléchargement annonce la nature du fichier et, quand elle est utile, sa taille, avant l'activation.",
+   "mesure": "tout lien de téléchargement mentionne le format du fichier dans son nom accessible",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Un lien vers un document annonce son format et sa taille dans le libellé, donc dans le nom accessible",
+     "liens": [
+      {
+       "label": "GOV.UK Publishing Components — Attachment link",
+       "url": "https://components.publishing.service.gov.uk/component-guide/attachment_link"
+      },
+      {
+       "label": "ONS Design System — Document list",
+       "url": "https://service-manual.ons.gov.uk/design-system/components/document-list"
+      }
+     ],
+     "confiance": "Établi par convergence — 2 systèmes publics vérifiés"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     },
+     {
+      "label": "MDN — élément a",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+     },
+     {
+      "label": "ARIA APG — Link Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+     }
+    ],
+    "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Téléchargement",
+     "famille": "Contexte"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R09",
+   "couche": "ux",
+   "solution": "l'ouverture d'un nouvel onglet reste exceptionnelle et est annoncée dans le libellé ou par",
+   "enonce": "L'ouverture d'un nouvel onglet reste exceptionnelle et est annoncée dans le libellé ou par une indication accessible équivalente ; une icône seule ne suffit pas tant que sa signification n'est pas établie dans le produit.",
+   "mesure": "tout lien ouvrant un nouvel onglet porte une mention d'ouverture externe dans son nom accessible",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Un changement de contexte — dont l'ouverture d'un nouvel onglet — n'est légitime que sur demande de l'utilisateur, et l'avertissement se fait dans le texte du lien ou par une description accessible équivalente",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 3.2.5 Change on Request",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+      },
+      {
+       "label": "WCAG — Technique G201",
+       "url": "https://www.w3.org/WAI/WCAG21/Techniques/general/G201"
+      }
+     ],
+     "confiance": "Établi, standard (AAA) — G201 se déclare elle-même consultative ; c'est 3.2.5 qui porte la norme. Ancrage mince, assumé"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Un changement de contexte — dont l'ouverture d'un nouvel onglet — n'est légitime que sur demande de l'utilisateur, et l'avertissement se fait dans le texte du lien ou par une description accessible équivalente",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 3.2.5 Change on Request",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+     },
+     {
+      "label": "WCAG — Technique G201",
+      "url": "https://www.w3.org/WAI/WCAG21/Techniques/general/G201"
+     }
+    ],
+    "confiance": "Établi, standard (AAA) — G201 se déclare elle-même consultative ; c'est 3.2.5 qui porte la norme. Ancrage mince, assumé"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R10",
+   "couche": "ux",
+   "solution": "default, hover, focus, active et visited restent distinguables quand ils s'appliquent.",
+   "enonce": "Les états default, hover, focus, active et visited d'un lien restent distinguables les uns des autres partout où ils s'appliquent.",
+   "mesure": "chaque état appliqué se distingue de l'état default par au moins une propriété visuelle",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "L'indicateur de focus clavier reste visible",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — ne couvre que le volet focus, pas hover/active/visited"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "L'indicateur de focus clavier reste visible",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — ne couvre que le volet focus, pas hover/active/visited"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Default",
+     "famille": "État"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Hover",
+     "famille": "État"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Focus",
+     "famille": "État"
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Active",
+     "famille": "État"
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Visited",
+     "famille": "État"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R11",
+   "couche": "ux",
+   "solution": "`visited` sert surtout aux collections de contenu où se souvenir des pages consultées aide la",
+   "enonce": "L'état visited est réservé aux collections de contenu où se souvenir des pages consultées sert la tâche ; il peut être omis dans la navigation applicative persistante lorsqu'il brouillerait le repère de destination courante.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S14",
+     "affirmation": "Pour des raisons de vie privée, :visited ne peut modifier que des propriétés de couleur ; aucun signal non chromatique n'est techniquement possible sur cet état",
+     "liens": [
+      {
+       "label": "MDN — :visited",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:visited"
+      }
+     ],
+     "confiance": "Normatif (contrainte des navigateurs) — explique pourquoi visited est le seul état exempté de « jamais la couleur seule »"
+    }
+   ],
+   "principale": {
+    "ref": "S14",
+    "affirmation": "Pour des raisons de vie privée, :visited ne peut modifier que des propriétés de couleur ; aucun signal non chromatique n'est techniquement possible sur cet état",
+    "liens": [
+     {
+      "label": "MDN — :visited",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:visited"
+     }
+    ],
+    "confiance": "Normatif (contrainte des navigateurs) — explique pourquoi visited est le seul état exempté de « jamais la couleur seule »"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Visited",
+     "famille": "État"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R12",
+   "couche": "ux",
+   "solution": "un lien n'a normalement pas d'état disabled. Si la destination n'est pas disponible, le lien",
+   "enonce": "Un lien n'a pas d'état désactivé : une destination indisponible est retirée ou remplacée par une explication, jamais laissée sous la forme d'un lien inerte.",
+   "mesure": "aucun lien ne porte un état disabled ou aria-disabled",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     },
+     {
+      "label": "MDN — élément a",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+     },
+     {
+      "label": "ARIA APG — Link Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+     }
+    ],
+    "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-5",
+     "titre": "Disabled",
+     "famille": "État"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R13",
+   "couche": "ux",
+   "solution": "une icône leading décrit la ressource ; une icône trailing décrit la direction ou la nature",
+   "enonce": "Une icône de lien complète le libellé — en tête elle décrit la ressource, en fin elle décrit la direction ou la nature de la destination — et ne le remplace que si le lien conserve un nom accessible explicite.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Tout composant d'interface, liens compris, expose un nom et un rôle programmatiquement déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Tout composant d'interface, liens compris, expose un nom et un rôle programmatiquement déterminables",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R14",
+   "couche": "ux",
+   "solution": "un lien icône seule conserve une cible tactile suffisante et un nom accessible. Sa forme ne",
+   "enonce": "Un lien réduit à une icône porte un nom accessible et une cible pointeur suffisante, et sa forme ne le fait pas passer pour un bouton alors que son résultat est une navigation.",
+   "mesure": "tout lien icône seule a un nom accessible non vide et une cible ≥ 24×24 px CSS",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Seuils de cible pointeur : 24 × 24 px CSS minimum (AA, avec exception explicite pour les liens en ligne dans une phrase), 44 × 44 px CSS renforcé (AAA)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA et AAA) — le 44 px cité par ce composant est le seuil AAA, pas le seuil de conformité courant"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Tout composant d'interface, liens compris, expose un nom et un rôle programmatiquement déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Seuils de cible pointeur : 24 × 24 px CSS minimum (AA, avec exception explicite pour les liens en ligne dans une phrase), 44 × 44 px CSS renforcé (AAA)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     },
+     {
+      "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA et AAA) — le 44 px cité par ce composant est le seuil AAA, pas le seuil de conformité courant"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-7",
+     "titre": "Icône seule",
+     "famille": "Contexte"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R15",
+   "couche": "ux",
+   "solution": "une Card cliquable vers un détail contient un vrai Link dont le texte accessible est le titre",
+   "enonce": "Une carte cliquable vers un détail contient un lien réel dont le texte accessible est le titre de la carte ; l'extension de la surface cliquable est une technique de ce lien, pas un gestionnaire de clic posé sur un conteneur inerte.",
+   "mesure": "aucune surface de carte navigable n'est portée par un élément non interactif muni d'un gestionnaire de clic",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Séparation lien/navigation et bouton/action",
+     "liens": [
+      {
+       "label": "Sémantique HTML + convergence des design systems majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Tout composant d'interface, liens compris, expose un nom et un rôle programmatiquement déterminables",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Séparation lien/navigation et bouton/action",
+    "liens": [
+     {
+      "label": "Sémantique HTML + convergence des design systems majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-6",
+     "titre": "Card cliquable",
+     "famille": "Contexte"
+    }
+   ]
+  },
+  {
+   "id": "LINK-R16",
+   "couche": "ux",
+   "solution": "les actions internes à la Card restent hors du lien et conservent leur propre sémantique.",
+   "enonce": "Les actions internes à une carte restent hors du lien et conservent leur propre sémantique ; aucun élément interactif n'est descendant d'un lien.",
+   "mesure": "aucun élément interactif n'est descendant d'un élément de type lien",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     },
+     {
+      "label": "MDN — élément a",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+     },
+     {
+      "label": "ARIA APG — Link Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+     }
+    ],
+    "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R17",
+   "couche": "ux",
+   "solution": "le texte décrit la destination ou la ressource : « Voir les factures », « Documentation de",
+   "enonce": "Le texte d'un lien décrit la destination ou la ressource, et évite l'URL brute dès qu'un nom humain est disponible.",
+   "mesure": "aucun libellé de lien réduit à « cliquez ici », « ici » ou « en savoir plus » seul",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+       "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte seul, hors contexte environnant",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.9 Link Purpose (Link Only)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA) — complète S1 (2.4.4, niveau A, qui n'exige que le contexte)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+      "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R18",
+   "couche": "ux",
+   "solution": "le contexte accessible permet de comprendre la fonction du lien. Plusieurs liens portant le",
+   "enonce": "Le contexte accessible d'un lien permet d'en comprendre la fonction, et deux liens portant le même texte accessible conduisent à la même nature de destination.",
+   "mesure": "deux liens de même texte accessible dans une page mènent à la même nature de destination",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+       "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La fonction d'un lien est déterminable à partir de son texte seul, hors contexte environnant",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.9 Link Purpose (Link Only)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA) — complète S1 (2.4.4, niveau A, qui n'exige que le contexte)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "La fonction d'un lien est déterminable à partir de son texte ou de son contexte",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.4 Link Purpose",
+      "url": "https://www.w3.org/TR/WCAG22/#link-purpose-in-context"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R19",
+   "couche": "ux",
+   "solution": "ces règles de wording sont la déclinaison locale de `VOICE-UX.md`, cadre unificateur du",
+   "enonce": "Les règles de wording du lien ne sont pas réécrites dans ce fichier : elles se rattachent nommément au cadre transversal du langage, qui fait autorité sur le vocabulaire et l'autosuffisance du texte de lien.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Texte de lien signifiant, cadre wording",
+     "liens": [
+      {
+       "label": "`VOICE-UX.md` (§ Le mot est le canal fiable / § Cohérence)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — langage transversal"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Texte de lien signifiant, cadre wording",
+    "liens": [
+     {
+      "label": "`VOICE-UX.md` (§ Le mot est le canal fiable / § Cohérence)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — langage transversal"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R20",
+   "couche": "ux",
+   "solution": "**un Link dit “aller”, un Button dit “faire”.** Le poids visuel ne change jamais cette",
+   "enonce": "Un lien dit « aller », un bouton dit « faire » ; le poids visuel ne modifie jamais cette répartition.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Séparation lien/navigation et bouton/action",
+     "liens": [
+      {
+       "label": "Sémantique HTML + convergence des design systems majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Sémantique native du lien : une ancre sans href ne crée pas d'hyperlien ; l'attribut download déclare l'intention de téléchargement ; un lien ne peut pas contenir de contenu interactif",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      },
+      {
+       "label": "MDN — élément a",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a"
+      },
+      {
+       "label": "ARIA APG — Link Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+      }
+     ],
+     "confiance": "Normatif — remplace le renvoi non sourcé « Sémantique HTML » de S4"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Séparation lien/navigation et bouton/action",
+    "liens": [
+     {
+      "label": "Sémantique HTML + convergence des design systems majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-R21",
+   "couche": "ux",
+   "solution": "Link n'invoque aucun instrument E-motion : un clic de navigation est une action à haute",
+   "enonce": "Le lien n'invoque aucun instrument d'animation expressive : un clic de navigation est une interaction à haute fréquence, hors du catalogue des moments mérités, et son seul besoin temporel est le feedback d'état.",
+   "mesure": "aucune animation d'un lien n'excède la durée de feedback du système",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U01",
+   "couche": "ui",
+   "solution": "`inline` reste souligné au repos. Le hover peut renforcer l'épaisseur ou le décalage du",
+   "enonce": "Un lien inline est souligné au repos ; le survol peut renforcer l'épaisseur ou le décalage du soulignement mais n'est jamais le moment où le lien devient enfin identifiable.",
+   "mesure": "un lien inline porte une décoration de texte visible à l'état de repos, pas seulement au survol",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Soulignement et signal non chromatique des liens inline",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Soulignement et signal non chromatique des liens inline",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 1.4.1 Use of Color",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U02",
+   "couche": "ui",
+   "solution": "`standalone` reste visuellement plus léger qu'un Button. Ajouter une boîte, un fond et des",
+   "enonce": "Un lien autonome reste visuellement plus léger qu'un bouton ; lui donner une boîte, un fond et des états de pression équivalents à un bouton signifie que le choix du composant doit être réexaminé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U03",
+   "couche": "ui",
+   "solution": "le soulignement utilise les propriétés CSS dédiées (`text-decoration-*`) et reste lisible",
+   "enonce": "Le soulignement d'un lien est produit par les propriétés CSS dédiées text-decoration-* et reste lisible autour des jambages ; il n'est pas simulé par une bordure qui traverse les lignes.",
+   "mesure": "aucun soulignement de lien produit par border-bottom",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T6",
+     "affirmation": "Le soulignement natif contourne les jambages : text-decoration-skip-ink vaut auto par défaut, comportement qu'aucune bordure simulée ne reproduit",
+     "liens": [
+      {
+       "label": "MDN — text-decoration-skip-ink",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-skip-ink"
+      }
+     ],
+     "confiance": "Normatif — largement disponible depuis mars 2022"
+    }
+   ],
+   "principale": {
+    "ref": "T6",
+    "affirmation": "Le soulignement natif contourne les jambages : text-decoration-skip-ink vaut auto par défaut, comportement qu'aucune bordure simulée ne reproduit",
+    "liens": [
+     {
+      "label": "MDN — text-decoration-skip-ink",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-skip-ink"
+     }
+    ],
+    "confiance": "Normatif — largement disponible depuis mars 2022"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U04",
+   "couche": "ui",
+   "solution": "les changements de couleur utilisent `motion.fast`/`motion.ease-out` — la transition d'état",
+   "enonce": "Les changements de couleur d'un lien s'animent sur la durée courte et la courbe de sortie du système au titre du feedback d'état, et sont supprimables sous prefers-reduced-motion sans perte d'information.",
+   "mesure": "sous prefers-reduced-motion: reduce, aucune transition du lien n'est nécessaire pour comprendre son état",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Transition d'état = feedback motion ; focus ring jamais animé",
+     "liens": [
+      {
+       "label": "`MOTION-UX.md` (§ Durées / § Ce qui ne s'anime pas), `BORDER-UX.md`",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — langage transversal"
+    },
+    {
+     "ref": "T7",
+     "affirmation": "prefers-reduced-motion: reduce signale une préférence de suppression ou de réduction des animations non essentielles",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Normatif"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Transition d'état = feedback motion ; focus ring jamais animé",
+    "liens": [
+     {
+      "label": "`MOTION-UX.md` (§ Durées / § Ce qui ne s'anime pas), `BORDER-UX.md`",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — langage transversal"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U05",
+   "couche": "ui",
+   "solution": "le focus ring n'est jamais animé — c'est une information de position pour la navigation",
+   "enonce": "L'anneau de focus d'un lien n'est jamais animé : c'est une information de position pour la navigation clavier, pas un effet.",
+   "mesure": "aucune propriété de l'anneau de focus n'est transitionnée ou animée",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Transition d'état = feedback motion ; focus ring jamais animé",
+     "liens": [
+      {
+       "label": "`MOTION-UX.md` (§ Durées / § Ce qui ne s'anime pas), `BORDER-UX.md`",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — langage transversal"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Transition d'état = feedback motion ; focus ring jamais animé",
+    "liens": [
+     {
+      "label": "`MOTION-UX.md` (§ Durées / § Ce qui ne s'anime pas), `BORDER-UX.md`",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — langage transversal"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U06",
+   "couche": "ui",
+   "solution": "navigation = élément `<a>` avec une destination réelle. Un handler JavaScript peut enrichir",
+   "enonce": "Toute navigation est portée par un élément d'ancre muni d'une destination réelle ; un gestionnaire JavaScript peut enrichir le comportement, jamais remplacer l'attribut de destination.",
+   "mesure": "tout élément de navigation est une ancre porteuse d'un href non vide",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Lien natif avec destination réelle",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      }
+     ],
+     "confiance": "Normatif"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Lien natif avec destination réelle",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     }
+    ],
+    "confiance": "Normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U07",
+   "couche": "ui",
+   "solution": "destination courante = `aria-current` approprié. Nouveau contexte ou téléchargement =",
+   "enonce": "La destination courante est déclarée par la valeur appropriée d'aria-current, et un changement de contexte ou un téléchargement porte les attributs natifs correspondants accompagnés de l'annonce accessible prévue.",
+   "mesure": "la destination courante porte aria-current ; tout téléchargement porte l'attribut download",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Lien natif avec destination réelle",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      }
+     ],
+     "confiance": "Normatif"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "`aria-current` pour l'élément courant d'un ensemble",
+     "liens": [
+      {
+       "label": "WAI-ARIA — aria-current",
+       "url": "https://www.w3.org/TR/wai-aria-1.2/#aria-current"
+      }
+     ],
+     "confiance": "Normatif"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Lien natif avec destination réelle",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     }
+    ],
+    "confiance": "Normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U08",
+   "couche": "ui",
+   "solution": "un lien étendu de Card suit la technique documentée dans `CARD-UI.md`; les actions internes",
+   "enonce": "Le lien étendu d'une carte suit la technique documentée du composant carte, et les actions internes restent des éléments frères du lien, jamais ses descendants.",
+   "mesure": "aucun élément interactif n'est descendant du lien étendu d'une carte",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Lien natif avec destination réelle",
+     "liens": [
+      {
+       "label": "HTML Living Standard — Links",
+       "url": "https://html.spec.whatwg.org/multipage/links.html"
+      }
+     ],
+     "confiance": "Normatif"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Lien natif avec destination réelle",
+    "liens": [
+     {
+      "label": "HTML Living Standard — Links",
+      "url": "https://html.spec.whatwg.org/multipage/links.html"
+     }
+    ],
+    "confiance": "Normatif"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U09",
+   "couche": "ui",
+   "solution": "l'icône inline utilise `icon.sm`; un lien autonome peut utiliser `icon.md`. Le trait et le",
+   "enonce": "L'icône d'un lien inline utilise la taille d'icône petite et celle d'un lien autonome peut utiliser la taille moyenne ; le trait et le dessin suivent la fondation d'iconographie.",
+   "mesure": "icône de lien inline = icon.sm ; icône de lien autonome ≤ icon.md",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LINK-U10",
+   "couche": "ui",
+   "solution": "en `only`, le nom accessible est obligatoire et la zone interactive atteint la cible tactile",
+   "enonce": "Un lien icône seule porte obligatoirement un nom accessible et une zone interactive atteignant la cible tactile commune de 44 px, sans que le glyphe lui-même soit agrandi.",
+   "mesure": "tout lien icône seule a un nom accessible non vide et une zone interactive ≥ 44×44 px CSS",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "Cible pointeur : 24 × 24 px CSS (AA) et 44 × 44 px CSS (AAA)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+      },
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA et AA) — le « 44 px commun » n'était rattaché à aucune référence"
+    },
+    {
+     "ref": "T8",
+     "affirmation": "Nom et rôle programmatiquement déterminables pour tout composant, liens icône seule compris",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "Cible pointeur : 24 × 24 px CSS (AA) et 44 × 44 px CSS (AAA)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+     },
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     }
+    ],
+    "confiance": "Établi, standard (AAA et AA) — le « 44 px commun » n'était rattaché à aucune référence"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

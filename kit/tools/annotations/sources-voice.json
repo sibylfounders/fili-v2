@@ -1,0 +1,156 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément — ce qui fonde le texte comme canal redondant obligatoire",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard d'accessibilité (niveau A)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Tout contenu non textuel dispose d'une alternative textuelle de même finalité ; un contenu non textuel qui est un contrôle porte un nom qui décrit sa fonction. Le texte alternatif dit pourquoi l'image est là et ne commence pas par « image » ou « photo »",
+  "source_markdown": "[WCAG 2.2 — 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html) ; [NN/g — Alt Text: What to Write](https://www.nngroup.com/articles/write-alt-text/)",
+  "confiance": "Établi, standard d'accessibilité (niveau A), complété par une synthèse NN/g"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Pour un composant dont le libellé contient du texte, le nom accessible contient le texte présenté visuellement — norme la plus directement applicable à un langage d'interface",
+  "source_markdown": "[WCAG 2.2 — 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)",
+  "confiance": "Établi, standard d'accessibilité (niveau A) — bénéficie d'abord au pilotage vocal"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "Si une erreur de saisie est détectée automatiquement, l'élément en cause est identifié et l'erreur est décrite à l'utilisateur en texte (3.3.1, A) ; si des suggestions de correction sont connues, elles sont fournies (3.3.3, AA)",
+  "source_markdown": "[WCAG 2.2 — 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html) ; [WCAG 2.2 — 3.3.3 Error Suggestion](https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion.html)",
+  "confiance": "Établi, standards d'accessibilité (A et AA) — fonde le gabarit « quoi / pourquoi / comment corriger »"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Les composants qui ont la même fonction dans un ensemble de pages sont identifiés de manière cohérente ; l'utilisateur ne doit pas avoir à se demander si des mots différents désignent la même chose",
+  "source_markdown": "[WCAG 2.2 — 3.2.4 Consistent Identification](https://www.w3.org/WAI/WCAG22/Understanding/consistent-identification.html) ; [NN/g — Maintain Consistency and Adhere to Standards (heuristique 4)](https://www.nngroup.com/articles/consistency-and-standards/)",
+  "confiance": "Établi (AA). **Nuance** : WCAG précise que « cohérent » n'est pas toujours « identique » (« Print receipt » / « Print invoice » sont conformes) — la règle interne « un concept = un mot » est plus stricte que la norme"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "La voix exprime le fond de la personnalité d'une organisation, le ton décrit la manière dont cette voix s'exprime et s'adapte aux situations ; le ton des messages d'erreur y est économique et direct",
+  "source_markdown": "[Carbon Design System — Content overview](https://carbondesignsystem.com/guidelines/content/overview/)",
+  "confiance": "Établi par convergence — deuxième design system public confirmant la distinction voix / ton (avec Mailchimp, S2)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "La concaténation de fragments casse la traduction (ordre des mots, pluriels, ponctuation, séparation des mots) ; la recommandation est une chaîne complète à paramètres nommés, jamais des morceaux assemblés par le code",
+  "source_markdown": "[Microsoft — Globalization: String concatenation](https://learn.microsoft.com/en-us/globalization/internationalization/concatenation)",
+  "confiance": "Établi — documentation d'éditeur ; comble une lacune de S7, qui ne traite pas la concaténation"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Les titres et les libellés décrivent le sujet ou la finalité — un libellé présent doit être exact et suffisamment descriptif",
+  "source_markdown": "[WCAG 2.2 — 2.4.6 Headings and Labels](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html)",
+  "confiance": "Établi, standard d'accessibilité (AA) — complète 2.4.4 pour les libellés de bouton, que 2.4.4 ne couvre pas"
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "Langage simple, niveau de lecture visé bas (~7e année), concision (« la manière la plus courte et la plus claire de donner l'information nécessaire à l'action ») et phrases commençant par un verbe",
+  "source_markdown": "[Shopify Polaris — Content fundamentals](https://polaris-react.shopify.com/content/fundamentals)",
+  "confiance": "Établi par convergence (avec S1). **Divergence à noter** : Polaris tolère le jargon « si c'est le mot qu'emploient réellement les marchands », là où ce fichier l'interdit sans nuance"
+ },
+ {
+  "couche": "ux",
+  "ref": "S19",
+  "affirmation": "L'expansion en traduction dépend de la longueur de la chaîne source : 200 à 300 % pour 10 caractères ou moins, 180 à 200 % de 11 à 20, et 130 % seulement au-delà de 70 caractères",
+  "source_markdown": "[W3C — Text size in translation](https://www.w3.org/International/articles/article-text-size)",
+  "confiance": "Établi. **Contredit ce fichier**, qui annonce « ~30 % » : ce chiffre n'est vrai que pour les textes longs, alors que les libellés courts d'interface — le cas le plus fréquent — peuvent doubler ou tripler"
+ },
+ {
+  "couche": "ui",
+  "ref": "T9",
+  "affirmation": "« Always use sentence case, even in page titles and service names » ; ne pas employer de capitales en bloc pour de grandes quantités de texte ; écrire les nombres en chiffres ; développer toute abréviation à sa première occurrence",
+  "source_markdown": "[GOV.UK — A to Z style guide](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/style-guides/a-to-z-style-guide)",
+  "confiance": "Établi. **Note de maintenance** : l'URL citée en T1 et T2 (www.gov.uk/guidance/style-guide/…) renvoie désormais une redirection 302 vers cette adresse"
+ },
+ {
+  "couche": "ui",
+  "ref": "T10",
+  "affirmation": "« Microsoft style uses sentence-style capitalization » — première lettre du premier mot et noms propres seulement, y compris pour un libellé d'interface ; « don't use all uppercase for emphasis »",
+  "source_markdown": "[Microsoft Writing Style Guide — Capitalization](https://learn.microsoft.com/en-us/style-guide/capitalization)",
+  "confiance": "Établi — guide d'écriture public, converge avec GOV.UK (T9) et GNOME (T18)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T11",
+  "affirmation": "« Skip the punctuation (exceptions: questions or text with 2+ sentences) » ; « be direct » et commencer par un verbe pour que le libellé se lise comme une instruction actionnable",
+  "source_markdown": "[Shopify Polaris — Content fundamentals](https://polaris-react.shopify.com/content/fundamentals)",
+  "confiance": "Établi par convergence — formulation quasi identique à la règle interne sur le point final"
+ },
+ {
+  "couche": "ui",
+  "ref": "T12",
+  "affirmation": "Le séparateur de milliers, la virgule décimale, le pourcentage et la devise dépendent de la locale et se délèguent au formatage sensible à la langue plutôt qu'à une chaîne écrite en dur",
+  "source_markdown": "[MDN — Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)",
+  "confiance": "Établi — API standardisée documentée par MDN"
+ },
+ {
+  "couche": "ui",
+  "ref": "T13",
+  "affirmation": "L'attribut datetime de l'élément time porte la valeur machine exacte pendant que l'utilisateur lit une forme humaine ou relative, ce qui la rend exploitable par les technologies d'assistance et les outils",
+  "source_markdown": "[MDN — <time>](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/time)",
+  "confiance": "Établi — élément HTML standard documenté par MDN"
+ },
+ {
+  "couche": "ui",
+  "ref": "T14",
+  "affirmation": "Un état vide ne reste jamais totalement vide : il dit ce qui pourrait s'y afficher, comment le remplir, et offre un chemin direct vers la tâche qui le comble",
+  "source_markdown": "[NN/g — Designing Empty States in Complex Applications](https://www.nngroup.com/articles/empty-state-interface-design/)",
+  "confiance": "Établi — recherche appliquée. **Limite** : la source ne distingue pas « rien trouvé » de « rien encore » ; cette distinction est un raffinement interne"
+ },
+ {
+  "couche": "ui",
+  "ref": "T15",
+  "affirmation": "L'erreur détectée est identifiée et décrite en texte (3.3.1, A) et la suggestion de correction est fournie quand elle est connue (3.3.3, AA)",
+  "source_markdown": "[WCAG 2.2 — 3.3.1 Error Identification](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html) ; [WCAG 2.2 — 3.3.3 Error Suggestion](https://www.w3.org/WAI/WCAG22/Understanding/error-suggestion.html)",
+  "confiance": "Établi, standards d'accessibilité (A et AA) — adosse le gabarit d'erreur de cette couche"
+ },
+ {
+  "couche": "ui",
+  "ref": "T16",
+  "affirmation": "Le ton des messages d'erreur est économique et direct, souvent en phrases courtes plutôt qu'en phrases complètes",
+  "source_markdown": "[Carbon Design System — Content overview](https://carbondesignsystem.com/guidelines/content/overview/)",
+  "confiance": "Établi par convergence avec NN/g (T6, « avoid humor since it can become stale ») — l'interdiction du calembour et de la fausse légèreté en erreur est partagée ; l'interdiction de l'emoji en propre reste un parti pris interne"
+ },
+ {
+  "couche": "ui",
+  "ref": "T17",
+  "affirmation": "Les libellés décrivent le sujet ou la finalité (2.4.6, AA) et le nom accessible contient le texte visible du libellé (2.5.3, A) — un bouton de confirmation doit donc nommer l'action",
+  "source_markdown": "[WCAG 2.2 — 2.4.6 Headings and Labels](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html) ; [WCAG 2.2 — 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)",
+  "confiance": "Établi, standards d'accessibilité (AA et A)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T18",
+  "affirmation": "« Use an ellipsis (…) at the end of a label if further input or confirmation is required from the user before the action can be carried out » ; capitalisation en sentence case ; « text generally shouldn't end with a period »",
+  "source_markdown": "[GNOME Human Interface Guidelines — Writing style](https://developer.gnome.org/hig/guidelines/writing-style.html)",
+  "confiance": "Établi — troisième guide de plateforme public confirmant simultanément l'ellipse, la sentence case et l'absence de point final (avec T10 et T11)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T19",
+  "affirmation": "« In body text, spell out whole numbers from zero through nine, and use numerals for 10 or greater. It's OK to use numerals for zero through nine when you have limited space, such as in tables and UI »",
+  "source_markdown": "[Microsoft Writing Style Guide — Numbers](https://learn.microsoft.com/en-us/style-guide/numbers)",
+  "confiance": "Établi. **Divergence partielle** : Microsoft écrit zéro à neuf en lettres dans la prose et n'admet les chiffres qu'en interface et en tableau ; GOV.UK (T9) écrit tout en chiffres sauf en début de phrase. La règle interne, restreinte aux données d'interface, tient dans l'intersection des deux"
+ },
+ {
+  "couche": "ui",
+  "ref": "T20",
+  "affirmation": "L'ordre jour/mois d'une date tout en chiffres dépend de la locale : la même date rend 12/19/2012 en en-US et 19/12/2012 en en-GB — un format tout-chiffres n'est jamais désambiguïsé par lui-même",
+  "source_markdown": "[MDN — Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)",
+  "confiance": "Établi — API standardisée documentée par MDN. **Contredit l'exemple de ce fichier** (« 12/07/2026 » donné comme non ambigu) et **remplace T5**, dont l'URL NN/g citée renvoie une erreur 404"
+ }
+]

@@ -1,0 +1,103 @@
+/* SubmitButton « avion en papier » — premier citoyen de la couche E-motion.
+   Adapté du « Paper plane button (v2) » d'Aaron Iker — CodePen BajabVN (pens publics
+   CodePen, licence MIT). Adaptation DS-UI : tokens couleur, runner maison sans GSAP
+   (voir submit-button.tsx), contrat E-motion (aria-live + prefers-reduced-motion).
+
+   Mécanique : la SURFACE du bouton est pré-découpée en 4 triangles (aile + corps × 2)
+   pilotés par variables CSS ; pli 1 → redécoupe invisible → pli 2 → envol ; les
+   facettes s'ombrent (base/dark/darker) pour donner le volume du papier. */
+
+.dsui-pplane {
+  position: relative; display: inline-block; /* LARGEUR AUTO au contenu (comme DeleteButton) */
+  --pp-scale: 1; --pp-font: 16px; --pp-pad-y: 12px; --pp-pad-x: 24px;
+  --pp-text-o: 1; --pp-success-x: -12; --pp-success-stroke: 14; --pp-success-o: 0;
+  --pp-radius: 8; --pp-rotate: 0; --pp-plane-x: 0; --pp-plane-y: 0; --pp-plane-o: 1; --pp-trails-stroke: 57; --pp-sh: 6;
+  /* surface de l'avion = rôle STATIC (fixe) : mêmes gris en clair ET en sombre — l'enveloppe garde son identité de papier,
+     elle n'invertit pas avec le thème. 3 nuances pour le volume (ailes claires → quilles ombrées). Repli sur les neutres. */
+  --pp-paper: var(--static-base, var(--neutral-0)); --pp-paper-mid: var(--static-dark, var(--neutral-200)); --pp-paper-dark: var(--static-darker, var(--neutral-400));
+  --pp-lw-bg: var(--pp-paper); --pp-lb-bg: var(--pp-paper);
+  --pp-rw-bg: var(--pp-paper); --pp-rb-bg: var(--pp-paper);
+  /* géométrie FIDÈLE à l'original (Aaron Iker) — les décalages part-x sur chaque facette (plus bas) ferment les coutures */
+  --pp-lw1x: 0;  --pp-lw1y: 0;   --pp-lw2x: 50;  --pp-lw2y: 0;   --pp-lw3x: 0;   --pp-lw3y: 100;
+  --pp-lb1x: 51; --pp-lb1y: 0;   --pp-lb2x: 51;  --pp-lb2y: 100; --pp-lb3x: 0;   --pp-lb3y: 100;
+  --pp-rw1x: 49; --pp-rw1y: 0;   --pp-rw2x: 100; --pp-rw2y: 0;   --pp-rw3x: 100; --pp-rw3y: 100;
+  --pp-rb1x: 49; --pp-rb1y: 0;   --pp-rb2x: 49;  --pp-rb2y: 100; --pp-rb3x: 100; --pp-rb3y: 100;
+}
+/* crans de taille — hauteurs alignées sur le Button (32/40/48) via padding + line-height 24, LARGEUR AUTO.
+   L'avion (boîte 100×40) est scalé avec le bouton : la géométrie en % reste identique. */
+.dsui-pplane--sm { --pp-pad-y: 4px;  --pp-pad-x: 12px; --pp-scale: .667; --pp-font: 14px; }
+.dsui-pplane--md { --pp-pad-y: 8px;  --pp-pad-x: 16px; --pp-scale: .833; --pp-font: 16px; }
+.dsui-pplane--lg { --pp-pad-y: 12px; --pp-pad-x: 24px; --pp-scale: 1;    --pp-font: 16px; }
+
+/* le papier : x/y + rotation sur le groupe, plane-x/y + opacité sur l'intérieur */
+/* boîte de pliage aux PROPORTIONS DE L'ORIGINAL (100×40), centrée dans le bouton Lg :
+   l'avion garde la forme/grosseur de la source, le bouton reste en taille Lg */
+.dsui-pplane__plane { position: absolute; width: 100px; height: 40px; left: calc(50% - 50px); top: calc(50% - 20px); pointer-events: none; transform: scale(var(--pp-scale)) rotate(calc(var(--pp-rotate) * 1deg)) translateZ(0); }
+/* l'avion (enveloppe) est MASQUÉ au repos → il ne dépasse pas d'un bouton auto-width court ; il apparaît au décollage */
+.dsui-pplane[data-state="idle"] .dsui-pplane__plane { opacity: 0; }
+.dsui-pplane__inner { position: absolute; inset: 0; opacity: var(--pp-plane-o); transform: translate(calc(var(--pp-plane-x) * 1px), calc(var(--pp-plane-y) * 1px)) translateZ(0); }
+.dsui-pplane__part { position: absolute; inset: 0; border-radius: 8px; border-radius: calc(var(--pp-radius) * 1px); }
+/* décalages part-x fidèles à l'original (.4% / -1% / -1% / 0) : c'est EUX qui referment les coutures entre facettes */
+.dsui-pplane__part--lw { z-index: 2; transform: translate(.4%, 0) translateZ(0); background: var(--pp-lw-bg); clip-path: polygon(calc(var(--pp-lw1x) * 1%) calc(var(--pp-lw1y) * 1%), calc(var(--pp-lw2x) * 1%) calc(var(--pp-lw2y) * 1%), calc(var(--pp-lw3x) * 1%) calc(var(--pp-lw3y) * 1%)); }
+.dsui-pplane__part--lb { z-index: 1; transform: translate(-1%, 0) translateZ(0); background: var(--pp-lb-bg); clip-path: polygon(calc(var(--pp-lb1x) * 1%) calc(var(--pp-lb1y) * 1%), calc(var(--pp-lb2x) * 1%) calc(var(--pp-lb2y) * 1%), calc(var(--pp-lb3x) * 1%) calc(var(--pp-lb3y) * 1%)); }
+.dsui-pplane__part--rw { z-index: 2; transform: translate(-1%, 0) translateZ(0); background: var(--pp-rw-bg); clip-path: polygon(calc(var(--pp-rw1x) * 1%) calc(var(--pp-rw1y) * 1%), calc(var(--pp-rw2x) * 1%) calc(var(--pp-rw2y) * 1%), calc(var(--pp-rw3x) * 1%) calc(var(--pp-rw3y) * 1%)); }
+.dsui-pplane__part--rb { z-index: 1; transform: translate(0, 0) translateZ(0); background: var(--pp-rb-bg); clip-path: polygon(calc(var(--pp-rb1x) * 1%) calc(var(--pp-rb1y) * 1%), calc(var(--pp-rb2x) * 1%) calc(var(--pp-rb2y) * 1%), calc(var(--pp-rb3x) * 1%) calc(var(--pp-rb3y) * 1%)); }
+
+/* traînées — verticales tournées à 68°, dash qui file (couleur tokenisée) */
+.dsui-pplane__trails { position: absolute; display: block; width: 33px; height: 64px; top: calc(50% - 24px); left: calc(50% - 34px); pointer-events: none; fill: none; stroke: rgba(79, 70, 229, .35); stroke: color-mix(in srgb, var(--primary) 35%, transparent); stroke-linecap: round; stroke-width: 2; stroke-dasharray: 57px; stroke-dashoffset: 57px; stroke-dashoffset: calc(var(--pp-trails-stroke) * 1px); transform: scale(var(--pp-scale)) rotate(68deg) translateZ(0); }
+
+/* l'ombre n'existe qu'en vol (pas d'ombre au repos). Portée plus VERS LE BAS, et --pp-sh
+   (animé au vol : ~11 au décollage → ~1 en s'éloignant) la fait s'amenuiser → impression de profondeur. */
+.dsui-pplane[data-state="sending"] .dsui-pplane__plane { filter: drop-shadow(0 calc(var(--pp-sh, 6) * 1px) calc(var(--pp-sh, 6) * 1.3px) rgba(3, 7, 18, .34)); }
+/* le vrai bouton : transparent, il porte le label et l'accessibilité */
+.dsui-pplane__btn { position: relative; z-index: 4; display: inline-flex; align-items: center; justify-content: center; border: 0; padding: var(--pp-pad-y, 12px) var(--pp-pad-x, 24px); background: var(--primary); border-radius: var(--radius-md); cursor: pointer; color: var(--on-primary); font: 500 var(--pp-font, 16px)/24px var(--font-sans); white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: background-color var(--duration-base) var(--ease-out); }
+.dsui-pplane[data-state="idle"] .dsui-pplane__btn:hover { background: var(--primary-hover); }
+.dsui-pplane[data-state="sending"] .dsui-pplane__btn, .dsui-pplane[data-state="sent"] .dsui-pplane__btn { background: none; transition: none; }
+/* focus : :focus en repli (navigateurs sans :focus-visible), :focus-visible sinon */
+.dsui-pplane__btn:focus { outline: var(--control-focus-width) solid var(--control-focus-color); outline-offset: var(--control-focus-offset); border-radius: var(--button-radius); }
+.dsui-pplane__btn:focus:not(:focus-visible) { outline: none; }
+.dsui-pplane__btn:focus-visible { outline: var(--control-focus-width) solid var(--control-focus-color); outline-offset: var(--control-focus-offset); border-radius: var(--button-radius); }
+.dsui-pplane__default { display: inline-flex; align-items: center; justify-content: center; position: relative; opacity: var(--pp-text-o); }
+.dsui-pplane__success { display: inline-flex; align-items: center; justify-content: center; gap: 8px; position: absolute; inset: 0; background: var(--primary-subtle); border-radius: var(--radius-md); color: var(--on-primary-subtle); opacity: 0; opacity: var(--pp-success-o); font: 500 var(--pp-font, 16px)/1 var(--font-sans); transform: translateX(calc(var(--pp-success-x) * 1px)) translateZ(0); }
+.dsui-pplane__success svg { width: 17px; height: 17px; fill: none; stroke: var(--on-primary-subtle); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 14px; stroke-dashoffset: 14px; stroke-dashoffset: calc(var(--pp-success-stroke) * 1px); }
+.dsui-pplane__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* SUCCÈS piloté par CLASSE : « Envoyé » n'apparaît qu'à la VRAIE réussite de onSubmit */
+.dsui-pplane--done { --pp-success-o: 1; --pp-success-x: 0; --pp-success-stroke: 0; }
+/* CHARGEMENT : spinner tant que l'envoi réel n'a pas répondu (après le vol) */
+.dsui-pplane__spin { position: absolute; inset: 0; z-index: 5; display: none; align-items: center; justify-content: center; background: var(--primary); border-radius: var(--radius-md); color: var(--on-primary); }
+.dsui-pplane--loading .dsui-pplane__spin { display: inline-flex; }
+.dsui-pplane__spin i { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: dsui-pplane-spin .7s linear infinite; }
+@keyframes dsui-pplane-spin { to { transform: rotate(360deg); } }
+/* ÉCHEC : « ⚠ Échec » + secousse, puis retour à idle (ré-armable) */
+.dsui-pplane__err { position: absolute; inset: 0; z-index: 6; display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: var(--danger); border-radius: var(--radius-md); color: var(--on-danger); font: 600 var(--pp-font, 16px)/1 var(--font-sans); opacity: 0; pointer-events: none; transition: opacity .18s; }
+.dsui-pplane--error .dsui-pplane__err { opacity: 1; }
+.dsui-pplane--error { animation: dsui-pplane-shake .42s var(--ease-out); }
+@keyframes dsui-pplane-shake { 0%, 100% { transform: translateX(0); } 12% { transform: translateX(-7px); } 26% { transform: translateX(6px); } 40% { transform: translateX(-5px); } 54% { transform: translateX(4px); } 68% { transform: translateX(-2px); } 82% { transform: translateX(1px); } }
+/* repli reduced-motion : la surface reste, le texte bascule ; spinner sans rotation */
+.dsui-pplane--instant { --pp-text-o: 0; }
+.dsui-pplane--instant .dsui-pplane__spin i { animation: none; }
+
+
+/* ── Relief « posé » (langage Interaction, cf. button/relief.css) — le bouton animé porte le
+   même signal que le Button filled : liseré haut clair, contour sombre, elevation-raised, et
+   il s'ENFONCE au clic. En box-shadow uniquement (border-width reste 0 : la géométrie des
+   facettes de l'avion ne bouge pas). Limité à l'état idle — dès l'acte, la surface se
+   redécoupe et le relief s'éteint avec elle. */
+[data-relief] .dsui-pplane[data-state="idle"] .dsui-pplane__btn {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--primary), var(--control-mix-light) 42%),
+    0 0 0 1px color-mix(in srgb, var(--primary), var(--control-mix-dark) 38%),
+    var(--control-raised-shadow);
+}
+[data-relief] .dsui-pplane[data-state="idle"] .dsui-pplane__btn:hover {
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--primary), var(--control-mix-light) 55%),
+    0 0 0 1px color-mix(in srgb, var(--primary), var(--control-mix-dark) 38%),
+    var(--control-hover-shadow);
+}
+[data-relief] .dsui-pplane[data-state="idle"] .dsui-pplane__btn:active {
+  transform: translateY(0.5px);
+  box-shadow:
+    var(--control-pressed-shadow),
+    0 0 0 1px color-mix(in srgb, var(--primary), var(--control-mix-dark) 38%);
+}

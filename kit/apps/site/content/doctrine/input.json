@@ -1,0 +1,3199 @@
+{
+ "slug": "input",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"7\" width=\"20\" height=\"10\" rx=\"3\" fill=\"#bcb9f5\"/><rect x=\"5.5\" y=\"10\" width=\"2.2\" height=\"4\" rx=\"1.1\" fill=\"#4F46E5\"/><circle cx=\"17.8\" cy=\"12\" r=\"1.7\" fill=\"#E56998\"/></svg>",
+ "nom": "input",
+ "nature": "Composant",
+ "meta": "UX v1.7.0 · UI v1.6.0 · mis à jour 2026-07-21 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · input",
+  "question": "Comment demander une information à l’utilisateur sans le perdre, et l’aider à corriger ses erreurs ?",
+  "detail": "On y choisit la forme du champ selon la donnée attendue, le bon moment pour vérifier la saisie, et la façon d’afficher une erreur pour qu’elle soit comprise et réparable plutôt que subie.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un champ annonce ce qu'il attend"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La validation arrive au bon moment"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le type de champ adapte le clavier et l'aide à la donnée demandée"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "38",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "58",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "12",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-input.md",
+   "source": "---\nsujet: input\ntype: composant\nresume: \"Champs de saisie : états et validation, wording des messages d'erreur, contenu additionnel, mot de passe, paiement, autofill\"\nrequires: [\"interaction\", \"adaptive\"]\nselon-contexte: [\"form (convention requis et validation décidées au niveau du formulaire)\", \"motion (feedback de bordure d'état, reduced-motion)\", \"voice (message d'erreur, ne jamais blâmer)\", \"emotion (sans objet — champ réflexe/haute fréquence)\"]\n---\n# RULES — Input (compilé, condensé)\n\n> Généré depuis `components/input/INPUT-UX.md` (v1.6.0) et `INPUT-UI.md` (v1.5.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Axes\n- Trois axes : **tone** (neutral/error/success/warning) × **size** (sm/md/lg) × **field_type** (text/email/password/number/search/textarea).\n- **Pas d'axe style** : il n'y a jamais \"l'input principal de l'écran\" — le type de champ le remplace (nature de contenu, pas poids visuel).\n\n## Usage\n- Utiliser pour toute donnée en texte libre ou semi-libre. Choix fermé parmi options limitées → select/radio/checkbox (le texte libre y augmente l'erreur sans raison).\n- Un champ de recherche est un input même s'il déclenche une action au submit — la nature de la donnée prime.\n- Toujours le vrai type HTML (email, search…) — un `text` stylisé perd le clavier mobile adapté et la validation native.\n- L'Input exprime **saisir** : zone réceptive visible au repos par label, limite et contenu. Il reste\n  à `elevation.none` ; aucun inset n'est requis pour prouver sa fonction.\n\n## Tone\n- **Neutral** : défaut, aucune validation en cours.\n- **Error** : valeur hors format/contrainte. **Timing : valider on blur, pas à chaque frappe** — sauf champs à fort risque de format (email, mot de passe) : délai ~500ms après la fin de frappe. Jamais tout garder pour la soumission (redécouverte punitive).\n- **Success** : optionnel — réservé aux champs à fort enjeu de confiance (dispo d'un username, force d'un mot de passe), pas systématique.\n- **Warning** : valeur acceptée mais méritant attention (mot de passe faible). La plupart des inputs n'ont besoin que de neutral/error.\n\n## Message d'erreur (wording)\n- Le message fait le diagnostic à la place de l'utilisateur : *pourquoi* et *comment corriger* (\"Le format attendu est JJ/MM/AAAA\"), jamais \"Champ invalide\".\n- CONFIANCE : cas isolé (Wroblewski : inline = +22% succès, −22% erreurs) + convergence (Baymard/Zuko : +5 à +13% complétion).\n- Nuance : la validation inline se réserve aux champs à fort risque d'erreur, pas à généraliser (coût cognitif du va-et-vient remplir/corriger).\n- Accessibilité : message précédé du mot \"Erreur\" ou d'une icône dédiée — jamais le rouge seul.\n\n## Contenu additionnel\n- **Helper text** ≠ message d'erreur : aide persistante sous le label, visible dès le focus, guide *avant* la saisie. L'erreur le remplace temporairement tant qu'elle est active (jamais d'empilement).\n- **Compteur de caractères** : affiché *avant* la saisie, pas à la limite atteinte. Format ratio \"12/280\" (convention retenue).\n- **Prefix/suffix** (\"€\", \"kg\") : élément non éditable à l'intérieur du champ, pas un label externe.\n- **Clear** (recherche notamment) : visible seulement quand le champ n'est pas vide.\n- **Indicateur requis** : astérisque ou équivalent textuel, systématique sur tout champ obligatoire. La convention requis-vs-optionnel se décide au niveau formulaire → RULES-form.\n\n## Tailles\n- sm : tableaux éditables, filtres compacts · md : défaut · lg : recherche hero, onboarding à fort enjeu.\n- Jamais de tailles mélangées dans un groupe de champs liés (ex : bloc adresse).\n\n## Contextes\n- **Formulaire** : label toujours visible, jamais en placeholder seul (il disparaît à la frappe). Champs du même ensemble logique groupés visuellement.\n- **Table (édition inline)** : le mode édition est visuellement sans ambiguïté (bordure, fond).\n- **Recherche** : type `search` natif, pas un `text` stylisé.\n\n## Champ de mot de passe\n- **Un seul champ + toggle show/hide** — pas de \"confirmer le mot de passe\" (recherche GOV.UK). CONFIANCE : établi.\n- Masqué par défaut ; le toggle révèle à la demande, jamais l'inverse. Retour au type `password` à la soumission.\n- Copier-coller toujours autorisé (gestionnaires de mots de passe). `spellcheck=\"false\"`, `autocapitalize=\"off\"`.\n- Exigences de format affichées *avant* la saisie. Pas de règles de complexité arbitraires sans justification de sécurité réelle.\n\n## Champ de paiement (carte bancaire)\n- Numéro de carte et CVV vivent dans l'iframe du processeur (PCI-DSS) — **les tokens de ce design system ne s'y appliquent pas directement** : styling limité via l'API du processeur uniquement. Jamais de champ carte custom hors solution processeur. CONFIANCE : établi.\n- Champs adjacents non sensibles (titulaire, adresse) : gabarit standard + `autocomplete` dédiés (`cc-name`, `cc-exp`, `cc-csc`).\n\n## Autofill\n- Jamais désactivé sans raison de sécurité valable — le confort dépasse le risque esthétique (contournement CSS connu, cf. technique UI).\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Label non lié techniquement au champ | Exclusion lecteur d'écran | Critique |\n| Nom accessible divergent du libellé visible | Inadressable en commande vocale (2.5.3) | Moyenne |\n| Champ de paiement stylé hors iframe | Non-conformité PCI-DSS | Critique |\n| Validation à la soumission uniquement | Abandon, redécouverte punitive | Élevée |\n| Label en placeholder seul | Perte de repère | Moyenne |\n| Type HTML non natif | Comportements natifs perdus | Moyenne |\n| Mot de passe sans toggle | Erreurs non détectées | Moyenne |\n| Autofill non anticipé | Rupture visuelle | Faible-moyenne |\n\n## Règle transversale\n- **La friction de validation est proportionnelle au risque réel d'erreur du champ** — email : quasi temps réel ; prénom : rien.\n\n## Application des Languages\n- **Interaction** : l'Input est l'expression canonique de l'intention **saisir** (`INTERACTION-UX`) — zone réceptive visible au repos (label, limite, contenu), distincte d'une action, à `elevation.none`.\n- **Motion** : la transition de bordure d'état est du **feedback** (`motion.fast`/`ease-out`, `MOTION-UX`) — le mouvement confirme, il n'informe jamais seul : l'erreur vit dans le **mot**, pas la bordure. Sous `prefers-reduced-motion`, le **changement de couleur est conservé** (opacité/couleur autorisées), seul le mouvement spatial part.\n- **Voice** : le message d'erreur est régi par `VOICE-UX` (cadre unificateur, Input nommé comme source réciproque) — **ne jamais blâmer**, dire *pourquoi* et *comment corriger*, jamais « champ invalide ».\n- **E-motion** : **sans objet** — la saisie est une action **réflexe et à haute fréquence** (budget de rareté d'`EMOTION-UX`) ; le moment « sortie d'erreur » n'est jamais porté par le champ (registre productif strict).\n\n---\n\n## Règles techniques (UI)\n\n```yaml\nsizing:\n  sm: { height: scale.compact, padding_x: spacing.sm, radius: radius.sm }\n  md: { height: scale.base, padding_x: spacing.md, radius: radius.md }\n  lg: { height: scale.expanded, padding_x: spacing.lg, radius: radius.md }\ntypography:\n  value_font: typography.body # JAMAIS en dessous : sous l'équivalent 16px, iOS Safari zoome au focus\n  fallback: typography.fallback.sans\ncolors:\n  value_text: color.text-primary\n  tone.neutral_border: color.border-strong # bordure délimitante : 3:1 obligatoire (WCAG 1.4.11)\n  tone.error_border: color.danger\n  tone.error_text: color.danger\n  tone.success_border: color.success\n  tone.warning_border: color.warning\n  focus_ring: color.accent\ncontent_elements:\n  helper_text: color.text-secondary\n  character_counter: color.text-secondary\n  prefix_suffix: color.text-secondary\n  clear_button_icon: color.text-secondary\n  required_indicator: color.danger\nstates: [default, focus, filled, error, disabled, readonly]\n```\n\n### Bordure au repos\n- Bordure neutral = `color.border-strong` : le champ au repos est identifié par sa seule bordure → délimitante, 3:1 obligatoire à **tous** les états (pas seulement error). La carte outlined garde `color.border` (bordure décorative) — critère appliqué identiquement par le test de rendu.\n\n### Accessibilité\n- Label lié via `for`/`id` ou `aria-labelledby` — jamais la seule proximité visuelle.\n- Message d'erreur associé via `aria-describedby` (annoncé au focus du champ).\n- **Nom accessible = libellé visible** (WCAG 2.5.3) : l'`aria-label` complète le `<label>`, jamais un libellé divergent (sinon champ inadressable en commande vocale).\n- **Dictée/collage** : champ natif, ne pas intercepter les touches (masque qui reconstruit la valeur touche à touche = dictée cassée) ; formater après coup, sur la valeur.\n\n### Adaptation au conteneur\n- Le pattern parent réorganise les colonnes via Container Query ; l'Input ne lit pas\n  `breakpoint.mobile` pour deviner sa largeur.\n- Label, valeur, contrainte nécessaire et erreur restent visibles dans tous les états.\n- Les services trailing peuvent se regrouper uniquement si leur accès et leur nom sont conservés.\n\n### Autofill — contournement\n```css\ninput:-webkit-autofill {\n  transition: background-color 9999s ease-in-out 0s;\n  -webkit-text-fill-color: var(--text-primary);\n}\n```\n- Non standardisé : tester sur Chrome, Safari et Firefox, pas supposé universel.\n\n### Paiement\n- Styling via l'API du processeur (ex : `styles` object Stripe/Hosted Fields) — prévoir un mapping séparé des tokens couleur/typo vers le format attendu par le processeur choisi.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 10 cas",
+   "titre": "Type de champ",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Type de champ\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"48\" width=\"100\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"50\" y=\"54\" width=\"2\" height=\"10\" fill=\"#111827\"/><rect x=\"40\" y=\"86\" width=\"100\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"56\" cy=\"96\" r=\"2.2\" fill=\"#111827\"/><circle cx=\"66\" cy=\"96\" r=\"2.2\" fill=\"#111827\"/><circle cx=\"76\" cy=\"96\" r=\"2.2\" fill=\"#111827\"/><rect x=\"170\" y=\"66\" width=\"108\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"188\" cy=\"75\" r=\"5.5\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M192 79l6 6\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Texte simple",
+     "quand": "L'utilisateur saisit un texte libre court.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte simple\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"56\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"77\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit un texte libre court.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence : label lié, aide au besoin, validation au blur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le champ « Nom ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Email",
+     "quand": "L'utilisateur saisit une adresse e-mail.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Email\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"56\" width=\"44\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"84\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">vous@exemple.com</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit une adresse e-mail.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Type e-mail natif et clavier adapté sur mobile.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« vous@exemple.com ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Mot de passe",
+     "quand": "La saisie doit être masquée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mot de passe\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"56\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"256\" cy=\"80\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"268\" cy=\"80\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"280\" cy=\"80\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"292\" cy=\"80\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"304\" cy=\"80\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"418\" cy=\"80\" r=\"7\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><circle cx=\"418\" cy=\"80\" r=\"2.4\" fill=\"#4B5563\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie doit être masquée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Toggle de visibilité, et laissez agir les gestionnaires de mots de passe.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ points avec une icône œil.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le tone par défaut — aucune validation en cours ou déjà passée avec succès sans besoin de le signaler visuellement.",
+       "id": "INPUT-R16"
+      },
+      {
+       "tag": "Règle",
+       "html": "mécanique de timing du champ — quand la validation inline est retenue, elle se joue au moment où l'utilisateur quitte le champ (on blur), pas à chaque frappe — sauf sur les champs à fort risque d'erreur de format (email, mot de passe), où un léger délai après la fin de la frappe (~500ms) permet une validation quasi temps réel sans interrompre la saisie. Jamais d'erreur avant que l'utilisateur ait terminé sa première saisie du champ.",
+       "id": "INPUT-R18"
+      },
+      {
+       "tag": "Règle",
+       "html": "confirmer qu'une valeur à fort enjeu de confiance est correcte (ex: disponibilité d'un nom d'utilisateur, force d'un mot de passe). Optionnel — à réserver aux champs à forte friction perçue, pas systématique sur chaque champ valide.",
+       "id": "INPUT-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Numérique",
+     "quand": "L'utilisateur saisit un montant, une quantité, un âge.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Numérique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"72\" width=\"120\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"266\" y=\"88\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">1 250</text><rect x=\"372\" y=\"72\" width=\"22\" height=\"24\" rx=\"5\" fill=\"#F3F4F6\"/><path d=\"M378 82l5-4l5 4M378 88l5 4l5-4\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit un montant, une quantité, un âge.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Clavier numérique mobile, sans se limiter à type=number.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une quantité dans un panier.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Téléphone",
+     "quand": "L'utilisateur saisit un numéro de téléphone.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Téléphone\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"72\" width=\"48\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"250\" y=\"88\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">+33</text><rect x=\"296\" y=\"72\" width=\"144\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit un numéro de téléphone.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Gérez l'indicatif pays et le format international.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« +33 6 12 34 56 78 ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le champ accepte la dictée comme n'importe quelle saisie clavier</strong> — un champ natif reçoit la parole convertie en texte sans traitement particulier. Ne jamais intercepter les touches d'une façon qui casse la dictée ou le collage : un masque qui rejette ce qui n'est pas tapé caractère par caractère, un handler qui reconstruit la valeur touche à touche. Le formatage (téléphone, carte) se fait <em>après coup, sur la valeur</em>, jamais en bloquant l'entrée.",
+       "id": "INPUT-R32"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Recherche",
+     "quand": "L'utilisateur saisit une requête.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Recherche\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"224\" y=\"78\" width=\"232\" height=\"32\" rx=\"16\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"248\" cy=\"94\" r=\"7\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M253 99l6 6\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"432\" cy=\"94\" r=\"8\" fill=\"#E5E7EB\"/><path d=\"M429 91l6 6m0-6l-6 6\" stroke=\"#4B5563\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit une requête.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Type search natif avec un bouton d'effacement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La barre de recherche du site.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>size</strong> (sm/md/lg) — transpose : toujours une question de densité de contexte (tableau éditable vs formulaire vs barre de recherche hero).",
+       "id": "INPUT-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "utiliser pour toute donnée en texte libre ou semi-libre (nom, email, montant, recherche).",
+       "id": "INPUT-R12"
+      },
+      {
+       "tag": "Règle",
+       "html": "cas limite fréquent — un champ de recherche est un input, même s'il déclenche une action au submit : la nature de la donnée saisie prime sur l'action déclenchée en aval.",
+       "id": "INPUT-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Texte long (textarea)",
+     "quand": "L'utilisateur écrit un message ou une description.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte long (textarea)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"48\" width=\"200\" height=\"84\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"254\" y=\"64\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/><rect x=\"254\" y=\"80\" width=\"170\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/><rect x=\"254\" y=\"96\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/><text x=\"392\" y=\"150\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">120/200</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur écrit un message ou une description.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Compteur de caractères et redimensionnement au besoin.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ « Votre message ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Date",
+     "quand": "L'utilisateur saisit une date ou une plage.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Date\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"72\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"88\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">12/07/2026</text><rect x=\"410\" y=\"74\" width=\"20\" height=\"20\" rx=\"3\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><path d=\"M410 80h20M416 74v-3M424 74v-3\" stroke=\"#4B5563\" stroke-width=\"1.8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit une date ou une plage.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Souvent couplé à un sélecteur, pas un simple texte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Date d'arrivée ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-8",
+     "titre": "URL",
+     "quand": "L'utilisateur saisit un lien web.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : URL\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"56\" width=\"40\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"68\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"84\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#1D4ED8\">https://mon-site.com</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit un lien web.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Validez le format spécifique de l'URL.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« https://mon-site.com ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-9",
+     "titre": "Fichier",
+     "quand": "L'utilisateur doit envoyer un fichier.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de champ",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Fichier\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"52\" width=\"208\" height=\"96\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-dasharray=\"6 6\"/><path d=\"M340 120v-30M328 102l12-12l12 12\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur doit envoyer un fichier.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Comportement très différent d'un champ texte — hors périmètre texte pur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Joindre un document ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>stratégie</strong> — ce formulaire valide-t-il au submit uniquement, ou au blur sur les champs à risque ? — est une décision du formulaire assemblé, pas du champ : voir <code>atelier/patterns/form/FORM-UX.md</code>, qui fait autorité (le benchmark diverge réellement : GOV.UK submit-only ↔ Carbon blur — divergence documentée là-bas). Ce fichier reste le défaut d'un champ isolé hors formulaire (recherche, édition inline). (Transfert d'autorité : cf. DECISIONS.md 2026-07-11.)",
+       "id": "INPUT-R19"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 7 cas",
+   "titre": "Conteneur / contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Conteneur / contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un formulaire",
+     "quand": "Le champ vit dans un formulaire.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans un formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"222\" y=\"40\" width=\"236\" height=\"132\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"244\" y=\"62\" width=\"192\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"100\" width=\"192\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"138\" width=\"120\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"282\" y=\"149\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ vit dans un formulaire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence, déjà détaillé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ dans une inscription.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>size</strong> (sm/md/lg) — transpose : toujours une question de densité de contexte (tableau éditable vs formulaire vs barre de recherche hero).",
+       "id": "INPUT-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "la <strong>stratégie</strong> — ce formulaire valide-t-il au submit uniquement, ou au blur sur les champs à risque ? — est une décision du formulaire assemblé, pas du champ : voir <code>atelier/patterns/form/FORM-UX.md</code>, qui fait autorité (le benchmark diverge réellement : GOV.UK submit-only ↔ Carbon blur — divergence documentée là-bas). Ce fichier reste le défaut d'un champ isolé hors formulaire (recherche, édition inline). (Transfert d'autorité : cf. DECISIONS.md 2026-07-11.)",
+       "id": "INPUT-R19"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>md</strong> — la taille par défaut : formulaires standards.",
+       "id": "INPUT-R35"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Dans une table (édition inline)",
+     "quand": "On modifie directement une cellule.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans une table (édition inline)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"52\" width=\"280\" height=\"36\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"200\" y=\"92\" width=\"280\" height=\"36\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"200\" y=\"132\" width=\"280\" height=\"36\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"316\" y=\"92\" width=\"150\" height=\"26\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#0891B2\" stroke-width=\"2\"/><rect x=\"328\" y=\"101\" width=\"2.5\" height=\"10\" fill=\"#111827\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On modifie directement une cellule.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Édition unitaire au clic, retour immédiat.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Corriger un prix dans un tableau.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>stratégie</strong> — ce formulaire valide-t-il au submit uniquement, ou au blur sur les champs à risque ? — est une décision du formulaire assemblé, pas du champ : voir <code>atelier/patterns/form/FORM-UX.md</code>, qui fait autorité (le benchmark diverge réellement : GOV.UK submit-only ↔ Carbon blur — divergence documentée là-bas). Ce fichier reste le défaut d'un champ isolé hors formulaire (recherche, édition inline). (Transfert d'autorité : cf. DECISIONS.md 2026-07-11.)",
+       "id": "INPUT-R19"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>sm</strong> — tableaux éditables, cellules inline, filtres compacts.",
+       "id": "INPUT-R34"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Barre de recherche (header/nav)",
+     "quand": "Le champ est la recherche globale du produit.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Barre de recherche (header/nav)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"54\" width=\"600\" height=\"34\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"420\" y=\"60\" width=\"200\" height=\"22\" rx=\"11\" fill=\"#F3F4F6\"/><circle cx=\"436\" cy=\"71\" r=\"6\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><path d=\"M440 75l5 5\" stroke=\"#4B5563\" stroke-width=\"1.8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ est la recherche globale du produit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Placement en en-tête, retour rapide, effacement facile.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La loupe en haut du site.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>size</strong> (sm/md/lg) — transpose : toujours une question de densité de contexte (tableau éditable vs formulaire vs barre de recherche hero).",
+       "id": "INPUT-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Dans une modale",
+     "quand": "La saisie se fait dans une fenêtre superposée.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Dans une modale\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect width=\"680\" height=\"240\" fill=\"#111827\" opacity=\".26\"/><rect x=\"240\" y=\"66\" width=\"200\" height=\"108\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"262\" y=\"96\" width=\"156\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"262\" y=\"138\" width=\"80\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"280\" y=\"149\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie se fait dans une fenêtre superposée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservez-la à des saisies courtes et contextuelles.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Renommer un élément dans une modale.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Filtre (liste, dashboard)",
+     "quand": "Le champ affine un résultat affiché.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Filtre (liste, dashboard)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"224\" y=\"44\" width=\"200\" height=\"26\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"238\" y=\"61\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Filtrer…</text><rect x=\"224\" y=\"86\" width=\"200\" height=\"22\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"116\" width=\"200\" height=\"22\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"146\" width=\"200\" height=\"22\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ affine un résultat affiché.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Retour immédiat sur la liste, sans soumission lourde.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Filtrer une liste par mot-clé.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Formulaire multi-étapes",
+     "quand": "Le champ appartient à un parcours en étapes.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Formulaire multi-étapes\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"256\" cy=\"56\" r=\"12\" fill=\"#4F46E5\" stroke=\"#4F46E5\"/><circle cx=\"340\" cy=\"56\" r=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"424\" cy=\"56\" r=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M270 56h56M354 56h56\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"244\" y=\"88\" width=\"192\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ appartient à un parcours en étapes.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Conservez la saisie entre les étapes.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'e-mail à l'étape 1 d'un tunnel.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-6",
+     "titre": "Champ de commentaire/réponse",
+     "quand": "La saisie est sociale, avec envoi séparé.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Conteneur / contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champ de commentaire/réponse\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"236\" cy=\"96\" r=\"14\" fill=\"#E0E7FF\"/><rect x=\"260\" y=\"82\" width=\"170\" height=\"28\" rx=\"14\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"400\" y=\"86\" width=\"26\" height=\"20\" rx=\"6\" fill=\"#4F46E5\"/><path d=\"M408 96l10-4l-4 10z\" fill=\"#fff\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie est sociale, avec envoi séparé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bouton d'envoi distinct, pas de validation intrusive.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Ajouter un commentaire ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 6 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Validation on blur",
+     "quand": "On valide quand l'utilisateur quitte le champ.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Validation on blur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"60\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><rect x=\"252\" y=\"68\" width=\"2.5\" height=\"12\" fill=\"#111827\"/><path d=\"M360 102L360 80\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M360 80L364.3 87.9M360 80L355.7 87.9\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"240\" y=\"116\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#15803D\"/><circle cx=\"452\" cy=\"128\" r=\"9\" fill=\"#15803D\"/><path d=\"M448 128l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On valide quand l'utilisateur quitte le champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence : pas de reproche pendant la frappe.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Vérifier l'e-mail en passant au champ suivant.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "mécanique de timing du champ — quand la validation inline est retenue, elle se joue au moment où l'utilisateur quitte le champ (on blur), pas à chaque frappe — sauf sur les champs à fort risque d'erreur de format (email, mot de passe), où un léger délai après la fin de la frappe (~500ms) permet une validation quasi temps réel sans interrompre la saisie. Jamais d'erreur avant que l'utilisateur ait terminé sa première saisie du champ.",
+       "id": "INPUT-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Validation temps réel (débounce)",
+     "quand": "Le champ a un fort risque de format.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Validation temps réel (débounce)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><rect x=\"256\" y=\"83\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"430\" cy=\"86\" r=\"12\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M430 78v8l5 4\" stroke=\"#4B5563\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ a un fort risque de format.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Attendez une pause de frappe avant de signaler.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La force du mot de passe qui s'actualise.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "mécanique de timing du champ — quand la validation inline est retenue, elle se joue au moment où l'utilisateur quitte le champ (on blur), pas à chaque frappe — sauf sur les champs à fort risque d'erreur de format (email, mot de passe), où un léger délai après la fin de la frappe (~500ms) permet une validation quasi temps réel sans interrompre la saisie. Jamais d'erreur avant que l'utilisateur ait terminé sa première saisie du champ.",
+       "id": "INPUT-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Autocomplete / suggestions",
+     "quand": "Des propositions apparaissent pendant la saisie.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Autocomplete / suggestions\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"50\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"59\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><g class=\"ill-appear\"><rect x=\"240\" y=\"80\" width=\"200\" height=\"70\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"256\" y=\"96\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"256\" y=\"116\" width=\"126\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"256\" y=\"136\" width=\"102\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des propositions apparaissent pendant la saisie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Navigables au clavier, sans voler la saisie en cours.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une adresse suggérée sous le champ.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Validation asynchrone (ex: dispo d'un username)",
+     "quand": "Un verdict vient du serveur pendant la saisie.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Validation asynchrone (ex: dispo d'un username)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"84\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"93\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle class=\"ill-spin\" style=\"transform-origin:430px 96px\" cx=\"430\" cy=\"96\" r=\"8\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><text x=\"240\" y=\"66\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Vérification…</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un verdict vient du serveur pendant la saisie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrez l'attente et jetez un résultat périmé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Ce pseudo est disponible ✓ ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Autosave",
+     "quand": "La saisie se sauvegarde sans action explicite.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Autosave\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"83\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"250\" cy=\"120\" r=\"9\" fill=\"#15803D\"/><path d=\"M246 120l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"266\" y=\"124\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#15803D\">Enregistré</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie se sauvegarde sans action explicite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Statut discret ; ne bloquez jamais sur un échec.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Brouillon enregistré ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "Verrouillé après soumission (readonly)",
+     "quand": "Le champ ne doit plus être modifié après validation.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Verrouillé après soumission (readonly)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74,\".replace(',','')+72\" width=\"200\" height=\"26\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"252\" y=\"89\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">vous@exemple.com</text><rect x=\"414\" y=\"76\" width=\"18\" height=\"14\" rx=\"3\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><path d=\"M418 76v-3a5 5 0 0 1 10 0v3\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ ne doit plus être modifié après validation.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Lecture seule, visuellement distincte du désactivé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un e-mail confirmé, non éditable.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 4 cas",
+   "titre": "Plateforme / device",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / device\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Desktop clavier",
+     "quand": "La saisie est au clavier physique.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Desktop clavier\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><rect x=\"252\" y=\"82\" width=\"2.5\" height=\"12\" fill=\"#111827\"/><rect x=\"240\" y=\"120\" width=\"200\" height=\"30\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"250\" y=\"128\" width=\"30\" height=\"14\" rx=\"3\" fill=\"#F3F4F6\"/><rect x=\"288\" y=\"128\" width=\"30\" height=\"14\" rx=\"3\" fill=\"#F3F4F6\"/><rect x=\"326\" y=\"128\" width=\"30\" height=\"14\" rx=\"3\" fill=\"#F3F4F6\"/><rect x=\"364\" y=\"128\" width=\"30\" height=\"14\" rx=\"3\" fill=\"#F3F4F6\"/><rect x=\"402\" y=\"128\" width=\"30\" height=\"14\" rx=\"3\" fill=\"#F3F4F6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie est au clavier physique.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Tabulation fluide et saisie précise.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Remplir un formulaire au clavier.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mobile clavier virtuel adapté",
+     "quand": "Le clavier mobile dépend du type de champ.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mobile clavier virtuel adapté\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"258\" y=\"22\" width=\"164\" height=\"196\" rx=\"14\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"276\" y=\"44\" width=\"128\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"266\" y=\"120\" width=\"148\" height=\"88\" rx=\"6\" fill=\"#F3F4F6\"/><rect x=\"278\" y=\"130\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"322\" y=\"130\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"366\" y=\"130\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"278\" y=\"156\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"322\" y=\"156\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"366\" y=\"156\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"278\" y=\"182\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"322\" y=\"182\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"366\" y=\"182\" width=\"32\" height=\"18\" rx=\"3\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le clavier mobile dépend du type de champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Choisissez le bon type pour afficher le bon clavier.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un clavier numérique pour un montant.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Accessibilité vocale/lecteur d'écran",
+     "quand": "Un lecteur d'écran parcourt le champ.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Accessibilité vocale/lecteur d'écran\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"80\" width=\"150\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M420 82v30l20 10v-50z\" fill=\"#4F46E5\"/><path d=\"M448 86a14 14 0 0 1 0 22\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><text x=\"240\" y=\"64\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">E-mail, obligatoire</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lecteur d'écran parcourt le champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Label lié et erreurs annoncées.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« E-mail, obligatoire » lu à voix haute.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Autofill / gestionnaire de mots de passe navigateur",
+     "quand": "Le navigateur remplit automatiquement le champ.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Autofill / gestionnaire de mots de passe navigateur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"78\" width=\"200\" height=\"26\" rx=\"6\" fill=\"#FEF9C3\" stroke=\"#6B7280\"/><text x=\"252\" y=\"95\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">vous@exemple.com</text><rect x=\"240\" y=\"114\" width=\"120\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"250\" y=\"128\" font-size=\"9\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">suggestions</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le navigateur remplit automatiquement le champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Prévoyez le style d'autofill pour qu'il ne casse pas le design.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ pré-rempli en jaune par le navigateur.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le remplissage automatique par le navigateur ou un gestionnaire de mots de passe est une fonctionnalité native, pas un cas exotique — elle doit être anticipée, pas subie.",
+       "id": "INPUT-R54"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 7 cas",
+   "titre": "Contenu / forme visuelle",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contenu / forme visuelle\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"54\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M54 44a9 9 0 0 1 9-9h76a9 9 0 0 1 9 9v22H54z\" fill=\"#4F46E5\" opacity=\".18\"/><rect x=\"66\" y=\"78\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"92\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"172\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"172\" y=\"34\" width=\"34\" height=\"82\" rx=\"9\" fill=\"#0891B2\" opacity=\".18\"/><rect x=\"216\" y=\"58\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"216\" y=\"72\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Label top fixe",
+     "quand": "Le label est fixe au-dessus du champ.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Label top fixe\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"54\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"66\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le label est fixe au-dessus du champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence, toujours visible.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Nom » au-dessus du champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>prefix / suffix</strong> — symbole monétaire, unité de mesure, ou tout élément de contexte fixe attaché au champ (ex: &quot;€&quot; en préfixe, &quot;kg&quot; en suffixe) : traité comme un élément non éditable à l'intérieur du champ, pas comme un label externe.",
+       "id": "INPUT-R28"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Label flottant (floating label)",
+     "quand": "Le label rétrécit et monte au focus.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Label flottant (floating label)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"70,\".replace(',','')+66\" width=\"200\" height=\"34\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><rect x=\"250\" y=\"60\" width=\"46\" height=\"14\" rx=\"3\" fill=\"#FFFFFF\"/><text x=\"254\" y=\"71\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">E-mail</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le label rétrécit et monte au focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Alternative au label fixe — à trancher, attention à l'accessibilité.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le label qui glisse en haut quand on saisit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'adaptation à l'espace conserve toujours label, valeur, contrainte nécessaire et message",
+       "id": "INPUT-R07"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>helper text — distinct du message d'erreur.</strong> C'est une aide contextuelle persistante sous le label, visible dès le focus, indépendante de la validation (ex: &quot;Doit contenir au moins 8 caractères&quot;) : le helper text guide <em>avant</em> la saisie, l'erreur corrige <em>après</em>.",
+       "id": "INPUT-R25"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>prefix / suffix</strong> — symbole monétaire, unité de mesure, ou tout élément de contexte fixe attaché au champ (ex: &quot;€&quot; en préfixe, &quot;kg&quot; en suffixe) : traité comme un élément non éditable à l'intérieur du champ, pas comme un label externe.",
+       "id": "INPUT-R28"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Icône leading/trailing dans le champ",
+     "quand": "Une icône de contexte accompagne le champ.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Icône leading/trailing dans le champ\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"28\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"260\" cy=\"88\" r=\"6\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><path d=\"M264 92l5 5\" stroke=\"#4B5563\" stroke-width=\"1.8\"/><rect x=\"280\" y=\"86\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une icône de contexte accompagne le champ.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Purement indicative : ne remplace pas le label.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une loupe à gauche d'un champ de recherche.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>bouton d'effacement (clear)</strong> — sur un champ de recherche notamment, une icône de suppression rapide du contenu, activée seulement quand le champ n'est pas vide.",
+       "id": "INPUT-R29"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Prefix / suffix",
+     "quand": "Un symbole ou une unité borde la saisie.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Prefix / suffix\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"28\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"93\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">€</text><rect x=\"272\" y=\"86\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un symbole ou une unité borde la saisie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Affichez-le dans le champ, non éditable.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« € » avant un montant.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>prefix / suffix</strong> — symbole monétaire, unité de mesure, ou tout élément de contexte fixe attaché au champ (ex: &quot;€&quot; en préfixe, &quot;kg&quot; en suffixe) : traité comme un élément non éditable à l'intérieur du champ, pas comme un label externe.",
+       "id": "INPUT-R28"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Compteur de caractères",
+     "quand": "La saisie a une limite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Compteur de caractères\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"52\" width=\"200\" height=\"56\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"254\" y=\"68\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/><rect x=\"254\" y=\"84\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.4\"/><text x=\"392\" y=\"126\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">120/200</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie a une limite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Affichez le décompte, sans bloquer brutalement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« 120/200 ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>compteur de caractères</strong> — sur un champ à limite (notamment textarea), afficher le compteur <em>avant</em> que l'utilisateur commence à taper, pas seulement une fois la limite atteinte. Format observé : ratio &quot;12/280&quot; plutôt qu'un décompte descendant, bien que les deux conventions coexistent selon les systèmes (pas de consensus univoque ici).",
+       "id": "INPUT-R27"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Bouton clear",
+     "quand": "L'utilisateur veut vider le champ vite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bouton clear\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"80\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"251\" y=\"89\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><circle cx=\"426\" cy=\"92\" r=\"8\" fill=\"#E5E7EB\"/><path d=\"M423 89l6 6m0-6l-6 6\" stroke=\"#4B5563\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur veut vider le champ vite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Une croix d'effacement quand le champ est rempli.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La croix dans une barre de recherche.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>bouton d'effacement (clear)</strong> — sur un champ de recherche notamment, une icône de suppression rapide du contenu, activée seulement quand le champ n'est pas vide.",
+       "id": "INPUT-R29"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-6",
+     "titre": "Champs connectés (ex: select + input)",
+     "quand": "Deux composants sont visuellement fusionnés.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Contenu / forme visuelle",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champs connectés (ex: select + input)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"64\" height=\"28\" rx=\"6 0 0 6\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><text x=\"250\" y=\"93\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">FR</text><rect x=\"304\" y=\"74\" width=\"136\" height=\"28\" rx=\"0 6 6 0\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Deux composants sont visuellement fusionnés.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un seul ensemble cohérent, un seul focus visible.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un indicatif pays + numéro.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "06 · 4 cas",
+   "titre": "Enjeu business / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu business / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-5-0",
+     "titre": "Champ de paiement (carte bancaire)",
+     "quand": "L'utilisateur saisit une carte bancaire.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "06 · Enjeu business / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champ de paiement (carte bancaire)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"52\" width=\"90\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"64\" width=\"200\" height=\"28\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"252\" y=\"83\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">4242 4242 4242 4242</text><rect x=\"408\" y=\"70\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#4F46E5\" opacity=\".7\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur saisit une carte bancaire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Sécurité et conformité : souvent un composant sécurisé dédié.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Numéro de carte, date, CVV.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "dans la grande majorité des implémentations conformes, le champ de numéro de carte et le CVV ne sont <strong>pas</strong> des champs HTML que ton design system contrôle directement — ils vivent dans un iframe fourni par le processeur de paiement (Stripe Elements, Hosted Fields, etc.). <strong>BUTTON-UI.md et INPUT-UI.md ne peuvent pas s'appliquer tels quels</strong> à ces deux champs précis — seule une styling limitée, exposée via l'API du processeur, est possible (couleur du texte, taille de police, état d'erreur), jamais un contrôle total du DOM.",
+       "id": "INPUT-R52"
+      }
+     ]
+    },
+    {
+     "id": "cas-5-1",
+     "titre": "Champ de mot de passe",
+     "quand": "La saisie protège l'accès au compte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu business / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Champ de mot de passe\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"74\" width=\"200\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"256\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"268\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"280\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"292\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"304\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><circle cx=\"316\" cy=\"88\" r=\"3.2\" fill=\"#111827\"/><rect x=\"418\" y=\"76\" width=\"16\" height=\"12\" rx=\"2\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"1.6\"/><path d=\"M421 76v-2a4 4 0 0 1 8 0v2\" fill=\"none\" stroke=\"#15803D\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La saisie protège l'accès au compte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Copier-coller autorisé, pas de règle piège ; sécurité soignée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le mot de passe d'un login.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de INPUT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "mécanique de timing du champ — quand la validation inline est retenue, elle se joue au moment où l'utilisateur quitte le champ (on blur), pas à chaque frappe — sauf sur les champs à fort risque d'erreur de format (email, mot de passe), où un léger délai après la fin de la frappe (~500ms) permet une validation quasi temps réel sans interrompre la saisie. Jamais d'erreur avant que l'utilisateur ait terminé sa première saisie du champ.",
+       "id": "INPUT-R18"
+      },
+      {
+       "tag": "Règle",
+       "html": "confirmer qu'une valeur à fort enjeu de confiance est correcte (ex: disponibilité d'un nom d'utilisateur, force d'un mot de passe). Optionnel — à réserver aux champs à forte friction perçue, pas systématique sur chaque champ valide.",
+       "id": "INPUT-R20"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>un seul champ, pas deux</strong> — un champ unique avec un toggle de visibilité (show/hide) est préférable au champ &quot;confirmer le mot de passe&quot; : il réduit la friction du formulaire sans perdre la fonction de vérification que le second champ apportait.",
+       "id": "INPUT-R45"
+      }
+     ]
+    },
+    {
+     "id": "cas-5-2",
+     "titre": "Données personnelles sensibles",
+     "quand": "Le champ collecte des données sensibles.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "06 · Enjeu business / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Données personnelles sensibles\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"80\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M430 78l14 5v8c0 9-6 13-14 16-8-3-14-7-14-16v-8z\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le champ collecte des données sensibles.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Minimisez la collecte, ne validez rien « en espion ».</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un numéro de sécurité sociale.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-5-3",
+     "titre": "Recherche critique pour le produit",
+     "quand": "La recherche est au cœur du produit.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "06 · Enjeu business / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Recherche critique pour le produit\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"70\" width=\"280\" height=\"34\" rx=\"17\" fill=\"#FFFFFF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"224\" cy=\"87\" r=\"7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\"/><path d=\"M229 92l6 6\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"248\" y=\"84\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><g class=\"ill-appear\"><rect x=\"210\" y=\"114\" width=\"260\" height=\"46\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"226\" y=\"130\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"226\" y=\"146\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La recherche est au cœur du produit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rapidité, tolérance aux fautes, résultats pertinents.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>La recherche d'un site e-commerce.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": ".doctrine-demo :is(.spec-input:focus-visible){outline:2px solid #0891B2;outline-offset:2px;}.doctrine-demo :is(.spec-input::placeholder){color:#4B5563;opacity:.75;}.doctrine-demo :is(.spec-clear:hover){background:#E5E7EB;}.doctrine-demo :is(.spec-clear:focus-visible){outline:2px solid #0891B2;outline-offset:2px;}",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<p class=\"spec-note\">Exemple d’implémentation de référence (DS-UI), non normatif — généré depuis <code>INPUT-UI.md</code> → <code>DESIGN.md</code>. Le référentiel décrit les états et fonctions ; les valeurs vivent dans DESIGN.md, jamais recopiées.</p><style>.spec-input:focus-visible{outline:2px solid #0891B2;outline-offset:2px;}.spec-input::placeholder{color:#4B5563;opacity:.75;}.spec-clear:hover{background:#E5E7EB;}.spec-clear:focus-visible{outline:2px solid #0891B2;outline-offset:2px;}</style> <p class=\"spec-note\">Les champs sont saisissables — cliquez dedans pour voir le focus ring, tapez pour tester.</p> <h3>Les quatre tones</h3><div class=\"spec-rang\" style=\"align-items:flex-start;\"><div><div class=\"spec-label\" style=\"margin-bottom:8px;\">neutral</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" value=\"claude@exemple.fr\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #6B7280;border-radius:8px;padding:0 16px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> </div> <div style=\"font-size:.85em;color:#4B5563;margin-top:4px;\">Libellé</div></div></div><div><div class=\"spec-label\" style=\"margin-bottom:8px;\">error</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" value=\"claude@exemple.fr\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #B91C1C;border-radius:8px;padding:0 16px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> </div> <div style=\"font-size:.85em;color:#B91C1C;margin-top:4px;\">Erreur : format attendu nom@domaine</div></div></div><div><div class=\"spec-label\" style=\"margin-bottom:8px;\">success</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" value=\"claude@exemple.fr\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #15803D;border-radius:8px;padding:0 16px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> </div> <div style=\"font-size:.85em;color:#4B5563;margin-top:4px;\">Nom disponible</div></div></div><div><div class=\"spec-label\" style=\"margin-bottom:8px;\">warning</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" value=\"claude@exemple.fr\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #92400E;border-radius:8px;padding:0 16px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> </div> <div style=\"font-size:.85em;color:#4B5563;margin-top:4px;\">Vérifiez la valeur saisie</div></div></div></div><h3>Cas de contenu</h3><div class=\"spec-rang\" style=\"align-items:flex-start;\"> <div><div class=\"spec-label\" style=\"margin-bottom:8px;\">vide + placeholder</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" placeholder=\"nom@domaine.fr\" value=\"\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #6B7280;border-radius:8px;padding:0 16px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> </div> <div style=\"font-size:.85em;color:#4B5563;margin-top:4px;\">Le placeholder n’est jamais le label</div></div></div> <div><div class=\"spec-label\" style=\"margin-bottom:8px;\">bouton d’effacement</div><div style=\"font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;max-width:280px;position:relative;\"> <div style=\"font-size:.85em;color:#4B5563;margin-bottom:4px;\">Adresse email</div> <div style=\"position:relative;\"><input type=\"email\" class=\"spec-input\" aria-label=\"Adresse email (spécimen)\" value=\"claude@exemple.fr\" style=\"width:100%;box-sizing:border-box;height:40px;border:1px solid #6B7280;border-radius:8px;padding:0 38px 0 16px;color:#111827;background:#FFFFFF;font-family:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;font-size:1em;\"> <button type=\"button\" class=\"spec-clear\" aria-label=\"Effacer le champ\" style=\"position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:none;border-radius:50%;background:transparent;cursor:pointer;display:grid;place-items:center;color:#4B5563;\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" aria-hidden=\"true\"><path d=\"M2 2l10 10M12 2L2 12\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg></button></div> <div style=\"font-size:.85em;color:#4B5563;margin-top:4px;\">La croix efface et rend le focus au champ</div></div></div> </div> </section>"
+  ],
+  "tokens": [
+   {
+    "token": "sizing.sm.height",
+    "ref": "scale.compact",
+    "valeur": "32px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.sm.padding_x",
+    "ref": "spacing.sm",
+    "valeur": "8px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.sm.radius",
+    "ref": "radius.sm",
+    "valeur": "4px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.md.height",
+    "ref": "scale.base",
+    "valeur": "40px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.md.padding_x",
+    "ref": "spacing.md",
+    "valeur": "16px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.md.radius",
+    "ref": "radius.md",
+    "valeur": "8px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.lg.height",
+    "ref": "scale.expanded",
+    "valeur": "48px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.lg.padding_x",
+    "ref": "spacing.lg",
+    "valeur": "24px",
+    "couleur": null
+   },
+   {
+    "token": "sizing.lg.radius",
+    "ref": "radius.md",
+    "valeur": "8px",
+    "couleur": null
+   },
+   {
+    "token": "axes.tone",
+    "ref": "neutral, error, success, warning",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "axes.size",
+    "ref": "sm, md, lg",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "axes.field_type",
+    "ref": "text, email, password, number, search, textarea",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "typography.value_font",
+    "ref": "typography.body",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "typography.message_font",
+    "ref": "typography.body-small",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "typography.fallback",
+    "ref": "typography.fallback.sans",
+    "valeur": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "couleur": null
+   },
+   {
+    "token": "colors.value_text",
+    "ref": "color.text-primary",
+    "valeur": "#111827",
+    "couleur": "#111827"
+   },
+   {
+    "token": "colors.tone.neutral_border",
+    "ref": "color.border-strong",
+    "valeur": "#6B7280",
+    "couleur": "#6B7280"
+   },
+   {
+    "token": "colors.tone.error_border",
+    "ref": "color.danger",
+    "valeur": "#B91C1C",
+    "couleur": "#B91C1C"
+   },
+   {
+    "token": "colors.tone.error_text",
+    "ref": "color.danger",
+    "valeur": "#B91C1C",
+    "couleur": "#B91C1C"
+   },
+   {
+    "token": "colors.tone.success_border",
+    "ref": "color.success",
+    "valeur": "#15803D",
+    "couleur": "#15803D"
+   },
+   {
+    "token": "colors.tone.warning_border",
+    "ref": "color.warning",
+    "valeur": "#92400E",
+    "couleur": "#92400E"
+   },
+   {
+    "token": "colors.focus_ring",
+    "ref": "color.accent",
+    "valeur": "#0891B2",
+    "couleur": "#0891B2"
+   },
+   {
+    "token": "icon.size",
+    "ref": "icon.md",
+    "valeur": "20px",
+    "couleur": null
+   },
+   {
+    "token": "motion.state_border.duration",
+    "ref": "motion.fast",
+    "valeur": "100ms",
+    "couleur": null
+   },
+   {
+    "token": "motion.state_border.easing",
+    "ref": "motion.ease-out",
+    "valeur": "cubic-bezier(0, 0, 0.2, 1)",
+    "couleur": null
+   },
+   {
+    "token": "motion.autofill_hack",
+    "ref": "hors vocabulaire motion — hack de neutralisation documenté (cf. section Autofill + MOTION-UI.md)",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "focus_ring_style.width",
+    "ref": "border.focus-width",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "focus_ring_style.offset",
+    "ref": "border.focus-offset",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "content_elements.helper_text",
+    "ref": "color.text-secondary",
+    "valeur": "#4B5563",
+    "couleur": "#4B5563"
+   },
+   {
+    "token": "content_elements.character_counter",
+    "ref": "color.text-secondary",
+    "valeur": "#4B5563",
+    "couleur": "#4B5563"
+   },
+   {
+    "token": "content_elements.prefix_suffix",
+    "ref": "color.text-secondary",
+    "valeur": "#4B5563",
+    "couleur": "#4B5563"
+   },
+   {
+    "token": "content_elements.clear_button_icon",
+    "ref": "color.text-secondary",
+    "valeur": "#4B5563",
+    "couleur": "#4B5563"
+   },
+   {
+    "token": "content_elements.required_indicator",
+    "ref": "color.danger",
+    "valeur": "#B91C1C",
+    "couleur": "#B91C1C"
+   },
+   {
+    "token": "states",
+    "ref": "default, focus, filled, error, disabled, readonly",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-19",
+   "titre": "Propagation du modèle STYLE × TONE dans les renvois croisés",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>COLOR-UI.md</code> (v1.1.0 — paires garanties étendues aux nouveaux fonds pleins, « warning jamais un fond plein » levé aussi ici, table de consommation du bouton réécrite en rôles par tone) et <code>dist/RULES-color.md</code> (mêmes tables) ; bumps de vocabulaire sans changement de règle : COLOR-UX 1.1.1, ALERT-UX 1.3.1, CARD-UX 1.2.1, INPUT-UX 1.5.1, INPUT-UI 1.4.2, FORM-UX 2.1.3, CREATION-COMPTE-UX 1.2.2, TYPOGRAPHY-UX 1.1.2, GRID-UX 1.0.1, METHODE 1.8.1, inventaire couleur (9 → 16 combinaisons), RULES-alert/card/input/creation-compte(-sso-social), <code>tools/genere-site.js</code> + <code>tools/methode-contenu.js</code> (deux textes du site).</li><li><strong>Ancienne situation</strong> : la décision BUTTON du 2026-07-18 avait renommé l'axe <code>emphasis</code> → <code>style</code> dans BUTTON-* et DESIGN.md, mais l'ancien nom restait vivant dans les notes de transposition et les renvois des autres sujets — et COLOR-UI garantissait encore « warning : jamais un fond plein » alors que le garde-fou était levé, sans mentionner <code>neutral-strong(-hover)</code>, <code>warning-hover</code> ni <code>danger-subtle-hover</code>.</li><li><strong>Nouvelle situation</strong> : plus aucune occurrence normative d'<code>emphasis</code> ; les mentions restantes sont historiques (ce journal, la note de vocabulaire BUTTON-UX 1.5.0, les récits du site). La formule des notes de transposition devient « l'axe <code>style</code> n'existe pas ici ». La table des paires garanties dit les paires réelles : <code>on-primary</code> sur <code>neutral-strong(-hover)</code> et <code>warning(-hover)</code>, <code>danger</code> sur <code>danger-subtle-hover</code>.</li><li><strong>Pourquoi</strong> : un renvoi normatif vers un axe qui n'existe plus est un défaut de doc du même ordre qu'un token fantôme ; et la table des paires garanties est le contrat que <code>test-rendu.js</code> vérifie — elle doit dire ce qui est vrai, ni plus ni moins.</li></ul>"
+  },
+  {
+   "date": "2026-07-16",
+   "titre": "TYPOGRAPHIE : token body-small (14 px) pour le texte fonctionnel sous le corps",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/core/DESIGN.md</code> (v1.19.0, <code>typography.body-small</code>), <code>atelier/components/input/INPUT-UI.md</code> (v1.4.1), <code>dist/tokens.css</code> + <code>dist/tokens.yaml</code> régénérés.</li><li><strong>Ancienne règle</strong> : aucun cran de texte entre <code>label</code> (12 px, interface) et <code>body</code> (16 px). INPUT-UI mappait le texte saisi, le label <strong>et les messages</strong> sur <code>typography.body</code> (16 px), au nom de la règle « jamais sous 16 px » — laquelle vise en réalité le <strong>champ de saisie</strong> (zoom iOS), pas son helper.</li><li><strong>Nouvelle règle</strong> : <code>typography.body-small</code> (Geist 14 px) pour le <strong>texte fonctionnel qui n'est pas un champ</strong> : helper, message d'erreur, compteur, légende. Le texte saisi et le label restent en <code>body</code> (16 px, règle iOS maintenue).</li><li><strong>Pourquoi</strong> : révélé par le pilote externe (agent à froid Claude Code, 2026-07-16) — faute d'un cran ~14 px, l'agent a détourné <code>headings.h6</code>, un token de <strong>titre</strong>, pour du helper text (couplage au mauvais rôle). Jumeau du besoin qui a fait naître la fondation <code>grid</code> au même pilote. Décision de design assumée : le helper passe de 16 à 14 px.</li></ul>"
+  },
+  {
+   "date": "2026-07 (début)",
+   "titre": "INPUT-UX : l'indicateur de champ requis, deux corrections successives",
+   "html": "<ul><li><strong>Fichiers</strong> : components/input/INPUT-UX.md, patterns/form/FORM-UX.md</li><li><strong>Ancienne règle</strong> : (1) d'abord absent de la première version d'INPUT-UX.md — par oubli, pas par choix ; (2) puis ajouté comme propriété du champ.</li><li><strong>Nouvelle règle</strong> : l'indicateur existe, mais la <em>convention</em> (marquer le requis vs marquer l'optionnel) est une décision de formulaire — FORM-UX.md fait autorité.</li><li><strong>Pourquoi</strong> : &quot;ce formulaire marque-t-il les champs requis ou optionnels ?&quot; se décide une fois pour tout le formulaire, jamais champ par champ. Qualifiée à l'époque d'« erreur structurelle qu'on a laissée traîner » — l'information vivait au mauvais niveau.</li></ul>"
+  },
+  {
+   "date": "2026-07 (début)",
+   "titre": "INPUT-UX : trous comblés après benchmark",
+   "html": "<ul><li><strong>Fichier</strong> : components/input/INPUT-UX.md (§ Contenu additionnel du champ, § Accessibilité du message d'erreur)</li><li><strong>Ancienne règle</strong> : première rédaction sans helper text, compteur de caractères, prefix/suffix, bouton d'effacement, ni la précision &quot;message d'erreur précédé du mot Erreur ou d'une icône&quot;.</li><li><strong>Nouvelle règle</strong> : sections présentes (contenu actuel du fichier).</li><li><strong>Pourquoi</strong> : trous révélés par le benchmark (Carbon, Material) et l'inventaire de cas d'usage — 11 trous sur 30 cas à la première passe, dont la validation asynchrone (2e occurrence du biais &quot;état transitoire&quot;, voir plus bas).</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-TEST F01 : le compteur de caractères passe sur text-secondary",
+   "html": "<ul><li><strong>Fichier</strong> : components/input/INPUT-UI.md 1.3.0</li><li><strong>Ancienne règle</strong> : <code>character_counter: color.text-muted</code> (#9CA3AF — 2.54:1 sur blanc).</li><li><strong>Nouvelle règle</strong> : <code>character_counter: color.text-secondary</code> (7.56:1), aligné sur <code>helper_text</code>.</li><li><strong>Pourquoi</strong> : le compteur est du texte fonctionnel courant (seuil 4.5:1), pas une mention accessoire — premier constat critique du nouvel outil de test.</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-TEST F02 : bordure délimitante vs décorative (décision de principe)",
+   "html": "<ul><li><strong>Fichiers</strong> : components/input/INPUT-UI.md 1.3.0, DESIGN.md 1.4.1 (guardrail), tools/test-rendu.js</li><li><strong>Ancienne règle</strong> : bordure neutral de l'input sur <code>color.border</code> (1.24:1) ; INPUT-UI.md n'exigeait 3:1 qu'en état error — en conflit latent avec la règle globale de DESIGN.md (&quot;3:1 sur tout état visible&quot;) ; la carte outlined avait la même valeur avec un autre statut.</li><li><strong>Nouvelle règle</strong> : la bordure neutral de l'input passe sur <code>color.border-strong</code> (4.83:1). Guardrail ajouté à DESIGN.md : une bordure qui est le <em>seul signal</em> identifiant un composant interactif au repos → <code>border-strong</code>, 3:1 obligatoire ; une bordure de groupement décoratif (carte outlined) → <code>border</code>, exemptée. Critère : &quot;si cette bordure disparaît, l'utilisateur sait-il encore où interagir ?&quot;. Le test de rendu applique le critère identiquement à tous les composants.</li><li><strong>Pourquoi</strong> : option &quot;exception&quot; écartée — un champ de saisie au repos est identifié par sa seule bordure, c'est le cas d'école de WCAG 1.4.11, et c'est exactement le raisonnement qui avait fait recalibrer le bouton secondary en DESIGN 1.3.0. Laisser l'input y échapper aurait été deux poids deux mesures. La subtilité visuelle au repos y perd — assumé : un champ qu'on ne voit pas est un champ qu'on ne remplit pas.</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-TEST F05 : la couleur du texte saisi de l'input devient explicite",
+   "html": "<ul><li><strong>Fichier</strong> : components/input/INPUT-UI.md 1.3.0</li><li><strong>Ancienne règle</strong> : aucune — la couleur du texte saisi était déduite implicitement (<code>text-primary</code> supposé).</li><li><strong>Nouvelle règle</strong> : <code>value_text: color.text-primary</code>.</li><li><strong>Pourquoi</strong> : même famille de &quot;déduction silencieuse&quot; que <code>tone.destructive_text</code> sur le bouton — une déduction correcte reste une déduction non documentée.</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-VALIDATION : résorption des 9 constats structurels",
+   "html": "<ul><li><strong>Fichiers</strong> : DESIGN.md 1.5.0, BUTTON-UI.md 1.2.0, CARD-UI.md 1.2.0, CALLOUT-UI.md 1.1.2, INPUT-UX.md 1.3.2, tools/*</li><li><strong>Ancien état</strong> : renvoi périmé vers un rapport disparu dans DESIGN.md ; 8 valeurs brutes dans les *-UI.md (480px ×2, 36px, 4px/8px illustratifs, 1px, #15803D) ; numérotation F04 ambiguë (historique vs tools/RAPPORT-TEST.md) ; &quot;À approfondir&quot; périmé dans INPUT-UX.md (autofill déjà documenté côté UI).</li><li><strong>Nouvelle règle</strong> : <code>breakpoint.mobile</code> (480px) et <code>scale.desktop-min</code> (36px) créés dans DESIGN.md et référencés par nom ; mentions de grille reformulées en tokens (spacing.*) ; <code>1px</code> promu <strong>exception documentée</strong> au même titre que 44px (épaisseur de hairline, pas une valeur d'échelle — documenté dans CALLOUT-UI.md, admis par valide-dossier.js) ; #15803D remplacé par <code>color.success</code> ; la source historique de BUTTON-UI est préfixée &quot;F04 (numérotation historique)&quot; ; le &quot;À approfondir&quot; autofill est retiré.</li><li><strong>Pourquoi</strong> : premier passage complet de l'outil de validation structurelle — les valeurs brutes se traitent par famille (token d'échelle, exception documentée, ou reformulation) plutôt qu'au cas par cas, pour que la règle survive au prochain constat du même type.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "DESIGN 1.9.0 : border.focus-* — le focus ring cesse d'être une déduction silencieuse",
+   "html": "<ul><li><strong>Fichiers</strong> : DESIGN.md 1.9.0, foundations/border/*, BUTTON-UI/INPUT-UI/CARD-UI (consommateurs)</li><li><strong>Ancien état</strong> : trois composants déclaraient <code>focus_ring: color.accent</code> — la couleur seulement ; largeur et écart de l'anneau étaient laissés à chaque implémentation.</li><li><strong>Nouvelle règle</strong> : ring unifié — <code>border.focus-width</code> (2px) + <code>border.focus-offset</code> (2px), implémenté en outline + offset (jamais border : pas de layout shift, coexistence avec la bordure d'état). Épaisseur du trait : toujours 1px constante, l'état change la couleur, jamais l'épaisseur — divergence assumée avec Atlassian (selected/focused à 2px), motivée dans BORDER-UX.md.</li><li><strong>Pourquoi</strong> : même famille que tone.destructive_text et value_text — une déduction correcte reste une déduction non documentée. La fondation border est née d'un guardrail (1.4.1/F02) : trajectoire inverse de l'élévation (tokens d'abord, doctrine ensuite), notée comme telle.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "DESIGN 1.10.0 : icon.* — tailles et trait, liaison aux consommateurs immédiate",
+   "html": "<ul><li><strong>Fichiers</strong> : DESIGN.md 1.10.0, foundations/iconography/*, BUTTON-UI 1.3.0, INPUT-UI 1.4.0, CARD-UI 1.3.0, CALLOUT-UI 1.2.0</li><li><strong>Ancien état</strong> : quatre composants rendent des icônes (tones, chevron, actions, clear/prefix) sans qu'aucune taille ne soit fixée nulle part — déduction silencieuse à l'échelle du système.</li><li><strong>Nouvelle règle</strong> : trois crans fermés (<code>icon.sm/md/lg</code> : 16/20/24px, appariement Carbon 20↔16) + <code>icon.stroke</code> (1.5px, décision d'identité fixée dans DESIGN.md comme les polices). SVG inline + currentColor, jamais d'icon font. Le dessin des glyphes reste libre (précédent icon_shape) — le système ne fournit <strong>pas</strong> de bibliothèque d'icônes, la frontière est documentée.</li><li><strong>Pourquoi la liaison immédiate</strong> : la typographie avait été livrée orpheline (aucun consommateur ne la référençait, corrigé en 1.1.0) — leçon appliquée : les quatre <code>*-UI.md</code> consommateurs sont reliés dans la même passe, pas après coup.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "INPUT-UX → FORM-UX : la stratégie de timing de validation change de propriétaire",
+   "html": "<ul><li><strong>Fichiers</strong> : components/input/INPUT-UX.md 1.4.0 (§ Error), patterns/form/FORM-UX.md 2.0.0 (§ Stratégie de validation)</li><li><strong>Ancienne règle</strong> : INPUT-UX portait le timing en absolu (&quot;valider au blur, ~500 ms pendant la frappe sur les champs à risque&quot;) — chaque champ décidait de son timing, le formulaire n'avait pas voix au chapitre.</li><li><strong>Nouvelle règle</strong> : INPUT-UX garde la <em>mécanique</em> du champ (comment une erreur inline s'affiche, se formule, remplace le helper text) et le défaut d'un champ isolé hors formulaire (recherche, édition inline) ; FORM-UX fait autorité sur la <em>stratégie</em> du formulaire assemblé — submit-only ou blur-sur-champs-à-risque, choisie par formulaire selon le risque d'erreur de format.</li><li><strong>Pourquoi</strong> : le benchmark primaire a montré une divergence frontale entre systèmes majeurs — GOV.UK interdit la validation au blur (&quot;attendez la soumission&quot;, problèmes documentés pour les utilisateurs qui tapent lentement) quand Carbon la recommande. Une divergence de cette taille ne peut pas être tranchée champ par champ : c'est une décision d'ensemble, comme la convention requis/optionnel l'était déjà (même trajectoire exacte : une propriété apparente du champ qui se révèle être une décision de formulaire). 4e application du principe de dédoublonnage.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "INPUT-R01",
+   "couche": "ux",
+   "solution": "les axes de l'input sont **tone / size / field_type** — pas les 3 axes du bouton.",
+   "enonce": "Note de transposition : l'input est structuré par les axes tone, size et field_type, différents des trois axes du bouton.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R02",
+   "couche": "ux",
+   "solution": "**tone** (neutral/error/success/warning) — transpose directement du bouton : ce sont les états de validation qu'un input a nativement dans tous les frameworks UI (`error` boolean, `helperText`, etc. — cf. Material UI, entre autres).",
+   "enonce": "Le tone (neutral/error/success/warning) doit reprendre les états de validation natifs à tous les frameworks UI courants (ex. Material UI).",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Tone (neutral/error/success/warning) transpose directement du bouton",
+     "liens": [
+      {
+       "label": "Convergence Material UI et autres frameworks",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — pattern natif à tous les frameworks UI courants"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Tone (neutral/error/success/warning) transpose directement du bouton",
+    "liens": [
+     {
+      "label": "Convergence Material UI et autres frameworks",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — pattern natif à tous les frameworks UI courants"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R03",
+   "couche": "ux",
+   "solution": "**size** (sm/md/lg) — transpose : toujours une question de densité de contexte (tableau éditable vs formulaire vs barre de recherche hero).",
+   "enonce": "Note de transposition : l'axe size (sm/md/lg) est repris du bouton car il traduit la densité du contexte d'usage.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Recherche",
+     "famille": "Type de champ"
+    },
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un formulaire",
+     "famille": "Conteneur / contexte d'intégration"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Barre de recherche (header/nav)",
+     "famille": "Conteneur / contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R04",
+   "couche": "ux",
+   "solution": "**l'axe `style` n'existe pas ici** : il n'y a jamais \"l'input principal de l'écran\" au sens où il y a \"le bouton principal\". L'axe qui le remplace est le **type de champ** (text/email/password/number/search/textarea) — une nature de contenu, pas un poids visuel.",
+   "enonce": "Note de transposition : l'axe style du bouton n'existe pas ici ; il est remplacé par field_type, une nature de contenu et non un poids visuel.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R05",
+   "couche": "ux",
+   "solution": "l'Input est l'expression canonique de l'intention **saisir** dans `INTERACTION-UX.md`. Sa zone",
+   "enonce": "Nous définissons l'input comme l'expression canonique de l'intention de saisie : label, bordure et contenu signalent où saisir, même au repos.",
+   "mesure": "au repos, le champ affiche un label visible, une bordure délimitée et l'espace de contenu, sans nécessiter d'interaction.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R06",
+   "couche": "ux",
+   "solution": "l'Input ne reçoit jamais l'élévation d'un contrôle d'action. Son focus et sa bordure d'état",
+   "enonce": "Nous excluons toute élévation de type action sur l'input : le focus et la bordure d'état portent seuls l'expression de la saisie.",
+   "mesure": "le champ ne porte aucune élévation de type action ; un inset éventuel n'est jamais l'unique délimitation visible.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R07",
+   "couche": "ux",
+   "solution": "l'adaptation à l'espace conserve toujours label, valeur, contrainte nécessaire et message",
+   "enonce": "Nous imposons que label, valeur, contrainte nécessaire et message d'erreur restent visibles dans toute adaptation d'espace.",
+   "mesure": "dans toute adaptation d'espace, le label, la valeur, la contrainte nécessaire et le message d'erreur restent visibles ; seule une aide secondaire non requise peut disparaître.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Label flottant (floating label)",
+     "famille": "Contenu / forme visuelle"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R08",
+   "couche": "ux",
+   "solution": "la transition de la bordure d'état (repos → error/success/warning) est du **feedback** au sens",
+   "enonce": "La transition de couleur de la bordure d'état doit rester un feedback qui confirme un changement déjà signalé ailleurs, jamais son unique vecteur d'information.",
+   "mesure": "la transition de bordure d'état confirme un changement déjà signalé ailleurs (texte), elle ne le porte jamais seule.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "Transition de bordure d'état = feedback ; l'information d'erreur vit dans le mot, pas la bordure",
+     "liens": [
+      {
+       "label": "`MOTION-UX.md` § « Le mouvement confirme, il n'informe jamais seul »",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — contrainte d'accessibilité (canaux redondants)"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "Transition de bordure d'état = feedback ; l'information d'erreur vit dans le mot, pas la bordure",
+    "liens": [
+     {
+      "label": "`MOTION-UX.md` § « Le mouvement confirme, il n'informe jamais seul »",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — contrainte d'accessibilité (canaux redondants)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R09",
+   "couche": "ux",
+   "solution": "règle cardinale héritée — **« le mouvement confirme, il n'informe jamais seul »**",
+   "enonce": "L'information d'erreur ne doit jamais reposer sur la seule couleur ou animation de la bordure : elle doit être portée par un texte lié techniquement au champ.",
+   "mesure": "le message d'erreur est signalé par le mot « Erreur » associé via aria-describedby, indépendamment de toute couleur ou animation de bordure.",
+   "contre": "",
+   "probleme": "c'est la condition qui rend `prefers-reduced-motion` implémentable sans perte — si la",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "Transition de bordure d'état = feedback ; l'information d'erreur vit dans le mot, pas la bordure",
+     "liens": [
+      {
+       "label": "`MOTION-UX.md` § « Le mouvement confirme, il n'informe jamais seul »",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — contrainte d'accessibilité (canaux redondants)"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Message d'erreur précédé du mot \"Erreur\" ou d'une icône, pas la couleur seule",
+     "liens": [
+      {
+       "label": "Material Design",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, exigence d'accessibilité daltonisme"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "Transition de bordure d'état = feedback ; l'information d'erreur vit dans le mot, pas la bordure",
+    "liens": [
+     {
+      "label": "`MOTION-UX.md` § « Le mouvement confirme, il n'informe jamais seul »",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — contrainte d'accessibilité (canaux redondants)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R10",
+   "couche": "ux",
+   "solution": "sous `prefers-reduced-motion`, un **changement de couleur peut rester** — `MOTION-UX.md`",
+   "enonce": "Nous choisissons de conserver la transition de couleur de la bordure d'état sous prefers-reduced-motion, cette préférence ciblant le mouvement spatial, pas la couleur.",
+   "mesure": "sous prefers-reduced-motion, la transition de couleur de la bordure d'état reste active.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S14",
+     "affirmation": "Bordure d'état : changement de couleur conservé sous reduced-motion",
+     "liens": [
+      {
+       "label": "`MOTION-UX.md` § prefers-reduced-motion (opacité/couleur conservables)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S14",
+    "affirmation": "Bordure d'état : changement de couleur conservé sous reduced-motion",
+    "liens": [
+     {
+      "label": "`MOTION-UX.md` § prefers-reduced-motion (opacité/couleur conservables)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R11",
+   "couche": "ux",
+   "solution": "l'insertion du message d'erreur sous le champ relève de `MOTION-UX.md`, règle « le contenu ne",
+   "enonce": "Nous n'insérons le message d'erreur qu'à la suite d'une action de l'utilisateur, jamais par un déplacement de contenu non sollicité.",
+   "mesure": "le message d'erreur apparaît uniquement après une action utilisateur (blur, soumission), jamais par déplacement spontané du contenu.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R12",
+   "couche": "ux",
+   "solution": "utiliser pour toute donnée en texte libre ou semi-libre (nom, email, montant, recherche).",
+   "enonce": "Nous recommandons l'input pour toute donnée exprimée en texte libre ou semi-libre, comme un nom, un email, un montant ou une recherche.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Recherche",
+     "famille": "Type de champ"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R13",
+   "couche": "ux",
+   "solution": "ne pas utiliser pour un choix parmi des options prédéfinies et limitées — c'est le rôle du select, radio, ou checkbox.",
+   "enonce": "Nous déconseillons l'input pour un choix parmi des options prédéfinies et limitées, ce rôle revenant au select, au radio ou à la checkbox.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "un input texte libre sur un choix fermé augmente le risque d'erreur de saisie sans raison.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R14",
+   "couche": "ux",
+   "solution": "cas limite fréquent — un champ de recherche est un input, même s'il déclenche une action au submit : la nature de la donnée saisie prime sur l'action déclenchée en aval.",
+   "enonce": "Nous classons le champ de recherche comme un input, et non une action, car la nature de la donnée saisie prime sur l'action déclenchée ensuite.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Recherche",
+     "famille": "Type de champ"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R15",
+   "couche": "ux",
+   "solution": "le type détermine le clavier, la validation native, et le comportement attendu — text, email, password, number, search, textarea.",
+   "enonce": "Le type de champ HTML doit correspondre à la nature réelle de la donnée saisie, car il détermine le clavier, la validation native et le comportement attendu.",
+   "mesure": "le type HTML natif utilisé (text/email/password/number/search/textarea) correspond à la nature réelle de la donnée attendue.",
+   "contre": "",
+   "probleme": "styliser un `<input type=\"text\">` pour qu'il *ressemble* à un champ email sans utiliser le vrai type HTML — ça casse des comportements natifs invisibles mais utiles (clavier adapté sur mobile, validation native du navigateur).",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R16",
+   "couche": "ux",
+   "solution": "le tone par défaut — aucune validation en cours ou déjà passée avec succès sans besoin de le signaler visuellement.",
+   "enonce": "Nous utilisons le tone neutral par défaut, tant qu'aucune validation en cours ou réussie ne nécessite d'être signalée visuellement.",
+   "mesure": "en l'absence de validation active à afficher, le champ est en tone neutral.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Mot de passe",
+     "famille": "Type de champ"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R17",
+   "couche": "ux",
+   "solution": "signaler qu'une valeur ne respecte pas le format ou la contrainte attendue.",
+   "enonce": "Nous utilisons le tone error pour signaler qu'une valeur ne respecte pas le format ou la contrainte attendue.",
+   "mesure": "le tone error s'affiche lorsque la valeur ne respecte pas le format ou la contrainte attendue.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R18",
+   "couche": "ux",
+   "solution": "mécanique de timing du champ — quand la validation inline est retenue, elle se joue au moment où l'utilisateur quitte le champ (on blur), pas à chaque frappe — sauf sur les champs à fort risque d'erreur de format (email, mot de passe), où un léger délai après la fin de la frappe (~500ms) permet une validation quasi temps réel sans interrompre la saisie. Jamais d'erreur avant que l'utilisateur ait terminé sa première saisie du champ.",
+   "enonce": "Nous déclenchons la validation inline au blur, sauf sur les champs à fort risque de format où elle se joue ~500ms après la frappe, jamais avant la première saisie complète.",
+   "mesure": "la validation inline se déclenche au blur, ou après environ 500ms sans frappe sur les champs à risque (email, mot de passe) ; jamais avant la fin de la première saisie.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Validation inline : +22% succès, -22% erreurs",
+     "liens": [
+      {
+       "label": "Luke Wroblewski, étude comparative",
+       "url": null
+      }
+     ],
+     "confiance": "Étude contrôlée, largement citée"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Validation inline : +5 à +13% complétion selon longueur du formulaire",
+     "liens": [
+      {
+       "label": "Benchmarks agrégés Baymard/Zuko 2026",
+       "url": null
+      }
+     ],
+     "confiance": "Benchmark multi-sites, tendance stable"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Validation inline : +22% succès, -22% erreurs",
+    "liens": [
+     {
+      "label": "Luke Wroblewski, étude comparative",
+      "url": null
+     }
+    ],
+    "confiance": "Étude contrôlée, largement citée"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Mot de passe",
+     "famille": "Type de champ"
+    },
+    {
+     "id": "cas-2-0",
+     "titre": "Validation on blur",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Validation temps réel (débounce)",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-5-1",
+     "titre": "Champ de mot de passe",
+     "famille": "Enjeu business / risque"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R19",
+   "couche": "ux",
+   "solution": "la **stratégie** — ce formulaire valide-t-il au submit uniquement, ou au blur sur les champs à risque ? — est une décision du formulaire assemblé, pas du champ : voir `atelier/patterns/form/FORM-UX.md`, qui fait autorité (le benchmark diverge réellement : GOV.UK submit-only ↔ Carbon blur — divergence documentée là-bas). Ce fichier reste le défaut d'un champ isolé hors formulaire (recherche, édition inline). (Transfert d'autorité : cf. DECISIONS.md 2026-07-11.)",
+   "enonce": "Cadrage : la stratégie de validation (submit seul vs blur) relève du formulaire assemblé (FORM-UX.md) ; ce document fixe seulement le défaut d'un champ isolé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "sur un champ à fort risque de format, attendre la soumission complète du formulaire pour signaler la moindre erreur — redécouverte punitive de plusieurs erreurs d'un coup.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-9",
+     "titre": "Fichier",
+     "famille": "Type de champ"
+    },
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un formulaire",
+     "famille": "Conteneur / contexte d'intégration"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Dans une table (édition inline)",
+     "famille": "Conteneur / contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R20",
+   "couche": "ux",
+   "solution": "confirmer qu'une valeur à fort enjeu de confiance est correcte (ex: disponibilité d'un nom d'utilisateur, force d'un mot de passe). Optionnel — à réserver aux champs à forte friction perçue, pas systématique sur chaque champ valide.",
+   "enonce": "Nous réservons le tone success aux champs à forte friction perçue, comme la disponibilité d'un identifiant, plutôt qu'à toute validation réussie.",
+   "mesure": "le tone success n'est utilisé que sur des champs à forte friction perçue, pas systématiquement sur chaque champ valide.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Mot de passe",
+     "famille": "Type de champ"
+    },
+    {
+     "id": "cas-5-1",
+     "titre": "Champ de mot de passe",
+     "famille": "Enjeu business / risque"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R21",
+   "couche": "ux",
+   "solution": "signaler une valeur techniquement acceptée mais qui mérite l'attention (ex: un mot de passe valide mais faible). Moins fréquent que sur le bouton — la plupart des inputs n'ont besoin que de neutral/error.",
+   "enonce": "Nous utilisons le tone warning pour signaler une valeur acceptée mais qui mérite l'attention, plus rarement que sur le bouton.",
+   "mesure": "le tone warning est utilisé sur une valeur acceptée mais signalée comme perfectible.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R22",
+   "couche": "ux",
+   "solution": "ce paragraphe est régi par `VOICE-UX.md`, cadre unificateur du wording de tous les composants.",
+   "enonce": "Un message d'erreur doit décrire l'écart et la correction sans jamais qualifier ou blâmer l'utilisateur.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Wording du message unifié par Voice ; ne jamais blâmer l'utilisateur",
+     "liens": [
+      {
+       "label": "`VOICE-UX.md` § « Le ton suit l'utilisateur » (INPUT nommé comme source réciproque)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — NN/g, GOV.UK, WCAG"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Wording du message unifié par Voice ; ne jamais blâmer l'utilisateur",
+    "liens": [
+     {
+      "label": "`VOICE-UX.md` § « Le ton suit l'utilisateur » (INPUT nommé comme source réciproque)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — NN/g, GOV.UK, WCAG"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R23",
+   "couche": "ux",
+   "solution": "un bon message fait le travail de diagnostic à la place de l'utilisateur : il dit *pourquoi* et *comment corriger* (\"Le format attendu est JJ/MM/AAAA\"), pas seulement *que* c'est faux.",
+   "enonce": "Un message d'erreur doit expliquer pourquoi la valeur est invalide et comment la corriger, pas seulement signaler qu'elle est fausse.",
+   "mesure": "chaque message d'erreur indique la cause du problème et l'action de correction, pas seulement l'invalidité (ex: pas seulement « Champ invalide »).",
+   "contre": "",
+   "probleme": "un message d'erreur générique (\"Champ invalide\") transfère toute la charge de résolution à l'utilisateur.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Validation inline : +22% succès, -22% erreurs",
+     "liens": [
+      {
+       "label": "Luke Wroblewski, étude comparative",
+       "url": null
+      }
+     ],
+     "confiance": "Étude contrôlée, largement citée"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Validation inline : +5 à +13% complétion selon longueur du formulaire",
+     "liens": [
+      {
+       "label": "Benchmarks agrégés Baymard/Zuko 2026",
+       "url": null
+      }
+     ],
+     "confiance": "Benchmark multi-sites, tendance stable"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Validation inline : +22% succès, -22% erreurs",
+    "liens": [
+     {
+      "label": "Luke Wroblewski, étude comparative",
+      "url": null
+     }
+    ],
+    "confiance": "Étude contrôlée, largement citée"
+   },
+   "confiance": "cas isolé — étude contrôlée largement citée, méthodologie publique.",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R24",
+   "couche": "ux",
+   "solution": "nuance à ne pas oublier — la validation inline n'est pas un gain gratuit : à réserver aux champs à fort risque d'erreur, pas à généraliser partout.",
+   "enonce": "Nous réservons la validation inline aux champs à fort risque d'erreur, car la généraliser oblige à un va-et-vient constant entre saisie et correction.",
+   "mesure": "la validation inline n'est appliquée que sur les champs à fort risque d'erreur de format, pas sur l'ensemble d'un formulaire.",
+   "contre": "",
+   "probleme": "une critique documentée (Jessica Enders, *Designing UX: Forms*) souligne qu'elle oblige l'utilisateur à basculer sans cesse entre remplir et corriger.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Coût cognitif du va-et-vient remplir/corriger en validation inline",
+     "liens": [
+      {
+       "label": "Jessica Enders, *Designing UX: Forms*",
+       "url": null
+      }
+     ],
+     "confiance": "Critique documentée, à mettre en balance"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Coût cognitif du va-et-vient remplir/corriger en validation inline",
+    "liens": [
+     {
+      "label": "Jessica Enders, *Designing UX: Forms*",
+      "url": null
+     }
+    ],
+    "confiance": "Critique documentée, à mettre en balance"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R25",
+   "couche": "ux",
+   "solution": "**helper text — distinct du message d'erreur.** C'est une aide contextuelle persistante sous le label, visible dès le focus, indépendante de la validation (ex: \"Doit contenir au moins 8 caractères\") : le helper text guide *avant* la saisie, l'erreur corrige *après*.",
+   "enonce": "Nous distinguons le helper text, aide persistante visible dès le focus, du message d'erreur qui le remplace temporairement.",
+   "mesure": "le helper text apparaît sous le label dès le focus, indépendamment de la validation ; il est remplacé, pas cumulé, par le message d'erreur actif.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Helper text distinct du message d'erreur, l'erreur le remplace temporairement",
+     "liens": [
+      {
+       "label": "Carbon, Material Design",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence entre systèmes majeurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Helper text distinct du message d'erreur, l'erreur le remplace temporairement",
+    "liens": [
+     {
+      "label": "Carbon, Material Design",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence entre systèmes majeurs"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Label flottant (floating label)",
+     "famille": "Contenu / forme visuelle"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R26",
+   "couche": "ux",
+   "solution": "l'erreur remplace temporairement le helper text tant qu'elle est active, plutôt que de s'empiler dessus (convention observée : Carbon, Material).",
+   "enonce": "Nous faisons en sorte que le message d'erreur remplace temporairement le helper text plutôt que de s'y ajouter.",
+   "mesure": "quand l'erreur est active, le helper text n'est pas affiché simultanément.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Helper text distinct du message d'erreur, l'erreur le remplace temporairement",
+     "liens": [
+      {
+       "label": "Carbon, Material Design",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence entre systèmes majeurs"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Helper text distinct du message d'erreur, l'erreur le remplace temporairement",
+    "liens": [
+     {
+      "label": "Carbon, Material Design",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence entre systèmes majeurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R27",
+   "couche": "ux",
+   "solution": "**compteur de caractères** — sur un champ à limite (notamment textarea), afficher le compteur *avant* que l'utilisateur commence à taper, pas seulement une fois la limite atteinte. Format observé : ratio \"12/280\" plutôt qu'un décompte descendant, bien que les deux conventions coexistent selon les systèmes (pas de consensus univoque ici).",
+   "enonce": "Nous affichons le compteur de caractères dès l'apparition du champ à limite, avant que l'utilisateur commence à taper.",
+   "mesure": "sur un champ à limite de caractères, le compteur est visible dès l'affichage du champ, avant toute frappe, au format 'saisi/maximum'.",
+   "contre": "",
+   "probleme": "ça évite la découverte punitive en cours de frappe.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Compteur de caractères affiché avant la saisie, pas seulement à la limite",
+     "liens": [
+      {
+       "label": "Carbon, Material Design",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence, format exact (ratio vs décompte) non consensuel"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Compteur de caractères affiché avant la saisie, pas seulement à la limite",
+    "liens": [
+     {
+      "label": "Carbon, Material Design",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence, format exact (ratio vs décompte) non consensuel"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-4",
+     "titre": "Compteur de caractères",
+     "famille": "Contenu / forme visuelle"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R28",
+   "couche": "ux",
+   "solution": "**prefix / suffix** — symbole monétaire, unité de mesure, ou tout élément de contexte fixe attaché au champ (ex: \"€\" en préfixe, \"kg\" en suffixe) : traité comme un élément non éditable à l'intérieur du champ, pas comme un label externe.",
+   "enonce": "Nous intégrons le prefix ou suffix comme élément non éditable à l'intérieur du champ, jamais comme un label externe séparé.",
+   "mesure": "un prefix ou suffix est rendu à l'intérieur du champ, non éditable, et non positionné comme un label externe.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Label top fixe",
+     "famille": "Contenu / forme visuelle"
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Label flottant (floating label)",
+     "famille": "Contenu / forme visuelle"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Prefix / suffix",
+     "famille": "Contenu / forme visuelle"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R29",
+   "couche": "ux",
+   "solution": "**bouton d'effacement (clear)** — sur un champ de recherche notamment, une icône de suppression rapide du contenu, activée seulement quand le champ n'est pas vide.",
+   "enonce": "Nous n'affichons le bouton d'effacement qu'une fois le champ non vide.",
+   "mesure": "le bouton d'effacement n'est visible/actif que lorsque le champ contient du texte.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-2",
+     "titre": "Icône leading/trailing dans le champ",
+     "famille": "Contenu / forme visuelle"
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Bouton clear",
+     "famille": "Contenu / forme visuelle"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R30",
+   "couche": "ux",
+   "solution": "**indicateur de champ requis** — un astérisque ou équivalent textuel, systématique sur tout champ obligatoire. (Historique de cette règle : cf. DECISIONS.md.)",
+   "enonce": "Nous marquons systématiquement tout champ obligatoire par un astérisque ou une mention textuelle équivalente.",
+   "mesure": "chaque champ obligatoire porte un astérisque ou une mention textuelle équivalente, indépendante de la couleur.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R31",
+   "couche": "ux",
+   "solution": "au-delà de la règle générale \"jamais la couleur seule\" déjà posée ailleurs — un message d'erreur doit être précédé du mot \"Erreur\" (ou d'une icône dédiée), pas seulement stylé en rouge.",
+   "enonce": "Un message d'erreur doit être précédé du mot « Erreur » ou d'une icône dédiée, jamais signalé par la seule couleur du texte.",
+   "mesure": "le message d'erreur est précédé du mot « Erreur » ou d'une icône dédiée, et ne repose pas uniquement sur la couleur rouge.",
+   "contre": "",
+   "probleme": "sinon un utilisateur daltonien peut manquer le changement d'état si le texte lui-même ne change pas.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Message d'erreur précédé du mot \"Erreur\" ou d'une icône, pas la couleur seule",
+     "liens": [
+      {
+       "label": "Material Design",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, exigence d'accessibilité daltonisme"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Message d'erreur précédé du mot \"Erreur\" ou d'une icône, pas la couleur seule",
+    "liens": [
+     {
+      "label": "Material Design",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, exigence d'accessibilité daltonisme"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R32",
+   "couche": "ux",
+   "solution": "**le champ accepte la dictée comme n'importe quelle saisie clavier** — un champ natif reçoit la parole convertie en texte sans traitement particulier. Ne jamais intercepter les touches d'une façon qui casse la dictée ou le collage : un masque qui rejette ce qui n'est pas tapé caractère par caractère, un handler qui reconstruit la valeur touche à touche. Le formatage (téléphone, carte) se fait *après coup, sur la valeur*, jamais en bloquant l'entrée.",
+   "enonce": "Le champ doit accepter dictée et collage sans interception bloquante ; tout formatage doit s'appliquer après coup, jamais en empêchant la saisie.",
+   "mesure": "le champ n'intercepte aucune touche de façon à bloquer la dictée ou le collage ; tout formatage s'applique après coup sur la valeur.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Champ natif accepte dictée et collage sans interception",
+     "liens": [
+      {
+       "label": "Recommandations d'accessibilité des champs natifs ; raisonnement de mécanisme",
+       "url": null
+      }
+     ],
+     "confiance": "Convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Champ natif accepte dictée et collage sans interception",
+    "liens": [
+     {
+      "label": "Recommandations d'accessibilité des champs natifs ; raisonnement de mécanisme",
+      "url": null
+     }
+    ],
+    "confiance": "Convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Téléphone",
+     "famille": "Type de champ"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R33",
+   "couche": "ux",
+   "solution": "**le nom accessible du champ contient son libellé visible** (WCAG 2.5.3 « Label in Name ») — l'utilisateur de commande vocale dit « champ E-mail » parce qu'il lit « E-mail » ; si le `<label>` affiche « E-mail » mais que l'`aria-label` dit « Adresse électronique », la cible devient inadressable à la voix. L'`aria-label` **complète** le libellé visible, il ne le remplace ni ne le contredit.",
+   "enonce": "Le nom accessible du champ doit contenir le texte de son libellé visible, conformément à WCAG 2.5.3 (Label in Name).",
+   "mesure": "le texte du label visible est inclus dans le nom accessible (aria-label ne le contredit ni ne le remplace).",
+   "contre": "",
+   "probleme": "c'est le pendant vocal de « label toujours lié au champ » — un champ parfaitement étiqueté pour le lecteur d'écran peut rester inadressable à la voix si son nom accessible s'écarte du texte affiché. La fondation VOICE ne couvre pas ce point : elle traite la voix *éditoriale*, pas la commande vocale (cf. ACCESSIBILITY-UX.md).",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Nom accessible contient le libellé visible (label in name)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.3 (niveau A)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Nom accessible contient le libellé visible (label in name)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.3 (niveau A)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "établi — WCAG 2.5.3 (niveau A) ; la non-interception de la dictée est un raisonnement de mécanisme, convergent avec les recommandations d'accessibilité des champs natifs.",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R34",
+   "couche": "ux",
+   "solution": "**sm** — tableaux éditables, cellules inline, filtres compacts.",
+   "enonce": "Nous réservons la taille sm de l'input aux tableaux éditables, cellules inline et filtres compacts.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Dans une table (édition inline)",
+     "famille": "Conteneur / contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R35",
+   "couche": "ux",
+   "solution": "**md** — la taille par défaut : formulaires standards.",
+   "enonce": "Nous utilisons la taille md comme taille par défaut de l'input, pour les formulaires standards.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Dans un formulaire",
+     "famille": "Conteneur / contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R36",
+   "couche": "ux",
+   "solution": "**lg** — champs de recherche hero, formulaires d'onboarding à fort enjeu de conversion.",
+   "enonce": "Nous réservons la taille lg aux champs de recherche hero et aux formulaires d'onboarding à fort enjeu de conversion.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R37",
+   "couche": "ux",
+   "solution": "mêmes règles que le bouton — ne jamais mélanger les tailles dans un même groupe de champs liés (ex: adresse), et pas de valeur px absolue fixée ici (cf. INPUT-UI.md).",
+   "enonce": "Nous interdisons de mélanger les tailles d'input au sein d'un même groupe de champs liés, comme un bloc adresse.",
+   "mesure": "tous les champs d'un même groupe logique (ex: adresse) utilisent la même taille, sans mélange.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R38",
+   "couche": "ux",
+   "solution": "label toujours visible, y compris pendant la saisie — jamais seulement en placeholder.",
+   "enonce": "Le label du champ doit rester visible en permanence, y compris pendant la saisie ; il ne doit jamais être porté uniquement par le placeholder.",
+   "mesure": "le label reste visible en permanence, y compris pendant la saisie ; il n'est jamais porté uniquement par le placeholder.",
+   "contre": "",
+   "probleme": "le placeholder disparaît dès que l'utilisateur tape, l'utilisateur perd le repère de ce qu'il remplit.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R39",
+   "couche": "ux",
+   "solution": "champs groupés visuellement quand ils appartiennent au même ensemble logique (ex: bloc adresse).",
+   "enonce": "Nous groupons visuellement les champs appartenant à un même ensemble logique, comme un bloc adresse.",
+   "mesure": "les champs d'un même ensemble logique sont rapprochés visuellement (espacement réduit, bordure ou fond commun).",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R40",
+   "couche": "ux",
+   "solution": "indicateur de champ requis — la convention (marquer le requis vs marquer l'optionnel) est une décision de formulaire, pas de champ isolé : voir `atelier/patterns/form/FORM-UX.md`, qui fait autorité sur ce point.",
+   "enonce": "Cadrage : le choix de marquer le champ requis ou le champ optionnel relève du formulaire assemblé (FORM-UX.md), pas de ce document.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R41",
+   "couche": "ux",
+   "solution": "le passage en mode édition doit être visuellement sans ambiguïté (bordure, fond) — l'utilisateur ne doit jamais se demander s'il modifie une donnée en direct ou consulte une valeur figée.",
+   "enonce": "Nous exigeons que le passage en mode édition d'un champ inline soit visuellement non ambigu.",
+   "mesure": "le mode édition inline se distingue visuellement du mode lecture par au moins un changement de bordure ou de fond.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R42",
+   "couche": "ux",
+   "solution": "le type `search` natif plutôt qu'un `text` stylisé — comportements natifs (bouton d'effacement, historique) perdus sinon.",
+   "enonce": "La barre de recherche doit utiliser le type HTML natif « search » plutôt qu'un champ texte stylisé, pour conserver les comportements natifs du navigateur.",
+   "mesure": "la barre de recherche utilise le type HTML natif 'search', pas un 'text' stylisé pour ressembler à une recherche.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R43",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Ce tableau récapitule, pour chaque risque de conception identifié dans ce document, sa cause et sa sévérité.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R44",
+   "couche": "ux",
+   "solution": "capturer une donnée sensible, masquée par défaut, tout en restant vérifiable par l'utilisateur avant soumission.",
+   "enonce": "Le champ de mot de passe doit capturer une donnée sensible masquée par défaut, tout en restant vérifiable par l'utilisateur avant soumission.",
+   "mesure": "le champ mot de passe est masqué par défaut et propose un moyen de vérifier la valeur avant soumission.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R45",
+   "couche": "ux",
+   "solution": "**un seul champ, pas deux** — un champ unique avec un toggle de visibilité (show/hide) est préférable au champ \"confirmer le mot de passe\" : il réduit la friction du formulaire sans perdre la fonction de vérification que le second champ apportait.",
+   "enonce": "Un formulaire doit utiliser un seul champ de mot de passe avec un toggle de visibilité, plutôt qu'un champ de confirmation séparé.",
+   "mesure": "le formulaire ne comporte qu'un seul champ mot de passe, avec un toggle afficher/masquer, sans champ de confirmation.",
+   "contre": "",
+   "probleme": "le champ \"confirmer le mot de passe\" a longtemps été la norme, mais des recherches documentées (GOV.UK Design System) ont conclu en faveur du champ unique.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Un seul champ mot de passe + toggle plutôt que confirm password",
+     "liens": [
+      {
+       "label": "GOV.UK Design System, recherche utilisateur documentée",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par recherche, consensus UX convergent"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Un seul champ mot de passe + toggle plutôt que confirm password",
+    "liens": [
+     {
+      "label": "GOV.UK Design System, recherche utilisateur documentée",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par recherche, consensus UX convergent"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-5-1",
+     "titre": "Champ de mot de passe",
+     "famille": "Enjeu business / risque"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R46",
+   "couche": "ux",
+   "solution": "le champ reste masqué par défaut ; le toggle affiche le texte en clair à la demande, jamais l'inverse.",
+   "enonce": "Le champ de mot de passe doit rester masqué par défaut ; seul un toggle actionné explicitement peut afficher le texte en clair, jamais l'inverse.",
+   "mesure": "le champ est masqué par défaut ; seule une action explicite (clic sur le toggle) révèle temporairement le texte en clair.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R47",
+   "couche": "ux",
+   "solution": "au moment de la soumission, le champ doit revenir au type `password` s'il ne l'était pas déjà.",
+   "enonce": "Au moment de la soumission, le champ doit revenir au type « password » s'il ne l'était pas déjà.",
+   "mesure": "au moment de la soumission, le champ mot de passe est de type 'password', même s'il avait été affiché en clair juste avant.",
+   "contre": "",
+   "probleme": "sinon certains navigateurs risquent de mémoriser la valeur comme suggestion d'autofill sur un champ non sécurisé.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R48",
+   "couche": "ux",
+   "solution": "toujours autoriser le copier-coller.",
+   "enonce": "Le champ de mot de passe doit toujours autoriser le copier-coller, car le bloquer casse l'usage des gestionnaires de mots de passe.",
+   "mesure": "le champ mot de passe n'intercepte ni ne bloque les actions copier/coller.",
+   "contre": "",
+   "probleme": "bloquer cette action casse l'usage des gestionnaires de mots de passe, qui reposent dessus.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R49",
+   "couche": "ux",
+   "solution": "désactiver la correction orthographique et la mise en majuscule automatique (`spellcheck=\"false\"`, `autocapitalize=\"off\"`).",
+   "enonce": "Le champ de mot de passe doit désactiver la correction orthographique et la mise en majuscule automatique.",
+   "mesure": "le champ mot de passe porte les attributs spellcheck=\"false\" et autocapitalize=\"off\".",
+   "contre": "",
+   "probleme": "au-delà de la gêne, certains outils de correction orthographique ont été documentés en train de transmettre le contenu de champs de mot de passe à des services tiers.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R50",
+   "couche": "ux",
+   "solution": "afficher les exigences de format *avant* que l'utilisateur commence à taper, pas seulement en cas d'erreur après coup.",
+   "enonce": "Nous affichons les exigences de format du mot de passe avant la saisie, sans imposer de règle de complexité sans justification de sécurité réelle.",
+   "mesure": "les exigences de format du mot de passe sont affichées avant la saisie, pas seulement en cas d'erreur.",
+   "contre": "",
+   "probleme": "imposer des règles de complexité arbitraires (caractère spécial obligatoire, etc.) sans justification de sécurité réelle — n'améliore pas la sécurité effective, dégrade l'expérience.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "établi — recommandations issues de GOV.UK Design System (recherche utilisateur documentée) et de patterns UX largement convergents — pas une étude chiffrée unique, mais un consensus stable entre plusieurs sources indépendantes.",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R51",
+   "couche": "ux",
+   "solution": "capturer une donnée à très haut risque, encadrée par une contrainte externe non négociable — la conformité PCI-DSS.",
+   "enonce": "Le champ de carte bancaire doit être traité comme une donnée à très haut risque, encadrée par la contrainte non négociable de conformité PCI-DSS.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Champ carte bancaire hors du contrôle direct du design system (iframe PCI)",
+     "liens": [
+      {
+       "label": "Guides d'intégration Stripe, Pin Payments, solutions \"hosted fields\"",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — architecture standard de l'industrie du paiement"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Champ carte bancaire hors du contrôle direct du design system (iframe PCI)",
+    "liens": [
+     {
+      "label": "Guides d'intégration Stripe, Pin Payments, solutions \"hosted fields\"",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — architecture standard de l'industrie du paiement"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R52",
+   "couche": "ux",
+   "solution": "dans la grande majorité des implémentations conformes, le champ de numéro de carte et le CVV ne sont **pas** des champs HTML que ton design system contrôle directement — ils vivent dans un iframe fourni par le processeur de paiement (Stripe Elements, Hosted Fields, etc.). **BUTTON-UI.md et INPUT-UI.md ne peuvent pas s'appliquer tels quels** à ces deux champs précis — seule une styling limitée, exposée via l'API du processeur, est possible (couleur du texte, taille de police, état d'erreur), jamais un contrôle total du DOM.",
+   "enonce": "Les champs numéro de carte et CVV doivent être rendus via l'iframe du processeur de paiement, hors du contrôle direct du design system.",
+   "mesure": "les champs numéro de carte et CVV sont rendus dans un iframe fourni par le processeur de paiement, pas par les composants input du design system.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Champ carte bancaire hors du contrôle direct du design system (iframe PCI)",
+     "liens": [
+      {
+       "label": "Guides d'intégration Stripe, Pin Payments, solutions \"hosted fields\"",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — architecture standard de l'industrie du paiement"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Champ carte bancaire hors du contrôle direct du design system (iframe PCI)",
+    "liens": [
+     {
+      "label": "Guides d'intégration Stripe, Pin Payments, solutions \"hosted fields\"",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — architecture standard de l'industrie du paiement"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-5-0",
+     "titre": "Champ de paiement (carte bancaire)",
+     "famille": "Enjeu business / risque"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R53",
+   "couche": "ux",
+   "solution": "ce qui reste sous ton contrôle — les champs adjacents non sensibles (nom du titulaire, adresse de facturation) suivent le gabarit standard sans restriction. Utiliser les valeurs `autocomplete` dédiées (`cc-name`, `cc-exp`, `cc-csc`).",
+   "enonce": "Les champs de paiement non sensibles (titulaire, adresse de facturation) doivent utiliser les valeurs autocomplete standard dédiées.",
+   "mesure": "les champs adjacents non sensibles utilisent les valeurs autocomplete dédiées (cc-name, cc-exp, cc-csc).",
+   "contre": "",
+   "probleme": "les valeurs autocomplete aident les navigateurs et gestionnaires à proposer un remplissage correct.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "établi — architecture iframe largement standard chez les processeurs de paiement (Stripe, Pin Payments, solutions \"hosted fields\"), documentée par leurs propres guides d'intégration.",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R54",
+   "couche": "ux",
+   "solution": "le remplissage automatique par le navigateur ou un gestionnaire de mots de passe est une fonctionnalité native, pas un cas exotique — elle doit être anticipée, pas subie.",
+   "enonce": "Le remplissage automatique du navigateur ou d'un gestionnaire de mots de passe est un comportement natif qui doit être anticipé, pas subi.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Style d'autofill navigateur non surchargeable en CSS standard",
+     "liens": [
+      {
+       "label": "Comportement documenté des navigateurs (Chrome, Safari, Firefox)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, contournement technique connu (cf. INPUT-UI.md)"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Style d'autofill navigateur non surchargeable en CSS standard",
+    "liens": [
+     {
+      "label": "Comportement documenté des navigateurs (Chrome, Safari, Firefox)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, contournement technique connu (cf. INPUT-UI.md)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Autofill / gestionnaire de mots de passe navigateur",
+     "famille": "Plateforme / device"
+    }
+   ]
+  },
+  {
+   "id": "INPUT-R55",
+   "couche": "ux",
+   "solution": "ne jamais désactiver l'autofill sans raison de sécurité valable (cf. champ mot de passe) — le confort qu'il apporte dépasse largement le risque esthétique, qui a une solution technique connue (cf. INPUT-UI.md).",
+   "enonce": "L'autofill du navigateur ne doit jamais être désactivé sans raison de sécurité valable et documentée.",
+   "mesure": "l'autofill n'est désactivé sur aucun champ, sauf raison de sécurité documentée.",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Style d'autofill navigateur non surchargeable en CSS standard",
+     "liens": [
+      {
+       "label": "Comportement documenté des navigateurs (Chrome, Safari, Firefox)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, contournement technique connu (cf. INPUT-UI.md)"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Style d'autofill navigateur non surchargeable en CSS standard",
+    "liens": [
+     {
+      "label": "Comportement documenté des navigateurs (Chrome, Safari, Firefox)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, contournement technique connu (cf. INPUT-UI.md)"
+   },
+   "confiance": "établi — comportement natif documenté des navigateurs, contournement technique connu mais non standardisé entre navigateurs.",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R56",
+   "couche": "ux",
+   "solution": "le champ de saisie est le **contre-exemple canonique** du moment mérité d'E-motion. La saisie",
+   "enonce": "Nous excluons tout instrument E-motion du champ de saisie lui-même, car la saisie est une action réflexe et à haute fréquence.",
+   "mesure": "aucun instrument E-motion n'est déclenché par le champ de saisie lui-même.",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "Aucun instrument E-motion dans le champ (action réflexe / haute fréquence)",
+     "liens": [
+      {
+       "label": "`EMOTION-UX.md` § budget de rareté ; miroir `TOAST-UX.md` § Instrument E-motion",
+       "url": null
+      }
+     ],
+     "confiance": "Déduction argumentée, cohérente avec une règle établie"
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "Aucun instrument E-motion dans le champ (action réflexe / haute fréquence)",
+    "liens": [
+     {
+      "label": "`EMOTION-UX.md` § budget de rareté ; miroir `TOAST-UX.md` § Instrument E-motion",
+      "url": null
+     }
+    ],
+    "confiance": "Déduction argumentée, cohérente avec une règle établie"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R57",
+   "couche": "ux",
+   "solution": "comme le toast (`TOAST-UX.md` § Instrument E-motion), le moment catalogué **« sortie d'une",
+   "enonce": "Nous maintenons le champ en état error dans un registre strictement productif, le soulagement de la résolution restant porté par un composant séparé.",
+   "mesure": "un champ en état error reste en registre strictement productif ; le soulagement de la résolution est porté par un autre composant (toast, alert success).",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "Aucun instrument E-motion dans le champ (action réflexe / haute fréquence)",
+     "liens": [
+      {
+       "label": "`EMOTION-UX.md` § budget de rareté ; miroir `TOAST-UX.md` § Instrument E-motion",
+       "url": null
+      }
+     ],
+     "confiance": "Déduction argumentée, cohérente avec une règle établie"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Wording du message unifié par Voice ; ne jamais blâmer l'utilisateur",
+     "liens": [
+      {
+       "label": "`VOICE-UX.md` § « Le ton suit l'utilisateur » (INPUT nommé comme source réciproque)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — NN/g, GOV.UK, WCAG"
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "Aucun instrument E-motion dans le champ (action réflexe / haute fréquence)",
+    "liens": [
+     {
+      "label": "`EMOTION-UX.md` § budget de rareté ; miroir `TOAST-UX.md` § Instrument E-motion",
+      "url": null
+     }
+    ],
+    "confiance": "Déduction argumentée, cohérente avec une règle établie"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-R58",
+   "couche": "ux",
+   "solution": "même principe que le bouton, transposé — **la friction de validation doit être proportionnelle au risque réel d'erreur du champ**, pas uniforme.",
+   "enonce": "Nous calibrons la friction de validation sur le risque réel d'erreur du champ, plutôt que d'appliquer un traitement uniforme.",
+   "mesure": "le niveau de validation appliqué varie selon le risque d'erreur du champ, et n'est pas uniforme sur tous les champs.",
+   "contre": "",
+   "probleme": "un champ email mérite une validation quasi temps réel, un champ \"prénom\" n'en a pas besoin.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-U01",
+   "couche": "ui",
+   "solution": "`state_border` anime `border-color` de repos → error/success/warning en `motion.fast` /",
+   "enonce": "Le code anime la couleur de la bordure d'état en motion.fast/ease-out, tandis que le message d'erreur apparaît sans délai.",
+   "mesure": "la bordure d'état transitionne border-color en motion.fast/ease-out ; le message d'erreur associé apparaît sans délai.",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-U02",
+   "couche": "ui",
+   "solution": "sous `prefers-reduced-motion`, cette transition **est conservée** — `MOTION-UI.md` § reduced-motion",
+   "enonce": "Le code conserve la transition de couleur de la bordure d'état sous prefers-reduced-motion, en héritant du bloc média global.",
+   "mesure": "sous prefers-reduced-motion, la transition de border-color reste active et n'est pas redéclarée localement.",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Bordure d'état : transition de couleur conservée sous reduced-motion",
+     "liens": [
+      {
+       "label": "`MOTION-UI.md` § reduced-motion (opacité/couleur conservées, hérité du bloc global)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — contrat motion interne"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Bordure d'état : transition de couleur conservée sous reduced-motion",
+    "liens": [
+     {
+      "label": "`MOTION-UI.md` § reduced-motion (opacité/couleur conservées, hérité du bloc global)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — contrat motion interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-U03",
+   "couche": "ui",
+   "solution": "l'Input reste à `elevation.none` dans tous ses états. La sensation réceptive vient du fond, de",
+   "enonce": "Le code fixe l'élévation de l'Input à elevation.none dans tous ses états, sans inset requis.",
+   "mesure": "le token d'élévation appliqué à l'Input est elevation.none dans tous ses états.",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-U04",
+   "couche": "ui",
+   "solution": "dans un conteneur étroit, les services trailing peuvent se regrouper seulement si leur accès",
+   "enonce": "Le code ne doit jamais masquer le label, la valeur, une contrainte nécessaire ou le message d'erreur via une Container Query.",
+   "mesure": "aucune Container Query ne masque le label, la valeur, une contrainte nécessaire ou le message d'erreur.",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "INPUT-U05",
+   "couche": "ui",
+   "solution": "une composition de champs utilise les Container Queries du pattern parent pour réorganiser les",
+   "enonce": "Le code de l'Input n'utilise jamais breakpoint.mobile pour déduire sa largeur ; la réorganisation est déléguée au pattern parent.",
+   "mesure": "le composant Input ne contient aucune media query basée sur breakpoint.mobile.",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

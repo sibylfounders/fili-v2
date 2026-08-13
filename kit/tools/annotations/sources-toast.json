@@ -1,0 +1,149 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Le document Understanding de WCAG 2.2.1 traite explicitement le cas du toast : « a web application such as an email client provides notification of new email arriving with a temporary message (such as a 'toast' message) in the lower right-hand side of the interface, and the message disappears after 5 seconds. Users are able to identify the arrival of email through other means, such as viewing the Inbox, so the disappearance of the message does not set a time limit on the their ability to determine if new mail has arrived. » — la disparition automatique n'est PAS une limite de temps au sens de 2.2.1 dès lors que l'information reste atteignable autrement. Le critère lui-même n'offre que trois issues (Turn off / Adjust sur une plage d'au moins dix fois la valeur par défaut / Extend avec avertissement d'au moins 20 s et dix prolongations) : la suspension au survol n'en est aucune. La section Intent précise par ailleurs que « the expiration of a window of opportunity for a user to react to a request for input » est bien une limite de temps.",
+  "source_markdown": "[WCAG 2.2 — 2.2.1 Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html)",
+  "confiance": "Établi, standard (A) — **corrige S4** : TOAST-R10 et TOAST-U04 attribuent à 2.2.1 une exigence de pause au survol/focus qui n'y figure pas. Fonde en revanche pleinement R11 et R27 (le repli est la condition même de l'exemption). **Contredit R13/R14** : un toast dont l'action (undo) n'existe nulle part ailleurs ouvre une fenêtre de réaction, donc une limite de temps réelle, que la pause au survol ne suffit pas à satisfaire."
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "Le pattern Alert de l'APG énonce : « It is also important to avoid designing alerts that disappear automatically. An alert that disappears too quickly can lead to failure to meet WCAG 2.0 success criterion 2.2.3. » Il ajoute que « Frequent interruptions inhibit usability for people with visual and cognitive disabilities, which makes meeting the requirements of WCAG 2.0 success criterion 2.2.4 more difficult. »",
+  "source_markdown": "[ARIA Authoring Practices Guide — Alert Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)",
+  "confiance": "Établi — pattern normatif W3C. Objection de principe au composant toast lui-même, mais ancrée sur 2.2.3 (No Timing), critère **AAA** : elle ne bloque pas une conformité AA. À lire avec S9, qui neutralise l'objection quand le repli est garanti."
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "« In content implemented using markup languages, status messages can be programmatically determined through role or properties such that they can be presented to the user by assistive technologies without receiving focus. » Situation A (succès / résultat d'une action) → role=\"status\" ; Situation B (avertissement / erreur) → role=\"alert\".",
+  "source_markdown": "[WCAG 2.2 — 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+  "confiance": "Établi, standard (AA) — fonde le mapping de TOAST-R24, déjà tranché dans ALERT."
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "« The alert role should only be used for text content, not interactive elements such as links or buttons. » ; « If the user is expected to close the alert, then the alertdialog role should be used instead. » ; le conteneur doit préexister dans le DOM, un élément role=\"alert\" injecté déjà peuplé n'est généralement pas annoncé.",
+  "source_markdown": "[MDN — ARIA alert role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/alert_role)",
+  "confiance": "Établi — **contredit la combinaison R13 + R24** : un toast danger/warning porteur d'une action « Annuler » place un bouton dans un conteneur que R24 fait porter role=\"alert\". Même contradiction que celle déjà relevée sur ALERT (S16 vs R36/R47)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "role=\"status\" implique aria-live=\"polite\" et aria-atomic=\"true\" ; « Do not give focus to the status when its content updates. »",
+  "source_markdown": "[MDN — ARIA status role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/status_role)",
+  "confiance": "Établi — documentation de référence."
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Fluent 2 (Toast) : « If there is no action to take, toast will time out after seven seconds. » ; « People who navigate via mouse can pause the timer by hovering over the toast. » ; « Don't show more than four toasts in a toaster » ; « Include the Close button to allow people to expressly dismiss toasts only if they can find that information again elsewhere. » ; « For critical messages, try a modal Dialog, Field error, or Message bar instead. » ; position « usually the top-right or bottom-right », « where they are least likely to block the main content ».",
+  "source_markdown": "[Fluent 2 — Toast, usage](https://fluent2.microsoft.design/components/web/react/core/toast/usage)",
+  "confiance": "Établi — design system public vérifié. Soutient R05, R06, R10, R11, R27 ; **diverge** de R16 (3 vs 4) et de U02 (croix présente)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "Shopify Polaris (Toast) : « Toast with action should persist for at least 10,000 milliseconds. » ; « Only include an action in toast if the same action is available elsewhere on the page. » ; « Not have actions, like [Cancel], for dismissing toast. The [X] to dismiss is already included in the component. » ; « Avoid using toast for error messages. Always try to use a banner to prominently inform merchants about persistent errors. »",
+  "source_markdown": "[Shopify Polaris — Toast](https://polaris-react.shopify.com/components/deprecated/toast)",
+  "confiance": "Établi — design system public vérifié (composant marqué deprecated dans Polaris, guidance conservée). Soutient R05, R06, R11, R13. **Contredit U03** (8 000 ms pour un toast avec action, contre un plancher de 10 000 ms annoncé comme exigence d'accessibilité) et **U02** (croix incluse par défaut)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "IBM Carbon (toast notification) : « Toast notifications persist by default, but they can timeout and be coded to dismiss automatically after five seconds on the screen. » ; « They can also include a close button so users can dismiss them sooner. » ; « toast notifications cover content on the screen so they should always be easily dismissed. » ; « Toast notifications slide in and out from the top right of the screen. » ; « New toast notifications should appear at the top of the list, with older notifications being pushed down until they are dismissed. »",
+  "source_markdown": "[IBM Carbon — Notification, usage](https://carbondesignsystem.com/components/notification/usage/)",
+  "confiance": "Établi — design system public vérifié. Soutient R05, R06, R12, R17 (ordre chronologique). **Contredit U02** (« should always be easily dismissed ») et **U10** (Carbon ancre en haut à droite, non en bas au centre — la note de TOAST-UI affirmant que « Carbon/Polaris/Material proposent tous bas-droit » est inexacte pour Carbon comme pour Polaris)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Atlassian Design System (Flag) : la variante auto-dismiss est décrite comme « A flag that is dismissed automatically after eight seconds. »",
+  "source_markdown": "[Atlassian Design System — Auto dismiss flag](https://atlassian.design/components/flag/auto-dismiss-flag/)",
+  "confiance": "Établi — design system public vérifié, mais documentation succincte : ne dit rien de la pause au survol ni des tones autorisés à s'auto-fermer."
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "React Aria (Adobe, Toast) : « Timers automatically pause when the user focuses or hovers over a toast. » ; « Only auto-dismiss toasts when the information is not critical, or may be found elsewhere. Some users may require additional time to read toasts, and screen zoom users may miss them entirely. » ; timeout minimum recommandé de 5 secondes ; la région de toasts est une landmark region dotée d'une navigation clavier dédiée.",
+  "source_markdown": "[React Aria — Toast](https://react-aria.adobe.com/Toast)",
+  "confiance": "Établi — implémentation de référence accessible, vérifiée. Fonde R10 (pause survol **et** focus), R11, R12, R27. **Signale un manque** : ni TOAST-UX ni TOAST-UI ne prévoient de chemin clavier permettant d'atteindre la région de toasts, sans lequel la pause au focus et l'action de R13 sont inatteignables au clavier."
+ },
+ {
+  "couche": "ux",
+  "ref": "S19",
+  "affirmation": "Radix Primitives (Toast) : « Pauses closing on hover, focus and window blur » ; durée par défaut du Provider : 5000 ms ; un sous-composant Toast.Close permet de « dismiss the toast before its duration has elapsed » ; fermeture par geste de balayage supportée.",
+  "source_markdown": "[Radix Primitives — Toast](https://www.radix-ui.com/primitives/docs/components/toast)",
+  "confiance": "Établi — primitive accessible de référence, vérifiée. Confirme la convergence de R10 (troisième système à énoncer la pause au survol ET au focus) ; **contredit U02** (affordance de fermeture explicite fournie)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S20",
+  "affirmation": "Nord Design System (Toast) : « Don't place interactive content in toasts. Assistive technology like screen readers will not convey any semantics when announcing toast messages. » ; timeout par défaut 10 000 ms ; « Toasts are complicated from an accessibility perspective ».",
+  "source_markdown": "[Nord Design System — Toast](https://nordhealth.design/components/toast/)",
+  "confiance": "Établi — design system public vérifié. Corrobore S12 : **contredit R13** (action tolérée à l'intérieur d'un conteneur live)."
+ },
+ {
+  "couche": "ux",
+  "ref": "S21",
+  "affirmation": "« When a user interface component receives keyboard focus, the component is not entirely hidden due to author-created content. » La section Intent précise : « Typical types of content that can overlap focused items are sticky footers, sticky headers, and non-modal dialogs » et « A notification implemented as sticky content, such as a cookie banner, will fail this success criterion if it entirely obscures a component receiving focus. »",
+  "source_markdown": "[WCAG 2.2 — 2.4.11 Focus Not Obscured (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)",
+  "confiance": "Établi, standard (AA) — **norme absente des deux fichiers**. Une région de toasts en position fixe ancrée en bas au centre (U10, position: fixed + inset-block-end) peut masquer entièrement un composant qui reçoit le focus : c'est exactement le cas de figure que 2.4.11 sanctionne. Point à instruire, non couvert par R20."
+ },
+ {
+  "couche": "ux",
+  "ref": "S22",
+  "affirmation": "« Timing is not an essential part of the event or activity presented by the content, except for non-interactive synchronized media and real-time events. » Niveau AAA.",
+  "source_markdown": "[WCAG 2.2 — 2.2.3 No Timing](https://www.w3.org/WAI/WCAG22/Understanding/no-timing.html)",
+  "confiance": "Établi, standard (AAA) — critère sur lequel l'APG (S10) fonde son objection à la disparition automatique. Son niveau AAA explique pourquoi le toast reste un composant licite en visée AA."
+ },
+ {
+  "couche": "ux",
+  "ref": "S23",
+  "affirmation": "« The size of the target for pointer inputs is at least 24 by 24 CSS pixels », sauf exceptions (Spacing, Equivalent, Inline, User Agent Control, Essential). Niveau AA.",
+  "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+  "confiance": "Établi, standard (AA) — la section Accessibilité de TOAST-UI exige 44 px pour la cible de l'action. L'exigence AA est de 24 px ; 44 px relève de 2.5.5 Target Size (Enhanced, AAA) et des HIG Apple. L'écart va dans le sens de la sécurité mais le fichier attribue à l'AA une valeur qui n'y figure pas."
+ },
+ {
+  "couche": "ux",
+  "ref": "S24",
+  "affirmation": "Pour l'information mise à jour automatiquement : « there is a mechanism for the user to pause, stop, or hide it or to control the frequency of the update unless the auto-updating is part of an activity where it is essential ». Niveau A ; l'auto-updating ne bénéficie d'aucune exception de cinq secondes.",
+  "source_markdown": "[WCAG 2.2 — 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)",
+  "confiance": "Établi, standard (A) — piste d'ancrage plus solide que 2.2.1 pour une région de toasts qui se renouvelle : une pile FIFO qui pousse dehors un toast à l'arrivée d'un autre (U06) est de l'information qui se met à jour toute seule, et « pause, stop or hide » est précisément ce qu'un contrôle de fermeture fournirait."
+ },
+ {
+  "couche": "ux",
+  "ref": "S25",
+  "affirmation": "Intelligence Community Design System (Toast, accessibilité) : composant testé contre WCAG 2.2 AA ; « A user can also hover over the toast with their mouse to pause the timer. » ; « If any actions are included within a toast, then it can't be set to auto-dismiss. » ; un toast auto-fermant porte role=\"alert\", un toast persistant porte role=\"dialog\" et reçoit le focus.",
+  "source_markdown": "[ICDS — Toast, accessibility](https://design.sis.gov.uk/components/feedback-progress/toast/accessibility)",
+  "confiance": "Établi — design system public vérifié. **Contredit frontalement R13/R14/U03** : ce système interdit purement et simplement l'auto-fermeture dès qu'une action est présente, là où Fili se contente d'ajouter 2 000 ms et une pause au survol."
+ },
+ {
+  "couche": "ui",
+  "ref": "T11",
+  "affirmation": "container-type: inline-size « Establishes a query container for dimensional queries on the inline axis of the container. Applies style and inline-size containment to the element. The inline size of the element can be computed in isolation, ignoring the child elements. » Établir un conteneur inline-size ne fait pas à lui seul s'effondrer l'élément : sa taille inline doit être fixée par le contexte (un élément de bloc en flux s'étire à la largeur de son parent) ou déclarée explicitement.",
+  "source_markdown": "[MDN — container-type](https://developer.mozilla.org/en-US/docs/Web/CSS/container-type)",
+  "confiance": "Établi — spécification CSS. Confirme le diagnostic de U09 pour le cas rencontré (région en position: fixed, donc sans largeur contextuelle, dont le contenu ne peut plus la déterminer), mais **la généralisation transversale de U09 est trop large** : un conteneur de requête en flux normal tire sa largeur de son parent et ne s'effondre pas. La condition manquante est « hors flux » (position: fixed/absolute, float, inline-block), pas « container-type »."
+ },
+ {
+  "couche": "ui",
+  "ref": "T12",
+  "affirmation": "La media feature prefers-reduced-motion exprime la préférence système de réduction du mouvement ; réduire n'est pas supprimer l'information, l'état final doit rester atteignable.",
+  "source_markdown": "[MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — spécification CSS, non re-fetchée dans cette passe (déjà sourcée dans MOTION). Fonde U13."
+ },
+ {
+  "couche": "ui",
+  "ref": "T13",
+  "affirmation": "Valeurs de durée observées dans les systèmes publics vérifiés : Carbon 5 s (optionnel), Radix 5 000 ms par défaut, React Aria minimum 5 s recommandé, Fluent 7 s sans action, Atlassian 8 s, Nord 10 000 ms, Polaris au moins 10 000 ms dès qu'une action est présente.",
+  "source_markdown": "[Radix — Toast](https://www.radix-ui.com/primitives/docs/components/toast) ; [React Aria — Toast](https://react-aria.adobe.com/Toast) ; [Fluent 2 — Toast](https://fluent2.microsoft.design/components/web/react/core/toast/usage) ; [Polaris — Toast](https://polaris-react.shopify.com/components/deprecated/toast)",
+  "confiance": "Établi — convergence sur une fourchette 5-10 s, pas sur une valeur. La base de 6 000 ms de U03 tient dans la fourchette ; le total de 8 000 ms pour un toast avec action est **sous le plancher explicitement qualifié d'accessibilité par Polaris**."
+ },
+ {
+  "couche": "ui",
+  "ref": "T14",
+  "affirmation": "Convergence vérifiée sur la suspension du minuteur : Radix « Pauses closing on hover, focus and window blur » ; React Aria « Timers automatically pause when the user focuses or hovers over a toast » ; Fluent « People who navigate via mouse can pause the timer by hovering over the toast » ; ICDS « A user can also hover over the toast with their mouse to pause the timer ».",
+  "source_markdown": "[Radix — Toast](https://www.radix-ui.com/primitives/docs/components/toast) ; [React Aria — Toast](https://react-aria.adobe.com/Toast) ; [Fluent 2 — Toast](https://fluent2.microsoft.design/components/web/react/core/toast/usage) ; [ICDS — Toast accessibility](https://design.sis.gov.uk/components/feedback-progress/toast/accessibility)",
+  "confiance": "Établi — quatre systèmes, dont deux couvrant explicitement le focus clavier en plus du survol. Fonde U04 et R10 en `universelle` **par convergence de systèmes, non par la norme WCAG 2.2.1** que les deux fichiers invoquent à tort (cf. S9)."
+ }
+]

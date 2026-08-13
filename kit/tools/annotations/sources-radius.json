@@ -1,0 +1,58 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S5",
+  "affirmation": "Géométrie des coins concentriques, normative : le rayon du bord intérieur vaut le rayon extérieur moins l'épaisseur correspondante, et zéro si le résultat est négatif ; idem du padding au contenu",
+  "source_markdown": "[W3C — CSS Backgrounds and Borders Level 3, Corner Shaping](https://www.w3.org/TR/css-backgrounds-3/)",
+  "confiance": "Établi, norme W3C — **contredit la note du fichier qui déclarait l'imbrication « sans source normative unique »**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S6",
+  "affirmation": "Réduction proportionnelle des rayons : si la somme de deux rayons d'un même côté dépasse la longueur de ce côté, tous les rayons sont multipliés par un facteur f < 1. C'est ce mécanisme qui produit la pilule exacte, le stade multiligne et la pilule accidentelle d'un rayon en pourcentage",
+  "source_markdown": "[CSSWG — CSS Backgrounds 3, Overlapping Curves](https://drafts.csswg.org/css-backgrounds-3/#corner-overlap)",
+  "confiance": "Établi, norme W3C"
+ },
+ {
+  "couche": "ux",
+  "ref": "S7",
+  "affirmation": "Relevé du 2026-07-27 : Atlassian expose huit crans (2, 4, 6, 8, 12, 16 px, plein, tuile) avec mapping explicite — medium pour boutons et champs, large pour cartes et menus, xlarge pour conteneurs de page et modales ; anneau de focus tokenisé à base + 2 px ; les badges y prennent 2 px, pas le rayon plein",
+  "source_markdown": "[Atlassian — Radius](https://atlassian.design/foundations/radius)",
+  "confiance": "Établi — seul système vérifié à documenter le mapping contrôle / conteneur. **Contredit R08 sur les badges**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "Polaris expose une échelle croissante et fermée de 0 à 30 px plus un cran plein ; aucune consigne d'usage par composant n'est publiée : l'échelle est convergente, le mapping ne l'est pas. Le cran nul y est tokenisé",
+  "source_markdown": "[Polaris — Border tokens](https://polaris-react.shopify.com/tokens/border)",
+  "confiance": "Établi — relevé sur la table de tokens officielle"
+ },
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Fluent 2 expose un cran nul, puis 2, 4, 6, 8, 12, 16, 24, 32, 40 px et un cran circulaire : échelle croissante, cran nul tokenisé, pilule par valeur géante",
+  "source_markdown": "[Fluent UI — tokens/borderRadius.ts](https://raw.githubusercontent.com/microsoft/fluentui/master/packages/tokens/src/global/borderRadius.ts)",
+  "confiance": "Établi — source primaire (dépôt de tokens)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "Material 3 définit une échelle de forme nommée et croissante terminée par un cran plein ; les valeurs numériques ne sont pas dans le fichier de tokens et le site n'est pas lisible sans JavaScript",
+  "source_markdown": "[Material Web — tokens/_md-sys-shape.scss](https://raw.githubusercontent.com/material-components/material-web/main/tokens/_md-sys-shape.scss)",
+  "confiance": "Partiel — noms de crans vérifiés, valeurs non vérifiables"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Carbon pose explicitement un rayon nul sur ses boutons via un mixin appliqué à toutes les variantes : l'angle droit y est le défaut voulu. Le Tag, cité comme exception, est spécifié à 16 px et non par un token de pilule",
+  "source_markdown": "[Carbon — issue #285](https://github.com/carbon-design-system/carbon/issues/285) ; [Carbon — Tag, style](https://carbondesignsystem.com/components/tag/style/)",
+  "confiance": "Établi — **corrige la sur-interprétation de S4**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Règle du rayon imbriqué telle qu'elle circule dans la littérature de design : rayon extérieur = rayon intérieur + écart ; l'article note la limite quand l'écart dépasse le rayon extérieur",
+  "source_markdown": "[Frontend Masters — The Classic Border Radius Advice](https://master.dev/blog/the-classic-border-radius-advice-plus-an-unusual-trick)",
+  "confiance": "Convergence de littérature — secondaire ; la version normative est S5"
+ }
+]

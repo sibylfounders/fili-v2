@@ -1,0 +1,254 @@
+[
+  {
+    "id": "LAWS-R01",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le catalogue des lois UX est un principe théorique : il ne se modélise ni en axes ni en rôle/valeur, n'introduit aucune contrainte propre, et se borne à nommer le corpus que les autres sujets appliquent et citent.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R02",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le catalogue des lois s'adresse aux humains et n'est pas compilé : il ne produit aucun fichier de règles dans dist/, n'apparaît pas dans le routeur, et n'est jamais chargé au moment de générer de l'UI.",
+    "mesure": "absence de RULES-laws dans dist/ et absence d'entrée laws dans le routeur"
+  },
+  {
+    "id": "LAWS-R03",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le catalogue des lois n'a pas de couche UI : sa couche concrète est la carte d'application reliant chaque loi à la règle qui l'implémente, et aucun fichier UI factice n'est créé pour satisfaire l'outillage.",
+    "mesure": "companion: none déclaré ; aucun fichier LAWS-UI ; chaque loi du catalogue possède une ligne dans la carte d'application ou une mention explicite de trou"
+  },
+  {
+    "id": "LAWS-R04",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Une loi ne s'invoque jamais seule : chaque entrée du catalogue expose la ou les lois avec lesquelles elle est en tension, et un arbitrage entre lois contradictoires remonte au lieu d'être tranché par le catalogue.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R05",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le mot « loi » ne vaut pas preuve : chaque entrée du catalogue porte un niveau de confiance explicite et distingue les résultats robustes, les heuristiques et les formules réfutées.",
+    "mesure": "chaque entrée du catalogue porte un niveau de confiance et un renvoi vers sa source primaire"
+  },
+  {
+    "id": "LAWS-R06",
+    "statut": "universelle",
+    "source": "S15",
+    "enonce": "Toute charge mentale imposée par la présentation de l'interface au-delà de la tâche elle-même est une charge extrinsèque à supprimer ; la réduire ne consiste jamais à masquer une décision, qui resterait alors à prendre ailleurs.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R07",
+    "statut": "universelle",
+    "source": "S6, S16, S17",
+    "enonce": "Aucune limite d'items d'interface — menu, onglets, champs — ne se justifie par Miller (1956) : la seule règle utilisable qui en dérive est le regroupement en unités signifiantes, jamais un plafond numérique.",
+    "mesure": "aucune contrainte de cardinalité du système n'est justifiée par une référence à Miller ou au « 7±2 »"
+  },
+  {
+    "id": "LAWS-R08",
+    "statut": "universelle",
+    "source": "S16, S17",
+    "enonce": "L'information longue ou dense se découpe en unités signifiantes — étapes, groupes visuels, segments de nombres et de dates — plutôt que d'être présentée d'un seul bloc.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R09",
+    "statut": "universelle",
+    "source": "S17, S18",
+    "enonce": "L'interface n'exige jamais qu'une information soit retenue d'un écran à l'autre : ce qui a déjà été saisi est redonné à voir au moment où il sert, et l'aide nécessaire à une saisie reste visible au lieu de disparaître.",
+    "mesure": "aucune donnée déjà saisie n'est redemandée ; aucune aide nécessaire à la saisie n'est masquée après son premier affichage"
+  },
+  {
+    "id": "LAWS-R10",
+    "statut": "identite",
+    "source": "S22, interne",
+    "enonce": "La progression d'une tâche longue est rendue visible pour aider la reprise, jamais pour exercer une pression : aucune relance ni aucun message n'a pour seul déclencheur le caractère incomplet d'une tâche.",
+    "mesure": "aucune notification ni message dont l'unique condition de déclenchement est un taux de complétion inférieur à 100 %"
+  },
+  {
+    "id": "LAWS-R11",
+    "statut": "universelle",
+    "source": "S19, S14",
+    "enonce": "Aucune information critique ne prend l'apparence d'un élément décoratif ou promotionnel : ce qui ressemble à une publicité est filtré avant lecture, et le mouvement, qui capte l'attention de force, reste parcimonieux.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R12",
+    "statut": "identite",
+    "source": "S4, S20",
+    "enonce": "Chez nous, une vue porte une action dominante et une seule, et chaque registre de couleur porte un sens unique ; réduire le nombre d'options visibles ne consiste jamais à enfouir une option derrière une navigation plus profonde.",
+    "mesure": "au plus un bouton primary par vue"
+  },
+  {
+    "id": "LAWS-R13",
+    "statut": "identite",
+    "source": "S21, interne",
+    "enonce": "Le nombre d'actions portées par une carte ou une alerte est plafonné par une règle explicite du composant concerné, et non par un seuil général d'abondance d'options.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R14",
+    "statut": "universelle",
+    "source": "S3",
+    "enonce": "Le temps d'atteinte d'une cible croît avec la distance à parcourir et décroît avec la taille de la cible : une action fréquente est grande et placée près de son contexte d'usage, et les bords d'écran comptent comme des cibles de profondeur infinie.",
+    "mesure": "toute action fréquente présente une zone tactile ≥ 44 px CSS (WCAG 2.5.5)"
+  },
+  {
+    "id": "LAWS-R15",
+    "statut": "identite",
+    "source": "S23, interne",
+    "enonce": "Toute progression affichée reflète l'avancement réel de la tâche : ni étape gonflée, ni avance offerte, ni jauge qui progresse sans travail accompli.",
+    "mesure": "la valeur de progression affichée est une fonction du nombre d'étapes réellement franchies sur le nombre d'étapes réellement requises"
+  },
+  {
+    "id": "LAWS-R16",
+    "statut": "identite",
+    "source": "S11, interne",
+    "enonce": "La complexité irréductible d'une tâche est absorbée par le système et non reportée sur la personne : normalisation des saisies, valeurs par défaut sensées, messages qui énoncent la cause et la correction.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R17",
+    "statut": "universelle",
+    "source": "S25, S26, S12, S24",
+    "enonce": "Une saisie est acceptée dans toutes ses formes usuelles — espaces, tirets, parenthèses, casse — puis normalisée en interne ; aucun rejet ne porte sur une forme que le système peut nettoyer, et la validation porte sur le sens.",
+    "mesure": "un numéro de téléphone, un numéro de carte ou une adresse e-mail saisis avec espaces, tirets ou casse variable sont acceptés et normalisés sans message d'erreur"
+  },
+  {
+    "id": "LAWS-R18",
+    "statut": "identite",
+    "source": "interne",
+    "enonce": "Aucun token, état ou variante n'est provisionné avant qu'un besoin réel ne l'exige : la solution la plus simple qui répond au besoin constaté est retenue.",
+    "mesure": "tout token du système est référencé par au moins un consommateur"
+  },
+  {
+    "id": "LAWS-R19",
+    "statut": "universelle",
+    "source": "S13",
+    "enonce": "L'aide est contextuelle et disponible dans l'action plutôt que préalable : aucune fonction ne suppose la lecture d'une documentation ou le passage par un tutoriel bloquant avant usage.",
+    "mesure": "aucun écran d'apprentissage obligatoire ne précède l'accès à une fonction"
+  },
+  {
+    "id": "LAWS-R20",
+    "statut": "universelle",
+    "source": "S32, S33",
+    "enonce": "Le contenu ne se déplace ni ne change de contexte sans action de la personne, et aucune animation ne verrouille l'interaction ; l'interruption n'est légitime que devant un enjeu destructeur ou une perte de données.",
+    "mesure": "aucun changement de contexte non déclenché par l'utilisateur (WCAG 3.2.5) ; tout contenu en mouvement ou en mise à jour automatique de plus de 5 s est pausable (WCAG 2.2.2) ; aucune animation ne bloque les entrées"
+  },
+  {
+    "id": "LAWS-R21",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le catalogue déclare Parkinson comme trou assumé : aucune règle d'accélérateur de saisie n'est écrite tant que le produit n'a ni saisie longue ni limite de temps, et le sujet est réactivé avec la première surface concernée.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R22",
+    "statut": "universelle",
+    "source": "S2",
+    "enonce": "Les éléments rapprochés sont perçus comme un groupe indépendamment de tout trait : l'espacement porte donc l'information de regroupement, avec un écart plus petit à l'intérieur d'un groupe qu'entre deux groupes.",
+    "mesure": "l'écart interne à un groupe est strictement inférieur à l'écart qui le sépare du groupe voisin"
+  },
+  {
+    "id": "LAWS-R23",
+    "statut": "universelle",
+    "source": "S2",
+    "enonce": "Un fond ou un cadre commun regroupe son contenu plus fortement que la proximité seule : un conteneur déclare un groupe et ne s'emploie donc jamais comme simple ornement.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R24",
+    "statut": "universelle",
+    "source": "S2",
+    "enonce": "Les éléments qui partagent forme, couleur ou taille sont perçus comme appartenant à la même famille : un même rôle reçoit toujours le même traitement visuel, et deux rôles distincts n'en partagent jamais un seul.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R25",
+    "statut": "universelle",
+    "source": "S2",
+    "enonce": "Un lien visuel explicite — trait continu ou fond partagé — produit le regroupement le plus fort, au-dessus de la proximité et de la similarité ; il s'emploie là où le groupement doit être sans ambiguïté.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R26",
+    "statut": "universelle",
+    "source": "S2",
+    "enonce": "La perception ramène le complexe à l'arrangement le plus simple : les formes portent le sens indépendamment de la couleur — trait constant en iconographie, silhouettes distinctes selon les états — afin qu'aucune information ne repose sur la seule teinte.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R27",
+    "statut": "universelle",
+    "source": "S27, S14",
+    "enonce": "Un élément qui rompt l'homogénéité de son contexte est mieux mémorisé, et l'effet disparaît dès que la distinction se généralise : l'accent et l'action primaire restent uniques dans leur vue.",
+    "mesure": "au plus un élément par vue porte le traitement d'accentuation réservé"
+  },
+  {
+    "id": "LAWS-R28",
+    "statut": "universelle",
+    "source": "S28",
+    "enonce": "Dans une liste, les éléments de tête et de queue sont mieux mémorisés que ceux du milieu : les entrées décisives se placent aux extrémités et jamais au centre d'une longue série.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R29",
+    "statut": "universelle",
+    "source": "S29, S5",
+    "enonce": "Une réponse du système obtenue sous 400 ms maintient la personne dans son flux et une réponse sous 100 ms est perçue comme instantanée : ces deux seuils bornent l'échelle des durées d'animation et de retour du système.",
+    "mesure": "toute durée d'animation ou de retour du système ≤ 400 ms ; retour d'appui perçu instantané ≤ 100 ms"
+  },
+  {
+    "id": "LAWS-R30",
+    "statut": "identite",
+    "source": "S9, S30, S31",
+    "enonce": "L'esthétique et l'utilisabilité se vérifient séparément : un jugement esthétique favorable ne clôt jamais une question d'utilisabilité en revue, car le soin visuel gonfle l'utilisabilité perçue et fait sous-déclarer les défauts en test.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R31",
+    "statut": "universelle",
+    "source": "S8",
+    "enonce": "Le souvenir d'un parcours est dominé par son moment le plus intense et par sa fin : les messages d'erreur et les messages de clôture reçoivent un soin supérieur au reste — calmes et orientés solution pour les premiers, nets et sans sur-célébration pour les seconds.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R32",
+    "statut": "methode",
+    "source": "S10",
+    "enonce": "Chaque fiche du système porte un benchmark des design systems publics de référence : converger avec les conventions rencontrées ailleurs est une exigence de méthode, et s'en écarter demande un motif journalé.",
+    "mesure": "chaque fiche comporte une section de benchmark citant au moins deux design systems publics"
+  },
+  {
+    "id": "LAWS-R33",
+    "statut": "universelle",
+    "source": "S7, S34",
+    "enonce": "Aucune exigence du système ne se formule en nombre de clics : la qualité d'un parcours se juge à l'évidence de chaque étape et à sa progression vers le but, pas au décompte des interactions.",
+    "mesure": "aucune règle du système ne fixe un plafond de clics ou de niveaux de profondeur"
+  },
+  {
+    "id": "LAWS-R34",
+    "statut": "methode",
+    "source": "S6, S16",
+    "enonce": "Le catalogue traite le « 7±2 de Miller » comme un mythe réfuté et renvoie au traitement unique de la règle correspondante, sans le redocumenter une seconde fois.",
+    "mesure": ""
+  },
+  {
+    "id": "LAWS-R35",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Le catalogue porte une table de risque dont les entrées sont argumentatives et non visuelles : chaque manière connue de mal invoquer une loi y figure avec sa sévérité.",
+    "mesure": "la table de risque du catalogue couvre au moins la citation hors source, le retournement en dark pattern, l'esthétique qui masque un défaut et la loi appliquée sans sa tension"
+  },
+  {
+    "id": "LAWS-R36",
+    "statut": "methode",
+    "source": "interne",
+    "enonce": "Une loi UX explique une règle et ne la remplace jamais : aucune décision de design n'est tranchée par l'invocation d'une loi unique, et une contradiction entre deux lois remonte au lieu d'être arbitrée localement.",
+    "mesure": ""
+  }
+]

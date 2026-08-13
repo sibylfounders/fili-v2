@@ -1,0 +1,74 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   CARD GROUP — le pattern COLLECTION. Ce fichier ne contient QUE ce que la table
+   des frontières de COLLECTION-UX.md lui attribue : grille et colonnes, gouttières,
+   régime joint/séparé, filets internes, coins hérités, highlight de proximité.
+   Tout ce qui touche à l'intérieur d'un item — fond, bordure, rayon, padding,
+   typographie, média, états — appartient à CARD et vit dans card.css.
+   Réécrit le 2026-07-30 : la collection posait l'intérieur de ses items.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Grille ─────────────────────────────────────────────────────────────── */
+.cardgrp{position:relative;display:grid;grid-template-columns:repeat(var(--grp-cols,2),minmax(0,1fr));width:100%;}
+/* Colonnes INTRINSÈQUES (cols="auto", COLLECTION-UI) : elles émergent de la largeur reçue et du
+   token grid.item-min, jamais d'un nombre par appareil. Portée ICI et non par un utilitaire
+   Tailwind : `.cardgrp` et `.grid-cols-[…]` ont la même spécificité, et c'est l'ordre des
+   feuilles qui tranchait — la règle du composant gagnait, le mode fluide n'a jamais fonctionné
+   (constat 2026-07-27). Une classe du composant, plus spécifique, ne dépend plus de cet ordre. */
+.cardgrp.fluide{grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--item-min)),1fr));}
+.cardgrp.solo{max-width:340px;}
+@container atelier-preview (max-width:34rem){ .cardgrp{grid-template-columns:1fr;} }
+@container atelier-preview (max-width:46rem){ .cardgrp[style*="--grp-cols:3"]{grid-template-columns:repeat(2,minmax(0,1fr));} }
+
+/* ── Régimes ────────────────────────────────────────────────────────────── */
+.cardgrp.sep{gap:var(--space-sm);}
+.cardgrp.joined{gap:0;border-radius:var(--radius-lg);overflow:hidden;}
+.cardgrp.outlined.joined{border:1px solid var(--border);}
+
+/* ── La CELLULE : l'unité de grille, pas la carte ───────────────────────────
+   Elle porte les filets, les coins et la cible du highlight ; la Card qu'elle
+   héberge porte son contour, son fond et son contenu. */
+.cg-cell{position:relative;display:flex;min-width:0;border-radius:var(--radius-lg);}
+.cardgrp.joined>.cg-cell{border-radius:0;}
+.cg-cell>.ds-card{display:flex;flex:1;z-index:2;}
+/* Ordre de peinture de la cellule : sol (0) → highlight de proximité (1) → carte, dont la
+   surface est transparente (2) → filets (3). Sans le z-index sur la carte, le highlight,
+   positionné à 1, passerait par-dessus son contenu. */
+.cg-cell>.ds-card>.ds-card-surface{flex:1;}
+
+/* Le SOL de la cellule. Seule concession de la collection à l'intérieur d'un item, et elle
+   est motivée : le highlight de proximité est un signal de collection qui doit apparaître
+   SOUS le contenu de la carte visée. La cellule peint donc le fond, la surface de la carte
+   se rend transparente, et le highlight se glisse entre les deux. */
+.cg-cell::before{content:"";position:absolute;inset:0;z-index:0;background:var(--background);border-radius:inherit;pointer-events:none;}
+.cardgrp .cg-cell>.ds-card>.ds-card-surface{background:transparent;}
+
+/* Régime JOINT : les filets de la collection remplacent le contour de chaque carte, et les
+   quatre coins extérieurs héritent du rayon du conteneur. */
+.cardgrp.joined .cg-cell>.ds-card>.ds-card-surface{border-color:transparent;border-radius:0;}
+.cardgrp.joined>.cg-cell.c-tl,.cardgrp.joined>.cg-cell.c-tl>.ds-card>.ds-card-surface{border-top-left-radius:calc(var(--radius-lg) - 1px);}
+.cardgrp.joined>.cg-cell.c-tr,.cardgrp.joined>.cg-cell.c-tr>.ds-card>.ds-card-surface{border-top-right-radius:calc(var(--radius-lg) - 1px);}
+.cardgrp.joined>.cg-cell.c-bl,.cardgrp.joined>.cg-cell.c-bl>.ds-card>.ds-card-surface{border-bottom-left-radius:calc(var(--radius-lg) - 1px);}
+.cardgrp.joined>.cg-cell.c-br,.cardgrp.joined>.cg-cell.c-br>.ds-card>.ds-card-surface{border-bottom-right-radius:calc(var(--radius-lg) - 1px);}
+/* Régime SÉPARÉ sans contour de collection : la carte ne dessine pas le sien non plus. */
+.cardgrp.sep:not(.outlined) .cg-cell>.ds-card>.ds-card-surface{border-color:transparent;}
+
+/* ── Filets internes (régime joint uniquement) ──────────────────────────── */
+.cg-hb,.cg-hr{position:absolute;background:var(--border);opacity:.7;pointer-events:none;z-index:3;transition:opacity var(--duration-fast) var(--ease-out);}
+.cg-hb{left:0;right:0;bottom:0;height:1px;}
+.cg-hr{top:0;bottom:1px;right:0;width:1px;}
+.cardgrp.sep .cg-hb,.cardgrp.sep .cg-hr,.cg-cell.no-b .cg-hb,.cg-cell.no-r .cg-hr{display:none;}
+/* Les filets adjacents à la carte survolée s'effacent : le highlight ne double pas le contour. */
+.cg-cell.hl-off-b .cg-hb,.cg-cell.hl-off-r .cg-hr{opacity:0;}
+
+/* ── Highlight de proximité ─────────────────────────────────────────────── */
+.cg-hl{position:absolute;left:0;top:0;width:0;height:0;background:var(--surface);opacity:0;pointer-events:none;z-index:1;border-radius:0;transition:transform var(--duration-fast) var(--ease-out),width var(--duration-fast) var(--ease-out),height var(--duration-fast) var(--ease-out),opacity var(--duration-fast) var(--ease-in);}
+.cardgrp.sep .cg-hl{border-radius:var(--radius-lg);}
+.cg-hl.on{opacity:1;transition:transform var(--duration-fast) var(--ease-out),width var(--duration-fast) var(--ease-out),height var(--duration-fast) var(--ease-out),opacity var(--duration-fast) var(--ease-out);}
+.cg-hl.teleport{transition:opacity var(--duration-fast) var(--ease-out);}
+@media(prefers-reduced-motion:reduce){.cg-hl,.cg-hl.on{transition:opacity var(--duration-fast) linear;}}
+/* Une carte sans cible n'attire pas le highlight (le JS l'écarte) et n'annonce rien. */
+.cg-cell--inactive{cursor:default;}
+
+/* Les deux affleurements d'item que la collection fournissait encore (.cg-chip / .cg-cmd)
+   sont RAPATRIÉS dans CARD le 2026-07-30 (Card.Icon / Card.TitleCommand, card.css) :
+   dette soldée — ce fichier ne peint plus rien à l'intérieur d'une cellule. */

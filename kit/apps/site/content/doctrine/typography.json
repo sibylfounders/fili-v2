@@ -1,0 +1,2964 @@
+{
+ "slug": "typography",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"4\" width=\"13\" height=\"3.6\" rx=\"1.6\" fill=\"#4F46E5\"/><rect x=\"7.6\" y=\"4\" width=\"3.8\" height=\"16\" rx=\"1.7\" fill=\"#4F46E5\"/><rect x=\"14.5\" y=\"12\" width=\"6.5\" height=\"2.6\" rx=\"1.3\" fill=\"#E56998\"/><rect x=\"14.5\" y=\"16.8\" width=\"4.5\" height=\"2.6\" rx=\"1.3\" fill=\"#90cedc\"/></svg>",
+ "nom": "typography",
+ "nature": "Fondation",
+ "meta": "UX v1.1.2 · UI v1.1.0 · mis à jour 2026-07-05 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · typography",
+  "question": "Comment hiérarchiser le texte pour qu’on lise l’essentiel sans effort ?",
+  "detail": "Cette page fixe les tailles, les graisses et les espacements qui rendent un texte lisible et navigable, du grand titre au corps de lecture, et qui tiennent sur tous les écrans comme au zoom.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "La hiérarchie se lit par la taille et la graisse combinées"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Le corps reste lisible"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le texte tient au zoom et sur tous les écrans grâce à une échelle fluide en rem"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "38",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "34",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "4",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-typography.md",
+   "source": "---\nsujet: typography\ntype: fondation\nresume: \"Le sens (hiérarchie h1-h6, un seul h1, pas de saut) et la lisibilité (échelle fluide, mesure, interligne, graisse, casse, taille minimale)\"\nrequires: []\nselon-contexte: []\n---\n# RULES — Typography (compilé, condensé)\n\n> Généré depuis `foundations/typography/TYPOGRAPHY-UX.md` (v1.1.1) et `TYPOGRAPHY-UI.md` (v1.1.0). Règles condensées pour le build — la source fait autorité en cas de doute. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation, pas un composant : contrainte transversale consommée par tous les composants. Le modèle à axes ne s'applique pas.\n- **Règle cardinale : deux fonctions indépendantes** — le *sens* (hiérarchie h1-h6, décision de contenu) et la *lisibilité* (taille, mesure, échelle responsive, décision de design). Aucune ne se déduit de l'autre.\n\n## Hiérarchie sémantique\n- h1-h6 décrivent la structure du contenu (arbre du lecteur d'écran, indexation, sommaire) — jamais le style.\n- **Un seul h1 par page** (le titre du document, pas le plus gros texte).\n- **Jamais de saut de niveau** (h2 → h4 interdit) : casse la navigation par titres.\n- **Niveau ≠ taille** : un h2 peut être stylé plus petit qu'un h3. Le niveau suit la structure, la taille suit le design.\n- Texte qui doit *avoir l'air* d'un titre sans en être un (KPI de dashboard, citation) : style voulu sur un élément non-heading — jamais un heading pour le style. Inversement, un hero marketing prend le style display, le h1 reste au vrai titre.\n\n## Typographie fluide\n- **`vw` seul interdit** : le zoom navigateur n'affecte pas les unités viewport → échec WCAG 1.4.4, invisible en test standard. Critique.\n- Correction : `clamp()` avec `rem` dans le min, le max ET la partie fixe de la valeur préférée — `clamp(2rem, 1.67rem + 1.67vw, 3rem)`, jamais `clamp(2rem, 4vw, 3rem)`.\n- Garde-fou : ratio max/min ≤ 2.5 par échelon (l'échelle du système est ≤ 1.5 partout).\n- Limite connue au zoom extrême (500 %) même corrigé. CONFIANCE : non formalisé (émergent/débattu) — **tester au zoom réel : à 200 %, le texte doit avoir doublé** (le resize de fenêtre ne teste rien).\n\n## Mesure de lecture\n- Texte courant borné à ~45-75 caractères par ligne, exprimé en `ch` via `measure.reading-max` — jamais en px.\n- Fluidité + bornage vont ensemble : un texte fluide sans `max-width` casse sa mesure sur grand écran.\n- La mesure protège le texte *courant*, pas les titres.\n\n## Interlignage\n- Fonction du corps et de l'usage, pas une constante : texte courant 120-145 % (WCAG AAA ≥ 1.5 ; `typography.body` = 1.6), grands corps serrés (`typography.display` = 1.1).\n- Jamais d'interligne de corps sur un titre multi-lignes (lignes flottantes), ni l'inverse (paragraphe compacté).\n\n## Graisse et emphase\n- La graisse n'est jamais le seul canal de hiérarchie — combinaison corps + graisse + position. Une light plus grande peut dominer une bold.\n- Semibold pour les titres, **jamais le texte long**. Aucune light sous le corps standard (contraste du trait).\n- Gras avec parcimonie (information critique) ; gras et italique jamais ensemble.\n\n## Casse\n- Titres en sentence case — décision produit unique.\n- CAPITALES réservées aux étiquettes brèves (`label-mono`), jamais au texte courant, toujours avec 5-12 % d'interlettrage (8 % en usage).\n- Capitales via `text-transform` CSS, jamais tapées dans le contenu (lecteurs d'écran, copier-coller).\n\n## Alignement\n- Fer à gauche par défaut. **Jamais de justifié en interface** (rivières d'espace, exclu par WCAG 1.4.8).\n- Centré : titres courts et moments éditoriaux uniquement, jamais un paragraphe.\n\n## Taille minimale\n- Corps 15-25 px d'équivalent ; **jamais sous 16px pour le texte courant** (`typography.body` = 16px).\n- Inputs : sous 16px, iOS Safari zoome au focus — comportement de plateforme, pas une décision esthétique.\n\n## Profondeur\n- Six niveaux existent, quatre suffisent presque toujours. Des h5/h6 récurrents = structure à réorganiser, pas des styles à ajouter.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Texte en vw seul | Zoom sans effet — échec WCAG 1.4.4 | Critique |\n| Saut de niveaux (h2 → h4) | Arbre AT cassé | Élevée |\n| Fluid type testé au resize seulement | Échec 1.4.4 invisible | Élevée |\n| Light en petit corps | Trait illisible | Élevée |\n| Plusieurs h1 / h1 décoratif | Titre réel illisible (AT, SEO) | Moyenne-élevée |\n| Texte sans max-width | Mesure > 75 car., fatigue | Moyenne |\n| Justifié sans césure | Rivières, exclu WCAG 1.4.8 | Moyenne |\n| Capitales sur texte courant | Lecture épelée | Moyenne |\n| Police sans pile de secours | Layout shift, rendu imprévisible | Moyenne |\n| Input < 16px | Zoom iOS subi | Moyenne |\n| Hiérarchie par gras seul | Plus aucun signal | Moyenne |\n\n## Règle transversale\n- **La structure appartient au contenu, l'apparence au design — aucun ne se déduit de l'autre.**\n\n---\n\n## Règles techniques (UI)\n\n```yaml\nheadings: # résolus dans DESIGN.md — clamp(min, fixe-rem + pente-vw, max)\n  h1: typography.headings.h1  # 32→48px, ratio 1.50\n  h2: typography.headings.h2  # 24→32px, ratio 1.33\n  h3: typography.headings.h3  # 20→24px, ratio 1.20\n  h4: typography.headings.h4  # 18→20px, ratio 1.11\n  h5: typography.headings.h5  # 16→18px, ratio 1.13\n  h6: typography.headings.h6  # 14→16px, ratio 1.14\ntext_styles: { display: typography.display, body: typography.body, label_mono: typography.label-mono }\nfallback: { sans: typography.fallback.sans, mono: typography.fallback.mono }\nmeasure: { reading_max: measure.reading-max }\n```\n\n### Échelle\n- Grammaire : `rem` dans min, max et partie fixe — jamais `px` seul, jamais `vw` seul.\n- Le max de h1 rejoint `typography.display` (deux usages, une taille de crête). La pente vw interpole entre `breakpoint.mobile` et sa valeur doublée.\n\n### Piles de secours\n- Geist et JetBrains Mono ne sont pas embarquées : toute déclaration écrit `fontFamily` PUIS la pile (`typography.fallback.sans` / `.mono`) — jamais une famille seule.\n- Piles à métriques proches (`system-ui`, `ui-monospace`) + `font-display: swap`.\n\n### Mesure — application\n- Paragraphes et blocs de lecture bornés par `measure.reading-max` (en `ch`), pas les titres. `max-width`, jamais `width` fixe.\n\n### Consommation par les composants\n| Consommateur | Texte | Référence |\n|---|---|---|\n| Button | label | `typography.body` + graisse `typography.display.fontWeight` |\n| Input | valeur, label, messages | `typography.body` — jamais en dessous (zoom iOS) |\n| Card | titre | taille `typography.headings.h4` par défaut, niveau selon la page |\n| Alert | titre + corps | `typography.body`, titre en graisse — pas un heading |\n| Form | hérite via alert et input | — |\n\n### Vérifiabilité\n- `clamp()` ne s'évalue qu'en rendu : le test zoom 200 % est manuel — aucune vérification statique ne couvre le point débattu.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 10 cas",
+   "titre": "Rôle de texte",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle de texte\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><text x=\"42\" y=\"82\" font-size=\"34\" font-weight=\"700\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Aa</text><rect x=\"110\" y=\"56\" width=\"120\" height=\"9\" rx=\"4.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"110\" y=\"76\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"110\" y=\"92\" width=\"130\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"110\" y=\"112\" width=\"64\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Titre de document (h1)",
+     "quand": "La page a un titre principal.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Titre de document (h1)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"116\" font-size=\"30\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Titre H1</text><text x=\"240\" y=\"146\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un seul par page</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La page a un titre principal.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Un seul h1 sémantique ; le hero décoratif ne compte pas.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le titre en haut d'un article.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>un seul h1 par page</strong> — c'est le titre du document, pas le plus gros texte de la page.",
+       "id": "TYPOGRAPHY-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "six niveaux existent, quatre suffisent presque toujours — GOV.UK ne style que quatre échelons de titres. Des h5/h6 récurrents signalent une structure trop profonde à réorganiser, pas un besoin de styles supplémentaires. L'échelle complète h1-h6 de DESIGN.md existe pour les cas légitimes (documentation longue, spécifications), pas comme une invitation.",
+       "id": "TYPOGRAPHY-R32"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Titres de section (h2-h4)",
+     "quand": "Le contenu a une structure navigable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Titres de section (h2-h4)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"82\" font-size=\"22\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H2 Section</text><text x=\"240\" y=\"116\" font-size=\"17\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H3 Sous-section</text><text x=\"240\" y=\"146\" font-size=\"14\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H4 Détail</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu a une structure navigable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Échelle et profondeur cohérentes.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Les sous-titres d'une doc.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Niveaux profonds (h5-h6)",
+     "quand": "La documentation est très détaillée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Niveaux profonds (h5-h6)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"88\" font-size=\"15\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H4</text><text x=\"272\" y=\"114\" font-size=\"13\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H5</text><text x=\"294\" y=\"138\" font-size=\"11\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H6</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La documentation est très détaillée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Quatre échelons suffisent presque toujours.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une spécification technique.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Corps de texte",
+     "quand": "L'utilisateur lit un texte long.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Corps de texte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"80\" width=\"210\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"100\" width=\"210\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"120\" width=\"210\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"140\" width=\"120\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur lit un texte long.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Mesure, interligne et taille minimale confortables.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le corps d'un article.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "inversement proportionnel au corps — le texte courant respire : 120 à 145 % du corps selon la fourchette classique (Butterick), et WCAG 1.4.8 (AAA) demande un interligne d'au moins 1.5 dans les paragraphes ; <code>typography.body</code> est à 1.6, conforme aux deux. Les grands corps serrent — un titre n'a pas besoin de l'air d'un paragraphe (<code>typography.display</code> à 1.1).",
+       "id": "TYPOGRAPHY-R18"
+      },
+      {
+       "tag": "Règle",
+       "html": "le semibold porte les titres, <strong>jamais le texte long</strong> (Carbon) — et aucune graisse light sous le corps standard : la finesse en petit corps dégrade le contraste effectif du trait.",
+       "id": "TYPOGRAPHY-R22"
+      },
+      {
+       "tag": "Règle",
+       "html": "corps de texte web — 15 à 25 px d'équivalent (Butterick) ; <code>typography.body</code> (16px) est dans la fourchette, volontairement bas de fourchette pour un produit dense. <strong>Jamais sous l'équivalent 16px pour le texte courant.</strong>",
+       "id": "TYPOGRAPHY-R30"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Texte d'accroche / lead",
+     "quand": "Un premier paragraphe est mis en avant.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte d'accroche / lead\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"90\" font-size=\"17\" font-weight=\"500\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Un chapô en avant</text><rect x=\"240\" y=\"110\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"128\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"146\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un premier paragraphe est mis en avant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : style « lead » candidat à un token.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le chapô d'un article.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Étiquette technique (label-mono)",
+     "quand": "Un token, une métadonnée ou un kicker s'affiche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Étiquette technique (label-mono)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"118\" font-size=\"13\" letter-spacing=\"2.5\" font-family=\"ui-monospace,monospace\" fill=\"#4B5563\">LABEL-01</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un token, une métadonnée ou un kicker s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rôle dédié : casse et interlettrage définis.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un nom de token en mono.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>TOUT EN CAPITALES : réservé aux étiquettes brèves</strong> (le rôle exact de <code>label-mono</code> dans ce système), jamais au texte courant — et toujours accompagné de 5 à 12 % d'interlettrage (Butterick). La valeur déjà utilisée en local (0.08em = 8 %) entre dans la fourchette — règle désormais sourcée, candidate à un token.",
+       "id": "TYPOGRAPHY-R25"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-6",
+     "titre": "Message d'erreur / d'état",
+     "quand": "Un composant affiche un état textuel.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Message d'erreur / d'état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"88\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#B91C1C\"/><text x=\"250\" y=\"140\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">Adresse invalide</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un composant affiche un état textuel.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La fondation fournit corps et graisse, le composant la sémantique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Champ obligatoire » sous un input.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le modèle à axes ne s'applique pas.</strong> La typographie n'a ni instances ni assemblage : elle est une <strong>contrainte transversale</strong> que tous les composants consomment — le bouton compose son label avec, l'input son message d'erreur, l'alert son titre.",
+       "id": "TYPOGRAPHY-R02"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-7",
+     "titre": "Code / données préformatées",
+     "quand": "Un bloc technique s'affiche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Code / données préformatées\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"72\" width=\"220\" height=\"100\" rx=\"9\" fill=\"#111827\"/><text x=\"250\" y=\"106\" font-size=\"12\" font-family=\"ui-monospace,monospace\" fill=\"#DCFCE7\">const x = 1;</text><text x=\"250\" y=\"128\" font-size=\"12\" font-family=\"ui-monospace,monospace\" fill=\"#E0E7FF\">return x;</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un bloc technique s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Couvert partiellement ; le bloc multiligne reste à traiter.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un extrait de code.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-8",
+     "titre": "Chiffres alignés (montants, tables)",
+     "quand": "Des nombres se comparent verticalement.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Chiffres alignés (montants, tables)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"430\" y=\"90\" font-size=\"13\" font-family=\"ui-monospace,monospace\" text-anchor=\"end\" fill=\"#111827\">1 240</text><text x=\"430\" y=\"114\" font-size=\"13\" font-family=\"ui-monospace,monospace\" text-anchor=\"end\" fill=\"#111827\">980</text><text x=\"430\" y=\"138\" font-size=\"13\" font-family=\"ui-monospace,monospace\" text-anchor=\"end\" fill=\"#111827\">12</text><text x=\"430\" y=\"162\" font-size=\"13\" font-family=\"ui-monospace,monospace\" text-anchor=\"end\" fill=\"#111827\">7 500</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des nombres se comparent verticalement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : chiffres tabulaires à ajouter.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une colonne de montants.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-9",
+     "titre": "Lien dans le texte courant",
+     "quand": "Un lien apparaît dans du texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de texte",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lien dans le texte courant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"238\" y=\"112\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Voir les</text><text x=\"298\" y=\"112\" font-size=\"14\" fill=\"#4F46E5\" font-family=\"Inter,sans-serif\">conditions</text><path d=\"M298 118h74\" stroke=\"#4F46E5\" stroke-width=\"1.6\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lien apparaît dans du texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Utiliser Link avec un soulignement persistant ; l’état visité dépend du contexte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un mot souligné qui mène vers une destination.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "borner la longueur de ligne du texte courant — la lisibilité d'un paragraphe dépend plus de sa mesure que de sa taille.",
+       "id": "TYPOGRAPHY-R15"
+      },
+      {
+       "tag": "Règle",
+       "html": "viser la fourchette classique d'environ <strong>45 à 75 caractères par ligne</strong> pour le texte courant. La mesure s'exprime en <code>ch</code> (elle suit la police et la taille effective), via le token <code>measure.reading-max</code> — jamais en pixels, qui ne suivraient ni le zoom ni la police.",
+       "id": "TYPOGRAPHY-R16"
+      },
+      {
+       "tag": "Règle",
+       "html": "inversement proportionnel au corps — le texte courant respire : 120 à 145 % du corps selon la fourchette classique (Butterick), et WCAG 1.4.8 (AAA) demande un interligne d'au moins 1.5 dans les paragraphes ; <code>typography.body</code> est à 1.6, conforme aux deux. Les grands corps serrent — un titre n'a pas besoin de l'air d'un paragraphe (<code>typography.display</code> à 1.1).",
+       "id": "TYPOGRAPHY-R18"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 6 cas",
+   "titre": "Contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Page de contenu / documentation",
+     "quand": "Le contenu est long et structuré.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Page de contenu / documentation\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"84\" font-size=\"16\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Titre</text><rect x=\"240\" y=\"100\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"116\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"132\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><text x=\"240\" y=\"162\" font-size=\"13\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Sous-titre</text><rect x=\"240\" y=\"176\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu est long et structuré.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Mesure, interligne et hiérarchie profonde.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une page de documentation.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Formulaire",
+     "quand": "Le texte sert un formulaire (labels, hints).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Formulaire\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"74\" width=\"60\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"86\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"250\" y=\"126\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"250\" y=\"138\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le texte sert un formulaire (labels, hints).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Via les règles d'input + taille minimale.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le label d'un champ.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Table dense / dashboard",
+     "quand": "Le texte est dense (tables, dashboard).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Table dense / dashboard\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"226\" y=\"78\" width=\"228\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"226\" y=\"100\" width=\"228\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"226\" y=\"122\" width=\"228\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"226\" y=\"144\" width=\"228\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M340 68v108\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le texte est dense (tables, dashboard).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Taille minimale respectée ; chiffres tabulaires à venir.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un tableau de bord.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Hero / marketing",
+     "quand": "Un texte géant accroche (hero).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hero / marketing\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"230\" y=\"128\" font-size=\"36\" font-weight=\"700\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">DISPLAY</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un texte géant accroche (hero).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Display ≠ h1 : hiérarchie visuelle distincte du sémantique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un grand titre marketing.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Modale / panneau étroit",
+     "quand": "Le texte vit dans un espace étroit.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Modale / panneau étroit\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"284\" y=\"58\" width=\"120\" height=\"124\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"84\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"300\" y=\"106\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"300\" y=\"128\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"300\" y=\"150\" width=\"88\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le texte vit dans un espace étroit.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La mesure est un max, pas un min.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un texte dans un panneau latéral.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Vitrine / spécimen",
+     "quand": "La typographie se montre elle-même.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Vitrine / spécimen\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"298\" y=\"146\" font-size=\"60\" font-weight=\"600\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">Aa</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La typographie se montre elle-même.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Démo en span, jamais en headings (niveau ≠ taille).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un nuancier de tailles.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 6 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Chargement de police (FOUT/swap)",
+     "quand": "La police web n'est pas encore chargée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Chargement de police (FOUT/swap)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"228\" y=\"128\" font-size=\"30\" font-family=\"Georgia,serif\" fill=\"#4B5563\">Aa</text><path d=\"M300 118L352 118\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M352 118L344.1 122.3M352 118L344.1 113.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"372\" y=\"128\" font-size=\"30\" font-weight=\"600\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Aa</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La police web n'est pas encore chargée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Piles de secours + font-display: swap.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le texte qui bascule à l'arrivée de la police.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Zoom navigateur 200 %",
+     "quand": "L'utilisateur zoome à 200 %.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zoom navigateur 200 %\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"244\" y=\"120\" font-size=\"18\" font-family=\"Inter,sans-serif\" fill=\"#111827\">A</text><path d=\"M272 114L312 114\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M312 114L304.1 118.3M312 114L304.1 109.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"330\" y=\"128\" font-size=\"40\" font-family=\"Inter,sans-serif\" fill=\"#111827\">A</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur zoome à 200 %.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le texte doit rester lisible (WCAG 1.4.4).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un malvoyant qui agrandit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Redimensionnement de fenêtre",
+     "quand": "La fenêtre change de taille.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Redimensionnement de fenêtre\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"214\" y=\"72\" width=\"120\" height=\"92\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"228\" y=\"112\" width=\"92\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"360\" y=\"72\" width=\"120\" height=\"92\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"374\" y=\"112\" width=\"92\" height=\"10\" rx=\"5\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La fenêtre change de taille.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Type fluide (clamp) avec un garde-fou 2.5×.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un titre qui s'adapte à la largeur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Texte traduit (expansion ~30 %)",
+     "quand": "Le texte est traduit (allemand, finnois).",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Texte traduit (expansion ~30 %)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"98\" font-size=\"14\" font-weight=\"500\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Enregistrer</text><text x=\"240\" y=\"140\" font-size=\"14\" font-weight=\"500\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Speichern unter…</text><rect x=\"234\" y=\"124\" width=\"224\" height=\"22\" rx=\"5\" fill=\"none\" stroke=\"#92400E\" stroke-width=\"1.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le texte est traduit (allemand, finnois).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : prévoir l'expansion.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un label plus long en allemand.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Contenu utilisateur imprévisible",
+     "quand": "Des titres longs ou mots insécables arrivent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contenu utilisateur imprévisible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"88\" width=\"160\" height=\"44\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><text x=\"258\" y=\"115\" font-size=\"13\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Anticonstitution…</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des titres longs ou mots insécables arrivent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Troncature (via card) et mesure ; overflow-wrap à traiter.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une URL très longue.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "Préférences utilisateur (reduced motion, contraste élevé)",
+     "quand": "L'utilisateur active un mode d'accessibilité.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Préférences utilisateur (reduced motion, contraste élevé)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"266\" y=\"96\" width=\"148\" height=\"40\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><text x=\"286\" y=\"121\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">préférences OS</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur active un mode d'accessibilité.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert pour le texte (le contraste forcé remplace les couleurs).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le mode contraste élevé.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 5 cas",
+   "titre": "Plateforme / device",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / device\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Desktop",
+     "quand": "L'affichage est desktop.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Desktop\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"64\" width=\"200\" height=\"112\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"260\" y=\"88\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"260\" y=\"106\" width=\"120\" height=\"7\" rx=\"3.5\" fill=\"#4F46E5\" opacity=\"0.7\"/><rect x=\"260\" y=\"124\" width=\"140\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'affichage est desktop.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le cas de référence.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un écran d'ordinateur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mobile",
+     "quand": "L'affichage est mobile.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mobile\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"56\" width=\"80\" height=\"124\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"314\" y=\"80\" width=\"52\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"314\" y=\"98\" width=\"52\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/><text x=\"288\" y=\"196\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">input ≥ 16px</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'affichage est mobile.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Échelle fluide basse, input ≥ 16px (anti-zoom iOS).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ lisible sans zoom sur iPhone.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Lecteur d'écran",
+     "quand": "Un lecteur d'écran parcourt le texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lecteur d'écran\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"86\" font-size=\"17\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">H1</text><text x=\"250\" y=\"112\" font-size=\"14\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">H2</text><text x=\"250\" y=\"138\" font-size=\"14\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">H3</text><text x=\"250\" y=\"164\" font-size=\"12\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">H4</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lecteur d'écran parcourt le texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Navigation par titres ; text-transform, pas des capitales tapées.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un titre dans le sommaire vocal.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les niveaux h1-h6 décrivent la <strong>structure du contenu</strong> — c'est l'arbre que le lecteur d'écran navigue, que les moteurs indexent, que la table des matières reflète. Ils ne décrivent jamais le style.",
+       "id": "TYPOGRAPHY-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "les capitales s'appliquent en CSS (<code>text-transform</code>), jamais tapées dans le contenu — le texte source reste en casse normale pour les lecteurs d'écran et le copier-coller.",
+       "id": "TYPOGRAPHY-R26"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "RTL / scripts non latins",
+     "quand": "La langue se lit de droite à gauche.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : RTL / scripts non latins\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"280\" y=\"110\" width=\"180\" height=\"8\" rx=\"4\" fill=\"#4B5563\" opacity=\"0.5\"/><path d=\"M450 110L268 110\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M268 110L275.9 105.7M268 110L275.9 114.3\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"300\" y=\"150\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sens droite → gauche</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La langue se lit de droite à gauche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : mesure en ch, échelle latine.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un texte en arabe.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-4",
+     "titre": "Impression",
+     "quand": "Le contenu est imprimé.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "04 · Plateforme / device",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Impression\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"64\" width=\"180\" height=\"114\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><rect x=\"270\" y=\"90\" width=\"140\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.85\"/><rect x=\"270\" y=\"110\" width=\"110\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"270\" y=\"130\" width=\"130\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu est imprimé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : corps en points, liens à expliciter.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un article imprimé.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 6 cas",
+   "titre": "Forme / emphase",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Forme / emphase\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"54\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M54 44a9 9 0 0 1 9-9h76a9 9 0 0 1 9 9v22H54z\" fill=\"#4F46E5\" opacity=\".18\"/><rect x=\"66\" y=\"78\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"92\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"172\" y=\"34\" width=\"94\" height=\"82\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"172\" y=\"34\" width=\"34\" height=\"82\" rx=\"9\" fill=\"#0891B2\" opacity=\".18\"/><rect x=\"216\" y=\"58\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"216\" y=\"72\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Interlignage titres vs corps",
+     "quand": "On règle l'interligne.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Interlignage titres vs corps\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"80\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"240\" y=\"93\" width=\"120\" height=\"8\" rx=\"4\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"240\" y=\"124\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"146\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/><rect x=\"240\" y=\"168\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.42\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On règle l'interligne.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Serré en grand, aéré en texte courant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un titre compact, un corps aéré.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le semibold porte les titres, <strong>jamais le texte long</strong> (Carbon) — et aucune graisse light sous le corps standard : la finesse en petit corps dégrade le contraste effectif du trait.",
+       "id": "TYPOGRAPHY-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Graisse comme canal de hiérarchie",
+     "quand": "On hiérarchise par la graisse.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Graisse comme canal de hiérarchie\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"102\" font-size=\"16\" font-weight=\"400\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Normal</text><text x=\"240\" y=\"142\" font-size=\"16\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Important</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On hiérarchise par la graisse.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Combinez taille + graisse, jamais la graisse seule.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un sous-titre gras et plus grand.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la graisse est un canal de hiérarchie parmi d'autres — jamais le seul.",
+       "id": "TYPOGRAPHY-R20"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Gras / italique dans le texte",
+     "quand": "On met en emphase localement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Gras / italique dans le texte\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"112\" font-size=\"16\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">gras</text><text x=\"330\" y=\"112\" font-size=\"16\" font-style=\"italic\" font-family=\"Inter,sans-serif\" fill=\"#111827\">italique</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On met en emphase localement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Avec parcimonie, jamais gras et italique ensemble.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un mot en gras dans une phrase.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le gras s'utilise avec parcimonie — pour &quot;l'information critique que l'utilisateur rate&quot; (GOV.UK) ; gras et italique le moins possible, et jamais ensemble (Butterick).",
+       "id": "TYPOGRAPHY-R23"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "TOUT EN CAPITALES",
+     "quand": "Une étiquette brève est en capitales.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : TOUT EN CAPITALES\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"118\" font-size=\"16\" letter-spacing=\"3\" font-family=\"Inter,sans-serif\" fill=\"#111827\">CAPITALES</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une étiquette brève est en capitales.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réservé aux libellés courts, avec interlettrage (5-12 %).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un kicker « NOUVEAU ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>TOUT EN CAPITALES : réservé aux étiquettes brèves</strong> (le rôle exact de <code>label-mono</code> dans ce système), jamais au texte courant — et toujours accompagné de 5 à 12 % d'interlettrage (Butterick). La valeur déjà utilisée en local (0.08em = 8 %) entre dans la fourchette — règle désormais sourcée, candidate à un token.",
+       "id": "TYPOGRAPHY-R25"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Alignement / justification",
+     "quand": "On aligne un paragraphe.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Alignement / justification\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"84\" width=\"200\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"240\" y=\"104\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"240\" y=\"124\" width=\"152\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/><rect x=\"240\" y=\"144\" width=\"192\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.45\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On aligne un paragraphe.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Fer à gauche, jamais justifié.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un texte aligné à gauche.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-5",
+     "titre": "Troncature / line clamp",
+     "quand": "Un texte est coupé volontairement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Forme / emphase",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Troncature / line clamp\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"96\" width=\"200\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"116\" width=\"200\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"240\" y=\"136\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"394\" y=\"142\" font-size=\"15\" font-weight=\"700\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">…</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un texte est coupé volontairement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais sans accès au contenu complet.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un extrait coupé par « … ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "06 · 5 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-5-0",
+     "titre": "vw seul → zoom inopérant",
+     "quand": "On dimensionne en vw seul.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : vw seul → zoom inopérant\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"250\" y=\"114\" font-size=\"15\" font-family=\"ui-monospace,monospace\" fill=\"#B91C1C\">font: 4vw</text><circle cx=\"410\" cy=\"108\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M406.5 104.5l7 7M413.5 104.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On dimensionne en vw seul.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : le zoom deviendrait inopérant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un titre en vw pur à éviter.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-5-1",
+     "titre": "h1 décoratif / sauts de niveaux",
+     "quand": "On saute des niveaux de titre pour l'esthétique.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : h1 décoratif / sauts de niveaux\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"92\" font-size=\"20\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H1</text><text x=\"240\" y=\"132\" font-size=\"14\" font-weight=\"600\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">H3</text><circle cx=\"330\" cy=\"110\" r=\"9\" fill=\"#92400E\"/><path d=\"M326.5 106.5l7 7M333.5 106.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"350\" y=\"116\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">saut de niveau</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On saute des niveaux de titre pour l'esthétique.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : ça casse l'outillage (AT, SEO, sommaire).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un h3 stylé en gros à la place d'un h1.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-5-2",
+     "titre": "Fatigue de lecture (mesure, interligne, justifié)",
+     "quand": "Un long texte fatigue à lire.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Fatigue de lecture (mesure, interligne, justifié)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"90\" width=\"320\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"180\" y=\"108\" width=\"320\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"180\" y=\"126\" width=\"320\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"180\" y=\"152\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">mesure trop large</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un long texte fatigue à lire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Mesure, interligne, pas de justification.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un pavé trop large.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de TYPOGRAPHY-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le pendant de la fluidité — un texte fluide qui s'étire sans <code>max-width</code> casse sa mesure sur grand écran. Fluidité de la taille et bornage de la mesure vont ensemble : l'un sans l'autre dégrade la lecture qu'ils devaient améliorer.",
+       "id": "TYPOGRAPHY-R17"
+      }
+     ]
+    },
+    {
+     "id": "cas-5-3",
+     "titre": "Layout shift au chargement de police",
+     "quand": "La bascule de police déplace le contenu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Layout shift au chargement de police\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"80\" width=\"120\" height=\"48\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><path d=\"M378 104L412 104\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M412 104L404.1 108.3M412 104L404.1 99.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"420\" y=\"70\" width=\"120\" height=\"66\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La bascule de police déplace le contenu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Piles à métriques proches pour limiter le CLS.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton qui bouge à l'arrivée de la police.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-5-4",
+     "titre": "Inflation du gras",
+     "quand": "Trop de gras tue l'emphase.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "06 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Inflation du gras\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"240\" y=\"90\" font-size=\"14\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Tout en gras</text><text x=\"240\" y=\"116\" font-size=\"14\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Tout en gras</text><text x=\"240\" y=\"142\" font-size=\"14\" font-weight=\"700\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#111827\">Tout en gras</text><circle cx=\"430\" cy=\"98\" r=\"9\" fill=\"#92400E\"/><path d=\"M426.5 94.5l7 7M433.5 94.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Trop de gras tue l'emphase.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Gardez le gras rare pour qu'il porte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une page où tout est en gras.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"type-echelle\"><div class=\"type-ligne\"><span style=\"font-size:clamp(2rem, 1.67rem + 1.67vw, 3rem);font-weight:500;line-height:1.2;\">Hiérarchie h1</span></div><div class=\"type-ligne\"><span style=\"font-size:clamp(1.5rem, 1.33rem + 0.83vw, 2rem);font-weight:500;line-height:1.2;\">Hiérarchie h2</span></div><div class=\"type-ligne\"><span style=\"font-size:clamp(1.25rem, 1.17rem + 0.42vw, 1.5rem);font-weight:500;line-height:1.2;\">Hiérarchie h3</span></div><div class=\"type-ligne\"><span style=\"font-size:clamp(1.125rem, 1.08rem + 0.21vw, 1.25rem);font-weight:500;line-height:1.2;\">Hiérarchie h4</span></div><div class=\"type-ligne\"><span style=\"font-size:clamp(1rem, 0.96rem + 0.21vw, 1.125rem);font-weight:500;line-height:1.2;\">Hiérarchie h5</span></div><div class=\"type-ligne\"><span style=\"font-size:clamp(0.875rem, 0.83rem + 0.21vw, 1rem);font-weight:500;line-height:1.2;\">Hiérarchie h6</span></div></div></section>"
+  ],
+  "tokens": [
+   {
+    "token": "headings.h1",
+    "ref": "typography.headings.h1",
+    "valeur": "clamp(2rem, 1.67rem + 1.67vw, 3rem)",
+    "couleur": null
+   },
+   {
+    "token": "headings.h2",
+    "ref": "typography.headings.h2",
+    "valeur": "clamp(1.5rem, 1.33rem + 0.83vw, 2rem)",
+    "couleur": null
+   },
+   {
+    "token": "headings.h3",
+    "ref": "typography.headings.h3",
+    "valeur": "clamp(1.25rem, 1.17rem + 0.42vw, 1.5rem)",
+    "couleur": null
+   },
+   {
+    "token": "headings.h4",
+    "ref": "typography.headings.h4",
+    "valeur": "clamp(1.125rem, 1.08rem + 0.21vw, 1.25rem)",
+    "couleur": null
+   },
+   {
+    "token": "headings.h5",
+    "ref": "typography.headings.h5",
+    "valeur": "clamp(1rem, 0.96rem + 0.21vw, 1.125rem)",
+    "couleur": null
+   },
+   {
+    "token": "headings.h6",
+    "ref": "typography.headings.h6",
+    "valeur": "clamp(0.875rem, 0.83rem + 0.21vw, 1rem)",
+    "couleur": null
+   },
+   {
+    "token": "text_styles.display",
+    "ref": "typography.display",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "text_styles.body",
+    "ref": "typography.body",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "text_styles.label_mono",
+    "ref": "typography.label-mono",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "fallback.sans",
+    "ref": "typography.fallback.sans",
+    "valeur": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "couleur": null
+   },
+   {
+    "token": "fallback.mono",
+    "ref": "typography.fallback.mono",
+    "valeur": "ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace",
+    "couleur": null
+   },
+   {
+    "token": "measure.reading_max",
+    "ref": "measure.reading-max",
+    "valeur": "70ch",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-19",
+   "titre": "Propagation du modèle STYLE × TONE dans les renvois croisés",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>COLOR-UI.md</code> (v1.1.0 — paires garanties étendues aux nouveaux fonds pleins, « warning jamais un fond plein » levé aussi ici, table de consommation du bouton réécrite en rôles par tone) et <code>dist/RULES-color.md</code> (mêmes tables) ; bumps de vocabulaire sans changement de règle : COLOR-UX 1.1.1, ALERT-UX 1.3.1, CARD-UX 1.2.1, INPUT-UX 1.5.1, INPUT-UI 1.4.2, FORM-UX 2.1.3, CREATION-COMPTE-UX 1.2.2, TYPOGRAPHY-UX 1.1.2, GRID-UX 1.0.1, METHODE 1.8.1, inventaire couleur (9 → 16 combinaisons), RULES-alert/card/input/creation-compte(-sso-social), <code>tools/genere-site.js</code> + <code>tools/methode-contenu.js</code> (deux textes du site).</li><li><strong>Ancienne situation</strong> : la décision BUTTON du 2026-07-18 avait renommé l'axe <code>emphasis</code> → <code>style</code> dans BUTTON-* et DESIGN.md, mais l'ancien nom restait vivant dans les notes de transposition et les renvois des autres sujets — et COLOR-UI garantissait encore « warning : jamais un fond plein » alors que le garde-fou était levé, sans mentionner <code>neutral-strong(-hover)</code>, <code>warning-hover</code> ni <code>danger-subtle-hover</code>.</li><li><strong>Nouvelle situation</strong> : plus aucune occurrence normative d'<code>emphasis</code> ; les mentions restantes sont historiques (ce journal, la note de vocabulaire BUTTON-UX 1.5.0, les récits du site). La formule des notes de transposition devient « l'axe <code>style</code> n'existe pas ici ». La table des paires garanties dit les paires réelles : <code>on-primary</code> sur <code>neutral-strong(-hover)</code> et <code>warning(-hover)</code>, <code>danger</code> sur <code>danger-subtle-hover</code>.</li><li><strong>Pourquoi</strong> : un renvoi normatif vers un axe qui n'existe plus est un défaut de doc du même ordre qu'un token fantôme ; et la table des paires garanties est le contrat que <code>test-rendu.js</code> vérifie — elle doit dire ce qui est vrai, ni plus ni moins.</li></ul>"
+  },
+  {
+   "date": "2026-07-16",
+   "titre": "TYPOGRAPHIE : token body-small (14 px) pour le texte fonctionnel sous le corps",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/core/DESIGN.md</code> (v1.19.0, <code>typography.body-small</code>), <code>atelier/components/input/INPUT-UI.md</code> (v1.4.1), <code>dist/tokens.css</code> + <code>dist/tokens.yaml</code> régénérés.</li><li><strong>Ancienne règle</strong> : aucun cran de texte entre <code>label</code> (12 px, interface) et <code>body</code> (16 px). INPUT-UI mappait le texte saisi, le label <strong>et les messages</strong> sur <code>typography.body</code> (16 px), au nom de la règle « jamais sous 16 px » — laquelle vise en réalité le <strong>champ de saisie</strong> (zoom iOS), pas son helper.</li><li><strong>Nouvelle règle</strong> : <code>typography.body-small</code> (Geist 14 px) pour le <strong>texte fonctionnel qui n'est pas un champ</strong> : helper, message d'erreur, compteur, légende. Le texte saisi et le label restent en <code>body</code> (16 px, règle iOS maintenue).</li><li><strong>Pourquoi</strong> : révélé par le pilote externe (agent à froid Claude Code, 2026-07-16) — faute d'un cran ~14 px, l'agent a détourné <code>headings.h6</code>, un token de <strong>titre</strong>, pour du helper text (couplage au mauvais rôle). Jumeau du besoin qui a fait naître la fondation <code>grid</code> au même pilote. Décision de design assumée : le helper passe de 16 à 14 px.</li></ul>"
+  },
+  {
+   "date": "2026-07-05",
+   "titre": "Typographie : création de la couche foundations/",
+   "html": "<ul><li><strong>Fichiers</strong> : foundations/typography/TYPOGRAPHY-UX.md + TYPOGRAPHY-UI.md (1.0.0), DESIGN.md 1.6.0, tools/*</li><li><strong>Décision</strong> : 3e nature de fichier — la typographie n'est ni un composant (pas d'instances à décliner) ni un pattern (pas d'assemblage) : une <strong>fondation</strong>, contrainte transversale consommée par tout le reste. Le modèle à axes ne s'y applique pas ; à la place, deux fonctions strictement séparées : le sens (hiérarchie sémantique) et la lisibilité (taille, mesure, échelle responsive). Pas d'inventaire de cas d'usage (une fondation a des consommateurs, pas des situations). DESIGN.md gagne l'échelle typography.headings (h1-h6 fluides en clamp rem+vw, ratio ≤ 2.5 par échelon), typography.fallback (piles de secours — les polices ne sont pas embarquées) et measure.reading-max. Les outils traitent foundations/ comme patterns/ (résolution de tokens, paires UX/UI) et documentent une limite assumée : les tailles fluides ne sont pas vérifiables statiquement, le test au zoom est manuel.</li><li><strong>Pourquoi</strong> : des besoins typographiques non tokenisés étaient apparus à l'usage (titres intermédiaires dérivés par calc, letter-spacing local) et l'audit historique de portfolio-landing avait laissé un écart assumé (h1 de hero non sémantique) — la règle &quot;niveau ≠ taille&quot; les tranche désormais. Le point fluid type / zoom 500 % est documenté en confiance &quot;émergent/débattu&quot; (Roselli via Smashing Magazine, nov. 2023) — première règle du système explicitement marquée comme non consensuelle.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "TYPOGRAPHY-R01",
+   "couche": "ux",
+   "solution": "la typographie n'est **ni un composant, ni un pattern — c'est une fondation**, et la structure du dossier le rend visible (`content/md/foundations/`, parallèle à `content/md/components/` et `content/md/patterns/`).",
+   "enonce": "La typographie est documentée comme une fondation transversale, rangée avec les autres fondations et non avec les composants ni les patterns.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R02",
+   "couche": "ux",
+   "solution": "**le modèle à axes ne s'applique pas.** La typographie n'a ni instances ni assemblage : elle est une **contrainte transversale** que tous les composants consomment — le bouton compose son label avec, l'input son message d'erreur, l'alert son titre.",
+   "enonce": "Une fondation ne se décrit pas par des axes de variantes mais par la contrainte qu'elle impose aux composants qui la consomment.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "un bouton a des instances qui se déclinent (style × tone × size) ; un pattern coordonne des composants assemblés. Chercher les axes de la typographie reviendrait à chercher les variantes d'une grille : la question n'a pas d'objet.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-6",
+     "titre": "Message d'erreur / d'état",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R03",
+   "couche": "ux",
+   "solution": "elle porte deux fonctions distinctes qui ne doivent jamais être confondues — c'est la vraie structure de ce fichier :",
+   "enonce": "La typographie porte deux décisions séparées — la structure sémantique du contenu et les conditions physiques de lisibilité — et aucune des deux ne se prend à la place de l'autre.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R04",
+   "couche": "ux",
+   "solution": "la règle cardinale de cette fondation est que ces deux fonctions sont **indépendantes** — le reste du fichier en découle.",
+   "enonce": "Le niveau sémantique d'un texte et son traitement visuel se décident indépendamment l'un de l'autre.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Indépendance niveau sémantique / taille visuelle",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi — règle explicitement documentée, citation directe"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R05",
+   "couche": "ux",
+   "solution": "les niveaux h1-h6 décrivent la **structure du contenu** — c'est l'arbre que le lecteur d'écran navigue, que les moteurs indexent, que la table des matières reflète. Ils ne décrivent jamais le style.",
+   "enonce": "Les niveaux de titre h1 à h6 décrivent la structure du contenu et ne sont jamais employés pour obtenir un effet de style.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    },
+    {
+     "ref": "S20",
+     "affirmation": "Les titres et les étiquettes décrivent le sujet ou l'objectif",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.6 Headings and Labels",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Lecteur d'écran",
+     "famille": "Plateforme / device"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R06",
+   "couche": "ux",
+   "solution": "**exactement un h1 par page** — c'est le titre du document, pas le plus gros texte de la page. Ni deux, ni **zéro** : une page sans h1 est un arbre sans racine pour la navigation par titres, et un document sans sujet pour l'indexation.",
+   "enonce": "Une page comporte exactement un titre de niveau 1, qui est le titre du document.",
+   "mesure": "exactement un élément h1 par page",
+   "critere": "compte(\"h1\") == 1",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+    "liens": [
+     {
+      "label": "MDN — HTML heading elements",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+     }
+    ],
+    "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R07",
+   "couche": "ux",
+   "solution": "**jamais de saut de niveau** — un h2 n'est jamais suivi directement d'un h4.",
+   "enonce": "Les niveaux de titre se suivent sans saut : un niveau n n'est jamais suivi directement d'un niveau n+2.",
+   "mesure": "aucun saut de niveau de titre (h2 → h4)",
+   "critere": "suite(\"h1,h2,h3,h4,h5,h6\") sans_saut",
+   "contre": "",
+   "probleme": "un saut casse l'arbre pour la navigation par titres (un utilisateur de lecteur d'écran conclut à du contenu manquant) sans aucun bénéfice en échange.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+    "liens": [
+     {
+      "label": "MDN — HTML heading elements",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+     }
+    ],
+    "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R08",
+   "couche": "ux",
+   "solution": "**le niveau et la taille sont deux décisions indépendantes.** Le niveau suit la structure du contenu ; la taille suit le design. Un h2 peut légitimement être stylé plus petit qu'un h3 si le contexte l'exige.",
+   "enonce": "Le niveau d'un titre suit la structure du contenu et sa taille suit le design : un titre de niveau inférieur peut légitimement être rendu plus petit qu'un titre de niveau supérieur.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison typographique d'un principe déjà établi ailleurs dans le système : \"Large ne veut pas dire important\" (BUTTON-UX.md — la taille du bouton répond à la densité du contexte, pas à l'importance de l'action).",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Indépendance niveau sémantique / taille visuelle",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi — règle explicitement documentée, citation directe"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Indépendance niveau sémantique / taille visuelle",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Typography",
+      "url": "https://design-system.service.gov.uk/styles/typography/"
+     }
+    ],
+    "confiance": "Établi — règle explicitement documentée, citation directe"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R09",
+   "couche": "ux",
+   "solution": "un texte qui doit *avoir l'air* d'un titre sans en être un (chiffre de dashboard, citation mise en avant) prend le style visuel voulu sur un élément non-heading — jamais un heading pour le style.",
+   "enonce": "Un texte qui doit avoir l'apparence d'un titre sans en être un prend son style sur un élément non-titre.",
+   "mesure": "les éléments h1 à h6 ne portent que des titres de section",
+   "critere": "",
+   "contre": "",
+   "probleme": "utiliser un h1 pour un hero visuel géant qui n'est pas le titre sémantique réel de la page — le texte d'accroche marketing prend le *style* display, mais le h1 appartient au vrai titre du document. Cas réellement rencontré dans ce projet (audit de portfolio-landing, laissé en écart assumé avant la suppression du dossier) : documenter la règle évite de refaire l'approximation.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+    "liens": [
+     {
+      "label": "MDN — HTML heading elements",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+     }
+    ],
+    "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R10",
+   "couche": "ux",
+   "solution": "faire glisser la taille du texte entre une borne minimale et une borne maximale selon la largeur du viewport, au lieu de sauter par paliers de media queries.",
+   "enonce": "Les tailles de texte varient continûment entre une borne minimale et une borne maximale en fonction de la largeur du viewport, plutôt que par paliers.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Correction : rem dans min, max et partie fixe du clamp()",
+     "liens": [
+      {
+       "label": "Smashing Magazine — Addressing Accessibility Concerns With Using Fluid Type (nov. 2023)",
+       "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+      }
+     ],
+     "confiance": "Établi comme mitigation"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Correction : rem dans min, max et partie fixe du clamp()",
+    "liens": [
+     {
+      "label": "Smashing Magazine — Addressing Accessibility Concerns With Using Fluid Type (nov. 2023)",
+      "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+     }
+    ],
+    "confiance": "Établi comme mitigation"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R11",
+   "couche": "ux",
+   "solution": "**les unités viewport seules sont interdites** — un texte dimensionné uniquement en `vw` échoue WCAG 1.4.4 (*Resize Text*).",
+   "enonce": "Une taille de texte ne s'exprime jamais en unités viewport seules, qui ne répondent pas au zoom du navigateur et font échouer le critère de redimensionnement du texte.",
+   "mesure": "aucune taille de police exprimée en unités viewport seules",
+   "critere": "aucune_valeur(\"font-size\") unites_seules(vw|vh|vmin|vmax)",
+   "contre": "",
+   "probleme": "**le zoom du navigateur n'affecte pas les unités viewport** — l'utilisateur zoome, la fenêtre ne change pas de largeur, le texte ne grandit pas. C'est un échec d'accessibilité silencieux : invisible en test standard, bloquant pour l'utilisateur malvoyant qui dépend du zoom.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Le zoom navigateur n'affecte pas les unités viewport → vw seul échoue Resize Text",
+     "liens": [
+      {
+       "label": "Adrian Roselli — Responsive Type and Zoom",
+       "url": "https://adrianroselli.com/2019/12/responsive-type-and-zoom.html"
+      }
+     ],
+     "confiance": "Établi — comportement navigateur documenté"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Le texte doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité ; l'usage des unités viewport pour dimensionner le texte est une défaillance documentée de ce critère",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — le fichier citait ce critère en prose sans l'inscrire dans sa bibliographie"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Le zoom navigateur n'affecte pas les unités viewport → vw seul échoue Resize Text",
+    "liens": [
+     {
+      "label": "Adrian Roselli — Responsive Type and Zoom",
+      "url": "https://adrianroselli.com/2019/12/responsive-type-and-zoom.html"
+     }
+    ],
+    "confiance": "Établi — comportement navigateur documenté"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R12",
+   "couche": "ux",
+   "solution": "la correction standard — combiner `rem` et `vw` dans `clamp()`, avec du `rem` dans le minimum, le maximum **et la partie fixe de la valeur préférée** (`clamp(2rem, 1.67rem + 1.67vw, 3rem)` — jamais `clamp(2rem, 4vw, 3rem)`). La composante `rem` répond au zoom, la composante `vw` porte la fluidité.",
+   "enonce": "Toute taille fluide combine rem et vw dans clamp(), avec une composante rem dans le minimum, dans le maximum et dans la partie fixe de la valeur préférée.",
+   "mesure": "chaque clamp() de taille contient une composante rem dans le minimum, le maximum et la partie fixe",
+   "critere": "chaque_valeur(\"font-size\") clamp_avec_rem()",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Correction : rem dans min, max et partie fixe du clamp()",
+     "liens": [
+      {
+       "label": "Smashing Magazine — Addressing Accessibility Concerns With Using Fluid Type (nov. 2023)",
+       "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+      }
+     ],
+     "confiance": "Établi comme mitigation"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Le texte doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité ; l'usage des unités viewport pour dimensionner le texte est une défaillance documentée de ce critère",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — le fichier citait ce critère en prose sans l'inscrire dans sa bibliographie"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Définir les tailles de police en px n'est pas accessible, l'utilisateur ne pouvant plus changer la taille dans certains navigateurs ; privilégier les valeurs relatives à la taille par défaut de l'utilisateur",
+     "liens": [
+      {
+       "label": "MDN — font-size",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Correction : rem dans min, max et partie fixe du clamp()",
+    "liens": [
+     {
+      "label": "Smashing Magazine — Addressing Accessibility Concerns With Using Fluid Type (nov. 2023)",
+      "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+     }
+    ],
+    "confiance": "Établi comme mitigation"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R13",
+   "couche": "ux",
+   "solution": "limite connue — même cette version corrigée peut ne pas atteindre les 200 % d'agrandissement exigés par WCAG 1.4.4 à des niveaux de zoom extrêmes (jusqu'à 500 %), sur certaines plages de viewport — démontré mathématiquement par l'analyse de novembre 2023 (cf. sources). Tester réellement au zoom plutôt que de faire confiance à la formule.",
+   "enonce": "La conformité au redimensionnement du texte se vérifie par un test de zoom navigateur réel, et non par la seule forme de la formule ni par un redimensionnement de fenêtre.",
+   "mesure": "à 200 % de zoom navigateur, la taille rendue a doublé sans perte de contenu ni défilement à deux dimensions",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Même corrigé, échec possible à zoom extrême (500 %) sur certaines plages de viewport",
+     "liens": [
+      {
+       "label": "Smashing Magazine, nov. 2023",
+       "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+      }
+     ],
+     "confiance": "**Émergent/débattu** — analyse mathématique publiée, pas de consensus normatif ; tester au zoom réel"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Le texte doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité ; l'usage des unités viewport pour dimensionner le texte est une défaillance documentée de ce critère",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — le fichier citait ce critère en prose sans l'inscrire dans sa bibliographie"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Même corrigé, échec possible à zoom extrême (500 %) sur certaines plages de viewport",
+    "liens": [
+     {
+      "label": "Smashing Magazine, nov. 2023",
+      "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+     }
+    ],
+    "confiance": "**Émergent/débattu** — analyse mathématique publiée, pas de consensus normatif ; tester au zoom réel"
+   },
+   "confiance": "non formalisé (émergent/débattu) — analyse mathématique publiée, pas un consensus établi ; Roselli recommande de tester réellement au zoom.",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R14",
+   "couche": "ux",
+   "solution": "garde-fou communément admis — ne jamais dépasser un **ratio de 2.5× entre la taille minimale et la taille maximale d'un même échelon**. L'échelle de ce système (TYPOGRAPHY-UI.md) reste très en dessous (ratio ≤ 1.5 partout).",
+   "enonce": "Le rapport entre la taille maximale et la taille minimale d'un même échelon typographique ne dépasse pas 2,5.",
+   "mesure": "ratio taille maximale / taille minimale ≤ 2,5 par échelon",
+   "critere": "",
+   "contre": "",
+   "probleme": "sous ce ratio, le texte atteint ses 200 % dans les navigateurs modernes sur les plages de viewport usuelles.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Garde-fou : ratio max/min ≤ 2.5 par échelon",
+     "liens": [
+      {
+       "label": "Smashing Magazine, nov. 2023",
+       "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+      }
+     ],
+     "confiance": "Communément admis, découle de l'analyse ci-dessus — pas un critère WCAG officiel"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Le texte doit pouvoir être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité ; l'usage des unités viewport pour dimensionner le texte est une défaillance documentée de ce critère",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.4 Resize Text",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — le fichier citait ce critère en prose sans l'inscrire dans sa bibliographie"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Garde-fou : ratio max/min ≤ 2.5 par échelon",
+    "liens": [
+     {
+      "label": "Smashing Magazine, nov. 2023",
+      "url": "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/"
+     }
+    ],
+    "confiance": "Communément admis, découle de l'analyse ci-dessus — pas un critère WCAG officiel"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R15",
+   "couche": "ux",
+   "solution": "borner la longueur de ligne du texte courant — la lisibilité d'un paragraphe dépend plus de sa mesure que de sa taille.",
+   "enonce": "La longueur de ligne du texte courant est bornée, la lisibilité d'un paragraphe dépendant davantage de sa mesure que de sa taille.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Mesure de lecture ~45-75 caractères par ligne (Butterick élargit à 45-90)",
+     "liens": [
+      {
+       "label": "Butterick, *Practical Typography*",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi par convergence de la littérature typographique, bornes indicatives"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Mesure de lecture ~45-75 caractères par ligne (Butterick élargit à 45-90)",
+    "liens": [
+     {
+      "label": "Butterick, *Practical Typography*",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi par convergence de la littérature typographique, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-9",
+     "titre": "Lien dans le texte courant",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R16",
+   "couche": "ux",
+   "solution": "viser la fourchette classique d'environ **45 à 75 caractères par ligne** pour le texte courant. La mesure s'exprime en `ch` (elle suit la police et la taille effective), via le token `measure.reading-max` — jamais en pixels, qui ne suivraient ni le zoom ni la police.",
+   "enonce": "Le texte courant vise une longueur de ligne d'environ 45 à 75 caractères, bornée par une largeur maximale exprimée en unités ch et jamais en pixels.",
+   "mesure": "longueur de ligne du texte courant entre 45 et 75 caractères, bornée par une max-width en ch",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Mesure de lecture ~45-75 caractères par ligne (Butterick élargit à 45-90)",
+     "liens": [
+      {
+       "label": "Butterick, *Practical Typography*",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi par convergence de la littérature typographique, bornes indicatives"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    },
+    {
+     "ref": "S21",
+     "affirmation": "L'unité ch représente la chasse du glyphe « 0 », et non la largeur moyenne d'un caractère ; rem représente le font-size de l'élément racine, dont le défaut usuel est 16 px mais que les préférences utilisateur modifient",
+     "liens": [
+      {
+       "label": "MDN — CSS length units",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/length"
+      }
+     ],
+     "confiance": "Établi — **nuance R16** : une max-width de 65ch laisse passer nettement plus de 65 caractères"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Mesure de lecture ~45-75 caractères par ligne (Butterick élargit à 45-90)",
+    "liens": [
+     {
+      "label": "Butterick, *Practical Typography*",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi par convergence de la littérature typographique, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-9",
+     "titre": "Lien dans le texte courant",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R17",
+   "couche": "ux",
+   "solution": "le pendant de la fluidité — un texte fluide qui s'étire sans `max-width` casse sa mesure sur grand écran. Fluidité de la taille et bornage de la mesure vont ensemble : l'un sans l'autre dégrade la lecture qu'ils devaient améliorer.",
+   "enonce": "Une taille de texte fluide s'accompagne toujours d'une largeur maximale sur le bloc de texte, faute de quoi la mesure se dégrade sur grand écran.",
+   "mesure": "tout bloc de texte courant porte une max-width",
+   "critere": "",
+   "contre": "",
+   "probleme": "la taille monte en butée de `clamp()` pendant que la ligne continue de s'allonger, et à 75+ caractères par ligne l'œil perd le retour à la ligne.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-5-2",
+     "titre": "Fatigue de lecture (mesure, interligne, justifié)",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R18",
+   "couche": "ux",
+   "solution": "inversement proportionnel au corps — le texte courant respire : 120 à 145 % du corps selon la fourchette classique (Butterick), et WCAG 1.4.8 (AAA) demande un interligne d'au moins 1.5 dans les paragraphes ; `typography.body` est à 1.6, conforme aux deux. Les grands corps serrent — un titre n'a pas besoin de l'air d'un paragraphe (`typography.display` à 1.1).",
+   "enonce": "Le texte courant est composé avec un interlignage d'au moins 1,5 fois le corps, et les grands corps peuvent recevoir un interlignage plus serré.",
+   "mesure": "interlignage ≥ 1,5 pour le texte courant",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Aucune perte de contenu ni de fonctionnalité lorsque l'utilisateur impose un interlignage d'au moins 1,5 fois le corps, un espacement de paragraphe d'au moins 2 fois le corps, un interlettrage d'au moins 0,12 et une chasse de mot d'au moins 0,16",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.12 Text Spacing",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — **c'est ce critère, et non 1.4.8 (AAA), qui contraint réellement l'auteur** ; il manquait au corpus"
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Utiliser une valeur minimale de 1,5 pour line-height sur le texte courant ; une valeur sans unité garantit la mise à l'échelle proportionnelle au zoom",
+     "liens": [
+      {
+       "label": "MDN — line-height",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/line-height"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme, convergente avec WCAG 1.4.8 et 1.4.12"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Corps de texte",
+     "famille": "Rôle de texte"
+    },
+    {
+     "id": "cas-0-9",
+     "titre": "Lien dans le texte courant",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R19",
+   "couche": "ux",
+   "solution": "l'interligne n'est pas une constante du système, c'est une fonction du corps et de l'usage.",
+   "enonce": "L'interlignage n'est pas une constante du système : il se détermine en fonction du corps et de l'usage du texte.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "l'espace entre les lignes fait plus pour la lisibilité d'un paragraphe que le choix de la police.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R20",
+   "couche": "ux",
+   "solution": "la graisse est un canal de hiérarchie parmi d'autres — jamais le seul.",
+   "enonce": "La graisse n'est jamais le seul canal par lequel une hiérarchie de texte est exprimée.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Hiérarchie par combinaison corps/graisse/position ; semibold pour titres, pas pour texte long ; une light plus grande peut dominer une bold",
+     "liens": [
+      {
+       "label": "IBM Carbon — Typography",
+       "url": "https://carbondesignsystem.com/elements/typography/overview/"
+      },
+      {
+       "label": "Shopify Polaris — Typography",
+       "url": "https://polaris-react.shopify.com/design/typography"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Graisse comme canal de hiérarchie",
+     "famille": "Forme / emphase"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R21",
+   "couche": "ux",
+   "solution": "la hiérarchie se construit par **combinaison** de corps, graisse et position (Polaris) — une graisse légère peut dominer une grasse si son corps est nettement supérieur (Carbon). C'est le pendant visuel de \"niveau ≠ taille\".",
+   "enonce": "La hiérarchie typographique se construit par combinaison du corps, de la graisse et de la position, un corps nettement supérieur pouvant dominer une graisse plus forte.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Hiérarchie par combinaison corps/graisse/position ; semibold pour titres, pas pour texte long ; une light plus grande peut dominer une bold",
+     "liens": [
+      {
+       "label": "IBM Carbon — Typography",
+       "url": "https://carbondesignsystem.com/elements/typography/overview/"
+      },
+      {
+       "label": "Shopify Polaris — Typography",
+       "url": "https://polaris-react.shopify.com/design/typography"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Hiérarchie par combinaison corps/graisse/position ; semibold pour titres, pas pour texte long ; une light plus grande peut dominer une bold",
+    "liens": [
+     {
+      "label": "IBM Carbon — Typography",
+      "url": "https://carbondesignsystem.com/elements/typography/overview/"
+     },
+     {
+      "label": "Shopify Polaris — Typography",
+      "url": "https://polaris-react.shopify.com/design/typography"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R22",
+   "couche": "ux",
+   "solution": "le semibold porte les titres, **jamais le texte long** (Carbon) — et aucune graisse light sous le corps standard : la finesse en petit corps dégrade le contraste effectif du trait.",
+   "enonce": "Les graisses semi-grasses portent les titres et jamais le texte long, et aucune graisse plus fine que la graisse standard n'est employée sous le corps de texte courant.",
+   "mesure": "aucune graisse inférieure à la graisse standard sous l'équivalent 16 px",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Hiérarchie par combinaison corps/graisse/position ; semibold pour titres, pas pour texte long ; une light plus grande peut dominer une bold",
+     "liens": [
+      {
+       "label": "IBM Carbon — Typography",
+       "url": "https://carbondesignsystem.com/elements/typography/overview/"
+      },
+      {
+       "label": "Shopify Polaris — Typography",
+       "url": "https://polaris-react.shopify.com/design/typography"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Hiérarchie par combinaison corps/graisse/position ; semibold pour titres, pas pour texte long ; une light plus grande peut dominer une bold",
+    "liens": [
+     {
+      "label": "IBM Carbon — Typography",
+      "url": "https://carbondesignsystem.com/elements/typography/overview/"
+     },
+     {
+      "label": "Shopify Polaris — Typography",
+      "url": "https://polaris-react.shopify.com/design/typography"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Corps de texte",
+     "famille": "Rôle de texte"
+    },
+    {
+     "id": "cas-4-0",
+     "titre": "Interlignage titres vs corps",
+     "famille": "Forme / emphase"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R23",
+   "couche": "ux",
+   "solution": "le gras s'utilise avec parcimonie — pour \"l'information critique que l'utilisateur rate\" (GOV.UK) ; gras et italique le moins possible, et jamais ensemble (Butterick).",
+   "enonce": "Le gras est réservé à l'information critique que le lecteur risque de manquer ; le gras et l'italique restent rares et ne se cumulent pas.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "un paragraphe semé de gras n'a plus d'emphase du tout.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    },
+    {
+     "ref": "S11",
+     "affirmation": "Titres en sentence case ; gras réservé à l'information critique ; 4 échelons de titres stylés suffisent",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi chez GOV.UK (système à recherche utilisateur documentée), adopté ici"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-2",
+     "titre": "Gras / italique dans le texte",
+     "famille": "Forme / emphase"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R24",
+   "couche": "ux",
+   "solution": "titres en **sentence case** (GOV.UK) — décision prise une fois pour tout le produit, pas titre par titre.",
+   "enonce": "Les titres sont rédigés en sentence case, décision prise une fois pour l'ensemble du produit.",
+   "mesure": "titres en sentence case",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Titres en sentence case ; gras réservé à l'information critique ; 4 échelons de titres stylés suffisent",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi chez GOV.UK (système à recherche utilisateur documentée), adopté ici"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Titres en sentence case ; gras réservé à l'information critique ; 4 échelons de titres stylés suffisent",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Typography",
+      "url": "https://design-system.service.gov.uk/styles/typography/"
+     }
+    ],
+    "confiance": "Établi chez GOV.UK (système à recherche utilisateur documentée), adopté ici"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R25",
+   "couche": "ux",
+   "solution": "**TOUT EN CAPITALES : réservé aux étiquettes brèves** (le rôle exact de `label-mono` dans ce système), jamais au texte courant — et toujours accompagné de 5 à 12 % d'interlettrage (Butterick). La valeur déjà utilisée en local (0.08em = 8 %) entre dans la fourchette — règle désormais sourcée, candidate à un token.",
+   "enonce": "Les capitales sont réservées aux étiquettes brèves, jamais au texte courant, et s'accompagnent d'un interlettrage de 5 à 12 % du corps.",
+   "mesure": "text-transform: uppercase uniquement sur des étiquettes courtes, avec un interlettrage entre 0,05em et 0,12em",
+   "critere": "",
+   "contre": "",
+   "probleme": "les capitales, dessinées pour ouvrir des phrases, se serrent sans interlettrage.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "De longues sections en capitales peuvent être difficiles à lire pour les personnes ayant des troubles cognitifs comme la dyslexie. **La source ne mentionne aucun effet sur les lecteurs d'écran**",
+     "liens": [
+      {
+       "label": "MDN — text-transform",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform"
+      }
+     ],
+     "confiance": "Établi pour la charge cognitive — **contredit l'argument « lecteur d'écran » avancé par R26**"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Étiquette technique (label-mono)",
+     "famille": "Rôle de texte"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "TOUT EN CAPITALES",
+     "famille": "Forme / emphase"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R26",
+   "couche": "ux",
+   "solution": "les capitales s'appliquent en CSS (`text-transform`), jamais tapées dans le contenu — le texte source reste en casse normale pour les lecteurs d'écran et le copier-coller.",
+   "enonce": "La casse haute s'applique par la feuille de style et jamais en saisissant le contenu en capitales, afin que le texte source reste dans sa casse d'origine.",
+   "mesure": "aucune chaîne de contenu saisie tout en capitales ; la casse haute vient de text-transform",
+   "critere": "",
+   "contre": "",
+   "probleme": "des capitales pour \"faire titre\" sur une phrase entière — la lecture par silhouette de mot disparaît, l'utilisateur épelle.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S18",
+     "affirmation": "De longues sections en capitales peuvent être difficiles à lire pour les personnes ayant des troubles cognitifs comme la dyslexie. **La source ne mentionne aucun effet sur les lecteurs d'écran**",
+     "liens": [
+      {
+       "label": "MDN — text-transform",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform"
+      }
+     ],
+     "confiance": "Établi pour la charge cognitive — **contredit l'argument « lecteur d'écran » avancé par R26**"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Lecteur d'écran",
+     "famille": "Plateforme / device"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R27",
+   "couche": "ux",
+   "solution": "**fer à gauche par défaut** — le retour à la ligne régulier est le repère de lecture.",
+   "enonce": "Le texte est aligné sur le bord de début de ligne par défaut, le retour à la ligne régulier servant de repère de lecture.",
+   "mesure": "text-align des blocs de texte = start par défaut",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R28",
+   "couche": "ux",
+   "solution": "**jamais de texte justifié en interface**.",
+   "enonce": "Le texte d'interface n'est jamais justifié.",
+   "mesure": "aucun bloc de texte en text-align: justify",
+   "critere": "",
+   "contre": "",
+   "probleme": "la justification sans césure creuse des rivières d'espace ; Butterick ne l'admet qu'avec césure activée, et la césure web reste inégale selon les langues et navigateurs. WCAG 1.4.8 (AAA) exclut le justifié.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Interligne ≥ 1.5 dans les paragraphes, pas de justifié, mesure ≤ 80 caractères",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.8 Visual Presentation (niveau AAA)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi comme critère AAA — visé, pas exigé au niveau AA"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R29",
+   "couche": "ux",
+   "solution": "le centré est réservé aux titres courts et aux moments éditoriaux — jamais un paragraphe (le début de ligne devient introuvable).",
+   "enonce": "Le centrage est réservé aux titres courts et aux moments éditoriaux, jamais appliqué à un paragraphe.",
+   "mesure": "aucun paragraphe en text-align: center",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R30",
+   "couche": "ux",
+   "solution": "corps de texte web — 15 à 25 px d'équivalent (Butterick) ; `typography.body` (16px) est dans la fourchette, volontairement bas de fourchette pour un produit dense. **Jamais sous l'équivalent 16px pour le texte courant.**",
+   "enonce": "Le texte courant n'est jamais composé sous l'équivalent de 16 px, et sa taille s'exprime en unités relatives au corps racine.",
+   "mesure": "taille du texte courant ≥ 16 px d'équivalent, exprimée en rem",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+     "liens": [
+      {
+       "label": "Butterick — Summary of key rules",
+       "url": "https://practicaltypography.com/summary-of-key-rules.html"
+      }
+     ],
+     "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Définir les tailles de police en px n'est pas accessible, l'utilisateur ne pouvant plus changer la taille dans certains navigateurs ; privilégier les valeurs relatives à la taille par défaut de l'utilisateur",
+     "liens": [
+      {
+       "label": "MDN — font-size",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Interligne du corps 120-145 %, corps web 15-25px, caps brèves + 5-12 % d'interlettrage, gras/italique rares et jamais ensemble, justifié seulement avec césure",
+    "liens": [
+     {
+      "label": "Butterick — Summary of key rules",
+      "url": "https://practicaltypography.com/summary-of-key-rules.html"
+     }
+    ],
+    "confiance": "Établi — littérature typographique de référence, bornes indicatives"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Corps de texte",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R31",
+   "couche": "ux",
+   "solution": "cas particulier des champs de saisie — sous 16px, iOS Safari **zoome automatiquement** la page au focus du champ : la taille du texte d'un input n'est pas une décision esthétique, c'est un comportement de plateforme (frontière avec INPUT-UI.md, qui hérite du corps standard et n'est donc pas concerné).",
+   "enonce": "Les champs de saisie ne descendent jamais sous l'équivalent de 16 px, faute de quoi Safari iOS zoome automatiquement la page à la prise de focus.",
+   "mesure": "font-size des champs de saisie ≥ 16 px d'équivalent",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Zoom automatique iOS Safari sur input < 16px",
+     "liens": [
+      {
+       "label": "Comportement de plateforme documenté (WebKit), observation production",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — comportement vérifiable, non documenté officiellement par Apple"
+    },
+    {
+     "ref": "S22",
+     "affirmation": "Un champ dont le font-size atteint 16 px ou plus reçoit le focus normalement sur Safari iOS ; à 15 px ou moins, le viewport zoome sur le champ",
+     "liens": [
+      {
+       "label": "CSS-Tricks — 16px or Larger Text Prevents iOS Form Zoom",
+       "url": "https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/"
+      }
+     ],
+     "confiance": "Secondaire mais vérifiable — aucune documentation primaire Apple ou WebKit trouvée sur ce comportement"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Zoom automatique iOS Safari sur input < 16px",
+    "liens": [
+     {
+      "label": "Comportement de plateforme documenté (WebKit), observation production",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — comportement vérifiable, non documenté officiellement par Apple"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R32",
+   "couche": "ux",
+   "solution": "six niveaux existent, quatre suffisent presque toujours — GOV.UK ne style que quatre échelons de titres. Des h5/h6 récurrents signalent une structure trop profonde à réorganiser, pas un besoin de styles supplémentaires. L'échelle complète h1-h6 de DESIGN.md existe pour les cas légitimes (documentation longue, spécifications), pas comme une invitation.",
+   "enonce": "Quatre échelons de titres stylés suffisent en usage courant, la récurrence de niveaux 5 et 6 signalant une structure de contenu à réorganiser.",
+   "mesure": "au plus quatre échelons de titres stylés distincts en usage courant",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Titres en sentence case ; gras réservé à l'information critique ; 4 échelons de titres stylés suffisent",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi chez GOV.UK (système à recherche utilisateur documentée), adopté ici"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Titres en sentence case ; gras réservé à l'information critique ; 4 échelons de titres stylés suffisent",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Typography",
+      "url": "https://design-system.service.gov.uk/styles/typography/"
+     }
+    ],
+    "confiance": "Établi chez GOV.UK (système à recherche utilisateur documentée), adopté ici"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Titre de document (h1)",
+     "famille": "Rôle de texte"
+    }
+   ]
+  },
+  {
+   "id": "TYPOGRAPHY-R33",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Les risques typographiques connus sont inventoriés et gradués par sévérité dans une table du document.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "TYPOGRAPHY-R34",
+   "couche": "ux",
+   "solution": "**la structure appartient au contenu, l'apparence appartient au design — et aucun des deux ne se déduit de l'autre.**",
+   "enonce": "La structure appartient au contenu et l'apparence appartient au design : aucune des deux ne se déduit de l'autre.",
+   "mesure": "",
+   "critere": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison typographique du principe fondateur du système : comme le style d'un bouton ne dit rien de sa taille, le niveau d'un titre ne dit rien de sa graisse ni de son corps. Chaque fois qu'une décision visuelle force une décision sémantique (ou l'inverse), c'est le signe qu'une des deux est prise au mauvais endroit.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+     "liens": [
+      {
+       "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+       "url": null
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Indépendance niveau sémantique / taille visuelle",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Typography",
+       "url": "https://design-system.service.gov.uk/styles/typography/"
+      }
+     ],
+     "confiance": "Établi — règle explicitement documentée, citation directe"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Une page comporte généralement un seul h1 ; ne jamais sauter de niveau de titre ; ne pas utiliser les éléments de titre pour redimensionner du texte — utiliser font-size",
+     "liens": [
+      {
+       "label": "MDN — HTML heading elements",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements"
+      }
+     ],
+     "confiance": "Établi — documentation de plateforme ; noter la réserve « generally » sur le h1 unique"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Un seul h1, pas de saut de niveau, hiérarchie = structure",
+    "liens": [
+     {
+      "label": "WCAG 1.3.1 / techniques WAI (G141, H42), convergence des systèmes majeurs",
+      "url": null
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

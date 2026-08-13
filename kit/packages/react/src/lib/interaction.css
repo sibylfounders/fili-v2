@@ -1,0 +1,115 @@
+/**
+ * Couche partagée du langage Interaction — le MODE d'une surface-conteneur
+ * (INTERACTION-R26…R28 / U09…U11). Card est le premier consommateur ; toute surface qui
+ * organise du contenu (ligne de liste, tuile, carte de stat) consomme CETTE couche au lieu
+ * de réimplémenter les signaux localement (U09).
+ *
+ * Relief = signal, jamais décor (INTERACTION-R11/U10) : ombre PRÉ-RENDUE sur un
+ * pseudo-élément, animée en OPACITÉ — jamais un box-shadow interpolé — visible uniquement
+ * au survol/focus d'une surface clickable. Jamais d'ombre de repos.
+ */
+.ds-interactive {
+  isolation: isolate;
+}
+.ds-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-raised);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.ds-interactive[data-mode="clickable"]:hover::before,
+.ds-interactive[data-mode="clickable"]:focus-within::before {
+  opacity: 1;
+}
+
+/* La cible réelle d'une surface clickable : un VRAI lien dont le pseudo-élément étend la
+   zone à toute la surface (U11). Les actions internes restent des SIBLINGS positionnés
+   au-dessus (z-index), jamais des descendants du lien. */
+.ds-interactive-target::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-interactive::before {
+    transition-duration: 0s;
+  }
+}
+
+/* REGISTRE RELIEF ACTIF ([data-relief]) : le survol/focus signale AUSSI les surfaces
+   selectable/expandable — demande Aurélien 2026-07-29 (hors relief, le signal de survol
+   reste réservé au clickable, conformément au langage Interaction). */
+[data-relief] .ds-interactive[data-mode="selectable"]:hover::before,
+[data-relief] .ds-interactive[data-mode="selectable"]:focus-within::before,
+[data-relief] .ds-interactive[data-mode="expandable"]:hover::before,
+[data-relief] .ds-interactive[data-mode="expandable"]:focus-within::before {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PRESSION (.ds-pressable) — INTERACTION-R13/R14.
+   L'active est un état DISTINCT et une propriété UNIVERSELLE : il ne peut donc pas
+   dépendre d'un registre optionnel. Or il n'existait QUE sous [data-relief] (couleurs
+   + ombre d'enfoncement de relief.css) : relief débrayé, le bouton n'avait aucun
+   accusé de réception. Cette couche porte le MINIMUM indépendant du registre ; le
+   relief l'enrichit, il ne le crée plus.
+   Identité TACTILE (géométrie), jamais une couleur de plus — R14 dit « sensation de
+   pression ». Aucun token de couleur n'est né pour cet état.
+   `prefers-reduced-motion` : c'est la TRANSITION qui tombe, pas l'état. Un changement
+   de géométrie instantané n'est pas du mouvement vestibulaire, et R13 exige que l'état
+   reste distinct — le supprimer rendrait l'active silencieux pour ces utilisateurs.
+   ───────────────────────────────────────────────────────────────────────────── */
+.ds-pressable {
+  /* Amplitude de la course, DÉCLARÉE ici : c'est cette couche qui la possède. Un
+     consommateur peut la redéfinir (geste de confirmation maintenu, cf. DeleteButton),
+     jamais l'inventer. Grandeur SANS UNITÉ à dessein — une longueur en dur dans la
+     couche pilote serait une dimension hors échelle ; un facteur d'échelle n'en est pas une. */
+  --ds-press-scale: 0.98;
+  /* Une seule déclaration de transition pour le survol, le focus ET la pression :
+     hover/focus/active partagent motion.fast (100 ms, seuil du perçu-instantané) —
+     ils ne peuvent pas se désynchroniser. Remplace le `transition-colors` local. */
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+.ds-pressable:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: scale(var(--ds-press-scale));
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-pressable { transition-duration: 0s; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   INERTE (.ds-inert) — BUTTON-U03. UN état d'indisponibilité, pas douze.
+   `opacity: .5` était une valeur en dur (contre la règle « jamais de valeur codée en
+   dur » de BUTTON-UI § Implémentation), d'intensité VARIABLE selon le style et selon
+   la surface posée dessous (2,29:1 en filled sur page, 2,34:1 sur carte, 3,38:1 en
+   ghost), donc invérifiable par une chaîne qui raisonne sur des paires de tokens.
+   Ici : deux rôles, un couple encadré par validate-contrast (1,8:1 ≤ r ≤ 4,5:1).
+   La classe est DOUBLÉE (même procédé que .ds-skeleton) pour passer devant les
+   règles de relief.css, qui sont des sélecteurs d'attribut à forte spécificité.
+   ───────────────────────────────────────────────────────────────────────────── */
+.ds-inert.ds-inert:is(:disabled, [aria-disabled="true"]) {
+  cursor: not-allowed;
+  color: var(--on-surface-disabled);
+  background: var(--surface-disabled);
+  border-color: var(--border);
+  /* le registre relief ne s'applique pas à un contrôle inerte : ni objet posé, ni course */
+  box-shadow: none;
+  transform: none;
+  --rl-ring: transparent;
+}
+/* Les styles SANS remplissage au repos n'en gagnent pas un en devenant inertes —
+   leur inertie se lit sur le texte et la limite (Material, Carbon, Polaris : idem). */
+.ds-inert.ds-inert:is(:disabled, [aria-disabled="true"]):is([data-style="stroke"], [data-style="ghost"]) {
+  background: transparent;
+}
+.ds-inert.ds-inert:is(:disabled, [aria-disabled="true"])[data-style="ghost"] {
+  border-color: transparent;
+}

@@ -1,0 +1,127 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   LA FAMILLE DU CHOIX — géométrie et facture partagées par Checkbox et Radio
+   (CHOICE-UI.md). Aucune valeur brute : la marque se dimensionne sur l'échelle
+   `icon`, dont la raison d'être déclarée est d'apparier des crans au corps de
+   texte — exactement la contrainte d'un signe posé sur la ligne (arbitrage
+   2026-07-30, point ouvert de la fiche de manque tranché là).
+
+   Le champ natif reste dans le DOM, superposé à la marque et transparent : il
+   garde son rôle, son clavier et — pour les radios de même `name` — la
+   navigation par flèches avec sélection qui suit le focus, gratuitement
+   (CHOICE-R14). Rien n'est réimplémenté.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* La rangée : marque à gauche, libellé à droite, cible commune (CHOICE-R08/R16). */
+.ds-choice {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  cursor: pointer;
+  position: relative;
+}
+.ds-choice[data-disabled] {
+  cursor: not-allowed;
+}
+
+/* Le champ natif : présent, focalisable, superposé à la marque — jamais display:none
+   (qui le retirerait de l'ordre de tabulation et de l'arbre d'accessibilité). */
+.ds-choice-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* La MARQUE — carré pour la case, disque pour le radio : la forme dit la
+   cardinalité (CHOICE-UI, « la forme porte le sens »). */
+.ds-choice-mark {
+  /* `relative` sert au glyphe indéterminé posé en absolu — pas à un empilement : la marque
+     vient APRÈS le champ dans le DOM, donc au-dessus, sans qu'aucun z-index soit posé.
+     Le système garde ainsi une seule échelle d'empilement (--z-*), celle des couches. */
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  border: 1px solid var(--border-strong); /* délimitante : seule identification au repos, 3:1 */
+  background: var(--background);
+  color: var(--on-primary);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+.ds-choice[data-size="sm"] .ds-choice-mark {
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+.ds-choice-mark--box { border-radius: var(--radius-sm); }
+.ds-choice-mark--dot { border-radius: var(--radius-pill); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-choice-mark { transition: none; }
+}
+
+/* Coché / indéterminé : le fond bascule, la marque apparaît. La couleur ne porte
+   jamais l'information seule (CHOICE-R12) — le glyphe est là. */
+.ds-choice-input:checked ~ .ds-choice-mark,
+.ds-choice-input:indeterminate ~ .ds-choice-mark {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.ds-choice-glyphe {
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.ds-choice-input:checked ~ .ds-choice-mark .ds-choice-glyphe--coche,
+.ds-choice-input:indeterminate ~ .ds-choice-mark .ds-choice-glyphe--trait {
+  opacity: 1;
+}
+/* L'indéterminé masque la coche : « quelque chose, pas tout » se lit d'un coup d'œil. */
+.ds-choice-input:indeterminate ~ .ds-choice-mark .ds-choice-glyphe--coche { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .ds-choice-glyphe { transition: none; }
+}
+
+/* Focus : l'anneau UNIQUE du système, posé sur la marque puisque le champ est transparent. */
+.ds-choice-input:focus-visible ~ .ds-choice-mark {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+
+/* Statut d'erreur — SUBI par la validation, jamais décoratif. La bordure passe en danger
+   et l'anneau prend le cran accordé (focus v2). */
+.ds-choice[data-status="error"] .ds-choice-mark { border-color: var(--danger); }
+.ds-choice[data-status="error"] { --control-focus-color: var(--control-focus-danger); }
+
+/* Inerte : mêmes rôles que .ds-inert (BUTTON-U03) — l'opacité composite est bannie
+   partout, pas seulement sur le bouton. La marque cochée garde son signe lisible. */
+.ds-choice[data-disabled] .ds-choice-mark { background: var(--surface-disabled); border-color: var(--border); color: var(--on-surface-disabled); }
+.ds-choice[data-disabled] .ds-choice-libelle { color: var(--text-disabled); }
+
+/* Le libellé : corps de texte — il est lu, pas décoré (CHOICE-UI). */
+.ds-choice-libelle {
+  color: var(--text-primary);
+  line-height: var(--icon-md); /* aligne la première ligne sur la marque */
+}
+.ds-choice[data-size="sm"] .ds-choice-libelle {
+  font-size: var(--size-sm);
+  line-height: var(--icon-sm);
+}
+
+/* La cible tactile couvre marque + libellé (CHOICE-R16). Le retrait vertical porte la
+   rangée au-dessus du plancher AA : marque `icon.md` (20) + 2 × `space.xs` (4) = 28, et en
+   cran `sm` marque `icon.sm` (16) + 8 = 24, le plancher exact.
+
+   NOTE HONNÊTE — `TOUCH-UI` nomme `touch.target-min` (24) et `touch.target-comfortable` (44),
+   mais le pipeline de tokens ne les ÉMET PAS : aucune `--touch-*` n'existe dans tokens.css.
+   Écrire `var(--touch-target-min)` aurait posé une variable inconnue (la garde de tokens le
+   relève). La géométrie ci-dessous est donc dérivée de rôles réels, et l'écart doctrine ↔
+   tokens est signalé plutôt que masqué — il appartient à la fondation TOUCH, pas à ce
+   composant. */
+.ds-choice {
+  padding-block: var(--space-xs);
+}

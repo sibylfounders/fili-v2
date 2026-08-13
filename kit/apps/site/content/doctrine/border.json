@@ -1,0 +1,1838 @@
+{
+ "slug": "border",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"4.5\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/><rect x=\"9\" y=\"9\" width=\"6\" height=\"6\" rx=\"1.8\" fill=\"#31A06E\"/></svg>",
+ "nom": "border",
+ "nature": "Fondation",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-11 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Quand tracer une bordure pour délimiter, et quand s’en passer ?",
+  "detail": "On y distingue la bordure qui sépare vraiment deux zones de celle qui n’est que décorative, et on garde un trait assez contrasté pour rester visible sans s’imposer.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "La bordure délimitante sépare deux zones et tient un contraste d'au moins 3:1"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Une échelle simple d'épaisseurs et de styles couvre tous les usages"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le focus ring, en accent, reste toujours visible et distinct de la bordure d'état"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "23",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "16",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "4",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-border.md",
+   "source": "---\nsujet: border\ntype: fondation\nresume: \"Les trois rôles du trait, épaisseur unique, focus ring unifié (outline + offset) pour tout composant focalisable\"\nrequires: []\nselon-contexte: [\"radius (rayon perçu du focus ring)\"]\n---\n# RULES — Border (compilé, condensé)\n\n> Généré depuis `foundations/border/BORDER-UX.md` (v1.1.0) et `BORDER-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation née du guardrail \"délimitante vs décorative\" (toujours actif dans les tokens/guardrails).\n- **Règle cardinale : le rôle du trait décide de tout** — couleur, seuil, droit au retrait.\n\n## Les trois rôles\n| Rôle | Couleur | Seuil | Exemples |\n|---|---|---|---|\n| **Délimiter** (seul signal d'un composant interactif) | `border-strong` | **3:1 obligatoire** | input au repos, bouton secondary |\n| Sémantique (état) | `color.{tone}` | 3:1 | input error, bordures de l'alert |\n| **Grouper** (le contenu identifie déjà) | `border` | exempté | carte outlined |\n| **Séparer** | `border` | exempté — et en DERNIER recours (espace d'abord, fond ensuite) | aucun à ce jour |\n\n- Critère du rôle délimitant : *\"si cette bordure disparaît, l'utilisateur sait-il encore où interagir ?\"* Si non → `border-strong`.\n\n## Épaisseur — une seule\n- **Hairline 1px partout** (exception documentée, comme 44px). Pas d'échelle d'épaisseurs.\n- **L'état change la couleur du trait, JAMAIS son épaisseur** (pas de layout shift, le focus n'est pas un état du trait). Pas de 0.5px physique.\n\n## Focus ring — spécification unifiée (tous composants focalisables)\n- `outline` : couleur `accent`, largeur `border.focus-width`, écart `border.focus-offset` (outline-offset) — **jamais `border`**.\n- Le ring **s'ajoute** à la bordure d'état (error focalisé = ring dehors + bordure danger dedans, les deux visibles).\n- Rayon perçu du ring = rayon du composant + offset (cf. RULES-radius).\n- **Apparition instantanée** — jamais de transition sur le focus. `:focus-visible` de préférence.\n- **Jamais `outline: none`** sans remplacement équivalent à 3:1.\n- **Jamais masqué** : la cible focalisée reste entièrement visible, jamais cachée par un sticky/superposé (WCAG 2.4.11) — le composant qui superpose réserve la place ou décale le scroll (contrat en avance, superposés à naître).\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Délimitante < 3:1 | Composant invisible (1.4.11) | Critique |\n| Focus supprimé | Navigation clavier aveugle | Critique |\n| Focus masqué par un superposé | Focus invisible en usage clavier (2.4.11) | Élevée |\n| Épaisseur variable à l'état | Layout shift | Moyenne-élevée |\n| Sur-bordage | Bruit — l'espace devait suffire | Moyenne |\n\nCONFIANCE : 3:1 et rôles = établi (WCAG 1.4.11, Atlassian, Carbon border-subtle/strong) — éprouvé par deux recalibrages internes. Ring 2px/2px = convention interne sourcée (Atlassian). Épaisseur constante = divergence assumée avec Atlassian (selected 2px), motivée dans la source.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Rôle de bordure",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle de bordure\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"50\" width=\"72\" height=\"50\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"52\" y=\"68\" width=\"40\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M140 46v58\" stroke=\"#E5E7EB\" stroke-width=\"2\"/><rect x=\"168\" y=\"46\" width=\"96\" height=\"58\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.6\"/><rect x=\"182\" y=\"60\" width=\"68\" height=\"30\" rx=\"7\" fill=\"#4F46E5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Bordure délimitante",
+     "quand": "Un composant interactif n'a que sa bordure au repos.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordure délimitante\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"78\" width=\"180\" height=\"88\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><text x=\"288\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">≥ 3:1</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un composant interactif n'a que sa bordure au repos.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>border-strong, 3:1 obligatoire (WCAG 1.4.11).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le contour d'un champ vide.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le critère du rôle 1 reste la question du guardrail : <strong>&quot;si cette bordure disparaît, l'utilisateur sait-il encore où interagir ?&quot;</strong> Si non → délimitante → <code>border-strong</code>. Le test de rendu applique ce critère identiquement à tous les composants.",
+       "id": "BORDER-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Bordure décorative / de groupement",
+     "quand": "Une carte ou un encadré regroupe du contenu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordure décorative / de groupement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"66\" width=\"224\" height=\"112\" rx=\"12\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><rect x=\"250\" y=\"94\" width=\"150\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"250\" y=\"118\" width=\"120\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"250\" y=\"142\" width=\"140\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte ou un encadré regroupe du contenu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>border, exemptée du seuil (le contenu identifie le composant).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le contour d'une carte.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Séparateur (divider)",
+     "quand": "Un trait sépare deux zones.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Séparateur (divider)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"86\" width=\"200\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><path d=\"M228 116h224\" stroke=\"#E5E7EB\"/><rect x=\"240\" y=\"140\" width=\"200\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un trait sépare deux zones.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>3e rôle : ni délimitant ni groupant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ligne entre deux lignes de table.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Bordure sémantique",
+     "quand": "Un état colore la bordure (erreur, tone).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordure sémantique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"96\" width=\"200\" height=\"44\" rx=\"8\" fill=\"#FEE2E2\"/><rect x=\"240\" y=\"96\" width=\"6\" height=\"44\" rx=\"3\" fill=\"#B91C1C\"/><text x=\"266\" y=\"123\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">bordure de sens</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un état colore la bordure (erreur, tone).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La couleur vient du tone, l'épaisseur reste hairline.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une bordure rouge d'erreur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Focus ring",
+     "quand": "Un élément a le focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus ring\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"244\" y=\"94\" width=\"192\" height=\"36\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément a le focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Anneau accent unifié (largeur/écart tokenisés).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'anneau autour d'un champ focalisé.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un trait qui s'épaissit à l'état (error, selected, focus) déplace le contenu (layout shift) ou exige une compensation fragile ; la couleur et le ring font le même travail sans bouger un pixel. Atlassian fait le choix inverse (selected/focused à 2px) — divergence assumée : notre sélection porte déjà un canal redondant non chromatique (coche, CARD-UI), et notre focus est un ring <em>externe</em>, pas un épaississement.",
+       "id": "BORDER-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "le focus ring est <strong>unifié pour tout le système</strong> : couleur <code>accent</code> (≥ 3:1 sur les fonds d'usage, recalibrée pour ça en 1.3.0), largeur et écart tokenisés (<code>border.focus-width</code>, <code>border.focus-offset</code> — créés par cette fondation : trois composants déclaraient la couleur du ring et laissaient largeur/écart en déduction silencieuse, le travers exact que le système combat depuis tone.destructive_text).",
+       "id": "BORDER-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "un focus visible ne suffit pas s'il est <strong>masqué</strong> : la cible focalisée ne doit jamais être cachée, même partiellement, par un élément collant (en-tête sticky) ou superposé (WCAG 2.4.11 « Focus Not Obscured »). Le contrat est posé ici parce que le ring relève de cette fondation ; sa mise en œuvre revient au composant qui superpose (sticky, tiroir, futur modal), qui doit réserver la place ou décaler le défilement pour que l'anneau reste entièrement visible. Aucun consommateur superposé n'existe encore — la règle est un contrat en avance, comme le focus bicolore sur fond arbitraire.",
+       "id": "BORDER-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Bordure de sélection",
+     "quand": "Un élément est sélectionné.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle de bordure",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordure de sélection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"78\" width=\"140\" height=\"88\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"266\" y=\"74\" width=\"148\" height=\"96\" rx=\"14\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément est sélectionné.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bordure primary + indicateur non chromatique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte sélectionnée.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "un trait qui s'épaissit à l'état (error, selected, focus) déplace le contenu (layout shift) ou exige une compensation fragile ; la couleur et le ring font le même travail sans bouger un pixel. Atlassian fait le choix inverse (selected/focused à 2px) — divergence assumée : notre sélection porte déjà un canal redondant non chromatique (coche, CARD-UI), et notre focus est un ring <em>externe</em>, pas un épaississement.",
+       "id": "BORDER-R05"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 4 cas",
+   "titre": "Propriété du trait",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Propriété du trait\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"48\" width=\"56\" height=\"54\" rx=\"0\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"1\"/><rect x=\"140\" y=\"48\" width=\"56\" height=\"54\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"220\" y=\"48\" width=\"56\" height=\"54\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"3\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Épaisseur standard",
+     "quand": "On choisit l'épaisseur d'un trait.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Propriété du trait",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Épaisseur standard\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1\"/><text x=\"300\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">1px</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On choisit l'épaisseur d'un trait.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>1px hairline partout.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le contour fin d'un champ.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Épaisseur renforcée",
+     "quand": "On envisage d'épaissir pour un état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Propriété du trait",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Épaisseur renforcée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.5\"/><text x=\"300\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">2px</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage d'épaissir pour un état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'état change la couleur, jamais l'épaisseur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une erreur en rouge, même épaisseur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Style de trait (dashed, dotted)",
+     "quand": "Une zone de dépôt appelle un trait pointillé.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Propriété du trait",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Style de trait (dashed, dotted)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"222\" y=\"82\" width=\"110\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"7 5\"/><rect x=\"360\" y=\"82\" width=\"110\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"1.5 5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une zone de dépôt appelle un trait pointillé.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : aucun consommateur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une zone de drop en pointillés.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Rayon du trait",
+     "quand": "La bordure a des coins arrondis.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Propriété du trait",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Rayon du trait\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"80\" width=\"160\" height=\"80\" rx=\"20\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La bordure a des coins arrondis.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le rayon appartient à la fondation radius.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ à coins arrondis.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Repos → hover",
+     "quand": "Une carte cliquable est survolée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Repos → hover\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1.5\"/><path d=\"M324 120L362 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M362 120L354.1 124.3M362 120L354.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"376\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte cliquable est survolée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Bordure renforcée OU élévation (signal d'affordance).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une bordure qui fonce au survol.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : les changements de couleur du trait (repos → error, repos → hover renforcé de la carte) transitionnent sur <code>motion.fast</code> ; l'apparition du <strong>ring de focus est exclue de toute transition</strong> (cf. ci-dessus). Une bordure qui apparaît/disparaît entièrement (encart dynamique) suit la règle de réservation d'espace de SPACING-UX — le trait fait partie de la boîte.",
+       "id": "BORDER-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Repos → focus",
+     "quand": "Un élément prend le focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Repos → focus\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><path d=\"M324 120L362 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M362 120L354.1 124.3M362 120L354.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"376\" y=\"86\" width=\"110\" height=\"68\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément prend le focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le ring apparaît, la bordure du composant reste.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un anneau en plus du contour.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : les changements de couleur du trait (repos → error, repos → hover renforcé de la carte) transitionnent sur <code>motion.fast</code> ; l'apparition du <strong>ring de focus est exclue de toute transition</strong> (cf. ci-dessus). Une bordure qui apparaît/disparaît entièrement (encart dynamique) suit la règle de réservation d'espace de SPACING-UX — le trait fait partie de la boîte.",
+       "id": "BORDER-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Repos → error",
+     "quand": "Un champ passe en erreur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Repos → error\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><path d=\"M324 120L362 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M362 120L354.1 124.3M362 120L354.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"376\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un champ passe en erreur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La bordure change de couleur (border-strong → danger).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ qui devient rouge.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : les changements de couleur du trait (repos → error, repos → hover renforcé de la carte) transitionnent sur <code>motion.fast</code> ; l'apparition du <strong>ring de focus est exclue de toute transition</strong> (cf. ci-dessus). Une bordure qui apparaît/disparaît entièrement (encart dynamique) suit la règle de réservation d'espace de SPACING-UX — le trait fait partie de la boîte.",
+       "id": "BORDER-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Apparition/disparition du ring",
+     "quand": "Le focus arrive ou part.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Apparition/disparition du ring\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><g class=\"ill-appear\"><rect x=\"244\" y=\"94\" width=\"192\" height=\"36\" rx=\"10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le focus arrive ou part.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La fondation motion règle la transition (focus sans délai).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un anneau qui apparaît net.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrit d'office (prédicteur &quot;état transitoire&quot;) : les changements de couleur du trait (repos → error, repos → hover renforcé de la carte) transitionnent sur <code>motion.fast</code> ; l'apparition du <strong>ring de focus est exclue de toute transition</strong> (cf. ci-dessus). Une bordure qui apparaît/disparaît entièrement (encart dynamique) suit la règle de réservation d'espace de SPACING-UX — le trait fait partie de la boîte.",
+       "id": "BORDER-R14"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 4 cas",
+   "titre": "Plateforme / environnement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / environnement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Écran standard",
+     "quand": "Cas de référence.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Écran standard\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1\"/><text x=\"298\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">1px net</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Cas de référence.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Vérifier « écran standard » au repos, au zoom et en contraste forcé.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Écrans haute densité",
+     "quand": "L'écran est très dense (Retina).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Écrans haute densité\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1\"/><text x=\"278\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">0.5px @2x</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'écran est très dense (Retina).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>1px CSS assumé, pas de 0.5px physique.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un hairline net sur Retina.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrans haute densité — le hairline reste <strong>1px CSS</strong> ; pas de 0.5px physique (rendu inégal entre navigateurs et plateformes). Le trait en px ne suit pas le zoom texte — même position que l'espacement (SPACING-UX), le trait n'est pas du texte.",
+       "id": "BORDER-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Contraste élevé forcé",
+     "quand": "Forced-colors remplace les couleurs.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste élevé forcé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"82\" width=\"160\" height=\"80\" rx=\"10\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>forced-colors remplace les couleurs.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La bordure est le signal qui survit : préservez le trait.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le mode contraste élevé.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la bordure est le signal qui <strong>survit à forced-colors</strong> — le mode contraste élevé supprime fonds et ombres mais <em>préserve et recolore</em> les traits. C'est l'argument de fond du rôle délimitant : dans l'environnement le plus dégradé, le trait est ce qui reste.",
+       "id": "BORDER-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Zoom navigateur",
+     "quand": "L'utilisateur zoome le texte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Zoom navigateur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"84\" width=\"92\" height=\"68\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1.5\"/><path d=\"M340 118L378 118\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M378 118L370.1 122.3M378 118L370.1 113.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"392\" y=\"76\" width=\"110\" height=\"84\" rx=\"10\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur zoome le texte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le trait en px ne grossit pas (choix assumé).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un zoom à 200 %.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "écrans haute densité — le hairline reste <strong>1px CSS</strong> ; pas de 0.5px physique (rendu inégal entre navigateurs et plateformes). Le trait en px ne suit pas le zoom texte — même position que l'espacement (SPACING-UX), le trait n'est pas du texte.",
+       "id": "BORDER-R13"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 5 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Bordure délimitante sous 3:1",
+     "quand": "Une bordure délimitante est trop pâle.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bordure délimitante sous 3:1\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"76\" rx=\"10\" fill=\"none\" stroke=\"#E5E7EB\" stroke-width=\"1\"/><text x=\"278\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">contraste < 3:1</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une bordure délimitante est trop pâle.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : le composant deviendrait invisible (3:1 min).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ à contour trop clair.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Focus supprimé sans remplacement",
+     "quand": "On envisage outline: none.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Focus supprimé sans remplacement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"100\" width=\"180\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><circle cx=\"452\" cy=\"112\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M448.5 108.5l7 7M455.5 108.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"250\" y=\"150\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">outline:none</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage outline: none.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : jamais supprimé sans équivalent.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ sans focus visible.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de BORDER-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>jamais supprimé sans remplacement équivalent</strong> — règle déjà présente dans les trois composants, centralisée ici.",
+       "id": "BORDER-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Ring identique à la bordure d'état",
+     "quand": "Focus accent et bordure error se ressemblent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ring identique à la bordure d'état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"88\" width=\"180\" height=\"72\" rx=\"10\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2.5\"/><text x=\"270\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#92400E\">erreur = focus ?</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Focus accent et bordure error se ressemblent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le ring s'ajoute en plus de la bordure d'état.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un anneau distinct du rouge d'erreur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Sur-bordage",
+     "quand": "Il y a des traits partout.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sur-bordage\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"72\" width=\"200\" height=\"112\" rx=\"12\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"258\" y=\"90\" width=\"164\" height=\"76\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"452\" cy=\"70\" r=\"9\" fill=\"#92400E\"/><path d=\"M448.5 66.5l7 7M455.5 66.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Il y a des traits partout.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Hiérarchie : espace d'abord, fond ensuite, trait en dernier.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une grille toute quadrillée.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Épaisseur variable entre états",
+     "quand": "Un trait passe de 1px à 2px selon l'état.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Épaisseur variable entre états\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"90\" width=\"110\" height=\"60\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"1\"/><path d=\"M324 120L362 120\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M362 120L354.1 124.3M362 120L354.1 115.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"376\" y=\"86\" width=\"110\" height=\"68\" rx=\"8\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"3.5\"/><text x=\"300\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">saut de largeur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un trait passe de 1px à 2px selon l'état.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : layout shift ; passez par la couleur ou le ring.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un contour qui épaissit au focus.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-rang\"> <div class=\"spec-item\"><div class=\"bord-boite\" style=\"border:1px solid #E5E7EB;\"><code>border</code></div><span class=\"val-sous\">décorative</span></div> <div class=\"spec-item\"><div class=\"bord-boite\" style=\"border:1px solid #6B7280;\"><code>border-strong</code></div><span class=\"val-sous\">délimitante</span></div> <div class=\"spec-item\"><div class=\"bord-boite\" style=\"border:1px solid #6B7280;outline:2px solid #0891B2;outline-offset:2px;\"><code>focus ring</code></div><span class=\"val-sous\">anneau de focus</span></div> </div></section>"
+  ],
+  "tokens": [
+   {
+    "token": "roles.delimitante",
+    "ref": "color.border-strong",
+    "valeur": "#6B7280",
+    "couleur": "#6B7280"
+   },
+   {
+    "token": "roles.decorative",
+    "ref": "color.border",
+    "valeur": "#E5E7EB",
+    "couleur": "#E5E7EB"
+   },
+   {
+    "token": "focus.ring_color",
+    "ref": "color.accent",
+    "valeur": "#0891B2",
+    "couleur": "#0891B2"
+   },
+   {
+    "token": "focus.ring_width",
+    "ref": "border.focus-width",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "focus.ring_offset",
+    "ref": "border.focus-offset",
+    "valeur": "2px",
+    "couleur": null
+   },
+   {
+    "token": "epaisseur.trait",
+    "ref": "1px",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-16",
+   "titre": "BORDER/ACCESSIBILITÉ : pas d'anneau sur une cible de focus programmatique",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/foundations/border/BORDER-UI.md</code> (v1.1.0), <code>tools/genere-site.js</code> (émet <code>[tabindex=&quot;-1&quot;]:focus{outline:none}</code> dans <code>public/assets/site.css</code>). <code>dist/RULES-border.md</code> reste à resynchroniser (dette de compilation non généralisée).</li><li><strong>Ancienne règle</strong> : « jamais <code>outline: none</code> sans remplacement 3:1 », sans exception — en collision avec la pratique d'accessibilité qui déplace le focus sur le titre/la région au changement de vue (annonce lecteur d'écran).</li><li><strong>Nouvelle règle</strong> : <code>outline: none</code> est autorisé, et seulement, sur une cible de focus programmatique (<code>tabindex=&quot;-1&quot;</code>, non atteignable au Tab). L'anneau reste obligatoire sur tout contrôle clavier, y compris un panneau d'onglet <code>tabindex=&quot;0&quot;</code> vide.</li><li><strong>Pourquoi</strong> : bug visible sur les trois surfaces (démo, doc, audit) — un titre encadré « parfois » au chargement. Le focus programmatique sur un <code>&lt;h1 tabindex=&quot;-1&quot;&gt;</code> affiche son anneau quand la dernière modalité était le clavier (<code>:focus-visible</code>), d'où l'intermittence. La règle ne disait rien de cette cible ; le bug l'a révélé.</li></ul>"
+  },
+  {
+   "date": "2026-07-04",
+   "titre": "RAPPORT-TEST F02 : bordure délimitante vs décorative (décision de principe)",
+   "html": "<ul><li><strong>Fichiers</strong> : components/input/INPUT-UI.md 1.3.0, DESIGN.md 1.4.1 (guardrail), tools/test-rendu.js</li><li><strong>Ancienne règle</strong> : bordure neutral de l'input sur <code>color.border</code> (1.24:1) ; INPUT-UI.md n'exigeait 3:1 qu'en état error — en conflit latent avec la règle globale de DESIGN.md (&quot;3:1 sur tout état visible&quot;) ; la carte outlined avait la même valeur avec un autre statut.</li><li><strong>Nouvelle règle</strong> : la bordure neutral de l'input passe sur <code>color.border-strong</code> (4.83:1). Guardrail ajouté à DESIGN.md : une bordure qui est le <em>seul signal</em> identifiant un composant interactif au repos → <code>border-strong</code>, 3:1 obligatoire ; une bordure de groupement décoratif (carte outlined) → <code>border</code>, exemptée. Critère : &quot;si cette bordure disparaît, l'utilisateur sait-il encore où interagir ?&quot;. Le test de rendu applique le critère identiquement à tous les composants.</li><li><strong>Pourquoi</strong> : option &quot;exception&quot; écartée — un champ de saisie au repos est identifié par sa seule bordure, c'est le cas d'école de WCAG 1.4.11, et c'est exactement le raisonnement qui avait fait recalibrer le bouton secondary en DESIGN 1.3.0. Laisser l'input y échapper aurait été deux poids deux mesures. La subtilité visuelle au repos y perd — assumé : un champ qu'on ne voit pas est un champ qu'on ne remplit pas.</li></ul>"
+  },
+  {
+   "date": "2026-07-11",
+   "titre": "DESIGN 1.9.0 : border.focus-* — le focus ring cesse d'être une déduction silencieuse",
+   "html": "<ul><li><strong>Fichiers</strong> : DESIGN.md 1.9.0, foundations/border/*, BUTTON-UI/INPUT-UI/CARD-UI (consommateurs)</li><li><strong>Ancien état</strong> : trois composants déclaraient <code>focus_ring: color.accent</code> — la couleur seulement ; largeur et écart de l'anneau étaient laissés à chaque implémentation.</li><li><strong>Nouvelle règle</strong> : ring unifié — <code>border.focus-width</code> (2px) + <code>border.focus-offset</code> (2px), implémenté en outline + offset (jamais border : pas de layout shift, coexistence avec la bordure d'état). Épaisseur du trait : toujours 1px constante, l'état change la couleur, jamais l'épaisseur — divergence assumée avec Atlassian (selected/focused à 2px), motivée dans BORDER-UX.md.</li><li><strong>Pourquoi</strong> : même famille que tone.destructive_text et value_text — une déduction correcte reste une déduction non documentée. La fondation border est née d'un guardrail (1.4.1/F02) : trajectoire inverse de l'élévation (tokens d'abord, doctrine ensuite), notée comme telle.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "BORDER-R01",
+   "couche": "ux",
+   "solution": "la bordure est une **fondation** — le modèle à axes ne s'applique pas. Particularité de trajectoire : son cœur existait déjà en **guardrail** (DESIGN.md 1.4.1, née de la décision F02) — cette fondation développe le raisonnement du guardrail et récupère ce qu'il ne couvrait pas (séparateurs, focus, forced-colors). Le guardrail court de DESIGN.md reste en place : c'est la version opérationnelle de ce fichier.",
+   "enonce": "",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R02",
+   "couche": "ux",
+   "solution": "un trait a **trois rôles**, et le rôle décide de tout (couleur, seuil, droit au retrait) :\n  1. **Délimiter** — le trait est le *seul signal* qu'un composant interactif est là (input au repos, bouton secondary). Couleur `border-strong`, **3:1 obligatoire** (WCAG 1.4.11).\n  2. **Grouper** — le trait aide à lire un contour que le contenu suffit à identifier (carte outlined). Couleur `border`, exemptée du seuil.\n  3. **Séparer** — le trait divise deux zones (séparateurs, lignes de table). Couleur `border`, et il vient **en dernier** : l'espace d'abord, le fond ensuite, le trait en dernier recours (hiérarchie posée par SPACING-UX ; Polaris ne garde les dividers que dans les tables).",
+   "enonce": "Un trait doit avoir un rôle explicite — délimiter un élément interactif, grouper du contenu ou séparer deux zones. Le rôle décide de sa couleur et du contraste exigé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "sans distinction de rôle, un même gris est traité partout pareil — soit on impose 3:1 à des traits décoratifs et le produit se durcit, soit on l'exempte partout et les champs deviennent invisibles.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Rôles du trait tokenisés (délimiter un interactif vs grouper/séparer)",
+     "liens": [
+      {
+       "label": "Carbon",
+       "url": "https://carbondesignsystem.com/elements/color/tokens/"
+      },
+      {
+       "label": "Material 3",
+       "url": "https://github.com/material-components/material-web"
+      },
+      {
+       "label": "Fluent 2",
+       "url": "https://fluent2.microsoft.design/color-tokens/"
+      },
+      {
+       "label": "GOV.UK",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris-react.shopify.com/components/layout-and-structure/divider"
+      },
+      {
+       "label": "Primer",
+       "url": "https://primer.style/foundations/color/overview/"
+      },
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "**Établi par convergence — 7 systèmes sur 9 vérifiés** (relevé du 2026-07-27). C'est la règle la mieux établie de cette fondation."
+    },
+    {
+     "ref": "S1",
+     "affirmation": "3:1 sur les composants d'interface identifiés par leur trait",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      },
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité — éprouvé ici par F02"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Séparateurs en dernier recours",
+     "liens": [
+      {
+       "label": "Polaris — Spacial organization",
+       "url": "https://polaris-react.shopify.com/design/layout/spacial-organization"
+      }
+     ],
+     "confiance": "Établi chez Polaris, adopté ici"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Rôles du trait tokenisés (délimiter un interactif vs grouper/séparer)",
+    "liens": [
+     {
+      "label": "Carbon",
+      "url": "https://carbondesignsystem.com/elements/color/tokens/"
+     },
+     {
+      "label": "Material 3",
+      "url": "https://github.com/material-components/material-web"
+     },
+     {
+      "label": "Fluent 2",
+      "url": "https://fluent2.microsoft.design/color-tokens/"
+     },
+     {
+      "label": "GOV.UK",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris-react.shopify.com/components/layout-and-structure/divider"
+     },
+     {
+      "label": "Primer",
+      "url": "https://primer.style/foundations/color/overview/"
+     },
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/border"
+     }
+    ],
+    "confiance": "**Établi par convergence — 7 systèmes sur 9 vérifiés** (relevé du 2026-07-27). C'est la règle la mieux établie de cette fondation."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R03",
+   "couche": "ux",
+   "solution": "le critère du rôle 1 reste la question du guardrail : **\"si cette bordure disparaît, l'utilisateur sait-il encore où interagir ?\"** Si non → délimitante → `border-strong`. Le test de rendu applique ce critère identiquement à tous les composants.",
+   "enonce": "Si un élément n'est identifiable que par sa bordure, cette bordure doit atteindre un contraste de 3:1 avec son fond.",
+   "mesure": "contraste bordure / fond ≥ 3:1",
+   "contre": "",
+   "probleme": "deux recalibrages ont été payés pour cette règle (bouton secondary en 1.3.0, input en F02) — un champ identifié par sa seule bordure à 1.24:1 est un champ invisible. La subtilité au repos y perd, assumé : \"un champ qu'on ne voit pas est un champ qu'on ne remplit pas.\"",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "3:1 sur les composants d'interface identifiés par leur trait",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      },
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité — éprouvé ici par F02"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "3:1 sur les composants d'interface identifiés par leur trait",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     },
+     {
+      "label": "Atlassian — Border",
+      "url": "https://atlassian.design/foundations/border"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité — éprouvé ici par F02"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Bordure délimitante",
+     "famille": "Rôle de bordure"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R04",
+   "couche": "ux",
+   "solution": "**le trait de ce système a une épaisseur constante : le hairline 1px** — exception documentée (au même titre que le 44px tactile), pas un token d'échelle. Il n'existe pas d'échelle d'épaisseurs parce que **l'état change la couleur du trait, jamais son épaisseur**.",
+   "enonce": "Nous utilisons une seule épaisseur de trait, 1px, partout.",
+   "mesure": "épaisseur du trait = 1px",
+   "contre": "sept systèmes sur neuf relevés exposent une ÉCHELLE d'épaisseurs tokenisée (Atlassian, Material 3, Carbon, Polaris, Fluent 2, Spectrum, Ant Design). Aucun système vérifié ne tient l'épaisseur unique — nous sommes seuls sur cette position, et c'est un choix, pas un standard.",
+   "probleme": "une échelle d'épaisseurs invite à distinguer les états par le trait — ce que la couleur fait déjà, sans coût de mise en page.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — épaisseur du trait.** Question 1 : épaisseur unique ou échelle tokenisée ? Question 2 : l'état modifie-t-il l'épaisseur ? Neuf systèmes interrogés : Atlassian, Material 3, Carbon, Polaris, Fluent 2, Spectrum, Primer, Salesforce, Ant Design. Résultat : **7/9 exposent une échelle** (aucun ne tient l'épaisseur unique) ; **6/9 épaississent le trait à l'état**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur sources primaires (documentation officielle et dépôts de tokens)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. Deux systèmes non vérifiables (Primer, Salesforce : documentation en JavaScript, aucune source primaire accessible)"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — épaisseur du trait.** Question 1 : épaisseur unique ou échelle tokenisée ? Question 2 : l'état modifie-t-il l'épaisseur ? Neuf systèmes interrogés : Atlassian, Material 3, Carbon, Polaris, Fluent 2, Spectrum, Primer, Salesforce, Ant Design. Résultat : **7/9 exposent une échelle** (aucun ne tient l'épaisseur unique) ; **6/9 épaississent le trait à l'état**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur sources primaires (documentation officielle et dépôts de tokens)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. Deux systèmes non vérifiables (Primer, Salesforce : documentation en JavaScript, aucune source primaire accessible)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R05",
+   "couche": "ux",
+   "solution": "un trait qui s'épaissit à l'état (error, selected, focus) déplace le contenu (layout shift) ou exige une compensation fragile ; la couleur et le ring font le même travail sans bouger un pixel. **Position minoritaire, tenue en connaissance de cause** : le relevé du 2026-07-27 montre que six systèmes sur neuf épaississent le trait à l'état (Atlassian 2px, Material 3 focus 3px, Carbon 1→2px, Fluent 2 bottom 2px, Spectrum, Ant Design `lineWidthFocus` 3). Nous divergeons parce que notre sélection porte déjà un canal redondant non chromatique (coche, CARD-UI) et que notre focus est un ring *externe* : l'épaississement ne nous apporterait qu'un décalage de mise en page.",
+   "enonce": "Nous ne changeons jamais l'épaisseur d'un trait pour signaler un état : la couleur s'en charge, et le contenu ne bouge pas.",
+   "mesure": "épaisseur identique au repos et à l'état",
+   "contre": "six systèmes sur neuf relevés font l'inverse et épaississent le trait à l'état. C'est la pratique majoritaire du secteur ; notre position est minoritaire et assumée.",
+   "probleme": "bordure 1px → 2px au focus \"pour bien la voir\" — le composant saute d'un pixel, et le focus devient un état *du trait* alors qu'il est un état *de l'élément* (le ring survit même sans bordure — un lien, une carte).",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — épaisseur du trait.** Question 1 : épaisseur unique ou échelle tokenisée ? Question 2 : l'état modifie-t-il l'épaisseur ? Neuf systèmes interrogés : Atlassian, Material 3, Carbon, Polaris, Fluent 2, Spectrum, Primer, Salesforce, Ant Design. Résultat : **7/9 exposent une échelle** (aucun ne tient l'épaisseur unique) ; **6/9 épaississent le trait à l'état**. Détail et URL dans la section « Benchmark » ci-dessous.",
+     "liens": [
+      {
+       "label": "Relevé interne sur sources primaires (documentation officielle et dépôts de tokens)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré, non déduit. Deux systèmes non vérifiables (Primer, Salesforce : documentation en JavaScript, aucune source primaire accessible)"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Épaisseurs d'état à 2px (choix inverse du nôtre)",
+     "liens": [
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi chez Atlassian — cas particulier du relevé S12"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — épaisseur du trait.** Question 1 : épaisseur unique ou échelle tokenisée ? Question 2 : l'état modifie-t-il l'épaisseur ? Neuf systèmes interrogés : Atlassian, Material 3, Carbon, Polaris, Fluent 2, Spectrum, Primer, Salesforce, Ant Design. Résultat : **7/9 exposent une échelle** (aucun ne tient l'épaisseur unique) ; **6/9 épaississent le trait à l'état**. Détail et URL dans la section « Benchmark » ci-dessous.",
+    "liens": [
+     {
+      "label": "Relevé interne sur sources primaires (documentation officielle et dépôts de tokens)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré, non déduit. Deux systèmes non vérifiables (Primer, Salesforce : documentation en JavaScript, aucune source primaire accessible)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Focus ring",
+     "famille": "Rôle de bordure"
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Bordure de sélection",
+     "famille": "Rôle de bordure"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R06",
+   "couche": "ux",
+   "solution": "le focus ring est **unifié pour tout le système** dans sa GÉOMÉTRIE et son MÉCANISME : largeur et écart tokenisés (`border.focus-width`, `border.focus-offset`), outline extérieur, définis une seule fois. Sa COULEUR est un anneau **subtil accordé à la bordure/état du composant** (crans `control.focus-*` : défaut primary éclairci ; error→danger, destructive→danger, success/warning/info/neutral idem — arbitrage 2026-07-29, remplace la couleur unique `accent` de la 1.3.0). Trois composants déclaraient la couleur du ring et laissaient largeur/écart en déduction silencieuse — la déduction silencieuse reste interdite : chaque cran de couleur est un token.",
+   "enonce": "Notre anneau de focus partage partout la même géométrie et le même mécanisme, définis une seule fois ; sa couleur est un cran subtil tokenisé, accordé à la bordure ou à l'état du composant, avec le primary éclairci pour défaut.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "un ring déduit composant par composant dérive — trois largeurs, trois écarts, et plus aucun moyen de le vérifier mécaniquement.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Seuils quantitatifs de l'anneau de focus : aire ≥ périmètre de 2px CSS, contraste ≥ 3:1 entre état focalisé et non focalisé ; technique libre (outline, box-shadow, bordure)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.13 Focus Appearance",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA) — ajoutée le 2026-07-27 : nos règles de focus s'appuyaient sur une convergence de systèmes alors qu'une norme quantitative existait"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Focus 2px avec écart, appairé largeur/couleur",
+     "liens": [
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi chez Atlassian ; adoption interne"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "3:1 sur les composants d'interface identifiés par leur trait",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      },
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité — éprouvé ici par F02"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Seuils quantitatifs de l'anneau de focus : aire ≥ périmètre de 2px CSS, contraste ≥ 3:1 entre état focalisé et non focalisé ; technique libre (outline, box-shadow, bordure)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.13 Focus Appearance",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html"
+     }
+    ],
+    "confiance": "Établi, standard (AAA) — ajoutée le 2026-07-27 : nos règles de focus s'appuyaient sur une convergence de systèmes alors qu'une norme quantitative existait"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R07",
+   "couche": "ux",
+   "solution": "le ring **s'ajoute, il ne remplace pas** : posé *à l'extérieur* du composant (offset), il coexiste avec la bordure d'état (un input en error focalisé montre les deux — ring accent dehors, bordure danger dedans, discernables simultanément).",
+   "enonce": "Chez nous, l'anneau de focus s'ajoute à la bordure existante plutôt que de la remplacer — les deux restent lisibles ensemble.",
+   "mesure": "",
+   "contre": "le relevé du 2026-07-27 donne le terrain **partagé, et plutôt contre nous** — quatre systèmes remplacent la bordure d'état par l'anneau au focus (Carbon, Primer, GOV.UK, Fluent 2 partiellement), deux la conservent et superposent l'anneau (Spectrum, Salesforce). Aucune norme ne tranche : WCAG 2.4.7 est agnostique, 2.4.13 fixe des seuils sans imposer la technique. Classée « loi » jusqu'au 2026-07-27, déclassée en préférence après vérification.",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — anneau de focus et bordure d'état.** Quand un champ en erreur reçoit le focus, l'anneau s'ajoute-t-il à la bordure rouge ou la remplace-t-il ? Huit systèmes interrogés. Résultat : **4 remplacent** (Carbon, Primer, GOV.UK, Fluent 2 partiellement), **2 conservent et superposent** (Spectrum, Salesforce), 2 non vérifiables (Material 3, Polaris). Aucune convergence.",
+     "liens": [
+      {
+       "label": "Relevé interne sur sources primaires (feuilles de style publiées)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré. C'est ce relevé qui a fait déclasser R07 de « loi » à « préférence »"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Focus 2px avec écart, appairé largeur/couleur",
+     "liens": [
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "Établi chez Atlassian ; adoption interne"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — anneau de focus et bordure d'état.** Quand un champ en erreur reçoit le focus, l'anneau s'ajoute-t-il à la bordure rouge ou la remplace-t-il ? Huit systèmes interrogés. Résultat : **4 remplacent** (Carbon, Primer, GOV.UK, Fluent 2 partiellement), **2 conservent et superposent** (Spectrum, Salesforce), 2 non vérifiables (Material 3, Polaris). Aucune convergence.",
+    "liens": [
+     {
+      "label": "Relevé interne sur sources primaires (feuilles de style publiées)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré. C'est ce relevé qui a fait déclasser R07 de « loi » à « préférence »"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R08",
+   "couche": "ux",
+   "solution": "**jamais supprimé sans remplacement équivalent** — règle déjà présente dans les trois composants, centralisée ici.",
+   "enonce": "L'indicateur de focus ne doit jamais être supprimé sans un remplacement au moins aussi visible.",
+   "mesure": "aucun outline supprimé sans équivalent ≥ 3:1",
+   "contre": "",
+   "probleme": "`outline: none` posé pour « faire propre » rend la navigation clavier aveugle — c'est la première cause d'exclusion clavier constatée en audit.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Un focus clavier doit rester visible — ne jamais supprimer l'indicateur sans équivalent",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — ajoutée en 1.2.0 : la règle R08 s'appuyait dessus sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Un focus clavier doit rester visible — ne jamais supprimer l'indicateur sans équivalent",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — ajoutée en 1.2.0 : la règle R08 s'appuyait dessus sans la citer"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Focus supprimé sans remplacement",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R09",
+   "couche": "ux",
+   "solution": "un focus visible ne suffit pas s'il est **masqué** : la cible focalisée ne doit jamais être cachée, même partiellement, par un élément collant (en-tête sticky) ou superposé (WCAG 2.4.11 « Focus Not Obscured »). Le contrat est posé ici parce que le ring relève de cette fondation ; sa mise en œuvre revient au composant qui superpose (sticky, tiroir, modal), qui doit réserver la place ou décaler le défilement pour que l'anneau reste entièrement visible.",
+   "enonce": "L'élément qui a le focus ne doit jamais être masqué, même en partie, par un en-tête collant ou un élément superposé.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "un ring parfaitement dessiné mais à moitié sous un header collant laisse l'utilisateur clavier sans repère — « visible » au sens du style, « masqué » au sens de l'usage. C'est la déclinaison spatiale de la non-suppression : ne pas retirer le focus, et ne pas le cacher non plus.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Focus non masqué par les superposés (sticky, overlay)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard (2.2) — le Modal est désormais le premier consommateur superposé"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Focus non masqué par les superposés (sticky, overlay)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+     }
+    ],
+    "confiance": "Établi, standard (2.2) — le Modal est désormais le premier consommateur superposé"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Focus ring",
+     "famille": "Rôle de bordure"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R10",
+   "couche": "ux",
+   "solution": "le focus apparaît **sans délai ni animation** — c'est une information de position pour la navigation clavier, pas un effet (frontière avec MOTION-UX, qui l'inscrit dans ses interdits).",
+   "enonce": "Chez nous, l'anneau de focus apparaît instantanément, sans animation.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R11",
+   "couche": "ux",
+   "solution": "limite connue — un ring monochrome peut se fondre dans un fond de même famille ; GOV.UK résout par un focus bicolore (jaune + noir). Ici, les fonds d'usage (background, surface) garantissent le 3:1 de l'accent ; le jour où un composant focalisable vit sur un fond arbitraire (media, surface-contrast), la question bicolore se rouvre.",
+   "enonce": "Notre anneau est d'une seule couleur : sur un fond imprévisible il peut se fondre, et nous ne traitons pas encore ce cas.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Anneau bicolore : deux couleurs contrastées entre elles ≥ 9:1 pour qu'au moins l'une tienne 3:1 sur tout fond uni — sans garantie sur image ou dégradé",
+     "liens": [
+      {
+       "label": "WCAG — Technique C40",
+       "url": "https://www.w3.org/WAI/WCAG21/Techniques/css/C40"
+      },
+      {
+       "label": "GOV.UK — Focus states",
+       "url": "https://design-system.service.gov.uk/get-started/focus-states/"
+      }
+     ],
+     "confiance": "Établi, technique référencée — remplace le simple renvoi à GOV.UK"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Focus bicolore pour fonds variables",
+     "liens": [
+      {
+       "label": "GOV.UK — Focus states",
+       "url": "https://design-system.service.gov.uk/get-started/focus-states/"
+      }
+     ],
+     "confiance": "Établi chez GOV.UK — noté comme issue de secours, non adopté"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Anneau bicolore : deux couleurs contrastées entre elles ≥ 9:1 pour qu'au moins l'une tienne 3:1 sur tout fond uni — sans garantie sur image ou dégradé",
+    "liens": [
+     {
+      "label": "WCAG — Technique C40",
+      "url": "https://www.w3.org/WAI/WCAG21/Techniques/css/C40"
+     },
+     {
+      "label": "GOV.UK — Focus states",
+      "url": "https://design-system.service.gov.uk/get-started/focus-states/"
+     }
+    ],
+    "confiance": "Établi, technique référencée — remplace le simple renvoi à GOV.UK"
+   },
+   "confiance": "établi (3:1, non-suppression) ; le choix 2px/2px est une convention interne sourcée sur Atlassian, pas une norme.",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R12",
+   "couche": "ux",
+   "solution": "la bordure est le signal qui **survit à forced-colors** — le mode contraste élevé supprime fonds et ombres mais *préserve et recolore* les traits. C'est l'argument de fond du rôle délimitant : dans l'environnement le plus dégradé, le trait est ce qui reste.",
+   "enonce": "Une information portée par un fond ou une ombre disparaît en mode contraste forcé ; le trait, lui, survit — c'est sur lui qu'il faut compter.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Le mode contraste forcé conserve et recolore les bordures, mais supprime fonds et ombres",
+     "liens": [
+      {
+       "label": "MDN — forced-colors",
+       "url": "https://developer.mozilla.org/docs/Web/CSS/@media/forced-colors"
+      },
+      {
+       "label": "Microsoft — Windows High Contrast",
+       "url": "https://learn.microsoft.com/windows/apps/design/accessibility/high-contrast-themes"
+      }
+     ],
+     "confiance": "Établi — ajoutée en 1.2.0 : la règle R12 était une affirmation non sourcée"
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Le mode contraste forcé conserve et recolore les bordures, mais supprime fonds et ombres",
+    "liens": [
+     {
+      "label": "MDN — forced-colors",
+      "url": "https://developer.mozilla.org/docs/Web/CSS/@media/forced-colors"
+     },
+     {
+      "label": "Microsoft — Windows High Contrast",
+      "url": "https://learn.microsoft.com/windows/apps/design/accessibility/high-contrast-themes"
+     }
+    ],
+    "confiance": "Établi — ajoutée en 1.2.0 : la règle R12 était une affirmation non sourcée"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Contraste élevé forcé",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R13",
+   "couche": "ux",
+   "solution": "écrans haute densité — le hairline reste **1px CSS** ; pas de 0.5px physique (rendu inégal entre navigateurs et plateformes). Le trait en px ne suit pas le zoom texte — même position que l'espacement (SPACING-UX), le trait n'est pas du texte.",
+   "enonce": "Le trait reste à 1px CSS, y compris sur écran haute densité.",
+   "mesure": "1px CSS, jamais 0.5px",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Écrans haute densité",
+     "famille": "Plateforme / environnement"
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Zoom navigateur",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R14",
+   "couche": "ux",
+   "solution": "écrit d'office (prédicteur \"état transitoire\") : les changements de couleur du trait (repos → error, repos → hover renforcé de la carte) transitionnent sur `motion.fast` ; l'apparition du **ring de focus est exclue de toute transition** (cf. ci-dessus). Une bordure qui apparaît/disparaît entièrement (encart dynamique) suit la règle de réservation d'espace de SPACING-UX — le trait fait partie de la boîte.",
+   "enonce": "Les changements de couleur d'un trait s'animent ; l'apparition de l'anneau de focus, jamais.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Repos → hover",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Repos → focus",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Repos → error",
+     "famille": "État / comportement dans le temps"
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Apparition/disparition du ring",
+     "famille": "État / comportement dans le temps"
+    }
+   ]
+  },
+  {
+   "id": "BORDER-R15",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-R16",
+   "couche": "ux",
+   "solution": "**le rôle du trait décide de tout — un même pixel gris n'a ni la même couleur, ni le même seuil, ni le même droit au retrait selon qu'il délimite, groupe ou sépare.**",
+   "enonce": "Un même gris n'a pas le même statut selon qu'il délimite, groupe ou sépare : c'est l'usage qui décide, pas la valeur.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "c'est le principe des registres (COLOR-UX) appliqué au trait : la valeur ne dit rien, l'usage dit tout.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Rôles du trait tokenisés (délimiter un interactif vs grouper/séparer)",
+     "liens": [
+      {
+       "label": "Carbon",
+       "url": "https://carbondesignsystem.com/elements/color/tokens/"
+      },
+      {
+       "label": "Material 3",
+       "url": "https://github.com/material-components/material-web"
+      },
+      {
+       "label": "Fluent 2",
+       "url": "https://fluent2.microsoft.design/color-tokens/"
+      },
+      {
+       "label": "GOV.UK",
+       "url": "https://design-system.service.gov.uk/styles/colour/"
+      },
+      {
+       "label": "Polaris",
+       "url": "https://polaris-react.shopify.com/components/layout-and-structure/divider"
+      },
+      {
+       "label": "Primer",
+       "url": "https://primer.style/foundations/color/overview/"
+      },
+      {
+       "label": "Atlassian",
+       "url": "https://atlassian.design/foundations/border"
+      }
+     ],
+     "confiance": "**Établi par convergence — 7 systèmes sur 9 vérifiés** (relevé du 2026-07-27). C'est la règle la mieux établie de cette fondation."
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Rôles du trait tokenisés (délimiter un interactif vs grouper/séparer)",
+    "liens": [
+     {
+      "label": "Carbon",
+      "url": "https://carbondesignsystem.com/elements/color/tokens/"
+     },
+     {
+      "label": "Material 3",
+      "url": "https://github.com/material-components/material-web"
+     },
+     {
+      "label": "Fluent 2",
+      "url": "https://fluent2.microsoft.design/color-tokens/"
+     },
+     {
+      "label": "GOV.UK",
+      "url": "https://design-system.service.gov.uk/styles/colour/"
+     },
+     {
+      "label": "Polaris",
+      "url": "https://polaris-react.shopify.com/components/layout-and-structure/divider"
+     },
+     {
+      "label": "Primer",
+      "url": "https://primer.style/foundations/color/overview/"
+     },
+     {
+      "label": "Atlassian",
+      "url": "https://atlassian.design/foundations/border"
+     }
+    ],
+    "confiance": "**Établi par convergence — 7 systèmes sur 9 vérifiés** (relevé du 2026-07-27). C'est la règle la mieux établie de cette fondation."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U01",
+   "couche": "ui",
+   "solution": "épaisseur **hairline 1px partout**. Un état ne modifie jamais l'épaisseur — il change la couleur du trait ou ajoute le ring.",
+   "enonce": "Le code applique 1px à tous les traits ; un état change la couleur, jamais l'épaisseur.",
+   "mesure": "border-width = 1px",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U02",
+   "couche": "ui",
+   "solution": "`outline` de largeur `border.focus-width` en `control.focus-color` (cran subtil accordé à la bordure/état ; défaut primary éclairci), décalé de `border.focus-offset` **à l'extérieur** du composant (`outline-offset`) — jamais `border` : le ring ne participe pas à la boîte, donc pas de layout shift et coexistence avec la bordure d'état.",
+   "enonce": "L'anneau de focus se pose en `outline` avec un décalage extérieur, jamais en `border`.",
+   "mesure": "outline + outline-offset, aucune border ajoutée au focus",
+   "contre": "aucune technique ne fait consensus (relevé du 2026-07-27) — `outline` + décalage chez Carbon et Spectrum, `box-shadow` chez Primer et Salesforce, hybride chez GOV.UK, `border` animée chez Fluent 2. Nous choisissons `outline` parce qu'il ne participe pas à la boîte ; ce n'est pas la pratique dominante, il n'y en a pas.",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "**Relevé de benchmark, 2026-07-27 — technique de l'anneau de focus.** Six systèmes vérifiés : `outline` + décalage (Carbon, Spectrum), `box-shadow` (Primer, Salesforce), hybride outline + box-shadow (GOV.UK), `border` animée (Fluent 2). Deux non vérifiables (Material 3, Polaris). **Aucune convergence.** La norme est agnostique : [WCAG 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) n'impose aucune propriété CSS, [2.4.13](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) fixe des seuils (aire ≥ périmètre de 2px, contraste ≥ 3:1) sans dicter la technique.",
+     "liens": [
+      {
+       "label": "Relevé interne sur feuilles de style publiées",
+       "url": null
+      }
+     ],
+     "confiance": "Établi — mesuré. Notre technique est un choix d'implémentation, pas un standard."
+    },
+    {
+     "ref": "T1",
+     "affirmation": "Ring en outline + offset, extérieur à la boîte",
+     "liens": [
+      {
+       "label": "Atlassian — Border",
+       "url": "https://atlassian.design/foundations/border"
+      },
+      {
+       "label": "Carbon",
+       "url": "https://cdn.jsdelivr.net/npm/@carbon/styles/scss/utilities/_focus-outline.scss"
+      },
+      {
+       "label": "Spectrum",
+       "url": "https://raw.githubusercontent.com/adobe/spectrum-css/main/components/textfield/index.css"
+      }
+     ],
+     "confiance": "**Corrigé le 2026-07-27** : annoncé « établi par convergence », il ne l'est pas — 2 systèmes sur 6 vérifiés emploient cette technique. Voir T4."
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "**Relevé de benchmark, 2026-07-27 — technique de l'anneau de focus.** Six systèmes vérifiés : `outline` + décalage (Carbon, Spectrum), `box-shadow` (Primer, Salesforce), hybride outline + box-shadow (GOV.UK), `border` animée (Fluent 2). Deux non vérifiables (Material 3, Polaris). **Aucune convergence.** La norme est agnostique : [WCAG 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) n'impose aucune propriété CSS, [2.4.13](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html) fixe des seuils (aire ≥ périmètre de 2px, contraste ≥ 3:1) sans dicter la technique.",
+    "liens": [
+     {
+      "label": "Relevé interne sur feuilles de style publiées",
+      "url": null
+     }
+    ],
+    "confiance": "Établi — mesuré. Notre technique est un choix d'implémentation, pas un standard."
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U03",
+   "couche": "ui",
+   "solution": "le rayon perçu du ring suit le composant — rayon du composant + offset (imbrication inversée, cf. RADIUS-UI).",
+   "enonce": "Le rayon de l'anneau suit celui du composant, augmenté du décalage.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U04",
+   "couche": "ui",
+   "solution": "apparition **instantanée** — le ring est exclu des transitions (MOTION-UI l'inscrit dans ses interdits techniques).",
+   "enonce": "L'anneau apparaît sans transition.",
+   "mesure": "aucune transition sur outline",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U05",
+   "couche": "ui",
+   "solution": "`:focus-visible` de préférence à `:focus` — le ring sert la navigation clavier ; le clic souris n'a pas besoin de le déclencher.",
+   "enonce": "Utiliser `:focus-visible` plutôt que `:focus`.",
+   "mesure": "sélecteur :focus-visible présent",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "`:focus-visible` pour la navigation clavier",
+     "liens": [
+      {
+       "label": "MDN — :focus-visible",
+       "url": "https://developer.mozilla.org/docs/Web/CSS/:focus-visible"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "`:focus-visible` pour la navigation clavier",
+    "liens": [
+     {
+      "label": "MDN — :focus-visible",
+      "url": "https://developer.mozilla.org/docs/Web/CSS/:focus-visible"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U06",
+   "couche": "ui",
+   "solution": "jamais `outline: none` sans remplacement équivalent au seuil 3:1, sur tout contrôle atteignable au clavier (Tab).",
+   "enonce": "Ne jamais écrire `outline: none` sur un élément atteignable au clavier sans un remplacement équivalent.",
+   "mesure": "aucun outline:none sur un élément tabulable",
+   "contre": "",
+   "probleme": "c'est la suppression la plus fréquente en revue de code — un `outline: none` posé « pour faire propre » rend la navigation clavier aveugle.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "3:1 sur délimitantes et états",
+     "liens": [
+      {
+       "label": "WCAG 1.4.11",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi — testé par tools/test-rendu.js"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "3:1 sur délimitantes et états",
+    "liens": [
+     {
+      "label": "WCAG 1.4.11",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+     }
+    ],
+    "confiance": "Établi — testé par tools/test-rendu.js"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U07",
+   "couche": "ui",
+   "solution": "**exception — cible de focus programmatique.** Un élément rendu focusable uniquement pour annoncer un changement de vue (titre ou région en `tabindex=\"-1\"`, focalisé par script) n'est jamais atteint au Tab : il ne porte donc pas d'anneau — `[tabindex=\"-1\"]:focus { outline: none }`. L'anneau reste obligatoire partout où l'on arrive réellement au clavier, y compris un panneau d'onglet `tabindex=\"0\"` vide.",
+   "enonce": "Exception : un élément focalisable uniquement par script (`tabindex=\"-1\"`) ne porte pas d'anneau.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "sans cette exception, un anneau parasite apparaît au chargement — et par intermittence, puisque `:focus-visible` dépend de la modalité d'arrivée (bug du 2026-07-16).",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U08",
+   "couche": "ui",
+   "solution": "`test-rendu.js` vérifie le 3:1 des bordures délimitantes et sémantiques, critère appliqué identiquement à tous les composants (décision F02).",
+   "enonce": "Le contraste des bordures est vérifié automatiquement à la génération.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U09",
+   "couche": "ui",
+   "solution": "la distinction délimitante / décorative n'est **pas** décidable par un script — elle dépend du rôle, pas de la valeur. C'est un critère de revue humaine ; la table « Application par rôle » ci-dessus en tient le registre.",
+   "enonce": "",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "BORDER-U10",
+   "couche": "ui",
+   "solution": "le rendu effectif d'`outline-offset` et de `:focus-visible` se vérifie **au clavier, à la main** — l'outillage ne le simule pas.",
+   "enonce": "",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

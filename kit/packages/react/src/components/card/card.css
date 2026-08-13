@@ -1,0 +1,81 @@
+/**
+ * Card — Container Queries (principe Adaptive, ADAPTIVE-UI.md) + relief au hover
+ * (langage Interaction, INTERACTION-UI.md). Pas de plugin Tailwind requis : les Container
+ * Queries sont du CSS natif, ce fichier passe tel quel dans le pipeline PostCSS.
+ * Cf. `foundations/relief-adaptive.md` pour le contexte de ces deux autorités.
+ */
+
+/* ── Adaptive : la Card est son propre conteneur de requête ─────────────────────────────
+   Elle réagit à SA largeur réelle, jamais au viewport (ADAPTIVE-UX.md : « la fenêtre
+   définit la page ; le conteneur définit le composant »). */
+.ds-card {
+  container-type: inline-size;
+  container-name: ds-card;
+  isolation: isolate;
+}
+
+/* état "regular" : assez de largeur pour passer le media à côté du contenu plutôt qu'au-
+   dessus. Le plus petit état viable (empilé, "compact") reste le CSS de base — cf.
+   ADAPTIVE-UI.md "le CSS de base rend l'état compact viable". Seuil dérivé du contenu réel
+   de CE composant (media + titre + description qui cessent de tenir côte à côte en dessous
+   de ~24rem), pas d'un breakpoint.mobile partagé. */
+@container ds-card (min-width: 24rem) {
+  .ds-card[data-regular-capable] > .ds-card-surface {
+    flex-direction: row;
+  }
+  .ds-card[data-regular-capable] > .ds-card-surface > .ds-card-media {
+    width: 40%;
+    aspect-ratio: 1 / 1;
+  }
+  .ds-card[data-regular-capable] > .ds-card-surface > .ds-card-body {
+    flex: 1 1 0%;
+  }
+}
+
+/* ── Relief au hover + lien étendu : DÉMÉNAGÉS dans la couche partagée du langage
+   Interaction (lib/interaction.css — .ds-interactive / .ds-interactive-target), dont Card
+   est le premier consommateur (arbitrage 2026-07-29, INTERACTION-R26…R28 / U09…U11).
+   Ce fichier ne garde que ce qui est PROPRE à Card : le conteneur de requête Adaptive. */
+
+/* ── Registre relief actif : une carte SÉLECTIONNÉE est posée (raised permanent, en plus
+   de sa bordure primary) — demande Aurélien 2026-07-29. Hors relief : bordure seule. */
+[data-relief] .ds-card[data-selected] > .ds-card-surface {
+  box-shadow: var(--control-raised-shadow);
+}
+
+/* ── Affleurements d'ITEM rapatriés depuis la collection (2026-07-30) ───────────────────
+   La pastille (`Card.Icon`) et la cible étendue-commande (`Card.TitleCommand`) vivaient
+   dans card-group.css (.cg-chip / .cg-cmd) : un pattern qui peint l'intérieur de ses
+   items empiète sur CARD. Géométrie dérivée des tokens (icon.lg + space.sm), plus aucun
+   pixel local. */
+.ds-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(var(--icon-lg) + var(--space-sm));
+  height: calc(var(--icon-lg) + var(--space-sm));
+  flex: none;
+}
+.ds-card-icon svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+
+/* La cible étendue peut être un <button> (ouvre un superposé) au lieu d'un <a> (navigue) :
+   même technique de zone étendue, sémantique honnête — une commande n'est pas une
+   destination. */
+.ds-card-title-command {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ds-card-title-command:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+  border-radius: var(--radius-sm);
+}

@@ -1,0 +1,1005 @@
+{
+ "slug": "navigation",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"4\" width=\"7.5\" height=\"16\" rx=\"2\" fill=\"#bcb9f5\"/><rect x=\"4.4\" y=\"6.2\" width=\"4.6\" height=\"1.7\" rx=\"0.85\" fill=\"#4F46E5\"/><rect x=\"4.4\" y=\"9.4\" width=\"4.6\" height=\"1.7\" rx=\"0.85\" fill=\"#F2C744\"/><rect x=\"4.4\" y=\"12.6\" width=\"4.6\" height=\"1.7\" rx=\"0.85\" fill=\"#0891B2\"/><rect x=\"12.5\" y=\"6.2\" width=\"8.5\" height=\"1.8\" rx=\"0.9\" fill=\"#111827\" opacity=\"0.32\"/><rect x=\"12.5\" y=\"9.6\" width=\"6.5\" height=\"1.8\" rx=\"0.9\" fill=\"#111827\" opacity=\"0.32\"/><rect x=\"12.5\" y=\"13\" width=\"7.5\" height=\"1.8\" rx=\"0.9\" fill=\"#111827\" opacity=\"0.32\"/></svg>",
+ "nom": "navigation",
+ "nature": "Pattern",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-24 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · navigation",
+  "question": "Comment aider quelqu'un à savoir où il est et à aller ailleurs ?",
+  "detail": "Un assemblage : des liens de destination regroupés en accordéons, un repère « page courante », une table des matières qui suit la lecture, et un raccourci pour sauter droit au contenu. Rien de neuf — ça compose lien, accordéon et repères.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Chaque zone de navigation est un repère nommé"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "La table des matières « sur cette page » suit la lecture et complète la nav principale sans la remplacer"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Un lien « aller au contenu »"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "11",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "8",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-navigation.md",
+   "source": "---\nsujet: navigation\ntype: pattern\nresume: \"Assemblage d'une navigation : landmarks (nav étiqueté, main), destinations = link (contexte navigation, état courant non chromatique), regroupement = accordion, table des matières « sur cette page » (scrollspy + aria-current), skip-link. Off-canvas délégué à overlay ; fil d'Ariane différé\"\nrequires: [\"link\", \"accordion\"]\nselon-contexte: [\"overlay (off-canvas de la nav latérale sous les seuils du shell)\", \"motion (scrollspy et défilement vers l'ancre)\", \"voice (libellés de destinations et d'étiquettes de nav)\"]\n---\n# RULES — Navigation (compilé, condensé)\n\n> Généré depuis `patterns/navigation/NAVIGATION-UX.md` (v1.0.0) et `NAVIGATION-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- **Pattern d'assemblage**, pas un composant neuf : il compose des **destinations** (`link` contexte navigation), les **regroupe** (`accordion`), les place dans des **landmarks** et gère l'**état courant**. Trois surfaces : nav latérale, TOC « sur cette page », skip-link. Fil d'Ariane différé.\n\n## Landmarks\n- Toute nav dans un `nav` **étiqueté** (`aria-label`) ; étiquettes distinctes si plusieurs (« principale », « sur cette page »). Contenu principal = `main` (cible du skip-link).\n\n## Nav latérale\n- Destinations = `link` (navigation) ; regroupement = `accordion` ; **un seul** lien courant (aria-current + signal **non chromatique**, cf. LINK). Hiérarchie à l'indentation et au regroupement, pas à la couleur seule.\n- Sous les seuils du shell, la nav passe **off-canvas** → comportement porté par `overlay` (scrim, focus, dismiss), pas ici.\n\n## Table des matières « sur cette page »\n- Liste les sections de la page ; l'entrée **active suit la lecture** (scrollspy), marquée `aria-current` + repère **non chromatique** (trait/gras). Complète la nav principale, ne la remplace pas. Clic = défilement vers l'ancre ; reduced-motion → instantané.\n\n## Skip-link\n- **Premier élément focalisable**, « Aller au contenu », **masqué jusqu'au focus** puis visible, déplace le focus vers `main`. Obligatoire dès qu'une nav longue précède le contenu (WCAG 2.4.1).\n\n## Clavier\n- Tab traverse dans un ordre qui suit le sens ; **aucun piège** ; accordéons suivent `accordion`, liens suivent `link`.\n\n## Frontières\n- Item → `link` ; regroupement → `accordion` ; off-canvas → `overlay` ; focus ring → `border` ; ordre général → `accessibility` ; wording → `voice`. Le pattern **compose**, il ne redéfinit rien.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Pas de skip-link devant une nav longue | Utilisateur clavier/lecteur d'écran forcé de tout traverser (WCAG 2.4.1) | Élevée |\n| Plusieurs `aria-current=\"page\"` ou aucun | Repère de position faux ou absent | Moyenne-élevée |\n| État courant porté par la seule couleur | Illisible sans perception des couleurs (WCAG 1.4.1) | Élevée |\n| `nav` multiples non étiquetés | Repères indistincts au lecteur d'écran | Moyenne |\n\nCONFIANCE : landmarks, aria-current, skip-link = établis (WCAG/APG). Scrollspy du TOC = consensus convergent (docs). Nav latérale + TOC + skip-link ; fil d'Ariane différé.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Surface de navigation",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Surface de navigation\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"24\" y=\"30\" width=\"86\" height=\"96\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"36\" y=\"44\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"30\" y=\"58\" width=\"74\" height=\"18\" rx=\"5\" fill=\"#E0E7FF\"/><rect x=\"40\" y=\"65\" width=\"44\" height=\"5\" rx=\"2.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"40\" y=\"86\" width=\"54\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"40\" y=\"102\" width=\"46\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"128\" y=\"36\" width=\"4\" height=\"12\" rx=\"2\" fill=\"#4F46E5\"/><text x=\"140\" y=\"46\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">TOC</text><rect x=\"140\" y=\"62\" width=\"60\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"140\" y=\"78\" width=\"48\" height=\"5\" rx=\"2.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"216\" y=\"32\" width=\"90\" height=\"20\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#0891B2\"/><text x=\"226\" y=\"46\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">skip-link</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Nav latérale",
+     "quand": "Destinations regroupées en accordéons dans le rail gauche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Surface de navigation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Nav latérale\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"70\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"80\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"132\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"152\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"52\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"224\" y=\"78\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"224\" y=\"98\" width=\"262\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><text x=\"40\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav latérale : liens groupés en accordéons</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Destinations regroupées en accordéons dans le rail gauche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « nav latérale » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de NAVIGATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "sous les seuils du shell, la nav latérale passe <strong>off-canvas</strong> — comportement porté par <code>overlay</code>",
+       "id": "NAVIGATION-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Table des matières « sur cette page »",
+     "quand": "Sections de la page, entrée active qui suit la lecture.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Surface de navigation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Table des matières « sur cette page »\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"50\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"120\" y=\"74\" width=\"260\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"120\" y=\"96\" width=\"280\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"120\" y=\"118\" width=\"240\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"500\" y=\"46\" width=\"4\" height=\"16\" rx=\"2\" fill=\"#4F46E5\"/><text x=\"516\" y=\"58\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">sur cette page</text><rect x=\"516\" y=\"80\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"500\" y=\"96\" width=\"4\" height=\"14\" rx=\"2\" fill=\"#4F46E5\"/><rect x=\"516\" y=\"100\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"516\" y=\"120\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"120\" y=\"220\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sommaire de page : entrée active qui suit la lecture</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Sections de la page, entrée active qui suit la lecture.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « table des matières « sur cette page » » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Skip-link",
+     "quand": "« Aller au contenu », premier focalisable, masqué jusqu'au focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Surface de navigation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Skip-link\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"50\" width=\"220\" height=\"34\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#0891B2\" stroke-width=\"2\"/><text x=\"250\" y=\"72\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Aller au contenu</text><path d=\"M340 90 v26 m-7 -7 l7 7 l7 -7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"122\" width=\"220\" height=\"74\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"250\" y=\"144\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"250\" y=\"164\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"230\" y=\"220\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">premier focalisable, masqué jusqu au focus, saute au main</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>« Aller au contenu », premier focalisable, masqué jusqu'au focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « skip-link » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Fil d'Ariane (breadcrumb)",
+     "quand": "Chemin dans l'arborescence.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Surface de navigation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Fil d'Ariane (breadcrumb)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"70\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"80\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"132\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"152\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"52\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"224\" y=\"78\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"224\" y=\"98\" width=\"262\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><text x=\"40\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav latérale : liens groupés en accordéons</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Chemin dans l'arborescence.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « fil d'Ariane (breadcrumb) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Barre de nav horizontale",
+     "quand": "Onglets de premier niveau en haut.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "01 · Surface de navigation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Barre de nav horizontale\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"70\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"80\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"132\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"152\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"52\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"224\" y=\"78\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"224\" y=\"98\" width=\"262\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><text x=\"40\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav latérale : liens groupés en accordéons</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Onglets de premier niveau en haut.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « barre de nav horizontale » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 3 cas",
+   "titre": "État et repère",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État et repère\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"30\" y=\"30\" width=\"120\" height=\"94\" rx=\"9\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"40\" y=\"46\" width=\"100\" height=\"20\" rx=\"6\" fill=\"#E0E7FF\"/><rect x=\"50\" y=\"54\" width=\"60\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"50\" y=\"80\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"50\" y=\"98\" width=\"66\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"180\" y=\"44\" width=\"4\" height=\"14\" rx=\"2\" fill=\"#4F46E5\"/><text x=\"194\" y=\"55\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4F46E5\">actif</text><rect x=\"194\" y=\"72\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"194\" y=\"90\" width=\"64\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Page courante",
+     "quand": "Un seul lien courant, signal non chromatique + aria-current.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État et repère",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Page courante\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"72\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"82\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><text x=\"66\" y=\"120\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">page courante</text><rect x=\"66\" y=\"136\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"156\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"120\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav étiquetée + un seul lien courant, signal non chromatique</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un seul lien courant, signal non chromatique + aria-current.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « page courante » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de NAVIGATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le TOC liste les <strong>sections de la page courante</strong> ; l'entrée <strong>active suit la lecture</strong> (la section",
+       "id": "NAVIGATION-R04"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Section active (scrollspy)",
+     "quand": "L'entrée du TOC suit la section lue.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État et repère",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Section active (scrollspy)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"120\" y=\"50\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"120\" y=\"74\" width=\"260\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"120\" y=\"96\" width=\"280\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"120\" y=\"118\" width=\"240\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.25\"/><rect x=\"500\" y=\"46\" width=\"4\" height=\"16\" rx=\"2\" fill=\"#4F46E5\"/><text x=\"516\" y=\"58\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">sur cette page</text><rect x=\"516\" y=\"80\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"500\" y=\"96\" width=\"4\" height=\"14\" rx=\"2\" fill=\"#4F46E5\"/><rect x=\"516\" y=\"100\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"516\" y=\"120\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"120\" y=\"220\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">sommaire de page : entrée active qui suit la lecture</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'entrée du TOC suit la section lue.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « section active (scrollspy) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de NAVIGATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le TOC liste les <strong>sections de la page courante</strong> ; l'entrée <strong>active suit la lecture</strong> (la section",
+       "id": "NAVIGATION-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "cliquer une entrée <strong>défile</strong> vers la section (ancre) ; le scrollspy <strong>reflète</strong> la lecture, il ne la",
+       "id": "NAVIGATION-R05"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Nav en off-canvas",
+     "quand": "La nav latérale passe en tiroir sous les seuils du shell.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · État et repère",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Nav en off-canvas\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"72\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"82\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><text x=\"66\" y=\"120\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">page courante</text><rect x=\"66\" y=\"136\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"156\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"120\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav étiquetée + un seul lien courant, signal non chromatique</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>La nav latérale passe en tiroir sous les seuils du shell.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « nav en off-canvas » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de NAVIGATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "sous les seuils du shell, la nav latérale passe <strong>off-canvas</strong> — comportement porté par <code>overlay</code>",
+       "id": "NAVIGATION-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'<strong>item</strong> est un <code>link</code> ; le <strong>regroupement</strong> un <code>accordion</code> ; l'<strong>off-canvas</strong> relève d'<code>overlay</code> ;",
+       "id": "NAVIGATION-R08"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "Landmarks et clavier",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Landmarks et clavier\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"30\" y=\"44\" width=\"90\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><text x=\"46\" y=\"63\" font-size=\"11\" font-family=\"ui-monospace,monospace\" fill=\"#4F46E5\">nav</text><rect x=\"140\" y=\"44\" width=\"100\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"164\" y=\"63\" font-size=\"11\" font-family=\"ui-monospace,monospace\" fill=\"#4B5563\">main</text><rect x=\"40\" y=\"92\" width=\"70\" height=\"26\" rx=\"7\" fill=\"#F3F4F6\"/><text x=\"56\" y=\"109\" font-size=\"11\" font-family=\"ui-monospace,monospace\" fill=\"#111827\">Tab</text><path d=\"M120 105h30m-8-6 8 6-8 6\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "nav étiqueté",
+     "quand": "Chaque zone de nav porte une étiquette distincte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Landmarks et clavier",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : nav étiqueté\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"72\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"82\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><text x=\"66\" y=\"120\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">page courante</text><rect x=\"66\" y=\"136\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"156\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><text x=\"210\" y=\"120\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav étiquetée + un seul lien courant, signal non chromatique</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Chaque zone de nav porte une étiquette distincte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « nav étiqueté » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de NAVIGATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "toute navigation vit dans un <code>nav</code> <strong>étiqueté</strong> (<code>aria-label</code>) ; quand plusieurs coexistent, chacune",
+       "id": "NAVIGATION-R01"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Cible du skip-link",
+     "quand": "Le contenu principal est un main.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Landmarks et clavier",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Cible du skip-link\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"50\" width=\"220\" height=\"34\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#0891B2\" stroke-width=\"2\"/><text x=\"250\" y=\"72\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Aller au contenu</text><path d=\"M340 90 v26 m-7 -7 l7 7 l7 -7\" fill=\"none\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"230\" y=\"122\" width=\"220\" height=\"74\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"250\" y=\"144\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"250\" y=\"164\" width=\"180\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><text x=\"230\" y=\"220\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">premier focalisable, masqué jusqu au focus, saute au main</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le contenu principal est un <code>main</code>.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « cible du skip-link » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Franchissable au clavier",
+     "quand": "Ordre logique, aucun piège de focus.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Landmarks et clavier",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Franchissable au clavier\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"34\" width=\"150\" height=\"172\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"54\" width=\"80\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"52\" y=\"70\" width=\"126\" height=\"26\" rx=\"7\" fill=\"#E0E7FF\"/><rect x=\"66\" y=\"80\" width=\"70\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.7\"/><rect x=\"66\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"132\" width=\"78\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"66\" y=\"152\" width=\"98\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"52\" width=\"190\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"224\" y=\"78\" width=\"300\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><rect x=\"224\" y=\"98\" width=\"262\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.28\"/><text x=\"40\" y=\"226\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">nav latérale : liens groupés en accordéons</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Ordre logique, aucun piège de focus.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « franchissable au clavier » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "NAVIGATION-R01",
+   "couche": "ux",
+   "solution": "toute navigation vit dans un `nav` **étiqueté** (`aria-label`) ; quand plusieurs coexistent, chacune",
+   "enonce": "Chaque bloc majeur de liens de navigation est exposé dans un élément nav porteur d'une étiquette accessible distincte, et le contenu principal dans un unique main.",
+   "mesure": "chaque nav de la page porte un aria-label ou aria-labelledby, tous distincts entre eux, et la page contient un seul main",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`nav` étiqueté, `main`, un seul `aria-current=\"page\"`",
+     "liens": [
+      {
+       "label": "WAI — Landmarks",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/"
+      },
+      {
+       "label": "aria-current",
+       "url": "https://www.w3.org/TR/wai-aria-1.1/#aria-current"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Un document peut contenir plusieurs nav (navigation de site, navigation intra-page) ; nav n'est destiné qu'aux blocs majeurs de liens, et l'étiquetage accessible sert à les distinguer",
+     "liens": [
+      {
+       "label": "MDN — L'élément nav",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/nav"
+      }
+     ],
+     "confiance": "Établi — référence normative de plateforme"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`nav` étiqueté, `main`, un seul `aria-current=\"page\"`",
+    "liens": [
+     {
+      "label": "WAI — Landmarks",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/"
+     },
+     {
+      "label": "aria-current",
+      "url": "https://www.w3.org/TR/wai-aria-1.1/#aria-current"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "nav étiqueté",
+     "famille": "Landmarks et clavier"
+    }
+   ]
+  },
+  {
+   "id": "NAVIGATION-R02",
+   "couche": "ux",
+   "solution": "les destinations sont des **liens** (`link`, contexte navigation) ; leur regroupement est un",
+   "enonce": "Dans un bloc de navigation, la destination correspondant à la page affichée est la seule à porter aria-current, et son état courant est signalé par au moins un indice non chromatique en plus de la couleur.",
+   "mesure": "un seul élément par bloc de navigation porte aria-current, et l'état courant reste distinguable en niveaux de gris",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "`nav` étiqueté, `main`, un seul `aria-current=\"page\"`",
+     "liens": [
+      {
+       "label": "WAI — Landmarks",
+       "url": "https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/"
+      },
+      {
+       "label": "aria-current",
+       "url": "https://www.w3.org/TR/wai-aria-1.1/#aria-current"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "L'indication de la position courante dans une barre de navigation est une technique suffisante ; le critère cite explicitement ARIA26 (aria-current) et G128",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.8 Location",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/location.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA)"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information ou de distinguer un élément — l'état courant d'un lien de navigation exige un second canal",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Le menu de navigation à divulgation est le motif ARIA de référence pour regrouper des destinations sous un en-tête dépliable",
+     "liens": [
+      {
+       "label": "ARIA APG — Disclosure (Show/Hide) Pattern",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+      }
+     ],
+     "confiance": "Établi, motif de référence W3C"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "`nav` étiqueté, `main`, un seul `aria-current=\"page\"`",
+    "liens": [
+     {
+      "label": "WAI — Landmarks",
+      "url": "https://www.w3.org/WAI/ARIA/apg/practices/landmark-regions/"
+     },
+     {
+      "label": "aria-current",
+      "url": "https://www.w3.org/TR/wai-aria-1.1/#aria-current"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-R03",
+   "couche": "ux",
+   "solution": "sous les seuils du shell, la nav latérale passe **off-canvas** — comportement porté par `overlay`",
+   "enonce": "Sous le seuil de compacité du shell, la navigation latérale devient un panneau hors-écran dont le scrim, le confinement du focus et la fermeture sont fournis par le composant overlay et non redéfinis par la navigation.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Nav latérale",
+     "famille": "Surface de navigation"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Nav en off-canvas",
+     "famille": "État et repère"
+    }
+   ]
+  },
+  {
+   "id": "NAVIGATION-R04",
+   "couche": "ux",
+   "solution": "le TOC liste les **sections de la page courante** ; l'entrée **active suit la lecture** (la section",
+   "enonce": "Le sommaire « sur cette page » liste les sections du document affiché, marque l'entrée correspondant à la section lue par aria-current et par un indice non chromatique, et complète la navigation principale sans s'y substituer.",
+   "mesure": "une seule entrée du sommaire porte aria-current à un instant donné, et l'entrée active reste distinguable en niveaux de gris",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "TOC « sur cette page » avec entrée active suivant la lecture (scrollspy)",
+     "liens": [
+      {
+       "label": "Convergence des docs (Docusaurus, MDN)",
+       "url": null
+      }
+     ],
+     "confiance": "Convergent"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "L'indication de la position courante dans une barre de navigation est une technique suffisante ; le critère cite explicitement ARIA26 (aria-current) et G128",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.8 Location",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/location.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA)"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de transmettre une information ou de distinguer un élément — l'état courant d'un lien de navigation exige un second canal",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "TOC « sur cette page » avec entrée active suivant la lecture (scrollspy)",
+    "liens": [
+     {
+      "label": "Convergence des docs (Docusaurus, MDN)",
+      "url": null
+     }
+    ],
+    "confiance": "Convergent"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Page courante",
+     "famille": "État et repère"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Section active (scrollspy)",
+     "famille": "État et repère"
+    }
+   ]
+  },
+  {
+   "id": "NAVIGATION-R05",
+   "couche": "ux",
+   "solution": "cliquer une entrée **défile** vers la section (ancre) ; le scrollspy **reflète** la lecture, il ne la",
+   "enonce": "L'activation d'une entrée de sommaire mène à sa section par une ancre, et le défilement associé est instantané dès que l'utilisateur a demandé une réduction des animations ; l'indicateur actif reflète la position de lecture sans la piloter.",
+   "mesure": "sous prefers-reduced-motion: reduce, aucun défilement animé n'est appliqué (scroll-behavior différent de smooth)",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "La valeur reduce indique que l'utilisateur a demandé la suppression ou la réduction des animations fondées sur le mouvement",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — référence normative de plateforme"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Le défilement lui-même est essentiel et autorisé, mais toute animation non essentielle ajoutée à l'interaction de défilement doit pouvoir être désactivée",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+      }
+     ],
+     "confiance": "Établi, standard (AAA)"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "La valeur reduce indique que l'utilisateur a demandé la suppression ou la réduction des animations fondées sur le mouvement",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — référence normative de plateforme"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Section active (scrollspy)",
+     "famille": "État et repère"
+    }
+   ]
+  },
+  {
+   "id": "NAVIGATION-R06",
+   "couche": "ux",
+   "solution": "le **premier élément focalisable** de la page est un lien « **Aller au contenu** » — **masqué",
+   "enonce": "Le premier élément focalisable du document est un lien qui mène directement au contenu principal ; il peut n'être visible qu'au focus, mais il doit alors le devenir.",
+   "mesure": "le premier élément focalisable du document est un lien dont la cible est le main",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Skip-link masqué jusqu'au focus, saute au contenu",
+     "liens": [
+      {
+       "label": "WCAG 2.4.1 — Bypass Blocks",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Le premier élément interactif de la page est un lien vers le début du contenu principal, et un lien visible uniquement au focus satisfait le critère",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — Technique G1",
+       "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G1"
+      }
+     ],
+     "confiance": "Établi, technique suffisante référencée pour 2.4.1 — c'est G1, et non 2.4.1, qui décrit « premier élément focalisable » et « masqué jusqu'au focus »"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Skip-link masqué jusqu'au focus, saute au contenu",
+    "liens": [
+     {
+      "label": "WCAG 2.4.1 — Bypass Blocks",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-R07",
+   "couche": "ux",
+   "solution": "Tab traverse la navigation dans un **ordre qui suit le sens** ; **aucun piège de focus** ; les",
+   "enonce": "L'ordre de tabulation à travers la navigation préserve le sens et l'opérabilité du contenu, et aucun élément de la navigation ne retient le focus au clavier.",
+   "mesure": "chaque élément interactif de la navigation peut être atteint puis quitté au clavier seul, sans tabindex positif",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Si le focus peut entrer dans un composant au clavier, il doit pouvoir en sortir au clavier seul",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.2 No Keyboard Trap",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Les composants focalisables reçoivent le focus dans un ordre qui préserve le sens et l'opérabilité",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.3 Focus Order",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Si le focus peut entrer dans un composant au clavier, il doit pouvoir en sortir au clavier seul",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.1.2 No Keyboard Trap",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html"
+     }
+    ],
+    "confiance": "Établi, standard (A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-R08",
+   "couche": "ux",
+   "solution": "l'**item** est un `link` ; le **regroupement** un `accordion` ; l'**off-canvas** relève d'`overlay` ;",
+   "enonce": "Ce pattern ne redéfinit aucun mécanisme : l'item relève de link, le regroupement d'accordion, l'off-canvas d'overlay, l'anneau de focus de border, l'ordre de focus général d'accessibility et le libellé de voice.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Nav en off-canvas",
+     "famille": "État et repère"
+    }
+   ]
+  },
+  {
+   "id": "NAVIGATION-U01",
+   "couche": "ui",
+   "solution": "le rythme vertical (entre groupes, entre liens) dérive de `spacing` ; l'indentation d'un sous-niveau",
+   "enonce": "Le rythme vertical et l'indentation des sous-niveaux de la navigation latérale dérivent de l'échelle spacing, et l'état courant d'un lien combine un fond secondary ou un trait avec une variation de graisse, jamais la couleur seule.",
+   "mesure": "l'état courant d'un lien de navigation reste distinguable en niveaux de gris",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "État courant = fond `secondary`/trait + poids, jamais la couleur seule",
+     "liens": [
+      {
+       "label": "LINK-UI + WCAG 1.4.1",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de distinguer un élément — fondement du « jamais la couleur seule » sur l'état courant et l'entrée active du sommaire",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "État courant = fond `secondary`/trait + poids, jamais la couleur seule",
+    "liens": [
+     {
+      "label": "LINK-UI + WCAG 1.4.1",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-U02",
+   "couche": "ui",
+   "solution": "les entrées du TOC sont des liens (`link`, navigation) ; l'entrée active porte un **repère non",
+   "enonce": "L'entrée active du sommaire porte un trait latéral border de couleur primary et une graisse accrue en plus d'aria-current, ses espacements et retraits venant de spacing.",
+   "mesure": "l'entrée active porte aria-current et se distingue des autres par au moins un écart de graisse ou un trait, hors couleur",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "État courant = fond `secondary`/trait + poids, jamais la couleur seule",
+     "liens": [
+      {
+       "label": "LINK-UI + WCAG 1.4.1",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de distinguer un élément — fondement du « jamais la couleur seule » sur l'état courant et l'entrée active du sommaire",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (A)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "État courant = fond `secondary`/trait + poids, jamais la couleur seule",
+    "liens": [
+     {
+      "label": "LINK-UI + WCAG 1.4.1",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-U03",
+   "couche": "ui",
+   "solution": "le skip-link est **hors flux visuel** (retiré à l'écran) tant qu'il n'a pas le focus ; **au focus**,",
+   "enonce": "Le lien d'évitement est retiré du rendu visuel tant qu'il n'a pas le focus et devient pleinement visible au focus, au-dessus du contenu, avec l'anneau, le rayon et le fond issus des tokens.",
+   "mesure": "au focus, le lien d'évitement est entièrement visible dans le viewport et n'est recouvert par aucun élément superposé",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Skip-link visible uniquement au focus, au-dessus du contenu",
+     "liens": [
+      {
+       "label": "WCAG 2.4.1, pattern « skip link »",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T4",
+     "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus est visible — fonde le « jamais caché au focus » du lien d'évitement",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.7 Focus Visible",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA)"
+    },
+    {
+     "ref": "T5",
+     "affirmation": "Un lien d'évitement visible uniquement au focus satisfait 2.4.1 ; c'est la technique, non le critère, qui décrit cette forme",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — Technique G1",
+       "url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G1"
+      }
+     ],
+     "confiance": "Établi, technique suffisante — comble l'absence d'URL de T2"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Skip-link visible uniquement au focus, au-dessus du contenu",
+    "liens": [
+     {
+      "label": "WCAG 2.4.1, pattern « skip link »",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "NAVIGATION-U04",
+   "couche": "ui",
+   "solution": "aucune valeur d'espacement, de couleur ou de trait codée en dur : tout référence `spacing.*`,",
+   "enonce": "Aucune valeur d'espacement, de couleur, de rayon ou de trait n'est écrite en dur dans la navigation : tout référence un token existant, et l'off-canvas applique les tokens d'overlay sans les redéfinir.",
+   "mesure": "aucun littéral de longueur ou de couleur dans les styles de navigation",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

@@ -1,0 +1,100 @@
+[
+ {
+  "id": "SELECT-R01",
+  "statut": "identite",
+  "source": "S3, S10, S11, S12",
+  "enonce": "Le select est réservé au choix unique dans une liste assez longue ou encombrante pour justifier d'être repliée ; en deçà du seuil retenu d'environ cinq options comparables d'un coup d'œil, le choix est présenté en radios visibles, une saisie libre relève du champ de texte et une bascule à effet immédiat du switch.",
+  "mesure": "aucun select ne porte un choix binaire ni une saisie libre"
+ },
+ {
+  "id": "SELECT-R02",
+  "statut": "universelle",
+  "source": "S4, S5, S7",
+  "enonce": "Le déclencheur d'un select affiche la valeur actuellement sélectionnée, ou à défaut un placeholder neutre qui n'est ni une option sélectionnable ni une valeur soumissible, et jamais une étiquette figée qui masquerait la sélection.",
+  "mesure": "le texte du déclencheur change à chaque changement de valeur ; l'option de placeholder porte une valeur vide et ne satisfait pas une contrainte de champ requis"
+ },
+ {
+  "id": "SELECT-R03",
+  "statut": "universelle",
+  "source": "S1, S2, S9",
+  "enonce": "La liste d'un select est un superposé non modal : ancrée à son déclencheur, sans voile, sans piège de focus, refermée aussi bien par Échap que par un clic ou un focus à l'extérieur, et rendant le focus au déclencheur à la fermeture.",
+  "mesure": "Échap et un clic extérieur ferment la liste ; aucun piège de focus n'est posé ; le focus revient au déclencheur après fermeture"
+ },
+ {
+  "id": "SELECT-R04",
+  "statut": "universelle",
+  "source": "S1, S8",
+  "enonce": "À l'ouverture de la liste, l'option sélectionnée — ou la première à défaut — devient l'option active sans que le focus du document quitte le déclencheur : l'option active est désignée par aria-activedescendant et rendue visible dans la liste.",
+  "mesure": "à l'ouverture, aria-activedescendant du déclencheur désigne l'option sélectionnée ou la première ; le focus du document reste sur le déclencheur"
+ },
+ {
+  "id": "SELECT-R05",
+  "statut": "universelle",
+  "source": "S1, S6, S8",
+  "enonce": "Le select est intégralement opérable au clavier selon le motif combobox à sélection seule : fermé, les flèches, Entrée, Espace et toute frappe de caractère l'ouvrent, la frappe présélectionnant par correspondance ; ouvert, les flèches déplacent l'option active, Début et Fin vont aux extrêmes, Entrée et Espace sélectionnent et ferment, Échap ferme sans changer la valeur et Tab ferme en validant l'option active.",
+  "mesure": "chaque touche du motif combobox à sélection seule produit l'effet prescrit ; aucune fonction du select n'exige le pointeur"
+ },
+ {
+  "id": "SELECT-R06",
+  "statut": "universelle",
+  "source": "S1, S5, S7",
+  "enonce": "Le déclencheur d'un select expose role=combobox, aria-expanded et une relation programmatique vers sa liste, et son nom accessible reprend le libellé visible ; la liste expose role=listbox, chaque option role=option avec son état de sélection, et la valeur choisie est restituée comme nom et valeur du combobox.",
+  "mesure": "le déclencheur porte role=combobox, aria-expanded et aria-controls vers la liste ; son nom accessible contient le libellé visible ; chaque option porte role=option et aria-selected"
+ },
+ {
+  "id": "SELECT-R07",
+  "statut": "universelle",
+  "source": "S1, S4, S8",
+  "enonce": "Le select distingue visuellement trois choses différentes — l'option survolée, l'option active et l'option sélectionnée — et expose ses états : désactivé et alors non focalisable, vide et alors signalé par un placeholder neutre, en erreur et alors signalé sans que le select prenne en charge l'orchestration du message.",
+  "mesure": "survol, option active et option sélectionnée se distinguent chacun par au moins une propriété visuelle ; un select désactivé n'est pas atteignable au clavier"
+ },
+ {
+  "id": "SELECT-R08",
+  "statut": "methode",
+  "source": "interne",
+  "enonce": "Le select ne redéfinit pas ce qui appartient à ses voisins : l'ancrage, le light-dismiss et l'empilement de sa liste relèvent du superposé, le caractère requis et la validation du formulaire, le chevron de l'iconographie, la saisie libre du champ de texte, et le mot du libellé du langage.",
+  "mesure": ""
+ },
+ {
+  "id": "SELECT-U01",
+  "statut": "identite",
+  "source": "T1, T2, T4",
+  "enonce": "Le déclencheur d'un select résout sa hauteur interactive, son rayon, son fond, sa couleur de texte et ses retraits sur les échelles de tokens, et porte une bordure délimitante contrastée à au moins 3:1, seule marque de la présence du contrôle ; son chevron est une icône en couleur courante.",
+  "mesure": "aucune valeur brute de hauteur, rayon, couleur ou retrait sur le déclencheur ; contraste de la bordure délimitante ≥ 3:1"
+ },
+ {
+  "id": "SELECT-U02",
+  "statut": "methode",
+  "source": "T2",
+  "enonce": "L'anneau de focus du select n'est pas redéfini localement : il reprend celui de la fondation bordure, et l'état désactivé abaisse l'opacité sans modifier ni le trait ni le rayon.",
+  "mesure": "aucun style de focus propre au select ; trait et rayon identiques entre l'état normal et l'état désactivé"
+ },
+ {
+  "id": "SELECT-U03",
+  "statut": "implementation",
+  "source": "T1",
+  "enonce": "La liste d'un select reprend le niveau d'empilement, l'ombre, le rayon et le fond du superposé non modal, sans voile, et s'aligne en ancrage comme en largeur sur son déclencheur.",
+  "mesure": "la liste applique le token d'empilement popover et l'ombre de superposé ; aucun voile n'est rendu ; largeur de la liste égale à celle du déclencheur"
+ },
+ {
+  "id": "SELECT-U04",
+  "statut": "universelle",
+  "source": "T3",
+  "enonce": "L'option sélectionnée d'une liste est marquée par un canal non chromatique — une coche — en plus de toute variation de couleur, et l'option active se distingue par une surface qui lui est propre.",
+  "mesure": "l'option sélectionnée porte un indicateur non chromatique ; la distinction entre option active et option sélectionnée ne repose pas sur la seule couleur"
+ },
+ {
+  "id": "SELECT-U05",
+  "statut": "universelle",
+  "source": "T5",
+  "enonce": "L'ouverture et la fermeture de la liste empruntent leurs durées et leurs courbes aux tokens de mouvement, et se réduisent à une apparition sans glissement lorsque l'utilisateur a demandé moins de mouvement.",
+  "mesure": "aucune durée ni courbe en dur ; sous prefers-reduced-motion: reduce, aucune translation n'est jouée"
+ },
+ {
+  "id": "SELECT-U06",
+  "statut": "methode",
+  "source": "T6",
+  "enonce": "Aucune valeur d'empilement, d'ombre, de rayon, de hauteur, de couleur, de retrait ni de durée du select n'est codée en dur : chacune résout un token de fondation, et la cible pointeur du déclencheur atteint le seuil de confort retenu par l'accessibilité.",
+  "mesure": "aucune valeur brute dans l'implémentation du select ; cible pointeur du déclencheur ≥ 44 × 44 px CSS"
+ }
+]

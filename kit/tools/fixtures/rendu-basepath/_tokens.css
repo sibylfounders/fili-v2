@@ -1,0 +1,18 @@
+/* Extrait minimal du thème : le harnais lit les crans sur la racine, il ne connaît
+   aucune couleur en dur. On reproduit ici la même mécanique que tokens.css. */
+:root{
+  --primary:#4F46E5;
+  --static-white:#FFFFFF;
+  --control-focus-primary: color-mix(in srgb, var(--primary), var(--static-white) 28%);
+  --control-focus-danger: color-mix(in srgb, #DC2626, var(--static-white) 28%);
+  --focus-width:2px; --focus-offset:2px;
+  --text-primary:#111827; --background:#FFFFFF;
+}
+body{background:var(--background);color:var(--text-primary);font:16px system-ui;margin:24px}
+.ds-focus-ring:focus-visible{outline:var(--focus-width) solid var(--control-focus-primary);outline-offset:var(--focus-offset)}
+/* Input du kit : l'anneau vit sur le CADRE ([data-slot=input]:has(input:focus-visible)),
+   le champ actif garde une outline transparente (le outline-none de Tailwind). */
+[data-slot="input"]{display:inline-block;border:1px solid #d1d5db;border-radius:6px;padding:4px}
+[data-slot="input"]:has(input:focus-visible){outline:var(--focus-width) solid var(--control-focus-primary);outline-offset:var(--focus-offset)}
+[data-slot="input"] input{border:0;outline:2px solid transparent}
+a,button{color:var(--primary)}

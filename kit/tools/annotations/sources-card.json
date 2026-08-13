@@ -1,0 +1,107 @@
+[
+  {
+    "couche": "ux",
+    "ref": "S18",
+    "affirmation": "Information, structure et relations véhiculées par la présentation sont programmatiquement déterminables ou disponibles en texte — ce qui fonde le titre de carte réel et le balisage de collection",
+    "source_markdown": "[WCAG 2.2 — 1.3.1 Info and Relationships](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html)",
+    "confiance": "Établi, standard (niveau A) — techniques suffisantes H42 (h1–h6) et H48 (ol/ul/dl) explicitement listées"
+  },
+  {
+    "couche": "ux",
+    "ref": "S19",
+    "affirmation": "Tout contenu non textuel dispose d'une alternative textuelle de finalité équivalente ; un contenu purement décoratif est implémenté de façon à pouvoir être ignoré par les technologies d'assistance",
+    "source_markdown": "[WCAG 2.2 — 1.1.1 Non-text Content](https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html)",
+    "confiance": "Établi, standard (niveau A) — couvre les deux volets de la règle media (alt obligatoire / décoratif explicitement marqué)"
+  },
+  {
+    "couche": "ux",
+    "ref": "S20",
+    "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément",
+    "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+    "confiance": "Établi, standard (niveau A) — fonde l'exigence d'un indice non chromatique sur l'état sélectionné"
+  },
+  {
+    "couche": "ux",
+    "ref": "S21",
+    "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible",
+    "source_markdown": "[WCAG 2.2 — 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+    "confiance": "Établi, standard (niveau AA)"
+  },
+  {
+    "couche": "ux",
+    "ref": "S22",
+    "affirmation": "Pour tout composant d'interface, le nom et le rôle sont programmatiquement déterminables, les états et propriétés modifiables sont programmatiquement réglables, et la notification de leur changement est disponible aux technologies d'assistance",
+    "source_markdown": "[WCAG 2.2 — 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+    "confiance": "Établi, standard (niveau A) — fonde à la fois l'état sélectionné exposé et l'état déplié porté par un attribut, pas par le mouvement"
+  },
+  {
+    "couche": "ux",
+    "ref": "S23",
+    "affirmation": "Toute fonctionnalité du contenu est opérable au clavier, sauf lorsque la fonction sous-jacente dépend du tracé du mouvement et non de ses seuls points d'arrivée",
+    "source_markdown": "[WCAG 2.2 — 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+    "confiance": "Établi, standard (niveau A) — complète 2.5.7 sur l'alternative au glisser-déposer"
+  },
+  {
+    "couche": "ux",
+    "ref": "S24",
+    "affirmation": "Le modèle de contenu de l'élément a interdit tout descendant de contenu interactif, tout descendant a et tout descendant portant l'attribut tabindex",
+    "source_markdown": "[HTML Living Standard — 4.5.1 The a element](https://html.spec.whatwg.org/multipage/text-level-semantics.html)",
+    "confiance": "Normatif — l'interdiction d'imbrication dans une carte cliquable n'est pas une convention de design system mais une contrainte de la spécification HTML"
+  },
+  {
+    "couche": "ux",
+    "ref": "S25",
+    "affirmation": "La finalité d'un lien est déterminable à partir de son texte seul ou de son texte et de son contexte programmatiquement déterminé — ce qui impose que le texte accessible d'une carte cliquable soit son titre",
+    "source_markdown": "[WCAG 2.2 — 2.4.4 Link Purpose (In Context)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) ; [WCAG 2.2 — 2.4.9 Link Purpose (Link Only)](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-link-only.html)",
+    "confiance": "Établi, standards (A et AAA) — la règle correspondante est portée par LINK-UX.md (R15/R16), la carte s'y rattache sans la réécrire"
+  },
+  {
+    "couche": "ux",
+    "ref": "S26",
+    "affirmation": "Dans le motif Disclosure, le déclencheur porte le rôle button et l'attribut aria-expanded vaut true quand le contenu est visible, false quand il est masqué ; Entrée et Espace l'activent",
+    "source_markdown": "[ARIA Authoring Practices Guide — Disclosure Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/)",
+    "confiance": "Normatif (pratique de référence W3C) — fonde le mode expandable : l'état vit dans aria-expanded, pas dans la rotation du chevron"
+  },
+  {
+    "couche": "ux",
+    "ref": "S27",
+    "affirmation": "La cible pour les entrées de pointage mesure au moins 24 × 24 px CSS, sauf exceptions d'espacement, d'équivalence, de texte en ligne, de contrôle par l'agent utilisateur ou d'essentialité",
+    "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+    "confiance": "Établi, standard (niveau AA) — s'applique aux cibles internes distinctes d'une carte cliquable"
+  },
+  {
+    "couche": "ux",
+    "ref": "S28",
+    "affirmation": "Les messages d'état, dont ceux qui portent sur l'attente et la progression d'un traitement, sont programmatiquement déterminables par rôle ou propriétés et présentables sans prise de focus",
+    "source_markdown": "[WCAG 2.2 — 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+    "confiance": "Établi, standard (niveau AA) — fonde l'annonce du déplacement effectif d'une carte et l'annonce de chargement d'une collection"
+  },
+  {
+    "couche": "ux",
+    "ref": "S29",
+    "affirmation": "Carte = point d'entrée résumant une information plus vaste ; anatomie en-tête / media / corps / pied avec les actions en pied ; groupe de cartes balisé ul + li ; niveau de titre choisi selon la structure de la page ; ratio d'image contrôlé par utilitaire",
+    "source_markdown": "[U.S. Web Design System — Card](https://designsystem.digital.gov/components/card/)",
+    "confiance": "Établi — troisième design system public vérifié sur la carte (avec Carbon S3/S4 et Polaris S5) ; fonde les convergences invoquées sur l'anatomie, la position des actions et le titre sémantique"
+  },
+  {
+    "couche": "ux",
+    "ref": "S30",
+    "affirmation": "« Les cartes affichent du contenu et des actions relatifs à un sujet unique » ; trois types de conteneur : elevated, filled, outlined",
+    "source_markdown": "[Material Design 3 — Cards](https://m3.material.io/components/cards/overview)",
+    "confiance": "Établi pour la définition et les trois types (page rendue en JavaScript : seule la description canonique de la page a pu être lue) — corrobore S8"
+  },
+  {
+    "couche": "ux",
+    "ref": "S31",
+    "affirmation": "Les titres et les étiquettes décrivent le sujet ou la finalité",
+    "source_markdown": "[WCAG 2.2 — 2.4.6 Headings and Labels](https://www.w3.org/WAI/WCAG22/Understanding/headings-and-labels.html)",
+    "confiance": "Établi, standard (niveau AA) — donne un ancrage normatif au titre de carte qui « nomme le sujet »"
+  },
+  {
+    "couche": "ui",
+    "ref": "T9",
+    "affirmation": "Le seuil de conformité courant pour une cible de pointage est 24 × 24 px CSS (niveau AA) ; le 44 px déclaré « standard externe non négociable » dans le frontmatter de CARD-UI.md est plus strict que la norme AA et relève d'un sur-respect interne, pas d'une obligation de conformité",
+    "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)",
+    "confiance": "Normatif — correction de qualification : min_touch_target: 44px est un choix plus exigeant que le standard invoqué, à documenter comme tel"
+  }
+]

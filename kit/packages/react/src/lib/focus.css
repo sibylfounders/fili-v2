@@ -1,0 +1,19 @@
+/* Focus v2 — L'ANNEAU UNIQUE de la fondation BORDER (BORDER-R06/U02) : UNE géométrie
+   (outline EXTÉRIEUR, largeur/écart tokenisés, :focus-visible — zéro layout shift),
+   et une COULEUR SUBTILE accordée à la bordure/état du composant (arbitrage Aurélien
+   2026-07-29 après-midi, remplace l'essai accent) : défaut = primary éclairci
+   (--control-focus-primary), un composant surcharge --control-focus-color avec le cran
+   de sa famille (--control-focus-danger/success/warning/info/neutral). L'anneau
+   s'AJOUTE à la bordure d'état (BORDER-R07). Toute la cascade passe par l'étage 2. */
+
+/* Contrôle focalisable directement (Button, CompactButton…). */
+.ds-focus-ring:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+
+/* Conteneur dont un descendant reçoit le focus (Input : le ring vit sur le cadre). */
+.ds-focus-within:has(:focus-visible) {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}

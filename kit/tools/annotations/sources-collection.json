@@ -1,0 +1,93 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S7",
+  "affirmation": "Un message de statut — information sur le résultat d'une action, l'attente ou l'existence d'erreurs — doit être déterminable programmatiquement par un rôle ou une propriété et présentable par les technologies d'assistance sans recevoir le focus ; « 18 results returned » et « No results returned » sont donnés en exemples, tandis que la liste de résultats elle-même n'est pas un message de statut",
+  "source_markdown": "[WCAG 2.2 — 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+  "confiance": "Établi, standard (AA) — **la norme la plus directement applicable au compteur de résultats d'une collection** ; elle fonde aussi le fait que la grille ne doit pas être une région live"
+ },
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "Lorsque l'ordre de présentation du contenu affecte son sens, une séquence de lecture correcte doit pouvoir être déterminée programmatiquement ; le repositionnement par CSS qui change le sens du contenu est un échec documenté",
+  "source_markdown": "[WCAG 2.2 — 1.3.2 Meaningful Sequence](https://www.w3.org/WAI/WCAG22/Understanding/meaningful-sequence.html)",
+  "confiance": "Établi, standard (A) — fonde l'interdiction de réordonner visuellement au reflux"
+ },
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Les composants focalisables reçoivent le focus dans un ordre qui préserve le sens et l'opérabilité, y compris lorsque du contenu est inséré dynamiquement — la recommandation étant d'insérer le contenu dynamique immédiatement après son élément déclencheur",
+  "source_markdown": "[WCAG 2.2 — 2.4.3 Focus Order](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)",
+  "confiance": "Établi, standard (A) — s'applique au reflux et à l'insertion d'un incrément ; **la norme ne prescrit pas de mécanique de focus propre à la pagination, et le fichier n'en contient aucune règle**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "Changer le réglage d'un composant d'interface ne doit pas provoquer automatiquement un changement de contexte sans que l'utilisateur en ait été averti ; la norme précise qu'« un changement de contenu n'est pas toujours un changement de contexte », les changements de contexte visant l'agent utilisateur, la zone d'affichage, le focus et le contenu qui change le sens de la page",
+  "source_markdown": "[WCAG 2.2 — 3.2.2 On Input](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html)",
+  "confiance": "Établi, standard (A) — **vérifié et nuancé** : réordonner ou filtrer une liste de résultats est un changement de contenu, pas un changement de contexte ; un contrôle de tri qui s'applique à la sélection reste conforme tant qu'il ne déplace ni le focus ni la vue (technique SCR19)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "La préférence de mouvement réduit est une caractéristique média standard indiquant que l'utilisateur demande la suppression, la réduction ou le remplacement des animations non essentielles",
+  "source_markdown": "[MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — standard CSS, fonde le remplacement sans transition au tri et au filtrage"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Les états vides se répartissent en trois cas (absence de données, résultat d'une action de l'utilisateur, erreur ou permission) ; leur anatomie est image optionnelle, titre, corps, action principale optionnelle ; « les états vides apparaissent toujours dans l'espace resté vide, dans le contexte des données manquantes » et « remplacent l'élément qui s'afficherait normalement » — pour un tableau, l'état vide remplace le tableau, en-têtes compris",
+  "source_markdown": "[Carbon — Empty states](https://carbondesignsystem.com/patterns/empty-states-pattern/)",
+  "confiance": "Établi chez eux — **convention de design system, pas une norme** ; converge avec S13 et S14 sur la structure et le rôle, diverge sur le périmètre (Carbon accepte l'état vide partiel, Polaris le réserve à la page entière)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "L'état vide est utilisé « quand une liste, un tableau ou un graphique n'a aucun élément ni donnée à afficher » ; il combine titre orienté action, illustration, corps et une seule action principale, et son ton évite de faire sentir l'échec à l'utilisateur ; Polaris le réserve explicitement aux pages entières",
+  "source_markdown": "[Shopify Polaris — Empty state](https://polaris-react.shopify.com/components/layout-and-structure/empty-state)",
+  "confiance": "Établi chez eux — convention ; divergence de périmètre notée avec S12"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "« Un état vide apparaît lorsqu'il n'y a aucune donnée à afficher et décrit ce que l'utilisateur peut faire ensuite »",
+  "source_markdown": "[Atlassian Design System — Empty state](https://atlassian.design/components/empty-state)",
+  "confiance": "Établi chez eux — troisième système public convergent sur la définition (expliquer + proposer la suite) ; page peu détaillée, la convergence porte sur le principe, pas sur l'anatomie"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "La pagination est recommandée quand tout afficher sur une page allonge trop le chargement et que la plupart des utilisateurs ne consultent que les premières pages ; elle est déconseillée dans les parcours linéaires, et le défilement infini est écarté parce qu'il crée des problèmes de navigation au clavier ; le composant impose un repère de navigation étiqueté, l'indication de la page courante et le numéro de page dans le titre du document",
+  "source_markdown": "[GOV.UK Design System — Pagination](https://design-system.service.gov.uk/components/pagination/)",
+  "confiance": "Établi chez eux — deuxième source publique convergente avec S3 contre le défilement infini seul ; **les exigences d'accessibilité de la pagination (repère, page courante, titre) n'ont aucun équivalent dans ce fichier**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "Les catégories de filtres se placent verticalement à gauche ou horizontalement au-dessus du jeu de données ; lorsqu'ils sont repliés, un indicateur visible signale que des filtres sont appliqués et en donne le nombre ; chaque catégorie offre un moyen de tout effacer, et un moyen global efface tous les filtres de toutes les catégories",
+  "source_markdown": "[Carbon — Filtering](https://carbondesignsystem.com/patterns/filtering/)",
+  "confiance": "Établi chez eux — converge avec S17 sur la visibilité et le retrait des filtres actifs ; **diverge sur la position** (gauche ou au-dessus), ce qui laisse notre « toujours au-dessus » en parti pris ; Carbon ne dit rien de l'annonce des changements aux technologies d'assistance"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Les filtres appliqués sont rendus sous forme de pastilles retirables individuellement, avec une réinitialisation globale, l'ensemble formant une barre de contrôle solidaire de la liste ou du tableau",
+  "source_markdown": "[Shopify Polaris — Filters](https://polaris-react.shopify.com/components/selection-and-input/filters)",
+  "confiance": "Établi chez eux — avec S16, deux systèmes publics convergents : filtres actifs visibles, retirables un à un, effaçables en bloc"
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "Un tableau expose les rôles table, row, columnheader/rowheader et cell, et « si le tableau contient des colonnes ou des rangées triables, aria-sort est positionné à la valeur appropriée sur la cellule d'en-tête de la colonne ou de la rangée triée » ; l'attribut ne doit être posé que sur un seul en-tête à la fois et se déplace vers la colonne nouvellement triée",
+  "source_markdown": "[ARIA APG — Table Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/table/) ; [MDN — aria-sort](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-sort)",
+  "confiance": "Établi, norme — **mais sans consommateur dans ce fichier** : la collection ne documente aucun régime tabulaire, aucune règle d'en-têtes de colonnes ni d'état de tri programmatique ; la déclaration visible du tri par défaut est notre parti pris, sa contrepartie normative pour un rendu en tableau est ici"
+ },
+ {
+  "couche": "ui",
+  "ref": "T5",
+  "affirmation": "Le compteur mis à jour est un message de statut au sens de la norme : déterminable programmatiquement, présenté sans prise de focus ; la liste de résultats elle-même n'en est pas un",
+  "source_markdown": "[WCAG 2.2 — 4.1.3 Status Messages](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html)",
+  "confiance": "Établi, standard (AA) — fonde « une seule région live, le compteur, jamais la grille »"
+ }
+]

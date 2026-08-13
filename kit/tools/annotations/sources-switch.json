@@ -1,0 +1,65 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S4",
+  "affirmation": "Les toggles ne servent qu'à des actions binaires « qui interviennent immédiatement après que l'utilisateur a actionné l'interrupteur » ; pour un réglage qui n'est pas binaire ou ne s'applique pas instantanément, utiliser une case à cocher associée à un bouton ; le toggle par défaut exige un libellé et un texte d'état",
+  "source_markdown": "[Carbon Design System — Toggle](https://carbondesignsystem.com/components/toggle/usage/)",
+  "confiance": "Établi par convergence — système public vérifié (1/2)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S5",
+  "affirmation": "« Le résultat du changement d'état du toggle est immédiatement effectif et aucune action supplémentaire n'est nécessaire pour appliquer ou enregistrer le changement » ; la case à cocher est préférée quand la sélection doit être enregistrée ou soumise",
+  "source_markdown": "[GitLab Pajamas — Toggle](https://design.gitlab.com/components/toggle/)",
+  "confiance": "Établi par convergence — système public vérifié (2/2) ; avec S2 (NN/g), fait de l'effet immédiat une propriété convergente et non un parti pris"
+ },
+ {
+  "couche": "ux",
+  "ref": "S6",
+  "affirmation": "Changer le réglage d'un composant ne provoque pas automatiquement de changement de contexte non annoncé ; changer un réglage n'est pas activer un contrôle, et l'application immédiate d'un état n'est pas en soi un changement de contexte",
+  "source_markdown": "[WCAG 2.2 — 3.2.2 On Input](https://www.w3.org/WAI/WCAG22/Understanding/on-input.html)",
+  "confiance": "Établi, standard (niveau A) — autorise l'effet immédiat du switch tant qu'il ne réagence pas la page ni ne déplace le focus ; ne prescrit pas l'immédiateté"
+ },
+ {
+  "couche": "ux",
+  "ref": "S7",
+  "affirmation": "Pour les composants dont l'étiquette contient du texte, le nom accessible contient le texte présenté visuellement",
+  "source_markdown": "[WCAG 2.2 — 2.5.3 Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)",
+  "confiance": "Établi, standard (niveau A) — le corpus cite 2.5.3 sans lien ; il exige que le nom contienne le libellé, pas qu'il s'y réduise"
+ },
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "Nom et rôle programmatiquement déterminables, états et valeurs programmatiquement définissables, et notification de leurs changements aux technologies d'assistance",
+  "source_markdown": "[WCAG 2.2 — 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+  "confiance": "Établi, standard (niveau A) — fonde la notification du changement d'état par aria-checked"
+ },
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard (niveau A) — donne son URL à S3 ; le second canal est exigé, le choix de la position du pouce comme second canal reste interne"
+ },
+ {
+  "couche": "ui",
+  "ref": "T3",
+  "affirmation": "La présentation visuelle des composants d'interface atteint un contraste d'au moins 3:1 avec les couleurs adjacentes ; la bordure n'est exigée que si rien d'autre n'identifie visuellement la présence du contrôle",
+  "source_markdown": "[WCAG 2.2 — 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)",
+  "confiance": "Établi, standard (niveau AA) — donne à T2 son ancrage externe ; la forme même du switch pouvant l'identifier, la bordure de piste est un choix de sûreté, pas une obligation stricte"
+ },
+ {
+  "couche": "ui",
+  "ref": "T4",
+  "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+  "source_markdown": "[WCAG 2.2 — 2.5.8 Target Size (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ; [WCAG 2.2 — 2.5.5 Target Size (Enhanced)](https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html)",
+  "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA"
+ },
+ {
+  "couche": "ui",
+  "ref": "T5",
+  "affirmation": "L'animation déclenchée par interaction peut être désactivée ; prefers-reduced-motion: reduce exprime la demande de suppression ou de remplacement du mouvement non essentiel",
+  "source_markdown": "[WCAG 2.2 — 2.3.3 Animation from Interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) ; [MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi — niveau AAA, plusieurs techniques suffisantes admises"
+ }
+]

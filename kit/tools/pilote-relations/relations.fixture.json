@@ -1,0 +1,153 @@
+{
+  "_statut": "FIXTURE DE PILOTE — représente ce que les lignes LIENS des fiches et les fichiers T-xxx déclareraient. N'est PAS une source éditoriale à faire vivre : à l'implémentation réelle, ces déclarations migrent dans la grammaire des règles (LIENS) et dans content/md/tensions/, et ce fichier disparaît. T-001 resserrée le 2026-07-28 (audit) : pôle hiérarchie = BUTTON-R18/R19/R23, INTERACTION-R10/R15/R17 retirées, pas de tension Card sans usage réel. Retraits sémantiques du 2026-07-28 (audit) : BUTTON-R23→INTERACTION-R15 (la hiérarchie dominante/alternative ne dérive pas de la matérialité proportionnelle) et CARD-R04 exception-de CARD-R01 (l'état sélectionné confirme l'axe interaction_mode, il ne le borne pas) — aucune relation de remplacement sans preuve éditoriale.",
+  "_tranche": [
+    "interaction",
+    "button",
+    "link",
+    "card",
+    "form",
+    "creation-compte"
+  ],
+  "_consommateurs": {
+    "derive-de": [
+      "justification (Fili DS)",
+      "cascade d'impact"
+    ],
+    "exception-de": [
+      "Fili Audit (éviter le faux positif)"
+    ],
+    "cede-a": [
+      "routeur",
+      "Fili Audit (router vers le propriétaire réel)"
+    ],
+    "tension": [
+      "Fili DS (arbitrage en génération)",
+      "Fili Audit (vérification de l'arbitrage rendu)"
+    ]
+  },
+  "relations": [
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R02",
+      "cible": "INTERACTION-R05",
+      "preuve": "BUTTON-R02 interdit le bouton de navigation pure ; INTERACTION-R05 pose que la sémantique native suit l'intention."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R04",
+      "cible": "INTERACTION-R06",
+      "preuve": "BUTTON-R04 : forme, limite et états rendent le bouton identifiable avant lecture — déclinaison de « un contrôle manipulable possède une limite et des états perceptibles »."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R06",
+      "cible": "INTERACTION-R07",
+      "preuve": "BUTTON-R06 : même en ghost, un Button ne devient pas un Link — déclinaison de « une action de faible poids ne devient jamais un faux lien »."
+    },
+    {
+      "type": "derive-de",
+      "source": "BUTTON-R18",
+      "cible": "INTERACTION-R03",
+      "preuve": "BUTTON-R18 : la dominante porte l'action que le parcours provoque — le rôle précède le style (intention agir)."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R01",
+      "cible": "INTERACTION-R05",
+      "preuve": "LINK-R01 : le Link conduit vers une ressource — la navigation est portée par un lien avec destination."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R02",
+      "cible": "INTERACTION-R03",
+      "preuve": "LINK-R02 : Button quand l'activation modifie l'état — le composant se choisit d'après ce qui se produit."
+    },
+    {
+      "type": "derive-de",
+      "source": "LINK-R04",
+      "cible": "INTERACTION-R12",
+      "preuve": "LINK-R04 : lien identifiable sans dépendre de la couleur seule — action et navigation compréhensibles sans perception de la couleur."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R13",
+      "cible": "INTERACTION-R03",
+      "preuve": "CARD-R13 (rattachement nommé) : la Card statique incarne l'intention « consulter » du § Les six intentions."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R11",
+      "cible": "INTERACTION-R10",
+      "preuve": "CARD-R11 : le mode d'interaction est reconnaissable au repos — une surface cliquable reçoit des signaux réels, une statique reste calme."
+    },
+    {
+      "type": "derive-de",
+      "source": "CARD-R22",
+      "cible": "INTERACTION-R05",
+      "preuve": "CARD-R22 : la cliquabilité vient d'un vrai lien ou bouton sémantique, jamais d'un div cliquable — la sémantique native suit l'intention."
+    },
+    {
+      "type": "exception-de",
+      "source": "BUTTON-R56",
+      "cible": "BUTTON-R19",
+      "preuve": "BUTTON-R56 : menu à choix parallèles — la règle de cardinalité du primary ne s'applique pas."
+    },
+    {
+      "type": "exception-de",
+      "source": "BUTTON-R20",
+      "cible": "BUTTON-R19",
+      "preuve": "BUTTON-R20 : header persistant et contenu comptent comme deux zones — coexistence permise à l'écran."
+    },
+    {
+      "type": "exception-de",
+      "source": "FORM-R29",
+      "cible": "FORM-R28",
+      "preuve": "FORM-R29 : désactiver reste justifié uniquement pendant le traitement asynchrone — borne de « garder le bouton de soumission actif en permanence »."
+    },
+    {
+      "type": "cede-a",
+      "source": "BUTTON-R65",
+      "cible": "FORM-R28",
+      "preuve": "BUTTON-R65 (note de méthode, 2026-07-28) : « autorité cédée à FORM-UX.md — la règle normative, sa mesure et ses sources sont portées par FORM-R28 »."
+    },
+    {
+      "type": "cede-a",
+      "source": "BUTTON-R70",
+      "cible": "CARD-R08",
+      "preuve": "BUTTON-R70 : cardinalité et position des actions régies par CARD-UX.md § Zone d'actions, qui fait autorité."
+    },
+    {
+      "type": "cede-a",
+      "source": "FORM-R06",
+      "cible": "BUTTON-R60",
+      "preuve": "FORM-R06 (note de méthode, 2026-07-28) : « autorité portée par BUTTON-UX.md — un seul bouton de soumission par formulaire, régi par BUTTON-R60 »."
+    }
+  ],
+  "tensions": [
+    {
+      "id": "T-001",
+      "titre": "Visibilité des actions vs hiérarchie du groupe",
+      "statut": "contextuelle",
+      "portee": [
+        "toolbar",
+        "groupe-d-actions",
+        "formulaire"
+      ],
+      "poles": {
+        "a": [
+          "INTERACTION-R06",
+          "INTERACTION-R07",
+          "BUTTON-R04"
+        ],
+        "b": [
+          "BUTTON-R18",
+          "BUTTON-R19",
+          "BUTTON-R23"
+        ]
+      },
+      "provenance": "redaction-deliberee",
+      "confiance": "convergence",
+      "consequence": "Semi-déterministe : au plus un bouton au rang dominant par vue (MESURE BUTTON-R19, convention de harnais). Déterministe : aucune action présentée comme un lien (MESURE INTERACTION-R07) ; contraste 3:1 des limites de contrôle (MESURE INTERACTION-R06). Assisté : l'action attendue du parcours ressort sans lecture ; chaque action du groupe reste identifiable comme un contrôle."
+    }
+  ]
+}

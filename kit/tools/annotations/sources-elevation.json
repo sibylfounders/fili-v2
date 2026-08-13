@@ -1,0 +1,79 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S8",
+  "affirmation": "En mode de couleurs forcées, les ombres portées et les ombres de texte sont forcées à néant, les images de fond non-url également (donc les dégradés), tandis que les couleurs de bordure et d'anneau sont recolorées. Ombres et liserés dégradés disparaissent ; la bordure et l'anneau survivent",
+  "source_markdown": "[MDN — @media (forced-colors)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) ; [W3C — CSS Color Adjust Level 1](https://www.w3.org/TR/css-color-adjust-1/)",
+  "confiance": "Établi, comportement plateforme normalisé — **la source décisive du sujet, elle manquait entièrement**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Une ombre portée ne peut pas servir de signal d'identification : le Understanding de 1.4.11 précise qu'elle est absorbée dans la couleur voisine la plus proche en luminosité et ne compte pas pour le seuil de 3:1",
+  "source_markdown": "[WCAG — Understanding 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html)",
+  "confiance": "Établi, standard — argument normatif direct pour R16, jamais cité"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "La perception de la profondeur n'est pas uniforme entre utilisateurs, d'où la nécessité de combiner plusieurs techniques",
+  "source_markdown": "[Polaris — Depth](https://polaris-react.shopify.com/design/depth)",
+  "confiance": "Établi chez Polaris — converge avec S8 et S9"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "La vision humaine interprète les ombrages ambigus selon un a priori de lumière venue d'en haut, robuste chez l'adulte et se renforçant avec l'âge",
+  "source_markdown": "[Journal of Vision — Interactions between light-from-above and convexity priors](https://jov.arvojournals.org/article.aspx?articleid=2191755)",
+  "confiance": "Établi — recherche en perception visuelle publiée et relue"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+  "source_markdown": "[Material Web — Elevation](https://github.com/material-components/material-web/blob/main/docs/components/elevation.md) ; [Fluent 2 — Elevation](https://fluent2.microsoft.design/elevation) ; [Polaris — Shadow tokens](https://polaris-react.shopify.com/tokens/shadow) ; [Atlassian — Elevation](https://atlassian.design/foundations/elevation) ; [Carbon — Color usage](https://carbondesignsystem.com/elements/color/usage/)",
+  "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "La préférence système de mouvement réduit demande de supprimer, réduire ou remplacer les animations non essentielles, sans perte d'information",
+  "source_markdown": "[MDN — prefers-reduced-motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)",
+  "confiance": "Établi, comportement plateforme"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Tout ce qui implique un flou est plus coûteux à peindre qu'un aplat",
+  "source_markdown": "[web.dev — Animations guide](https://web.dev/articles/animations-guide)",
+  "confiance": "Établi — **réserve : le guide documente le coût mais n'interdit pas l'interpolation d'ombre ; le fichier sur-interprétait cette source**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "Le mot-clé d'ombre interne rogne l'ombre sur la boîte de remplissage ; une ombre n'affecte pas les dimensions du modèle de boîte",
+  "source_markdown": "[MDN — box-shadow](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow)",
+  "confiance": "Établi — fonde le fait qu'une ombre interne est un état sans coût de mise en page"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "En thème sombre, l'élévation ne peut pas reposer sur l'ombre seule : plus l'élévation est haute, plus la surface s'éclaircit, et les tokens de surface et d'ombre doivent être appairés",
+  "source_markdown": "[Atlassian — Elevation](https://atlassian.design/foundations/elevation) ; [Carbon — Color usage](https://carbondesignsystem.com/elements/color/usage/)",
+  "confiance": "Établi par convergence — deux systèmes vérifiés, plus Material"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "**Vérification négative.** WCAG 1.4.1 n'exige que l'absence de recours à la couleur seule et son Understanding précise qu'il traite spécifiquement de la perception des couleurs : ce critère ne couvre pas les ombres et ne peut pas fonder la règle du « jamais seul signal »",
+  "source_markdown": "[WCAG 2.2 — Understanding 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi — consigné comme **source écartée**, pour éviter qu'elle soit invoquée à tort"
+ },
+ {
+  "couche": "ui",
+  "ref": "T4",
+  "affirmation": "La technique du liseré par dégradé masqué est annulée en couleurs forcées, les images de fond non-url y étant forcées à néant, tout comme l'ombre. Seule l'arête réalisée en bordure survit",
+  "source_markdown": "[MDN — @media (forced-colors)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) ; [W3C — CSS Color Adjust Level 1](https://www.w3.org/TR/css-color-adjust-1/)",
+  "confiance": "Établi — **la section « Techniques imposées » du fichier UI ne mentionne pas cette dégradation**"
+ }
+]

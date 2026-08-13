@@ -1,0 +1,42 @@
+{
+  "name": "fili",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Monorepo Fili — tokens + composants partagés, trois sites (MD, UI, Audit) sur la même stack Next.js.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @fili/site",
+    "build": "npm run build --workspaces --if-present",
+    "tokens:build": "npm run build --workspace @fili/tokens",
+    "manifeste:build": "node packages/react/build/genere-manifeste.mjs",
+    "manifeste:check": "node packages/react/build/genere-manifeste.mjs --check",
+    "rapport:tokens": "node tools/verifie-tokens.mjs",
+    "rapport:consommation": "node tools/verifie-consommation.mjs",
+    "verifie:tokens": "node tools/verifie-tokens.mjs --strict",
+    "verifie:manifeste": "node tools/verifie-manifeste.mjs",
+    "verifie:consommation": "node tools/verifie-consommation.mjs --strict",
+    "verifie:exemples": "node tools/verifie-exemples.mjs",
+    "verifie:tsc": "tsc --noEmit -p apps/site/tsconfig.json",
+    "test": "npm run test --workspace @fili/react",
+    "verifie:rendu": "node tools/teste-verifie-rendu.mjs && node tools/verifie-rendu.mjs --strict",
+    "verifie": "npm run tokens:build && npm run manifeste:check && npm run verifie:manifeste && npm run verifie:tokens && npm run verifie:consommation && npm run verifie:exemples && npm run verifie:flows && npm run verifie:tsc && npm run test && npm run plugin:build && npm run build --workspace @fili/site && npm run verifie:criteres && npm run verifie:contraste && npm run verifie:ux && npm run verifie:rendu",
+    "plugin": "node tools/plugin/publie.js",
+    "plugin:build": "node tools/plugin/build-plugin.js",
+    "gardes:locales": "git config core.hooksPath tools/hooks && echo 'Crochet de pré-commit Fili activé (tools/hooks) — l autorité reste la CI.'",
+    "criteres": "node tools/execute-criteres.mjs",
+    "verifie:criteres": "node tools/teste-criteres.mjs",
+    "verifie:contraste": "node tools/teste-contraste.mjs",
+    "verifie:ux": "node tools/teste-ux.mjs",
+    "flows": "node tools/extrait-flow.mjs",
+    "verifie:flows": "node tools/extrait-flow.mjs --check && node tools/teste-extrait-flow.mjs creation-compte"
+  },
+  "engines": {
+    "node": ">=18.18"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.0"
+  }
+}

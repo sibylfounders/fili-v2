@@ -1,0 +1,778 @@
+{
+ "slug": "switch",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"8.5\" width=\"18\" height=\"9\" rx=\"4.5\" fill=\"#bcb9f5\"/><rect x=\"3\" y=\"8.5\" width=\"12\" height=\"9\" rx=\"4.5\" fill=\"#4F46E5\"/><circle cx=\"15.5\" cy=\"13\" r=\"3.4\" fill=\"white\"/><circle cx=\"7\" cy=\"13\" r=\"1\" fill=\"#0891B2\"/></svg>",
+ "nom": "switch",
+ "nature": "Composant",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-24 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · switch",
+  "question": "Comment offrir un réglage qui prend effet tout de suite, sans bouton « appliquer » ?",
+  "detail": "Un interrupteur bascule un état booléen — activé/désactivé — et l'effet est immédiat. C'est ce qui le distingue de la case à cocher, qui, elle, est une sélection validée quand on soumet le formulaire.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un interrupteur agit tout de suite"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "L'état se lit à la position autant qu'à la couleur"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Espace le bascule au clavier"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "9",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "6",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-switch.md",
+   "source": "---\nsujet: switch\ntype: composant\nresume: \"Bascule d'un état booléen à EFFET IMMÉDIAT (≠ checkbox validée à la soumission) : role=switch, aria-checked, Espace bascule ; état lu à la position du pouce (jamais la seule couleur), piste pilule, glissement en motion.base\"\nrequires: []\nselon-contexte: [\"color (couleur des états on/off)\", \"motion (glissement du pouce, sur place)\", \"form (frontière : une sélection validée à la soumission est une checkbox, pas un switch)\"]\n---\n# RULES — Switch (compilé, condensé)\n\n> Généré depuis `components/switch/SWITCH-UX.md` (v1.0.0) et `SWITCH-UI.md` (v1.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Activer/désactiver **une fonction, tout de suite** — état booléen à **effet immédiat**.\n\n## Switch ou checkbox\n- **switch** = effet **immédiat**, rien à soumettre (réglage, mode sombre, couper une notification). **checkbox** = **sélection validée à la soumission** (options, consentement). Jamais l'un pour l'autre.\n- Bascule qui peut **échouer** (appel serveur) = cas **asynchrone**, hors périmètre de cette version → remonter, ne pas improviser.\n\n## État — jamais la seule couleur\n- L'état on/off se lit d'abord à la **position** du pouce ; un **libellé d'état** (Activé/Désactivé) accompagne quand la conséquence n'est pas évidente. Le switch porte un **libellé** cliquable, partie du nom accessible.\n\n## Rôle / clavier\n- `role=\"switch\"` + `aria-checked` ; **Espace** (et Entrée) basculent ; nom accessible = libellé visible.\n\n## UI (tokens)\n- Piste `radius.pill` ; **off** : `surface` bordée `border-strong` (3:1), pouce `background` ; **on** : `primary`, pouce `on-primary`. Glissement `motion.base` / `motion.ease-in-out`, focus ring `border`, `prefers-reduced-motion` respecté. Cible tactile 44px.\n\n## Frontières\n- Couleur → `color` ; mouvement → `motion` ; focus ring → `border` ; wording → `voice` ; sélection soumise → checkbox + `form`.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Switch qui n'agit qu'après « enregistrer » | Ment sur l'immédiateté ; l'utilisateur croit avoir agi | Élevée |\n| Checkbox utilisée pour un effet immédiat (ou l'inverse) | Attente trahie | Moyenne |\n| État porté par la seule couleur | Illisible sans perception des couleurs (WCAG 1.4.1) | Élevée |\n| Bascule asynchrone traitée comme synchrone | Échec serveur invisible, état incohérent | Élevée |\n\nCONFIANCE : role=switch + clavier = établi (ARIA APG). Frontière switch/checkbox = consensus convergent (NN/g). Basique (on/off) ; asynchrone différé.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 3 cas",
+   "titre": "Usage",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Usage\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"40\" y=\"52\" width=\"240\" height=\"46\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"56\" y=\"68\" width=\"120\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"56\" y=\"82\" width=\"90\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"220\" y=\"62\" width=\"46\" height=\"26\" rx=\"13\" fill=\"#4F46E5\"/><circle cx=\"254\" cy=\"75\" r=\"10\" fill=\"#FFFFFF\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Thème clair / sombre",
+     "quand": "Basculer l'apparence tout de suite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Thème clair / sombre\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"70\" width=\"320\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"202\" y=\"92\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"202\" y=\"108\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"428\" y=\"86\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#4F46E5\"/><circle cx=\"466\" cy=\"100\" r=\"11\" fill=\"#FFFFFF\"/><text x=\"180\" y=\"158\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un réglage qui prend effet tout de suite</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Basculer l'apparence tout de suite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « thème clair / sombre » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Activer une fonction",
+     "quand": "Notifications, option d'affichage — effet immédiat.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Activer une fonction\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"70\" width=\"320\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"202\" y=\"92\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"202\" y=\"108\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"428\" y=\"86\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#4F46E5\"/><circle cx=\"466\" cy=\"100\" r=\"11\" fill=\"#FFFFFF\"/><text x=\"180\" y=\"158\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un réglage qui prend effet tout de suite</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Notifications, option d'affichage — effet immédiat.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « activer une fonction » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Réglage du rail d'outils",
+     "quand": "Grille de debug, animations, préférence.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Usage",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Réglage du rail d'outils\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"70\" width=\"320\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"202\" y=\"92\" width=\"150\" height=\"7\" rx=\"3.5\" fill=\"#111827\" opacity=\"0.6\"/><rect x=\"202\" y=\"108\" width=\"110\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"428\" y=\"86\" width=\"52\" height=\"28\" rx=\"14\" fill=\"#4F46E5\"/><circle cx=\"466\" cy=\"100\" r=\"11\" fill=\"#FFFFFF\"/><text x=\"180\" y=\"158\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">un réglage qui prend effet tout de suite</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Grille de debug, animations, préférence.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « réglage du rail d'outils » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 3 cas",
+   "titre": "Frontières (ne pas confondre)",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Frontières (ne pas confondre)\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"60\" y=\"54\" width=\"60\" height=\"30\" rx=\"15\" fill=\"#4F46E5\"/><circle cx=\"105\" cy=\"69\" r=\"12\" fill=\"#FFFFFF\"/><text x=\"52\" y=\"104\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">switch (immédiat)</text><rect x=\"210\" y=\"56\" width=\"26\" height=\"26\" rx=\"6\" fill=\"#4F46E5\"/><path d=\"M216 69l5 5 8-10\" stroke=\"#fff\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"188\" y=\"104\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">checkbox (soumise)</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "vs Checkbox",
+     "quand": "Sélection validée à la soumission d'un formulaire.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "02 · Frontières (ne pas confondre)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : vs Checkbox\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"150\" y=\"76\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#4F46E5\"/><circle cx=\"207\" cy=\"95\" r=\"14\" fill=\"#FFFFFF\"/><text x=\"150\" y=\"142\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">switch : effet immédiat</text><rect x=\"410\" y=\"80\" width=\"30\" height=\"30\" rx=\"7\" fill=\"#4F46E5\"/><path d=\"M417 95l5 5 9-11\" stroke=\"#fff\" stroke-width=\"2.4\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"400\" y=\"142\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">checkbox : validée à la soumission</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Sélection validée à la soumission d'un formulaire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « vs Checkbox » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "vs Radio",
+     "quand": "Choix exclusif parmi plusieurs.",
+     "statut": "hors périmètre",
+     "lien": "Comprendre la frontière",
+     "kicker": "02 · Frontières (ne pas confondre)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : vs Radio\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"150\" y=\"76\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#4F46E5\"/><circle cx=\"207\" cy=\"95\" r=\"14\" fill=\"#FFFFFF\"/><text x=\"150\" y=\"142\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">switch : effet immédiat</text><rect x=\"410\" y=\"80\" width=\"30\" height=\"30\" rx=\"7\" fill=\"#4F46E5\"/><path d=\"M417 95l5 5 9-11\" stroke=\"#fff\" stroke-width=\"2.4\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"400\" y=\"142\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">checkbox : validée à la soumission</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Choix exclusif parmi plusieurs.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « vs Radio » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Bascule qui appelle le serveur (asynchrone)",
+     "quand": "État d'attente, retour arrière si échec.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Frontières (ne pas confondre)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bascule qui appelle le serveur (asynchrone)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"76\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"289\" cy=\"95\" r=\"14\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle class=\"ill-spin\" style=\"transform-origin:345px 95px\" cx=\"345\" cy=\"95\" r=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.6\" stroke-dasharray=\"13 26\" stroke-linecap=\"round\"/><text x=\"210\" y=\"150\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">bascule asynchrone : attente puis retour si échec — différé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>État d'attente, retour arrière si échec.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « bascule qui appelle le serveur (asynchrone) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "État",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"70\" y=\"58\" width=\"66\" height=\"32\" rx=\"16\" fill=\"#4F46E5\"/><circle cx=\"120\" cy=\"74\" r=\"13\" fill=\"#FFFFFF\"/><text x=\"80\" y=\"112\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">activé</text><rect x=\"190\" y=\"58\" width=\"66\" height=\"32\" rx=\"16\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"205\" cy=\"74\" r=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"196\" y=\"112\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">désactivé</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "On / Off",
+     "quand": "État lu à la position du pouce ET à la couleur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : On / Off\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#4F46E5\"/><circle cx=\"267\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\"/><text x=\"210\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">activé</text><rect x=\"400\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"419\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"400\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><text x=\"210\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">la position dit autant que la couleur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>État lu à la position du pouce ET à la couleur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « on / Off » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Désactivé",
+     "quand": "Non focalisable, opacité réduite.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Désactivé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#4F46E5\"/><circle cx=\"267\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\"/><text x=\"210\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">activé</text><rect x=\"400\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"419\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"400\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><text x=\"210\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">la position dit autant que la couleur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Non focalisable, opacité réduite.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « désactivé » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Avec libellé d'état",
+     "quand": "« Activé / Désactivé » quand la conséquence n'est pas évidente.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Avec libellé d'état\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"210\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#4F46E5\"/><circle cx=\"267\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\"/><text x=\"210\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">activé</text><rect x=\"400\" y=\"74\" width=\"76\" height=\"38\" rx=\"19\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"419\" cy=\"93\" r=\"14\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"400\" y=\"138\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">désactivé</text><text x=\"210\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">la position dit autant que la couleur</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>« Activé / Désactivé » quand la conséquence n'est pas évidente.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « avec libellé d'état » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de SWITCH-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le switch porte un <strong>libellé</strong> qui dit ce qu'il gouverne ; ce libellé est cliquable et fait partie",
+       "id": "SWITCH-R04"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "SWITCH-R01",
+   "couche": "ux",
+   "solution": "**switch** = l'action prend effet **immédiatement** (un réglage, le mode sombre, une notification",
+   "enonce": "Un switch est réservé aux bascules binaires dont l'effet est immédiat et n'appelle aucune validation ; une sélection binaire qui n'est appliquée qu'à la soumission d'un formulaire est une case à cocher, et l'un ne se substitue jamais à l'autre.",
+   "mesure": "aucun switch n'est accompagné d'un bouton d'application ou d'enregistrement de son propre état",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Switch = effet immédiat ; checkbox = sélection validée à la soumission",
+     "liens": [
+      {
+       "label": "NN/g — Toggle-Switch Guidelines",
+       "url": "https://www.nngroup.com/articles/toggle-switch-guidelines/"
+      }
+     ],
+     "confiance": "Convergent"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Les toggles ne servent qu'à des actions binaires « qui interviennent immédiatement après que l'utilisateur a actionné l'interrupteur » ; pour un réglage qui n'est pas binaire ou ne s'applique pas instantanément, utiliser une case à cocher associée à un bouton ; le toggle par défaut exige un libellé et un texte d'état",
+     "liens": [
+      {
+       "label": "Carbon Design System — Toggle",
+       "url": "https://carbondesignsystem.com/components/toggle/usage/"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié (1/2)"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "« Le résultat du changement d'état du toggle est immédiatement effectif et aucune action supplémentaire n'est nécessaire pour appliquer ou enregistrer le changement » ; la case à cocher est préférée quand la sélection doit être enregistrée ou soumise",
+     "liens": [
+      {
+       "label": "GitLab Pajamas — Toggle",
+       "url": "https://design.gitlab.com/components/toggle/"
+      }
+     ],
+     "confiance": "Établi par convergence — système public vérifié (2/2) ; avec S2 (NN/g), fait de l'effet immédiat une propriété convergente et non un parti pris"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Switch = effet immédiat ; checkbox = sélection validée à la soumission",
+    "liens": [
+     {
+      "label": "NN/g — Toggle-Switch Guidelines",
+      "url": "https://www.nngroup.com/articles/toggle-switch-guidelines/"
+     }
+    ],
+    "confiance": "Convergent"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-R02",
+   "couche": "ux",
+   "solution": "l'effet immédiat implique qu'il n'y a **rien à soumettre** — le switch n'attend pas un envoi. Si la",
+   "enonce": "Le switch n'a rien à soumettre ; le cas d'une bascule qui déclenche un appel distant et peut échouer est hors du périmètre de cette version du composant et se remonte au lieu de s'improviser.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-R03",
+   "couche": "ux",
+   "solution": "l'état on/off se lit d'abord à la **position** du pouce (gauche/droite), pas seulement à la couleur",
+   "enonce": "L'état d'un switch se lit à un canal non chromatique — la position du pouce sur la piste — en plus de toute variation de couleur, et un libellé d'état accompagne la bascule quand la conséquence de l'état n'est pas évidente.",
+   "mesure": "l'état activé se distingue de l'état désactivé autrement que par la seule couleur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "État jamais porté par la seule couleur (position + mot)",
+     "liens": [
+      {
+       "label": "WCAG 1.4.1, 1.3.3 (renvoi ACCESSIBILITY)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.1 Use of Color",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — donne son URL à S3 ; le second canal est exigé, le choix de la position du pouce comme second canal reste interne"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "État jamais porté par la seule couleur (position + mot)",
+    "liens": [
+     {
+      "label": "WCAG 1.4.1, 1.3.3 (renvoi ACCESSIBILITY)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-R04",
+   "couche": "ux",
+   "solution": "le switch porte un **libellé** qui dit ce qu'il gouverne ; ce libellé est cliquable et fait partie",
+   "enonce": "Un switch porte un libellé qui nomme ce qu'il gouverne ; ce libellé est cliquable, il est contenu dans le nom accessible du contrôle, et les états désactivé et focalisé restent perceptibles.",
+   "mesure": "le nom accessible du switch contient le texte du libellé visible ; un clic sur le libellé bascule le switch",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Pour les composants dont l'étiquette contient du texte, le nom accessible contient le texte présenté visuellement",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.3 Label in Name",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — le corpus cite 2.5.3 sans lien ; il exige que le nom contienne le libellé, pas qu'il s'y réduise"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Nom et rôle programmatiquement déterminables, états et valeurs programmatiquement définissables, et notification de leurs changements aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde la notification du changement d'état par aria-checked"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Pour les composants dont l'étiquette contient du texte, le nom accessible contient le texte présenté visuellement",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.3 Label in Name",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html"
+     }
+    ],
+    "confiance": "Établi, standard (niveau A) — le corpus cite 2.5.3 sans lien ; il exige que le nom contienne le libellé, pas qu'il s'y réduise"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Avec libellé d'état",
+     "famille": "État"
+    }
+   ]
+  },
+  {
+   "id": "SWITCH-R05",
+   "couche": "ux",
+   "solution": "`role=\"switch\"` + `aria-checked` (true/false) ; **Espace** (et Entrée) **basculent** ; le nom",
+   "enonce": "Un switch expose role=switch et aria-checked, bascule à la barre d'espace, et notifie son changement d'état par aria-checked plutôt que par le seul déplacement visuel du pouce.",
+   "mesure": "le contrôle porte role=switch et aria-checked ; la barre d'espace bascule l'état ; aria-checked change à chaque bascule",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "role=\"switch\", aria-checked, Espace bascule",
+     "liens": [
+      {
+       "label": "ARIA APG — Switch",
+       "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Pour les composants dont l'étiquette contient du texte, le nom accessible contient le texte présenté visuellement",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.3 Label in Name",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — le corpus cite 2.5.3 sans lien ; il exige que le nom contienne le libellé, pas qu'il s'y réduise"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Nom et rôle programmatiquement déterminables, états et valeurs programmatiquement définissables, et notification de leurs changements aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau A) — fonde la notification du changement d'état par aria-checked"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "role=\"switch\", aria-checked, Espace bascule",
+    "liens": [
+     {
+      "label": "ARIA APG — Switch",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-R06",
+   "couche": "ux",
+   "solution": "la **couleur** des états relève de `color` ; le **mouvement** du pouce relève de `motion` ; l'**anneau",
+   "enonce": "Le switch ne redéfinit pas ce qui appartient à ses voisins : la couleur de ses états relève de la couleur, le mouvement du pouce du mouvement, l'anneau de focus de la bordure, le mot du libellé du langage, et une sélection validée à la soumission de la case à cocher et du formulaire.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-U01",
+   "couche": "ui",
+   "solution": "la **piste** est une pilule (`radius.pill`) ; le **pouce** est un disque inscrit, séparé des bords",
+   "enonce": "La piste d'un switch est une pilule et son pouce un disque inscrit séparé des bords par un retrait constant ; l'état inactif oppose une piste de surface bordée à au moins 3:1 et un pouce de fond, l'état actif une piste primaire et un pouce en couleur sur primaire, la transition empruntant les tokens de mouvement.",
+   "mesure": "aucune valeur brute de rayon, de couleur ou de durée sur le switch ; contraste de la bordure de piste inactive ≥ 3:1",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Piste pilule + pouce inscrit, états on/off contrastés",
+     "liens": [
+      {
+       "label": "convergence des systèmes (Material, Carbon)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "T2",
+     "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+     "liens": [
+      {
+       "label": "BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    },
+    {
+     "ref": "T3",
+     "affirmation": "La présentation visuelle des composants d'interface atteint un contraste d'au moins 3:1 avec les couleurs adjacentes ; la bordure n'est exigée que si rien d'autre n'identifie visuellement la présence du contrôle",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard (niveau AA) — donne à T2 son ancrage externe ; la forme même du switch pouvant l'identifier, la bordure de piste est un choix de sûreté, pas une obligation stricte"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Piste pilule + pouce inscrit, états on/off contrastés",
+    "liens": [
+     {
+      "label": "convergence des systèmes (Material, Carbon)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-U02",
+   "couche": "ui",
+   "solution": "l'anneau de focus est celui de BORDER (`border.focus-width` / `border.focus-offset`) ; l'état",
+   "enonce": "L'anneau de focus du switch n'est pas redéfini localement : il reprend celui de la fondation bordure, et l'état désactivé abaisse l'opacité sans modifier ni le trait ni le rayon.",
+   "mesure": "aucun style de focus propre au switch ; trait et rayon identiques entre l'état normal et l'état désactivé",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+     "liens": [
+      {
+       "label": "BORDER-UX (guardrail)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi (interne)"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Bordure délimitante d'un contrôle interactif à 3:1 → `border-strong`",
+    "liens": [
+     {
+      "label": "BORDER-UX (guardrail)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi (interne)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-U03",
+   "couche": "ui",
+   "solution": "quelle que soit la taille visuelle de la piste, la **zone interactive** atteint au minimum 44px",
+   "enonce": "Quelle que soit la taille visuelle de la piste, la zone interactive d'un switch — libellé cliquable compris — atteint le seuil de cible renforcé de 44 × 44 px CSS.",
+   "mesure": "cible pointeur du switch ≥ 44 × 44 px CSS, libellé inclus",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "La cible pointeur mesure au moins 24 × 24 px CSS (AA) ; le seuil renforcé de 44 × 44 px CSS relève du niveau AAA",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+     },
+     {
+      "label": "WCAG 2.2 — 2.5.5 Target Size (Enhanced)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA et AAA) — le 44 px du composant est le seuil AAA"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "SWITCH-U04",
+   "couche": "ui",
+   "solution": "aucune couleur, rayon ou durée codés en dur : tout référence `radius.pill`, `color` (`surface`,",
+   "enonce": "Aucune couleur, rayon ni durée du switch n'est codé en dur — chacun résout un token de fondation — et le déplacement du pouce devient une bascule instantanée lorsque l'utilisateur a demandé moins de mouvement.",
+   "mesure": "aucune valeur brute dans l'implémentation du switch ; sous prefers-reduced-motion: reduce, le pouce ne glisse pas",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "L'animation déclenchée par interaction peut être désactivée ; prefers-reduced-motion: reduce exprime la demande de suppression ou de remplacement du mouvement non essentiel",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+      },
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — niveau AAA, plusieurs techniques suffisantes admises"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "L'animation déclenchée par interaction peut être désactivée ; prefers-reduced-motion: reduce exprime la demande de suppression ou de remplacement du mouvement non essentiel",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.3.3 Animation from Interactions",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+     },
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — niveau AAA, plusieurs techniques suffisantes admises"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

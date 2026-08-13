@@ -1,0 +1,1709 @@
+{
+ "slug": "elevation",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"6\" y=\"4\" width=\"15\" height=\"10\" rx=\"2.5\" fill=\"#F2C744\"/><rect x=\"3\" y=\"10\" width=\"15\" height=\"10\" rx=\"2.5\" fill=\"#4F46E5\"/><rect x=\"6.5\" y=\"14\" width=\"8\" height=\"2\" rx=\"1\" fill=\"#FFFFFF\"/></svg>",
+ "nom": "elevation",
+ "nature": "Fondation",
+ "meta": "UX v2.0.0 · UI v2.0.0 · mis à jour 2026-07-23 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · elevation",
+  "question": "Quand détacher un élément du fond avec une ombre, et à quelle hauteur ?",
+  "detail": "Cette page décide quels éléments flottent au-dessus des autres — menus, panneaux, fenêtres — et dose l’ombre pour signaler cette hauteur sans alourdir l’écran.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "L'ombre signale qu'un élément flotte au-dessus du flux"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Chaque niveau d'élévation correspond à une hauteur et un rôle précis"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Au repos une surface reste plane"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "22",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "19",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "2",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-elevation.md",
+   "source": "---\nsujet: elevation\ntype: fondation\nresume: \"Élévation & relief : l'ombre dit la couche — et le relief dit la nature (posé / creusé / plat, registre d'identité débrayable) ; repos à plat pour les surfaces, matrice posé/soulevé/enfoncé pour les objets\"\nrequires: []\nselon-contexte: [\"motion (swaps d'ombre instantanés, jamais de box-shadow interpolé)\", \"border (l'arête du relief est une bordure réelle)\", \"interaction (test de matérialité fonctionnelle)\"]\n---\n# RULES — Elevation & Relief (compilé, condensé)\n\n> Généré depuis `foundations/elevation/ELEVATION-UX.md` (v2.0.0) et `ELEVATION-UI.md` (v2.0.0). Règles condensées pour le build — la source fait autorité. Ne pas éditer à la main. Tokens : `dist/tokens.yaml`.\n\n## Nature\n- Fondation. **Deux règles cardinales : l'ombre dit la couche, jamais l'importance — le relief dit la nature, jamais l'importance.**\n- Trois niveaux d'ombre = les trois couches : à plat / soulevé / au-dessus du flux. Le relief n'ajoute AUCUN niveau : il compose ombre + arête (bordure) + liseré.\n\n## Grammaire de relief (registre d'identité, DÉBRAYABLE — parti pris, jamais un critère d'audit d'hôte)\n- À la création de tout composant, classer chaque surface :\n  - **POSÉ** = objet actionnable ou couche flottante (bouton et dérivés, toast) : arête sombre `mix(tone, noir 38%)` + liseré interne **en dégradé** (clair EN HAUT `mix(tone, blanc ~40%)` fondant vers l'objet — jamais un anneau uniforme) + `elevation.raised` AU REPOS.\n  - **CREUSÉ** = réceptacle (input) : fond `background`, ombre interne haute, double filet — le creux dit « on me remplit ».\n  - **PLAT** = contenu (alert, texte, ghost, statique, skeleton) : rien — l'absence est la règle.\n- **Le relief suit la FONCTION, jamais la décoration** (test des 5 questions d'INTERACTION).\n- **Matrice d'états des posés** : défaut = posé (raised) · survol = SOULEVÉ (`overlay` + fond ÉCLAIRCI `mix(tone, blanc ~12%)` — la métaphore prime sur la convention state-layer) · appui = ENFONCÉ (ombre interne + fond assombri `mix(tone, noir ~20%)` + course 0,5 px).\n- **Sombre** : mêmes directions ; l'enfoncé se dérive VERS LE NOIR — jamais via le token de survol (qui s'éclaircit en sombre → physique inversée) ; liserés dans la gamme du tone, jamais blanc pur ; ombres internes renforcées.\n- **Une seule source de lumière (le haut), pour tout l'écran.**\n\n## Surfaces (doctrine conservée, les deux registres)\n- **Le repos d'une SURFACE est à plat.** `elevation.raised` = retour de survol des surfaces **cliquables** uniquement (card clickable) — en registre relief, arête + liseré vivent sur la couche de survol et disparaissent avec elle. Surface statique : jamais de réaction (affordance mensongère).\n- Mise en avant ≠ élévation : `surface-contrast` sans ombre (non-cumul). Skeleton jamais élevé.\n- `elevation.overlay` : composants superposés (toast au repos — c'est sa couche).\n\n## Techniques\n- Liseré = anneau 1 px par pseudo + `mask-composite: exclude` (un box-shadow ne dégrade pas) ; états via custom property.\n- **Jamais de box-shadow interpolé** : swaps d'ombre INSTANTANÉS ; seules les couleurs transitionnent ; reduced-motion = tout instantané.\n- Sans bordure structurelle (métrique de crans) : arête en `inset 0 0 0 1px`, liseré en pseudo décalé de 1 px.\n- Ombres teintées `text-primary`, jamais noir pur ; niveaux distincts par la portée. Valeurs dépendantes du thème (à re-thématiser comme les couleurs).\n\n## Ce que le relief ne garantit pas\n- **Jamais le seul signal** : en forced-colors, ombres et liserés disparaissent — l'arête (bordure réelle), le focus ring et la sémantique doivent suffire.\n- **Pas d'échelle z-index** : naîtra avec le premier consommateur d'overlay modal. STOP et remonter.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Relief sur surface statique | Affordance mensongère | Élevée |\n| Relief généralisé aux surfaces | Signal annulé — skeuomorphisme | Élevée |\n| Relief seul porteur d'info | Perdu en forced-colors | Élevée |\n| Enfoncé dérivé du token hover en sombre | Physique inversée (l'objet monte à l'appui) | Élevée |\n| Liseré uniforme / blanc pur en sombre | Lumière incohérente | Moyenne |\n| Box-shadow interpolé | Paint coûteux | Moyenne |\n| Cumul ombre + surface-contrast | Vocabulaires brouillés | Moyenne |\n\nCONFIANCE : échelle courte et repos-à-plat des surfaces = établi (Atlassian, Carbon, Material 3) ; coût des signifiants faibles du flat = établi (NN/g) ; grammaire posé/creusé/plat et physique lumière-du-haut = **parti pris d'identité daté (2026-07-23), débrayable**, éprouvé dans l'implémentation de référence (atelier DS-UI) — à éprouver par tests utilisateurs. En audit d'hôte : seule l'affordance mensongère fonde une non-conformité, jamais l'absence de relief.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Rôle d'élévation",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Rôle d'élévation\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"42\" y=\"64\" width=\"62\" height=\"42\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"130\" y=\"70\" width=\"62\" height=\"42\" rx=\"9\" fill=\"#111827\" opacity=\".14\"/><rect x=\"124\" y=\"64\" width=\"62\" height=\"42\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"212\" y=\"46\" width=\"72\" height=\"78\" rx=\"9\" fill=\"#111827\" opacity=\".2\"/><rect x=\"224\" y=\"60\" width=\"48\" height=\"50\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Surface au repos",
+     "quand": "Un composant est au repos.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'élévation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Surface au repos\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"78\" width=\"180\" height=\"90\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"300\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">plane</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un composant est au repos.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Tout vit à plat ; la bordure fait le travail.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte outlined.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les surfaces restent gouvernées par la doctrine 1.x, <strong>inchangée</strong> : le repos d'une <em>surface</em> est à plat ; <code>raised</code> reste le retour de survol des surfaces <strong>cliquables</strong> uniquement (card clickable — et en registre relief, ce survol porte aussi l'arête et le liseré, qui apparaissent et disparaissent <em>avec</em> lui) ; une surface statique ne réagit jamais.",
+       "id": "ELEVATION-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Affordance au survol",
+     "quand": "Une carte cliquable est survolée.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'élévation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Affordance au survol\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"83\" width=\"180\" height=\"90\" rx=\"12\" fill=\"#111827\" opacity=\"0.18\"/><rect x=\"250\" y=\"74\" width=\"180\" height=\"90\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"296\" y=\"186\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">survol</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte cliquable est survolée.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>elevation.raised, réservée aux cliquables.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte qui se soulève.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Superposition au flux",
+     "quand": "Un élément se superpose (modale, popover).",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'élévation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Superposition au flux\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"220\" y=\"70\" width=\"240\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"220\" y=\"90\" width=\"240\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"220\" y=\"110\" width=\"240\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.3\"/><rect x=\"280\" y=\"96\" width=\"150\" height=\"92\" rx=\"12\" fill=\"#111827\" opacity=\"0.22\"/><rect x=\"280\" y=\"86\" width=\"150\" height=\"92\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément se superpose (modale, popover).</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>elevation.overlay, provisionné.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une modale au-dessus de la page.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Mise en avant sans superposition",
+     "quand": "On met en avant sans superposer.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'élévation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mise en avant sans superposition\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"78\" width=\"180\" height=\"90\" rx=\"9\" fill=\"#111827\"/><text x=\"280\" y=\"128\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#fff\">mise en avant</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On met en avant sans superposer.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Passez par le contraste de surface, pas l'ombre.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un panneau sombre.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>mise en avant ≠ élévation</strong>, inchangé : <code>surface-contrast</code> met en avant par le fond, sans ombre (non-cumul). Et <strong>l'importance ne réquisitionne pas le relief</strong> : un bouton primaire n'est pas plus posé qu'un bouton neutre — la hiérarchie passe par style × tone (BUTTON-UX), le relief dit la nature, pas le rang.",
+       "id": "ELEVATION-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Hiérarchie permanente par l'ombre",
+     "quand": "On veut « tout ce qui est important est élevé ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Rôle d'élévation",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Hiérarchie permanente par l'ombre\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"190\" y=\"95\" width=\"120\" height=\"80\" rx=\"12\" fill=\"#111827\" opacity=\"0.1\"/><rect x=\"190\" y=\"92\" width=\"120\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"348\" y=\"95\" width=\"120\" height=\"80\" rx=\"12\" fill=\"#111827\" opacity=\"0.22\"/><rect x=\"348\" y=\"84\" width=\"120\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On veut « tout ce qui est important est élevé ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Anti-pattern : l'élévation de repos généralisée annule le signal.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des ombres partout à éviter.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>mise en avant ≠ élévation</strong>, inchangé : <code>surface-contrast</code> met en avant par le fond, sans ombre (non-cumul). Et <strong>l'importance ne réquisitionne pas le relief</strong> : un bouton primaire n'est pas plus posé qu'un bouton neutre — la hiérarchie passe par style × tone (BUTTON-UX), le relief dit la nature, pas le rang.",
+       "id": "ELEVATION-R11"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 5 cas",
+   "titre": "Contexte d'intégration",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Contexte d'intégration\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"92\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"46\" y=\"30\" width=\"228\" height=\"18\" rx=\"10\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><circle cx=\"67\" cy=\"39\" r=\"2.6\" fill=\"#6B7280\"/><rect x=\"112\" y=\"62\" width=\"96\" height=\"46\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"126\" y=\"82\" width=\"68\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Carte en collection",
+     "quand": "Des cartes vivent en collection.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Carte en collection\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"202\" y=\"84\" width=\"84\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"302\" y=\"84\" width=\"84\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"402\" y=\"84\" width=\"84\" height=\"72\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des cartes vivent en collection.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>raised au hover des cliquables, none au repos.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une grille de cartes.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Bouton",
+     "quand": "On envisage d'élever un bouton.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Bouton\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"276\" y=\"104\" width=\"128\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"115\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"300\" y=\"158\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">plat</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage d'élever un bouton.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Aucune élévation : le bouton signale par le fond.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bouton plat.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>en thème sombre, la physique tient, les valeurs changent.</strong> La convention « les surfaces s'éclaircissent avec la hauteur » (1.1.0) s'applique au registre entier : le soulevé s'éclaircit aussi en sombre ; l'enfoncé se dérive <em>vers le noir</em> — jamais via le token de survol, qui s'éclaircit en sombre et inverserait la physique (un bouton qui <em>monte</em> quand on le presse). Le liseré s'exprime dans la gamme de l'objet, jamais en blanc pur.",
+       "id": "ELEVATION-R09"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>mise en avant ≠ élévation</strong>, inchangé : <code>surface-contrast</code> met en avant par le fond, sans ombre (non-cumul). Et <strong>l'importance ne réquisitionne pas le relief</strong> : un bouton primaire n'est pas plus posé qu'un bouton neutre — la hiérarchie passe par style × tone (BUTTON-UX), le relief dit la nature, pas le rang.",
+       "id": "ELEVATION-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Alert",
+     "quand": "On envisage d'élever une alerte.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Alert\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"100\" width=\"220\" height=\"42\" rx=\"8\" fill=\"#DBEAFE\"/><rect x=\"230\" y=\"100\" width=\"6\" height=\"42\" rx=\"3\" fill=\"#1D4ED8\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On envisage d'élever une alerte.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Aucune élévation : elle est dans le flux (frontière avec le toast).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une alerte à plat.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Futur toast/snackbar",
+     "quand": "Un toast apparaît au-dessus du flux.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Futur toast/snackbar\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"158\" width=\"200\" height=\"44\" rx=\"12\" fill=\"#111827\" opacity=\"0.24\"/><rect x=\"240\" y=\"150\" width=\"200\" height=\"44\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"262\" y=\"178\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">Snackbar</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un toast apparaît au-dessus du flux.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Overlay, à confirmer le jour venu.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un toast flottant.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Empilement de superpositions",
+     "quand": "Une modale contient un popover.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Contexte d'intégration",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Empilement de superpositions\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"216\" y=\"76\" width=\"160\" height=\"92\" rx=\"12\" fill=\"#111827\" opacity=\"0.14\"/><rect x=\"216\" y=\"68\" width=\"160\" height=\"92\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"284\" y=\"111\" width=\"160\" height=\"92\" rx=\"12\" fill=\"#111827\" opacity=\"0.22\"/><rect x=\"284\" y=\"100\" width=\"160\" height=\"92\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une modale contient un popover.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : un seul niveau overlay.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un menu ouvert dans une modale.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 3 cas",
+   "titre": "État / comportement dans le temps",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : État / comportement dans le temps\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M50 78h172\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"62\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"114\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"166\" cy=\"78\" r=\"9\" fill=\"#4F46E5\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"218\" cy=\"78\" r=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"256\" cy=\"78\" r=\"16\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\"/><path d=\"M256 68v10l6 4\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Transition d'élévation (repos → hover)",
+     "quand": "L'ombre apparaît ou disparaît.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Transition d'élévation (repos → hover)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"198\" y=\"96\" width=\"110\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M324 126L362 126\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M362 126L354.1 130.3M362 126L354.1 121.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"376\" y=\"99\" width=\"110\" height=\"66\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"376\" y=\"90\" width=\"110\" height=\"66\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'ombre apparaît ou disparaît.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La fondation motion règle durée et courbe.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ombre qui monte en douceur.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Élévation pendant un drag",
+     "quand": "On soulève une carte pendant un glisser-déposer.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Élévation pendant un drag\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"256\" y=\"98\" width=\"150\" height=\"80\" rx=\"12\" fill=\"#E5E7EB\"/><rect x=\"278\" y=\"95\" width=\"150\" height=\"80\" rx=\"12\" fill=\"#111827\" opacity=\"0.28\"/><rect x=\"278\" y=\"80\" width=\"150\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On soulève une carte pendant un glisser-déposer.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : aucun consommateur drag &amp; drop.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte soulevée au drag.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Skeleton / chargement",
+     "quand": "Un squelette s'affiche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · État / comportement dans le temps",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Skeleton / chargement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g class=\"ill-pulse\"><rect x=\"250\" y=\"78\" width=\"180\" height=\"90\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"272\" y=\"100\" width=\"140\" height=\"10\" rx=\"5\" fill=\"#E5E7EB\" opacity=\"1\"/><rect x=\"272\" y=\"122\" width=\"110\" height=\"10\" rx=\"5\" fill=\"#E5E7EB\" opacity=\"1\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un squelette s'affiche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Jamais élevé : il occupe l'espace, il ne signale pas d'affordance.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un skeleton plat.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 4 cas",
+   "titre": "Plateforme / environnement",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Plateforme / environnement\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"52\" y=\"38\" width=\"150\" height=\"86\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M112 124h30M104 132h46\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"68\" y=\"54\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"68\" y=\"72\" width=\"54\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.8\"/><rect x=\"220\" y=\"46\" width=\"52\" height=\"86\" rx=\"9\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"230\" y=\"60\" width=\"32\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"230\" y=\"110\" width=\"32\" height=\"14\" rx=\"7\" fill=\"#4F46E5\" opacity=\"0.8\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Fond clair (référence)",
+     "quand": "L'ombre est sur fond clair.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Fond clair (référence)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"186\" y=\"58\" width=\"308\" height=\"130\" rx=\"9\" fill=\"#FFFFFF\"/><rect x=\"262\" y=\"94\" width=\"160\" height=\"80\" rx=\"12\" fill=\"#111827\" opacity=\"0.18\"/><rect x=\"262\" y=\"86\" width=\"160\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'ombre est sur fond clair.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ombres teintées text-primary, pas noir pur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ombre douce sur blanc.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'élévation est une <strong>fondation</strong> — pas d'axes, pas d'assemblage : une contrainte transversale. Particularité de trajectoire : ses tokens sont nés <em>avant</em> sa doctrine (créés en DESIGN.md 1.2.0 pour la card) ; la 2.0.0 élargit la doctrine de l'<strong>ombre</strong> au <strong>relief</strong> entier (ombre + arête + liseré), après que l'implémentation de référence (atelier DS-UI) en a éprouvé la grammaire.",
+       "id": "ELEVATION-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>la lumière vient du haut, pour tout le monde.</strong> Un objet posé porte une arête externe sombre, un liseré interne clair <em>en haut qui fond vers sa couleur en bas</em> (jamais un anneau uniforme — la lumière ne cercle pas), et l'ombre de repos <code>raised</code>. Un creux porte une ombre interne haute. Une seule source de lumière dans tout le produit ; deux objets éclairés de deux directions sont un bug de physique.",
+       "id": "ELEVATION-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Mode sombre",
+     "quand": "L'interface passe en sombre.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Mode sombre\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"186\" y=\"58\" width=\"308\" height=\"130\" rx=\"9\" fill=\"#111827\"/><rect x=\"262\" y=\"90\" width=\"160\" height=\"80\" rx=\"12\" fill=\"#6B7280\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'interface passe en sombre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : les ombres deviennent invisibles.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ombre perdue sur fond noir.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Sur surface-contrast",
+     "quand": "On pose une ombre sur le panneau sombre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sur surface-contrast\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"186\" y=\"58\" width=\"308\" height=\"130\" rx=\"9\" fill=\"#111827\"/><rect x=\"262\" y=\"90\" width=\"160\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On pose une ombre sur le panneau sombre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non-cumul : surface-contrast ne porte pas d'ombre.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un panneau sombre sans ombre.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>mise en avant ≠ élévation</strong>, inchangé : <code>surface-contrast</code> met en avant par le fond, sans ombre (non-cumul). Et <strong>l'importance ne réquisitionne pas le relief</strong> : un bouton primaire n'est pas plus posé qu'un bouton neutre — la hiérarchie passe par style × tone (BUTTON-UX), le relief dit la nature, pas le rang.",
+       "id": "ELEVATION-R11"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Contraste élevé forcé",
+     "quand": "Forced-colors supprime les ombres.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Plateforme / environnement",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Contraste élevé forcé\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"84\" width=\"160\" height=\"80\" rx=\"12\" fill=\"none\" stroke=\"#111827\" stroke-width=\"2.5\"/><text x=\"288\" y=\"182\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">bordure</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>forced-colors supprime les ombres.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>L'élévation ne doit jamais être le seul signal.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Le mode contraste élevé.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le relief n'est <strong>jamais le seul signal</strong> (inchangé, étendu) : en <code>forced-colors</code>, ombres ET liserés disparaissent — restent la bordure, le focus ring, la sémantique. Le registre relief a l'avantage de reposer d'abord sur des <em>bordures</em> (arête = border réel), qui survivent au contraste forcé mieux que les ombres.",
+       "id": "ELEVATION-R16"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 5 cas",
+   "titre": "Enjeu / risque",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Enjeu / risque\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><path d=\"M160 30l42 16v26c0 30-20 46-42 52-22-6-42-22-42-52V46z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M140 76l14 14 26-30\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Élévation décorative généralisée",
+     "quand": "On met des ombres partout.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Élévation décorative généralisée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"98\" width=\"84\" height=\"70\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"200\" y=\"92\" width=\"84\" height=\"70\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"300\" y=\"98\" width=\"84\" height=\"70\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"300\" y=\"92\" width=\"84\" height=\"70\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"400\" y=\"98\" width=\"84\" height=\"70\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"400\" y=\"92\" width=\"84\" height=\"70\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"300\" cy=\"62\" r=\"9\" fill=\"#92400E\"/><path d=\"M296.5 58.5l7 7M303.5 58.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On met des ombres partout.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Risque n°1 : le signal ne signale plus rien.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une page toute en relief.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Ombre sur carte statique",
+     "quand": "Une carte statique porte une ombre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ombre sur carte statique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"260\" y=\"99\" width=\"160\" height=\"80\" rx=\"12\" fill=\"#111827\" opacity=\"0.2\"/><rect x=\"260\" y=\"90\" width=\"160\" height=\"80\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"284\" y=\"184\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">statique</text><circle cx=\"432\" cy=\"80\" r=\"9\" fill=\"#92400E\"/><path d=\"M428.5 76.5l7 7M435.5 76.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une carte statique porte une ombre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Affordance mensongère : l'utilisateur clique dans le vide.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte non cliquable qui semble l'être.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de ELEVATION-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les transitions d'état du relief appartiennent à motion (MOTION-UX) : les couleurs transitionnent ; <strong>les ombres se remplacent instantanément</strong> (jamais de box-shadow interpolé — le soulevé/enfoncé est un changement d'état sec, pas un glissement). Sous <code>prefers-reduced-motion</code>, tout est instantané ; l'information (la nature de l'objet) reste — elle est statique par construction.",
+       "id": "ELEVATION-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Multiplication des niveaux",
+     "quand": "On empile 6 ombres proches.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Multiplication des niveaux\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"180\" y=\"103\" width=\"60\" height=\"60\" rx=\"12\" fill=\"#111827\" opacity=\"0.15\"/><rect x=\"180\" y=\"102\" width=\"60\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"260\" y=\"105\" width=\"60\" height=\"60\" rx=\"12\" fill=\"#111827\" opacity=\"0.15\"/><rect x=\"260\" y=\"102\" width=\"60\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"340\" y=\"107\" width=\"60\" height=\"60\" rx=\"12\" fill=\"#111827\" opacity=\"0.15\"/><rect x=\"340\" y=\"102\" width=\"60\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"420\" y=\"109\" width=\"60\" height=\"60\" rx=\"12\" fill=\"#111827\" opacity=\"0.15\"/><rect x=\"420\" y=\"102\" width=\"60\" height=\"60\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On empile 6 ombres proches.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Échelle courte ; ajout uniquement sur besoin réel.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Quatre ombres indiscernables.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Ombre comme séparateur",
+     "quand": "On délimite avec une ombre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Ombre comme séparateur\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"200\" y=\"104\" width=\"280\" height=\"14\" rx=\"7\" fill=\"#111827\" opacity=\".18\"/><circle cx=\"440\" cy=\"80\" r=\"9\" fill=\"#92400E\"/><path d=\"M436.5 76.5l7 7M443.5 76.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"220\" y=\"150\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">ombre = séparateur ?</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On délimite avec une ombre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>La délimitation appartient à la bordure.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une ombre en guise de trait.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "z-index anarchique",
+     "quand": "Les z-index se battent sans échelle.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "05 · Enjeu / risque",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : z-index anarchique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"240\" y=\"80\" width=\"92\" height=\"72\" rx=\"9\" fill=\"#E0E7FF\"/><rect x=\"302\" y=\"102\" width=\"92\" height=\"72\" rx=\"9\" fill=\"#DBEAFE\" stroke=\"#1D4ED8\" stroke-width=\"1.5\"/><rect x=\"360\" y=\"88\" width=\"92\" height=\"72\" rx=\"9\" fill=\"#FEF3C7\" stroke=\"#92400E\" stroke-width=\"1.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Les z-index se battent sans échelle.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Non couvert : naîtra avec la première superposition.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une guerre de z-index.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "<div class=\"spec-rang\"><div class=\"elev-boite\" style=\"box-shadow:none;\"><code>none</code></div><div class=\"elev-boite\" style=\"box-shadow:0 1px 3px rgba(17, 24, 39, 0.10);\"><code>raised</code></div><div class=\"elev-boite\" style=\"box-shadow:0 4px 12px rgba(17, 24, 39, 0.14);\"><code>overlay</code></div></div></section>"
+  ],
+  "tokens": [
+   {
+    "token": "niveaux.repos_surface",
+    "ref": "elevation.none",
+    "valeur": "none",
+    "couleur": null
+   },
+   {
+    "token": "niveaux.repos_objet",
+    "ref": "elevation.raised",
+    "valeur": "0 1px 3px rgba(17, 24, 39, 0.10)",
+    "couleur": null
+   },
+   {
+    "token": "niveaux.survol",
+    "ref": "elevation.overlay",
+    "valeur": "0 4px 12px rgba(17, 24, 39, 0.14)",
+    "couleur": null
+   },
+   {
+    "token": "niveaux.enfoncement",
+    "ref": "ombre interne — état, pas palier ; candidate à tokenisation (cf. UX/À approfondir)",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-17",
+   "titre": "Passe « stress-test » : neuf remontées d'un rebranding double (dont un thème sombre) intégrées",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/core/DESIGN.md</code> (1.19.0 → 1.20.0, token <code>radius.lg</code>), <code>foundations/color/COLOR-UX.md</code> (→ 1.1.0) + <code>COLOR-UI.md</code> (→ 1.0.1), <code>radius/RADIUS-UX.md</code> + <code>RADIUS-UI.md</code> (→ 1.1.0), <code>elevation/ELEVATION-UX.md</code> + <code>ELEVATION-UI.md</code> (→ 1.1.0), <code>motion/MOTION-UX.md</code> (→ 1.2.0), <code>voice/VOICE-UX.md</code> (→ 1.1.0), <code>components/card/CARD-UI.md</code> + <code>alert/ALERT-UI.md</code> (→ radius.lg), <code>tools/genere-tokens.js</code> (copie de theme-gate.mjs + guardrail), <code>dist/</code> régénéré.</li><li><strong>Origine</strong> : rapport de stress-test du 2026-07-17 — un parcours de création de compte construit puis rebrandé deux fois à partir de maquettes marketing externes (WanderLuxe, Nexus UI), dont un thème sombre. Neuf manques relevés, tous non bloquants ; les chiffres du rapport (contrastes, teinte, voile) revérifiés de zéro avant intégration.</li><li><strong>Décisions</strong> :</li><li><strong>Règle dérivée dark mode</strong> (haute) : la table des paires suppose implicitement un thème clair. <code>surface-contrast</code> doit porter <code>background</code> ET <code>on-primary</code> à 4.5:1 ; en sombre, cela force <code>primary</code> clair (un primary sombre est démontré insatisfiable — aucun neutre représentable ne tient 4.5:1 à la fois avec un quasi-noir et un blanc). Ajoutée en dérivée, pas en préférence.</li><li><strong>Outil de vérif livré</strong> (haute) : le garde-fou « re-vérifier par test-rendu.js » n'était pas exécutable côté consommateur (dist/ ne contient pas tools/). <code>theme-gate.mjs</code> (mêmes seuils) est désormais <strong>copié dans dist/ par le build</strong> (son en-tête l'annonçait sans que ce soit fait) ; le garde-fou distingue mainteneur (test-rendu) et consommateur (theme-gate).</li><li><strong>Élévation dépendante du thème</strong> (haute) : <code>elevation.*</code> encode une ombre pour fond clair, invisible en sombre — déclaré valeur à re-thématiser, pas constante.</li><li><strong>Cran conteneur <code>radius.lg</code> (12px)</strong> (moyenne) : sépare le rayon des conteneurs (card, alert, désormais en <code>lg</code>) de celui des contrôles (bouton/input en sm/md). Rend exprimable l'intention « carte 16 / contrôle 8 » d'une source externe.</li><li><strong>Contradiction pill tranchée</strong> (moyenne) : <code>radius.pill</code> réservé aux badges/avatars (forme intrinsèquement pilule) ; un contrôle mono-ligne (bouton, input) ne prend jamais pill.</li><li><strong>Contrainte ≠ parti pris</strong> (moyenne) : dans motion et voice, le registre « productif seulement » est marqué comme parti pris d'identité <strong>paramétrable</strong> par un consommateur qui l'assume, distinct des contraintes WCAG non négociables — le système encadre la dérogation au lieu de la forcer.</li><li><strong>Teinte des neutres à luminance constante</strong> (basse) : méthode bénie (OKLCh + recalage de L) — le contraste ne dépendant que de la luminance, teinter à luminance constante ne déplace aucun rapport.</li><li><strong>Méthode de voile sur image</strong> (basse) : le voile est un calcul (échantillonner le pire pixel, calculer l'alpha pour 4.5:1, revérifier à plusieurs formats), pas un réglage à l'œil.</li><li><strong>Slot de marque additionnel refusé</strong> (basse) : les identités multi-teintes décoratives sortent du périmètre — un token naît d'un besoin réel, pas d'une couleur à caser. Le registre marque reste à trois rôles.</li><li><strong>Pourquoi</strong> : le test a montré que l'architecture par rôles tient un rebranding double sans code conditionnel (surface-contrast s'inverse seule en sombre). Les manques étaient concentrés sur l'outillage et sur des angles morts que seul un thème sombre révèle. Intégrer les dérivées (dark mode, élévation) évite à chaque futur consommateur de les redécouvrir par l'échec.</li><li><strong>Arbitrages assumés</strong> : <code>radius.lg</code> change la courbure rendue des cartes/alertes (8 → 12 px) — décision d'identité tranchée ici, trivialement réversible (valeur du token). Le dark mode reste non implémenté (décision produit non prise) ; seule sa contrainte dérivée est documentée.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "ELEVATION-R01",
+   "couche": "ux",
+   "solution": "l'élévation est une **fondation** — pas d'axes, pas d'assemblage : une contrainte transversale. Particularité de trajectoire : ses tokens sont nés *avant* sa doctrine (créés en DESIGN.md 1.2.0 pour la card) ; la 2.0.0 élargit la doctrine de l'**ombre** au **relief** entier (ombre + arête + liseré), après que l'implémentation de référence (atelier DS-UI) en a éprouvé la grammaire.",
+   "enonce": "L'élévation est une fondation transversale : elle ne se décrit ni par axes ni par assemblage, et sa doctrine peut être écrite après ses tokens.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Fond clair (référence)",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R02",
+   "couche": "ux",
+   "solution": "l'élévation porte une seule fonction — **dire à quelle couche du flux un élément appartient** :",
+   "enonce": "L'élévation ne dit qu'une chose : à quelle couche du flux un élément appartient — à plat, soulevé mais dans le flux, ou au-dessus du flux.",
+   "mesure": "toute élévation résout vers l'un des trois niveaux nommés",
+   "contre": "",
+   "probleme": "cette échelle à 3 niveaux recoupe exactement une frontière déjà tracée ailleurs — \"dans le flux vs au-dessus du flux\" (ALERT-UX, la frontière alert/toast). L'élévation est la traduction visuelle de cette frontière ; elle n'a donc pas plus de niveaux que le système n'a de couches.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Échelles courtes et sémantiques",
+     "liens": [
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Material 3",
+       "url": "https://m3.material.io/styles/elevation/overview"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Échelles courtes et sémantiques",
+    "liens": [
+     {
+      "label": "Atlassian — Elevation",
+      "url": "https://atlassian.design/foundations/elevation"
+     },
+     {
+      "label": "Material 3",
+      "url": "https://m3.material.io/styles/elevation/overview"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R03",
+   "couche": "ux",
+   "solution": "le relief est la **matérialité retrouvée de la fonction** : un objet qui dépasse de la page appelle le doigt ; un creux appelle un contenu ; une surface plate se lit sans rien promettre. Le flat design a uniformisé ces trois natures en une seule — le système les redistingue.",
+   "enonce": "Un élément interactif doit porter un signifiant perceptible de sa nature ; ce système choisit le relief comme signifiant.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "la disparition des signifiants du flat est un coût d'utilisabilité **documenté**, pas une nostalgie : les éléments plats à signifiants faibles attirent moins l'attention et créent de l'incertitude sur ce qui est cliquable (NN/g). Le biseau des années 90 encodait physiquement l'affordance (Norman : ce qui se perçoit comme pressable est pressé) — il le disait avec 4 px de gris ; ce système le dit à 1 px près, sur tokens.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Les éléments plats à signifiants faibles créent incertitude et coût attentionnel",
+     "liens": [
+      {
+       "label": "NN/g — Flat UI Elements Attract Less Attention and Cause Uncertainty",
+       "url": "https://www.nngroup.com/articles/flat-ui-less-attention-cause-uncertainty/"
+      }
+     ],
+     "confiance": "Établi — recherche publiée"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Affordances perçues : ce qui semble pressable est pressé",
+     "liens": [
+      {
+       "label": "Don Norman, *The Design of Everyday Things* (affordances/signifiers)",
+       "url": null
+      }
+     ],
+     "confiance": "Référence établie en design"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Les éléments plats à signifiants faibles créent incertitude et coût attentionnel",
+    "liens": [
+     {
+      "label": "NN/g — Flat UI Elements Attract Less Attention and Cause Uncertainty",
+      "url": "https://www.nngroup.com/articles/flat-ui-less-attention-cause-uncertainty/"
+     }
+    ],
+    "confiance": "Établi — recherche publiée"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R04",
+   "couche": "ux",
+   "solution": "**grammaire à trois natures** — à la création de tout composant, chaque surface est classée :",
+   "enonce": "Toute surface est classée dans l'une de trois natures — posé, creusé, plat — et cette classe détermine son relief.",
+   "mesure": "chaque surface documentée est classée posé, creusé ou plat",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+     "liens": [
+      {
+       "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+       "url": null
+      }
+     ],
+     "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+    "liens": [
+     {
+      "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+      "url": null
+     }
+    ],
+    "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R05",
+   "couche": "ux",
+   "solution": "**le relief suit la fonction, jamais la décoration.** Le test reste celui du langage d'interaction (INTERACTION-UX, matérialité fonctionnelle) : manipulable ? reçoit ? organise ? couche temporaire ? état changé ? — un effet qui ne répond à aucune question est décoratif, donc banni. La grammaire ne crée pas un droit à l'effet ; elle nomme les trois seules réponses admises.",
+   "enonce": "Un effet de relief qui ne répond à aucune question de matérialité fonctionnelle est décoratif et interdit.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+     "liens": [
+      {
+       "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+       "url": null
+      }
+     ],
+     "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+    "liens": [
+     {
+      "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+      "url": null
+     }
+    ],
+    "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R06",
+   "couche": "ux",
+   "solution": "**statut de frontière — parti pris d'identité, paramétrable.** Le registre Relief est débrayable (l'implémentation de référence l'expose comme un réglage de thème) : un consommateur peut le désactiver et retomber sur le registre plat intégral (doctrine 1.x, conservée ci-dessous). En audit d'une interface tierce, l'absence de relief n'est jamais une non-conformité ; l'affordance mensongère (relief sur du statique) en est une.",
+   "enonce": "Le registre de relief est un parti pris paramétrable : son absence chez un tiers n'est jamais une non-conformité, alors que le relief posé sur du statique en est une.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "Registre relief débrayable = parti pris paramétrable, pas contrainte",
+     "liens": [
+      {
+       "label": "Cadre « contrainte ≠ parti pris » (DECISIONS 2026-07-17)",
+       "url": null
+      }
+     ],
+     "confiance": "Décision de méthode interne"
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "Registre relief débrayable = parti pris paramétrable, pas contrainte",
+    "liens": [
+     {
+      "label": "Cadre « contrainte ≠ parti pris » (DECISIONS 2026-07-17)",
+      "url": null
+     }
+    ],
+    "confiance": "Décision de méthode interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R07",
+   "couche": "ux",
+   "solution": "**la lumière vient du haut, pour tout le monde.** Un objet posé porte une arête externe sombre, un liseré interne clair *en haut qui fond vers sa couleur en bas* (jamais un anneau uniforme — la lumière ne cercle pas), et l'ombre de repos `raised`. Un creux porte une ombre interne haute. Une seule source de lumière dans tout le produit ; deux objets éclairés de deux directions sont un bug de physique.",
+   "enonce": "L'ombrage suppose une source de lumière unique et venue du haut, la perception humaine interprétant toute ombre selon un a priori de lumière d'en haut.",
+   "mesure": "une seule direction de décalage d'ombre portée dans tout le produit",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "La vision humaine interprète les ombrages ambigus selon un a priori de lumière venue d'en haut, robuste chez l'adulte et se renforçant avec l'âge",
+     "liens": [
+      {
+       "label": "Journal of Vision — Interactions between light-from-above and convexity priors",
+       "url": "https://jov.arvojournals.org/article.aspx?articleid=2191755"
+      }
+     ],
+     "confiance": "Établi — recherche en perception visuelle publiée et relue"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "La vision humaine interprète les ombrages ambigus selon un a priori de lumière venue d'en haut, robuste chez l'adulte et se renforçant avec l'âge",
+    "liens": [
+     {
+      "label": "Journal of Vision — Interactions between light-from-above and convexity priors",
+      "url": "https://jov.arvojournals.org/article.aspx?articleid=2191755"
+     }
+    ],
+    "confiance": "Établi — recherche en perception visuelle publiée et relue"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Fond clair (référence)",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R08",
+   "couche": "ux",
+   "solution": "**matrice d'états des objets posés** — trois états, une seule métaphore :",
+   "enonce": "Un objet posé a trois états dans une seule métaphore : posé au repos, soulevé au survol, enfoncé à l'appui.",
+   "mesure": "l'état d'appui porte une ombre interne et un fond plus sombre que l'état de repos",
+   "contre": "",
+   "probleme": "au registre plat, le survol assombrit (convention state-layer). Au registre relief, il éclaircit — parce que la métaphore prime : ce qui monte prend la lumière, ce qui s'enfonce la perd. Un registre qui mélange les deux directions ne raconte plus rien. L'appui qui s'enfonce ferme la boucle sensorielle du biseau : l'utilisateur *sent* le clic avant la réponse du système.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+     "liens": [
+      {
+       "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+       "url": null
+      }
+     ],
+     "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Grammaire posé / creusé / plat, physique lumière-du-haut, matrice défaut/soulevé/enfoncé",
+    "liens": [
+     {
+      "label": "Décision d'identité interne (2026-07-23), maquettes Figma Sibyl 86:129 et 128:136, éprouvée dans l'atelier DS-UI (registre débrayable)",
+      "url": null
+     }
+    ],
+    "confiance": "Parti pris d'identité — à éprouver par tests utilisateurs"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R09",
+   "couche": "ux",
+   "solution": "**en thème sombre, la physique tient, les valeurs changent.** La convention « les surfaces s'éclaircissent avec la hauteur » (1.1.0) s'applique au registre entier : le soulevé s'éclaircit aussi en sombre ; l'enfoncé se dérive *vers le noir* — jamais via le token de survol, qui s'éclaircit en sombre et inverserait la physique (un bouton qui *monte* quand on le presse). Le liseré s'exprime dans la gamme de l'objet, jamais en blanc pur.",
+   "enonce": "En thème sombre les directions de la physique du relief sont conservées et seules les valeurs changent.",
+   "mesure": "le fond de l'état d'appui n'est jamais dérivé du token de survol",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Dark mode : surfaces éclaircies avec la hauteur",
+     "liens": [
+      {
+       "label": "Material — Dark theme",
+       "url": "https://m2.material.io/design/color/dark-theme.html"
+      }
+     ],
+     "confiance": "Établi par convergence — étendue ici au registre relief entier"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "En thème sombre, l'élévation ne peut pas reposer sur l'ombre seule : plus l'élévation est haute, plus la surface s'éclaircit, et les tokens de surface et d'ombre doivent être appairés",
+     "liens": [
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi par convergence — deux systèmes vérifiés, plus Material"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Dark mode : surfaces éclaircies avec la hauteur",
+    "liens": [
+     {
+      "label": "Material — Dark theme",
+      "url": "https://m2.material.io/design/color/dark-theme.html"
+     }
+    ],
+    "confiance": "Établi par convergence — étendue ici au registre relief entier"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Bouton",
+     "famille": "Contexte d'intégration"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R10",
+   "couche": "ux",
+   "solution": "les surfaces restent gouvernées par la doctrine 1.x, **inchangée** : le repos d'une *surface* est à plat ; `raised` reste le retour de survol des surfaces **cliquables** uniquement (card clickable — et en registre relief, ce survol porte aussi l'arête et le liseré, qui apparaissent et disparaissent *avec* lui) ; une surface statique ne réagit jamais.",
+   "enonce": "Le repos d'une surface est à plat : l'élévation soulevée n'est accordée qu'au survol des surfaces cliquables.",
+   "mesure": "aucune élévation soulevée au repos sur une surface non actionnable",
+   "contre": "",
+   "probleme": "c'est la ligne de partage qui empêche la grammaire de dégénérer en skeuomorphisme : les **objets** (petits, actionnables, en nombre borné par écran) ont droit au relief de repos ; les **surfaces** (grandes, porteuses de contenu) ne l'obtiennent qu'en le méritant par l'interaction. Généraliser le relief aux surfaces recréerait l'inflation que la 1.x combattait — si tout est posé, rien n'est pressable.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Le survol comme élévation des surfaces cliquables",
+     "liens": [
+      {
+       "label": "Convention Material/MUI + précédent interne (CARD-UI)",
+       "url": null
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Le survol comme élévation des surfaces cliquables",
+    "liens": [
+     {
+      "label": "Convention Material/MUI + précédent interne (CARD-UI)",
+      "url": null
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Surface au repos",
+     "famille": "Rôle d'élévation"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R11",
+   "couche": "ux",
+   "solution": "**mise en avant ≠ élévation**, inchangé : `surface-contrast` met en avant par le fond, sans ombre (non-cumul). Et **l'importance ne réquisitionne pas le relief** : un bouton primaire n'est pas plus posé qu'un bouton neutre — la hiérarchie passe par style × tone (BUTTON-UX), le relief dit la nature, pas le rang.",
+   "enonce": "La mise en avant passe par le fond et non par l'ombre : élévation et fond contrasté ne se cumulent pas.",
+   "mesure": "aucune surface ne porte simultanément un token d'élévation et un fond contrasté",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Mise en avant sans superposition",
+     "famille": "Rôle d'élévation"
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Hiérarchie permanente par l'ombre",
+     "famille": "Rôle d'élévation"
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Bouton",
+     "famille": "Contexte d'intégration"
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Sur surface-contrast",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R12",
+   "couche": "ux",
+   "solution": "trois niveaux d'ombre, inchangés. Le relief n'ajoute **aucun niveau** : il compose les niveaux existants avec l'arête et le liseré (fondation border : le containment passe par la bordure). L'ombre interne d'enfoncement est un état, pas un palier — elle n'entre pas dans l'échelle.",
+   "enonce": "L'échelle d'ombre compte exactement trois niveaux ; l'ombre interne d'enfoncement est un état, pas un palier.",
+   "mesure": "l'échelle expose exactement trois niveaux ; l'ombre interne n'y est pas comptée",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    },
+    {
+     "ref": "S15",
+     "affirmation": "Le mot-clé d'ombre interne rogne l'ombre sur la boîte de remplissage ; une ombre n'affecte pas les dimensions du modèle de boîte",
+     "liens": [
+      {
+       "label": "MDN — box-shadow",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow"
+      }
+     ],
+     "confiance": "Établi — fonde le fait qu'une ombre interne est un état sans coût de mise en page"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+    "liens": [
+     {
+      "label": "Material Web — Elevation",
+      "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+     },
+     {
+      "label": "Fluent 2 — Elevation",
+      "url": "https://fluent2.microsoft.design/elevation"
+     },
+     {
+      "label": "Polaris — Shadow tokens",
+      "url": "https://polaris-react.shopify.com/tokens/shadow"
+     },
+     {
+      "label": "Atlassian — Elevation",
+      "url": "https://atlassian.design/foundations/elevation"
+     },
+     {
+      "label": "Carbon — Color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     }
+    ],
+    "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R13",
+   "couche": "ux",
+   "solution": "les ombres restent **teintées** (base `text-primary`, jamais noir pur) et se distinguent par la *portée*, pas par l'opacité seule.",
+   "enonce": "Les ombres sont teintées sur la couleur de texte primaire, jamais en noir pur, et se distinguent par leur portée plutôt que par leur seule opacité.",
+   "mesure": "aucune valeur d'ombre en noir pur ; deux niveaux successifs diffèrent par leur flou ou leur décalage",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+    "liens": [
+     {
+      "label": "Material Web — Elevation",
+      "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+     },
+     {
+      "label": "Fluent 2 — Elevation",
+      "url": "https://fluent2.microsoft.design/elevation"
+     },
+     {
+      "label": "Polaris — Shadow tokens",
+      "url": "https://polaris-react.shopify.com/tokens/shadow"
+     },
+     {
+      "label": "Atlassian — Elevation",
+      "url": "https://atlassian.design/foundations/elevation"
+     },
+     {
+      "label": "Carbon — Color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     }
+    ],
+    "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R14",
+   "couche": "ux",
+   "solution": "les transitions d'état du relief appartiennent à motion (MOTION-UX) : les couleurs transitionnent ; **les ombres se remplacent instantanément** (jamais de box-shadow interpolé — le soulevé/enfoncé est un changement d'état sec, pas un glissement). Sous `prefers-reduced-motion`, tout est instantané ; l'information (la nature de l'objet) reste — elle est statique par construction.",
+   "enonce": "Les ombres se remplacent instantanément et ne sont jamais interpolées ; seules les couleurs transitionnent.",
+   "mesure": "aucune propriété d'ombre déclarée dans une transition ou une animation",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "La préférence système de mouvement réduit demande de supprimer, réduire ou remplacer les animations non essentielles, sans perte d'information",
+     "liens": [
+      {
+       "label": "MDN — prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme"
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Tout ce qui implique un flou est plus coûteux à peindre qu'un aplat",
+     "liens": [
+      {
+       "label": "web.dev — Animations guide",
+       "url": "https://web.dev/articles/animations-guide"
+      }
+     ],
+     "confiance": "Établi — **réserve : le guide documente le coût mais n'interdit pas l'interpolation d'ombre ; le fichier sur-interprétait cette source**"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "La préférence système de mouvement réduit demande de supprimer, réduire ou remplacer les animations non essentielles, sans perte d'information",
+    "liens": [
+     {
+      "label": "MDN — prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Ombre sur carte statique",
+     "famille": "Enjeu / risque"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R15",
+   "couche": "ux",
+   "solution": "le **skeleton n'est jamais en relief** — il occupe l'espace du contenu, il ne promet aucune interaction (inchangé).",
+   "enonce": "Un squelette de chargement ne porte jamais de relief : il occupe l'espace du contenu sans promettre d'interaction.",
+   "mesure": "aucun token d'élévation appliqué à un squelette",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R16",
+   "couche": "ux",
+   "solution": "le relief n'est **jamais le seul signal** (inchangé, étendu) : en `forced-colors`, ombres ET liserés disparaissent — restent la bordure, le focus ring, la sémantique. Le registre relief a l'avantage de reposer d'abord sur des *bordures* (arête = border réel), qui survivent au contraste forcé mieux que les ombres.",
+   "enonce": "Aucune information ne repose sur la seule ombre ni sur le seul liseré : en mode de couleurs forcées les ombres sont supprimées et les fonds dégradés annulés.",
+   "mesure": "en couleurs forcées, chaque élément reste identifiable par sa bordure, son anneau de focus ou son texte",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "En mode de couleurs forcées, les ombres portées et les ombres de texte sont forcées à néant, les images de fond non-url également (donc les dégradés), tandis que les couleurs de bordure et d'anneau sont recolorées. Ombres et liserés dégradés disparaissent ; la bordure et l'anneau survivent",
+     "liens": [
+      {
+       "label": "MDN — @media (forced-colors)",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+      },
+      {
+       "label": "W3C — CSS Color Adjust Level 1",
+       "url": "https://www.w3.org/TR/css-color-adjust-1/"
+      }
+     ],
+     "confiance": "Établi, comportement plateforme normalisé — **la source décisive du sujet, elle manquait entièrement**"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Une ombre portée ne peut pas servir de signal d'identification : le Understanding de 1.4.11 précise qu'elle est absorbée dans la couleur voisine la plus proche en luminosité et ne compte pas pour le seuil de 3:1",
+     "liens": [
+      {
+       "label": "WCAG — Understanding 1.4.11 Non-text Contrast",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html"
+      }
+     ],
+     "confiance": "Établi, standard — argument normatif direct pour R16, jamais cité"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "La perception de la profondeur n'est pas uniforme entre utilisateurs, d'où la nécessité de combiner plusieurs techniques",
+     "liens": [
+      {
+       "label": "Polaris — Depth",
+       "url": "https://polaris-react.shopify.com/design/depth"
+      }
+     ],
+     "confiance": "Établi chez Polaris — converge avec S8 et S9"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "En mode de couleurs forcées, les ombres portées et les ombres de texte sont forcées à néant, les images de fond non-url également (donc les dégradés), tandis que les couleurs de bordure et d'anneau sont recolorées. Ombres et liserés dégradés disparaissent ; la bordure et l'anneau survivent",
+    "liens": [
+     {
+      "label": "MDN — @media (forced-colors)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors"
+     },
+     {
+      "label": "W3C — CSS Color Adjust Level 1",
+      "url": "https://www.w3.org/TR/css-color-adjust-1/"
+     }
+    ],
+    "confiance": "Établi, comportement plateforme normalisé — **la source décisive du sujet, elle manquait entièrement**"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Contraste élevé forcé",
+     "famille": "Plateforme / environnement"
+    }
+   ]
+  },
+  {
+   "id": "ELEVATION-R17",
+   "couche": "ux",
+   "solution": "l'élévation — et désormais le liseré — sont **dépendants du thème** (1.1.0, étendu) : un thème redéfinit `elevation.*` et les dérivations de liseré comme il redéfinit `background`.",
+   "enonce": "Les valeurs d'élévation et de liseré appartiennent au thème : un thème les redéfinit comme il redéfinit ses couleurs de fond.",
+   "mesure": "aucune valeur d'ombre ou de liseré codée en dur hors de la définition de thème",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "En thème sombre, l'élévation ne peut pas reposer sur l'ombre seule : plus l'élévation est haute, plus la surface s'éclaircit, et les tokens de surface et d'ombre doivent être appairés",
+     "liens": [
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi par convergence — deux systèmes vérifiés, plus Material"
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Relevé du 2026-07-27, longueur des échelles d'élévation : Material 3 six niveaux, Fluent 2 six sur deux rampes, Polaris six plus variantes, Atlassian quatre plus un cas de débordement, Carbon aucune ombre (profondeur par couches de fond). **Aucun système vérifié ne tient une échelle à trois niveaux**",
+     "liens": [
+      {
+       "label": "Material Web — Elevation",
+       "url": "https://github.com/material-components/material-web/blob/main/docs/components/elevation.md"
+      },
+      {
+       "label": "Fluent 2 — Elevation",
+       "url": "https://fluent2.microsoft.design/elevation"
+      },
+      {
+       "label": "Polaris — Shadow tokens",
+       "url": "https://polaris-react.shopify.com/tokens/shadow"
+      },
+      {
+       "label": "Atlassian — Elevation",
+       "url": "https://atlassian.design/foundations/elevation"
+      },
+      {
+       "label": "Carbon — Color usage",
+       "url": "https://carbondesignsystem.com/elements/color/usage/"
+      }
+     ],
+     "confiance": "Établi — mesuré sur sources primaires. **Contredit la mention « échelles courtes, établi par convergence » de S1**"
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "En thème sombre, l'élévation ne peut pas reposer sur l'ombre seule : plus l'élévation est haute, plus la surface s'éclaircit, et les tokens de surface et d'ombre doivent être appairés",
+    "liens": [
+     {
+      "label": "Atlassian — Elevation",
+      "url": "https://atlassian.design/foundations/elevation"
+     },
+     {
+      "label": "Carbon — Color usage",
+      "url": "https://carbondesignsystem.com/elements/color/usage/"
+     }
+    ],
+    "confiance": "Établi par convergence — deux systèmes vérifiés, plus Material"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R20",
+   "couche": "ux",
+   "solution": "le PLAN et le RELIEF sont deux signaux distincts. Ce que porte un plan — son existence, son remplissage, ce qu'il promet quand il apparaît — appartient à `SURFACE-UX` (2026-07-27). L'élévation ne possède que l'ombre et la grammaire des trois natures ; elle ne dit pas ce qu'est une surface.",
+   "enonce": "La définition d'une surface et le signal que constitue son apparition appartiennent à SURFACE-UX ; ce document ne possède que l'ombre et la grammaire posé / creusé / plat.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R18",
+   "couche": "ux",
+   "solution": "table ci-dessous",
+   "enonce": "Les risques du relief sont recensés et hiérarchisés par sévérité dans une table d'autorité du fichier.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "ELEVATION-R19",
+   "couche": "ux",
+   "solution": "**le relief dit la nature, jamais l'importance.** Posé = pressable, creusé = remplissable, plat = lisible — et rien d'autre. Un élément important n'est pas plus posé : il est mieux placé, mieux contrasté, mieux nommé.",
+   "enonce": "Le relief dit la nature d'un élément et jamais son importance, qui passe par la place, le contraste et le nom.",
+   "mesure": "deux composants de même nature et de rangs différents portent la même élévation",
+   "contre": "",
+   "probleme": "c'est la même discipline que \"Large ne veut pas dire important\" (BUTTON-UX) et \"niveau ≠ taille\" (TYPOGRAPHY-UX) — chaque canal a son sens propre, l'importance n'en réquisitionne aucun. Le relief rejoint la liste des canaux protégés.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

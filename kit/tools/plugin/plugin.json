@@ -1,0 +1,16 @@
+{
+  "name": "design-system-md",
+  "version": "1.7.1",
+  "description": "Documentation UX/UI contextuelle : règles et tokens chargés par intention (formulaire, création de compte, collection, page de contenu, feedback, superposé modal) via un routeur, pour que l'agent applique le bon bundle sans lire tout le système d'un coup.",
+  "author": {
+    "name": "Aurélien Nougier"
+  },
+  "keywords": [
+    "design-system",
+    "ux",
+    "ui",
+    "design-tokens",
+    "ai-agents",
+    "cowork"
+  ]
+}

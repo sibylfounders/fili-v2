@@ -1,0 +1,1892 @@
+{
+ "slug": "gesture",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3.5 15c3.2 3 8.8 3 12.6-1.3\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.1\" stroke-linecap=\"round\"/><path d=\"M14.4 11.4l2.6 2.6-3.7.8z\" fill=\"#4F46E5\"/><circle cx=\"6.6\" cy=\"7.4\" r=\"2.3\" fill=\"#F2C744\"/><circle cx=\"12\" cy=\"5.4\" r=\"2.3\" fill=\"#0891B2\"/></svg>",
+ "nom": "gesture",
+ "nature": "Langage",
+ "meta": "UX v1.0.0 · UI v1.0.0 · mis à jour 2026-07-25 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Quand un geste aide-t-il, et comment ne jamais en faire le seul moyen d’agir ?",
+  "detail": "Ce langage cadre les gestes — balayer, glisser-déposer, appui long, pincer : rapides mais invisibles. La règle qui fonde tout : un geste est un raccourci, jamais l’unique porte. Toute trajectoire ou tout glissement a une alternative simple (WCAG 2.5.1 / 2.5.7), s’annonce, et s’annule avant sa validation.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Un geste est un raccourci, jamais le seul chemin"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Un geste utile s’annonce par un affordant visible"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Il se déclenche au-delà d’un seuil franc"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "21",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "16",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "0",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "RULES-gesture.md",
+   "source": "---\nsujet: gesture\ntype: langage\nresume: \"Le geste (swipe, drag, appui long, pinch) est un raccourci, jamais le seul chemin : alternative à pointeur unique (2.5.1) / sans glisser (2.5.7) / motion actuation (2.5.4) obligatoires, découvrabilité, seuil et annulation\"\nrequires: []\nselon-contexte: [\"touch (la taille et l'atteinte des cibles et des alternatives — fondation voisine)\"]\n---\n# RULES — Gesture / gestes (compilé, condensé)\n\n> Généré depuis `languages/gesture/GESTURE-UX.md` (v1.0.0) et `GESTURE-UI.md` (v1.0.0). Langage comportemental — aucun token propre (compose `motion.*` pour le retour, `touch.*` pour les cibles). Ne pas éditer à la main. La source fait autorité.\n\n## Nature\n- Langage du **mouvement fait sur une cible** : balayer, glisser-déposer, appui long, multipoint. Pendant comportemental de la fondation `touch` (qui, elle, porte les tokens de taille).\n- Un geste est **invisible** : ni libellé, ni bordure, ni état au repos. D'où deux exigences : **découvrable** (affordant visible) et **doublé** (alternative simple).\n- **Règle cardinale : le geste est un raccourci, jamais une porte.** Il accélère pour l'expert ; il n'enlève l'accès à personne.\n- **Contrainte ≠ parti pris** : les alternatives WCAG (2.5.1 / 2.5.7 / 2.5.4) sont non négociables ; le registre « raccourci seulement » est un parti pris d'identité interne.\n\n## L'alternative (règle cardinale)\n- Tout geste **à trajectoire (path-based) ou multipoint** → alternative à **pointeur unique** : la même fonction au tap/clic simple (WCAG 2.5.1, A). Balayer-pour-supprimer → un bouton supprimer existe aussi.\n- Tout **glissement (drag)** → alternative **sans glisser** : boutons monter/descendre, « déplacer vers » (WCAG 2.5.7, AA).\n- **Motion actuation** (secouer, incliner) → contrôle équivalent à l'écran **et** désactivable (WCAG 2.5.4, A).\n- **Seule exception : le geste essentiel** — le tracé EST la donnée (signer, dessiner, carte libre). Déclarée, jamais présumée.\n\n## Découvrabilité\n- Un geste utile s'**annonce** (poignée, « peek », ombre, chevron) — frontière avec le langage interaction. Un geste sans indice est un secret.\n- Respecter le **geste standard de plateforme** (swipe-back iOS, pull-to-refresh) plutôt qu'un concurrent maison.\n- Aide au premier usage **ponctuelle**, non bloquante, non ré-affichée par défaut.\n\n## Seuil, annulation, accident\n- Déclenchement seulement au-delà d'un **seuil franc** (distance/durée) ; sous le seuil, rien. Le **défilement prime** sur un effleurement.\n- **Annulable avant validation** : ramener et relâcher hors zone annule ; l'effet n'est acté qu'au seuil + relâchement dans la zone (parenté 2.5.2, `touch`).\n- Retour d'accompagnement en **`transform`/`opacity`** (langage motion), coupé sous `prefers-reduced-motion` sans retirer la fonction.\n\n## Accessibilité\n- Toute fonction gestuelle est atteignable **au clavier** (contrat porté par le principe accessibility ; ce langage en est consommateur).\n- L'**AT** capte ses propres gestes → l'action reste exposée par un **contrôle nommé**, pas un swipe brut.\n- L'alternative à pointeur unique **est** l'accès pour la **motricité réduite**.\n\n## Application (UI)\n- Implémenter sur **Pointer Events** (`pointerdown/move/up/cancel`). L'action se lie à un **contrôle natif** (`<button>`/`<a>`) ; le geste est un raccourci branché par-dessus → alternative + clavier par construction.\n- Cibles-alternatives = cibles tactiles ordinaires : `touch.target-comfortable` + `touch.target-spacing`.\n- Affordant **statique et accessible** (peek, poignée) — jamais une animation seule ni le seul `:hover`.\n\n## Risque\n| Cas | Risque | Sévérité |\n|---|---|---|\n| Geste path/multipoint sans alternative | Fonction inaccessible (2.5.1) | Critique |\n| Drag sans alternative sans glisser | Inaccessible en motricité réduite (2.5.7) | Critique |\n| Motion actuation sans équivalent ni off | Déclenchement involontaire (2.5.4) | Élevée |\n| Geste caché sans affordant | Découvert par personne | Élevée |\n| Geste maison contre geste système | Conflit, action involontaire | Élevée |\n| Pas de seuil (confusion scroll) | Action déclenchée en défilant | Moyenne |\n\nCONFIANCE : alternatives (2.5.1 / 2.5.7 / 2.5.4), annulation (2.5.2), découvrabilité (Apple HIG, Material) = établi, standards d'accessibilité. Le registre « raccourci seulement » = décision interne datée 2026-07-25. Produit sans surface gestuelle réelle → langage anticipatoire : tout geste concret non couvert par un cas ci-dessus : STOP, remonter.\n"
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 5 cas",
+   "titre": "Type de geste",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Type de geste\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"54\" cy=\"58\" r=\"8\" fill=\"#0891B2\"/><path d=\"M64 58h32\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\"/><path d=\"M92 52l10 6-10 6z\" fill=\"#4F46E5\"/><text x=\"50\" y=\"84\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">swipe</text><rect x=\"128\" y=\"46\" width=\"28\" height=\"18\" rx=\"4\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><path d=\"M160 55h18\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"3 3\"/><rect x=\"182\" y=\"46\" width=\"28\" height=\"18\" rx=\"4\" fill=\"none\" stroke=\"#4F46E5\" stroke-dasharray=\"4 3\"/><text x=\"140\" y=\"84\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">drag</text><circle cx=\"248\" cy=\"54\" r=\"8\" fill=\"#0891B2\"/><circle cx=\"284\" cy=\"54\" r=\"8\" fill=\"#0891B2\"/><path d=\"M260 54h14M272 54h-14\" stroke=\"#4F46E5\" stroke-width=\"2\"/><text x=\"246\" y=\"84\" font-size=\"9\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">pinch</text></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Tap / appui simple",
+     "quand": "Le geste de base.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de geste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Tap / appui simple\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"298\" y=\"92\" width=\"84\" height=\"52\" rx=\"11\" fill=\"#E0E7FF\" stroke=\"#4F46E5\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"340\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><text x=\"286\" y=\"184\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">tap : un point, pas un chemin (→ touch)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le geste de base.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « tap / appui simple » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Appui long",
+     "quand": "Menu contextuel, prévisualisation.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de geste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Appui long\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"340\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"340\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><circle cx=\"340\" cy=\"118\" r=\"24\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"3\" stroke-dasharray=\"100 42\" transform=\"rotate(-90 340 118)\"/><text x=\"290\" y=\"186\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">appui long : durée, jamais le seul accès</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Menu contextuel, prévisualisation.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « appui long » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Glissement path-based (swipe)",
+     "quand": "Balayer pour supprimer, changer d'onglet.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de geste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Glissement path-based (swipe)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"268\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"268\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M282 118h122\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-dasharray=\"2 10\"/><path d=\"M398 108l16 10-16 10z\" fill=\"#4F46E5\"/><text x=\"272\" y=\"186\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">balayer : geste à trajectoire (2.5.1)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Balayer pour supprimer, changer d'onglet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « glissement path-based (swipe) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>tout geste à trajectoire (path-based) ou multipoint a une alternative à pointeur unique.</strong>",
+       "id": "GESTURE-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Glisser-déposer (drag)",
+     "quand": "Réordonner, déplacer vers une cible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de geste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Glisser-déposer (drag)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"102\" width=\"90\" height=\"32\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"295\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"295\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M348 118h54M398 108l16 10-16 10z\" fill=\"#6B7280\" stroke=\"#6B7280\" stroke-width=\"0\"/><path d=\"M348 118h54\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><rect x=\"414\" y=\"102\" width=\"90\" height=\"32\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"414\" y=\"102\" width=\"90\" height=\"32\" rx=\"8\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"5 4\"/><text x=\"268\" y=\"180\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">glisser-déposer (drag) : réordonner</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Réordonner, déplacer vers une cible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « glisser-déposer (drag) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Multipoint (pinch, rotation)",
+     "quand": "Zoomer, pivoter.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Type de geste",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Multipoint (pinch, rotation)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"300\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><circle cx=\"380\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"380\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M330 112l8 6-8 6M350 112l-8 6 8 6\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><text x=\"284\" y=\"186\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">multipoint : pincer / pivoter</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Zoomer, pivoter.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « multipoint (pinch, rotation) » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 4 cas",
+   "titre": "Alternative obligatoire",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Alternative obligatoire\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><g opacity=\"0.5\"><circle cx=\"56\" cy=\"58\" r=\"8\" fill=\"#0891B2\"/><path d=\"M66 58h44\" stroke=\"#6B7280\" stroke-width=\"2.4\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\"/></g><path d=\"M52 48l58 20\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"150\" y=\"66\" width=\"120\" height=\"26\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"196\" y=\"76\" width=\"28\" height=\"6\" rx=\"3\" fill=\"#fff\"/><text x=\"150\" y=\"54\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">le tap simple suffit</text></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Alternative à pointeur unique",
+     "quand": "Tout swipe / pinch.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Alternative obligatoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Alternative à pointeur unique\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g opacity=\"0.5\"><circle cx=\"250\" cy=\"98\" r=\"12\" fill=\"#0891B2\"/><path d=\"M264 98h70\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-dasharray=\"2 9\" stroke-linecap=\"round\"/></g><path d=\"M244 86l60 24\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"320\" y=\"146\" width=\"120\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"358\" y=\"157\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"360\" y=\"142\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">tap</text><text x=\"250\" y=\"196\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">chaque geste a une alternative au tap (2.5.1)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tout swipe / pinch.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « alternative à pointeur unique » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>tout geste à trajectoire (path-based) ou multipoint a une alternative à pointeur unique.</strong>",
+       "id": "GESTURE-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "l'alternative à pointeur unique <strong>est</strong> l'accès pour la <strong>motricité réduite</strong> — qui ne peut",
+       "id": "GESTURE-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Alternative sans glissement",
+     "quand": "Tout drag.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Alternative obligatoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Alternative sans glissement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"104\" width=\"90\" height=\"32\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"295\" cy=\"120\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"295\" cy=\"120\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><g opacity=\"0.5\"><path d=\"M348 120h40\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-dasharray=\"2 9\"/></g><path d=\"M332 96l30 22\" stroke=\"#B91C1C\" stroke-width=\"2.2\"/><rect x=\"410\" y=\"98\" width=\"42\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M425 116l6-7 6 7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"410\" y=\"128\" width=\"42\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M425 134l6 7 6-7\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"256\" y=\"190\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">drag → alternative sans glisser (2.5.7)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Tout drag.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « alternative sans glissement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>tout glissement (drag) a une alternative sans glisser.</strong> Réordonner, déplacer vers une",
+       "id": "GESTURE-R04"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Geste essentiel",
+     "quand": "Signature, dessin, carte libre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Alternative obligatoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Geste essentiel\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"64\" width=\"220\" height=\"112\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M256 140c14-30 22 12 34-14s16 20 30-2 18 8 30-6\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><text x=\"258\" y=\"198\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">signer / dessiner : le tracé EST la donnée</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Signature, dessin, carte libre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « geste essentiel » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "la <strong>seule exception</strong> est le geste <strong>essentiel</strong> — quand le tracé <em>est</em> la donnée",
+       "id": "GESTURE-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Raccourci, pas substitut",
+     "quand": "Le geste accélère.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Alternative obligatoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Raccourci, pas substitut\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M300 82l-16 28h18l-14 28 38-38h-18l16-18z\" fill=\"#92400E\"/><rect x=\"358\" y=\"92\" width=\"62\" height=\"54\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M382 92v54\" stroke=\"#6B7280\" stroke-width=\"2\"/><circle cx=\"376\" cy=\"119\" r=\"2.4\" fill=\"#6B7280\"/><text x=\"278\" y=\"188\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">le geste accélère ; la porte reste ouverte</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le geste accélère.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « raccourci, pas substitut » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>le geste est un raccourci, pas un substitut.</strong> Il accélère pour qui le connaît ; il",
+       "id": "GESTURE-R02"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 4 cas",
+   "titre": "Découvrabilité",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Découvrabilité\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"72\" y=\"34\" width=\"150\" height=\"82\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"206\" y=\"34\" width=\"16\" height=\"82\" rx=\"5\" fill=\"#E0E7FF\"/><path d=\"M214 64v22\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><text x=\"80\" y=\"134\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">le « peek » annonce le geste</text></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Geste caché",
+     "quand": "Aucun indice à l'écran.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Découvrabilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Geste caché\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"80\" width=\"140\" height=\"80\" rx=\"12\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><path d=\"M300 120h60\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-dasharray=\"2 9\" stroke-linecap=\"round\" opacity=\".5\"/><text x=\"384\" y=\"130\" font-size=\"30\" font-family=\"Inter,sans-serif\" fill=\"#B91C1C\">?</text><text x=\"266\" y=\"192\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">geste caché sans indice : interdit comme seul accès</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucun indice à l'écran.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « geste caché » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Indice visible",
+     "quand": "Poignée, ombre, « peek ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Découvrabilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Indice visible\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"270\" y=\"70\" width=\"140\" height=\"100\" rx=\"12\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"392\" y=\"70\" width=\"18\" height=\"100\" rx=\"6\" fill=\"#E0E7FF\"/><path d=\"M404 108v24\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><text x=\"276\" y=\"196\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">le « peek » / la poignée annoncent le geste</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Poignée, ombre, « peek ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « indice visible » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Standard de plateforme",
+     "quand": "Swipe-back iOS, pull-to-refresh.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Découvrabilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Standard de plateforme\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"44\" width=\"120\" height=\"160\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><path d=\"M314 124h44\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M328 112l-14 12 14 12\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"274\" y=\"224\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">swipe-back : le geste système attendu</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Swipe-back iOS, pull-to-refresh.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « standard de plateforme » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "on respecte le <strong>geste standard de la plateforme</strong> (balayer-pour-revenir iOS, tirer-pour-",
+       "id": "GESTURE-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Apprentissage / première fois",
+     "quand": "Coach-mark au premier usage.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Découvrabilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Apprentissage / première fois\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"330\" cy=\"142\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"330\" cy=\"142\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><rect x=\"298\" y=\"70\" width=\"154\" height=\"44\" rx=\"10\" fill=\"#111827\"/><path d=\"M328 114l8 12 8-12z\" fill=\"#111827\"/><text x=\"314\" y=\"97\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#FFFFFF\">Balayez pour ouvrir</text><text x=\"278\" y=\"198\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">aide au 1er usage : ponctuelle, non bloquante</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Coach-mark au premier usage.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « apprentissage / première fois » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 4 cas",
+   "titre": "Annulation et erreur",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Annulation et erreur\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"58\" cy=\"74\" r=\"8\" fill=\"#0891B2\"/><path d=\"M68 74h40\" stroke=\"#E5E7EB\" stroke-width=\"2.4\"/><path d=\"M118 52v44\" stroke=\"#B91C1C\" stroke-width=\"2\" stroke-dasharray=\"3 3\"/><path d=\"M118 74h44\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/><path d=\"M156 68l8 6-8 6z\" fill=\"#4F46E5\"/><text x=\"94\" y=\"118\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#4B5563\">seuil</text><path d=\"M252 60a20 20 0 1 0 6 14\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M258 52v14h-14\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Seuil de déclenchement",
+     "quand": "Distance/durée avant d'agir.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Annulation et erreur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Seuil de déclenchement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"266\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"266\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M280 118h58\" stroke=\"#E5E7EB\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M340 96v44\" stroke=\"#B91C1C\" stroke-width=\"2.4\" stroke-dasharray=\"4 4\"/><path d=\"M340 118h56M390 108l16 10-16 10z\" fill=\"#4F46E5\"/><path d=\"M340 118h56\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><text x=\"266\" y=\"186\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">rien avant le seuil ; au-delà seulement, ça agit</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Distance/durée avant d'agir.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « seuil de déclenchement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Annulation d'un glissement",
+     "quand": "Relâcher avant la cible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Annulation et erreur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Annulation d'un glissement\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"300\" y=\"102\" width=\"90\" height=\"32\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"346\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"346\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M392 118h-40\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M362 108l-12 10 12 10\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"274\" y=\"186\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">ramené et relâché hors zone → annulé</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Relâcher avant la cible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « annulation d'un glissement » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Geste accidentel",
+     "quand": "Effleurement en défilant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Annulation et erreur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Geste accidentel\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M300 70v88\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M290 146l10 14 10-14\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g opacity=\"0.45\"><path d=\"M330 118h58\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-dasharray=\"2 9\"/></g><text x=\"280\" y=\"192\" font-size=\"13\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">le défilement prime sur l’effleurement</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Effleurement en défilant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « geste accidentel » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Retour pendant le geste",
+     "quand": "Suivi du doigt, aperçu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Annulation et erreur",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Retour pendant le geste\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"278\" y=\"102\" width=\"80\" height=\"32\" rx=\"8\" fill=\"#E0E7FF\" stroke=\"#6B7280\"/><g opacity=\"0.4\"><rect x=\"360\" y=\"102\" width=\"80\" height=\"32\" rx=\"8\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/></g><path d=\"M366 118h36\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-dasharray=\"4 4\"/><circle cx=\"318\" cy=\"118\" r=\"12\" fill=\"#0891B2\"/><circle cx=\"318\" cy=\"118\" r=\"12\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><text x=\"262\" y=\"184\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">le contenu suit le doigt (transform) ; coupé en reduced-motion</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Suivi du doigt, aperçu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « retour pendant le geste » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "le <strong>retour d'accompagnement</strong> pendant le geste (le contenu qui suit le doigt, un aperçu)",
+       "id": "GESTURE-R12"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 4 cas",
+   "titre": "Accessibilité",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Accessibilité\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"58\" y=\"60\" width=\"60\" height=\"26\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"68\" y=\"78\" font-size=\"11\" font-family=\"ui-monospace,monospace\" fill=\"#111827\">Tab</text><path d=\"M138 100h16l18-14v46l-18-14h-16z\" fill=\"#4F46E5\"/><path d=\"M182 96a14 14 0 0 1 0 20\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"214\" y=\"62\" width=\"82\" height=\"24\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"224\" y=\"79\" font-size=\"10\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Action</text></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Clavier",
+     "quand": "Toute fonction gestuelle.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Clavier\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"104\" width=\"70\" height=\"30\" rx=\"7\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"260\" y=\"124\" font-size=\"13\" font-family=\"ui-monospace,monospace\" fill=\"#111827\">Tab</text><path d=\"M324 119h30m-8-6 8 6-8 6\" stroke=\"#0891B2\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"372\" y=\"104\" width=\"92\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"396\" y=\"115\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><text x=\"256\" y=\"188\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">toute fonction gestuelle : atteignable au clavier</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Toute fonction gestuelle.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « clavier » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "toute fonction gestuelle est atteignable <strong>au clavier</strong> — le geste n'est jamais l'unique",
+       "id": "GESTURE-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Lecteur d'écran",
+     "quand": "Gestes propres à l'AT.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Lecteur d'écran\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M280 108h18l22-18v58l-22-18h-18z\" fill=\"#4F46E5\"/><path d=\"M326 104a18 18 0 0 1 0 28M334 96a30 30 0 0 1 0 44\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><rect x=\"380\" y=\"102\" width=\"92\" height=\"30\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><text x=\"392\" y=\"122\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#111827\">Action</text><text x=\"270\" y=\"190\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">AT : un contrôle nommé, pas un swipe brut</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Gestes propres à l'AT.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « lecteur d'écran » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les <strong>technologies d'assistance</strong> capturent leurs propres gestes (lecteur d'écran) ; l'action",
+       "id": "GESTURE-R14"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Motricité réduite",
+     "quand": "Geste complexe coûteux.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Motricité réduite\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g opacity=\"0.4\"><circle cx=\"266\" cy=\"100\" r=\"12\" fill=\"#0891B2\"/><path d=\"M280 100h56\" stroke=\"#6B7280\" stroke-width=\"3\" stroke-dasharray=\"2 9\"/></g><rect x=\"300\" y=\"132\" width=\"122\" height=\"30\" rx=\"8\" fill=\"#4F46E5\"/><rect x=\"340\" y=\"146\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#fff\" opacity=\"1\"/><text x=\"274\" y=\"192\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">l’alternative EST la porte en motricité réduite</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Geste complexe coûteux.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « motricité réduite » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de GESTURE-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "l'alternative à pointeur unique <strong>est</strong> l'accès pour la <strong>motricité réduite</strong> — qui ne peut",
+       "id": "GESTURE-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Motion actuation",
+     "quand": "Secouer, incliner l'appareil.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Accessibilité",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Motion actuation\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"310\" y=\"52\" width=\"100\" height=\"150\" rx=\"20\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.4\"/><path d=\"M300 80c-10 6-10 30 0 36M420 80c10 6 10 30 0 36\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><rect x=\"330\" y=\"176\" width=\"60\" height=\"20\" rx=\"10\" fill=\"#F3F4F6\" stroke=\"#6B7280\"/><circle cx=\"376\" cy=\"186\" r=\"8\" fill=\"#4F46E5\"/><text x=\"268\" y=\"224\" font-size=\"11\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">secouer : équivalent à l’écran + désactivable (2.5.4)</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Secouer, incliner l'appareil.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Appliquer la règle portée par le propriétaire indiqué dans l’inventaire, puis vérifier le résultat sur un écran assemblé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester « motion actuation » sur un écran représentatif du produit.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Les exemples rendent les règles concrètes ; les tokens montrent comment elles se traduisent visuellement.",
+  "specimens": [
+   "</section></div> <p class=\"pied\">Généré par <code>tools/genere-site.js</code> le 2026-07-24 — depuis l'atelier (DESIGN.md 1.31.0). Ce site n'est pas une source : <a href=\"../llms.txt\">llms.txt</a>. Constellation : <a href=\"https://sibylfounders.github.io/audit-md-site/\">Audit MD</a>.</p>"
+  ],
+  "tokens": []
+ },
+ "evolution": [],
+ "decisions": [
+  {
+   "id": "GESTURE-R01",
+   "couche": "ux",
+   "solution": "un geste n'a **ni forme ni état**. Là où un bouton montre qu'il est cliquable, un balayage",
+   "enonce": "Un geste ne possède ni forme ni état au repos : il n'est perceptible qu'une fois connu, ce qui impose qu'il soit à la fois annoncé par un indice perceptible et doublé par une alternative simple menant à la même fonction.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les interfaces gestuelles régressent en découvrabilité : un geste ne peut pas figurer dans un menu et rien n'informe la personne des alternatives disponibles ; la visibilité des contrôles a disparu, et la récupération après une action accidentelle y est très difficile",
+     "liens": [
+      {
+       "label": "Norman & Nielsen — Gestural Interfaces: A Step Backwards In Usability (JND.org)",
+       "url": "https://jnd.org/gestural-interfaces-a-step-backwards-in-usability/"
+      }
+     ],
+     "confiance": "Établi comme texte de référence en design d'interaction — argumentation d'auteurs faisant autorité, pas une norme opposable"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+     "liens": [
+      {
+       "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+       "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+      }
+     ],
+     "confiance": "Établi — note de groupe de travail W3C (WAI)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R02",
+   "couche": "ux",
+   "solution": "**le geste est un raccourci, pas un substitut.** Il accélère pour qui le connaît ; il",
+   "enonce": "Un geste est un raccourci qui accélère une fonction déjà accessible par un autre chemin, et jamais le moyen exclusif de l'atteindre.",
+   "mesure": "aucune fonction du système n'est atteignable exclusivement par un geste",
+   "contre": "",
+   "probleme": "un geste caché sans alternative est une fonction qui n'existe que pour ceux qui",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "« Le geste est un raccourci, jamais une porte » (registre)",
+     "liens": [
+      {
+       "label": "Décision d'identité interne, 2026-07-25",
+       "url": null
+      }
+     ],
+     "confiance": "Parti pris interne, aligné sur les obligations WCAG"
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "« Le geste est un raccourci, jamais une porte » (registre)",
+    "liens": [
+     {
+      "label": "Décision d'identité interne, 2026-07-25",
+      "url": null
+     }
+    ],
+    "confiance": "Parti pris interne, aligné sur les obligations WCAG"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Raccourci, pas substitut",
+     "famille": "Alternative obligatoire"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R03",
+   "couche": "ux",
+   "solution": "**tout geste à trajectoire (path-based) ou multipoint a une alternative à pointeur unique.**",
+   "enonce": "Toute fonction opérée par un geste multipoint ou à trajectoire est également opérable par un pointeur unique sans trajectoire, sauf lorsque le geste multipoint ou à trajectoire est essentiel.",
+   "mesure": "toute fonction accessible par un geste multipoint ou tracé l'est aussi par une action à pointeur unique sans tracé, hors cas essentiel déclaré",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Glissement path-based (swipe)",
+     "famille": "Type de geste"
+    },
+    {
+     "id": "cas-1-0",
+     "titre": "Alternative à pointeur unique",
+     "famille": "Alternative obligatoire"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R04",
+   "couche": "ux",
+   "solution": "**tout glissement (drag) a une alternative sans glisser.** Réordonner, déplacer vers une",
+   "enonce": "Toute fonction opérée par un glissement est également réalisable par un pointeur unique sans glisser, sauf lorsque le glissement est essentiel ou que la fonction est fournie par l'agent utilisateur sans modification par l'auteur.",
+   "mesure": "toute fonction accessible par glissement l'est aussi par une action à pointeur unique sans glisser, hors cas essentiel déclaré",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Alternative sans glissement",
+     "famille": "Alternative obligatoire"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R05",
+   "couche": "ux",
+   "solution": "**une fonction déclenchée par le mouvement de l'appareil** (secouer pour annuler, incliner)",
+   "enonce": "Toute fonction déclenchée par le mouvement de l'appareil ou de l'utilisateur dispose d'un contrôle d'interface équivalent et d'un moyen de désactiver la réponse au mouvement, sauf lorsque le mouvement passe par une interface prise en charge par l'accessibilité ou qu'il est essentiel à la fonction.",
+   "mesure": "toute fonction déclenchée par le mouvement expose un contrôle équivalent à l'écran et un réglage de désactivation",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Une fonction par mouvement de l'appareil a un équivalent et se désactive",
+     "liens": [
+      {
+       "label": "WCAG 2.1 — 2.5.4 Motion Actuation",
+       "url": "https://www.w3.org/WAI/WCAG21/Understanding/motion-actuation.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Une fonction par mouvement de l'appareil a un équivalent et se désactive",
+    "liens": [
+     {
+      "label": "WCAG 2.1 — 2.5.4 Motion Actuation",
+      "url": "https://www.w3.org/WAI/WCAG21/Understanding/motion-actuation.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R06",
+   "couche": "ux",
+   "solution": "la **seule exception** est le geste **essentiel** — quand le tracé *est* la donnée",
+   "enonce": "La seule dispense d'alternative est le caractère essentiel du geste, quand le tracé constitue lui-même la donnée ; ce caractère se déclare explicitement au cas par cas et ne se présume jamais.",
+   "mesure": "toute fonction gestuelle livrée sans alternative porte une déclaration écrite de son caractère essentiel",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Geste essentiel",
+     "famille": "Alternative obligatoire"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R07",
+   "couche": "ux",
+   "solution": "un geste utile s'**annonce** — une poignée, un « peek » (un bord de contenu qui dépasse),",
+   "enonce": "Un geste est annoncé par un indice perceptible au repos — poignée, bord de contenu visible, chevron — ou par une instruction explicite : un geste sans indice ni instruction n'est pas découvrable et sa fonction reste ignorée.",
+   "mesure": "tout geste non standard porte un indice visuel persistant à l'état de repos ou une instruction textuelle accessible",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Découvrabilité et respect des gestes de plateforme",
+     "liens": [
+      {
+       "label": "Apple HIG — Gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      },
+      {
+       "label": "Material — Gestures",
+       "url": "https://m2.material.io/design/interaction/gestures.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S7",
+     "affirmation": "Les interfaces gestuelles régressent en découvrabilité : un geste ne peut pas figurer dans un menu et rien n'informe la personne des alternatives disponibles ; la visibilité des contrôles a disparu, et la récupération après une action accidentelle y est très difficile",
+     "liens": [
+      {
+       "label": "Norman & Nielsen — Gestural Interfaces: A Step Backwards In Usability (JND.org)",
+       "url": "https://jnd.org/gestural-interfaces-a-step-backwards-in-usability/"
+      }
+     ],
+     "confiance": "Établi comme texte de référence en design d'interaction — argumentation d'auteurs faisant autorité, pas une norme opposable"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+     "liens": [
+      {
+       "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+       "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+      }
+     ],
+     "confiance": "Établi — note de groupe de travail W3C (WAI)"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Découvrabilité et respect des gestes de plateforme",
+    "liens": [
+     {
+      "label": "Apple HIG — Gestures",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+     },
+     {
+      "label": "Material — Gestures",
+      "url": "https://m2.material.io/design/interaction/gestures.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R08",
+   "couche": "ux",
+   "solution": "on respecte le **geste standard de la plateforme** (balayer-pour-revenir iOS, tirer-pour-",
+   "enonce": "Les gestes réservés par la plateforme d'accueil sont respectés et jamais redéfinis : aucun geste applicatif ne se place dans une zone ou une direction dont le système d'exploitation ou l'agent utilisateur conserve la maîtrise.",
+   "mesure": "aucun geste applicatif défini dans une zone d'exclusion ou une direction réservée déclarée par la plateforme",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Découvrabilité et respect des gestes de plateforme",
+     "liens": [
+      {
+       "label": "Apple HIG — Gestures",
+       "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+      },
+      {
+       "label": "Material — Gestures",
+       "url": "https://m2.material.io/design/interaction/gestures.html"
+      }
+     ],
+     "confiance": "Établi par convergence"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "Le balayage entrant depuis les bords (retour) et les balayages du bas de l'écran (accueil, bascule rapide) sont réservés au système ; une application ne peut pas se soustraire aux gestes d'accueil et de bascule, et doit déclarer des zones d'exclusion pour lever les conflits avec le geste de retour",
+     "liens": [
+      {
+       "label": "Android — Gesture navigation",
+       "url": "https://developer.android.com/develop/ui/views/touch-and-input/gestures/gesturenav"
+      }
+     ],
+     "confiance": "Établi, documentation constructeur — converge avec Apple HIG (S5) sur l'interdit de concurrencer un geste système"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Découvrabilité et respect des gestes de plateforme",
+    "liens": [
+     {
+      "label": "Apple HIG — Gestures",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/gestures"
+     },
+     {
+      "label": "Material — Gestures",
+      "url": "https://m2.material.io/design/interaction/gestures.html"
+     }
+    ],
+    "confiance": "Établi par convergence"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Standard de plateforme",
+     "famille": "Découvrabilité"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R09",
+   "couche": "ux",
+   "solution": "l'**aide au premier usage** (coach-mark, animation d'amorce) est **ponctuelle** et non",
+   "enonce": "L'aide au premier usage d'un geste est ponctuelle et non bloquante : elle ne se répète pas à chaque venue et ne s'interpose jamais entre la personne et la fonction.",
+   "mesure": "l'aide au premier usage s'affiche au plus une fois par utilisateur et se ferme sans conditionner l'accès à la fonction",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+     "liens": [
+      {
+       "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+       "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+      }
+     ],
+     "confiance": "Établi — note de groupe de travail W3C (WAI)"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+    "liens": [
+     {
+      "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+      "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+     }
+    ],
+    "confiance": "Établi — note de groupe de travail W3C (WAI)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R10",
+   "couche": "ux",
+   "solution": "un geste ne se déclenche qu'au-delà d'un **seuil franc** (distance ou durée) — sous le seuil,",
+   "enonce": "Un geste ne s'engage qu'au-delà d'un seuil franc de distance ou de durée ; en deçà de ce seuil rien ne se produit et le défilement conserve la priorité.",
+   "mesure": "sous le seuil, aucun effet n'est déclenché et l'événement est rendu au défilement de l'agent utilisateur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    },
+    {
+     "ref": "S10",
+     "affirmation": "Par défaut, le défilement et le pincement sont pris en charge exclusivement par le navigateur ; une application utilisant les événements pointeur reçoit un pointercancel dès que le navigateur décide d'interpréter l'interaction comme un pan ou un zoom",
+     "liens": [
+      {
+       "label": "MDN — touch-action",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN ; fonde la priorité du défilement sur le geste applicatif"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau AA)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R11",
+   "couche": "ux",
+   "solution": "un geste est **annulable avant sa validation** : ramener puis relâcher hors de la zone",
+   "enonce": "L'effet d'un geste n'est acté qu'au franchissement du seuil suivi d'un relâchement dans la zone d'effet ; ramener le pointeur hors de cette zone avant de relâcher annule le geste sans conséquence.",
+   "mesure": "aucun effet exécuté sur l'événement de contact ; sortie de la zone d'effet avant relâchement = annulation sans effet",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Annulation au relâchement (parenté)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Annulation au relâchement (parenté)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-R12",
+   "couche": "ux",
+   "solution": "le **retour d'accompagnement** pendant le geste (le contenu qui suit le doigt, un aperçu)",
+   "enonce": "Le retour d'accompagnement pendant le geste est porté par des propriétés composables uniquement et se réduit lorsque l'utilisateur demande moins de mouvement, sans que la fonction du geste en soit jamais retirée.",
+   "mesure": "sous prefers-reduced-motion: reduce, le suivi animé est supprimé ou remplacé et la fonction du geste reste atteignable",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "prefers-reduced-motion signale que l'utilisateur préfère une interface qui supprime, réduit ou remplace les animations fondées sur le mouvement ; l'intention est d'atténuer le mouvement, pas de retirer l'interaction",
+     "liens": [
+      {
+       "label": "MDN — @media/prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "prefers-reduced-motion signale que l'utilisateur préfère une interface qui supprime, réduit ou remplace les animations fondées sur le mouvement ; l'intention est d'atténuer le mouvement, pas de retirer l'interaction",
+    "liens": [
+     {
+      "label": "MDN — @media/prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — spécification CSS documentée par MDN"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Retour pendant le geste",
+     "famille": "Annulation et erreur"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R13",
+   "couche": "ux",
+   "solution": "toute fonction gestuelle est atteignable **au clavier** — le geste n'est jamais l'unique",
+   "enonce": "Toute fonction exposée par un geste est également opérable au clavier, sauf lorsque la fonction sous-jacente exige une entrée dépendant du tracé du mouvement et pas seulement de ses extrémités.",
+   "mesure": "toute fonction gestuelle est déclenchable au clavier seul, hors cas de tracé essentiel déclaré",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S12",
+     "affirmation": "Toute fonctionnalité du contenu doit être opérable au clavier sans exiger de synchronisation particulière des frappes, sauf lorsque la fonction sous-jacente requiert une entrée dépendant du tracé du mouvement et pas seulement de ses extrémités",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A). **Nuance absente du fichier** : GESTURE-R13 pose l'obligation clavier sans réserve alors que le critère exempte explicitement l'entrée dépendante du tracé — la même exception que le cas « essentiel » de GESTURE-R06"
+    }
+   ],
+   "principale": {
+    "ref": "S12",
+    "affirmation": "Toute fonctionnalité du contenu doit être opérable au clavier sans exiger de synchronisation particulière des frappes, sauf lorsque la fonction sous-jacente requiert une entrée dépendant du tracé du mouvement et pas seulement de ses extrémités",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.1.1 Keyboard",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A). **Nuance absente du fichier** : GESTURE-R13 pose l'obligation clavier sans réserve alors que le critère exempte explicitement l'entrée dépendante du tracé — la même exception que le cas « essentiel » de GESTURE-R06"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Clavier",
+     "famille": "Accessibilité"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R14",
+   "couche": "ux",
+   "solution": "les **technologies d'assistance** capturent leurs propres gestes (lecteur d'écran) ; l'action",
+   "enonce": "Les technologies d'assistance capturent les gestes tactiles pour leur propre navigation : toute fonction gestuelle reste donc exposée par un contrôle dont le nom et le rôle sont programmatiquement déterminables, et non par le seul geste brut.",
+   "mesure": "toute fonction gestuelle est atteignable par un contrôle exposant un nom et un rôle accessibles",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+     "liens": [
+      {
+       "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+       "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+      }
+     ],
+     "confiance": "Établi — note de groupe de travail W3C (WAI)"
+    },
+    {
+     "ref": "S13",
+     "affirmation": "Pour tout composant d'interface, y compris généré par script, le nom et le rôle doivent être programmatiquement déterminables, les états et valeurs modifiables par l'utilisateur programmatiquement définissables, et les changements notifiés aux technologies d'assistance",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Les gestes personnalisés sont difficiles à découvrir, à exécuter et à mémoriser, et des instructions doivent être fournies pour expliquer quels gestes sont utilisables ; les widgets exigeant des gestes complexes sont difficiles ou impossibles à utiliser au lecteur d'écran, dont le mode d'interaction remplace la manipulation directe par un cycle de focalisation puis d'activation ; des alternatives tactiles et clavier restent nécessaires quand le mouvement de l'appareil pilote une fonction",
+    "liens": [
+     {
+      "label": "W3C — Mobile Accessibility: How WCAG 2.0 and Other W3C/WAI Guidelines Apply to Mobile",
+      "url": "https://www.w3.org/TR/mobile-accessibility-mapping/"
+     }
+    ],
+    "confiance": "Établi — note de groupe de travail W3C (WAI)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-1",
+     "titre": "Lecteur d'écran",
+     "famille": "Accessibilité"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R15",
+   "couche": "ux",
+   "solution": "l'alternative à pointeur unique **est** l'accès pour la **motricité réduite** — qui ne peut",
+   "enonce": "L'alternative à pointeur unique et l'alternative sans glisser constituent l'accès principal des personnes à motricité réduite, qui ne peuvent ni tracer un chemin précis ni maintenir un appui : ce ne sont pas des compléments de confort.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Un glissement a une alternative sans glisser (sauf essentiel)",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.7 Dragging Movements",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau AA)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Un geste à trajectoire/multipoint a une alternative à pointeur unique (sauf essentiel)",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.1 Pointer Gestures",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Alternative à pointeur unique",
+     "famille": "Alternative obligatoire"
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Motricité réduite",
+     "famille": "Accessibilité"
+    }
+   ]
+  },
+  {
+   "id": "GESTURE-R16",
+   "couche": "ux",
+   "solution": "tout nouveau geste passe ces quatre questions :",
+   "enonce": "Tout nouveau geste est soumis aux quatre questions du test du geste — alternative par tap simple, affordant visible, seuil et annulation, atteignabilité clavier et exposition à l'assistance — et un « non » à la première question interdit la livraison hors cas essentiel déclaré.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U01",
+   "couche": "ui",
+   "solution": "implémenter les gestes sur les **Pointer Events** (`pointerdown`/`move`/`up`/`cancel`), qui",
+   "enonce": "Les gestes s'implémentent sur les événements pointeur, qui unifient souris, doigt et stylet en un seul modèle, et non sur des familles d'événements tactiles et souris traitées séparément.",
+   "mesure": "aucun gestionnaire de geste attaché à touchstart ou mousedown seuls ; cycle pointerdown / pointermove / pointerup / pointercancel complet",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Pointer Events unifient souris/doigt/stylet ; `pointercancel`",
+     "liens": [
+      {
+       "label": "MDN — Pointer events",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events"
+      }
+     ],
+     "confiance": "Établi"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Pointer Events unifient souris/doigt/stylet ; `pointercancel`",
+    "liens": [
+     {
+      "label": "MDN — Pointer events",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U02",
+   "couche": "ui",
+   "solution": "l'action ne se lie **jamais** au seul geste. Le chemin canonique est : un **contrôle natif**",
+   "enonce": "La fonction est portée par un contrôle natif et le geste n'est qu'un raccourci branché par-dessus, de sorte que l'alternative à pointeur unique et l'opérabilité clavier existent par construction et non par rattrapage.",
+   "mesure": "toute fonction exposée par un geste est également portée par un élément de contrôle natif focalisable et activable",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T2",
+     "affirmation": "Alternative à pointeur unique / sans glisser branchée sur un contrôle natif",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.1",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+      },
+      {
+       "label": "2.5.7",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité"
+    }
+   ],
+   "principale": {
+    "ref": "T2",
+    "affirmation": "Alternative à pointeur unique / sans glisser branchée sur un contrôle natif",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.5.1",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html"
+     },
+     {
+      "label": "2.5.7",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U03",
+   "couche": "ui",
+   "solution": "un geste à trajectoire ne s'engage qu'au-delà d'un **seuil** (une distance minimale) qui le",
+   "enonce": "Un geste à trajectoire ne s'engage qu'au-delà d'une distance minimale qui le distingue d'un appui et d'un défilement ; en deçà l'événement revient à l'agent utilisateur, et le sens dominant se fixe au premier franchissement puis se tient jusqu'au relâchement.",
+   "mesure": "aucun effet avant franchissement du seuil de distance ; un seul sens de geste actif entre le franchissement et le relâchement",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "T5",
+     "affirmation": "touch-action détermine comment la région d'un élément peut être manipulée au doigt ; par défaut le navigateur traite seul le pan et le pincement, et l'application reçoit un pointercancel quand il prend la main — pan-x et pan-y restreignent le pan à un axe, none rend tous les gestes à l'application, manipulation conserve pan et pincement en supprimant le double-appui pour zoomer",
+     "liens": [
+      {
+       "label": "MDN — touch-action",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "T5",
+    "affirmation": "touch-action détermine comment la région d'un élément peut être manipulée au doigt ; par défaut le navigateur traite seul le pan et le pincement, et l'application reçoit un pointercancel quand il prend la main — pan-x et pan-y restreignent le pan à un axe, none rend tous les gestes à l'application, manipulation conserve pan et pincement en supprimant le double-appui pour zoomer",
+    "liens": [
+     {
+      "label": "MDN — touch-action",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action"
+     }
+    ],
+    "confiance": "Établi — spécification CSS documentée par MDN"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U04",
+   "couche": "ui",
+   "solution": "`pointercancel` (le navigateur reprend le pointeur pour défiler) et le relâchement **hors",
+   "enonce": "L'annulation du pointeur par l'agent utilisateur et le relâchement hors de la zone d'effet ramènent l'élément à son état initial sans exécuter la fonction, celle-ci n'étant acquise qu'au franchissement du seuil suivi d'un relâchement dans la zone.",
+   "mesure": "à réception de pointercancel ou au relâchement hors zone, retour à l'état initial et aucune fonction exécutée",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T1",
+     "affirmation": "Pointer Events unifient souris/doigt/stylet ; `pointercancel`",
+     "liens": [
+      {
+       "label": "MDN — Pointer events",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events"
+      }
+     ],
+     "confiance": "Établi"
+    },
+    {
+     "ref": "T6",
+     "affirmation": "Pour une fonction opérable à pointeur unique, l'une au moins de ces conditions est vraie : l'événement de contact n'exécute aucune part de la fonction ; la fonction s'achève au relâchement avec un moyen de l'interrompre avant achèvement ou de l'annuler après ; le relâchement inverse le résultat du contact ; ou l'exécution au contact est essentielle",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.5.2 Pointer Cancellation",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "T1",
+    "affirmation": "Pointer Events unifient souris/doigt/stylet ; `pointercancel`",
+    "liens": [
+     {
+      "label": "MDN — Pointer events",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events"
+     }
+    ],
+    "confiance": "Établi"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U05",
+   "couche": "ui",
+   "solution": "pendant le geste, n'animer que **`transform`/`opacity`** (le contenu qui suit le doigt) ;",
+   "enonce": "Pendant le geste, seules les propriétés composables de transformation et d'opacité sont animées ; lorsque l'utilisateur demande moins de mouvement, le suivi cède la place à une bascule d'état instantanée sans perte de fonction.",
+   "mesure": "aucune propriété déclenchant une mise en page animée pendant le geste ; sous prefers-reduced-motion: reduce, suivi remplacé par une bascule instantanée",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T3",
+     "affirmation": "Retour de geste en `transform`/`opacity`, coupé sous reduced-motion",
+     "liens": [
+      {
+       "label": "web.dev — Animations guide",
+       "url": "https://web.dev/articles/animations-guide"
+      }
+     ],
+     "confiance": "Établi + héritage interne"
+    },
+    {
+     "ref": "T7",
+     "affirmation": "prefers-reduced-motion vaut reduce lorsque l'utilisateur a activé le réglage de réduction du mouvement ; la consigne est de supprimer, réduire ou remplacer l'animation, la fonction demeurant",
+     "liens": [
+      {
+       "label": "MDN — @media/prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "T3",
+    "affirmation": "Retour de geste en `transform`/`opacity`, coupé sous reduced-motion",
+    "liens": [
+     {
+      "label": "web.dev — Animations guide",
+      "url": "https://web.dev/articles/animations-guide"
+     }
+    ],
+    "confiance": "Établi + héritage interne"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U06",
+   "couche": "ui",
+   "solution": "les contrôles-alternatives (le bouton « supprimer » révélé, les boutons +/−) sont des cibles",
+   "enonce": "Les contrôles qui portent l'alternative à un geste sont des cibles tactiles de plein droit et respectent la taille confortable et l'espacement minimal du système : une alternative trop petite pour être touchée n'est pas une alternative.",
+   "mesure": "tout contrôle-alternative mesure au moins touch.target-comfortable et respecte touch.target-spacing",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T4",
+     "affirmation": "Cibles-alternatives dimensionnées au doigt",
+     "liens": [
+      {
+       "label": "`TOUCH-UI` (touch.target-comfortable, touch.target-spacing)",
+       "url": null
+      }
+     ],
+     "confiance": "Décision interne cohérente"
+    }
+   ],
+   "principale": {
+    "ref": "T4",
+    "affirmation": "Cibles-alternatives dimensionnées au doigt",
+    "liens": [
+     {
+      "label": "`TOUCH-UI` (touch.target-comfortable, touch.target-spacing)",
+      "url": null
+     }
+    ],
+    "confiance": "Décision interne cohérente"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U07",
+   "couche": "ui",
+   "solution": "l'affordant d'un geste est rendu par des moyens **statiques et accessibles** — un « peek »",
+   "enonce": "L'affordant d'un geste est rendu par des moyens statiques et perceptibles sans interaction préalable : il ne dépend ni d'une animation seule, absente quand l'utilisateur demande moins de mouvement, ni du seul survol, indisponible sur un dispositif qui ne survole pas.",
+   "mesure": "l'affordant reste visible sous prefers-reduced-motion: reduce et sous (hover: none)",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T7",
+     "affirmation": "prefers-reduced-motion vaut reduce lorsque l'utilisateur a activé le réglage de réduction du mouvement ; la consigne est de supprimer, réduire ou remplacer l'animation, la fonction demeurant",
+     "liens": [
+      {
+       "label": "MDN — @media/prefers-reduced-motion",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+      }
+     ],
+     "confiance": "Établi — spécification CSS documentée par MDN"
+    },
+    {
+     "ref": "T10",
+     "affirmation": "La requête de média pointer indique la précision du dispositif de pointage principal (coarse pour un doigt sur écran tactile, fine pour une souris, none en l'absence de dispositif) ; la requête hover indique si ce dispositif peut survoler commodément, hover: none couvrant les appareils qui ne survolent pas ou n'émulent le survol que par un appui long malcommode",
+     "liens": [
+      {
+       "label": "MDN — @media/pointer",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+      },
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi — spécifications CSS documentées par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "T7",
+    "affirmation": "prefers-reduced-motion vaut reduce lorsque l'utilisateur a activé le réglage de réduction du mouvement ; la consigne est de supprimer, réduire ou remplacer l'animation, la fonction demeurant",
+    "liens": [
+     {
+      "label": "MDN — @media/prefers-reduced-motion",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+     }
+    ],
+    "confiance": "Établi — spécification CSS documentée par MDN"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U08",
+   "couche": "ui",
+   "solution": "le coach-mark de premier usage est un overlay **non-modal** léger (cf. fondation overlay),",
+   "enonce": "L'aide au premier usage est une surcouche non modale légère, fermée au premier appui et non ré-affichée par défaut : elle ne piège pas le focus et ne conditionne pas l'accès au contenu sous-jacent.",
+   "mesure": "le coach-mark ne capture pas le focus, se ferme au premier appui et n'est pas ré-affiché après une première fermeture",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U09",
+   "couche": "ui",
+   "solution": "sous `(pointer: coarse)`, les cibles-alternatives sont dimensionnées pour le doigt ; sous",
+   "enonce": "Le régime d'entrée se déclare par les requêtes de média de pointeur et de survol : sous un pointeur de précision limitée, les contrôles-alternatives sont dimensionnés pour le doigt, et sous un dispositif incapable de survoler, aucun affordant de geste ne dépend du survol.",
+   "mesure": "sous (pointer: coarse), tout contrôle-alternative ≥ touch.target-comfortable ; sous (hover: none), aucun affordant de geste conditionné au survol",
+   "contre": "",
+   "probleme": "",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T10",
+     "affirmation": "La requête de média pointer indique la précision du dispositif de pointage principal (coarse pour un doigt sur écran tactile, fine pour une souris, none en l'absence de dispositif) ; la requête hover indique si ce dispositif peut survoler commodément, hover: none couvrant les appareils qui ne survolent pas ou n'émulent le survol que par un appui long malcommode",
+     "liens": [
+      {
+       "label": "MDN — @media/pointer",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+      },
+      {
+       "label": "MDN — @media/hover",
+       "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+      }
+     ],
+     "confiance": "Établi — spécifications CSS documentées par MDN"
+    }
+   ],
+   "principale": {
+    "ref": "T10",
+    "affirmation": "La requête de média pointer indique la précision du dispositif de pointage principal (coarse pour un doigt sur écran tactile, fine pour une souris, none en l'absence de dispositif) ; la requête hover indique si ce dispositif peut survoler commodément, hover: none couvrant les appareils qui ne survolent pas ou n'émulent le survol que par un appui long malcommode",
+    "liens": [
+     {
+      "label": "MDN — @media/pointer",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer"
+     },
+     {
+      "label": "MDN — @media/hover",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+     }
+    ],
+    "confiance": "Établi — spécifications CSS documentées par MDN"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "GESTURE-U10",
+   "couche": "ui",
+   "solution": "un `<div>` rendu « swipable » conserve un rôle et un nom accessibles et ne capte pas les",
+   "enonce": "Un élément générique rendu gestuel expose un rôle et un nom accessibles et n'intercepte aucun événement clavier ni aucune interaction d'assistance destinés au contrôle natif qui porte la fonction.",
+   "mesure": "tout élément générique gestuel expose un rôle et un nom accessibles ; toute fonction reste déclenchable au clavier sur le contrôle natif",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "T8",
+     "affirmation": "Un contrôle personnalisé doit exposer nom, rôle, états et valeurs de façon programmatiquement déterminable, y compris lorsqu'il est généré par script",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    },
+    {
+     "ref": "T9",
+     "affirmation": "Toute fonctionnalité doit rester opérable au clavier, sauf entrée dépendante du tracé du mouvement — un élément rendu gestuel ne peut donc pas intercepter les événements clavier destinés au contrôle qui porte la fonction",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.1.1 Keyboard",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      }
+     ],
+     "confiance": "Établi, standard d'accessibilité (niveau A)"
+    }
+   ],
+   "principale": {
+    "ref": "T8",
+    "affirmation": "Un contrôle personnalisé doit exposer nom, rôle, états et valeurs de façon programmatiquement déterminable, y compris lorsqu'il est généré par script",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 4.1.2 Name, Role, Value",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html"
+     }
+    ],
+    "confiance": "Établi, standard d'accessibilité (niveau A)"
+   },
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

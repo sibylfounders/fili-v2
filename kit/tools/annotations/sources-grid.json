@@ -1,0 +1,100 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Le contenu est présentable sans perte d'information ni de fonctionnalité et sans défilement en deux dimensions à une largeur équivalente à 320 px CSS, soit 1280 px à 400 % de zoom",
+  "source_markdown": "[WCAG 2.2 — 1.4.10 Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+  "confiance": "Établi, standard (AA) — **la seule norme qui contraigne directement le cadre de page, absente du fichier**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "La largeur maximale ne fait qu'empêcher la largeur utilisée de dépasser la valeur donnée : l'élément peut être plus étroit. Une note d'accessibilité demande qu'un élément ainsi borné ne soit ni tronqué ni masquant au zoom",
+  "source_markdown": "[MDN — max-width](https://developer.mozilla.org/en-US/docs/Web/CSS/max-width)",
+  "confiance": "Établi — fonde « la borne ne mord pas » et la borne unique par conteneur"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Le contenu ne restreint pas son affichage à une seule orientation, sauf si une orientation est essentielle",
+  "source_markdown": "[WCAG 2.2 — 1.3.4 Orientation](https://www.w3.org/WAI/WCAG22/Understanding/orientation.html)",
+  "confiance": "Établi, standard (AA)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Le composant Page de Polaris expose deux largeurs nommées : pleine largeur et largeur étroite, cette dernière explicitement destinée aux dispositions mono-colonne",
+  "source_markdown": "[Shopify Polaris — Page](https://polaris-react.shopify.com/components/layout-and-structure/page)",
+  "confiance": "Établi — un troisième système public converge sur un petit jeu fermé de largeurs nommées"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "Les classes de taille de fenêtre sont définies en largeur (compact, medium, expanded, large, extra-large) et servent aux décisions de disposition de haut niveau",
+  "source_markdown": "[Android / Material — Use window size classes](https://developer.android.com/develop/adaptive-apps/guides/use-window-size-classes)",
+  "confiance": "Établi — **remplace le lien Material 2 de S2, qui documente une grille 12 colonnes et non des classes de taille**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Le shell de Carbon distingue un en-tête, un panneau gauche fixé sous l'en-tête et un panneau droit optionnel de largeur constante et pleine hauteur, ces panneaux flottant toujours au-dessus du contenu",
+  "source_markdown": "[Carbon — UI shell left panel](https://carbondesignsystem.com/components/UI-shell-left-panel/usage/) ; [Carbon — UI shell right panel](https://carbondesignsystem.com/components/UI-shell-right-panel/usage/)",
+  "confiance": "Établi — **remplace un lien vers une page d'accueil. Contredit partiellement le fichier : en-tête omis, et rail secondaire toujours en superposition chez Carbon**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "Contrat d'un dialogue modal : focus déplacé à l'intérieur, tabulation confinée, contenu extérieur inerte et visuellement obscurci, focus rendu au déclencheur à la fermeture",
+  "source_markdown": "[W3C — ARIA APG, Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)",
+  "confiance": "Établi, note du W3C — source du contrat overlay que la grille délègue"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "Les requêtes de conteneur permettent à un composant de réagir à la taille de son conteneur plutôt qu'à celle de la fenêtre ; les requêtes média ne connaissent que la fenêtre",
+  "source_markdown": "[MDN — Container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries)",
+  "confiance": "Établi — **mécanisme absent du fichier, dont tout le récit responsive est fondé sur la fenêtre**"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "Le texte peut être agrandi jusqu'à 200 % sans perte de contenu ni de fonctionnalité",
+  "source_markdown": "[WCAG 2.2 — 1.4.4 Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html)",
+  "confiance": "Établi, standard (AA)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T6",
+  "affirmation": "Les marges logiques en ligne sont mappées sur des marges physiques selon le mode d'écriture et la direction du texte, et acceptent la valeur automatique",
+  "source_markdown": "[MDN — margin-inline](https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline)",
+  "confiance": "Établi — justifie le centrage par propriété logique"
+ },
+ {
+  "couche": "ui",
+  "ref": "T7",
+  "affirmation": "Aucun défilement en deux dimensions ni perte d'information à une largeur équivalente à 320 px CSS",
+  "source_markdown": "[WCAG 2.2 — 1.4.10 Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)",
+  "confiance": "Établi, standard (AA) — donne au régime étroit sa mesure vérifiable"
+ },
+ {
+  "couche": "ui",
+  "ref": "T8",
+  "affirmation": "La largeur maximale plafonne sans fixer ; note d'accessibilité MDN sur la troncature au zoom",
+  "source_markdown": "[MDN — max-width](https://developer.mozilla.org/en-US/docs/Web/CSS/max-width)",
+  "confiance": "Établi"
+ },
+ {
+  "couche": "ui",
+  "ref": "T9",
+  "affirmation": "Les panneaux droits du shell de Carbon ont une largeur constante, occupent toute la hauteur et flottent au-dessus du contenu",
+  "source_markdown": "[Carbon — UI shell right panel](https://carbondesignsystem.com/components/UI-shell-right-panel/usage/)",
+  "confiance": "Établi — **nuance le modèle « rail secondaire dans le flux » du fichier**"
+ },
+ {
+  "couche": "ui",
+  "ref": "T10",
+  "affirmation": "Contrat d'un dialogue modal : focus confiné, contenu extérieur inerte, focus rendu au déclencheur",
+  "source_markdown": "[W3C — ARIA APG, Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)",
+  "confiance": "Établi, note du W3C"
+ }
+]

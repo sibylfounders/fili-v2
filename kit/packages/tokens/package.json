@@ -1,0 +1,26 @@
+{
+  "name": "@fili/tokens",
+  "version": "0.1.0",
+  "description": "Couche tokens du Design System UI — organisation 3 étages (primitives → rôles → composants) + modes clair/sombre natifs. Les valeurs partagées sont sous contrat DS-MD (garde de fidélité), rejouée à chaque build avec le contrôle de contraste. Zéro dépendance.",
+  "type": "module",
+  "scripts": {
+    "build": "node build/generate.mjs && node build/verify-ds-md.mjs && node build/validate-contrast.mjs",
+    "generate": "node build/generate.mjs",
+    "sync:ds-md": "node build/sync-ds-md.mjs",
+    "verify:ds-md": "node build/verify-ds-md.mjs",
+    "contrast": "node build/validate-contrast.mjs"
+  },
+  "exports": {
+    ".": "./src/tokens.source.mjs",
+    "./css": "./dist/tokens.css",
+    "./tailwind": "./dist/tailwind.theme.cjs",
+    "./figma": "./dist/figma-variables.json"
+  },
+  "files": [
+    "src",
+    "build",
+    "dist"
+  ],
+  "license": "UNLICENSED",
+  "private": true
+}

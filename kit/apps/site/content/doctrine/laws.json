@@ -1,0 +1,2776 @@
+{
+ "slug": "laws",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"3.7\" r=\"1.9\" fill=\"#F2C744\"/><rect x=\"11\" y=\"4.4\" width=\"2\" height=\"14.2\" rx=\"1\" fill=\"#4F46E5\"/><rect x=\"4\" y=\"5.3\" width=\"16\" height=\"2.1\" rx=\"1.05\" fill=\"#4F46E5\"/><rect x=\"7.5\" y=\"18.4\" width=\"9\" height=\"2.4\" rx=\"1.2\" fill=\"#4F46E5\"/><path d=\"M4 6.4 L2 10 M4 6.4 L6 10 M20 6.4 L18 10 M20 6.4 L22 10\" stroke=\"#111827\" stroke-width=\"1\" stroke-linecap=\"round\" opacity=\"0.55\"/><path d=\"M1.6 10 a2.9 2.4 0 0 0 5.8 0 Z\" fill=\"#F2C744\"/><path d=\"M16.6 10 a2.9 2.4 0 0 0 5.8 0 Z\" fill=\"#0891B2\"/></svg>",
+ "nom": "laws",
+ "nature": "Principe",
+ "meta": "UX v1.3.1 · mis à jour 2026-07-21 · référence humaine — non chargée par l’IA",
+ "confiance": "référence humaine — non chargée par l’IA",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX",
+  "question": "Quelles lois de psychologie fondent nos règles — et comment s’en servir sans les invoquer à tort ?",
+  "detail": "Cette page nomme les grandes lois UX (Fitts, Hick, Gestalt, Doherty, Peak-End, Jakob…) derrière les règles du système, dit leur portée réelle et leur limite, réfute deux mythes tenaces, et renvoie vers l’endroit où chacune est déjà appliquée — elle éclaire, elle ne décide jamais seule.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Chaque loi UX nomme la psychologie derrière une règle déjà écrite ailleurs dans le système"
+   },
+   {
+    "num": "02 / MÉCANIQUE",
+    "texte": "Une loi éclaire une décision, elle ne la tranche jamais seule"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Ce principe est une référence"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "32",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "36",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "4",
+    "libelle": "arbitrages journalisés"
+   }
+  ],
+  "rules": {
+   "nom": "",
+   "source": ""
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 6 cas",
+   "titre": "Charge cognitive et mémoire",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Charge cognitive et mémoire\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"108\" cy=\"74\" r=\"38\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2\"/><rect x=\"86\" y=\"60\" width=\"44\" height=\"7\" rx=\"3.5\" fill=\"#4F46E5\" opacity=\"0.6\"/><rect x=\"86\" y=\"76\" width=\"34\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"86\" y=\"92\" width=\"26\" height=\"7\" rx=\"3.5\" fill=\"#4B5563\" opacity=\"0.3\"/><g opacity=\"1.00\"><rect x=\"182\" y=\"60\" width=\"24\" height=\"28\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"194\" cy=\"74\" r=\"4\" fill=\"#4F46E5\"/></g><g opacity=\"0.78\"><rect x=\"212\" y=\"60\" width=\"24\" height=\"28\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"224\" cy=\"74\" r=\"4\" fill=\"#4F46E5\"/></g><g opacity=\"0.56\"><rect x=\"242\" y=\"60\" width=\"24\" height=\"28\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"254\" cy=\"74\" r=\"4\" fill=\"#4F46E5\"/></g><g opacity=\"0.34\"><rect x=\"272\" y=\"60\" width=\"24\" height=\"28\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"284\" cy=\"74\" r=\"4\" fill=\"#4F46E5\"/></g></svg>",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Cognitive Load",
+     "quand": "Une interface impose plus d'effort que la tâche elle-même.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Cognitive Load** (Sweller)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"208\" y=\"60\" width=\"140\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"224\" y=\"78\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"94\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"110\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"126\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"142\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"224\" y=\"158\" width=\"108\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><path d=\"M358 120L404 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M404 120L396.1 124.3M404 120L396.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"414\" y=\"60\" width=\"140\" height=\"120\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"430\" y=\"96\" width=\"80\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.7\"/><rect x=\"430\" y=\"120\" width=\"58\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une interface impose plus d'effort que la tâche elle-même.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Retirez la charge inutile : moins d'options, échelles fermées, rien de superflu.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un écran épuré qui va à l'essentiel.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Cognitive Load (Sweller) — la loi-mère.</strong> Toute charge mentale qu'une interface impose <em>au-delà</em> de la tâche elle-même est du gaspillage (charge extrinsèque). C'est le principe implicite de tout le système : registre productif du MOTION, échelles fermées de SPACING et RADIUS, « un token naît d'un besoin réel ». Frontière : réduire la charge extrinsèque ne veut pas dire cacher — un choix retiré de l'écran reste un choix à faire ailleurs (cf. Tesler).",
+       "id": "LAWS-R06"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Miller's Law",
+     "quand": "On veut limiter le nombre d'éléments « parce que 7 ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Miller's Law** (7±2)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><text x=\"242\" y=\"132\" font-size=\"42\" font-family=\"Inter,sans-serif\" font-weight=\"700\" fill=\"#4B5563\" opacity=\".45\">7±2</text><path d=\"M236 124l104 -30\" stroke=\"#B91C1C\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"392\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"407\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"422\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"446\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"461\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"476\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"500\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"515\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"530\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On veut limiter le nombre d'éléments « parce que 7 ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Oubliez le plafond « 7 » : la vraie règle est de regrouper (chunking).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un numéro de carte en groupes de 4 chiffres.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une loi ne s'applique <strong>jamais seule</strong>. La plupart sont en tension avec une autre (Hick « montre moins » ↔ découvrabilité et Fitts ; Miller « limite » ↔ Tesler « la complexité ne disparaît pas »). Le rôle de ce principe est de rendre ces tensions <strong>visibles</strong>, pas de les trancher — l'arbitrage remonte, comme partout ailleurs (les lignes CONFIANCE calibrent la vitesse de remontée).",
+       "id": "LAWS-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>une loi nommée n'est pas une loi vraie.</strong> Le mot « loi » recouvre ici des choses d'ampleur très inégale : des résultats robustes (Fitts, Gestalt, Doherty), des heuristiques utiles (Occam, Postel), des effets réels mais contextuels (Peak-End, Aesthetic-Usability), et des formules <strong>abusées</strong> (Miller « 7 items », la « règle des 3 clics »). Chaque entrée porte donc son niveau de confiance, et les deux mythes les plus tenaces sont réfutés à leur source.",
+       "id": "LAWS-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Miller's Law — à corriger, pas à appliquer.</strong> L'énoncé populaire « 7±2 éléments maximum » est un <strong>abus</strong> : Miller (1956) parlait de la capacité de la mémoire de travail sur des <em>unités non structurées</em>, pas d'une limite de menus, d'onglets ou de champs. La règle utile qui en dérive est le <strong>chunking</strong> (regrouper), pas le plafond numérique. Frontière : ne jamais justifier « maximum 7 items » par Miller — segmenter un numéro de carte en groupes de 4, oui ; brider une navigation à 7 entrées « à cause de Miller », non.",
+       "id": "LAWS-R07"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Chunking",
+     "quand": "Une information est trop longue à retenir d'un bloc.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Chunking**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"94\" width=\"66\" height=\"48\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"252\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"269\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"286\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><rect x=\"318\" y=\"94\" width=\"66\" height=\"48\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"334\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"351\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"368\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><rect x=\"400\" y=\"94\" width=\"66\" height=\"48\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"416\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"433\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/><circle cx=\"450\" cy=\"118\" r=\"5\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une information est trop longue à retenir d'un bloc.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Découpez-la en petits groupes qui ont du sens.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un IBAN affiché par blocs.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Miller's Law — à corriger, pas à appliquer.</strong> L'énoncé populaire « 7±2 éléments maximum » est un <strong>abus</strong> : Miller (1956) parlait de la capacité de la mémoire de travail sur des <em>unités non structurées</em>, pas d'une limite de menus, d'onglets ou de champs. La règle utile qui en dérive est le <strong>chunking</strong> (regrouper), pas le plafond numérique. Frontière : ne jamais justifier « maximum 7 items » par Miller — segmenter un numéro de carte en groupes de 4, oui ; brider une navigation à 7 entrées « à cause de Miller », non.",
+       "id": "LAWS-R07"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Chunking — regrouper pour mémoriser.</strong> Découper l'information en unités signifiantes allège la mémoire de travail. Implémenté par le FORM-multi-step (une décision par étape), la proximité de SPACING (regroupement visuel), la segmentation des nombres et dates (VOICE-UI).",
+       "id": "LAWS-R08"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "Working Memory",
+     "quand": "L'utilisateur devrait retenir une info d'un écran à l'autre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Working Memory**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><g opacity=\"1.00\"><rect x=\"240\" y=\"98\" width=\"46\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"263\" cy=\"119\" r=\"6\" fill=\"#4F46E5\"/></g><g opacity=\"0.78\"><rect x=\"298\" y=\"98\" width=\"46\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"321\" cy=\"119\" r=\"6\" fill=\"#4F46E5\"/></g><g opacity=\"0.56\"><rect x=\"356\" y=\"98\" width=\"46\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"379\" cy=\"119\" r=\"6\" fill=\"#4F46E5\"/></g><g opacity=\"0.34\"><rect x=\"414\" y=\"98\" width=\"46\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"437\" cy=\"119\" r=\"6\" fill=\"#4F46E5\"/></g></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur devrait retenir une info d'un écran à l'autre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne lui faites rien mémoriser : rappelez l'info au bon moment.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un récapitulatif avant de valider.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Working Memory — volatile et rare.</strong> Ne jamais exiger de l'utilisateur qu'il retienne une information d'un écran à l'autre. Implémenté par l'« ask-once » et la récapitulation avant soumission finale (FORM-multi-step), par le helper text <em>persistant</em> plutôt que l'aide qui disparaît (INPUT).",
+       "id": "LAWS-R09"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-4",
+     "titre": "Zeigarnik Effect",
+     "quand": "Une tâche est commencée mais pas finie.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Zeigarnik Effect**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"110\" width=\"204\" height=\"16\" rx=\"8\" fill=\"#E5E7EB\"/><rect x=\"238\" y=\"110\" width=\"120\" height=\"16\" rx=\"8\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une tâche est commencée mais pas finie.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrez la progression pour aider — jamais pour culpabiliser.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une barre d'étapes de formulaire.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Zeigarnik Effect — l'inachevé reste présent.</strong> Une tâche interrompue occupe la mémoire ; une barre de progression visible exploite cet effet pour <em>aider</em> (FORM-multi-step, statut d'autosave). Frontière éthique : le même levier retourné en dark pattern (relances culpabilisantes, « votre profil n'est complété qu'à 40 % » à répétition) est hors registre — l'effet sert l'utilisateur, jamais la pression.",
+       "id": "LAWS-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-5",
+     "titre": "Selective Attention",
+     "quand": "Un élément ressemble à une publicité.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · Charge cognitive et mémoire",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Selective Attention**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M244 120q32-26 64 0q-32 26-64 0z\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/><circle cx=\"276\" cy=\"120\" r=\"9\" fill=\"#4F46E5\"/><rect x=\"360\" y=\"100\" width=\"150\" height=\"40\" rx=\"6\" fill=\"#F3F4F6\" stroke=\"#E5E7EB\"/><text x=\"435\" y=\"124\" font-size=\"12\" font-family=\"Inter,sans-serif\" text-anchor=\"middle\" fill=\"#4B5563\">PUB</text><circle cx=\"500\" cy=\"104\" r=\"9\" fill=\"#4B5563\"/><path d=\"M496.5 100.5l7 7M503.5 100.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément ressemble à une publicité.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne déguisez jamais une info importante en pub : elle sera ignorée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une alerte sobre, pas une bannière clignotante.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Selective Attention — l'utilisateur ignore le bruit.</strong> La « banner blindness » est réelle : ce qui ressemble à de la publicité est filtré avant lecture. Fonde la sobriété du MOTION (le mouvement capte l'attention de force, donc parcimonie) et la rareté de l'alert. Frontière (promue en RÈGLE opérationnelle par le principe cognitive-load, 2026-07-21) : ne jamais déguiser une information critique en élément décoratif ou promotionnel — elle sera filtrée avec le reste.",
+       "id": "LAWS-R11"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 10 cas",
+   "titre": "Décision et action",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Décision et action\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"58\" y=\"38\" width=\"92\" height=\"16\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"60\" width=\"92\" height=\"16\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"82\" width=\"92\" height=\"16\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"58\" y=\"104\" width=\"92\" height=\"16\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><path d=\"M166 73h24\" stroke=\"#0891B2\" stroke-width=\"2.5\"/><path d=\"M184 67l8 6-8 6\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"206\" y=\"60\" width=\"72\" height=\"26\" rx=\"7\" fill=\"#4F46E5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Hick's Law",
+     "quand": "Beaucoup de choix ralentissent la décision.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Hick's Law**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"52\" width=\"112\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"228\" y=\"82\" width=\"112\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"228\" y=\"112\" width=\"112\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"228\" y=\"142\" width=\"112\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"228\" y=\"172\" width=\"112\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><path d=\"M356 118L402 118\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M402 118L394.1 122.3M402 118L394.1 113.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"414\" y=\"104\" width=\"124\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"454\" y=\"115\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Beaucoup de choix ralentissent la décision.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Réduisez les options visibles ; un seul choix dominant.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un seul bouton principal par écran.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "les lois UX forment le <strong>principe théorique</strong> du système — ni variantes (composant), ni assemblage (pattern), ni token transversal. C'est le corpus que les autres sujets <em>appliquent</em> et <em>citent</em> déjà (Doherty dans MOTION, Hick dans l'inflation du primary de BUTTON, Gestalt/proximité dans SPACING). Le modèle à axes ne s'y applique pas ; le modèle rôle/valeur non plus.",
+       "id": "LAWS-R01"
+      },
+      {
+       "tag": "Règle",
+       "html": "une loi ne s'applique <strong>jamais seule</strong>. La plupart sont en tension avec une autre (Hick « montre moins » ↔ découvrabilité et Fitts ; Miller « limite » ↔ Tesler « la complexité ne disparaît pas »). Le rôle de ce principe est de rendre ces tensions <strong>visibles</strong>, pas de les trancher — l'arbitrage remonte, comme partout ailleurs (les lignes CONFIANCE calibrent la vitesse de remontée).",
+       "id": "LAWS-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Hick's Law — le choix coûte du temps.</strong> Le temps de décision croît avec le nombre <em>et</em> la complexité des options. Implémenté par l'inflation du primary (un seul BUTTON primary par vue), les registres étanches (COLOR : une couleur = un sens), un CTA dominant par section. Frontière : Hick pousse à réduire les choix visibles, mais réduire ≠ enfouir — un choix caché derrière trois clics reste un choix (tension avec Fitts et la découvrabilité, arbitrée au cas par cas).",
+       "id": "LAWS-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Choice Overload",
+     "quand": "Trop d'options découragent l'utilisateur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Choice Overload**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"66\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"298\" y=\"66\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"358\" y=\"66\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"418\" y=\"66\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"238\" y=\"120\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"298\" y=\"120\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"358\" y=\"120\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"418\" y=\"120\" width=\"48\" height=\"42\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><circle cx=\"486\" cy=\"150\" r=\"15\" fill=\"#FEF3C7\"/><text x=\"486\" y=\"156\" font-size=\"16\" font-family=\"Inter,sans-serif\" text-anchor=\"middle\" fill=\"#92400E\">?</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Trop d'options découragent l'utilisateur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Limitez ou hiérarchisez : l'abondance paralyse.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Trois offres mises en avant, pas trente.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Choice Overload — corollaire de Hick.</strong> Au-delà d'un seuil, l'abondance d'options réduit la satisfaction et la probabilité de décision. Implémenté par la cardinalité des actions en carte (CARD) et le nombre d'actions portées par une alert (ALERT).",
+       "id": "LAWS-R13"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Fitts's Law",
+     "quand": "On place une cible à cliquer.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Fitts's Law**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"300\" cy=\"118\" r=\"40\" fill=\"#4F46E5\" opacity=\".14\"/><circle cx=\"300\" cy=\"118\" r=\"40\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/><circle cx=\"440\" cy=\"118\" r=\"13\" fill=\"#4F46E5\" opacity=\".14\"/><circle cx=\"440\" cy=\"118\" r=\"13\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/><path d=\"M214 118L286 118\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M286 118L278.1 122.3M286 118L278.1 113.7\" stroke=\"#6B7280\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On place une cible à cliquer.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Grande et proche de son contexte pour être atteinte vite.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une zone tactile d'au moins 44px.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une loi ne s'applique <strong>jamais seule</strong>. La plupart sont en tension avec une autre (Hick « montre moins » ↔ découvrabilité et Fitts ; Miller « limite » ↔ Tesler « la complexité ne disparaît pas »). Le rôle de ce principe est de rendre ces tensions <strong>visibles</strong>, pas de les trancher — l'arbitrage remonte, comme partout ailleurs (les lignes CONFIANCE calibrent la vitesse de remontée).",
+       "id": "LAWS-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>une loi nommée n'est pas une loi vraie.</strong> Le mot « loi » recouvre ici des choses d'ampleur très inégale : des résultats robustes (Fitts, Gestalt, Doherty), des heuristiques utiles (Occam, Postel), des effets réels mais contextuels (Peak-End, Aesthetic-Usability), et des formules <strong>abusées</strong> (Miller « 7 items », la « règle des 3 clics »). Chaque entrée porte donc son niveau de confiance, et les deux mythes les plus tenaces sont réfutés à leur source.",
+       "id": "LAWS-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Hick's Law — le choix coûte du temps.</strong> Le temps de décision croît avec le nombre <em>et</em> la complexité des options. Implémenté par l'inflation du primary (un seul BUTTON primary par vue), les registres étanches (COLOR : une couleur = un sens), un CTA dominant par section. Frontière : Hick pousse à réduire les choix visibles, mais réduire ≠ enfouir — un choix caché derrière trois clics reste un choix (tension avec Fitts et la découvrabilité, arbitrée au cas par cas).",
+       "id": "LAWS-R12"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Goal-Gradient Effect",
+     "quand": "L'utilisateur approche de la fin d'une tâche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Goal-Gradient Effect**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M232 148h222\" stroke=\"#E5E7EB\" stroke-width=\"2.5\"/><circle cx=\"250\" cy=\"148\" r=\"4\" fill=\"#4F46E5\"/><circle cx=\"282\" cy=\"148\" r=\"5.6\" fill=\"#4F46E5\"/><circle cx=\"314\" cy=\"148\" r=\"7.2\" fill=\"#4F46E5\"/><circle cx=\"346\" cy=\"148\" r=\"8.8\" fill=\"#4F46E5\"/><path d=\"M430 148v-42h28l-8 8 8 8h-28\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur approche de la fin d'une tâche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Montrez une progression réelle qui motive — jamais fausse.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Plus qu'une étape ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Goal-Gradient Effect — l'effort s'intensifie près du but.</strong> La progression visible motive d'autant plus qu'on approche de la fin (FORM-multi-step). Frontière : la progression doit être <em>vraie</em> — une fausse jauge (progrès artificiel, étapes gonflées) trahit l'effet.",
+       "id": "LAWS-R15"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Tesler's Law",
+     "quand": "Une tâche a une complexité incompressible.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Tesler's Law** (conservation de la complexité)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"232\" y=\"72\" width=\"118\" height=\"96\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"258\" y=\"124\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">système</text><rect x=\"266\" y=\"132\" width=\"50\" height=\"24\" rx=\"6\" fill=\"#4F46E5\"/><path d=\"M406 118L358 118\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M358 118L365.9 113.7M358 118L365.9 122.3\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"412\" y=\"72\" width=\"118\" height=\"96\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"432\" y=\"124\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">vous</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une tâche a une complexité incompressible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Le système l'absorbe (défauts, autofill) plutôt que l'utilisateur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un champ pré-rempli intelligemment.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "une loi ne s'applique <strong>jamais seule</strong>. La plupart sont en tension avec une autre (Hick « montre moins » ↔ découvrabilité et Fitts ; Miller « limite » ↔ Tesler « la complexité ne disparaît pas »). Le rôle de ce principe est de rendre ces tensions <strong>visibles</strong>, pas de les trancher — l'arbitrage remonte, comme partout ailleurs (les lignes CONFIANCE calibrent la vitesse de remontée).",
+       "id": "LAWS-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Tesler's Law — la complexité se conserve.</strong> Toute tâche a une complexité irréductible ; la seule question est <em>qui l'absorbe</em> — le système ou l'utilisateur. Le système absorbe : autofill et normalisation (INPUT/Postel), messages qui diagnostiquent à la place de l'utilisateur (INPUT : <em>pourquoi</em> et <em>comment corriger</em>), valeurs par défaut sensées. Frontière : on ne peut pas supprimer la complexité, seulement décider où elle tombe — la reporter <em>toujours</em> sur l'utilisateur est le défaut par paresse.",
+       "id": "LAWS-R16"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-5",
+     "titre": "Postel's Law",
+     "quand": "On reçoit une saisie au format variable.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Postel's Law** (robustesse)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"228\" y=\"72\" width=\"110\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"239\" y=\"81\" width=\"50\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"228\" y=\"104\" width=\"110\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"239\" y=\"113\" width=\"50\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><rect x=\"228\" y=\"136\" width=\"110\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"239\" y=\"145\" width=\"50\" height=\"6\" rx=\"3\" fill=\"#111827\" opacity=\"0.5\"/><path d=\"M350 78l58 30-58 30z\" fill=\"#4F46E5\" opacity=\".2\" stroke=\"#4F46E5\" stroke-width=\"2\"/><rect x=\"430\" y=\"96\" width=\"100\" height=\"24\" rx=\"6\" fill=\"#FFFFFF\" stroke=\"#15803D\"/><circle cx=\"518\" cy=\"108\" r=\"9\" fill=\"#15803D\"/><path d=\"M514 108l3 3 5.5-6.5\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On reçoit une saisie au format variable.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Tolérez l'entrée (espaces, casse) et normalisez en interne.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un IBAN accepté avec ou sans espaces.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Postel's Law (robustesse) — tolérant en entrée, strict en sortie.</strong> Accepter les formes variées de saisie (espaces dans un IBAN ou un numéro de carte, casse d'un e-mail, tirets d'un téléphone) et normaliser en interne ; ne jamais rejeter sur la forme ce qu'on peut nettoyer. Implémenté par la tolérance de l'INPUT et sa validation qui vise le sens, pas la syntaxe cosmétique.",
+       "id": "LAWS-R17"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-6",
+     "titre": "Occam's Razor",
+     "quand": "On hésite à ajouter une option « au cas où ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Occam's Razor**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"68\" width=\"184\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"262\" y=\"94\" width=\"124\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"262\" y=\"116\" width=\"104\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><rect x=\"262\" y=\"138\" width=\"92\" height=\"16\" rx=\"4\" fill=\"#B91C1C\" opacity=\".28\"/><path d=\"M236 150l204 -30\" stroke=\"#B91C1C\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On hésite à ajouter une option « au cas où ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Gardez la solution la plus simple qui marche ; rien sans besoin réel.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Pas de réglage tant que personne ne le demande.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Occam's Razor — la solution la plus simple qui marche gagne.</strong> Ne pas provisionner ce qu'aucun besoin réel ne réclame : disabled non tokenisé tant qu'inutile (COLOR), tokens qui naissent d'un besoin. C'est la version conception du principe d'économie du système.",
+       "id": "LAWS-R18"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-7",
+     "titre": "Parkinson's Law",
+     "quand": "Une tâche s'étire pour remplir le temps disponible.",
+     "statut": "non couvert",
+     "lien": "Ce qui reste à traiter",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Parkinson's Law**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"298\" cy=\"118\" r=\"42\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.5\"/><path d=\"M298 118V88M298 118l22 12\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"368\" y=\"98\" width=\"160\" height=\"40\" rx=\"8\" fill=\"#4F46E5\" opacity=\".16\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une tâche s'étire pour remplir le temps disponible.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Accélérez-la : valeurs par défaut, raccourcis, autofill.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un formulaire pré-rempli rempli en quelques secondes.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Parkinson's Law — la tâche remplit le temps disponible (trou signalé).</strong> Une tâche s'étale jusqu'à occuper le temps qu'on lui laisse ; d'où l'intérêt des accélérateurs (autofill, valeurs par défaut, raccourcis). Non couvert par un consommateur actuel — le produit n'a pas encore de mécanique de temps ni de saisie longue ; activé le jour d'un formulaire lourd ou d'une limite temporelle.",
+       "id": "LAWS-R21"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-8",
+     "titre": "Paradox of the Active User",
+     "quand": "L'utilisateur se lance sans lire la doc.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Paradox of the Active User**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"230\" y=\"70\" width=\"108\" height=\"100\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><text x=\"258\" y=\"112\" font-size=\"12\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4B5563\">DOC</text><circle cx=\"330\" cy=\"80\" r=\"9\" fill=\"#4B5563\"/><path d=\"M326.5 76.5l7 7M333.5 76.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M350 120L398 120\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M398 120L390.1 124.3M398 120L390.1 115.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"412\" y=\"106\" width=\"122\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"451\" y=\"117\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur se lance sans lire la doc.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Aidez dans l'action, pas avant : aide contextuelle.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un texte d'aide visible sous le champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Paradox of the Active User — personne ne lit la doc.</strong> Les utilisateurs se lancent immédiatement plutôt que d'apprendre d'abord ; l'aide doit donc être <em>contextuelle et dans l'action</em>, pas préalable. Fonde « le helper text visible dès le focus, avant l'erreur » (INPUT) et l'onboarding intégré plutôt que le tutoriel bloquant (VOICE). Établi — observation robuste (Carroll &amp; Rosson).",
+       "id": "LAWS-R19"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-9",
+     "titre": "Flow",
+     "quand": "L'utilisateur est concentré sur sa tâche.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Décision et action",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Flow** (Csíkszentmihályi)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M232 130q40-42 80 0t80 0 80 0\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur est concentré sur sa tâche.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne l'interrompez pas sans enjeu ; rien ne bouge tout seul.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Pas de pop-in pendant la saisie.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Flow (Csíkszentmihályi) — la concentration ininterrompue est précieuse.</strong> Rien ne doit rompre l'élan sans raison : le MOTION « ne verrouille jamais l'interaction », le contenu « ne se déplace jamais sans action de l'utilisateur » (SPACING/MOTION). L'interruption se justifie seulement quand l'enjeu la vaut (destructive, perte de données).",
+       "id": "LAWS-R20"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 7 cas",
+   "titre": "Perception et regroupement (lois de Gestalt)",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Perception et regroupement (lois de Gestalt)\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"50\" y=\"50\" width=\"82\" height=\"48\" rx=\"12\" fill=\"none\" stroke=\"#6B7280\" stroke-dasharray=\"5 4\"/><circle cx=\"70\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/><circle cx=\"92\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/><circle cx=\"114\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/><path d=\"M196 74h44\" stroke=\"#4F46E5\" stroke-width=\"2.4\"/><circle cx=\"196\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/><circle cx=\"218\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/><circle cx=\"240\" cy=\"74\" r=\"9\" fill=\"#4F46E5\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Law of Proximity",
+     "quand": "Des éléments vont ensemble.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Law of Proximity**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"250\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/><circle cx=\"267\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/><circle cx=\"284\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/><circle cx=\"404\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/><circle cx=\"421\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/><circle cx=\"438\" cy=\"116\" r=\"6\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des éléments vont ensemble.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Rapprochez-les : la proximité dit qu'ils sont liés.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un label collé à son champ.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Proximity — proche = lié.</strong> Les éléments rapprochés sont perçus comme un groupe, indépendamment de tout trait. C'est la loi que SPACING transforme en <em>information</em> : un label collé à son champ lui appartient ; un écart plus grand sépare deux groupes. La loi Gestalt la plus adossée au système.",
+       "id": "LAWS-R22"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Law of Common Region",
+     "quand": "Un groupe d'éléments forme un tout.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Law of Common Region**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"238\" y=\"80\" width=\"150\" height=\"80\" rx=\"12\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-dasharray=\"5 4\"/><circle cx=\"288\" cy=\"120\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"332\" cy=\"120\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"470\" cy=\"120\" r=\"7\" fill=\"#4B5563\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un groupe d'éléments forme un tout.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Entourez-les d'un fond ou d'un cadre commun.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une carte qui regroupe son contenu.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Common Region — une frontière partagée regroupe.</strong> Un fond ou un cadre commun lie son contenu plus fort que la proximité seule. Implémenté par la CARD (le conteneur <em>est</em> le groupe) et le rôle de regroupement de la BORDER.",
+       "id": "LAWS-R23"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-2",
+     "titre": "Law of Similarity",
+     "quand": "Des éléments appartiennent à la même famille.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Law of Similarity**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"250\" cy=\"114\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"290\" cy=\"114\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"330\" cy=\"114\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"370\" cy=\"114\" r=\"7\" fill=\"#4F46E5\"/><rect x=\"424\" y=\"107\" width=\"14\" height=\"14\" rx=\"3\" fill=\"#0891B2\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Des éléments appartiennent à la même famille.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Donnez-leur la même forme ou couleur.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tous les liens de la même couleur.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Similarity — semblable = même famille.</strong> Les éléments qui partagent forme, couleur ou taille sont perçus comme apparentés. Fonde les registres de COLOR (même rôle → même traitement) et la cohérence des tones.",
+       "id": "LAWS-R24"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-3",
+     "titre": "Law of Uniform Connectedness",
+     "quand": "Un lien fort doit être visible entre éléments.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Law of Uniform Connectedness**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M256 118h158\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/><circle cx=\"256\" cy=\"118\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"335\" cy=\"118\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"414\" cy=\"118\" r=\"7\" fill=\"#4F46E5\"/><circle cx=\"470\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un lien fort doit être visible entre éléments.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Reliez-les par un trait ou un fond continu.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Des étapes reliées par une ligne.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Uniform Connectedness — le lien visuel explicite prime.</strong> Ce qui est relié par un trait ou un fond continu est le regroupement le plus fort de tous (au-dessus de la proximité et de la similarité). Implémenté par les séparateurs/regroupements de BORDER et les fonds <code>*-subtle</code> de l'alert.",
+       "id": "LAWS-R25"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-4",
+     "titre": "Law of Prägnanz / Simplicity",
+     "quand": "Une forme est complexe à lire.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Law of Prägnanz / Simplicity**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M250 92l22 42-44 0z\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><rect x=\"270\" y=\"104\" width=\"30\" height=\"30\" fill=\"none\" stroke=\"#4B5563\" stroke-width=\"2\"/><path d=\"M338 118L388 118\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M388 118L380.1 122.3M388 118L380.1 113.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><circle cx=\"442\" cy=\"118\" r=\"26\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une forme est complexe à lire.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Simplifiez : l'œil cherche la forme la plus simple.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Une icône au trait épuré.</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-2-5",
+     "titre": "Von Restorff Effect",
+     "quand": "Un élément doit ressortir.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Von Restorff Effect** (isolation)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"250\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/><circle cx=\"286\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/><circle cx=\"322\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/><circle cx=\"394\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/><circle cx=\"430\" cy=\"118\" r=\"7\" fill=\"#4B5563\"/><circle cx=\"358\" cy=\"118\" r=\"11\" fill=\"#4F46E5\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un élément doit ressortir.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Isolez-le — mais un seul, sinon l'effet s'annule.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un seul bouton primaire coloré.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Von Restorff Effect (isolation) — ce qui diffère se retient.</strong> L'élément visuellement isolé est mémorisé et attire l'action. C'est la justification du primary <em>unique</em> (BUTTON) et de l'accent <em>parcimonieux</em> (COLOR). Frontière : l'effet s'annule si tout se distingue — un écran où tout est mis en avant n'a plus de point focal (la même inflation que « le primary partout »).",
+       "id": "LAWS-R27"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-6",
+     "titre": "Serial Position Effect",
+     "quand": "On ordonne une liste ou un menu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Perception et regroupement (lois de Gestalt)",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Serial Position Effect**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"258\" y=\"62\" width=\"164\" height=\"20\" rx=\"5\" fill=\"#4F46E5\" stroke=\"#4F46E5\" opacity=\"1\"/><rect x=\"258\" y=\"88\" width=\"164\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" opacity=\"0.55\"/><rect x=\"258\" y=\"114\" width=\"164\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" opacity=\"0.55\"/><rect x=\"258\" y=\"140\" width=\"164\" height=\"20\" rx=\"5\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\" opacity=\"0.55\"/><rect x=\"258\" y=\"166\" width=\"164\" height=\"20\" rx=\"5\" fill=\"#4F46E5\" stroke=\"#4F46E5\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On ordonne une liste ou un menu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Placez les éléments clés au début et à la fin.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>L'action importante en tête de liste.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Serial Position Effect — on retient le début et la fin (partiellement couvert).</strong> Dans une liste, les premiers et derniers éléments sont mieux mémorisés que le milieu ; placer les items importants aux extrémités. Implicite dans l'ordre des actions, mais <strong>trou</strong> : pas de règle explicite tant qu'un composant navigation/liste n'existe pas — activé avec lui.",
+       "id": "LAWS-R28"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 4 cas",
+   "titre": "Temps, effort perçu et confiance",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Temps, effort perçu et confiance\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><circle cx=\"92\" cy=\"74\" r=\"32\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.5\"/><path d=\"M92 74V52M92 74l15 9\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M146 104q22-56 54-18t54-38\" fill=\"none\" stroke=\"#0891B2\" stroke-width=\"2.5\"/><circle cx=\"184\" cy=\"66\" r=\"4\" fill=\"#B91C1C\"/><circle cx=\"254\" cy=\"50\" r=\"4\" fill=\"#15803D\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Doherty Threshold",
+     "quand": "Le système répond à une action.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Temps, effort perçu et confiance",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Doherty Threshold**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><circle cx=\"316\" cy=\"116\" r=\"38\" fill=\"#FFFFFF\" stroke=\"#6B7280\" stroke-width=\"2.5\"/><path d=\"M316 116V90M316 116l18 10\" stroke=\"#4F46E5\" stroke-width=\"3\" stroke-linecap=\"round\"/><text x=\"366\" y=\"122\" font-size=\"14\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">< 400 ms</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le système répond à une action.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Restez sous ~400 ms pour garder l'utilisateur engagé.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un feedback quasi instantané.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Doherty Threshold — sous ~400 ms, l'utilisateur reste dans le flux.</strong> Quand système et utilisateur répondent l'un à l'autre sous 400 ms, l'engagement se maintient et la productivité grimpe. C'est la borne haute de toute l'échelle du MOTION ; le feedback perçu-instantané est sous ~100 ms (Nielsen). Établi — un des seuils fondateurs, déjà pleinement implémenté.",
+       "id": "LAWS-R29"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Aesthetic-Usability Effect",
+     "quand": "Un design est beau mais peut cacher des défauts.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Temps, effort perçu et confiance",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Aesthetic-Usability Effect**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"66\" width=\"180\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"86\" width=\"144\" height=\"12\" rx=\"6\" fill=\"#4F46E5\" opacity=\".4\"/><path d=\"M254 140l40-16 40 20 44-16\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2\" opacity=\".55\" stroke-dasharray=\"4 3\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un design est beau mais peut cacher des défauts.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne laissez jamais « c'est joli » clore une question d'utilisabilité.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Tester l'usage même si l'écran plaît.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Aesthetic-Usability Effect — le beau paraît utilisable (un risque autant qu'un levier).</strong> Un design perçu comme esthétique est jugé plus facile à utiliser, <em>même quand il ne l'est pas</em>. Levier : le soin visuel achète de la tolérance aux petits défauts. <strong>Risque, et c'est le point</strong> : le fini esthétique <strong>masque les problèmes d'utilisabilité en test</strong> — les utilisateurs les signalent moins. Règle du système : ne <strong>jamais</strong> laisser « c'est beau » clore une question d'utilisabilité en revue ; l'esthétique et l'utilisabilité se vérifient séparément (parallèle exact au « contraste et redondance sont deux exigences indépendantes » de COLOR).",
+       "id": "LAWS-R30"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Peak-End Rule",
+     "quand": "L'utilisateur gardera un souvenir de l'expérience.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Temps, effort perçu et confiance",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Peak-End Rule**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M238 150q26-72 66-24t72-44 66 56\" fill=\"none\" stroke=\"#4F46E5\" stroke-width=\"2.5\"/><circle cx=\"300\" cy=\"102\" r=\"6\" fill=\"#B91C1C\"/><text x=\"284\" y=\"94\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#B91C1C\">pic</text><circle cx=\"452\" cy=\"140\" r=\"6\" fill=\"#0891B2\"/><text x=\"446\" y=\"132\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">fin</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'utilisateur gardera un souvenir de l'expérience.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Soignez surtout le pic (l'erreur) et la fin (la clôture).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un message d'erreur calme et utile.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Peak-End Rule — on juge sur le pic et la fin.</strong> Le souvenir d'une expérience est dominé par son moment le plus intense et par sa fin, pas par sa moyenne. Conséquence : soigner <em>particulièrement</em> les moments d'erreur (pic négatif) et de succès/clôture (la fin) — c'est là que se joue le VOICE (ton du message d'erreur : calme, orienté solution ; ton du message final : net, sans sur-célébration). Établi (Kahneman) ; l'ampleur exacte en UI reste contextuelle.",
+       "id": "LAWS-R31"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-3",
+     "titre": "Jakob's Law",
+     "quand": "On conçoit une page ou un composant courant.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Temps, effort perçu et confiance",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : **Jakob's Law**\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"236\" y=\"72\" width=\"132\" height=\"98\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"236\" y=\"72\" width=\"132\" height=\"22\" rx=\"13\" fill=\"#F3F4F6\"/><rect x=\"252\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"252\" y=\"140\" width=\"82\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"271\" y=\"151\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/><rect x=\"398\" y=\"72\" width=\"132\" height=\"98\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"398\" y=\"72\" width=\"132\" height=\"22\" rx=\"13\" fill=\"#F3F4F6\"/><rect x=\"414\" y=\"112\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.4\"/><rect x=\"414\" y=\"140\" width=\"82\" height=\"28\" rx=\"7\" fill=\"#4F46E5\"/><rect x=\"433\" y=\"151\" width=\"44\" height=\"6\" rx=\"3\" fill=\"#ffffff\" opacity=\"1\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>On conçoit une page ou un composant courant.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Suivez les conventions connues ; c'est le rôle du benchmark.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un panier en haut à droite.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "**Jakob's Law — l'utilisateur passe son temps sur <em>d'autres</em> produits.<strong> Il s'attend donc à ce que le tien marche comme ceux qu'il connaît déjà. C'est la </strong>justification méthodologique du benchmark** présent dans chaque fiche du système (Carbon, Polaris, Material, GOV.UK, Atlassian) : converger avec les conventions établies n'est pas un manque d'originalité, c'est respecter la mémoire acquise de l'utilisateur. La loi la plus structurante pour ce système — elle explique pourquoi « convergence » est un niveau de confiance à part entière. Frontière : suivre la convention <em>sauf</em> quand elle est mesurablement mauvaise (le disabled comme validation, écarté malgré sa fréquence — cf. DECISIONS.md).",
+       "id": "LAWS-R32"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "05 · 5 cas",
+   "titre": "Risque de mauvaise application",
+   "visuel": "<svg viewBox=\"0 0 320 150\" role=\"img\" aria-label=\"Illustration de la famille : Risque de mauvaise application\"><rect width=\"320\" height=\"150\" rx=\"12\" fill=\"#F3F4F6\"/><rect x=\"56\" y=\"50\" width=\"132\" height=\"52\" rx=\"8\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"72\" y=\"68\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"72\" y=\"86\" width=\"64\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><path d=\"M232 46l30 56h-60z\" fill=\"#FEF3C7\" stroke=\"#92400E\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/><path d=\"M232 66v18\" stroke=\"#92400E\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><circle cx=\"232\" cy=\"93\" r=\"1.8\" fill=\"#92400E\"/></svg>",
+   "cas": [
+    {
+     "id": "cas-4-0",
+     "titre": "Loi invoquée sans source",
+     "quand": "Une « loi » sert à trancher sans preuve.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Risque de mauvaise application",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Loi invoquée sans source\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"78\" width=\"184\" height=\"84\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"270\" y=\"104\" width=\"124\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.5\"/><rect x=\"270\" y=\"124\" width=\"92\" height=\"6\" rx=\"3\" fill=\"#4B5563\" opacity=\"0.35\"/><text x=\"270\" y=\"152\" font-size=\"12\" font-family=\"Inter,sans-serif\" fill=\"#B91C1C\">« source ? »</text><circle cx=\"432\" cy=\"84\" r=\"9\" fill=\"#B91C1C\"/><path d=\"M428.5 80.5l7 7M435.5 80.5l-7 7\" stroke=\"#ffffff\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une « loi » sert à trancher sans preuve.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Vérifiez la source ; méfiez-vous des mythes (« 7 items », « 3 clics »).</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Refuser la règle « tout en 3 clics ».</p>"
+      }
+     ],
+     "sourceRegles": "",
+     "regles": []
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Loi retournée en dark pattern",
+     "quand": "Une loi pourrait manipuler l'utilisateur.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Risque de mauvaise application",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Loi retournée en dark pattern\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M338 78v38a20 20 0 1 1 -20 -20\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"338\" cy=\"74\" r=\"4\" fill=\"#B91C1C\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une loi pourrait manipuler l'utilisateur.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Interdit : progression et rareté servent l'utilisateur, pas la pression.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Pas de « profil complété à 40 % » culpabilisant.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>Zeigarnik Effect — l'inachevé reste présent.</strong> Une tâche interrompue occupe la mémoire ; une barre de progression visible exploite cet effet pour <em>aider</em> (FORM-multi-step, statut d'autosave). Frontière éthique : le même levier retourné en dark pattern (relances culpabilisantes, « votre profil n'est complété qu'à 40 % » à répétition) est hors registre — l'effet sert l'utilisateur, jamais la pression.",
+       "id": "LAWS-R10"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-2",
+     "titre": "Sur-application (une loi contre une autre)",
+     "quand": "Deux lois se contredisent.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Risque de mauvaise application",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Sur-application (une loi contre une autre)\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><path d=\"M360 108L252 108\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M252 108L259.9 103.7M252 108L259.9 112.3\" stroke=\"#4F46E5\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"258\" y=\"100\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#4F46E5\">Hick</text><path d=\"M360 140L468 140\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M468 140L460.1 144.3M468 140L460.1 135.7\" stroke=\"#0891B2\" stroke-width=\"2\" stroke-linecap=\"round\"/><text x=\"420\" y=\"158\" font-size=\"10\" font-family=\"Inter,ui-sans-serif,sans-serif\" fill=\"#0891B2\">Fitts</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Deux lois se contredisent.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Aucune ne tranche seule : arbitrez selon le contexte.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Hick (cacher) contre la découvrabilité.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>ce principe n'a pas de couche UI — par nature, pas par oubli.</strong> Un catalogue de lois n'a ni surface visuelle (hex, px) ni lexique concret : ses « valeurs » sont les tokens et règles des autres sujets, qui portent déjà l'implémentation. Créer une couche <code>LAWS-UI</code> reviendrait à dupliquer ce qui vit dans les couches UI de motion, spacing, button… — exactement le travers que le principe de dédoublonnage interdit. Sa couche « concrète » est donc la <strong>carte d'application</strong> en fin de fichier : loi → où elle est déjà implémentée.",
+       "id": "LAWS-R03"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Aesthetic-usability qui clôt un débat d'UX",
+     "quand": "« C'est beau donc c'est bon » clôt une revue.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Risque de mauvaise application",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Aesthetic-usability qui clôt un débat d'UX\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"250\" y=\"66\" width=\"180\" height=\"104\" rx=\"13\" fill=\"#FFFFFF\" stroke=\"#E5E7EB\"/><rect x=\"268\" y=\"86\" width=\"144\" height=\"12\" rx=\"6\" fill=\"#4F46E5\" opacity=\".4\"/><path d=\"M254 140l40-16 40 20 44-16\" fill=\"none\" stroke=\"#B91C1C\" stroke-width=\"2\" opacity=\".55\" stroke-dasharray=\"4 3\"/></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>« C'est beau donc c'est bon » clôt une revue.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Séparez esthétique et utilisabilité : deux vérifications distinctes.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un test d'usage malgré un bel écran.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>une loi nommée n'est pas une loi vraie.</strong> Le mot « loi » recouvre ici des choses d'ampleur très inégale : des résultats robustes (Fitts, Gestalt, Doherty), des heuristiques utiles (Occam, Postel), des effets réels mais contextuels (Peak-End, Aesthetic-Usability), et des formules <strong>abusées</strong> (Miller « 7 items », la « règle des 3 clics »). Chaque entrée porte donc son niveau de confiance, et les deux mythes les plus tenaces sont réfutés à leur source.",
+       "id": "LAWS-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<strong>Aesthetic-Usability Effect — le beau paraît utilisable (un risque autant qu'un levier).</strong> Un design perçu comme esthétique est jugé plus facile à utiliser, <em>même quand il ne l'est pas</em>. Levier : le soin visuel achète de la tolérance aux petits défauts. <strong>Risque, et c'est le point</strong> : le fini esthétique <strong>masque les problèmes d'utilisabilité en test</strong> — les utilisateurs les signalent moins. Règle du système : ne <strong>jamais</strong> laisser « c'est beau » clore une question d'utilisabilité en revue ; l'esthétique et l'utilisabilité se vérifient séparément (parallèle exact au « contraste et redondance sont deux exigences indépendantes » de COLOR).",
+       "id": "LAWS-R30"
+      }
+     ]
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Loi appliquée mais non nommée",
+     "quand": "Une règle existe sans citer la loi qui la fonde.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "05 · Risque de mauvaise application",
+     "visuel": "<svg viewBox=\"0 0 680 240\" role=\"img\" aria-label=\"Illustration du cas : Loi appliquée mais non nommée\"><rect width=\"680\" height=\"240\" fill=\"#F3F4F6\"/><rect x=\"248\" y=\"88\" width=\"184\" height=\"60\" rx=\"10\" fill=\"#FFFFFF\" stroke=\"#6B7280\"/><rect x=\"272\" y=\"114\" width=\"132\" height=\"6\" rx=\"3\" fill=\"#4F46E5\" opacity=\"0.6\"/><rect x=\"452\" y=\"102\" width=\"60\" height=\"32\" rx=\"6\" fill=\"none\" stroke=\"#E5E7EB\" stroke-dasharray=\"4 3\"/><text x=\"482\" y=\"123\" font-size=\"15\" font-family=\"Inter,sans-serif\" text-anchor=\"middle\" fill=\"#4B5563\">?</text></svg>",
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une règle existe sans citer la loi qui la fonde.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Nommez la loi : la carte d'application relie règle et loi.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« 44px », c'est Fitts.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de LAWS-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<strong>une loi nommée n'est pas une loi vraie.</strong> Le mot « loi » recouvre ici des choses d'ampleur très inégale : des résultats robustes (Fitts, Gestalt, Doherty), des heuristiques utiles (Occam, Postel), des effets réels mais contextuels (Peak-End, Aesthetic-Usability), et des formules <strong>abusées</strong> (Miller « 7 items », la « règle des 3 clics »). Chaque entrée porte donc son niveau de confiance, et les deux mythes les plus tenaces sont réfutés à leur source.",
+       "id": "LAWS-R05"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision — la carte qui sert à éprouver la couverture des règles."
+ },
+ "specs": {
+  "css": "",
+  "kicker": "",
+  "titre": "",
+  "lead": "",
+  "specimens": [],
+  "tokens": []
+ },
+ "evolution": [
+  {
+   "date": "2026-07-21",
+   "titre": "Principe « performance » : le contrat des attentes devient le cinquième RULES du socle universel",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/principles/performance/PERFORMANCE-UX.md</code> (1.0.0, companion: none) ; <code>atelier/inventaires/inventaire-cas-usage-performance.md</code> (3e inventaire transversal, 20 cas) ; <code>dist/RULES-performance.md</code> (maintenu à la main) ; <code>DESIGN.md</code> 1.28.0 (index, aucun token) ; <code>LAWS-UX.md</code> 1.3.1 (Doherty → carte) ; <code>MOTION-UX.md</code> 1.3.1 (frontière nommée) ; <code>tools/genere-routeur.js</code> (socle à 5 RULES) ; contenus éditoriaux du site.</li><li><strong>Constat</strong> : le système possédait les mécaniques d'attente en pièces détachées (cycle de soumission FORM, loading BUTTON, attente par champ INPUT, squelettes CARD/COLLECTION, bornes d'animation MOTION) mais aucun propriétaire du contrat transversal — quel feedback à quel délai, quand l'optimisme est permis, ce que l'honnêteté interdit. Doherty et les seuils NN/g n'existaient qu'en théorie (catalogue) ou en local (MOTION).</li><li><strong>Décisions</strong> :</li><li><strong>Frontière motion / performance</strong> (haute) : motion possède les durées et courbes des ANIMATIONS ; performance possède le contrat des ATTENTES. L'indicateur de chargement appartient aux deux — forme et mouvement chez motion, moment d'apparition et sincérité chez performance.</li><li><strong>Socle universel à cinq</strong> (haute, arbitrage délégué) : toute intention charge et attend — RULES-performance rejoint accessibility/interaction/adaptive/cognitive-load ; coût mesuré à chaque build, clause de réouverture déjà journalisée chez cognitive-load.</li><li><strong>Échelle de l'attente</strong> (haute) : rien sous ~100 ms ; local entre ~100 ms et ~1 s ; visible ET annoncé au-delà ; état à part entière (progression honnête, issue, timeout) au-delà de ~10 s ou en durée inconnue. Anti-scintillement : délai d'apparition + durée minimale, non chiffrés jusqu'au premier consommateur outillé (un chiffre sans besoin réel serait le travers que le système interdit).</li><li><strong>UI optimiste sous trois conditions cumulées</strong> (haute) : réversible/rejouable + très probable + échec réparé visiblement ; interdite sur l'irréversible, le paiement, le légal — alignée sur la réversibilité de cognitive-load.</li><li><strong>Honnêteté renforcée</strong> (haute) : jamais de fausse progression (la frontière Goal-Gradient du catalogue devient un interdit opérationnel) et JAMAIS d'attente artificielle — refus assumé d'exploiter la labor illusion (Buell &amp; Norton), documentée puis écartée, cohérent avec le refus des dark patterns.</li><li><strong>Seuils en prose, aucun token</strong> (moyenne) : les bornes 0,1/1/10 s sont de la psychophysique sourcée, pas des valeurs de design à thématiser.</li><li><strong>Laissé ouvert</strong> : composant de progression déterminée (aucun dans le système — naîtra du besoin, d'ici là remonter) ; chiffrage de l'anti-scintillement ; incarnation de l'optimisme (premier terrain : TOAST porteur d'une annulation) ; valeurs machine des seuils si un harness les consomme un jour.</li><li><strong>Pourquoi</strong> : troisième et dernière absence prioritaire du fil « quatre axes » (2026-07-21 : cognitive-load, collection, performance) — le tout par la voie complète de la méthode, en un jour, sans casser la promesse d'aucun fichier existant.</li></ul>"
+  },
+  {
+   "date": "2026-07-21",
+   "titre": "Principe « cognitive-load » : le pendant opérationnel du catalogue des lois entre au socle universel",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>atelier/principles/cognitive-load/COGNITIVE-LOAD-UX.md</code> (1.0.0, companion: none) ; <code>atelier/inventaires/inventaire-cas-usage-charge-cognitive.md</code> (2e inventaire transversal, 23 cas) ; <code>dist/RULES-cognitive-load.md</code> (maintenu à la main, comme les RULES historiques) ; <code>LAWS-UX.md</code> 1.3.0 (carte d'application + promotion anti-camouflage) ; <code>DESIGN.md</code> 1.26.0 (index des principes, aucun token) ; <code>tools/genere-routeur.js</code> (socle à 4 RULES) ; contenus éditoriaux du site (<code>tools/site/data.js</code>, <code>tools/genere-site.js</code>).</li><li><strong>Constat</strong> : <code>LAWS-UX.md</code> déclare Cognitive Load « principe implicite de tout le système » — implicite = invisible au build : aucune règle chargée ne contraignait le nombre de décisions d'un écran, la divulgation, les défauts, la réversibilité ou l'anti-camouflage en tant qu'obligations transversales ; elles existaient en pièces détachées chez les propriétaires.</li><li><strong>Décisions</strong> :</li><li><strong>Frontière laws / cognitive-load</strong> (haute) : le catalogue garde la théorie (audience: humans, jamais chargé au build) ; le nouveau principe porte les obligations opérationnelles, cite les lois sans les réécrire, et renvoie chaque mécanique à son propriétaire (modèle accessibility). En divergence : le catalogue a raison sur la loi, le principe sur l'obligation, le propriétaire sur la mécanique.</li><li><strong>Socle universel à quatre</strong> (haute, arbitrée avec l'utilisateur) : <code>RULES-cognitive-load</code> rejoint accessibility/interaction/adaptive, chargé pour toute intention ; le coût est mesuré à chaque build (RAPPORT-ROUTEUR) et l'arbitrage se rouvre avec les chiffres si le socle enfle.</li><li><strong>Anti-camouflage promu</strong> (moyenne) : le trou signalé par le catalogue (« candidate ») devient une RÈGLE du principe ; le catalogue pointe désormais vers lui.</li><li><strong>Aucun plafond numérique</strong> (moyenne) : le principe contraint la structure (hiérarchie, divulgation, défauts, réversibilité), jamais un nombre — cohérent avec les mythes réfutés du catalogue (Miller « 7 », règle des 3 clics).</li><li><strong>Laissé ouvert</strong> : tri/filtre par défaut d'une collection (propriétaire à désigner — CARD candidate le jour d'une collection réelle) ; répartition fine undo/confirmation par composant (premier terrain : TOAST porteur d'une annulation) ; épreuve du réel de l'anti-camouflage (attend un composant de contenu marketing) ; DeleteButton toujours OUVERT (non tranché ici).</li><li><strong>Pourquoi</strong> : première absence identifiée par la relecture « quatre axes » (visuel / technique / psychologique / sensoriel) à entrer au système — et elle entre par la voie complète de la méthode (inventaire transversal → benchmark → couverture → compilation), pas comme une fiche isolée.</li></ul>"
+  },
+  {
+   "date": "2026-07-12",
+   "titre": "Fondations : ajout de laws (lois UX) et voice (voix & ton) — le test de transposition donne deux structures différentes",
+   "html": "<ul><li><strong>Fichiers</strong> : foundations/laws/LAWS-UX.md (créé), foundations/voice/VOICE-UX.md + VOICE-UI.md (créés), inventaires/inventaire-cas-usage-{lois,voix}.md (créés), DESIGN.md 1.13.0 (index <code>foundations:</code> étendu, aucune valeur ajoutée).</li><li><strong>Décision</strong> : deux fondations ajoutées, avec un <strong>résultat de transposition différent pour chacune</strong> (le test appliqué sujet par sujet, jamais copié par défaut) :</li><li><strong>laws → UX-only.</strong> Un catalogue de lois n'a ni surface visuelle (hex/px) ni lexique concret : c'est la <em>couche théorique</em> que les autres fondations citent déjà (Doherty dans motion, Hick dans l'inflation du primary, Gestalt/proximité dans spacing). Pas de <code>LAWS-UI.md</code> — le créer dupliquerait ce qui vit dans les autres <code>*-UI.md</code>. Sa « couche concrète » est la <strong>carte d'application</strong> en fin de fichier (loi → règle qui l'implémente). Périmètre « catalogue large » (27 lois, aligné lawsofux.com + sources primaires) ; deux mythes réfutés à leur source (Miller « 7 items », règle des 3 clics).</li><li><strong>voice → paire UX/UI.</strong> Le split rôle/valeur de la couleur retombe pile : principes de voix <em>stables</em> (voix constante, ton variable, ne jamais blâmer, le mot comme canal fiable) en UX ; lexique + mécaniques <em>changeants avec la marque</em> (casse, ponctuation FR, nombres, dates, gabarits) en UI. VOICE-UI n'introduit <strong>aucun token</strong> — il référence <code>typography.label</code>, <code>typography.body</code>, <code>measure.reading-max</code>. Consolide le wording déjà écrit dans BUTTON-UX (§ Wording), INPUT-UX (§ Contenu du message) et ALERT-UX <strong>sans en retirer l'autorité</strong> : le composant garde son libellé, la fondation fournit la mécanique (même modèle que COLOR pour les valeurs).</li><li><strong>Conséquence outillée à trancher (remontée, non tranchée d'office)</strong> : <code>valide-dossier.js</code> vérifie la complétude des paires UX/UI ; une fondation délibérément UX-only (laws) est un cas qu'il ne connaît pas. Deux issues admises : (1) le script exempte les fichiers <code>type: foundation</code> déclarant <code>companion: none</code> ; (2) exception documentée. À confirmer au moment de recompiler <code>dist/</code>. Décision explicite : <strong>ne pas</strong> fabriquer un <code>LAWS-UI.md</code> factice pour satisfaire le script — ce serait une valeur sans besoin réel (guardrail COLOR/Occam).</li><li><strong>Pourquoi</strong> : <code>laws</code> rend lisible la théorie derrière les règles existantes (résorbe la « déduction silencieuse » conceptuelle : une règle fondée sur une loi qu'on ne nomme pas) ; <code>voice</code> fournit le socle des canaux redondants — quand COLOR/MOTION/ICONOGRAPHY disent « jamais ce canal seul », le canal de repli qu'ils invoquent tous est le mot. Inventaire + benchmark faits <strong>avant</strong> livraison pour les deux (leçon typographie) ; ratios de trous conformes à la série (laws 3/27, voice 6/38). Nouveau constat de méthode : sur <code>voice</code>, le prédicteur « état transitoire » s'applique enfin <em>littéralement</em> (ton d'attente, de résolution, message qui en remplace un autre) — écrit d'office ; sur <code>laws</code>, il ne s'applique pas (aucun état), le trou-type devient « la loi connue mais non reliée ».</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "LAWS-R01",
+   "couche": "ux",
+   "solution": "les lois UX forment le **principe théorique** du système — ni variantes (composant), ni assemblage (pattern), ni token transversal. C'est le corpus que les autres sujets *appliquent* et *citent* déjà (Doherty dans MOTION, Hick dans l'inflation du primary de BUTTON, Gestalt/proximité dans SPACING). Le modèle à axes ne s'y applique pas ; le modèle rôle/valeur non plus.",
+   "enonce": "Le catalogue des lois UX est un principe théorique : il ne se modélise ni en axes ni en rôle/valeur, n'introduit aucune contrainte propre, et se borne à nommer le corpus que les autres sujets appliquent et citent.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Hick's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R02",
+   "couche": "ux",
+   "solution": "**ce principe s'adresse aux humains, pas à l'IA du build** (`audience: humans`). Il n'est **pas compilé vers `dist/`** : aucun `RULES-laws`, absent du routeur, jamais chargé au moment de générer de l'UI. Motif — les lois ne posent aucune contrainte que le build consomme (elles renvoient toutes à une règle qui vit ailleurs) ; les charger à chaque build ne ferait qu'alourdir sans rien contraindre. Il vit donc dans l'atelier et sur le site (revue, formation, argumentation), et son influence passe par les sujets opérationnels qui, eux, sont compilés et chargés. Décision journalée (DECISIONS.md 2026-07-12).",
+   "enonce": "Le catalogue des lois s'adresse aux humains et n'est pas compilé : il ne produit aucun fichier de règles dans dist/, n'apparaît pas dans le routeur, et n'est jamais chargé au moment de générer de l'UI.",
+   "mesure": "absence de RULES-laws dans dist/ et absence d'entrée laws dans le routeur",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R03",
+   "couche": "ux",
+   "solution": "**ce principe n'a pas de couche UI — par nature, pas par oubli.** Un catalogue de lois n'a ni surface visuelle (hex, px) ni lexique concret : ses « valeurs » sont les tokens et règles des autres sujets, qui portent déjà l'implémentation. Créer une couche `LAWS-UI` reviendrait à dupliquer ce qui vit dans les couches UI de motion, spacing, button… — exactement le travers que le principe de dédoublonnage interdit. Sa couche « concrète » est donc la **carte d'application** en fin de fichier : loi → où elle est déjà implémentée.",
+   "enonce": "Le catalogue des lois n'a pas de couche UI : sa couche concrète est la carte d'application reliant chaque loi à la règle qui l'implémente, et aucun fichier UI factice n'est créé pour satisfaire l'outillage.",
+   "mesure": "companion: none déclaré ; aucun fichier LAWS-UI ; chaque loi du catalogue possède une ligne dans la carte d'application ou une mention explicite de trou",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-4-2",
+     "titre": "Sur-application (une loi contre une autre)",
+     "famille": "Risque de mauvaise application"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R04",
+   "couche": "ux",
+   "solution": "une loi ne s'applique **jamais seule**. La plupart sont en tension avec une autre (Hick « montre moins » ↔ découvrabilité et Fitts ; Miller « limite » ↔ Tesler « la complexité ne disparaît pas »). Le rôle de ce principe est de rendre ces tensions **visibles**, pas de les trancher — l'arbitrage remonte, comme partout ailleurs (les lignes CONFIANCE calibrent la vitesse de remontée).",
+   "enonce": "Une loi ne s'invoque jamais seule : chaque entrée du catalogue expose la ou les lois avec lesquelles elle est en tension, et un arbitrage entre lois contradictoires remonte au lieu d'être tranché par le catalogue.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Miller's Law",
+     "famille": "Charge cognitive et mémoire"
+    },
+    {
+     "id": "cas-1-0",
+     "titre": "Hick's Law",
+     "famille": "Décision et action"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Fitts's Law",
+     "famille": "Décision et action"
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Tesler's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R05",
+   "couche": "ux",
+   "solution": "**une loi nommée n'est pas une loi vraie.** Le mot « loi » recouvre ici des choses d'ampleur très inégale : des résultats robustes (Fitts, Gestalt, Doherty), des heuristiques utiles (Occam, Postel), des effets réels mais contextuels (Peak-End, Aesthetic-Usability), et des formules **abusées** (Miller « 7 items », la « règle des 3 clics »). Chaque entrée porte donc son niveau de confiance, et les deux mythes les plus tenaces sont réfutés à leur source.",
+   "enonce": "Le mot « loi » ne vaut pas preuve : chaque entrée du catalogue porte un niveau de confiance explicite et distingue les résultats robustes, les heuristiques et les formules réfutées.",
+   "mesure": "chaque entrée du catalogue porte un niveau de confiance et un renvoi vers sa source primaire",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Miller's Law",
+     "famille": "Charge cognitive et mémoire"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Fitts's Law",
+     "famille": "Décision et action"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Aesthetic-usability qui clôt un débat d'UX",
+     "famille": "Risque de mauvaise application"
+    },
+    {
+     "id": "cas-4-4",
+     "titre": "Loi appliquée mais non nommée",
+     "famille": "Risque de mauvaise application"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R06",
+   "couche": "ux",
+   "solution": "**Cognitive Load (Sweller) — la loi-mère.** Toute charge mentale qu'une interface impose *au-delà* de la tâche elle-même est du gaspillage (charge extrinsèque). C'est le principe implicite de tout le système : registre productif du MOTION, échelles fermées de SPACING et RADIUS, « un token naît d'un besoin réel ». Frontière : réduire la charge extrinsèque ne veut pas dire cacher — un choix retiré de l'écran reste un choix à faire ailleurs (cf. Tesler).",
+   "enonce": "Toute charge mentale imposée par la présentation de l'interface au-delà de la tâche elle-même est une charge extrinsèque à supprimer ; la réduire ne consiste jamais à masquer une décision, qui resterait alors à prendre ailleurs.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S15",
+     "affirmation": "Sweller (1988) fonde la théorie de la charge cognitive : une présentation qui impose au penseur un traitement mental sans rapport avec l'apprentissage visé consomme la capacité de travail et dégrade le résultat — c'est la charge extrinsèque.",
+     "liens": [
+      {
+       "label": "Sweller, J. (1988). *Cognitive Load During Problem Solving: Effects on Learning*, Cognitive Science 12, 257–285",
+       "url": "https://mrbartonmaths.com/resourcesnew/8.%20Research/Explicit%20Instruction/Cognitive%20Load%20during%20problem%20solving.pdf"
+      }
+     ],
+     "confiance": "Établi — article original, théorie massivement répliquée. Réserve : le corpus est celui de la psychologie de l'apprentissage (résolution de problèmes, instruction) ; la transposition à l'interface est une extension par analogie, pas un résultat de Sweller."
+    }
+   ],
+   "principale": {
+    "ref": "S15",
+    "affirmation": "Sweller (1988) fonde la théorie de la charge cognitive : une présentation qui impose au penseur un traitement mental sans rapport avec l'apprentissage visé consomme la capacité de travail et dégrade le résultat — c'est la charge extrinsèque.",
+    "liens": [
+     {
+      "label": "Sweller, J. (1988). *Cognitive Load During Problem Solving: Effects on Learning*, Cognitive Science 12, 257–285",
+      "url": "https://mrbartonmaths.com/resourcesnew/8.%20Research/Explicit%20Instruction/Cognitive%20Load%20during%20problem%20solving.pdf"
+     }
+    ],
+    "confiance": "Établi — article original, théorie massivement répliquée. Réserve : le corpus est celui de la psychologie de l'apprentissage (résolution de problèmes, instruction) ; la transposition à l'interface est une extension par analogie, pas un résultat de Sweller."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Cognitive Load",
+     "famille": "Charge cognitive et mémoire"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R07",
+   "couche": "ux",
+   "solution": "**Miller's Law — à corriger, pas à appliquer.** L'énoncé populaire « 7±2 éléments maximum » est un **abus** : Miller (1956) parlait de la capacité de la mémoire de travail sur des *unités non structurées*, pas d'une limite de menus, d'onglets ou de champs. La règle utile qui en dérive est le **chunking** (regrouper), pas le plafond numérique. Frontière : ne jamais justifier « maximum 7 items » par Miller — segmenter un numéro de carte en groupes de 4, oui ; brider une navigation à 7 entrées « à cause de Miller », non.",
+   "enonce": "Aucune limite d'items d'interface — menu, onglets, champs — ne se justifie par Miller (1956) : la seule règle utilisable qui en dérive est le regroupement en unités signifiantes, jamais un plafond numérique.",
+   "mesure": "aucune contrainte de cardinalité du système n'est justifiée par une référence à Miller ou au « 7±2 »",
+   "contre": "",
+   "probleme": "c'est exactement le travers que le système combat ailleurs — une formule citée hors de sa source (comme « le contraste suffit » pour le daltonisme, COLOR). La loi vraie est plus modeste et plus utile que sa version virale.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Miller (1956) porte sur la mémoire de travail, PAS sur une limite d'items UI",
+     "liens": [
+      {
+       "label": "Miller, *The Magical Number Seven*",
+       "url": "https://psychclassics.yorku.ca/Miller/"
+      },
+      {
+       "label": "NN/g — The Myth of “Seven, Plus or Minus 2”",
+       "url": "https://www.nngroup.com/articles/short-term-memory-and-web-usability/"
+      }
+     ],
+     "confiance": "Établi (réfutation du mythe)"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Miller (1956) sépare explicitement deux limites qui partagent par coïncidence le chiffre 7 : l'empan du jugement absolu (limité par la quantité d'information, en bits) et l'empan de mémoire immédiate (limité par le nombre d'unités, en chunks). Il écrit lui-même que ce sont « des sortes de limitations tout à fait différentes », ouvre par « j'ai été persécuté par un entier », et ne prescrit AUCUNE limite de menu, de liste ou de champ.",
+     "liens": [
+      {
+       "label": "Miller, G. A. (1956). *The Magical Number Seven, Plus or Minus Two*, Psychological Review 63(2), 81–97 — texte intégral",
+       "url": "https://labs.la.utexas.edu/gilden/files/2016/04/MagicNumberSeven-Miller1956.pdf"
+      }
+     ],
+     "confiance": "Établi — source primaire lue. **Corrige le fichier LAWS-UX lui-même** : LAWS-R07 attribue à Miller « la capacité de la mémoire de travail sur des unités non structurées ». C'est encore la lecture populaire : Miller distingue jugement absolu et empan mnésique et refuse de les confondre. La réfutation du mythe est bonne, sa reformulation ne l'est pas."
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Cowan (2001) réexamine la capacité de stockage à court terme : quand le regroupement et la répétition subvocale sont empêchés, la limite centrale se situe autour de **quatre** unités, pas sept.",
+     "liens": [
+      {
+       "label": "Cowan, N. (2001). *The magical number 4 in short-term memory: a reconsideration of mental storage capacity*, Behavioral and Brain Sciences 24(1), 87–114",
+       "url": "https://philpapers.org/rec/COWTMN"
+      }
+     ],
+     "confiance": "Établi — article de référence avec commentaires par les pairs. Renforce la réfutation de LAWS-R07/R34 et **contredit la valeur de 7** que le fichier laisse implicitement subsister."
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Miller (1956) porte sur la mémoire de travail, PAS sur une limite d'items UI",
+    "liens": [
+     {
+      "label": "Miller, *The Magical Number Seven*",
+      "url": "https://psychclassics.yorku.ca/Miller/"
+     },
+     {
+      "label": "NN/g — The Myth of “Seven, Plus or Minus 2”",
+      "url": "https://www.nngroup.com/articles/short-term-memory-and-web-usability/"
+     }
+    ],
+    "confiance": "Établi (réfutation du mythe)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Miller's Law",
+     "famille": "Charge cognitive et mémoire"
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Chunking",
+     "famille": "Charge cognitive et mémoire"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R08",
+   "couche": "ux",
+   "solution": "**Chunking — regrouper pour mémoriser.** Découper l'information en unités signifiantes allège la mémoire de travail. Implémenté par le FORM-multi-step (une décision par étape), la proximité de SPACING (regroupement visuel), la segmentation des nombres et dates (VOICE-UI).",
+   "enonce": "L'information longue ou dense se découpe en unités signifiantes — étapes, groupes visuels, segments de nombres et de dates — plutôt que d'être présentée d'un seul bloc.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S16",
+     "affirmation": "Miller (1956) sépare explicitement deux limites qui partagent par coïncidence le chiffre 7 : l'empan du jugement absolu (limité par la quantité d'information, en bits) et l'empan de mémoire immédiate (limité par le nombre d'unités, en chunks). Il écrit lui-même que ce sont « des sortes de limitations tout à fait différentes », ouvre par « j'ai été persécuté par un entier », et ne prescrit AUCUNE limite de menu, de liste ou de champ.",
+     "liens": [
+      {
+       "label": "Miller, G. A. (1956). *The Magical Number Seven, Plus or Minus Two*, Psychological Review 63(2), 81–97 — texte intégral",
+       "url": "https://labs.la.utexas.edu/gilden/files/2016/04/MagicNumberSeven-Miller1956.pdf"
+      }
+     ],
+     "confiance": "Établi — source primaire lue. **Corrige le fichier LAWS-UX lui-même** : LAWS-R07 attribue à Miller « la capacité de la mémoire de travail sur des unités non structurées ». C'est encore la lecture populaire : Miller distingue jugement absolu et empan mnésique et refuse de les confondre. La réfutation du mythe est bonne, sa reformulation ne l'est pas."
+    },
+    {
+     "ref": "S17",
+     "affirmation": "Cowan (2001) réexamine la capacité de stockage à court terme : quand le regroupement et la répétition subvocale sont empêchés, la limite centrale se situe autour de **quatre** unités, pas sept.",
+     "liens": [
+      {
+       "label": "Cowan, N. (2001). *The magical number 4 in short-term memory: a reconsideration of mental storage capacity*, Behavioral and Brain Sciences 24(1), 87–114",
+       "url": "https://philpapers.org/rec/COWTMN"
+      }
+     ],
+     "confiance": "Établi — article de référence avec commentaires par les pairs. Renforce la réfutation de LAWS-R07/R34 et **contredit la valeur de 7** que le fichier laisse implicitement subsister."
+    }
+   ],
+   "principale": {
+    "ref": "S16",
+    "affirmation": "Miller (1956) sépare explicitement deux limites qui partagent par coïncidence le chiffre 7 : l'empan du jugement absolu (limité par la quantité d'information, en bits) et l'empan de mémoire immédiate (limité par le nombre d'unités, en chunks). Il écrit lui-même que ce sont « des sortes de limitations tout à fait différentes », ouvre par « j'ai été persécuté par un entier », et ne prescrit AUCUNE limite de menu, de liste ou de champ.",
+    "liens": [
+     {
+      "label": "Miller, G. A. (1956). *The Magical Number Seven, Plus or Minus Two*, Psychological Review 63(2), 81–97 — texte intégral",
+      "url": "https://labs.la.utexas.edu/gilden/files/2016/04/MagicNumberSeven-Miller1956.pdf"
+     }
+    ],
+    "confiance": "Établi — source primaire lue. **Corrige le fichier LAWS-UX lui-même** : LAWS-R07 attribue à Miller « la capacité de la mémoire de travail sur des unités non structurées ». C'est encore la lecture populaire : Miller distingue jugement absolu et empan mnésique et refuse de les confondre. La réfutation du mythe est bonne, sa reformulation ne l'est pas."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Chunking",
+     "famille": "Charge cognitive et mémoire"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R09",
+   "couche": "ux",
+   "solution": "**Working Memory — volatile et rare.** Ne jamais exiger de l'utilisateur qu'il retienne une information d'un écran à l'autre. Implémenté par l'« ask-once » et la récapitulation avant soumission finale (FORM-multi-step), par le helper text *persistant* plutôt que l'aide qui disparaît (INPUT).",
+   "enonce": "L'interface n'exige jamais qu'une information soit retenue d'un écran à l'autre : ce qui a déjà été saisi est redonné à voir au moment où il sert, et l'aide nécessaire à une saisie reste visible au lieu de disparaître.",
+   "mesure": "aucune donnée déjà saisie n'est redemandée ; aucune aide nécessaire à la saisie n'est masquée après son premier affichage",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S17",
+     "affirmation": "Cowan (2001) réexamine la capacité de stockage à court terme : quand le regroupement et la répétition subvocale sont empêchés, la limite centrale se situe autour de **quatre** unités, pas sept.",
+     "liens": [
+      {
+       "label": "Cowan, N. (2001). *The magical number 4 in short-term memory: a reconsideration of mental storage capacity*, Behavioral and Brain Sciences 24(1), 87–114",
+       "url": "https://philpapers.org/rec/COWTMN"
+      }
+     ],
+     "confiance": "Établi — article de référence avec commentaires par les pairs. Renforce la réfutation de LAWS-R07/R34 et **contredit la valeur de 7** que le fichier laisse implicitement subsister."
+    },
+    {
+     "ref": "S18",
+     "affirmation": "La sixième heuristique de Nielsen (« Recognition rather than recall ») pose que l'interface doit minimiser la charge mnésique en rendant visibles éléments, actions et options plutôt qu'en exigeant leur rappel.",
+     "liens": [
+      {
+       "label": "Nielsen, J. — *10 Usability Heuristics for User Interface Design* (heuristiques 4 et 6), NN/g, 1994",
+       "url": "https://www.nngroup.com/articles/ten-usability-heuristics/"
+      }
+     ],
+     "confiance": "Établi — jeu d'heuristiques publié en 1994 après analyse factorielle de 249 problèmes d'utilisabilité, adopté comme norme de fait dans toute la profession. Fonde LAWS-R09 mieux que Miller ne le ferait."
+    }
+   ],
+   "principale": {
+    "ref": "S17",
+    "affirmation": "Cowan (2001) réexamine la capacité de stockage à court terme : quand le regroupement et la répétition subvocale sont empêchés, la limite centrale se situe autour de **quatre** unités, pas sept.",
+    "liens": [
+     {
+      "label": "Cowan, N. (2001). *The magical number 4 in short-term memory: a reconsideration of mental storage capacity*, Behavioral and Brain Sciences 24(1), 87–114",
+      "url": "https://philpapers.org/rec/COWTMN"
+     }
+    ],
+    "confiance": "Établi — article de référence avec commentaires par les pairs. Renforce la réfutation de LAWS-R07/R34 et **contredit la valeur de 7** que le fichier laisse implicitement subsister."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "Working Memory",
+     "famille": "Charge cognitive et mémoire"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R10",
+   "couche": "ux",
+   "solution": "**Zeigarnik Effect — l'inachevé reste présent.** Une tâche interrompue occupe la mémoire ; une barre de progression visible exploite cet effet pour *aider* (FORM-multi-step, statut d'autosave). Frontière éthique : le même levier retourné en dark pattern (relances culpabilisantes, « votre profil n'est complété qu'à 40 % » à répétition) est hors registre — l'effet sert l'utilisateur, jamais la pression.",
+   "enonce": "La progression d'une tâche longue est rendue visible pour aider la reprise, jamais pour exercer une pression : aucune relance ni aucun message n'a pour seul déclencheur le caractère incomplet d'une tâche.",
+   "mesure": "aucune notification ni message dont l'unique condition de déclenchement est un taux de complétion inférieur à 100 %",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S22",
+     "affirmation": "Méta-analyse 2025 de l'effet Zeigarnik : le rapport des tâches interrompues rappelées sur les tâches achevées rappelées est de **0,99** — aucun avantage mnésique pour l'inachevé. Les auteurs concluent que l'effet « manque de validité universelle » et « ne peut simplement pas être répliqué de manière fiable ». L'effet Ovsiankina (reprise de la tâche interrompue, 67 %) tient, lui.",
+     "liens": [
+      {
+       "label": "Ghibellini, R. & Meier, B. (2025). *Interruption, recall and resumption: a meta-analysis of the Zeigarnik and Ovsiankina effects*, Humanities and Social Sciences Communications",
+       "url": "https://www.nature.com/articles/s41599-025-05000-w"
+      }
+     ],
+     "confiance": "Établi — méta-analyse revue par les pairs. **Contredit LAWS-R10** : la barre de progression et l'autosave restent de bonnes idées, mais Zeigarnik ne les justifie pas ; c'est la reprise (Ovsiankina) qui est étayée, pas la rémanence mnésique."
+    }
+   ],
+   "principale": {
+    "ref": "S22",
+    "affirmation": "Méta-analyse 2025 de l'effet Zeigarnik : le rapport des tâches interrompues rappelées sur les tâches achevées rappelées est de **0,99** — aucun avantage mnésique pour l'inachevé. Les auteurs concluent que l'effet « manque de validité universelle » et « ne peut simplement pas être répliqué de manière fiable ». L'effet Ovsiankina (reprise de la tâche interrompue, 67 %) tient, lui.",
+    "liens": [
+     {
+      "label": "Ghibellini, R. & Meier, B. (2025). *Interruption, recall and resumption: a meta-analysis of the Zeigarnik and Ovsiankina effects*, Humanities and Social Sciences Communications",
+      "url": "https://www.nature.com/articles/s41599-025-05000-w"
+     }
+    ],
+    "confiance": "Établi — méta-analyse revue par les pairs. **Contredit LAWS-R10** : la barre de progression et l'autosave restent de bonnes idées, mais Zeigarnik ne les justifie pas ; c'est la reprise (Ovsiankina) qui est étayée, pas la rémanence mnésique."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-4",
+     "titre": "Zeigarnik Effect",
+     "famille": "Charge cognitive et mémoire"
+    },
+    {
+     "id": "cas-4-1",
+     "titre": "Loi retournée en dark pattern",
+     "famille": "Risque de mauvaise application"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R11",
+   "couche": "ux",
+   "solution": "**Selective Attention — l'utilisateur ignore le bruit.** La « banner blindness » est réelle : ce qui ressemble à de la publicité est filtré avant lecture. Fonde la sobriété du MOTION (le mouvement capte l'attention de force, donc parcimonie) et la rareté de l'alert. Frontière (promue en RÈGLE opérationnelle par le principe cognitive-load, 2026-07-21) : ne jamais déguiser une information critique en élément décoratif ou promotionnel — elle sera filtrée avec le reste.",
+   "enonce": "Aucune information critique ne prend l'apparence d'un élément décoratif ou promotionnel : ce qui ressemble à une publicité est filtré avant lecture, et le mouvement, qui capte l'attention de force, reste parcimonieux.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S19",
+     "affirmation": "La cécité aux bannières est documentée par dix ans d'oculométrie : les gens ne regardent presque jamais ce qui a l'apparence d'une publicité, que ce soit une publicité ou non ; l'exception éthiquement problématique est la publicité déguisée en contenu éditorial, qui capte des fixations.",
+     "liens": [
+      {
+       "label": "NN/g — *Banner Blindness: Old and New Findings* / the original eyetracking research (recherche menée depuis 1997)",
+       "url": "https://www.nngroup.com/articles/banner-blindness-original-eyetracking/"
+      }
+     ],
+     "confiance": "Établi — programme oculométrique longitudinal. Fonde directement l'interdiction anti-camouflage de LAWS-R11."
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Zeigarnik, Goal-Gradient, Serial Position, Von Restorff, Selective Attention, Flow, Parkinson, Occam, Choice Overload",
+     "liens": [
+      {
+       "label": "lawsofux.com",
+       "url": "https://lawsofux.com/"
+      },
+      {
+       "label": "IxDF",
+       "url": "https://www.interaction-design.org/"
+      }
+     ],
+     "confiance": "Mixte — effets réels d'ampleur variable, chacun marqué dans son entrée"
+    }
+   ],
+   "principale": {
+    "ref": "S19",
+    "affirmation": "La cécité aux bannières est documentée par dix ans d'oculométrie : les gens ne regardent presque jamais ce qui a l'apparence d'une publicité, que ce soit une publicité ou non ; l'exception éthiquement problématique est la publicité déguisée en contenu éditorial, qui capte des fixations.",
+    "liens": [
+     {
+      "label": "NN/g — *Banner Blindness: Old and New Findings* / the original eyetracking research (recherche menée depuis 1997)",
+      "url": "https://www.nngroup.com/articles/banner-blindness-original-eyetracking/"
+     }
+    ],
+    "confiance": "Établi — programme oculométrique longitudinal. Fonde directement l'interdiction anti-camouflage de LAWS-R11."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-5",
+     "titre": "Selective Attention",
+     "famille": "Charge cognitive et mémoire"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R12",
+   "couche": "ux",
+   "solution": "**Hick's Law — le choix coûte du temps.** Le temps de décision croît avec le nombre *et* la complexité des options. Implémenté par l'inflation du primary (un seul BUTTON primary par vue), les registres étanches (COLOR : une couleur = un sens), un CTA dominant par section. Frontière : Hick pousse à réduire les choix visibles, mais réduire ≠ enfouir — un choix caché derrière trois clics reste un choix (tension avec Fitts et la découvrabilité, arbitrée au cas par cas).",
+   "enonce": "Chez nous, une vue porte une action dominante et une seule, et chaque registre de couleur porte un sens unique ; réduire le nombre d'options visibles ne consiste jamais à enfouir une option derrière une navigation plus profonde.",
+   "mesure": "au plus un bouton primary par vue",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S4",
+     "affirmation": "Hick's Law (temps de décision ∝ log du nombre de choix)",
+     "liens": [
+      {
+       "label": "lawsofux.com/hicks-law",
+       "url": "https://lawsofux.com/hicks-law/"
+      }
+     ],
+     "confiance": "Établi — avec la nuance « complexité, pas seulement nombre »"
+    },
+    {
+     "ref": "S20",
+     "affirmation": "La loi de Hick est très largement mal appliquée en IHM : dans les tâches d'interface, très compatibles stimulus-réponse et sur-apprises, le temps de réaction au choix peut souvent être considéré comme constant. Le caractère logarithmique de la recherche dans un menu hiérarchique vient de la recherche visuelle (Landauer & Nachbar 1985), pas de Hick. Les auteurs montrent même que, prise au pied de la lettre, la loi de Hick suggère d'afficher **le plus d'items possible** — l'inverse du « moins, c'est mieux » qu'on lui fait dire.",
+     "liens": [
+      {
+       "label": "Liu, W., Gori, J., Rioul, O., Beaudouin-Lafon, M. & Guiard, Y. (2020). *How Relevant is Hick's Law for HCI ?*, CHI '20",
+       "url": "https://perso.telecom-paristech.fr/rioul/publis/202001liugoririoulbeaudouinlafonguiard.pdf"
+      }
+     ],
+     "confiance": "Établi — article de conférence majeure (CHI), analyse formelle. **Contredit frontalement l'usage que LAWS-R12 fait de Hick** : Hick (1952) et Hyman (1953) existent bien, mais ils ne fondent ni « un seul primary par vue » ni la réduction du nombre d'options en interface."
+    }
+   ],
+   "principale": {
+    "ref": "S4",
+    "affirmation": "Hick's Law (temps de décision ∝ log du nombre de choix)",
+    "liens": [
+     {
+      "label": "lawsofux.com/hicks-law",
+      "url": "https://lawsofux.com/hicks-law/"
+     }
+    ],
+    "confiance": "Établi — avec la nuance « complexité, pas seulement nombre »"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Hick's Law",
+     "famille": "Décision et action"
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Fitts's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R13",
+   "couche": "ux",
+   "solution": "**Choice Overload — corollaire de Hick.** Au-delà d'un seuil, l'abondance d'options réduit la satisfaction et la probabilité de décision. Implémenté par la cardinalité des actions en carte (CARD) et le nombre d'actions portées par une alert (ALERT).",
+   "enonce": "Le nombre d'actions portées par une carte ou une alerte est plafonné par une règle explicite du composant concerné, et non par un seuil général d'abondance d'options.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S21",
+     "affirmation": "La méta-analyse de la surcharge de choix couvre 63 conditions expérimentales, 50 études et 5 036 participants : la taille d'effet moyenne est **quasiment nulle**, avec une variance considérable entre études, et les auteurs ne parviennent pas à identifier de conditions suffisantes de son apparition.",
+     "liens": [
+      {
+       "label": "Scheibehenne, B., Greifeneder, R. & Todd, P. M. (2010). *Can There Ever Be Too Many Options? A Meta-Analytic Review of Choice Overload*, Journal of Consumer Research 37(3), 409–425",
+       "url": "https://academic.oup.com/jcr/article-abstract/37/3/409/1827647"
+      }
+     ],
+     "confiance": "Établi — méta-analyse revue par les pairs (contestée par Chernev et al. 2010, ce qui laisse au mieux un effet conditionnel). **Interdit de traiter LAWS-R13 comme universel** : la « surcharge de choix » n'est pas un effet robuste."
+    }
+   ],
+   "principale": {
+    "ref": "S21",
+    "affirmation": "La méta-analyse de la surcharge de choix couvre 63 conditions expérimentales, 50 études et 5 036 participants : la taille d'effet moyenne est **quasiment nulle**, avec une variance considérable entre études, et les auteurs ne parviennent pas à identifier de conditions suffisantes de son apparition.",
+    "liens": [
+     {
+      "label": "Scheibehenne, B., Greifeneder, R. & Todd, P. M. (2010). *Can There Ever Be Too Many Options? A Meta-Analytic Review of Choice Overload*, Journal of Consumer Research 37(3), 409–425",
+      "url": "https://academic.oup.com/jcr/article-abstract/37/3/409/1827647"
+     }
+    ],
+    "confiance": "Établi — méta-analyse revue par les pairs (contestée par Chernev et al. 2010, ce qui laisse au mieux un effet conditionnel). **Interdit de traiter LAWS-R13 comme universel** : la « surcharge de choix » n'est pas un effet robuste."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Choice Overload",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R14",
+   "couche": "ux",
+   "solution": "**Fitts's Law — grand et proche se cliquent vite.** Le temps d'atteinte d'une cible est proportionnel à la distance / à la taille. Implémenté par la zone tactile minimale de 44px (BUTTON-UI, standard WCAG 2.5.5), par les actions placées près de leur contexte, par les cibles de bord d'écran (infiniment « profondes »). Établi — une des rares vraies lois quantifiées de l'UX.",
+   "enonce": "Le temps d'atteinte d'une cible croît avec la distance à parcourir et décroît avec la taille de la cible : une action fréquente est grande et placée près de son contexte d'usage, et les bords d'écran comptent comme des cibles de profondeur infinie.",
+   "mesure": "toute action fréquente présente une zone tactile ≥ 44 px CSS (WCAG 2.5.5)",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Fitts's Law (temps ∝ distance/taille)",
+     "liens": [
+      {
+       "label": "NN/g — Fitts's Law",
+       "url": "https://www.nngroup.com/articles/fitts-law/"
+      }
+     ],
+     "confiance": "Établi — loi quantifiée robuste"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Fitts's Law (temps ∝ distance/taille)",
+    "liens": [
+     {
+      "label": "NN/g — Fitts's Law",
+      "url": "https://www.nngroup.com/articles/fitts-law/"
+     }
+    ],
+    "confiance": "Établi — loi quantifiée robuste"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R15",
+   "couche": "ux",
+   "solution": "**Goal-Gradient Effect — l'effort s'intensifie près du but.** La progression visible motive d'autant plus qu'on approche de la fin (FORM-multi-step). Frontière : la progression doit être *vraie* — une fausse jauge (progrès artificiel, étapes gonflées) trahit l'effet.",
+   "enonce": "Toute progression affichée reflète l'avancement réel de la tâche : ni étape gonflée, ni avance offerte, ni jauge qui progresse sans travail accompli.",
+   "mesure": "la valeur de progression affichée est une fonction du nombre d'étapes réellement franchies sur le nombre d'étapes réellement requises",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S23",
+     "affirmation": "Kivetz, Urminsky & Zheng (2006) ressuscitent l'hypothèse du gradient de but chez l'humain — et documentent en même temps la **progression illusoire** : les clients qui reçoivent une carte de 12 cases dont 2 sont pré-tamponnées achèvent leurs 10 achats plus vite que ceux qui reçoivent une carte de 10 cases vierges.",
+     "liens": [
+      {
+       "label": "Kivetz, R., Urminsky, O. & Zheng, Y. (2006). *The Goal-Gradient Hypothesis Resurrected: Purchase Acceleration, Illusionary Goal Progress, and Customer Retention*, Journal of Marketing Research 43(1), 39–58",
+       "url": "https://journals.sagepub.com/doi/abs/10.1509/jmkr.43.1.39"
+      }
+     ],
+     "confiance": "Établi — article original revu par les pairs. **Contredit la frontière posée par LAWS-R15** (« une fausse jauge trahit l'effet ») : empiriquement, la jauge gonflée fonctionne mieux. L'objection à la progression truquée est **éthique**, pas empirique — et le fichier doit le dire ainsi, sous peine d'être réfuté en revue par la source qu'il invoque."
+    }
+   ],
+   "principale": {
+    "ref": "S23",
+    "affirmation": "Kivetz, Urminsky & Zheng (2006) ressuscitent l'hypothèse du gradient de but chez l'humain — et documentent en même temps la **progression illusoire** : les clients qui reçoivent une carte de 12 cases dont 2 sont pré-tamponnées achèvent leurs 10 achats plus vite que ceux qui reçoivent une carte de 10 cases vierges.",
+    "liens": [
+     {
+      "label": "Kivetz, R., Urminsky, O. & Zheng, Y. (2006). *The Goal-Gradient Hypothesis Resurrected: Purchase Acceleration, Illusionary Goal Progress, and Customer Retention*, Journal of Marketing Research 43(1), 39–58",
+      "url": "https://journals.sagepub.com/doi/abs/10.1509/jmkr.43.1.39"
+     }
+    ],
+    "confiance": "Établi — article original revu par les pairs. **Contredit la frontière posée par LAWS-R15** (« une fausse jauge trahit l'effet ») : empiriquement, la jauge gonflée fonctionne mieux. L'objection à la progression truquée est **éthique**, pas empirique — et le fichier doit le dire ainsi, sous peine d'être réfuté en revue par la source qu'il invoque."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Goal-Gradient Effect",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R16",
+   "couche": "ux",
+   "solution": "**Tesler's Law — la complexité se conserve.** Toute tâche a une complexité irréductible ; la seule question est *qui l'absorbe* — le système ou l'utilisateur. Le système absorbe : autofill et normalisation (INPUT/Postel), messages qui diagnostiquent à la place de l'utilisateur (INPUT : *pourquoi* et *comment corriger*), valeurs par défaut sensées. Frontière : on ne peut pas supprimer la complexité, seulement décider où elle tombe — la reporter *toujours* sur l'utilisateur est le défaut par paresse.",
+   "enonce": "La complexité irréductible d'une tâche est absorbée par le système et non reportée sur la personne : normalisation des saisies, valeurs par défaut sensées, messages qui énoncent la cause et la correction.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [
+    {
+     "ref": "S11",
+     "affirmation": "Tesler's Law (conservation de la complexité)",
+     "liens": [
+      {
+       "label": "lawsofux.com/teslers-law",
+       "url": "https://lawsofux.com/teslers-law/"
+      }
+     ],
+     "confiance": "Convergence — heuristique de conception largement admise"
+    }
+   ],
+   "principale": {
+    "ref": "S11",
+    "affirmation": "Tesler's Law (conservation de la complexité)",
+    "liens": [
+     {
+      "label": "lawsofux.com/teslers-law",
+      "url": "https://lawsofux.com/teslers-law/"
+     }
+    ],
+    "confiance": "Convergence — heuristique de conception largement admise"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Tesler's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R17",
+   "couche": "ux",
+   "solution": "**Postel's Law (robustesse) — tolérant en entrée, strict en sortie.** Accepter les formes variées de saisie (espaces dans un IBAN ou un numéro de carte, casse d'un e-mail, tirets d'un téléphone) et normaliser en interne ; ne jamais rejeter sur la forme ce qu'on peut nettoyer. Implémenté par la tolérance de l'INPUT et sa validation qui vise le sens, pas la syntaxe cosmétique.",
+   "enonce": "Une saisie est acceptée dans toutes ses formes usuelles — espaces, tirets, parenthèses, casse — puis normalisée en interne ; aucun rejet ne porte sur une forme que le système peut nettoyer, et la validation porte sur le sens.",
+   "mesure": "un numéro de téléphone, un numéro de carte ou une adresse e-mail saisis avec espaces, tirets ou casse variable sont acceptés et normalisés sans message d'erreur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S25",
+     "affirmation": "GOV.UK impose la tolérance de saisie : « Allow users enter phone numbers in whatever format is familiar to them. Allow for additional spaces, hyphens, dashes and brackets » ; et pour les cartes : « Let users enter payment card numbers in whatever format is familiar to them. Allow additional spaces, hyphens and dashes. »",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Phone numbers",
+       "url": "https://design-system.service.gov.uk/patterns/phone-numbers/"
+      },
+      {
+       "label": "GOV.UK Design System — Payment card details",
+       "url": "https://design-system.service.gov.uk/patterns/payment-card-details/"
+      }
+     ],
+     "confiance": "Établi — design system public d'État, guidance normative explicite sur deux patterns distincts."
+    },
+    {
+     "ref": "S26",
+     "affirmation": "Le design system de l'ONS pose la même exigence : le champ téléphone « doit accommoder toutes les variations de numéro pour que l'utilisateur saisisse dans le format dont il a l'habitude », espaces, parenthèses, tirets et indicatifs compris.",
+     "liens": [
+      {
+       "label": "ONS Service Manual — Design system, Ask users for: Phone numbers",
+       "url": "https://service-manual.ons.gov.uk/design-system/patterns/phone-numbers"
+      }
+     ],
+     "confiance": "Établi — second design system public. Réserve : l'ONS prescrit l'acceptation, pas explicitement la normalisation en interne. Avec GOV.UK (S25), la convergence sur la tolérance de saisie est acquise ; la normalisation reste un choix interne."
+    },
+    {
+     "ref": "S12",
+     "affirmation": "Postel's Law (robustesse)",
+     "liens": [
+      {
+       "label": "lawsofux.com/postels-law",
+       "url": "https://lawsofux.com/postels-law/"
+      }
+     ],
+     "confiance": "Établi en réseau ; transposé UI par convergence"
+    },
+    {
+     "ref": "S24",
+     "affirmation": "L'IETF a explicitement révisé le principe de robustesse de Postel : tolérer les entrées inattendues « n'est plus considéré comme une bonne pratique dans tous les scénarios », parce que les conséquences négatives sur l'interopérabilité s'accumulent quand une implémentation accepte silencieusement une entrée défectueuse, et qu'un défaut toléré devient un standard de fait.",
+     "liens": [
+      {
+       "label": "RFC 9413 — *Maintaining Robust Protocols*, M. Thomson & D. Schinazi, IAB, juin 2023 (issu du draft « The Harmful Consequences of the Robustness Principle »)",
+       "url": "https://datatracker.ietf.org/doc/html/rfc9413"
+      }
+     ],
+     "confiance": "Établi — RFC de l'IAB. **Rend caduque la source réseau invoquée par LAWS-R17** (RFC 760/761) : citer « Postel » comme norme est aujourd'hui faux côté protocoles. La pratique UI (tolérance de saisie) reste valide, mais elle doit être sourcée sur les design systems, pas sur les RFC."
+    }
+   ],
+   "principale": {
+    "ref": "S25",
+    "affirmation": "GOV.UK impose la tolérance de saisie : « Allow users enter phone numbers in whatever format is familiar to them. Allow for additional spaces, hyphens, dashes and brackets » ; et pour les cartes : « Let users enter payment card numbers in whatever format is familiar to them. Allow additional spaces, hyphens and dashes. »",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Phone numbers",
+      "url": "https://design-system.service.gov.uk/patterns/phone-numbers/"
+     },
+     {
+      "label": "GOV.UK Design System — Payment card details",
+      "url": "https://design-system.service.gov.uk/patterns/payment-card-details/"
+     }
+    ],
+    "confiance": "Établi — design system public d'État, guidance normative explicite sur deux patterns distincts."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-5",
+     "titre": "Postel's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R18",
+   "couche": "ux",
+   "solution": "**Occam's Razor — la solution la plus simple qui marche gagne.** Ne pas provisionner ce qu'aucun besoin réel ne réclame : disabled non tokenisé tant qu'inutile (COLOR), tokens qui naissent d'un besoin. C'est la version conception du principe d'économie du système.",
+   "enonce": "Aucun token, état ou variante n'est provisionné avant qu'un besoin réel ne l'exige : la solution la plus simple qui répond au besoin constaté est retenue.",
+   "mesure": "tout token du système est référencé par au moins un consommateur",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-6",
+     "titre": "Occam's Razor",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R19",
+   "couche": "ux",
+   "solution": "**Paradox of the Active User — personne ne lit la doc.** Les utilisateurs se lancent immédiatement plutôt que d'apprendre d'abord ; l'aide doit donc être *contextuelle et dans l'action*, pas préalable. Fonde « le helper text visible dès le focus, avant l'erreur » (INPUT) et l'onboarding intégré plutôt que le tutoriel bloquant (VOICE). Établi — observation robuste (Carroll & Rosson).",
+   "enonce": "L'aide est contextuelle et disponible dans l'action plutôt que préalable : aucune fonction ne suppose la lecture d'une documentation ou le passage par un tutoriel bloquant avant usage.",
+   "mesure": "aucun écran d'apprentissage obligatoire ne précède l'accès à une fonction",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S13",
+     "affirmation": "Paradox of the Active User",
+     "liens": [
+      {
+       "label": "NN/g",
+       "url": "https://www.nngroup.com/articles/paradox-of-the-active-user/"
+      }
+     ],
+     "confiance": "Établi par recherche"
+    }
+   ],
+   "principale": {
+    "ref": "S13",
+    "affirmation": "Paradox of the Active User",
+    "liens": [
+     {
+      "label": "NN/g",
+      "url": "https://www.nngroup.com/articles/paradox-of-the-active-user/"
+     }
+    ],
+    "confiance": "Établi par recherche"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-8",
+     "titre": "Paradox of the Active User",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R20",
+   "couche": "ux",
+   "solution": "**Flow (Csíkszentmihályi) — la concentration ininterrompue est précieuse.** Rien ne doit rompre l'élan sans raison : le MOTION « ne verrouille jamais l'interaction », le contenu « ne se déplace jamais sans action de l'utilisateur » (SPACING/MOTION). L'interruption se justifie seulement quand l'enjeu la vaut (destructive, perte de données).",
+   "enonce": "Le contenu ne se déplace ni ne change de contexte sans action de la personne, et aucune animation ne verrouille l'interaction ; l'interruption n'est légitime que devant un enjeu destructeur ou une perte de données.",
+   "mesure": "aucun changement de contexte non déclenché par l'utilisateur (WCAG 3.2.5) ; tout contenu en mouvement ou en mise à jour automatique de plus de 5 s est pausable (WCAG 2.2.2) ; aucune animation ne bloque les entrées",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S32",
+     "affirmation": "WCAG 2.2, critère 3.2.5 « Change on Request » (AAA) : « Changes of context are initiated only by user request or a mechanism is available to turn off such changes. »",
+     "liens": [
+      {
+       "label": "W3C — Understanding SC 3.2.5 Change on Request (WCAG 2.2)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+      }
+     ],
+     "confiance": "Établi — norme W3C. Fonde LAWS-R20 bien plus solidement que le concept de flow, qui n'a jamais été mesuré sur une interface."
+    },
+    {
+     "ref": "S33",
+     "affirmation": "WCAG 2.2, critère 2.2.2 « Pause, Stop, Hide » (niveau A) : tout contenu qui bouge, clignote, défile ou se met à jour automatiquement pendant plus de cinq secondes en parallèle d'un autre contenu doit pouvoir être mis en pause, arrêté ou masqué, sauf si le mouvement est essentiel.",
+     "liens": [
+      {
+       "label": "W3C — Understanding SC 2.2.2 Pause, Stop, Hide (WCAG 2.2)",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      }
+     ],
+     "confiance": "Établi — norme W3C, niveau A. Seconde jambe normative de LAWS-R20."
+    }
+   ],
+   "principale": {
+    "ref": "S32",
+    "affirmation": "WCAG 2.2, critère 3.2.5 « Change on Request » (AAA) : « Changes of context are initiated only by user request or a mechanism is available to turn off such changes. »",
+    "liens": [
+     {
+      "label": "W3C — Understanding SC 3.2.5 Change on Request (WCAG 2.2)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/change-on-request.html"
+     }
+    ],
+    "confiance": "Établi — norme W3C. Fonde LAWS-R20 bien plus solidement que le concept de flow, qui n'a jamais été mesuré sur une interface."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-9",
+     "titre": "Flow",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R21",
+   "couche": "ux",
+   "solution": "**Parkinson's Law — la tâche remplit le temps disponible (trou signalé).** Une tâche s'étale jusqu'à occuper le temps qu'on lui laisse ; d'où l'intérêt des accélérateurs (autofill, valeurs par défaut, raccourcis). Non couvert par un consommateur actuel — le produit n'a pas encore de mécanique de temps ni de saisie longue ; activé le jour d'un formulaire lourd ou d'une limite temporelle.",
+   "enonce": "Le catalogue déclare Parkinson comme trou assumé : aucune règle d'accélérateur de saisie n'est écrite tant que le produit n'a ni saisie longue ni limite de temps, et le sujet est réactivé avec la première surface concernée.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-7",
+     "titre": "Parkinson's Law",
+     "famille": "Décision et action"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R22",
+   "couche": "ux",
+   "solution": "**Proximity — proche = lié.** Les éléments rapprochés sont perçus comme un groupe, indépendamment de tout trait. C'est la loi que SPACING transforme en *information* : un label collé à son champ lui appartient ; un écart plus grand sépare deux groupes. La loi Gestalt la plus adossée au système.",
+   "enonce": "Les éléments rapprochés sont perçus comme un groupe indépendamment de tout trait : l'espacement porte donc l'information de regroupement, avec un écart plus petit à l'intérieur d'un groupe qu'entre deux groupes.",
+   "mesure": "l'écart interne à un groupe est strictement inférieur à l'écart qui le sépare du groupe voisin",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+     "liens": [
+      {
+       "label": "IxDF — Gestalt principles",
+       "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+      }
+     ],
+     "confiance": "Établi — un siècle de validation en perception"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+    "liens": [
+     {
+      "label": "IxDF — Gestalt principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+     }
+    ],
+    "confiance": "Établi — un siècle de validation en perception"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Law of Proximity",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R23",
+   "couche": "ux",
+   "solution": "**Common Region — une frontière partagée regroupe.** Un fond ou un cadre commun lie son contenu plus fort que la proximité seule. Implémenté par la CARD (le conteneur *est* le groupe) et le rôle de regroupement de la BORDER.",
+   "enonce": "Un fond ou un cadre commun regroupe son contenu plus fortement que la proximité seule : un conteneur déclare un groupe et ne s'emploie donc jamais comme simple ornement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+     "liens": [
+      {
+       "label": "IxDF — Gestalt principles",
+       "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+      }
+     ],
+     "confiance": "Établi — un siècle de validation en perception"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+    "liens": [
+     {
+      "label": "IxDF — Gestalt principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+     }
+    ],
+    "confiance": "Établi — un siècle de validation en perception"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Law of Common Region",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R24",
+   "couche": "ux",
+   "solution": "**Similarity — semblable = même famille.** Les éléments qui partagent forme, couleur ou taille sont perçus comme apparentés. Fonde les registres de COLOR (même rôle → même traitement) et la cohérence des tones.",
+   "enonce": "Les éléments qui partagent forme, couleur ou taille sont perçus comme appartenant à la même famille : un même rôle reçoit toujours le même traitement visuel, et deux rôles distincts n'en partagent jamais un seul.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+     "liens": [
+      {
+       "label": "IxDF — Gestalt principles",
+       "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+      }
+     ],
+     "confiance": "Établi — un siècle de validation en perception"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+    "liens": [
+     {
+      "label": "IxDF — Gestalt principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+     }
+    ],
+    "confiance": "Établi — un siècle de validation en perception"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-2",
+     "titre": "Law of Similarity",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R25",
+   "couche": "ux",
+   "solution": "**Uniform Connectedness — le lien visuel explicite prime.** Ce qui est relié par un trait ou un fond continu est le regroupement le plus fort de tous (au-dessus de la proximité et de la similarité). Implémenté par les séparateurs/regroupements de BORDER et les fonds `*-subtle` de l'alert.",
+   "enonce": "Un lien visuel explicite — trait continu ou fond partagé — produit le regroupement le plus fort, au-dessus de la proximité et de la similarité ; il s'emploie là où le groupement doit être sans ambiguïté.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+     "liens": [
+      {
+       "label": "IxDF — Gestalt principles",
+       "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+      }
+     ],
+     "confiance": "Établi — un siècle de validation en perception"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+    "liens": [
+     {
+      "label": "IxDF — Gestalt principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+     }
+    ],
+    "confiance": "Établi — un siècle de validation en perception"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-3",
+     "titre": "Law of Uniform Connectedness",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R26",
+   "couche": "ux",
+   "solution": "**Prägnanz / Loi de simplicité — l'œil cherche la forme la plus simple.** On perçoit le complexe comme l'arrangement le plus simple possible. Fonde l'iconographie à trait constant (ICONOGRAPHY) et les silhouettes distinctes des tones (les formes font le travail que la couleur ne garantit pas — COLOR/daltonisme).",
+   "enonce": "La perception ramène le complexe à l'arrangement le plus simple : les formes portent le sens indépendamment de la couleur — trait constant en iconographie, silhouettes distinctes selon les états — afin qu'aucune information ne repose sur la seule teinte.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+     "liens": [
+      {
+       "label": "IxDF — Gestalt principles",
+       "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+      }
+     ],
+     "confiance": "Établi — un siècle de validation en perception"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Lois de Gestalt (proximité, similarité, région commune, connexité, Prägnanz)",
+    "liens": [
+     {
+      "label": "IxDF — Gestalt principles",
+      "url": "https://www.interaction-design.org/literature/topics/gestalt-principles"
+     }
+    ],
+    "confiance": "Établi — un siècle de validation en perception"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R27",
+   "couche": "ux",
+   "solution": "**Von Restorff Effect (isolation) — ce qui diffère se retient.** L'élément visuellement isolé est mémorisé et attire l'action. C'est la justification du primary *unique* (BUTTON) et de l'accent *parcimonieux* (COLOR). Frontière : l'effet s'annule si tout se distingue — un écran où tout est mis en avant n'a plus de point focal (la même inflation que « le primary partout »).",
+   "enonce": "Un élément qui rompt l'homogénéité de son contexte est mieux mémorisé, et l'effet disparaît dès que la distinction se généralise : l'accent et l'action primaire restent uniques dans leur vue.",
+   "mesure": "au plus un élément par vue porte le traitement d'accentuation réservé",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S27",
+     "affirmation": "Hunt (1995) revient à ce que von Restorff a réellement montré : la saillance perceptive **n'est pas nécessaire** à l'effet d'isolation, et la différence entre l'item isolé et son entourage n'y suffit pas — elle ne produit l'effet que rapportée à un contexte de similarité. La distinctivité est un construit théorique sur la mémoire, pas un synonyme de « ça saute aux yeux ».",
+     "liens": [
+      {
+       "label": "Hunt, R. R. (1995). *The subtlety of distinctiveness: What von Restorff really did*, Psychonomic Bulletin & Review 2(1), 105–112",
+       "url": "https://link.springer.com/article/10.3758/BF03214414"
+      }
+     ],
+     "confiance": "Établi — article de revue revu par les pairs. **Nuance LAWS-R27** : von Restorff mesure de la **mémorisation**, pas de l'attraction de l'action ; « l'élément isolé attire l'action » est une extrapolation non sourcée. En revanche la frontière du fichier (« l'effet s'annule si tout se distingue ») est exactement ce que Hunt établit."
+    },
+    {
+     "ref": "S14",
+     "affirmation": "Zeigarnik, Goal-Gradient, Serial Position, Von Restorff, Selective Attention, Flow, Parkinson, Occam, Choice Overload",
+     "liens": [
+      {
+       "label": "lawsofux.com",
+       "url": "https://lawsofux.com/"
+      },
+      {
+       "label": "IxDF",
+       "url": "https://www.interaction-design.org/"
+      }
+     ],
+     "confiance": "Mixte — effets réels d'ampleur variable, chacun marqué dans son entrée"
+    }
+   ],
+   "principale": {
+    "ref": "S27",
+    "affirmation": "Hunt (1995) revient à ce que von Restorff a réellement montré : la saillance perceptive **n'est pas nécessaire** à l'effet d'isolation, et la différence entre l'item isolé et son entourage n'y suffit pas — elle ne produit l'effet que rapportée à un contexte de similarité. La distinctivité est un construit théorique sur la mémoire, pas un synonyme de « ça saute aux yeux ».",
+    "liens": [
+     {
+      "label": "Hunt, R. R. (1995). *The subtlety of distinctiveness: What von Restorff really did*, Psychonomic Bulletin & Review 2(1), 105–112",
+      "url": "https://link.springer.com/article/10.3758/BF03214414"
+     }
+    ],
+    "confiance": "Établi — article de revue revu par les pairs. **Nuance LAWS-R27** : von Restorff mesure de la **mémorisation**, pas de l'attraction de l'action ; « l'élément isolé attire l'action » est une extrapolation non sourcée. En revanche la frontière du fichier (« l'effet s'annule si tout se distingue ») est exactement ce que Hunt établit."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-5",
+     "titre": "Von Restorff Effect",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R28",
+   "couche": "ux",
+   "solution": "**Serial Position Effect — on retient le début et la fin (partiellement couvert).** Dans une liste, les premiers et derniers éléments sont mieux mémorisés que le milieu ; placer les items importants aux extrémités. Implicite dans l'ordre des actions, mais **trou** : pas de règle explicite tant qu'un composant navigation/liste n'existe pas — activé avec lui.",
+   "enonce": "Dans une liste, les éléments de tête et de queue sont mieux mémorisés que ceux du milieu : les entrées décisives se placent aux extrémités et jamais au centre d'une longue série.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S28",
+     "affirmation": "Glanzer & Cunitz (1966) dissocient les deux moitiés de la courbe de position sérielle : après une tâche interférente de 30 secondes, l'effet de récence disparaît alors que l'effet de primauté subsiste — deux mécanismes de stockage distincts.",
+     "liens": [
+      {
+       "label": "Glanzer, M. & Cunitz, A. R. (1966). *Two storage mechanisms in free recall*, Journal of Verbal Learning and Verbal Behavior 5(4), 351–360",
+       "url": "https://psychologysorted.blog/wp-content/uploads/2019/07/glanzer-and-cunitz_1966.pdf"
+      }
+     ],
+     "confiance": "Établi — un des effets les mieux répliqués de la psychologie de la mémoire (avec Murdock 1962). Réserve pour l'UI : l'effet est mesuré en **rappel libre de listes de mots mémorisées**, pas en lecture d'une liste qui reste affichée — la transposition à une navigation visible relève de la convergence, pas de la démonstration."
+    }
+   ],
+   "principale": {
+    "ref": "S28",
+    "affirmation": "Glanzer & Cunitz (1966) dissocient les deux moitiés de la courbe de position sérielle : après une tâche interférente de 30 secondes, l'effet de récence disparaît alors que l'effet de primauté subsiste — deux mécanismes de stockage distincts.",
+    "liens": [
+     {
+      "label": "Glanzer, M. & Cunitz, A. R. (1966). *Two storage mechanisms in free recall*, Journal of Verbal Learning and Verbal Behavior 5(4), 351–360",
+      "url": "https://psychologysorted.blog/wp-content/uploads/2019/07/glanzer-and-cunitz_1966.pdf"
+     }
+    ],
+    "confiance": "Établi — un des effets les mieux répliqués de la psychologie de la mémoire (avec Murdock 1962). Réserve pour l'UI : l'effet est mesuré en **rappel libre de listes de mots mémorisées**, pas en lecture d'une liste qui reste affichée — la transposition à une navigation visible relève de la convergence, pas de la démonstration."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-6",
+     "titre": "Serial Position Effect",
+     "famille": "Perception et regroupement (lois de Gestalt)"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R29",
+   "couche": "ux",
+   "solution": "**Doherty Threshold — sous ~400 ms, l'utilisateur reste dans le flux.** Quand système et utilisateur répondent l'un à l'autre sous 400 ms, l'engagement se maintient et la productivité grimpe. C'est la borne haute de toute l'échelle du MOTION ; le feedback perçu-instantané est sous ~100 ms (Nielsen). Établi — un des seuils fondateurs, déjà pleinement implémenté.",
+   "enonce": "Une réponse du système obtenue sous 400 ms maintient la personne dans son flux et une réponse sous 100 ms est perçue comme instantanée : ces deux seuils bornent l'échelle des durées d'animation et de retour du système.",
+   "mesure": "toute durée d'animation ou de retour du système ≤ 400 ms ; retour d'appui perçu instantané ≤ 100 ms",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S29",
+     "affirmation": "Doherty & Thadhani (1982) mesurent la productivité de programmeurs et d'ingénieurs selon le temps de réponse du système : le nombre de transactions par heure croît nettement sous la seconde, et passer de 3 s à 0,3 s fait passer un programmeur de 180 à 371 transactions par heure (+106 %).",
+     "liens": [
+      {
+       "label": "Doherty, W. J. & Thadhani, A. J. (1982). *The Economic Value of Rapid Response Time*, IBM (novembre 1982) — notice du Computer History Museum",
+       "url": "https://www.computerhistory.org/collections/catalog/102751398"
+      },
+      {
+       "label": "texte intégral repris",
+       "url": "https://jlelliotton.blogspot.com/p/the-economic-value-of-rapid-response.html"
+      }
+     ],
+     "confiance": "Établi comme source primaire réelle — mais **c'est une étude de productivité industrielle, pas une expérience psychologique contrôlée**, et le seuil de 400 ms popularisé sous le nom de « Doherty Threshold » est une lecture postérieure : le document argumente le passage sous la seconde et illustre à 300 ms. Sa transposition en plafond de **durée d'animation** est une extension du système, légitime mais nôtre."
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Doherty Threshold (~400 ms)",
+     "liens": [
+      {
+       "label": "lawsofux.com/doherty-threshold",
+       "url": "https://lawsofux.com/doherty-threshold/"
+      },
+      {
+       "label": "NN/g — Response Times",
+       "url": "https://www.nngroup.com/articles/response-times-3-important-limits/"
+      }
+     ],
+     "confiance": "Établi — déjà implémenté par MOTION"
+    }
+   ],
+   "principale": {
+    "ref": "S29",
+    "affirmation": "Doherty & Thadhani (1982) mesurent la productivité de programmeurs et d'ingénieurs selon le temps de réponse du système : le nombre de transactions par heure croît nettement sous la seconde, et passer de 3 s à 0,3 s fait passer un programmeur de 180 à 371 transactions par heure (+106 %).",
+    "liens": [
+     {
+      "label": "Doherty, W. J. & Thadhani, A. J. (1982). *The Economic Value of Rapid Response Time*, IBM (novembre 1982) — notice du Computer History Museum",
+      "url": "https://www.computerhistory.org/collections/catalog/102751398"
+     },
+     {
+      "label": "texte intégral repris",
+      "url": "https://jlelliotton.blogspot.com/p/the-economic-value-of-rapid-response.html"
+     }
+    ],
+    "confiance": "Établi comme source primaire réelle — mais **c'est une étude de productivité industrielle, pas une expérience psychologique contrôlée**, et le seuil de 400 ms popularisé sous le nom de « Doherty Threshold » est une lecture postérieure : le document argumente le passage sous la seconde et illustre à 300 ms. Sa transposition en plafond de **durée d'animation** est une extension du système, légitime mais nôtre."
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "Doherty Threshold",
+     "famille": "Temps, effort perçu et confiance"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R30",
+   "couche": "ux",
+   "solution": "**Aesthetic-Usability Effect — le beau paraît utilisable (un risque autant qu'un levier).** Un design perçu comme esthétique est jugé plus facile à utiliser, *même quand il ne l'est pas*. Levier : le soin visuel achète de la tolérance aux petits défauts. **Risque, et c'est le point** : le fini esthétique **masque les problèmes d'utilisabilité en test** — les utilisateurs les signalent moins. Règle du système : ne **jamais** laisser « c'est beau » clore une question d'utilisabilité en revue ; l'esthétique et l'utilisabilité se vérifient séparément (parallèle exact au « contraste et redondance sont deux exigences indépendantes » de COLOR).",
+   "enonce": "L'esthétique et l'utilisabilité se vérifient séparément : un jugement esthétique favorable ne clôt jamais une question d'utilisabilité en revue, car le soin visuel gonfle l'utilisabilité perçue et fait sous-déclarer les défauts en test.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S9",
+     "affirmation": "Aesthetic-Usability Effect",
+     "liens": [
+      {
+       "label": "NN/g — Aesthetic-Usability Effect",
+       "url": "https://www.nngroup.com/articles/aesthetic-usability-effect/"
+      }
+     ],
+     "confiance": "Établi — y compris son revers (masque les défauts en test)"
+    },
+    {
+     "ref": "S30",
+     "affirmation": "Sonderegger & Sauer (2010) testent 60 adolescents sur deux simulations de téléphone fonctionnellement identiques ne différant que par l'apparence : l'appareil attrayant produit **à la fois** des temps de tâche réduits et une utilisabilité perçue supérieure.",
+     "liens": [
+      {
+       "label": "Sonderegger, A. & Sauer, J. (2010). *The influence of design aesthetics in usability testing: effects on user performance and perceived usability*, Applied Ergonomics 41(3), 403–410",
+       "url": "https://pubmed.ncbi.nlm.nih.gov/19892317/"
+      }
+     ],
+     "confiance": "Établi — expérience contrôlée revue par les pairs. **Nuance LAWS-R30** : la formule « le beau paraît utilisable même quand il ne l'est pas » est trop tranchée ; l'esthétique influe fortement sur le perçu et de façon variable sur la performance réelle. La règle de revue (vérifier séparément) reste bonne, sa justification doit être reformulée."
+    },
+    {
+     "ref": "S31",
+     "affirmation": "L'effet esthétique-utilisabilité a pour source primaire Kurosu & Kashimura, *Apparent usability vs. inherent usability*, dans les actes compagnons de CHI '95 (ACM, p. 292–293), sur des distributeurs automatiques ; l'utilisabilité apparente y est moins corrélée à l'utilisabilité inhérente qu'à la beauté apparente. Tractinsky (2000) prolonge ce résultat.",
+     "liens": [
+      {
+       "label": "Aesthetic–usability effect — citation exacte de Kurosu & Kashimura (1995) et de Tractinsky (2000)",
+       "url": "https://en.wikipedia.org/wiki/Aesthetic%E2%80%93usability_effect"
+      }
+     ],
+     "confiance": "Convergence — la référence primaire est identifiée et vérifiable (CHI '95 companion), mais consultée ici via une source secondaire, l'original étant sous paywall ACM. À remplacer par la référence ACM le jour d'un accès."
+    }
+   ],
+   "principale": {
+    "ref": "S9",
+    "affirmation": "Aesthetic-Usability Effect",
+    "liens": [
+     {
+      "label": "NN/g — Aesthetic-Usability Effect",
+      "url": "https://www.nngroup.com/articles/aesthetic-usability-effect/"
+     }
+    ],
+    "confiance": "Établi — y compris son revers (masque les défauts en test)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Aesthetic-Usability Effect",
+     "famille": "Temps, effort perçu et confiance"
+    },
+    {
+     "id": "cas-4-3",
+     "titre": "Aesthetic-usability qui clôt un débat d'UX",
+     "famille": "Risque de mauvaise application"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R31",
+   "couche": "ux",
+   "solution": "**Peak-End Rule — on juge sur le pic et la fin.** Le souvenir d'une expérience est dominé par son moment le plus intense et par sa fin, pas par sa moyenne. Conséquence : soigner *particulièrement* les moments d'erreur (pic négatif) et de succès/clôture (la fin) — c'est là que se joue le VOICE (ton du message d'erreur : calme, orienté solution ; ton du message final : net, sans sur-célébration). Établi (Kahneman) ; l'ampleur exacte en UI reste contextuelle.",
+   "enonce": "Le souvenir d'un parcours est dominé par son moment le plus intense et par sa fin : les messages d'erreur et les messages de clôture reçoivent un soin supérieur au reste — calmes et orientés solution pour les premiers, nets et sans sur-célébration pour les seconds.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S8",
+     "affirmation": "Peak-End Rule",
+     "liens": [
+      {
+       "label": "NN/g — Peak-End Rule",
+       "url": "https://www.nngroup.com/articles/peak-end-rule/"
+      }
+     ],
+     "confiance": "Établi (mémoire) ; ampleur en UI contextuelle"
+    }
+   ],
+   "principale": {
+    "ref": "S8",
+    "affirmation": "Peak-End Rule",
+    "liens": [
+     {
+      "label": "NN/g — Peak-End Rule",
+      "url": "https://www.nngroup.com/articles/peak-end-rule/"
+     }
+    ],
+    "confiance": "Établi (mémoire) ; ampleur en UI contextuelle"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Peak-End Rule",
+     "famille": "Temps, effort perçu et confiance"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R32",
+   "couche": "ux",
+   "solution": "**Jakob's Law — l'utilisateur passe son temps sur *d'autres* produits.** Il s'attend donc à ce que le tien marche comme ceux qu'il connaît déjà. C'est la **justification méthodologique du benchmark** présent dans chaque fiche du système (Carbon, Polaris, Material, GOV.UK, Atlassian) : converger avec les conventions établies n'est pas un manque d'originalité, c'est respecter la mémoire acquise de l'utilisateur. La loi la plus structurante pour ce système — elle explique pourquoi « convergence » est un niveau de confiance à part entière. Frontière : suivre la convention *sauf* quand elle est mesurablement mauvaise (le disabled comme validation, écarté malgré sa fréquence — cf. DECISIONS.md).",
+   "enonce": "Chaque fiche du système porte un benchmark des design systems publics de référence : converger avec les conventions rencontrées ailleurs est une exigence de méthode, et s'en écarter demande un motif journalé.",
+   "mesure": "chaque fiche comporte une section de benchmark citant au moins deux design systems publics",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S10",
+     "affirmation": "Jakob's Law",
+     "liens": [
+      {
+       "label": "NN/g — Jakob's Law of Internet UX",
+       "url": "https://www.nngroup.com/videos/jakobs-law-internet-ux/"
+      },
+      {
+       "label": "lawsofux.com/jakobs-law",
+       "url": "https://lawsofux.com/jakobs-law/"
+      }
+     ],
+     "confiance": "Établi — fonde la pratique du benchmark"
+    }
+   ],
+   "principale": {
+    "ref": "S10",
+    "affirmation": "Jakob's Law",
+    "liens": [
+     {
+      "label": "NN/g — Jakob's Law of Internet UX",
+      "url": "https://www.nngroup.com/videos/jakobs-law-internet-ux/"
+     },
+     {
+      "label": "lawsofux.com/jakobs-law",
+      "url": "https://lawsofux.com/jakobs-law/"
+     }
+    ],
+    "confiance": "Établi — fonde la pratique du benchmark"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-3",
+     "titre": "Jakob's Law",
+     "famille": "Temps, effort perçu et confiance"
+    }
+   ]
+  },
+  {
+   "id": "LAWS-R33",
+   "couche": "ux",
+   "solution": "**« La règle des 3 clics » est fausse.** Aucune donnée ne montre que les utilisateurs abandonnent après 3 clics ; ce qui compte est que *chaque* clic soit évident et progresse vers le but, pas leur nombre (étude Joshua Porter / UIE). À opposer à toute exigence « tout doit être atteignable en 3 clics ».",
+   "enonce": "Aucune exigence du système ne se formule en nombre de clics : la qualité d'un parcours se juge à l'évidence de chaque étape et à sa progression vers le but, pas au décompte des interactions.",
+   "mesure": "aucune règle du système ne fixe un plafond de clics ou de niveaux de profondeur",
+   "contre": "",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S7",
+     "affirmation": "« Règle des 3 clics » non fondée",
+     "liens": [
+      {
+       "label": "UIE / Joshua Porter — Testing the Three-Click Rule",
+       "url": "https://articles.uie.com/three_click_rule/"
+      }
+     ],
+     "confiance": "Établi (réfutation)"
+    },
+    {
+     "ref": "S34",
+     "affirmation": "L'étude qui réfute la règle des 3 clics porte sur 44 participants, 620 tâches et plus de 8 000 clics : la probabilité d'abandon après trois clics n'est pas supérieure à celle après douze, des participants poursuivent au-delà de 25 clics, et la satisfaction varie peu (46 % à 61 %) quelle que soit la longueur du parcours. L'auteur conclut que la plainte porte sur l'échec à trouver, pas sur le nombre de clics.",
+     "liens": [
+      {
+       "label": "Porter, J. (2003). *Testing the Three-Click Rule*, User Interface Engineering — URL actuelle (l'adresse articles.uie.com citée en S7 redirige désormais ici)",
+       "url": "https://articles.centercentre.com/three_click_rule"
+      }
+     ],
+     "confiance": "Établi comme réfutation, avec une réserve à porter : **étude industrielle, non revue par les pairs, un seul protocole**. Elle suffit à retirer tout fondement à la règle des 3 clics (qui n'en a jamais eu), pas à établir une loi inverse. À noter aussi : l'URL de S7 est morte et doit être mise à jour."
+    }
+   ],
+   "principale": {
+    "ref": "S7",
+    "affirmation": "« Règle des 3 clics » non fondée",
+    "liens": [
+     {
+      "label": "UIE / Joshua Porter — Testing the Three-Click Rule",
+      "url": "https://articles.uie.com/three_click_rule/"
+     }
+    ],
+    "confiance": "Établi (réfutation)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R34",
+   "couche": "ux",
+   "solution": "**« Miller = 7 items » est un abus** (traité au § 1) — la source ne dit pas ça.",
+   "enonce": "Le catalogue traite le « 7±2 de Miller » comme un mythe réfuté et renvoie au traitement unique de la règle correspondante, sans le redocumenter une seconde fois.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S6",
+     "affirmation": "Miller (1956) porte sur la mémoire de travail, PAS sur une limite d'items UI",
+     "liens": [
+      {
+       "label": "Miller, *The Magical Number Seven*",
+       "url": "https://psychclassics.yorku.ca/Miller/"
+      },
+      {
+       "label": "NN/g — The Myth of “Seven, Plus or Minus 2”",
+       "url": "https://www.nngroup.com/articles/short-term-memory-and-web-usability/"
+      }
+     ],
+     "confiance": "Établi (réfutation du mythe)"
+    },
+    {
+     "ref": "S16",
+     "affirmation": "Miller (1956) sépare explicitement deux limites qui partagent par coïncidence le chiffre 7 : l'empan du jugement absolu (limité par la quantité d'information, en bits) et l'empan de mémoire immédiate (limité par le nombre d'unités, en chunks). Il écrit lui-même que ce sont « des sortes de limitations tout à fait différentes », ouvre par « j'ai été persécuté par un entier », et ne prescrit AUCUNE limite de menu, de liste ou de champ.",
+     "liens": [
+      {
+       "label": "Miller, G. A. (1956). *The Magical Number Seven, Plus or Minus Two*, Psychological Review 63(2), 81–97 — texte intégral",
+       "url": "https://labs.la.utexas.edu/gilden/files/2016/04/MagicNumberSeven-Miller1956.pdf"
+      }
+     ],
+     "confiance": "Établi — source primaire lue. **Corrige le fichier LAWS-UX lui-même** : LAWS-R07 attribue à Miller « la capacité de la mémoire de travail sur des unités non structurées ». C'est encore la lecture populaire : Miller distingue jugement absolu et empan mnésique et refuse de les confondre. La réfutation du mythe est bonne, sa reformulation ne l'est pas."
+    }
+   ],
+   "principale": {
+    "ref": "S6",
+    "affirmation": "Miller (1956) porte sur la mémoire de travail, PAS sur une limite d'items UI",
+    "liens": [
+     {
+      "label": "Miller, *The Magical Number Seven*",
+      "url": "https://psychclassics.yorku.ca/Miller/"
+     },
+     {
+      "label": "NN/g — The Myth of “Seven, Plus or Minus 2”",
+      "url": "https://www.nngroup.com/articles/short-term-memory-and-web-usability/"
+     }
+    ],
+    "confiance": "Établi (réfutation du mythe)"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R35",
+   "couche": "ux",
+   "solution": "table ci-dessous — le risque d'un principe-catalogue n'est pas visuel mais **argumentatif** (une loi mal invoquée justifie une mauvaise décision).",
+   "enonce": "Le catalogue porte une table de risque dont les entrées sont argumentatives et non visuelles : chaque manière connue de mal invoquer une loi y figure avec sa sévérité.",
+   "mesure": "la table de risque du catalogue couvre au moins la citation hors source, le retournement en dark pattern, l'esthétique qui masque un défaut et la loi appliquée sans sa tension",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "LAWS-R36",
+   "couche": "ux",
+   "solution": "**une loi UX explique une règle, elle ne la remplace pas — et jamais seule.** Ce fichier donne le *pourquoi* profond des contraintes écrites ailleurs ; il ne crée pas de contrainte, ne porte pas de valeur, et n'autorise personne à trancher un arbitrage « parce qu'une loi le dit ». Quand deux lois se contredisent (elles le font souvent), on remonte.",
+   "enonce": "Une loi UX explique une règle et ne la remplace jamais : aucune décision de design n'est tranchée par l'invocation d'une loi unique, et une contradiction entre deux lois remonte au lieu d'être arbitrée localement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "c'est la déclinaison théorique du principe des canaux du système (COLOR : jamais la couleur seule ; MOTION : le mouvement confirme, n'informe jamais seul). Ici : **la loi éclaire, elle ne décide jamais seule.** Une décision de design adossée à une unique loi hors contexte est aussi fragile qu'une information portée par un seul canal.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

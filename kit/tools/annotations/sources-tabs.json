@@ -1,0 +1,107 @@
+[
+ {
+  "couche": "ux",
+  "ref": "S9",
+  "affirmation": "Les onglets groupent des contenus différents mais apparentés et permettent de changer de vue sans quitter la page ; ils sont écartés quand l'utilisateur doit comparer des informations d'un groupe à l'autre, remplacés par un indicateur de progression quand il s'agit d'un processus linéaire pas à pas, et ne remplacent pas la navigation ; les libellés font un à deux mots ; en situation responsive les onglets horizontaux ne reviennent jamais à la ligne ni ne s'empilent, ils défilent horizontalement",
+  "source_markdown": "[Carbon Design System — Tabs, usage](https://carbondesignsystem.com/components/tabs/usage/)",
+  "confiance": "Établi — design system public vérifié ; couvre à lui seul quatre règles du fichier (R01, R02, R08, R09) et fonde la frontière avec la navigation"
+ },
+ {
+  "couche": "ux",
+  "ref": "S10",
+  "affirmation": "Les onglets représentent le même type de contenu (par exemple une même liste sous différents filtres), un seul est actif à la fois, ils n'obligent pas à faire des allers-retours pour accomplir une seule tâche et ne sont pas utilisés comme navigation principale ; les libellés sont courts et scannables, généralement d'un seul mot, et fonctionnent comme des noms",
+  "source_markdown": "[Shopify Polaris — Tabs](https://polaris-react.shopify.com/components/navigation/tabs)",
+  "confiance": "Établi — deuxième design system public vérifié ; note d'attention : Polaris classe lui-même Tabs dans la catégorie « navigation » de sa documentation tout en interdisant l'usage en navigation principale"
+ },
+ {
+  "couche": "ux",
+  "ref": "S11",
+  "affirmation": "Les onglets sont écartés quand l'utilisateur doit lire tout le contenu dans l'ordre (processus pas à pas) ou comparer des informations d'un onglet à l'autre ; il faut éviter les onglets qui débordent sur plus d'une ligne ; l'implémentation retenue est faite d'ancres pointant vers des fragments, l'URL étant mise à jour à chaque bascule, et n'emploie pas les rôles tablist/tab/tabpanel",
+  "source_markdown": "[GOV.UK Design System — Tabs](https://design-system.service.gov.uk/components/tabs/)",
+  "confiance": "Établi — troisième design system public vérifié. Source décisive sur la frontière onglet/navigation : GOV.UK fait exactement ce que prescrit R06 (des onglets adressables par URL deviennent des liens et abandonnent la sémantique de tablist), mais contredit R05 sur l'absence d'entrée d'historique"
+ },
+ {
+  "couche": "ux",
+  "ref": "S12",
+  "affirmation": "Les onglets servent quand une page a des sous-sections dont une seule doit être visible à la fois ; au-delà de quatre onglets, envisager un autre motif ; il faut éviter que les onglets débordent sur plusieurs rangées sur petit écran ; les libellés ne dépassent pas deux mots ; les flèches gauche/droite naviguent entre onglets et les rôles tablist/tab/tabpanel sont employés",
+  "source_markdown": "[CMS Design System — Tabs](https://design.cms.gov/components/tabs/)",
+  "confiance": "Établi — quatrième design system public vérifié ; seule source consultée à donner un seuil numérique explicite (quatre), ce qui confirme qu'aucun seuil ne fait consensus (Carbon : quatre ou moins pour une variante ; GitLab : deux à trois)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S13",
+  "affirmation": "Les onglets montrent une section de contenu à la fois au sein d'un ensemble apparenté ; les libellés sont concis et décrivent le volet associé, les libellés longs étant tronqués avec info-bulle ; chaque onglet de premier niveau devrait avoir sa propre URL unique, et pour les onglets imbriqués il faut se demander si l'utilisateur voudrait mettre le contenu en signet",
+  "source_markdown": "[GitLab Design System — Tabs](https://design.gitlab.com/components/tabs)",
+  "confiance": "Établi — cinquième design system public vérifié. Contre-exemple direct à R05/R20 : GitLab prescrit une URL propre par onglet de premier niveau, là où le fichier interdit toute liaison à l'URL hors initialisation"
+ },
+ {
+  "couche": "ux",
+  "ref": "S14",
+  "affirmation": "Pour tout composant d'interface, le nom et le rôle sont programmatiquement déterminables, et les états, propriétés et valeurs modifiables par l'utilisateur sont programmatiquement définissables, la notification de leurs changements étant disponible aux technologies d'assistance ; pour un contrôle personnalisé, l'exposition de l'état passe par les attributs WAI-ARIA",
+  "source_markdown": "[WCAG 2.2 — 4.1.2 Name, Role, Value](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html)",
+  "confiance": "Établi, standard (niveau A) — donne l'ancrage normatif de aria-selected invoqué par R11, que le fichier n'attachait à aucune norme"
+ },
+ {
+  "couche": "ux",
+  "ref": "S15",
+  "affirmation": "Toute fonctionnalité du contenu est opérable au clavier sans exiger de timing particulier par frappe, sauf lorsque la fonction sous-jacente dépend du tracé du mouvement et pas seulement de ses extrémités",
+  "source_markdown": "[WCAG 2.2 — 2.1.1 Keyboard](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html)",
+  "confiance": "Établi, standard (niveau A) — fonde l'exigence d'opérabilité clavier complète du motif, dont les règles R14 à R16 sont la mise en œuvre concrète"
+ },
+ {
+  "couche": "ux",
+  "ref": "S16",
+  "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible",
+  "source_markdown": "[WCAG 2.2 — 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+  "confiance": "Établi, standard (niveau AA)"
+ },
+ {
+  "couche": "ux",
+  "ref": "S17",
+  "affirmation": "L'attribut hidden ne doit pas servir à masquer un contenu pour une seule présentation : un élément masqué l'est pour toutes, y compris les lecteurs d'écran ; la valeur until-found place l'élément dans un état masqué où son contenu reste accessible à la recherche dans la page et à la navigation par fragment, le navigateur émettant alors beforematch, retirant l'attribut hidden et faisant défiler jusqu'à l'élément",
+  "source_markdown": "[MDN — attribut global hidden](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden)",
+  "confiance": "Normatif — donne son ancrage technique à la limite « contenu non cherchable au Cmd+F » de R02, et révèle que hidden=\"until-found\" lève précisément cette limite : le fichier ne mentionne pas cette valeur"
+ },
+ {
+  "couche": "ux",
+  "ref": "S18",
+  "affirmation": "L'information visuelle nécessaire à identifier les composants d'interface et leurs états présente un contraste d'au moins 3:1, sauf composant inactif ou apparence déterminée par le navigateur ; le critère n'exige pas ce ratio entre deux états qui n'apparaissent pas côte à côte",
+  "source_markdown": "[WCAG 2.2 — 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)",
+  "confiance": "Établi, standard (niveau AA) — réponse à la question posée : le trait de l'onglet courant, en tant qu'information visuelle identifiant l'état sélectionné, doit atteindre 3:1 contre son fond adjacent ; en revanche l'écart entre onglet courant et onglet au repos n'est pas soumis au ratio tant qu'ils ne sont pas contigus"
+ },
+ {
+  "couche": "ux",
+  "ref": "S19",
+  "affirmation": "Dans l'exemple de référence à activation automatique, le tabpanel porte tabindex=\"0\" afin de faciliter le passage d'un onglet au début du contenu du volet actif ; les flèches bouclent du dernier au premier onglet ; Origine et Fin portent le focus au premier et au dernier onglet et les activent",
+  "source_markdown": "[ARIA APG — Tabs with Automatic Activation (exemple)](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-automatic/)",
+  "confiance": "Établi (pratique de référence W3C) — nuance importante : dans le motif, Origine et Fin sont déclarées « Optional » et tabindex=0 sur le tabpanel est conditionné à l'absence d'élément focalisable en tête de volet ; l'exemple, lui, les applique inconditionnellement"
+ },
+ {
+  "couche": "ui",
+  "ref": "T5",
+  "affirmation": "L'information visuelle nécessaire à identifier un composant d'interface et son état atteint un contraste de 3:1, un contour n'étant pas exigé lorsque le composant présente un contenu visible suffisamment contrasté",
+  "source_markdown": "[WCAG 2.2 — 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)",
+  "confiance": "Établi, standard (niveau AA) — arbitre la dispense de seuil que U04 accorde au séparateur bas de la variante ligne (délimitation de groupe, non porteuse d'état : dispense recevable) mais pas au trait de l'onglet courant, qui identifie l'état sélectionné et reste soumis au 3:1 ; le fichier UI ne pose ce seuil nulle part"
+ },
+ {
+  "couche": "ui",
+  "ref": "T6",
+  "affirmation": "Toute interface opérable au clavier dispose d'un mode où l'indicateur de focus clavier est visible",
+  "source_markdown": "[WCAG 2.2 — 2.4.7 Focus Visible](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html)",
+  "confiance": "Établi, standard (niveau AA) — donne son ancrage normatif à l'exception interne de BORDER-UI invoquée par U08 (anneau dû sur un tabpanel focalisable, même vide)"
+ },
+ {
+  "couche": "ui",
+  "ref": "T7",
+  "affirmation": "Si la liste d'onglets possède une étiquette visible, l'élément role=tablist la référence par aria-labelledby ; c'est seulement à défaut d'étiquette visible qu'il porte un aria-label",
+  "source_markdown": "[ARIA APG — Tabs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)",
+  "confiance": "Établi (pratique de référence W3C) — divergence relevée : U01 impose une prop label rendue en aria-label et n'ouvre aucune voie vers aria-labelledby, ce qui inverse l'ordre de préférence du motif et duplique l'étiquette quand un titre visible coiffe déjà la liste"
+ },
+ {
+  "couche": "ui",
+  "ref": "T8",
+  "affirmation": "La couleur n'est jamais le seul moyen visuel de véhiculer une information, d'indiquer une action, d'appeler une réponse ou de distinguer un élément visuel",
+  "source_markdown": "[WCAG 2.2 — 1.4.1 Use of Color](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)",
+  "confiance": "Établi, standard (niveau A) — la couche UI invoquait le « canal non chromatique » par renvoi à la couche UX sans référence normative propre ; à noter, le document d'explication de 1.4.1 ne traite pas explicitement le cas des onglets"
+ }
+]

@@ -1,0 +1,1753 @@
+{
+ "slug": "consentement",
+ "embleme": "<svg class=\"ico\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2.5\" y=\"14\" width=\"19\" height=\"6.5\" rx=\"1.5\"/><path d=\"M6 17.25h4M14 17.25h4\"/><path d=\"M12 3v7.5M12 10.5l-2.5-2.5M12 10.5l2.5-2.5\"/></svg>",
+ "nom": "consentement",
+ "nature": "Flow",
+ "meta": "UX v1.1.0 · UI v1.1.0 · mis à jour 2026-07-27 · confiance globale : mixte",
+ "confiance": "mixte",
+ "onglets": [
+  {
+   "id": "essentiel",
+   "label": "L’essentiel"
+  },
+  {
+   "id": "cas",
+   "label": "Cas d’usage"
+  },
+  {
+   "id": "ui",
+   "label": "Spécifications"
+  },
+  {
+   "id": "decisions",
+   "label": "Évolution"
+  }
+ ],
+ "essentiel": {
+  "kicker": "La question UX · consentement",
+  "question": "Ce bandeau a-t-il lieu d'être — et si oui, le choix qu'il propose en est-il vraiment un ?",
+  "detail": "Le bandeau de consentement n'a pas de matière propre : c'est un conteneur d'alerte, deux boutons, parfois un superposé. Ce qui appartient à ce sujet, et à lui seul, c'est la décision d'interrompre et la symétrie du choix. La question préalable passe avant toute maquette : on établit ce que le site dépose réellement, et si rien n'est soumis à consentement, on ne dessine pas de bandeau. Quand un bandeau est nécessaire, refuser doit coûter exactement le même nombre de clics qu'accepter, les deux boutons portent le même poids visuel, et le silence vaut refus.",
+  "titreRegles": "Trois règles fondamentales",
+  "regles": [
+   {
+    "num": "01 / PRINCIPE",
+    "texte": "Aucun bandeau tant qu'un traitement soumis à consentement n'a pas été identifié et listé"
+   },
+   {
+    "num": "02 / SYMÉTRIE",
+    "texte": "Refuser demande le même nombre d'actions qu'accepter, et les deux boutons ont le même poids visuel"
+   },
+   {
+    "num": "03 / GARDE-FOU",
+    "texte": "Le référentiel constate ce que le site dépose ; il ne qualifie jamais juridiquement"
+   }
+  ],
+  "preuves": [
+   {
+    "valeur": "34",
+    "libelle": "situations cartographiées"
+   },
+   {
+    "valeur": "17",
+    "libelle": "règles explicites"
+   },
+   {
+    "valeur": "2/9",
+    "libelle": "design systems qui documentent ce pattern"
+   }
+  ],
+  "rules": {
+   "nom": "",
+   "source": ""
+  }
+ },
+ "cas": [
+  {
+   "kicker": "01 · 4 cas",
+   "titre": "La question préalable",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Le site ne dépose rien de soumis à consentement",
+     "quand": "Aucun cookie, ou seulement une préférence d'affichage, un panier, une session, la mémorisation du choix lui-même.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · La question préalable",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucun cookie, ou seulement une préférence d'affichage, un panier, une session, la mémorisation du choix lui-même.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Ne concevoir aucun bandeau. Publier une page d'information qui liste les stockages et leur finalité.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un site vitrine qui ne mémorise que le thème clair/sombre : la préférence d'affichage est exemptée, le bandeau est sans objet.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Aucun bandeau ne s'affiche tant qu'un traitement soumis à consentement n'a pas été <strong>identifié et listé</strong>. L'inventaire des stockages précède la maquette, jamais l'inverse.</p>",
+       "id": "CONSENTEMENT-R03"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>L'inventaire couvre les cookies, <code>localStorage</code>, <code>sessionStorage</code>, <code>IndexedDB</code>, les service workers et les appels aux domaines tiers.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-1",
+     "titre": "Le bandeau se contredit lui-même",
+     "quand": "Son texte affirme « uniquement des cookies techniques », « strictement nécessaires », « aucun traçage ».",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · La question préalable",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Son texte affirme « uniquement des cookies techniques », « strictement nécessaires », « aucun traçage ».</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Vérifier l'inventaire. Si les deux conditions sont réunies — la formule d'exemption et l'absence mesurée de traceur soumis à consentement — signaler le bandeau comme sans objet.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bandeau qui écrit en gras « ce site utilise uniquement des cookies techniques » et demande quand même l'autorisation de les poser.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un bandeau qui déclare lui-même n'utiliser que des traceurs techniques <strong>se contredit</strong> : son propre texte affirme qu'il n'a pas lieu d'être.</p>",
+       "id": "CONSENTEMENT-R05"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>La mesure exige les deux conditions — le texte seul ne suffit jamais, un site peut se déclarer sobre et charger une régie.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-2",
+     "titre": "Le choix proposé est fictif",
+     "quand": "Aucun dépôt ne varie selon que le visiteur accepte ou refuse.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · La question préalable",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Aucun dépôt ne varie selon que le visiteur accepte ou refuse.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Comparer l'état du stockage et les requêtes réseau après chaque réponse. Si les deux états sont identiques, retirer la question plutôt que de rendre le refus effectif.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Refuser » ferme le bandeau et enregistre la réponse — exactement comme « Accepter ». Rien d'autre ne change.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Quand aucun dépôt ne varie selon la réponse, le choix proposé est <strong>fictif</strong>. Un bouton « Refuser » qui ne refuse rien est un mensonge d'interface, même bienveillant.</p>",
+       "id": "CONSENTEMENT-R06"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Cela relève de la catégorie <em>Left in the Dark</em> du CEPD : l'interface laisse croire à un contrôle qui n'existe pas.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-0-3",
+     "titre": "La qualification juridique n'appartient pas au référentiel",
+     "quand": "L'audit constate ce que le site dépose ; il ne dit pas si un bandeau est légalement dû.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "01 · La question préalable",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>L'audit constate ce que le site dépose ; il ne dit pas si un bandeau est légalement dû.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Remonter le constat au registre « à trancher », accompagné de l'inventaire mesuré. Ne jamais le classer « à corriger ».</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Nous avons relevé deux stockages, tous deux dans les catégories exemptées listées par la CNIL. La nécessité du bandeau est une question à poser à votre conseil. »</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le design system <strong>constate</strong>, il ne <strong>qualifie</strong> pas.</p>",
+       "id": "CONSENTEMENT-R04"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Les règles bougent : la proposition européenne « Digital Omnibus » de novembre 2025 réécrit précisément ces exemptions.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "02 · 5 cas",
+   "titre": "Le choix, quand il est nécessaire",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Refuser coûte plus cher qu'accepter",
+     "quand": "Un clic pour accepter, un passage par un écran de réglages pour refuser.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Le choix, quand il est nécessaire",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Un clic pour accepter, un passage par un écran de réglages pour refuser.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Poser les deux actions au même niveau, atteignables en autant de clics l'une que l'autre, visibles simultanément sans repli ni défilement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Tout accepter » en évidence, « Personnaliser » qui ouvre une modale où le refus demande deux clics de plus.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Refuser demande <strong>exactement le même nombre d'actions</strong> qu'accepter.</p>",
+       "id": "CONSENTEMENT-R07"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>C'est la définition de la catégorie <em>Obstructing</em> du CEPD, et l'exigence de la CNIL : refuser doit être aussi simple qu'accepter.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-1",
+     "titre": "Un bouton pèse plus lourd que l'autre",
+     "quand": "« Accepter » en bouton plein coloré, « Refuser » en simple contour ou en lien.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Le choix, quand il est nécessaire",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>« Accepter » en bouton plein coloré, « Refuser » en simple contour ou en lien.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Donner le même token de style aux deux actions. Notre défaut : les deux en style discret.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Bandeau de consentement où l'acceptation est un bouton bleu plein et le refus un contour transparent.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les deux actions portent le <strong>même poids visuel</strong> — même style, même taille, même contraste.</p>",
+       "id": "CONSENTEMENT-R08"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Écart de contraste entre les deux boutons ≤ 0,3:1, dimensions identiques à ±2 px.</p>"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>C'est la définition de <em>Stirring</em> chez le CEPD, et le point le plus exposé en cas de contrôle.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-2",
+     "titre": "Le silence est traité comme un accord",
+     "quand": "Fermer le bandeau, faire défiler ou continuer à naviguer déclenche le dépôt.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Le choix, quand il est nécessaire",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Fermer le bandeau, faire défiler ou continuer à naviguer déclenche le dépôt.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Traiter toute absence d'action explicite comme un refus. Le bouton de fermeture est un refus, il ne doit pas être présenté comme neutre.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bandeau dont la croix de fermeture enregistre « accepté ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le silence vaut refus. Fermer le bandeau, l'ignorer, faire défiler la page ou poursuivre la navigation ne constituent jamais un consentement.</p>",
+       "id": "CONSENTEMENT-R09"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Aucun dépôt soumis à consentement avant un clic sur le bouton d'acceptation.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-3",
+     "titre": "Les libellés n'annoncent pas ce qui est accepté",
+     "quand": "« J'ai compris », « OK », « Continuer » — l'assentiment sans l'objet.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Le choix, quand il est nécessaire",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>« J'ai compris », « OK », « Continuer » — l'assentiment sans l'objet.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Nommer la catégorie de traceurs concernée dans le libellé de chaque action.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Accepter les cookies de mesure d'audience » plutôt que « J'ai compris ».</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Les libellés nomment <strong>ce qui est accepté</strong>, pas l'assentiment.</p>",
+       "id": "CONSENTEMENT-R10"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Parti pris : le DSFR impose « Tout accepter / Tout refuser », plus courts mais moins précis. Nous suivons GOV.UK, dont le libellé reste vrai quand le contenu du bandeau change.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-1-4",
+     "titre": "Le contenu est pris en otage",
+     "quand": "Le site est inutilisable tant que le visiteur n'a pas répondu.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "02 · Le choix, quand il est nécessaire",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le site est inutilisable tant que le visiteur n'a pas répondu.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Laisser le contenu accessible. Le bandeau informe, il ne bloque pas.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Voile opaque sur toute la page, aucune lecture possible avant réponse.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le contenu du site reste accessible tant que le choix n'est pas fait.</p>",
+       "id": "CONSENTEMENT-R11"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Parti pris assumé : le <em>cookie wall</em> n'est pas illégal en soi en France depuis la décision du Conseil d'État du 19 juin 2020. Nous le refusons, nous ne prétendons pas qu'il est interdit.</p>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "03 · 2 cas",
+   "titre": "Où le bandeau se pose",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Le bandeau est fixé à l'écran",
+     "quand": "`position: fixed` ou `sticky` : il flotte au-dessus du contenu et suit le défilement.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Où le bandeau se pose",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>`position: fixed` ou `sticky` : il flotte au-dessus du contenu et suit le défilement.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Poser le bandeau dans le flux du document. La règle d'accessibilité est alors satisfaite par construction plutôt que par vigilance.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un bandeau collé en bas d'écran recouvre exactement le dernier lien du pied de page quand le clavier l'atteint.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le bandeau ne doit jamais masquer, même partiellement, un élément qui reçoit le focus.</p>",
+       "id": "CONSENTEMENT-R12"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Application directe du critère WCAG 2.2 « Focus Not Obscured » — c'est la raison explicite pour laquelle GOV.UK interdit le bandeau collant.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-2-1",
+     "titre": "Le bandeau arrive tard dans le document",
+     "quand": "Visuellement en haut, mais placé en fin de code : le clavier doit traverser la page pour l'atteindre.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "03 · Où le bandeau se pose",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Visuellement en haut, mais placé en fin de code : le clavier doit traverser la page pour l'atteindre.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Placer le bandeau immédiatement après l'ouverture du corps, avant le lien d'évitement.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un utilisateur clavier tabule quarante fois avant de pouvoir répondre à une question qui bloque sa lecture.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le bandeau est placé immédiatement après l'ouverture de <code>&lt;body&gt;</code>, <strong>avant</strong> le lien d'évitement, pour être rencontré en premier au clavier.</p>",
+       "id": "CONSENTEMENT-R13"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "kicker": "04 · 3 cas",
+   "titre": "Après le choix",
+   "visuel": null,
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "La question revient à chaque visite",
+     "quand": "Le choix n'est pas mémorisé, ou l'est trop peu de temps.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Après le choix",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Le choix n'est pas mémorisé, ou l'est trop peu de temps.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Conserver le choix six mois, refus compris, sans nouvelle sollicitation pendant cette durée.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un visiteur qui revient trois fois par semaine et répond trois fois par semaine.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Le choix est mémorisé et <strong>n'est pas redemandé</strong> à chaque visite. Notre durée de référence est de six mois, pour l'acceptation comme pour le refus.</p>",
+       "id": "CONSENTEMENT-R14"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Arbitrage : GOV.UK mémorise un an, la CNIL recommande six mois, le Digital Omnibus retient au moins six mois pour le refus. Six mois satisfait les trois.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-1",
+     "titre": "Le bandeau disparaît sans rien dire",
+     "quand": "Après le clic, le bandeau s'efface : aucun retour sur ce qui a été enregistré.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Après le choix",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Après le clic, le bandeau s'efface : aucun retour sur ce qui a été enregistré.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Remplacer le bandeau par un message de confirmation qui énonce le choix retenu, porte un lien pour le modifier et un moyen de le fermer.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>« Vous avez refusé les cookies de mesure d'audience. Vous pouvez modifier ce choix à tout moment. »</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Après le choix, un message de confirmation <strong>remplace</strong> le bandeau.</p>",
+       "id": "CONSENTEMENT-R15"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Il est annoncé (<code>role=\"alert\"</code>), reçoit le focus par programme, et sa fermeture rend le focus à un point stable de la page.</p>"
+      }
+     ]
+    },
+    {
+     "id": "cas-3-2",
+     "titre": "Revenir sur son choix est impossible",
+     "quand": "Une fois le bandeau fermé, plus aucun moyen de changer d'avis.",
+     "statut": null,
+     "lien": "Comprendre la décision",
+     "kicker": "04 · Après le choix",
+     "visuel": null,
+     "blocs": [
+      {
+       "titre": "Quand utiliser cette règle ?",
+       "html": "<p>Une fois le bandeau fermé, plus aucun moyen de changer d'avis.</p>"
+      },
+      {
+       "titre": "Que faire ?",
+       "html": "<p>Poser un point d'accès permanent, présent sur toutes les pages, menant à un écran où le choix courant est visible et modifiable.</p>"
+      },
+      {
+       "titre": "Exemple",
+       "html": "<p>Un lien « Gérer les cookies » dans le pied de page de chaque page.</p>"
+      }
+     ],
+     "sourceRegles": "extraites de CONSENTEMENT-UX.md",
+     "regles": [
+      {
+       "tag": "Règle",
+       "html": "<p>Un moyen permanent de revenir sur son choix est atteignable depuis toutes les pages.</p>",
+       "id": "CONSENTEMENT-R16"
+      },
+      {
+       "tag": "Règle",
+       "html": "<p>Les trois références convergent : le DSFR impose le lien en pied de page, GOV.UK une page dédiée, la CNIL exige que le retrait soit aussi simple que le consentement.</p>"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "casChapeau": {
+  "kicker": "02 · Carte de couverture",
+  "titre": "Cas d’usage",
+  "lead": "Des situations concrètes, regroupées par angle de décision. Les cas déclarés non couverts — granularité par finalité, signaux navigateur, ressources tierces sans traceur — sont des frontières assumées, pas des oublis."
+ },
+ "specs": {
+  "kicker": "03 · Spécifications",
+  "titre": "Voir les décisions en action",
+  "lead": "Ce pattern n'introduit aucun token propre : c'est volontaire. Le bandeau est un message doublé de deux actions ; lui donner ses propres jetons créerait un dialecte à maintenir pour un objet qu'un site affiche une fois par visiteur et par semestre.",
+  "css": "",
+  "specimens": [],
+  "tokens": [
+   {
+    "token": "surface_du_bandeau",
+    "ref": "couleur.surface.elevated",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "trait_de_separation",
+    "ref": "bordure.epaisseur.default + couleur.bordure.subtle",
+    "valeur": "1px",
+    "couleur": null
+   },
+   {
+    "token": "rythme_interne",
+    "ref": "espacement.stack.md",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "largeur_utile",
+    "ref": "grid.container.default",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "les_deux_boutons",
+    "ref": "bouton.style.ghost — identique pour les deux",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "confirmation_apres_choix",
+    "ref": "alert / tone info",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "rayon",
+    "ref": "radius.md",
+    "valeur": "—",
+    "couleur": null
+   },
+   {
+    "token": "empilement",
+    "ref": "aucun — le bandeau vit dans le flux",
+    "valeur": "—",
+    "couleur": null
+   }
+  ]
+ },
+ "evolution": [
+  {
+   "date": "2026-07-27",
+   "titre": "CONSENTEMENT quitte les patterns pour les flows",
+   "html": "<ul><li><strong>Pourquoi</strong> : un pattern est une composition d'écran — plusieurs éléments assemblés au même moment, comme FORM ou NAVIGATION. Le consentement n'est pas ça. C'est une séquence qui se joue dans le temps : constater ce que le site dépose, interrompre ou non, proposer deux issues, mémoriser six mois, permettre le retour sur le choix. La définition d'un flow, à côté de <code>creation-compte</code>.</li><li><strong>L'erreur d'origine</strong> : le sujet a été rangé en pattern parce qu'il emprunte alert, button et overlay. Mais emprunter des composants ne fait pas une composition — sinon tout sujet en serait une.</li><li><strong>Fichiers</strong> : <code>content/md/flows/CONSENTEMENT-UX.md</code> et <code>-UI.md</code> (1.1.0). Aucune règle modifiée, aucun identifiant changé : les constats d'audit déjà émis restent valides.</li></ul>"
+  },
+  {
+   "date": "2026-07-27",
+   "titre": "CONSENTEMENT naît d'un audit externe : un bandeau qui déclarait lui-même n'avoir pas lieu d'être",
+   "html": "<ul><li><strong>Fichiers</strong> : <code>CONSENTEMENT-UX.md</code> + <code>CONSENTEMENT-UI.md</code> (1.0.0, nouveaux) ; <code>inventaire-cas-usage-consentement.md</code> (34 cas) ; <code>doctrine/consentement.json</code> ; <code>BUTTON-UX.md</code> (R76 rapatriée).</li><li><strong>Déclencheur</strong> : l'audit externe d'un site de courtage a rencontré un bandeau dont le texte affirmait en gras « ce site utilise uniquement des cookies techniques, strictement nécessaires » — et qui demandait quand même l'autorisation de les poser. Vérification faite, le site ne posait aucun cookie : deux entrées de stockage local, la préférence de thème et la mémorisation de la réponse au bandeau lui-même. Toutes deux dans les catégories exemptées. « Refuser » ne refusait rien.</li><li><strong>Ce que le sujet corrige</strong> : la règle du poids visuel des deux actions vivait dans <code>BUTTON-UX</code> (R76), où personne ne va la chercher, et où la question qui la précède — <em>faut-il un bandeau ?</em> — n'avait pas de place. Une règle rangée au mauvais endroit est une règle qu'on n'applique pas.</li><li><strong>Frontière posée</strong> : le référentiel constate l'inventaire des stockages, il ne qualifie pas juridiquement. Un constat de ce type se remonte en « à trancher », jamais en « à corriger » — d'autant que la proposition européenne « Digital Omnibus » de novembre 2025 réécrit ces exemptions.</li><li><strong>Benchmark</strong> : 2 design systems sur 9 documentent ce pattern (GOV.UK et DSFR), tous deux publics. Les six systèmes de produit l'ignorent. Pas de convergence de marché à invoquer : nos règles s'appuient sur deux précédents et sur des textes de régulateurs.</li></ul>"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "CONSENTEMENT-R01",
+   "couche": "ux",
+   "solution": "ce sujet ne définit aucun objet visuel nouveau. Il définit un parcours : constater un besoin, interrompre ou non, proposer deux issues équivalentes, mémoriser, permettre le retour.",
+   "enonce": "Ce document décrit une séquence de décision, non un composant ; les tokens et les états visuels appartiennent aux sujets empruntés (ALERT, BUTTON, OVERLAY).",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-R02",
+   "couche": "ux",
+   "solution": "chaque règle du domaine consentement a exactement un propriétaire. En cas de doute, cette table tranche :",
+   "enonce": "Ce document fournit une table attribuant à chaque règle du domaine consentement un propriétaire unique.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-R03",
+   "couche": "ux",
+   "solution": "aucun bandeau ne s'affiche tant qu'un traitement soumis à consentement n'a pas été **identifié et listé**. L'inventaire des stockages et des appels tiers précède la maquette, jamais l'inverse.",
+   "enonce": "Un bandeau de consentement ne s'affiche que si le site dépose au moins un traceur soumis à consentement ; l'inventaire des stockages doit être établi avant de concevoir le bandeau.",
+   "mesure": "inventaire daté des cookies, `localStorage`, `sessionStorage`, `IndexedDB`, service workers et appels à des domaines tiers. S'il ne contient aucun élément soumis à consentement, aucun bandeau n'est conçu.",
+   "contre": "",
+   "probleme": "interrompre chaque visiteur pour demander une autorisation dont on n'a pas besoin est une interruption sans cause. Elle coûte une décision à 100 % des arrivants, n'apporte aucune protection supplémentaire, et habitue le public à cliquer sans lire — ce qui abîme les consentements qui, eux, comptent.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-0",
+     "titre": "Le site ne dépose rien de soumis à consentement",
+     "famille": "La question préalable"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R04",
+   "couche": "ux",
+   "solution": "le design system **constate**, il ne **qualifie** pas. Un audit rapporte la liste mesurée des stockages et pose la question ; il ne conclut jamais « bandeau non requis ». Ce constat se remonte au registre « à trancher », accompagné de l'inventaire, jamais au registre « à corriger ».",
+   "enonce": "L'audit rapporte l'inventaire mesuré des stockages et pose la question de la nécessité du bandeau, sans trancher la qualification juridique.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "la qualification dépend du droit applicable, de la finalité réelle des traitements et de textes qui bougent — la proposition européenne « Digital Omnibus » de novembre 2025 (S6) réécrit précisément ces exemptions. Une règle de design qui se prononcerait sur le droit serait fausse à la première réforme, et engagerait une responsabilité qui n'est pas la nôtre.",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-3",
+     "titre": "La qualification juridique n'appartient pas au référentiel",
+     "famille": "La question préalable"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R05",
+   "couche": "ux",
+   "solution": "un bandeau qui déclare lui-même n'utiliser que des traceurs techniques ou strictement nécessaires **se contredit** : son propre texte affirme qu'il n'a pas lieu d'être. Le signaler.",
+   "enonce": "Si le texte du bandeau affirme que le site n'utilise que des traceurs strictement nécessaires, et que l'inventaire le confirme, le bandeau est signalé comme sans objet.",
+   "mesure": "le texte du bandeau contient une formule d'exemption (« strictement nécessaires », « techniques uniquement », « aucun traceur publicitaire ») **et** l'inventaire de R03 ne relève aucun traceur soumis à consentement.",
+   "contre": "la formule peut être inexacte — un site peut se déclarer sobre et charger une régie. La mesure exige donc les deux conditions, jamais le texte seul.",
+   "probleme": "c'est le cas le plus fréquent chez les petites structures. Le bandeau est posé par précaution, par imitation, ou fourni par un thème. Personne ne vérifie jamais qu'il correspond à un besoin, et il survit des années.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-1",
+     "titre": "Le bandeau se contredit lui-même",
+     "famille": "La question préalable"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R06",
+   "couche": "ux",
+   "solution": "quand aucun dépôt ne varie selon la réponse, le choix proposé est **fictif**. Un bouton « Refuser » qui ne refuse rien est un mensonge d'interface, même bienveillant.",
+   "enonce": "Chaque issue proposée doit produire un effet observable et différent ; un choix sans conséquence ne doit pas être présenté comme un choix.",
+   "mesure": "comparer l'état du stockage et les requêtes réseau après « Accepter » et après « Refuser ». Si les deux états sont identiques, le choix est fictif.",
+   "contre": "",
+   "probleme": "cela relève de la catégorie *Left in the Dark* du CEPD — l'interface laisse croire à un contrôle qui n'existe pas. Le remède n'est pas de rendre le refus effectif : c'est de retirer une question qui n'avait pas lieu d'être posée.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S3",
+     "affirmation": "Six catégories de conception trompeuse : *Overloading*, *Skipping*, *Stirring*, *Obstructing*, *Fickle*, *Left in the Dark*. L'absence de consentement est l'état par défaut ; l'expression du refus doit être aussi simple que celle du consentement",
+     "liens": [
+      {
+       "label": "CEPD — Lignes directrices 03/2022, adoptées le 24 février 2023",
+       "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-032022-on-deceptive-design-patterns-in-social-media-platform_en"
+      }
+     ],
+     "confiance": "Établi, régulateur européen. Les catégories sont nommées telles quelles ; nous en faisons l'application au bandeau, ce que le texte ne fait pas explicitement — l'inférence est nôtre"
+    }
+   ],
+   "principale": {
+    "ref": "S3",
+    "affirmation": "Six catégories de conception trompeuse : *Overloading*, *Skipping*, *Stirring*, *Obstructing*, *Fickle*, *Left in the Dark*. L'absence de consentement est l'état par défaut ; l'expression du refus doit être aussi simple que celle du consentement",
+    "liens": [
+     {
+      "label": "CEPD — Lignes directrices 03/2022, adoptées le 24 février 2023",
+      "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-032022-on-deceptive-design-patterns-in-social-media-platform_en"
+     }
+    ],
+    "confiance": "Établi, régulateur européen. Les catégories sont nommées telles quelles ; nous en faisons l'application au bandeau, ce que le texte ne fait pas explicitement — l'inférence est nôtre"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-0-2",
+     "titre": "Le choix proposé est fictif",
+     "famille": "La question préalable"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R07",
+   "couche": "ux",
+   "solution": "refuser demande **exactement le même nombre d'actions** qu'accepter. Un refus qui passe par un écran de réglages quand l'acceptation tient en un clic n'est pas un refus offert.",
+   "enonce": "Le refus doit être atteignable en autant d'actions que l'acceptation, au même niveau de l'interface.",
+   "mesure": "nombre de clics jusqu'au refus effectif = nombre de clics jusqu'à l'acceptation, et les deux actions sont visibles simultanément sans repli ni défilement.",
+   "contre": "",
+   "probleme": "c'est la définition même de la catégorie *Obstructing* du CEPD, et l'exigence de la CNIL depuis les lignes directrices modificatives : refuser doit être aussi simple qu'accepter.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Six catégories de conception trompeuse : *Overloading*, *Skipping*, *Stirring*, *Obstructing*, *Fickle*, *Left in the Dark*. L'absence de consentement est l'état par défaut ; l'expression du refus doit être aussi simple que celle du consentement",
+     "liens": [
+      {
+       "label": "CEPD — Lignes directrices 03/2022, adoptées le 24 février 2023",
+       "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-032022-on-deceptive-design-patterns-in-social-media-platform_en"
+      }
+     ],
+     "confiance": "Établi, régulateur européen. Les catégories sont nommées telles quelles ; nous en faisons l'application au bandeau, ce que le texte ne fait pas explicitement — l'inférence est nôtre"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+    "liens": [
+     {
+      "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+      "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+     },
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     },
+     {
+      "label": "CNIL — Mesure d'audience exemptée",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+     }
+    ],
+    "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-0",
+     "titre": "Refuser coûte plus cher qu'accepter",
+     "famille": "Le choix, quand il est nécessaire"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R08",
+   "couche": "ux",
+   "solution": "les deux actions portent le **même poids visuel** — même style de bouton, même taille, même contraste. Aucune n'est mise en avant par la couleur, le remplissage ou la position.",
+   "enonce": "Les boutons d'acceptation et de refus doivent avoir un traitement visuel strictement identique.",
+   "mesure": "même classe de style, mêmes dimensions à ±2 px, écart de contraste entre les deux boutons ≤ 0,3:1.",
+   "contre": "cette règle arrivait de BUTTON-R76, où elle était formulée comme une exception au modèle style × tone du bouton. Elle n'en est pas une : c'est une contrainte du pattern qui s'impose au composant, pas un cas particulier du composant.",
+   "probleme": "le déséquilibre visuel oriente le choix sans le contraindre — c'est la définition de *Stirring* chez le CEPD, et la CNIL exige des boutons présentés « au même niveau et selon un format identique ». C'est aussi, sur un site commercial, le point le plus exposé en cas de contrôle.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Six catégories de conception trompeuse : *Overloading*, *Skipping*, *Stirring*, *Obstructing*, *Fickle*, *Left in the Dark*. L'absence de consentement est l'état par défaut ; l'expression du refus doit être aussi simple que celle du consentement",
+     "liens": [
+      {
+       "label": "CEPD — Lignes directrices 03/2022, adoptées le 24 février 2023",
+       "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-032022-on-deceptive-design-patterns-in-social-media-platform_en"
+      }
+     ],
+     "confiance": "Établi, régulateur européen. Les catégories sont nommées telles quelles ; nous en faisons l'application au bandeau, ce que le texte ne fait pas explicitement — l'inférence est nôtre"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+    "liens": [
+     {
+      "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+      "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+     },
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     },
+     {
+      "label": "CNIL — Mesure d'audience exemptée",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+     }
+    ],
+    "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-1",
+     "titre": "Un bouton pèse plus lourd que l'autre",
+     "famille": "Le choix, quand il est nécessaire"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R09",
+   "couche": "ux",
+   "solution": "le silence vaut refus. Fermer le bandeau, l'ignorer, faire défiler la page ou poursuivre la navigation ne constituent jamais un consentement.",
+   "enonce": "L'absence d'action ne doit jamais être interprétée comme un consentement ; l'état par défaut est le refus.",
+   "mesure": "aucun dépôt soumis à consentement avant une action explicite sur un bouton d'acceptation.",
+   "contre": "",
+   "probleme": "le CEPD pose l'absence de consentement comme état par défaut jusqu'à ce que le consentement soit donné. La conséquence de conception est nette : le bouton de fermeture est un refus, il ne doit pas être présenté comme neutre.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+    "liens": [
+     {
+      "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+      "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+     },
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     },
+     {
+      "label": "CNIL — Mesure d'audience exemptée",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+     }
+    ],
+    "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-2",
+     "titre": "Le silence est traité comme un accord",
+     "famille": "Le choix, quand il est nécessaire"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R10",
+   "couche": "ux",
+   "solution": "les libellés nomment **ce qui est accepté**, pas l'assentiment. « Accepter les cookies de mesure d'audience », pas « J'ai compris », « OK » ni « Continuer ».",
+   "enonce": "Chez nous, les libellés des deux actions nomment la catégorie de traceurs concernée plutôt que d'exprimer un assentiment général.",
+   "mesure": "",
+   "contre": "le DSFR (S4) impose « Tout accepter » et « Tout refuser », plus courts et indépendants du contenu, au prix de la précision. GOV.UK nomme la catégorie (« Accept analytics cookies »). Les deux positions sont défendables ; nous suivons GOV.UK parce qu'un libellé qui nomme l'objet reste vrai quand le contenu du bandeau change.",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-3",
+     "titre": "Les libellés n'annoncent pas ce qui est accepté",
+     "famille": "Le choix, quand il est nécessaire"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R11",
+   "couche": "ux",
+   "solution": "le contenu du site reste accessible tant que le choix n'est pas fait — le bandeau informe, il ne prend pas la page en otage.",
+   "enonce": "Chez nous, aucun contenu n'est bloqué tant que le visiteur n'a pas répondu au bandeau.",
+   "mesure": "",
+   "contre": "le *cookie wall* n'est pas illégal en soi en France depuis la décision du Conseil d'État du 19 juin 2020, et la CNIL l'apprécie au cas par cas. Notre position est donc un parti pris, pas une norme : nous refusons le mur, nous ne prétendons pas qu'il est interdit.",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-1-4",
+     "titre": "Le contenu est pris en otage",
+     "famille": "Le choix, quand il est nécessaire"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R12",
+   "couche": "ux",
+   "solution": "le bandeau ne doit jamais masquer, même partiellement, un élément qui reçoit le focus. En pratique : pas de `position: fixed`, pas de `sticky`.",
+   "enonce": "Le bandeau de consentement ne doit pas être fixé à l'écran, afin de ne jamais recouvrir un élément focalisé.",
+   "mesure": "parcours clavier complet de la page bandeau affiché ; aucun élément focalisé n'est recouvert.",
+   "contre": "",
+   "probleme": "c'est l'application directe du critère WCAG 2.2 « Focus Not Obscured », et la raison explicite pour laquelle GOV.UK interdit le bandeau collant. Un bandeau fixé en bas d'écran masque exactement ce que le clavier atteint en fin de page.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Un élément qui reçoit le focus ne doit pas être masqué par un contenu ajouté",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — c'est la norme qui fonde l'interdiction du bandeau collant"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-0",
+     "titre": "Le bandeau est fixé à l'écran",
+     "famille": "Où le bandeau se pose"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R13",
+   "couche": "ux",
+   "solution": "le bandeau est placé immédiatement après l'ouverture de `<body>`, **avant** le lien d'évitement, pour être rencontré en premier au clavier.",
+   "enonce": "Placer le bandeau en tout premier dans le corps du document, avant le lien d'évitement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "un bandeau visuellement en haut mais tardif dans le DOM oblige l'utilisateur clavier à traverser toute la page pour répondre à une question qui bloque sa lecture.",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S9",
+     "affirmation": "L'ordre de parcours au clavier doit suivre un enchaînement qui préserve le sens et l'utilisabilité",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.3 Focus Order",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html"
+      }
+     ],
+     "confiance": "Établi, standard (A) — fonde R13 : un bandeau bloquant atteint en fin de parcours rompt l'enchaînement"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-2-1",
+     "titre": "Le bandeau arrive tard dans le document",
+     "famille": "Où le bandeau se pose"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R14",
+   "couche": "ux",
+   "solution": "le choix est mémorisé et **n'est pas redemandé** à chaque visite. Notre durée de référence est de six mois, pour l'acceptation comme pour le refus.",
+   "enonce": "Chez nous, le choix exprimé est conservé six mois, sans nouvelle sollicitation pendant cette durée, refus compris.",
+   "mesure": "",
+   "contre": "GOV.UK mémorise un an, la CNIL recommande six mois, et la proposition « Digital Omnibus » retient au moins six mois pour le refus. Nous alignons sur six mois — la valeur la plus courte des trois, donc la plus protectrice pour le visiteur, et la seule qui satisfait les trois références simultanément.",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S6",
+     "affirmation": "Proposition de la Commission européenne du 12 novembre 2025 : nouvelles exemptions de stockage (article 88a), consentement exprimable par signaux automatisés lisibles par machine (article 88b), pas de nouvelle sollicitation pendant au moins six mois après un refus",
+     "liens": [
+      {
+       "label": "Osborne Clarke — analyse du Digital Omnibus",
+       "url": "https://www.osborneclarke.com/insights/digital-omnibus-reshapes-eu-cookie-rules-leaves-banner-fatigue-largely-intact"
+      },
+      {
+       "label": "Taylor Wessing — Digital Omnibus et cookies",
+       "url": "https://www.taylorwessing.com/en/global-data-hub/2026/the-digital-omnibus-proposal/gdh---the-digital-omnibus---cookies"
+      }
+     ],
+     "confiance": "**Non stabilisé — proposition, non adoptée.** Citée uniquement pour justifier R04 : les règles bougent, le design system ne qualifie pas"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+    "liens": [
+     {
+      "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+      "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+     },
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     },
+     {
+      "label": "CNIL — Mesure d'audience exemptée",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+     }
+    ],
+    "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-0",
+     "titre": "La question revient à chaque visite",
+     "famille": "Après le choix"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R15",
+   "couche": "ux",
+   "solution": "après le choix, un message de confirmation **remplace** le bandeau : il énonce ce qui a été choisi, porte le moyen de revenir dessus, et un moyen de le fermer.",
+   "enonce": "Après le choix, afficher un message de confirmation en lieu et place du bandeau, énonçant le choix retenu et offrant un lien pour le modifier ainsi qu'un bouton de fermeture.",
+   "mesure": "le message est annoncé (`role=\"alert\"`), reçoit le focus par programme, et sa fermeture rend le focus à un point stable de la page.",
+   "contre": "",
+   "probleme": "une disparition silencieuse ne confirme rien. Sans retour, l'utilisateur de lecteur d'écran ne sait pas si son clic a été pris en compte, et personne ne sait ce qui a été enregistré.",
+   "statut": "implementation",
+   "statutLibelle": "implémentation de référence",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    },
+    {
+     "ref": "S8",
+     "affirmation": "Un message qui rend compte du résultat d'une action doit être annoncé sans déplacer le focus de force, via un rôle approprié",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 4.1.3 Status Messages",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — c'est la norme qui fonde le `role=\"alert\"` de R15, que GOV.UK applique sans la citer"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     },
+     {
+      "label": "GOV.UK — Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+     }
+    ],
+    "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-1",
+     "titre": "Le bandeau disparaît sans rien dire",
+     "famille": "Après le choix"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R16",
+   "couche": "ux",
+   "solution": "un moyen permanent de revenir sur son choix est atteignable depuis toutes les pages, sans avoir à retrouver le bandeau.",
+   "enonce": "Un point d'accès permanent, présent sur toutes les pages, doit permettre de modifier ou retirer le choix exprimé.",
+   "mesure": "un lien ou un bouton dédié est présent dans le pied de page de chaque page, et mène à un écran où le choix courant est visible et modifiable.",
+   "contre": "",
+   "probleme": "le retrait doit être aussi simple que le consentement. Les trois références du panel convergent : le DSFR impose le lien en pied de page, GOV.UK une page « Cookies » dédiée, la CNIL exige la réversibilité.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+     "liens": [
+      {
+       "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+       "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+      },
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      },
+      {
+       "label": "CNIL — Mesure d'audience exemptée",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+      }
+     ],
+     "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+    },
+    {
+     "ref": "S4",
+     "affirmation": "Quatre actions imposées (Personnaliser, Tout refuser, Tout accepter, Fermer) ; granularité par finalité dans une modale ; lien d'accès permanent obligatoire en pied de page ; position et ordre des boutons non modifiables",
+     "liens": [
+      {
+       "label": "DSFR — Gestionnaire de consentement",
+       "url": "https://www.systeme-de-design.gouv.fr/version-courante/fr/composants/gestionnaire-de-consentement"
+      }
+     ],
+     "confiance": "Établi — seul système du panel à imposer la granularité par finalité et le lien permanent. Nous divergeons sur les libellés (R10)"
+    },
+    {
+     "ref": "S1",
+     "affirmation": "Pas de bandeau si le service n'utilise que des cookies essentiels (une page d'information suffit) ; libellés nommant la catégorie ; interdiction du bandeau collant au nom du focus non masqué ; placement avant le lien d'évitement ; message de confirmation avec `role=\"alert\"`, focus déplacé et bouton de fermeture ; mémorisation un an",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      },
+      {
+       "label": "GOV.UK — Cookies page",
+       "url": "https://design-system.service.gov.uk/patterns/cookies-page/"
+      }
+     ],
+     "confiance": "Établi — c'est le seul design system du panel qui spécifie le DOM, le focus et le texte de confirmation. Adopté ici pour R10, R12, R13, R15"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Catégories de traceurs exemptées de consentement (mémorisation du choix, authentification et sécurité, panier, personnalisation d'interface attendue, équilibrage de charge, accès limité aux contenus payants, mesure d'audience sous conditions) ; refuser aussi simple qu'accepter, boutons au même niveau et de format identique ; le silence vaut refus ; conservation du choix recommandée six mois ; réversibilité",
+    "liens": [
+     {
+      "label": "CNIL — Cookies et traceurs : que dit la loi ?",
+      "url": "https://www.cnil.fr/fr/cookies-traceurs-que-dit-la-loi"
+     },
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     },
+     {
+      "label": "CNIL — Mesure d'audience exemptée",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies-solutions-pour-les-outils-de-mesure-daudience"
+     }
+    ],
+    "confiance": "Établi, régulateur national — cité pour le fait, jamais pour la qualification d'un cas particulier (cf. R04)"
+   },
+   "confiance": "",
+   "cas": [
+    {
+     "id": "cas-3-2",
+     "titre": "Revenir sur son choix est impossible",
+     "famille": "Après le choix"
+    }
+   ]
+  },
+  {
+   "id": "CONSENTEMENT-R17",
+   "couche": "ux",
+   "solution": "le niveau d'exigence ne dépend pas du bandeau mais de ce que le site dépose.",
+   "enonce": "Ce document fournit une table reliant la nature des traitements au niveau d'exigence attendu sur le pattern.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "methode",
+   "statutLibelle": "note de méthode",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R01",
+   "couche": "ui",
+   "solution": "le bandeau ne possède aucun token. Il consomme le conteneur d'alerte (`ALERT-UI`), les boutons (`BUTTON-UI`), la couleur de surface (`COLOR-UI`) et le rythme vertical (`SPACING-UI`). Tout token qui naîtrait ici serait le signe d'une duplication.",
+   "enonce": "Chez nous, le bandeau de consentement n'introduit aucun token propre et réutilise intégralement ceux d'alerte, de bouton, de couleur et d'espacement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "le bandeau est un message doublé de deux actions. Lui donner ses propres jetons de couleur ou d'espacement crée un troisième dialecte à maintenir, pour un objet qu'un site affiche une fois par visiteur et par semestre.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R02",
+   "couche": "ui",
+   "solution": "les deux actions partagent le **même token de style de bouton**, sans exception. Ce n'est pas une préférence esthétique : c'est la traduction visuelle de `CONSENTEMENT-R08`.",
+   "enonce": "Les boutons d'acceptation et de refus doivent référencer le même token de style de bouton.",
+   "mesure": "même valeur de `bouton.style`, dimensions rendues identiques à ±2 px, écart de contraste entre les deux ≤ 0,3:1.",
+   "contre": "la tentation est constante de donner le `fill` à l'acceptation « pour guider ». C'est exactement le nudge que la règle interdit.",
+   "probleme": "",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S2",
+     "affirmation": "Boutons d'acceptation et de refus présentés au même niveau et selon un format identique",
+     "liens": [
+      {
+       "label": "CNIL — Mettre son site en conformité",
+       "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+      }
+     ],
+     "confiance": "Établi, régulateur national — fonde R02"
+    },
+    {
+     "ref": "S3",
+     "affirmation": "Catégorie *Stirring* : influencer un choix par un nudge visuel",
+     "liens": [
+      {
+       "label": "CEPD — Lignes directrices 03/2022",
+       "url": "https://www.edpb.europa.eu/documents/guideline/guidelines-032022-on-deceptive-design-patterns-in-social-media-platform_en"
+      }
+     ],
+     "confiance": "Établi, régulateur européen — fonde R02"
+    }
+   ],
+   "principale": {
+    "ref": "S2",
+    "affirmation": "Boutons d'acceptation et de refus présentés au même niveau et selon un format identique",
+    "liens": [
+     {
+      "label": "CNIL — Mettre son site en conformité",
+      "url": "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite"
+     }
+    ],
+    "confiance": "Établi, régulateur national — fonde R02"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R03",
+   "couche": "ui",
+   "solution": "le choix du style commun est libre — les deux en `ghost` (bandeau discret) ou les deux en `fill` (bandeau assumé). Notre défaut est `ghost` pour les deux : le bandeau est une information, pas une action attendue.",
+   "enonce": "Chez nous, les deux actions du bandeau sont rendues en style `ghost` par défaut.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R04",
+   "couche": "ui",
+   "solution": "aucun token de superposition. Pas de `z-index.overlay`, pas de voile, pas d'ombre portée d'élévation haute. Le bandeau n'est pas un superposé : il se pose dans le flux.",
+   "enonce": "Le bandeau ne consomme aucun token de superposition et n'est jamais fixé à l'écran.",
+   "mesure": "`position` calculée ≠ `fixed` et ≠ `sticky` ; aucun `z-index` supérieur à celui du contenu.",
+   "contre": "",
+   "probleme": "traduction directe de `CONSENTEMENT-R12`. Un bandeau posé dans le flux ne peut pas masquer un élément focalisé — la règle d'accessibilité est satisfaite par construction plutôt que par vigilance.",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S1",
+     "affirmation": "Interdiction du bandeau collant au nom du focus non masqué ; message de confirmation après le choix",
+     "liens": [
+      {
+       "label": "GOV.UK Design System — Cookie banner",
+       "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+      }
+     ],
+     "confiance": "Établi — adopté ici pour R04 et R01"
+    },
+    {
+     "ref": "S5",
+     "affirmation": "Un élément qui reçoit le focus ne doit pas être masqué ; seuils de contraste texte et composants",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.3 Contrast Minimum",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde R04 et R05"
+    }
+   ],
+   "principale": {
+    "ref": "S1",
+    "affirmation": "Interdiction du bandeau collant au nom du focus non masqué ; message de confirmation après le choix",
+    "liens": [
+     {
+      "label": "GOV.UK Design System — Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/"
+     }
+    ],
+    "confiance": "Établi — adopté ici pour R04 et R01"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R05",
+   "couche": "ui",
+   "solution": "le texte du bandeau respecte les seuils généraux — 4,5:1 pour le corps, 3:1 pour les traits et les bordures des deux boutons. Aucune tolérance liée au caractère temporaire du bandeau.",
+   "enonce": "Les seuils de contraste habituels s'appliquent sans dérogation au bandeau de consentement.",
+   "mesure": "",
+   "contre": "",
+   "probleme": "le bandeau est le premier élément rencontré et il bloque la lecture tant qu'il n'a pas été traité. C'est le pire endroit possible pour un texte gris clair « puisqu'il va disparaître ».",
+   "statut": "universelle",
+   "statutLibelle": "propriété universelle",
+   "interne": false,
+   "sources": [
+    {
+     "ref": "S5",
+     "affirmation": "Un élément qui reçoit le focus ne doit pas être masqué ; seuils de contraste texte et composants",
+     "liens": [
+      {
+       "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      },
+      {
+       "label": "WCAG 2.2 — 1.4.3 Contrast Minimum",
+       "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      }
+     ],
+     "confiance": "Établi, standard (AA) — fonde R04 et R05"
+    }
+   ],
+   "principale": {
+    "ref": "S5",
+    "affirmation": "Un élément qui reçoit le focus ne doit pas être masqué ; seuils de contraste texte et composants",
+    "liens": [
+     {
+      "label": "WCAG 2.2 — 2.4.11 Focus Not Obscured",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+     },
+     {
+      "label": "WCAG 2.2 — 1.4.3 Contrast Minimum",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+     }
+    ],
+    "confiance": "Établi, standard (AA) — fonde R04 et R05"
+   },
+   "confiance": "",
+   "cas": []
+  },
+  {
+   "id": "CONSENTEMENT-UI-R06",
+   "couche": "ui",
+   "solution": "l'apparition du bandeau ne retarde jamais l'accès à ses actions. Une transition d'opacité courte est admise ; aucun glissement, aucun rebond, aucun délai avant l'activation des boutons.",
+   "enonce": "Chez nous, le bandeau apparaît par une transition d'opacité courte, sans déplacement, et ses actions sont immédiatement activables.",
+   "mesure": "sous `prefers-reduced-motion: reduce`, apparition instantanée. Dans tous les cas, aucun `transform` sur le bandeau.",
+   "contre": "",
+   "probleme": "un bandeau qui glisse pendant 400 ms puis se stabilise fait manquer le premier clic. Le motif se retrouve tel quel dans `FORM-UI` sur l'écran de confirmation — même cause, même remède.",
+   "statut": "identite",
+   "statutLibelle": "parti pris d'identité",
+   "interne": true,
+   "sources": [],
+   "principale": null,
+   "confiance": "",
+   "cas": []
+  }
+ ]
+}

@@ -1,0 +1,232 @@
+@import "./doctrine-demo.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body { margin: 0; }
+
+/* Simulation reduced-motion dans l'aperçu de l'atelier */
+.atelier-reduced *, .atelier-reduced *::before, .atelier-reduced *::after {
+  animation-duration: 0.001s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0.001s !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FONDATIONS — galeries lues depuis les tokens (thème-conscientes).
+   Transcrit fidèlement d'atelier.html (« tokens live » : chaque échantillon
+   est piloté par une var() réelle du système). Voir apps/site/app/ui/foundations.tsx
+   ══════════════════════════════════════════════════════════════════════════ */
+.foundations{margin-top:24px;display:flex;flex-direction:column;gap:24px;max-width:900px;}
+.fblock-l{font-family:var(--font-label);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+.chiprow{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.chiprow .rl{width:80px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.chip{height:38px;width:140px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-label);font-size:12px;font-weight:600;}
+/* typographie */
+.ty-row{display:flex;align-items:baseline;gap:16px;padding:9px 0;border-bottom:1px solid var(--border);}
+.ty-tag{width:44px;flex-shrink:0;font-family:var(--font-mono);font-size:12px;color:var(--primary);font-weight:500;}
+.ty-spec{width:52px;flex-shrink:0;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+.ty-sample{color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fam-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);}
+.fam-row b{font-size:15px;display:block;}
+.fam-d{font-size:12px;color:var(--text-secondary);font-family:var(--font-sans);}
+.fam-demo{font-size:20px;color:var(--text-secondary);letter-spacing:.02em;}
+/* icônes */
+.iconSizes{display:flex;gap:28px;align-items:flex-end;}
+.isz{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.ico{display:inline-grid;place-items:center;color:var(--text-primary);}
+.ico svg{width:100%;height:100%;}
+.isz-l{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);}
+.isz-l em{color:var(--text-muted);font-style:normal;margin-left:5px;}
+.iconSet{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px;}
+.icell{display:flex;flex-direction:column;align-items:center;gap:9px;padding:16px 8px;border:1px solid var(--border);border-radius:10px;background:var(--background);color:var(--text-primary);}
+.icell-l{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);}
+/* grille */
+.grow{margin-bottom:16px;}
+.grow-h{display:flex;align-items:center;gap:12px;margin-bottom:7px;}
+.grow-d{font-size:12px;color:var(--text-secondary);flex:1;}
+.grow-px{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+.grail{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px;}
+.gbar{height:26px;background:var(--primary-subtle);border:1px solid var(--primary);border-radius:5px;min-width:40px;}
+/* ombres / rayon */
+.shadowGrid,.radiusGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:20px;}
+.scard,.rcard{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.schip{width:100%;height:88px;border-radius:12px;background:var(--background);border:1px solid var(--border);}
+.rchip{width:88px;height:88px;background:var(--primary-subtle);border:1.5px solid var(--primary);}
+.scard-l{font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);text-align:center;}
+.scard-l em{display:block;color:var(--text-muted);font-style:normal;font-size:11px;margin-top:2px;}
+/* espacement */
+.sprow{display:flex;align-items:center;gap:16px;padding:6px 0;}
+.sbar{height:16px;background:var(--primary);border-radius:3px;flex:none;}
+/* motion */
+.motionGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;}
+.mcard{padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--background);cursor:pointer;}
+.mtrack{height:28px;border-radius:6px;background:var(--surface);position:relative;overflow:hidden;}
+.mdot{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:5px;background:var(--primary);}
+.mdot.go{left:calc(100% - 23px);}
+.mcard-l{display:block;margin-top:10px;font-family:var(--font-mono);font-size:12px;color:var(--text-secondary);}
+.mcard-l em{color:var(--text-muted);font-style:normal;margin-left:8px;}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CARD — groupe de cartes (Fluid Functionalism). Transcrit fidèlement d'atelier.html :
+   cartes transparentes (z1), filets internes par carte, highlight de proximité = rect
+   exact de la carte active en fond (z0). Voir apps/site/app/ui/card-group.tsx
+   ══════════════════════════════════════════════════════════════════════════ */
+.blk-title{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--text-primary);margin:0 0 10px;}
+/* Le groupe de cartes vit désormais dans @fili/react (components/card-group). */
+/* skeleton — structure réelle, pulsation en opacité */
+.sk{display:inline-block;background:var(--surface-hover);border-radius:var(--radius-sm);animation:sk-pulse 1.4s var(--ease-in-out) infinite;flex:none;}
+@keyframes sk-pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none;}}
+.sk-col{display:flex;flex-direction:column;gap:8px;}
+.sk-row{display:flex;align-items:center;gap:10px;}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DOC-PROSE — typographie de la documentation rendue depuis le markdown
+   (Doctrine + Audit). Sobre, pilotée par les tokens ; aucune valeur en dur
+   hors rythme vertical. Tailwind preflight remet les titres à plat : ce bloc
+   redonne la hiérarchie du système.
+   ══════════════════════════════════════════════════════════════════════════ */
+.doc-prose { color: var(--text-primary); font-size: 15px; line-height: 1.65; max-width: 74ch; }
+.doc-prose > :first-child { margin-top: 0; }
+.doc-prose h1, .doc-prose h2, .doc-prose h3, .doc-prose h4, .doc-prose h5, .doc-prose h6 {
+  color: var(--text-primary); font-weight: var(--weight-semibold); line-height: 1.25; letter-spacing: -.01em;
+  scroll-margin-top: 72px;
+}
+.doc-prose h1 { font-size: 28px; margin: 40px 0 12px; }
+.doc-prose h2 { font-size: 21px; margin: 40px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.doc-prose h3 { font-size: 17px; margin: 28px 0 8px; }
+.doc-prose h4 { font-size: 15px; margin: 22px 0 6px; }
+.doc-prose h5, .doc-prose h6 { font-size: 14px; margin: 18px 0 6px; color: var(--text-secondary); }
+.doc-prose p { margin: 0 0 14px; }
+.doc-prose ul, .doc-prose ol { margin: 0 0 14px; padding-left: 22px; }
+.doc-prose li { margin: 4px 0; }
+.doc-prose li > ul, .doc-prose li > ol { margin: 4px 0; }
+/* Les liens issus du MARKDOWN passent désormais par Link (@fili/react, mapping de
+   markdown.tsx) et portent leur facture et leur focus eux-mêmes. Les règles ci-dessous
+   ne servent plus qu'aux <a> du HTML BRUT embarqué dans les fiches (specimens, pieds
+   générés) — et leur appliquent la même fondation Focus/Bordure (BORDER-U05). */
+.doc-prose a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+.doc-prose a:hover { color: var(--primary-hover); }
+.doc-prose a:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+.doc-prose strong { font-weight: var(--weight-semibold); color: var(--text-primary); }
+.doc-prose code {
+  font-family: var(--font-mono); font-size: .875em; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .1em .35em;
+}
+.doc-prose pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 14px 16px; overflow-x: auto; margin: 0 0 16px;
+}
+/* Un conteneur SCROLLABLE est focalisable au clavier dans Chromium (le défilement doit
+   rester atteignable sans souris) : l'anneau est celui de la fondation Focus/Bordure —
+   géométrie et couleur tokenisées (--control-focus-*), jamais celui du navigateur.
+   Règle posée sur TOUS les <pre> (doc-prose, sources repliées, blocs de l'atelier) :
+   c'est l'application de la fondation transversale, pas une facture nouvelle. */
+pre:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+.doc-prose pre code { background: none; border: 0; padding: 0; font-size: 13px; line-height: 1.6; }
+.doc-prose blockquote {
+  margin: 0 0 16px; padding: 2px 0 2px 16px; border-left: 3px solid var(--border);
+  color: var(--text-secondary);
+}
+.doc-prose blockquote p:last-child { margin-bottom: 0; }
+.doc-prose hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+.doc-prose table {
+  width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 14px; display: block; overflow-x: auto;
+}
+.doc-prose th, .doc-prose td {
+  border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top;
+}
+.doc-prose th { background: var(--surface); font-weight: var(--weight-semibold); }
+.doc-prose img { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DOCTRINE — manifeste de fiche (bandeau « la question UX »), repris du site
+   DS-MD avec son animation (orbites + pilules qui flottent, emblème qui respire).
+   Re-câblé sur les tokens : bande `surface-inverse`, dégradé primary→secondary.
+   Ajout maison : l'animation s'éteint sous prefers-reduced-motion (MOTION-UX).
+   ══════════════════════════════════════════════════════════════════════════ */
+.doctrine-manifeste {
+  position: relative; overflow: hidden; display: flex; align-items: center;
+  min-height: 280px; padding: var(--space-xl); border-radius: var(--radius-lg);
+  background: var(--surface-inverse); color: var(--text-inverse);
+}
+.dm-texte { position: relative; z-index: 2; width: min(64%, 680px); }
+.dm-kicker { margin: 0; font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--secondary); }
+.dm-question { margin: var(--space-sm) 0 0; font-size: var(--text-h3, 1.5rem); font-weight: 600; line-height: 1.25; letter-spacing: -.01em; }
+.dm-detail { margin: var(--space-sm) 0 0; font-size: 15px; line-height: 1.6; opacity: .78; }
+.dm-anim { position: absolute; z-index: 1; right: -35px; top: 50%; width: 430px; height: 430px; transform: translateY(-50%); opacity: .9; }
+.dm-orbite { position: absolute; inset: 45px; border: 1px solid color-mix(in srgb, var(--secondary) 26%, transparent); border-radius: 50%; }
+.dm-orbite-b { inset: 105px; border-color: color-mix(in srgb, var(--primary) 34%, transparent); }
+.dm-pilule {
+  position: absolute; width: 72px; height: 24px; border-radius: var(--radius-pill, 9999px);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 28px color-mix(in srgb, var(--primary) 42%, transparent);
+  animation: dmFlotte 7s var(--ease-in-out) infinite;
+}
+.dm-pilule-a { left: 45px; top: 176px; }
+.dm-pilule-b { right: 58px; top: 92px; animation-delay: -2.3s; transform: rotate(55deg) scale(.72); }
+.dm-pilule-c { right: 38px; bottom: 84px; animation-delay: -4.6s; transform: rotate(-32deg) scale(.52); opacity: .65; }
+.dm-icone {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  display: grid; place-items: center; width: 126px; height: 126px; border-radius: 36px;
+  background: color-mix(in srgb, var(--background) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--background) 14%, transparent);
+  animation: dmRespire 5s var(--ease-in-out) infinite;
+}
+.dm-icone svg { width: 76px; height: 76px; }
+@keyframes dmFlotte { 0%, 100% { translate: 0 0; } 35% { translate: 18px -24px; } 70% { translate: -12px 18px; } }
+@keyframes dmRespire { 0%, 100% { scale: 1; rotate: -2deg; } 50% { scale: 1.06; rotate: 2deg; } }
+@media (prefers-reduced-motion: reduce) { .dm-pilule, .dm-icone { animation: none; } }
+@container (max-width: 60rem) {
+  .doctrine-manifeste { padding: var(--space-lg); min-height: 0; }
+  .dm-texte { width: 100%; }
+  .dm-anim { opacity: .28; right: -180px; }
+}
+
+/* Cible visée depuis une autre vue (une situation qui renvoie à sa règle) : un halo bref,
+   non chromatique au sens sémantique — c'est un repère de position, pas un état. */
+.cible-visee { box-shadow: 0 0 0 2px var(--secondary); transition: box-shadow var(--duration-slow) var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .cible-visee { transition: none; } }
+
+/* ── Le lien d'attribution de React Flow ──────────────────────────────────────
+   Le canevas du diagramme (`/flows/`) est rendu par @xyflow/react, qui pose lui-même un
+   lien « React Flow » en bas du cadre. Sa feuille de style lui donne l'anneau de focus du
+   NAVIGATEUR : au clavier, ce lien ne se donnait pas à voir comme les autres contrôles du
+   site (constat `focus-hors-systeme` de verifie:rendu, 2026-08-01). Les commandes de zoom
+   et de cadrage sont passées aux Button du kit ; ce lien-là, lui, appartient à la
+   bibliothèque et ne peut pas être remplacé — le retirer relèverait de sa licence, pas du
+   style. On lui rend donc la géométrie unique de BORDER, en tokens et sans valeur en dur,
+   exactement celle que `.ds-focus-ring` applique partout ailleurs. */
+.react-flow__attribution a:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
+
+/* ── L'anneau de focus des nœuds du diagramme ─────────────────────────────────
+   @xyflow/react ÉTEINT l'anneau du système, et il le fait par la SPÉCIFICITÉ, pas par
+   l'ordre — c'est ce qui rendait la panne difficile à lire :
+
+       .react-flow__node.selectable:focus-visible { outline: none }   (0,3,0)
+       .ds-focus-ring:focus-visible               { outline: … }      (0,2,0)
+
+   La classe du kit posée sur le nœud perdait donc silencieusement, et un `verifie:rendu`
+   annonçait dix contrôles tabulables sans indicateur au clavier (WCAG 2.4.7). Sa feuille
+   est en plus chargée EN DERNIER sur les pages /flows/ : un simple
+   `.react-flow__node.ds-focus-ring:focus-visible` ferait (0,3,0) contre (0,3,0), et
+   l'ordre trancherait encore en sa faveur. Il faut donc un cran de plus.
+
+   Le sélecteur reprend EXACTEMENT la portée de la règle qu'il annule — un nœud
+   sélectionnable qui a demandé l'anneau du kit — plutôt que d'écraser tous les nœuds :
+   si `elementsSelectable` passait à faux, la règle de la bibliothèque disparaîtrait et
+   `.ds-focus-ring` reprendrait la main tout seul. Aucune valeur en dur : la géométrie
+   reste celle de BORDER, en tokens. */
+.react-flow__node.selectable.ds-focus-ring:focus-visible {
+  outline: var(--control-focus-width) solid var(--control-focus-color);
+  outline-offset: var(--control-focus-offset);
+}
