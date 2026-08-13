@@ -35,7 +35,571 @@ traversé une perte est une pièce, pas une entrée vivante (`#057`) ; trente so
 perdues ; sept sont gelées. Le trou de `#013` à `#042` est la trace, et il vaut
 mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
+**Mise à jour du 2026-08-13 — la lignée du projet est rapatriée.** La lignée du
+projet a continué après `#049` sans voir `#051` ni `#057` (kit de création,
+test KYB, séance É1 et ses suites, déclaration du produit). Ses huit entrées
+postérieures à `#049` sont **reprises ici sous `#087` à `#094`**, textes
+d'origine, avec une note chacune. Correspondance : projet `#058`→`#087` ·
+`#059`→`#088` · `#060`→`#089` · `#050`→`#090` · `#051`→`#091` · `#061`→`#092` ·
+`#062`→`#093` · `#063`→`#094`. `claude/journal.md` est de nouveau **gelé comme
+pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire :
+`claude/plan-reconciliation-journaux-2026-08-13.md` et
+`claude/inventaire-versement-journal-2026-08-13.md`.
+
+
 ---
+
+## #095 — Les deux journaux sont réconciliés : le dépôt fait foi, la lignée du projet est rapatriée, rien n'est réécrit
+*2026-08-13 · Statut : 🟢 Verrouillé (décision d'Auteur : option A du plan de réconciliation) · Exécute `#051` et `#057` · Thread « resynchronisation des deux journaux »*
+
+**Contexte** — Le 7 août, `#051` et `#057` ont fait descendre le journal vivant
+au dépôt et gelé `claude/journal.md` à `#043`–`#049`. Les threads suivants —
+kit de création, test KYB, suites de la séance É1, déclaration du produit —
+n'ont pas vu cette décision et ont continué la lignée du projet. Résultat
+constaté le 13 août : deux journaux vivants, 52 décisions distinctes, huit
+numéros portant deux entrées différentes (`#050`, `#051`, `#058` à `#063`),
+et aucune décision écrite en double. Inventaire et plan :
+`claude/inventaire-versement-journal-2026-08-13.md`,
+`claude/plan-reconciliation-journaux-2026-08-13.md`.
+
+**Décision** — **Le dépôt fait foi, et la décision du 7 août est exécutée au
+lieu d'être révisée.** Les huit entrées du projet postérieures à `#049` sont
+reprises ici sous `#087` à `#094`, textes d'origine, chacune avec une note de
+provenance ; la correspondance est en tête de fichier. `claude/journal.md`
+est de nouveau **gelé comme pièce**, à 15 entrées. Le scellement, en retard
+depuis `#064`, est remis à jour : **45 entrées scellées, `#050` à `#094`**,
+aucune entrée passée touchée — vérifié par l'outil avant et après.
+
+**Sens produit / UX** — Un projet dont la mémoire vit à deux endroits n'a pas
+de mémoire : chaque numéro cité devient une ambiguïté, et chaque écriture un
+risque. La réconciliation rend au journal sa propriété première — une seule
+suite de décisions, sous une garantie mécanique qui refuse toute réécriture du
+passé. Et la cause de la divergence est nommée pour ne pas se reproduire : une
+décision d'autorité prise d'un côté et invisible de l'autre.
+
+**Alternatives écartées** — *Le projet fait foi* (37 reprises au lieu de 8, et
+au bout : un journal sans empreintes — on réinstallait la fragilité qui a coûté
+quarante-deux entrées) ; *deux journaux assumés avec un index* (le moins cher
+aujourd'hui, le plus cher pour toujours : chaque numéro devient ambigu, et deux
+journaux vivants, c'est deux fois le risque d'écriture concurrente — la cause
+de l'incident d'origine) ; *reprendre aussi `#043`–`#049`* (leur sort est déjà
+écrit par `#057` : gelées au projet, désignées par la table d'orientation).
+
+**Conséquences** — Une règle de tenue, opposable : **un thread qui n'a pas
+accès au dépôt n'écrit pas d'entrée — il dépose son texte « à coller » dans un
+document de projet, et un thread de tenue le verse ici.** C'est le protocole
+qui a réparé la divergence, écrit en règle. Les numéros `#087` à `#094` ne
+suivent pas la chronologie ; leurs notes de provenance en gardent la trace.
+Les renvois internes des entrées reprises suivent la numérotation du projet.
+Dette restante : la carte du dépôt (`system-map.md` du dépôt) n'est pas mise à
+jour par ce thread.
+
+**Impact carte** — Carte du projet : la note « État du journal » dit désormais
+que le vivant est au dépôt (45 entrées scellées) et que le journal du projet
+est une pièce gelée à 15 entrées. Aucun contrat touché, aucune assertion,
+aucun code de produit.
+
+---
+
+
+## #094 — La phrase fondatrice est retrouvée, et elle coiffe la déclaration
+*2026-08-13 · Statut : 🟢 Verrouillé (décision d'Auteur : « ça me semble fondateur ») · Complète `#061` et `#062` du projet (ici `#092` et `#093`), ne les révise pas*
+
+> **Note de reprise (2026-08-13)** — Entrée du journal du projet, reprise ici en
+> exécution de `#051` et `#057` : le journal vivant est ce fichier. Texte
+> d'origine inchangé ; les renvois `#0NN` du texte suivent la numérotation du
+> projet (correspondance en tête de fichier). Au projet, cette entrée porte le
+> numéro **`#063`**.
+
+**Contexte** — Après la déclaration (`#061`, `#062`) et deux jours de doute sur
+le marché — ce qui existe déjà en morceaux, ce qu'on vend, l'open source —,
+l'Auteur écrit : *« Mon but était simple : créer une encyclopédie des bonnes
+pratiques et permettre aux IA et aux humains de les maintenir dans le temps. »*
+Ce but date de la v1 et n'a jamais bougé ; il était déjà presque mot pour mot
+dans `#062` — « la mémoire et le gardien des bonnes pratiques ».
+
+**Décision** — La phrase entre au journal comme **phrase fondatrice**, en tête
+de la déclaration :
+
+> **Fili existe pour créer une encyclopédie des bonnes pratiques, et permettre
+> aux IA et aux humains de la maintenir dans le temps.**
+
+Tout le reste en descend. **L'encyclopédie**, c'est le savoir : la grille, les
+contrats, les registres, le vocabulaire, les décisions écrites. **Le maintien
+dans le temps**, c'est la partie dure — le Gardien, les batteries, le journal
+immuable — celle qui a coûté deux versions, et celle que le marché n'a pas :
+il est plein d'encyclopédies qui pourrissent.
+
+**Sens produit / UX** — Cette phrase donne le critère de tri que la déclaration
+cherchait : chaque pièce du projet est soit du **savoir**, soit du **maintien** ;
+ce qui n'est ni l'un ni l'autre n'appartient pas à Fili. Elle éclaire aussi les
+intuitions des derniers jours sans les trancher : une encyclopédie se **donne**
+— l'instinct open source d'hier — et ce qui se vend, c'est celui qui sait
+l'installer. Ces deux points restent des questions ouvertes, pas des décisions.
+
+**Alternatives écartées** — *La réécrire en langage produit* (c'est sa
+simplicité qui la rend fondatrice ; la reformuler serait la perdre une deuxième
+fois) ; *en faire une nouvelle déclaration qui remplace `#061` et `#062`*
+(elles ne se contredisent pas : la phrase dit le **but**, la déclaration dit le
+**produit** qui le sert).
+
+**Conséquences** — La phrase coiffe la déclaration ; `#061` et `#062` se lisent
+désormais comme sa traduction en produit. L'open source et le modèle — que
+donner, que vendre — restent **non tranchés**, à instruire dans leur propre
+thread.
+
+**Impact carte** — La carte portera la phrase fondatrice en tête ; elle n'est
+pas touchée dans ce thread.
+
+---
+
+## #093 — La déclaration se précise : Fili est un facilitateur, et ses trois verbes sont égaux
+*2026-08-13 · Statut : 🟢 Verrouillé (paroles d'Auteur, deux arbitrages rendus) · Révise `#061` du projet (ici `#092`) sur un seul point : le rang de l'audit*
+
+> **Note de reprise (2026-08-13)** — Entrée du journal du projet, reprise ici en
+> exécution de `#051` et `#057`. Texte d'origine inchangé ; les renvois `#0NN`
+> du texte suivent la numérotation du projet. Au projet, cette entrée porte le
+> numéro **`#062`**.
+
+**Contexte** — La déclaration de `#061` à peine versée, l'Auteur la reprend dans
+ses mots : *« L'idée centrale de Fili est là. Aider à construire, auditer et
+corriger des sites et apps qui utilisent des design systems de façon
+incohérente. »* Trois choses de cette phrase n'étaient pas dans `#061` : le mot
+**facilitateur**, l'ennemi nommé — **l'incohérence** —, et le verbe **corriger**.
+
+**Décision** — Trois précisions entrent dans la déclaration, dont une révise
+`#061`.
+
+1. **Fili est un facilitateur.** Il aide le designer à produire, à respecter ses
+   propres choix, et à les **propager aux autres** — au-delà de sa connaissance
+   personnelle. L'IA et Fili deviennent **la mémoire et le gardien des bonnes
+   pratiques**.
+2. **L'ennemi est nommé : l'incohérence.** Avoir une librairie d'objets et des
+   fondations de charte, tout le monde le fait. Les assembler de manière logique
+   et **faire respecter cette logique**, presque personne. Le rythme est le
+   **premier étage** de cette logique — on n'en est qu'au début.
+3. **Les trois verbes sont égaux : construire, auditer, corriger.** C'est la
+   révision de `#061`, qui plaçait l'audit « derrière la création ». L'audit est
+   un service plein, au même rang que la construction. Sa **limite** reste
+   écrite et ne bouge pas : il dit « rien d'inventé », jamais « bien réglé ».
+
+**Et un horizon déclaré, pas un chantier** — **Corriger l'existant** : remettre
+en cohérence des sites et apps déjà construits qui utilisent mal leur design
+system. C'est le marché le plus large, et c'est une destination écrite dans la
+déclaration. Mais on construit d'abord le geste de création ; la correction
+viendra quand le rythme et le sens tiendront. Arbitrage d'Auteur, rendu ce jour.
+
+**Sens produit / UX** — Ce que `#061` promettait — accepter la production d'une
+machine sans relire ligne à ligne — reste. S'y ajoute la **propagation** : une
+bonne pratique décidée une fois est tenue partout, même là où le designer ne
+regarde pas, même par des gens ou des machines qui ne l'ont jamais rencontré.
+Ses choix lui survivent au lieu de vivre dans sa seule tête.
+
+**Alternatives écartées** — *Laisser `#061` tel quel et ranger ces phrases en
+commentaire* (les mots de l'Auteur sont la déclaration, pas une glose) ;
+*garder l'audit derrière la création* (c'était la lecture de la veille,
+l'Auteur l'a corrigée : le service a trois verbes) ; *ouvrir le chantier
+« corriger l'existant » tout de suite* (le marché est large mais le geste de
+création n'est pas fini — un horizon déclaré vaut mieux qu'un chantier de
+plus).
+
+**Conséquences** — La déclaration se lit désormais en trois phrases : Fili est
+un facilitateur ; son ennemi est l'incohérence ; il aide à construire, auditer
+et corriger — les deux premiers verbes maintenant, le troisième à l'horizon.
+Rien d'autre de `#061` ne bouge : les jetons de rôle restent mis de côté,
+l'utilisateur déclaré reste le designer qui fait produire des IA, et la limite
+de l'audit reste écrite.
+
+**Impact carte** — Même note qu'en `#061` : la carte portera la déclaration
+précisée ; elle n'est pas touchée dans ce thread.
+
+---
+
+## #092 — Ce que Fili est, après les trois épreuves de sortie : le lien entre un rythme dérivé et un sens déclaré
+*2026-08-13 · Statut : 🟢 Verrouillé (quatre réponses d'Auteur aux questions de cadrage) · Révise `#040` sur un seul point : l'utilisateur déclaré · ⛔ Révisée par `#062` du projet (ici `#093`) sur le rang de l'audit*
+
+> **Note de reprise (2026-08-13)** — Entrée du journal du projet, reprise ici en
+> exécution de `#051` et `#057`. Texte d'origine inchangé, y compris sa note de
+> numérotation d'époque ; les renvois `#0NN` du texte suivent la numérotation du
+> projet. Au projet, cette entrée porte le numéro **`#061`**.
+
+> **Note de numérotation** — les entrées `#051` à `#060` vivent dans les documents
+> de leurs threads (séances, migration, règle du squelette) et ne sont pas encore
+> versées ici. Ce numéro suit le plus haut numéro déjà attribué (`#060`). Le trou
+> est la trace, comme celui de `#049`.
+
+**Contexte** — Trois épreuves de sortie ont confronté le système au dehors, et
+leur enseignement tient en une phrase de l'Auteur : **le marché sait déjà nommer
+une couleur par son rôle ; il ne sait ni poser un rythme, ni dire un sens.**
+S'y ajoute le résultat interne le plus dur du chapitre : un écran peut être
+conforme à cent pour cent et moins bon qu'avant — la conformité ne dit jamais le
+sens. Il fallait trancher ce que Fili garde et ce qu'il abandonne, avant
+d'engager quoi que ce soit d'autre.
+
+**Décision — la déclaration.**
+
+> **Fili est ce qui permet à un designer de faire produire des machines sans
+> perdre sa main.** Il tient en deux gestes que le marché ne fait pas, et qui ne
+> se séparent pas : **poser un rythme** — toute la géométrie descend de quelques
+> décisions d'auteur, personne ne choisit plus une valeur une par une — et
+> **dire un sens** — une page déclare ce qui compte d'abord, et l'absence
+> d'arbitrage devient impossible à ne pas voir. L'un sans l'autre a déjà
+> échoué : le rythme seul a produit un écran conforme et moins bon ; le sens
+> seul ne se transmet pas à une machine.
+
+**Ce qui est explicitement mis de côté, et pourquoi** —
+
+- **Les jetons de rôle et le nommage sémantique.** Le marché entier sait le
+  faire : ce n'est plus une invention, c'est un acquis ambiant. Fili s'y appuie
+  et ne le refait pas ; les sorties CSS, Tailwind et Figma restent des
+  véhicules, jamais la valeur.
+- **L'audit comme promesse.** Le Gardien et le moteur d'invariants sont gardés
+  comme **filet** : ils garantissent que rien n'a été inventé, jamais que c'est
+  bien réglé. Deux faits l'imposent — l'épreuve corrigée du kit (conforme et
+  moins bon), et l'instrument trouvé aveugle pendant le test d'entreprise. Dans
+  tout ce que Fili dit de lui-même, le filet passe derrière la création.
+
+**L'utilisateur déclaré change** — de « l'Auteur, seul » (`#040`) à **« le
+designer qui fait produire des IA »**, dont l'Auteur est le premier cas. Rien
+d'autre de `#040` ne bouge : ni les trois parcours, ni les sept écrans, ni la
+ligne rouge.
+
+**Sens produit / UX** — Ce que gagne celui qui s'en sert : il peut accepter ce
+qu'une machine a produit **sans relire ligne à ligne**, parce que le rythme est
+dérivé (rien à vérifier valeur par valeur) et que le sens est déclaré (rien à
+deviner sur ce qui compte). C'est une valeur qui croît avec la qualité des
+modèles au lieu de fondre avec elle.
+
+**Alternatives écartées** — *Revendiquer le rythme seul* (la preuve la plus
+solide du projet, mais l'épreuve corrigée a montré qu'il peut produire du
+conforme moins bon : vendu seul, il promet ce qu'il ne tient pas) ;
+*revendiquer le sens seul* (sans mécanique il ne se transmet pas, et le marché
+est plein de doctrines sans dents) ; *garder les jetons de rôle comme valeur
+propre* (ce serait se comparer là où tout le monde est déjà) ; *garder l'audit
+au premier rang* (un dispositif qui surestime ses garanties est le pire des
+dispositifs — établi deux fois sur pièce) ; *rester mono-utilisateur* (les
+trois épreuves ont précisément testé la transmission à des machines dirigées
+par un designer : c'est là que la valeur se joue).
+
+**Conséquences** — Tout chantier se juge désormais à cette aune : sert-il le
+rythme, le sens, ou leur lien ? Ce qui ne sert que l'acquis ambiant n'est plus
+un chantier de Fili. Aucun contrat n'est rouvert, aucune assertion ajoutée,
+aucun code écrit.
+
+**Impact carte** — La carte devra porter cette déclaration en tête et le
+changement d'utilisateur déclaré ; elle n'est pas touchée dans ce thread
+(règle de `#049` : une seule écriture de document vivant à la fois — ici,
+le journal).
+
+---
+
+## #091 — Le système éprouvé sur une US d'entreprise : 11 réponses sur 72, et un instrument aveugle
+*2026-08-11 · Statut : 🟢 Verrouillé · Thread « Test grandeur nature US-KYB »*
+
+> **Note de reprise (2026-08-13)** — Entrée du journal du projet, reprise ici en
+> exécution de `#051` et `#057`. Texte d'origine inchangé ; les renvois `#0NN`
+> du texte suivent la numérotation du projet. Au projet, cette entrée porte le
+> numéro **`#051`** (elle s'était numérotée `#049` par erreur à l'écriture, le
+> numéro était déjà pris ; corrigé au versement du 13 août, avec note).
+
+**Contexte** — US-KYB-001, formulaire KYB multi-juridictionnel volontairement
+monstrueux, passé en trois temps : recensement des questions d'interface,
+verdict de couverture, preuve par l'écran sur la tranche Identité + arbre UBO.
+
+**Résultat du recensement et du verdict** — 72 questions d'interface, 11
+familles. Le système répond à **11** (15 %), répond à moitié à **16** (22 %),
+ne répond pas à **45** (63 %). Les onze réponses pleines sont toutes de la
+géométrie ou de l'existence d'un état : c'est la Ligne de Partage de `#027`
+mesurée pour la première fois sur un cas réel, et elle tient.
+
+**Trois trous nommés, aucun improvisé** — *(1)* **S2 ne connaît que cinq
+états ; l'US en exige onze.** Dégradé, hors ligne, verrouillé, en conflit,
+lecture seule, en cours non bloquant : six états décidables, opposables, absents
+de tout contrat. C'est `B-ÉTAT`, candidat contrat, priorité 1. *(2)* **La chaîne
+géométrique s'épuise au troisième niveau.** Un arbre récursif en demande *n* ;
+au quatrième, la loi des rayons tend vers zéro et la chaîne des paddings tape le
+plancher. Le trou est dans la dérivation, la pièce que le projet croyait close.
+C'est `B-GEO`. *(3)* **R4.3 sur-bloquerait une vue-outil** : exiger un
+changement de densité toutes les deux sections n'a pas de sens sur un dossier
+réglementaire. Deuxième divergence entre conformité et utilité, après `#025`.
+
+**La contrainte a produit le dessin** — Plutôt que d'inventer une règle de
+profondeur, la conséquence de `B-GEO` a été tenue : l'arbre n'emboîte pas de
+surfaces, les nœuds sont de même rang et la profondeur se dit par le retrait.
+Quatre niveaux, aucune chaîne cassée, lisible à 320 px. Ça ne clôt pas `B-GEO` ;
+ça donne un argument au repli d'affichage contre le plancher.
+
+**La mesure** — Pièce construite avec le système : **9/9 aux neuf invariants**,
+dans quatre états et à trois largeurs, diviseur unique ÷2, une seule valeur de
+frontière par étage, zéro faute. Pièce écrite sans le système, sans sabotage :
+**6/9, 107 fautes** (i2 ×3, i6 ×3, i9 ×101), diviseur accidentel ÷1,7, deux
+valeurs de frontière sans parenté.
+
+**Et le résultat qui compte plus que les deux écrans** — Les 107 fautes de forme
+sont la partie visible. La partie coûteuse est ailleurs : la pièce sans règles
+**laisse soumettre un dossier dont une branche n'atteint aucune personne
+physique**, et **laisse passer un champ obligatoire vide sans rien dire**. Elle
+n'est pas laide, elle est fausse, et elle est fausse là où la géométrie ne
+regarde pas.
+
+**L'instrument d'audit était aveugle** — L'invariant 9 a rendu 1 déclaration lue
+sur 138. Depuis Chrome 112, une règle de style ordinaire porte une liste de
+sous-règles (CSS imbriqué) ; le moteur teste les sous-règles **avant** les
+déclarations, la branche des déclarations n'est donc jamais atteinte, et
+**aucune feuille de style n'est lue**. Une page entièrement en pixels y passe au
+vert. Écart mesuré sur la même pièce : **1 faute contre 101**. Correctif : une
+ligne, l'ordre des deux questions. C'est `#020` et `#021` répétés sur l'autre
+instrument — *un dispositif qui surestime ses propres garanties est le pire des
+dispositifs* — et la cause de fond est nommée : **le moteur des 9 invariants n'a
+ni fixtures piégées ni tests de mutation**, là où le Gardien en a depuis `#010`.
+
+**Alternatives écartées** — Élargir la tranche au champ TVA pour démontrer
+l'état dégradé (arbitrage d'Auteur : la tranche reste celle qui a été décidée ;
+le dégradé se joue sur le numéro d'identification). Rendre contractuels les deux
+états supplémentaires au passage (interdit par le brief : les trous se
+consignent, ils ne s'improvisent pas). Corriger le moteur d'audit dans la
+foulée (hors périmètre du thread).
+
+**Ce que ça ne prouve pas** — La comparaison n'est pas aveugle : la même session
+a écrit les deux pièces, limite de l'Épreuve A jamais levée, dont l'Épreuve E
+reste le seul correctif. Une seule tranche sur sept ; téléversement, co-édition
+et délégation — là où les trous sont les plus nombreux — n'ont pas été éprouvés.
+Aucun jugement d'Auteur n'a été rendu sur l'écran.
+
+**Impact carte** — Nouveaux chantiers consignés : `B-ÉTAT` (candidat contrat,
+priorité 1) · `B-GEO` (candidat loi, priorité 1) · `B-S4` (l'alternance sur une
+vue-outil ; verrou d'épreuve `#048` toujours en place) · `B-S6` (douze questions
+chiffrées) · `B-REG` (quatorze composants absents, charge de K5) · `B-A11Y` (six
+questions, zéro instrument). Dette d'outillage nouvelle : **le moteur des 9
+invariants n'est pas testé par mutation**, et son i9 est inopérant sur Chromium
+récent.
+
+**Pièces** — `claude/recensement-questions-kyb.md` · `claude/couverture-kyb.md` ·
+`claude/contrat-etat-tranche-kyb.md` · `claude/resultat-test-kyb.md` ·
+`kyb-identite-ubo.html` · `kyb-sans-regles.html`.
+
+---
+
+## #090 — Le kit de création est construit, et il est aligné sur l'Échelle Semantic Rhythm de l'Auteur : le modèle que j'avais reconstruit est abandonné
+*2026-08-11 · Statut : 🟢 Verrouillé (décision d'Auteur : « La mienne fait foi, aligne ton kit dessus ») · Ouvre et clôt le thread « Kit de création »*
+
+> **Note de reprise (2026-08-13)** — Entrée du journal du projet, reprise ici en
+> exécution de `#051` et `#057`. Texte d'origine inchangé ; les renvois `#0NN`
+> du texte suivent la numérotation du projet. Au projet, cette entrée porte le
+> numéro **`#050`** — le même numéro que l'entrée du dépôt sur le périmètre
+> typographique : c'est la collision qui a révélé la divergence des deux
+> lignées.
+
+**Contexte** — Le thread « Kit de création » s'ouvre sur `claude/brief-kit-creation.md` : outiller l'**étage 1 de la prévention** — rendre l'erreur inconstructible — avant l'audit, qui n'est que le filet. Les cinq questions de cadrage du §4 sont posées et répondues (`claude/cadrage-kit-creation.md`) : les trois cibles (CSS, Tailwind, Figma), les trois décisions d'entrée seules, la géométrie seule, une page « réglez et téléchargez », un fichier de règles unique éprouvé sur deux IA. L'accord de production est donné.
+
+**Le fait qui a tout décidé, et qui n'a été vu qu'à la fin** — La dérivation géométrique existe déjà chez l'Auteur, dans un générateur nommé *Échelle Semantic Rhythm*. Elle n'était **dans aucun document du projet**, et le dossier qui la contenait n'était pas accessible — une demande d'accès est restée sans réponse. J'ai donc **reconstruit** un modèle : échelle fermée `4 · 8 · 16 · 24 · 40 · 80`, quatre rôles verticaux, un « diviseur » entendu comme rapport minimal entre deux rôles voisins, une loi de rayons où le rayon d'un cadre valait celui de son contenu **plus** la marge. Ce modèle reproduisait à l'identique toutes les valeurs prouvées du corpus — l'échelle de `#017`, la table des trois régimes de `rythme-v0-etude.md`, les hauteurs de SPACING-R14 — et il était **faux quand même**, parce qu'il répondait à une autre question que celle que l'Auteur avait tranchée.
+
+**Décision** — **La mécanique de l'Auteur fait foi.** Le kit est réécrit sur elle, et le modèle reconstruit est abandonné — pas amendé. Ce qui change de nature :
+
+| Ce que j'avais construit | Ce qui fait foi |
+|---|---|
+| une échelle fermée de six crans | des valeurs continues, dérivées de la base et du ratio |
+| quatre **rôles** verticaux | trois **profondeurs** d'emboîtement — la coque, la carte, le détail |
+| un « diviseur » entre rôles voisins | un **ratio** entre profondeurs : `B`, `B/R`, `B/R²`, intervalle musical nommé |
+| rayon = rayon intérieur **+** marge | rayon **÷ 2** à chaque profondeur — l'octave |
+| un seul axe d'espacement | **deux axes distincts**, horizontal et vertical, d'élasticités différentes |
+| aucune fluidité | un rythme responsive de 320 à 1440 px, cinq axes, courbe adoucie |
+
+**Sens produit / UX** — Cinq choses, dont quatre n'étaient pas cherchées.
+
+**La profondeur n'est pas un jugement, le rôle en était un.** C'est le résultat qui compte, et il ne vient pas de moi. Mon fichier de règles demandait à l'IA de décider si deux blocs étaient « frères » ou « dans un bloc » — un arbitrage déguisé en règle. Le modèle de l'Auteur ne pose jamais cette question : il demande **à quelle profondeur d'emboîtement on se trouve**, ce qui est un fait lisible dans la structure. Le trou que l'épreuve avait révélé n'existe pas chez lui. C'est le critère d'admission de `#027` — *décidable sans contexte* — appliqué à l'espacement, et j'avais construit exactement ce qu'il interdit.
+
+**Un écran peut être conforme à 100 % et moins bon qu'avant.** C'est le résultat le plus dur du thread, et il tient à l'épreuve corrigée décrite plus bas. Le vérificateur contrôlait que chaque valeur venait de la liste ; il ne contrôlait pas que **le bon rôle** avait été employé. Le vert disait « rien n'a été inventé », il ne disait pas « c'est bien réglé », et je présentais l'un pour l'autre. C'est la faute que `#020` nomme : un dispositif qui surestime ses propres garanties. Le vérificateur a donc **changé de nature** (voir *Conséquences*).
+
+**Deux épreuves à l'aveugle, dont la première ne vaut rien — et c'est l'Auteur qui l'a établi.** Première épreuve : même commande donnée deux fois à une session vierge, avec et sans le fichier de règles. Résultat brut **0 faute contre 33**. L'Auteur l'invalide sur deux motifs, dont le second n'avait pas été vu : *(a)* l'écran équipé était trop nu pour être montré à un client ; *(b)* surtout, **les deux écrans ne portaient pas la même structure d'information** — « Date de naissance » suivi d'une valeur est une paire étiquette-donnée, donc un écart à régler ; « Née le 12 mars 1985 » est une phrase, donc aucun écart. La géométrie n'avait pas le même travail à faire des deux côtés. Le chiffre reste vrai ; il ne démontre pas ce qu'on lui faisait dire. **Ce cas exact est déjà consigné dans `claude/or-du-thread-histoire.md` §3 comme la fixture qui ouvrira S6** : l'Auteur n'a pas relevé un biais de protocole, il a reconnu un cas qu'il avait lui-même nommé.
+
+**La seconde épreuve, correctement montée, a fait échouer le kit — et c'est ce qui l'a sauvé.** Protocole corrigé : **un seul écran**, celui que l'Auteur accepterait de montrer, réespacé avec les règles. Identité vérifiée mécaniquement — 86 balises, 36 textes, 21 couleurs, 11 déclarations de police, identiques des deux côtés ; **40 nombres** changés, rien d'autre. Verdict du vérificateur : vert. Verdict de l'œil : les sections ne se séparaient plus, les cartes respiraient moins, la hiérarchie s'était aplatie. L'épreuve n'a **pas** été rejouée jusqu'à obtenir un résultat flatteur : c'eût été ajuster le critère après avoir vu la sortie, la faute nommée depuis `#002`.
+
+**Une alarme a été levée puis retirée, et le retrait vaut d'être écrit.** Sur le modèle reconstruit, j'avais annoncé une contradiction interne au corpus : *« le diviseur du kit vaut 2, le facteur de proximité de S3-R3.7 vaut 3, un écran conforme à la table des régimes est donc en faute au regard de R3.7 »*. Elle reposait **entièrement sur le sens que j'avais prêté au mot diviseur**. Chez l'Auteur, le ratio est un intervalle entre profondeurs — un autre objet que celui que R3.7 gouverne. **L'alarme est retirée. Le facteur 3 de `#018` n'est pas remis en cause.** Une alarme fausse sur un corpus verrouillé coûte plus cher qu'un silence : elle appelle une réouverture qui n'a pas lieu d'être.
+
+**Alternatives écartées** — *Garder mon modèle au motif qu'il reproduisait toutes les valeurs prouvées* (il les reproduisait, et il posait une autre question ; reproduire les sorties d'un système n'est pas en tenir la logique — c'est exactement le piège de la v1 que `#004` a nommé, une règle écrite avant sa référence) ; *fusionner les deux modèles, garder les rôles pour le vertical et les profondeurs pour l'emboîtement* (deux vocabulaires pour une seule mécanique, et l'IA aurait eu à choisir lequel s'applique — on aurait réintroduit le jugement qu'on venait de supprimer) ; *demander à l'Auteur d'arbitrer entre les deux au lieu de trancher pour le sien* (il a tranché, et l'arbitrage n'était pas symétrique : son modèle est plus complet, responsive, et il supprime un choix — le mien n'apportait rien qu'il n'ait déjà) ; *rejouer l'épreuve corrigée jusqu'à un résultat présentable* (`#002`) ; *taire l'échec de l'épreuve corrigée et livrer le kit sur le résultat de la première* (une épreuve invalide présentée comme preuve, sur un thread dont l'objet est précisément la prévention de la négligence) ; *garder l'alarme R3.7 « au cas où »* (une alarme dont on ne peut plus dire sur quoi elle porte est un bruit qui use le crédit des vraies) ; *écrire le fichier de règles sans les décisions déjà tranchées du registre* (l'exception du parcours plein écran, la rupture déclarée, la règle du drapeau existaient déjà dans `or-du-thread-histoire.md` §5 et §7 ; les omettre aurait fait du fichier une camisole, et c'est ce que le premier passage KYB a déjà payé).
+
+**Conséquences** — **Le kit existe, et il est prouvé contre la source.** Cinq pièces : le moteur de dérivation ; la page « réglez et téléchargez » ; les trois fichiers générés (`tokens.css`, `tailwind.fili.js`, `fili.tokens.json`) ; le fichier de règles `regles.md` ; l'écran de référence `exemple.html`, qui n'écrit aucun nombre et passe les sept règles du vérificateur.
+
+**Le crash-test de conformité — 24 assertions, toutes vertes.** L'étalon n'est pas une opinion : le générateur de l'Auteur est **ouvert dans un navigateur et ses valeurs sont lues**, puis comparées à la sortie du moteur. Socle exact aux réglages par défaut ; rythme responsive à 320, 480, 768, 1024 et 1440 px, 22 jetons à chaque largeur — **110 comparaisons, écart maximal 0,00008 px** ; un second jeu de réglages pour ne pas prouver seulement le cas par défaut ; refus de statuer hors plage plutôt que valeur bricolée.
+
+**Un prix déclaré, mesuré et non supposé.** Le générateur adoucit sa courbe en JavaScript ; le CSS ne sait qu'interpoler droit. L'écart a été mesuré tous les 10 px sur toute la plage : **0,924 px au maximum**, sur la marge de coque autour de 560 px. Sous le pixel, mais réel, et écrit plutôt que tu.
+
+**Le vérificateur a changé de nature.** Il ne compare plus des nombres à une liste — il vérifie qu'**il n'y a pas de nombre** : toute valeur d'espace, de taille ou de rayon doit être un `var(--…)`. Sept règles, lecture de code seule (S3 §2). Tolérés en dur : 0, 1 px, 2 px, 100 %, auto, 9999 px, 50 %. **Une règle nouvelle est rendue possible par le modèle de l'Auteur : G7 — les deux axes ne se mélangent pas**, un jeton horizontal posé sur une propriété verticale étant désormais une faute détectable, ce qui était impossible avec un axe unique. Capacité à échouer prouvée sur fixture piégée : 16 fautes, dont les deux mélanges d'axes.
+
+**Ce que le kit ne fait pas, et qui est l'autre moitié de l'étage 1** — les **composants typés**. Le fichier de règles *demande* à l'IA de bien faire ; un composant ne lui laisse rien à choisir. Le brief les mettait en « éventuellement » ; l'épreuve corrigée a montré que c'est là que se joue le résultat. La charge est nommée, elle n'est pas construite, et elle relève de S1 et de K5 — pas de ce thread.
+
+**Trois trous nommés par les épreuves, aucun improvisé** — l'écart horizontal entre deux contrôles côte à côte (résolu par les deux axes de l'Auteur), le cas du badge (ni contrôle ni composant), la largeur maximale d'une page. Ils partent au registre comme questions, pas comme réponses.
+
+**Deux dettes** — *(1)* la moitié **ChatGPT** de l'épreuve n'a pas été jouée, faute d'accès ; le protocole se rejoue tel quel. *(2)* **Le code du kit ne vit dans aucun dépôt.** Il a déjà été perdu une fois pendant ce thread — l'environnement d'exécution a été réinitialisé et le dossier de travail effacé ; seules les pièces déjà livrées ont survécu. C'est le §6 de `or-du-thread-histoire.md` appliqué au kit lui-même : la mémoire vit dans le dépôt du projet cible, et celui-ci n'y est pas encore.
+
+**Impact carte** — Ajout de la section **3.7 — Le kit de création**. Ajout à la documentation vivante de `claude/brief-kit-creation.md`, `claude/cadrage-kit-creation.md`, `claude/kit-creation-derivation.md`, `claude/kit-creation-resultat.md` et `claude/or-du-thread-histoire.md`. **Aucun contrat n'est rouvert ; aucune assertion n'est ajoutée ; le corpus reste à 29.** L'alarme portée contre R3.7 est **retirée** : le facteur 3 de `#018` reste tel quel. L'étage 1 de la prévention passe ⚪ → 🟡 : **une moitié construite et prouvée (la géométrie dérivée), une moitié nommée et non construite (les composants typés)**. La carte est par ailleurs remise à jour : elle était restée à `#048` depuis l'incident de `#049`.
+
+---
+
+## #089 — Le squelette devient une règle : une section qui attend attend en entier, et le corpus a eu le dernier mot sur la forme
+*2026-08-08 · Statut : 🟢 Verrouillé · R2.7 · le Gardien porte 30 assertions*
+
+> **Note de reprise (2026-08-13)** — Entrée écrite le 2026-08-08 dans
+> `claude/regle-squelette-b6-2026-08-08.md`, versée au journal du projet le
+> 13 août sous le numéro **`#060`**, reprise ici en exécution de `#051` et
+> `#057`. Texte d'origine inchangé ; les renvois `#0NN` du texte suivent la
+> numérotation du projet.
+
+**Contexte** — Point de passage B-6, refusé à la séance du 2026-08-07 :
+*« les titres et les textes ne sont pas traités en squelette comme le reste »*.
+Le rangement l'avait classé en réouverture de règle plutôt qu'en correction de
+valeurs : corriger l'écran de chargement de É1 seul n'aurait rien dit de É2 à
+É7. Trois énoncés de sévérité différente ont été soumis à l'Auteur, avec ce que
+chacun laisse passer et ce qu'il bloque à tort. Il a tranché le deuxième.
+
+**Décision** — **Une section qui attend ses données attend en entier : son titre
+et la phrase posée sous lui deviennent gris avec le reste.** Le haut de page
+reste écrit — il n'attend rien. La règle ne juge que le chargement ; elle se
+contrôle sur le fichier ; elle se déclare avec un motif quand un écran doit en
+sortir. Elle entre au contrat des états sous le numéro R2.7. Douze sections des
+sept écrans y sont repassées ; le rendu nominal ne change pas.
+
+**Sens produit / UX** — Trois choses.
+
+**Le défaut n'était pas qu'il manquait du gris, c'est qu'il en manquait à côté
+du gris.** Un écran à moitié lu et à moitié gris ne promet pas une page qui
+arrive : il en promet une autre. Le titre écrit dit « voilà ce que vous allez
+lire » pendant que le bloc gris dit « je ne sais pas encore ». Les deux ne
+peuvent pas être vrais en même temps, et c'est ce désaccord que l'œil attrape
+avant de savoir le nommer.
+
+**La règle a rencontré une règle déjà verrouillée, et c'est la seconde qui a dit
+comment la première s'écrit.** Descendre le titre dans le conteneur voulait
+d'abord dire l'emballer avec le contenu dans un groupe. R3.7 refuse un groupe
+dont l'écart intérieur n'est pas trois fois plus serré que l'écart extérieur :
+l'emballage aurait forcé à écarter les blocs de 32 à 48 pixels sur les sept
+écrans — un changement d'espacement que personne n'avait demandé, deux jours
+après un arbitrage sur les espaces. La forme retenue ne pose aucun groupe
+nouveau et ne déplace aucun pixel. **Une règle neuve qui déplace ce qu'une règle
+ancienne a fixé n'est pas une règle neuve : c'est une régression déguisée.**
+
+**Une seule chose parle encore pendant l'attente, et elle est signée.** Le
+compte qui avance sur É1 — « 47 épreuves sur 80 » — sort de la règle avec son
+motif écrit dans le code : il ne décrit pas le contenu à venir, il décrit
+l'attente elle-même. C'était annoncé comme le coût de cette version avant que
+l'Auteur tranche, et c'est le seul. **Un coût annoncé avant l'arbitrage et
+retrouvé après n'est pas une dette : c'est une prévision tenue.**
+
+---
+
+## #088 — L'arbitrage de lecture de É1 déclaré par K2 tombe, et le déplacement qui l'applique invente du contenu que personne n'a demandé
+*2026-08-08 · Statut : 🟢 Appliqué · La primauté de É1 est réécrite · Une faute de conception assistée est nommée*
+
+> **Note de reprise (2026-08-13)** — Entrée écrite le 2026-08-08 dans
+> `claude/suite-temoin-e1-2026-08-08.md` §5, versée au journal du projet le
+> 13 août sous le numéro **`#059`**, reprise ici en exécution de `#051` et
+> `#057`. Texte d'origine inchangé ; les renvois `#0NN` du texte suivent la
+> numérotation du projet.
+
+**Contexte** — K2 §5 déclarait que ce qui compte d'abord sur É1 est l'intégrité
+du juge, avant le verdict lui-même — un juge désarmé qui affiche vert étant la
+panne de #020. Le protocole avait écrit que chacune des sept propositions
+d'arbitrage de lecture pouvait tomber. Au B-1 de la séance du 7 août, l'Auteur a
+prononcé non : *« j'aurais mis le résultat en premier. Le besoin immédiat, ce
+n'est pas ce qui a été fait, mais si ça marche ou pas et dans quelles
+proportions. »*
+
+**Décision** — **La primauté de É1 devient le résultat de la batterie.** Le bloc
+du résultat est le premier bloc et porte la marque de tête ; l'intégrité du juge
+vient immédiatement après. **Le résultat n'a pas de titre à lui : le grand titre
+de la page est son titre.** La respiration suit le B-9 : seule la section du
+résultat est ample, les trois autres alternent. Le titre de page, le chapeau et
+la déclaration interne de primauté restent ceux du 7 août : ils seront dictés
+par l'Auteur, et la contradiction qu'ils portent est laissée visible.
+
+**Sens produit / UX** — Trois choses, et la deuxième n'était pas au programme.
+
+**L'intégrité du juge ne disparaît pas, elle change de rôle.** Elle ne dit plus
+ce qu'il faut vérifier avant de regarder ; elle dit ce que le résultat vaut. Un
+résultat vert rendu par un juge amputé ne vaut toujours rien, et la page le
+montre toujours — comme une garantie, plus comme un préalable. La panne de #020
+reste couverte ; c'est l'ordre de lecture qui change, pas la couverture.
+
+**Un déplacement de hiérarchie n'est jamais un geste sans contenu, et la session
+qui l'a exécuté l'a prouvé en inventant.** La première version a créé un
+quatrième titre de section, réécrit deux phrases d'écran et une phrase de
+doctrine, et modifié une valeur d'espacement — sans qu'on lui demande une ligne
+de contenu. **Le mécanisme est identifiable et il se répétera : sortir un bloc
+d'une section, c'est lui retirer ce qui le titrait ; le trou s'ouvre, et la
+machine le bouche au lieu de le montrer.** L'Auteur l'a vu au rythme des titres,
+en un regard : trois titres de section avant, quatre après. La réparation a
+consisté à retirer l'invention, à remettre les phrases d'origine, et à faire
+arbitrer chaque trou plutôt qu'à le remplir. **Ce que Fili doit produire n'est
+pas seulement un garde-fou sur le code écrit : c'est un garde-fou sur le contenu
+qui apparaît sans avoir été demandé.**
+
+**Le ricochet attendu sur le B-8 n'a pas eu lieu.** Le rangement de la séance
+pariait que remonter le résultat rapprocherait le bouton du bas. Mesure en
+320 × 568 après correction : il est toujours à la troisième page, très
+légèrement plus bas. La tête est ample, et le bloc du résultat y a gagné de
+l'air. Le B-8 se remesurera à la génération suivante et il sera toujours
+mauvais. **Un rangement de défauts est une hypothèse sur les causes ; celle-ci
+était fausse, et elle est consignée fausse plutôt que corrigée en silence.**
+
+---
+
+## #087 — La première séance du protocole se tient, É1 est refusé, et la découverte n'est pas dans le verdict : la typographie du produit ne s'affichait nulle part
+*2026-08-07 · Statut : 🔴 Témoin refusé · La lignée É1 n'a pas de référence*
+
+> **Note de reprise (2026-08-13)** — Entrée écrite le 2026-08-08 dans
+> `claude/suite-temoin-e1-2026-08-08.md` §5, versée au journal du projet le
+> 13 août sous le numéro **`#058`**, reprise ici en exécution de `#051` et
+> `#057`. Texte d'origine inchangé ; les renvois `#0NN` du texte suivent la
+> numérotation du projet. C'est la première des huit reprises : la
+> correspondance complète est en tête de fichier.
+
+**Contexte** — Première séance jamais exécutée du protocole de référence, après
+son gel définitif et après l'annulation du même jour. Le contrôle d'admission a
+été pris sur pièce et non sur attestation : batterie relancée à 29 assertions
+sur 29 et verdict à 100 %, chaîne de rendu relancée et les cinq fichiers
+comparés par empreinte avant et après — identiques au bit près, cinq états
+rendus. Huit points de passage sur neuf portés ; B-2 déclaré sans objet parce
+que la primauté de É1 était hors du froid depuis le cadrage de la séance
+annulée.
+
+**Décision** — **Le témoin n'est pas accepté : il ne devient pas la référence de
+son gabarit.** Un point tenu sur huit — la matière du système, au B-4. Sept
+refusés : pas d'auteur (B-3), contenu utile hors d'atteinte (B-8), états
+bouche-trous (B-7), squelette qui n'annonce pas (B-6), mauvais ordre de lecture
+(B-1), espaces mal répartis (B-9), mots qui ne sont pas ceux de l'Auteur (B-5).
+
+**Sens produit / UX** — Trois choses, et la plus lourde n'était pas au programme.
+
+**La typographie du produit ne s'affichait nulle part, et rien ne le disait.**
+Les fichiers de police embarqués déclarent *Geist Variable*, *Inter Variable*,
+*JetBrains Mono Variable* ; le registre d'expression réclamait *Geist*, *Inter*,
+*JetBrains Mono*. Le navigateur ne rapproche pas : il retombe en silence sur la
+police système. Aucune erreur, aucun écart au Gardien, aucun symptôme — sinon un
+produit entier, ses dix-sept témoins et la planche des registres elle-même
+affichés dans une police qui n'est pas la sienne, depuis le premier jour. **Ce
+n'est pas un défaut du témoin, c'est un défaut du produit** : le témoin montrait
+fidèlement ce que l'application montrait, et c'est la condition 2 d'admission qui
+tient. Le B-4 a donc été prononcé sur une planche qui ne montrait pas la vraie
+matière ; ce oui reste écrit, il ne se corrige pas, et il devra être reposé.
+
+**La correction a trouvé une seconde pièce cassée dans la même chaîne.** Un
+témoin porte sa feuille de style à l'intérieur de lui, mais une feuille de style
+ne peut que désigner un fichier de police, jamais le porter — et personne
+n'avait déposé ces fichiers à côté des témoins. Le bon nom seul n'aurait rien
+changé pour eux. Les fichiers sont maintenant déposés une fois à la racine des
+témoins, 444 Ko, et chaque témoin les désigne par son chemin de retour. Une
+lignée déplacée sans ce dossier reperd sa police : c'est le prix arrêté contre
+celui de recoudre la police dans chacun des fichiers, à chaque génération.
+
+**Le contrôle sur pièce vaut mieux que l'attestation, et c'est lui qui a trouvé
+le reste.** Il a coûté trois commandes. Il a permis d'affirmer sans croire
+personne sur parole que rien n'avait été retouché à la main — et c'est le même
+réflexe, appliqué aux polices, qui a mis au jour le défaut le plus large du
+chapitre.
+
+---
+
 
 ## #086 — Troisième sortie : non concluant, et c'est le résultat le plus utile des trois
 
