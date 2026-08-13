@@ -1,7 +1,12 @@
 {
   "$comment": "Empreintes des entrées du journal. Une entrée passée dont l'empreinte change est une réécriture, et le dépôt la refuse. Scellé par tools/fili/journal/immuable.mjs.",
-  "entrees": 46,
+  "entrees": 51,
   "empreintes": {
+    "#100": "50d6608ffa845921",
+    "#099": "0c8c13d17134941f",
+    "#098": "3ce996f560344d6e",
+    "#097": "95d059ab36544c87",
+    "#096": "2a57de314412cb3c",
     "#095": "402a181267ec671d",
     "#094": "7d699b0e52500ee5",
     "#093": "22dc2f06661782d7",

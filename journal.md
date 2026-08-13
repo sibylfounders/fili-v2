@@ -49,6 +49,92 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #100 — Reprise de la couleur : seize règles de code, et le texte pâle remonte au-dessus du seuil
+*2026-08-13 · Statut : 🟢 acté (accord d'Auteur ; arbitrage d'Auteur sur le texte pâle) · Thread « reprise des lois de l'étude de mise en page »*
+
+Reprise de la couleur — seize règles de code, trois mesures de rendu, et
+un arbitrage qui ferme une contradiction. Le quatrième paquet de la
+reprise des lois de l'étude est rédigé : les 22 lois vivantes de la
+couleur deviennent seize règles au moule V2 et trois mesures pour le
+futur instrument de rendu. L'arbitrage d'Auteur du texte pâle est
+prononcé : le gris remonte au-dessus du seuil de lisibilité dans les deux
+thèmes — la norme ne connaît pas d'exception « métadonnées », la
+contradiction que le fonds gardait ouverte est fermée par le haut, et la
+dette « liste fermée » du ménage est dissoute. La remontée de la valeur
+est commandée au registre, pas exécutée ici. Le principe « par rôle,
+jamais par valeur » coiffe la famille. Zéro code, zéro contrat ouvert,
+aucune assertion ajoutée au Gardien. Pièce :
+`claude/reprise-couleur-regles.md`.
+
+---
+
+## #099 — Reprise du tactile : dix règles de code, cinq mesures pour le futur instrument de rendu
+*2026-08-13 · Statut : 🟢 acté (accord d'Auteur) · Thread « reprise des lois de l'étude de mise en page »*
+
+Reprise du tactile — dix règles de code, cinq mesures de rendu. Le
+troisième paquet de la reprise des lois de l'étude est rédigé : les 23
+lois vivantes du tactile (la famille aux 72 violations de l'étude)
+deviennent dix règles au moule V2 — trois paires qui disaient la même
+chose sur les deux couches du fonds sont fusionnées en le disant — et
+cinq mesures consignées pour le futur instrument de rendu, qui n'est pas
+construit. La sanction d'arrêt du ménage est intégrée à la règle du
+plancher ; les principes (le doigt n'est pas une souris, la zone
+d'atteinte, la rampe) partent en référence avec la liste de contrôle.
+Une tension de source sur l'empreinte du doigt est consignée, sans effet
+sur les seuils. Zéro code, zéro contrat ouvert, aucune assertion ajoutée
+au Gardien. Pièce : `claude/reprise-tactile-regles.md`.
+
+---
+
+## #098 — Reprise des arrondis : dix règles sur papier, et la dette des superposés est fermée
+*2026-08-13 · Statut : 🟢 acté (accord d'Auteur) · Thread « reprise des lois de l'étude de mise en page »*
+
+Reprise des arrondis — dix règles sur papier. Le deuxième paquet de la
+reprise des lois de l'étude est rédigé : les dix lois vivantes des
+arrondis sont réécrites au moule V2 (énoncé, mesure décidable sans
+contexte, test esquissé), la table de risques passe en référence, et la
+dette du ménage est fermée — la loi des superpositions est corrigée dans
+sa version consignée : un superposé est un conteneur, grand cran, comme
+l'arbitrage du 3 août l'avait déjà tranché côté arrondis. Quatre règles
+sur dix déclarent leur dépendance au registre typé et refuseront de
+statuer sans lui. Zéro code, zéro contrat ouvert, aucune assertion
+ajoutée au Gardien. Pièce : `claude/reprise-arrondis-regles.md`.
+
+---
+
+## #097 — Le ménage des seize douteuses est tranché : le corpus de reprise passe de 260 à 247 lois
+*2026-08-13 · Statut : 🟢 acté (seize verdicts d'Auteur) · Thread « reprise des lois de l'étude de mise en page »*
+
+Ménage des 16 lois douteuses de l'étude de mise en page — tranché. Les 16
+douteuses de l'inventaire validé ont été présentées une par une et jugées :
+6 jetées (les notes d'ouverture historiques), 4 fusionnées dans leur loi
+voisine, 2 reclassées principes de tête, 1 reclassée liste de contrôle de
+référence, 3 gardées avec exécution (le texte pâle attend sa liste fermée
+d'usages ; le récit de la grille de colonnes est résumé à sa décision ; la
+contradiction superpositions/arrondis est tranchée en faveur des arrondis —
+un superposé est un conteneur). Le corpus de reprise passe de 260 à 247 lois
+comptées. Les fichiers sources du fonds ne sont pas modifiés : chaque verdict
+s'exécute à la reprise de sa famille. Pièce :
+`claude/menage-lois-douteuses-verdicts.md`. Aucune règle écrite, aucun
+contrat ouvert.
+
+---
+
+## #096 — L'inventaire des 260 lois de l'étude de mise en page est validé, et le premier paquet est choisi : le ménage
+*2026-08-13 · Statut : 🟢 acté (décisions d'Auteur : inventaire validé, premier paquet choisi) · Thread « reprise des lois de l'étude de mise en page »*
+
+Reprise des lois de l'étude de mise en page — inventaire validé. Les 260
+lois des 12 fondations V1 sont classées loi par loi : 9 déjà couvertes par
+le Gardien, 138 candidates règles lisibles au fichier, 26 vérifiables
+seulement au rendu (hors Gardien par construction — un instrument tiers,
+dont l'étude a laissé le prototype), 71 affaires d'œil versées à la
+référence, 16 douteuses à trancher. Pièces :
+`claude/inventaire-lois-etude-mise-en-page.md` et
+`claude/paquets-reprise-lois-etude.md`. Le premier paquet choisi est le
+ménage des 16 douteuses. Aucune règle écrite, aucun contrat ouvert.
+
+---
+
 ## #095 — Les deux journaux sont réconciliés : le dépôt fait foi, la lignée du projet est rapatriée, rien n'est réécrit
 *2026-08-13 · Statut : 🟢 Verrouillé (décision d'Auteur : option A du plan de réconciliation) · Exécute `#051` et `#057` · Thread « resynchronisation des deux journaux »*
 
