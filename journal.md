@@ -37,6 +37,59 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #086 — Troisième sortie : non concluant, et c'est le résultat le plus utile des trois
+
+*2026-08-12 · Statut : 🟡 Non concluant, par le sort déclaré d'avance · Le tri du corpus était faux*
+
+**Contexte** — Troisième épreuve, troisième outil : un écran produit par GPT,
+servi en local. Même demande, même liste figée, même seuil.
+
+**Verdict : non concluant.** C'est le troisième sort écrit avant l'épreuve 1 —
+*« moins de trois contrôles parlent, et c'est une réponse aussi »*. Un seul des
+treize a eu quelque chose à dire. **Avoir écrit ce sort d'avance est ce qui permet
+aujourd'hui de l'appeler un résultat et non un échec.**
+
+**Pourquoi ils se sont tus** — L'écran ne contient aucune classe utilitaire. Il est
+écrit en CSS ordinaire, avec trente et un noms de classes qui décrivent des rôles.
+Nos douze contrôles muets lisent tous des classes utilitaires.
+
+**Ce que ça dit, et ça touche la définition du projet** — **Notre cadre n'est pas
+un cadre de design, c'est un cadre Tailwind.** Les treize contrôles qu'on avait
+rangés du côté « juge n'importe quel code » jugent en réalité *une façon d'écrire
+du code*. Ce n'est pas une faiblesse d'implémentation : **le tri fait avant
+l'épreuve 1 était faux**, et il a fallu trois épreuves pour s'en apercevoir. La
+règle tient ; l'instrument regarde au mauvais endroit.
+
+**Le relevé à la main, hors corpus et déclaré comme tel** — Sur la couleur, c'est
+**le meilleur des trois** : sept teintes choisies, déclarées une fois, nommées par
+leur rôle, aucune palette de librairie. C'est notre propre doctrine, écrite par
+quelqu'un d'autre. Sur le rythme, c'est **le pire des trois** : trente-huit valeurs
+d'espacement, soixante-huit déclarations, **pas une seule qui passe par une
+variable**. Sur la typographie, douze tailles là où nous en admettons six, dont du
+neuf et du dix — sous cette taille, un texte en capitales espacées n'est plus lu,
+il est deviné.
+
+**Et il faut l'écrire, même si ça dérange : c'est le plus beau des trois.** Titre
+éditorial en deux temps, palette crème, bandeau de chiffres sans une seule surface,
+respiration large. **Le plus beau des trois est celui que notre cadre ne sait pas
+juger, et le seul qui ait une vraie palette est celui dont le rythme est le plus
+désordonné.** Ces deux phrases valent tout le reste de la journée : elles disent où
+le cadre sert, et où il ne dit rien de ce qui compte.
+
+**Alternatives écartées** — *Rouvrir le tri pour reclasser les contrôles muets*
+(la liste est figée depuis l'épreuve 1 ; la rouvrir en cours de série annule les
+trois mesures — le tri se corrigera, après, par une décision datée) ; *compter le
+relevé à la main dans le verdict* (il n'est pas passé par le corpus, il n'a pas la
+même valeur de preuve) ; *conclure que GPT est « le meilleur »* (il est le plus
+beau et le plus désordonné, et ces deux choses sont vraies ensemble).
+
+**Impact carte** — Trois épreuves de sortie faites : deux succès, un non concluant.
+**Charge majeure ouverte** : le corpus ne sait lire qu'une seule façon d'écrire du
+style. Tant que c'est vrai, « ce cadre juge n'importe quel code » est une phrase
+fausse, et elle était écrite dans le tri du 12 août.
+
+---
+
 ## #085 — Deuxième sortie : quand l'IA a déjà un cadre, elle le tient — sauf pour dire un sens
 
 *2026-08-12 · Statut : 🟢 Épreuve 2 passée · Le résultat le plus utile depuis l'ouverture du chantier*
