@@ -37,6 +37,66 @@ mieux qu'un journal sans trou qui donnerait à croire qu'il n'a rien perdu.
 
 ---
 
+## #085 — Deuxième sortie : quand l'IA a déjà un cadre, elle le tient — sauf pour dire un sens
+
+*2026-08-12 · Statut : 🟢 Épreuve 2 passée · Le résultat le plus utile depuis l'ouverture du chantier*
+
+**Contexte** — L'épreuve 1 avait mesuré une IA sans rien : Gemini, aucune règle,
+aucune bibliothèque. L'épreuve 2 mesure l'inverse : **Figma Make**, qui travaille
+avec un système de jetons. Même demande banale, **et surtout la même liste de
+contrôles et le même seuil, figés avant l'épreuve 1 et non retouchés**. C'est ce
+qui rend les deux mesures comparables ; les rouvrir aurait annulé les deux.
+
+**Résultat brut** — Sept contrôles sur treize trouvent du réel, deux refus
+injustes. Succès au même seuil. Mais le score n'est pas le résultat.
+
+**Le résultat, c'est la comparaison.** Le nombre de refus de fond passe de **240 à
+96**. Figma Make écrit **soixante-dix-huit couleurs sémantiques** — il ne nomme
+presque jamais une couleur, il nomme un **rôle**. Un outil doté d'un système de
+jetons produit trois fois moins de désordre, sans qu'on lui ait rien demandé.
+**C'est un fait qui touche la raison d'être du projet** : la bouillie visuelle
+n'est pas une fatalité de l'IA, c'est une conséquence de l'absence de cadre — et
+le marché est en train de combler ce vide tout seul.
+
+**Et voici ce qui reste, et c'est exactement notre place.** Les dix-sept couleurs
+en clair qui subsistent sont **toutes** aux deux mêmes endroits : le jeton de
+statut et le jeton de priorité. Partout ailleurs le rôle suffit ; **dès qu'il faut
+dire un sens, l'outil retombe sur le bleu, l'ambre, le vert, le rouge**. Or c'est
+précisément la pièce que Fili porte : un état s'emploie par couple déclaré, et le
+sens ne se lit jamais à la couleur seule. Le meilleur outil du marché n'a pas
+cette pièce. **Si le projet doit se resserrer sur une chose, c'est celle-là.**
+
+**Un aveuglement découvert au passage** — `bg-card` et `text-foreground` ne
+viennent pas de notre palette et **notre contrôle ne les voit pas** : il ne connaît
+que les familles livrées par défaut avec l'outil. Chez nous ces classes ne
+compileraient pas — la porte est fermée — mais aucun message ne nommerait la
+faute. Un écran écrit dans un autre vocabulaire de jetons traverserait le contrôle
+en silence. Charge ouverte, non corrigée : on ne corrige pas pendant une mesure.
+
+**Ce qui n'a pas bougé** — Soixante-dix-huit espacements hors échelle, trente-trois
+valeurs différentes. Aucun outil du marché n'a d'échelle nommée. La conclusion de
+`#084` tient sans une virgule de moins : **sans outil de traduction, le cadre reste
+inadoptable sur du code existant**.
+
+**La faute la plus grave des deux épreuves** — Un bloc non interactif qui porte un
+clic : invisible au clavier, muet au lecteur d'écran. Trouvée chez l'outil le plus
+soigné des deux. Hors liste figée, donc signalée et non comptée.
+
+**Alternatives écartées** — *Rouvrir la liste des contrôles pour tenir compte des
+jetons sémantiques* (elle est figée depuis l'épreuve 1 ; la rouvrir en cours de
+série annule les deux mesures) ; *conclure que Figma Make est « meilleur »* (on a
+mesuré la conformité à notre cadre, pas la qualité perçue — le troisième chiffre,
+celui de l'œil, manque toujours) ; *corriger l'aveuglement du contrôle de couleur
+dans la foulée* (corriger pendant une mesure, c'est mesurer autre chose).
+
+**Impact carte** — Deux épreuves de sortie faites, deux succès au seuil déclaré.
+Une charge nouvelle : le contrôle de couleur est aveugle aux vocabulaires de jetons
+étrangers. **Et une orientation produit, qui n'est pas une décision et attend
+l'Auteur** : ce que le marché ne fait pas, c'est le sens — l'état, la priorité, ce
+qui ne se lit pas à la couleur seule.
+
+---
+
 ## #084 — Première sortie : le cadre tient sur du code étranger, et ce n'est pas ce qu'on croyait qui a trouvé
 
 *2026-08-12 · Statut : 🟢 Épreuve 1 passée, deux enseignements qui dérangent*

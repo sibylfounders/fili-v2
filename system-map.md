@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#084`
+> **Dernière décision au journal** : `#085`
 
 **Légende des statuts**
 
@@ -124,6 +124,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Le moteur de géométrie sans preuve contre la source | 🔴 | `#059` | Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois jetons produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt. |
 | La provenance des hauteurs de témoin | 🔴 | `#059` | Elles se disaient « multiples de l'échelle d'espacement, 21 pas de 32 ». La phrase n'a plus d'objet. Les valeurs restent justes, leur justification est à réécrire. |
 | Les cinq trous de la promesse mesurée | 🟢 | `#081` → `#083` | Fermée : couleur nommée (`#082`), rond qui tourne, icône répétée, texte suivi hors pile, porte des données (`#083`). |
+| Le contrôle de couleur est aveugle aux jetons étrangers | 🔴 | `#085` | Il ne connaît que les familles livrées par défaut. Un écran écrit dans un autre vocabulaire de jetons le traverse en silence — la porte est fermée, mais aucun message ne nomme la faute. |
 | La règle du mouvement est trop large d'un cran | 🔴 | `#084` | « Rien ne tourne dans le vide » vise l'attente et refuse toute animation, y compris l'ouverture d'une fenêtre. Constatée en mesure, non corrigée. |
 | Rien ne traduit du code existant vers le cadre | 🔴 | `#084` | 240 refus sur un écran étranger pour 2 décisions réelles (palette, échelle). Sans outil de traduction, le cadre a raison et n'est pas adoptable. |
 | L'amorçage lit hors de la couche de données | 🔴 | `#083` | Le démarrage lit l'état par la fenêtre et non par la porte. Il n'affiche rien, il ne peut donc oublier aucun état — mais il est exempté par son nom, et une exemption nommée est une dette. |
