@@ -102,6 +102,21 @@ pre.code {
   display: grid; gap: var(--space-block-card); align-content: start;
 }
 .reglages h3 { margin: 0; font-size: 0.8125rem; font-weight: 600; }
+/* Le bouton actif d'un réglage se dessine depuis l'attribut de <html>,
+   jamais depuis l'état React : l'attribut est posé avant la première
+   peinture (script de layout.tsx), le bon bouton est donc juste dès la
+   première image — React n'intervient qu'au clic. */
+html:not([data-theme]) [data-choix-theme="system"],
+html[data-theme="light"] [data-choix-theme="light"],
+html[data-theme="dark"] [data-choix-theme="dark"],
+html:not([data-density]) [data-choix-density="comfortable"],
+html[data-density="airy"] [data-choix-density="airy"],
+html[data-density="compact"] [data-choix-density="compact"],
+html:not([data-adaptation]) [data-choix-adaptation="tailwind"],
+html[data-adaptation="shadcn"] [data-choix-adaptation="shadcn"],
+html[data-adaptation="html"] [data-choix-adaptation="html"] {
+  background: var(--primary); border-color: var(--primary); color: var(--on-primary);
+}
 .reglages .bloc { display: grid; gap: var(--space-block-md); }
 .reglages .bouton { height: 1.75rem; padding: 0 var(--space-inline-sm); font-size: 0.6875rem; }
 .reglages input[type="range"] { width: 100%; accent-color: var(--primary); }

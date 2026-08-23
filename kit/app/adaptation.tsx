@@ -38,14 +38,15 @@ export function useAdaptation() {
 }
 
 export function Adaptation() {
-  const { adaptation, changer } = useAdaptation();
+  const { changer } = useAdaptation();
   const CHOIX: [Adapt, string][] = [["tailwind", "Tailwind"], ["shadcn", "shadcn"], ["html", "HTML natif"]];
   return (
     <div className="bloc">
       <span className="mono sourd">Adaptation — tout le site</span>
       <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
         {CHOIX.map(([a, nom]) => (
-          <button key={a} className={`bouton ${adaptation === a ? "on" : ""}`} onClick={() => changer(a)}>{nom}</button>
+          /* bouton actif dessiné en CSS depuis <html data-adaptation> */
+          <button key={a} data-choix-adaptation={a} className="bouton" onClick={() => changer(a)}>{nom}</button>
         ))}
       </div>
     </div>

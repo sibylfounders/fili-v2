@@ -37,14 +37,15 @@ export function useDensite() {
 }
 
 export function Densite() {
-  const { densite, changer } = useDensite();
+  const { changer } = useDensite();
   const CHOIX: [Densité, string][] = [["airy", "Aéré"], ["comfortable", "Confortable"], ["compact", "Compact"]];
   return (
     <div className="bloc">
       <span className="mono sourd">Densité — tout le site</span>
       <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
         {CHOIX.map(([d, nom]) => (
-          <button key={d} className={`bouton ${densite === d ? "on" : ""}`} onClick={() => changer(d)}>{nom}</button>
+          /* bouton actif dessiné en CSS depuis <html data-density> */
+          <button key={d} data-choix-density={d} className="bouton" onClick={() => changer(d)}>{nom}</button>
         ))}
       </div>
     </div>

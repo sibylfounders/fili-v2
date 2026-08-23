@@ -52,14 +52,16 @@ export function useSchemeSysteme() {
 }
 
 export function Theme() {
-  const { theme, changer } = useTheme();
+  const { changer } = useTheme();
   const CHOIX: [Thème, string][] = [["light", "Clair"], ["system", "Système"], ["dark", "Sombre"]];
   return (
     <div className="bloc">
       <span className="mono sourd">Thème — tout le site</span>
       <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
         {CHOIX.map(([t, nom]) => (
-          <button key={t} className={`bouton ${theme === t ? "on" : ""}`} onClick={() => changer(t)}>{nom}</button>
+          /* le bouton actif est dessiné en CSS depuis <html data-theme> —
+             juste dès la première peinture, sans attendre l'hydratation */
+          <button key={t} data-choix-theme={t} className="bouton" onClick={() => changer(t)}>{nom}</button>
         ))}
       </div>
     </div>
