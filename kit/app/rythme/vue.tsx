@@ -134,16 +134,64 @@ function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean })
 
 const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
-    "CSS natif": `<div style={{ gap: 'var(--rr-inline-unit)' }}>\n  …\n</div>`,
-    Tailwind: `// tailwind.config : theme.extend.spacing = rythme.spacing\n<div className="gap-inline-unit">\n  …\n</div>`,
+    "CSS natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
+export function Fiche({ enfants }) {
+  return (
+    <section className="fiche">   {/* inset : block-card / inline-2xl */}
+      <div className="pile">{enfants}</div>
+    </section>
+  );
+}
+
+/* styles.css — tout sort des jetons, rien en dur */
+.fiche { padding: var(--rr-block-card) var(--rr-inline-2xl);
+         border-radius: var(--rr-radius-card); }
+.pile  { display: grid; gap: var(--rr-block-md); }  /* stack, un cran sous l'inset — Y1 */`,
+    Tailwind: `// tailwind.config : theme.extend.spacing ← rythme.spacing (variables, fluide)
+// ou rythmeLitteral (grille 4-16, arrondie) — jamais les deux à la fois
+export function Fiche({ enfants }) {
+  return (
+    <section className="p-block-card px-inline-2xl rounded-card">
+      <div className="grid gap-block-md">{enfants}</div>
+    </section>
+  );
+}`,
   },
   Angular: {
-    "CSS natif": `<div [style.gap]="'var(--rr-inline-unit)'">\n  …\n</div>`,
-    Tailwind: `<!-- même config tailwind, mêmes variables -->\n<div class="gap-inline-unit">\n  …\n</div>`,
+    "CSS natif": `@Component({
+  selector: "kit-fiche",
+  template: \`
+    <section class="fiche">
+      <div class="pile"><ng-content /></div>
+    </section>\`,
+  styleUrl: "./fiche.css", // mêmes classes : var(--rr-block-card), var(--rr-block-md)…
+})
+export class Fiche {}`,
+    Tailwind: `@Component({
+  selector: "kit-fiche",
+  template: \`
+    <section class="p-block-card px-inline-2xl rounded-card">
+      <div class="grid gap-block-md"><ng-content /></div>
+    </section>\`,
+})
+export class Fiche {}`,
   },
   HTML: {
-    "CSS natif": `<div style="gap: var(--rr-inline-unit)">\n  …\n</div>`,
-    Tailwind: `<div class="gap-inline-unit">\n  …\n</div>`,
+    "CSS natif": `<link rel="stylesheet" href="kit/tokens.css" />
+
+<section class="fiche">
+  <p>Chaque distance vient d'un jeton — inset, stack, inline.</p>
+</section>
+
+<style>
+  .fiche { padding: var(--rr-block-card) var(--rr-inline-2xl); }
+  .fiche p { margin-block: var(--rr-block-md); }
+</style>`,
+    Tailwind: `<section class="p-block-card px-inline-2xl rounded-card">
+  <div class="grid gap-block-md">
+    <p>Les classes résolvent les jetons — le système reste le même.</p>
+  </div>
+</section>`,
   },
 };
 

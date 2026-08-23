@@ -49,6 +49,24 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #106 — La composition entre au corpus : huit règles, actées en bloc
+*2026-08-23 · Statut : 🟢 Verrouillé (accord d'Auteur explicite) · Thread « le kit avance sous mes yeux »*
+
+Le fonds complet inventorié tient en quinze lois — sept vivaient déjà dans
+nos familles, les huit restantes forment COMPOSITION-UX 1.0.0 : un costume
+un rôle, la région commune se mérite, un dominant par vue, l'essentiel sur
+le chemin de l'œil, la rupture se dépense, peu d'axes, chaque espace porte
+un rôle nommé, le blanc d'abord. Nées des planches annotées fournies par
+l'Auteur, du vocabulaire de Curtis et de la leçon des vingt retours. Actée
+en bloc par accord d'Auteur explicite — pas de séance règle par règle, dit
+et assumé. Sans CRITERE : la condition des assertions est que le Gardien
+morde sur le kit. Premier consommateur : les espaces visualisés du kit
+affichent leur rôle.
+
+Pièces : `sources/apps/site/content/md/foundations/COMPOSITION-UX.md` ·
+`claude/inventaire-lois-composition-2026-08-23.md` ·
+`claude/pature-composition-2026-08-23.md`.
+
 ## #105 — Reprise de la typographie : onze règles gardées sur onze, la fonte déclarée est la fonte livrée
 *2026-08-23 · Statut : 🟢 Verrouillé (séance de passage, verdicts d'Auteur) · Thread « le kit avance sous mes yeux »*
 

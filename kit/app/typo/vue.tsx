@@ -361,7 +361,7 @@ export default function Vue() {
           <p className="sourd">Quatre dérives ordinaires, et aucune ne produit d&apos;erreur
           nulle part — c&apos;est bien le problème. Chaque carte porte la règle qui
           l&apos;arrête, et le moyen de la voir échouer.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))", gap: "var(--rr-inline-unit)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--rr-inline-unit)" }}>
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">La graisse</span>
