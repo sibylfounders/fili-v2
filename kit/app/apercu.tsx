@@ -1,25 +1,25 @@
 "use client";
 import * as React from "react";
 
-/* L'aperçu redimensionnable — porté de l'atelier (sources/…/resizable-preview.tsx),
-   adapté aux jetons du kit neuf : fond damier, paliers cliquables (l'alternative
-   sans glisser), poignée au pointeur ET au clavier, pastille de largeur,
-   double-clic pour réinitialiser. Les paliers sont des repères d'inspection,
-   pas des états — rien ne prétend qu'un composant bascule à ces valeurs. */
+/* L'aperçu redimensionnable — porté de l'atelier, adapté aux jetons du kit
+   neuf : fond damier, paliers cliquables (l'alternative sans glisser),
+   poignée au pointeur ET au clavier, pastille de largeur, double-clic pour
+   revenir au repère par défaut. Les paliers sont des repères d'inspection,
+   pas des états. Par défaut : 1024 px (choix d'Auteur du 23 août). */
 
 const MIN = 260;
+const DEFAUT = 1024;
 const PAS = 16;
 const PAS_LARGE = 64;
-const PALIERS: { label: string; w: number | null }[] = [
+const PALIERS: { label: string; w: number }[] = [
   { label: "320 px", w: 320 },
   { label: "768 px", w: 768 },
   { label: "1024 px", w: 1024 },
-  { label: "Pleine largeur", w: null },
 ];
 
 export function Apercu({ enfants }: { enfants: (largeur: number) => React.ReactNode }) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
-  const [w, setW] = React.useState<number | null>(null);
+  const [w, setW] = React.useState(DEFAUT);
   const [max, setMax] = React.useState(0);
   const [drag, setDrag] = React.useState(false);
 
@@ -34,7 +34,7 @@ export function Apercu({ enfants }: { enfants: (largeur: number) => React.ReactN
   }, []);
 
   const borne = (v: number) => Math.max(MIN, Math.min(max || v, v));
-  const courante = Math.round(w === null ? max : Math.min(w, max || w));
+  const courante = Math.round(max ? Math.min(w, max) : w);
 
   const onDown = (e: React.PointerEvent) => {
     e.preventDefault();
@@ -49,39 +49,37 @@ export function Apercu({ enfants }: { enfants: (largeur: number) => React.ReactN
 
   const onKeyPoignee = (e: React.KeyboardEvent) => {
     const pas = e.shiftKey ? PAS_LARGE : PAS;
-    const cur = w === null ? max : w;
-    if (e.key === "ArrowLeft") { e.preventDefault(); setW(borne(cur - pas)); }
-    else if (e.key === "ArrowRight") { e.preventDefault(); setW(borne(cur + pas)); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); setW(borne(w - pas)); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); setW(borne(w + pas)); }
     else if (e.key === "Home") { e.preventDefault(); setW(MIN); }
-    else if (e.key === "End") { e.preventDefault(); setW(null); }
+    else if (e.key === "End") { e.preventDefault(); setW(borne(DEFAUT)); }
   };
 
   return (
     <div className="apercu">
       <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
-        {PALIERS.filter((p) => p.w === null || max === 0 || p.w <= max).map((p) => {
-          const actif = p.w === null ? w === null : w !== null && Math.round(w) === p.w;
+        {PALIERS.filter((p) => max === 0 || p.w <= max).map((p) => {
+          const actif = courante === p.w;
           return (
             <button key={p.label} className={`bouton ${actif ? "on" : ""}`} aria-pressed={actif}
-              onClick={() => setW(p.w === null ? null : borne(p.w))}
-              title={p.w === null ? "Pleine largeur" : `Aperçu à ${p.w} px`}>
+              onClick={() => setW(borne(p.w))} title={`Aperçu à ${p.w} px`}>
               {p.label}
             </button>
           );
         })}
       </div>
       <div ref={wrapRef} className="apercu-piste">
-        <div className="apercu-cadre" style={{ width: w ? `${w}px` : "100%" }}>
+        <div className="apercu-cadre" style={{ width: `${courante}px` }}>
           <div className="apercu-scene">{courante > 0 ? enfants(courante) : null}</div>
-          {w ? <span className="puce-w mono">{Math.round(w)} px</span> : null}
+          <span className="puce-w mono">{courante} px</span>
         </div>
         <div role="separator" tabIndex={0} aria-orientation="vertical"
           aria-label="Largeur de l'aperçu" aria-valuemin={MIN}
           aria-valuemax={Math.round(max) || MIN} aria-valuenow={courante || MIN}
-          onPointerDown={onDown} onKeyDown={onKeyPoignee} onDoubleClick={() => setW(null)}
-          title="Glisser, ou flèches gauche/droite · double-clic : pleine largeur"
+          onPointerDown={onDown} onKeyDown={onKeyPoignee} onDoubleClick={() => setW(borne(DEFAUT))}
+          title="Glisser, ou flèches gauche/droite · double-clic : 1024 px"
           className={`poignee ${drag ? "en-prise" : ""}`}
-          style={{ left: w ? `${w}px` : "100%" }}>
+          style={{ left: `${courante}px` }}>
           <span className="poignee-trait" />
         </div>
       </div>
