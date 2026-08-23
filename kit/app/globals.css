@@ -77,7 +77,8 @@ pre.code {
 .navigation a.actif { background: var(--p-accent-doux); color: var(--p-accent); font-weight: 600; }
 .navigation .venir { color: var(--p-sourd); padding: var(--rr-block-sm) var(--rr-inline-sm); }
 .contenu { padding: var(--rr-block-page) var(--rr-inline-2xl);
-  display: grid; gap: var(--rr-block-page); min-width: 0; }
+  display: grid; gap: var(--rr-block-page); min-width: 0;
+  max-width: 64rem; width: 100%; margin-inline: auto; justify-self: center; }
 .reglages {
   position: sticky; top: 0; padding: var(--rr-block-page) var(--rr-inline-2xl);
   border-left: 1px solid var(--p-trait); display: grid; gap: var(--rr-block-card);
