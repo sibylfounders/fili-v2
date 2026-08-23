@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
+import { Densite } from "../densite";
 
 /* L'échelle de travail des corps — mêmes valeurs que tokens.css.
    L'aperçu recalcule chaque échelon pour SA largeur, et le « zoom lecteur »
@@ -268,20 +269,22 @@ export default function Vue() {
           <p className="kicker">Fondation · La typographie</p>
           <h1>Chaque lettre de cette page sait pourquoi</h1>
           <p className="chapo">
-            Cette page définit comment ce système compose le texte — et vous laisse voir chaque
-            règle agir, la régler, et la casser. <b>Onze règles, passées une par une en séance
-            le 23 août 2026</b>, chacune avec son pourquoi, sa source, et l&apos;aveu de nos
-            tensions. Vous la lisez déjà dans les fontes qu&apos;elle impose : Geist, et
-            JetBrains Mono pour le code — livrées avec le kit, c&apos;est la règle T11.
+            La typographie de ce système tient en <b>onze règles, passées une par une en
+            séance le 23 août 2026</b> — chacune née d&apos;un problème réel, avec son pourquoi,
+            sa source, et l&apos;aveu de nos tensions. Chaque banc d&apos;essai les montre à
+            l&apos;œuvre, réglables et cassables. Vous les lisez déjà dans les fontes
+            qu&apos;elles imposent : Geist, et JetBrains Mono pour le code — livrées avec le
+            kit, c&apos;est la règle T11.
           </p>
         </div>
 
         <section className="bloc-section">
           <p className="kicker">01 · L&apos;échelle et le zoom</p>
           <h2>L&apos;échelle glisse — et le zoom garde ses droits</h2>
-          <p className="sourd">Tirez la poignée : chaque échelon glisse entre ses deux bornes.
-          Puis montez le « zoom lecteur » — c&apos;est la part rem qui répond. Cassez en « vw seul »
-          et refaites le geste : plus rien ne bouge. C&apos;est ça, l&apos;échec silencieux.</p>
+          <p className="sourd">Une taille figée casse au premier écran étroit ; une taille en
+          unités d&apos;écran ignore le zoom du lecteur — échec invisible en test, bloquant pour
+          qui en dépend. Ici chaque échelon glisse entre deux bornes, et sa part rem laisse le
+          zoom agir. La casse « vw seul » montre le piège : le zoom monte, rien ne bouge.</p>
           <Apercu outils={
             <>
               {[1, 1.5, 2].map((z) => (
@@ -315,9 +318,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">02 · La mesure et l&apos;air</p>
           <h2>La mesure et l&apos;air — le paragraphe se défend</h2>
-          <p className="sourd">Le compteur mesure la ligne réelle, en caractères, sur la page
-          rendue — pas la déclaration. Élargissez la feuille, cassez la borne, et regardez-le
-          passer au rouge.</p>
+          <p className="sourd">Une ligne trop longue égare l&apos;œil au retour ; un interligne
+          serré étouffe la lecture. La borne en ch et le plancher de 1,5 tiennent le
+          paragraphe — et le compteur lit la ligne réelle sur la page rendue, jamais la
+          déclaration.</p>
           <Apercu outils={
             <>
               <button className={`bouton ${sansBorne ? "on" : ""}`} onClick={() => setSansBorne(!sansBorne)}>
@@ -337,9 +341,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">03 · La hiérarchie</p>
           <h2>Le sens et la taille, séparés — et jamais de barreau manquant</h2>
-          <p className="sourd">Les niveaux de titre sont l&apos;échelle que le lecteur d&apos;écran
-          descend. Sautez un barreau et voyez ce qu&apos;il reste de l&apos;arbre. (Les titres
-          ci-dessous sont dessinés, pas réels : cette page garde son unique h1 — règle G1.)</p>
+          <p className="sourd">Un niveau de titre sauté, et le lecteur d&apos;écran conclut à du
+          contenu manquant : l&apos;arbre des titres est une échelle, chaque barreau compte. Le
+          sens suit la structure, la taille suit le design. (Les titres ci-dessous sont
+          dessinés, pas réels : cette page garde son unique h1 — règle G1.)</p>
           <Apercu outils={
             <button className={`bouton ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>
               {saut ? "Réparer" : "Casser : sauter un niveau"}
@@ -354,8 +359,9 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">04 · Les pièges</p>
           <h2>Quatre pièges connus — cassez-les un par un</h2>
-          <p className="sourd">Chaque carte casse une seule règle. Aucune ne produit d&apos;erreur
-          nulle part : c&apos;est bien le problème.</p>
+          <p className="sourd">Quatre dérives ordinaires, et aucune ne produit d&apos;erreur
+          nulle part — c&apos;est bien le problème. Chaque carte porte la règle qui
+          l&apos;arrête, et le moyen de la voir échouer.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))", gap: "var(--rr-inline-unit)" }}>
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
@@ -403,8 +409,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">05 · La fonte livrée</p>
           <h2>La fonte déclarée est la fonte livrée</h2>
-          <p className="sourd">Notre règle la plus chèrement payée. Déclarez un nom qui
-          n&apos;existe pas : aucune erreur, aucun avertissement — juste un autre produit.</p>
+          <p className="sourd">Un nom de famille qui ne correspond à aucun fichier livré ne
+          déclenche rien : le produit entier passe en police système, en silence. C&apos;est
+          arrivé ici, dix-sept versions durant — d&apos;où la règle la plus chèrement payée du
+          corpus.</p>
           <Apercu outils={
             <button className={`bouton ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
               {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
@@ -428,8 +436,9 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">06 · L&apos;adaptation</p>
           <h2>Votre stack, pas la nôtre</h2>
-          <p className="sourd">Le réglage « adaptation » (à droite) traduit les mêmes jetons dans
-          votre environnement — copiez, c&apos;est le même système.</p>
+          <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
+          qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
+          Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
           <PanneauCode langage={`${fw} · ${styl}`} code={SNIPPETS[fw][styl]} />
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul jeu de
@@ -441,6 +450,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Densite />
         <div className="bloc">
           <span className="mono sourd">Adaptation</span>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>

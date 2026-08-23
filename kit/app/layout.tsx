@@ -11,8 +11,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html:
+          `try{if(localStorage.getItem("kit-densite")==="compact")document.documentElement.dataset.densite="compact"}catch(e){}` }} />
         <header className="chrome">
           <b>Kit</b>
           <span className="sourd" style={{ fontSize: "0.8125rem" }}>

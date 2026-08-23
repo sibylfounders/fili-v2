@@ -8,7 +8,7 @@ import * as React from "react";
    pas. Poignée au pointeur ET au clavier, paliers cliquables, pastille
    de largeur, double-clic pour revenir à 1024 px. */
 
-const MIN = 260;
+const MIN = 320; /* jamais en dessous : la plus petite largeur d'écran du système */
 const DEFAUT = 1024;
 const PAS = 16;
 const PAS_LARGE = 64;

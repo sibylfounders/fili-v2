@@ -14,31 +14,52 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Axe inline — horizontal */
-  --rr-inline-xs: clamp(0.3001rem, 0.2572rem + 0.2144vw, 0.4501rem);
-  --rr-inline-sm: clamp(0.3900rem, 0.3343rem + 0.2786vw, 0.5850rem);
-  --rr-inline-unit: clamp(0.6000rem, 0.5143rem + 0.4286vw, 0.9000rem);
-  --rr-inline-lg: clamp(0.8487rem, 0.7274rem + 0.6062vw, 1.2730rem);
-  --rr-inline-xl: clamp(0.6600rem, 0.5657rem + 0.4714vw, 0.9900rem);
-  --rr-inline-2xl: clamp(1.2000rem, 1.0286rem + 0.8571vw, 1.8000rem);
+  /* L'échelle commune — les crans, par axe (inline puis block) */
+  --cran-i1: clamp(0.3001rem, 0.2572rem + 0.2144vw, 0.4501rem);
+  --cran-i2: clamp(0.3900rem, 0.3343rem + 0.2786vw, 0.5850rem);
+  --cran-i3: clamp(0.6000rem, 0.5143rem + 0.4286vw, 0.9000rem);
+  --cran-i4: clamp(0.6600rem, 0.5657rem + 0.4714vw, 0.9900rem);
+  --cran-i5: clamp(0.8487rem, 0.7274rem + 0.6062vw, 1.2730rem);
+  --cran-i6: clamp(1.2000rem, 1.0286rem + 0.8571vw, 1.8000rem);
+  --cran-b1: clamp(0.1350rem, 0.1239rem + 0.0557vw, 0.1741rem);
+  --cran-b2: clamp(0.1688rem, 0.1549rem + 0.0697vw, 0.2176rem);
+  --cran-b3: clamp(0.2363rem, 0.2168rem + 0.0975vw, 0.3046rem);
+  --cran-b4: clamp(0.4725rem, 0.4335rem + 0.1950vw, 0.6090rem);
+  --cran-b5: clamp(0.6752rem, 0.6195rem + 0.2787vw, 0.8703rem);
+  --cran-b6: clamp(0.8438rem, 0.7741rem + 0.3482vw, 1.0875rem);
+  --cran-b7: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
+  --cran-b8: clamp(1.3500rem, 1.2386rem + 0.5571vw, 1.7400rem);
 
-  /* Axe block — vertical */
-  --rr-block-xs: clamp(0.1350rem, 0.1239rem + 0.0557vw, 0.1741rem);
-  --rr-block-sm: clamp(0.1688rem, 0.1549rem + 0.0697vw, 0.2176rem);
-  --rr-block-md: clamp(0.2363rem, 0.2168rem + 0.0975vw, 0.3046rem);
-  --rr-block-control: clamp(0.4725rem, 0.4335rem + 0.1950vw, 0.6090rem);
-  --rr-block-card: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
-  --rr-block-unit: clamp(0.6752rem, 0.6195rem + 0.2787vw, 0.8703rem);
-  --rr-block-lg: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
-  --rr-block-xl: clamp(0.8438rem, 0.7741rem + 0.3482vw, 1.0875rem);
-  --rr-block-page: clamp(1.3500rem, 1.2386rem + 0.5571vw, 1.7400rem);
+  /* Les noms d'usage → leur cran (densité confortable) */
+  --rr-inline-xs: var(--cran-i1); --rr-inline-sm: var(--cran-i2);
+  --rr-inline-unit: var(--cran-i3); --rr-inline-xl: var(--cran-i4);
+  --rr-inline-lg: var(--cran-i5); --rr-inline-2xl: var(--cran-i6);
+  --rr-block-xs: var(--cran-b1); --rr-block-sm: var(--cran-b2);
+  --rr-block-md: var(--cran-b3); --rr-block-control: var(--cran-b4);
+  --rr-block-unit: var(--cran-b5); --rr-block-xl: var(--cran-b6);
+  --rr-block-card: var(--cran-b7); --rr-block-lg: var(--cran-b7);
+  --rr-block-page: var(--cran-b8);
 
-  /* Type, rayons, contrôle */
+  /* Type, rayons, hauteur de contrôle — la densité n'y touche pas */
   --rr-type: clamp(0.9600rem, 0.9286rem + 0.1571vw, 1.0700rem);
   --rr-radius: clamp(0.6450rem, 0.5893rem + 0.2786vw, 0.8400rem);
   --rr-radius-card: clamp(0.7418rem, 0.6777rem + 0.3204vw, 0.9660rem);
   --rr-radius-shell: clamp(0.8708rem, 0.7955rem + 0.3761vw, 1.1340rem);
   --rr-control: clamp(2.7500rem, 2.7029rem + 0.2357vw, 2.9150rem);
+}
+
+/* Densité compacte (règle Y5) : chaque nom descend d'exactement un cran
+   sur l'échelle commune — jamais une valeur propre, jamais un
+   multiplicateur. S'applique à TOUT le site (attribut posé sur <html>,
+   mémorisé d'une visite à l'autre). Le plus petit cran reste lui-même. */
+[data-densite="compact"] {
+  --rr-inline-sm: var(--cran-i1); --rr-inline-unit: var(--cran-i2);
+  --rr-inline-xl: var(--cran-i3); --rr-inline-lg: var(--cran-i4);
+  --rr-inline-2xl: var(--cran-i5);
+  --rr-block-sm: var(--cran-b1); --rr-block-md: var(--cran-b2);
+  --rr-block-control: var(--cran-b3); --rr-block-unit: var(--cran-b4);
+  --rr-block-xl: var(--cran-b5); --rr-block-card: var(--cran-b6);
+  --rr-block-lg: var(--cran-b6); --rr-block-page: var(--cran-b7);
 }
 
 /* ── PROVISOIRE, HORS CORPUS — déclaré, pas subi ──────────────────────

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
+import { Densite, useDensite } from "../densite";
 
 /* Constantes des jetons — mêmes que tokens.css (valeurs lues sur le générateur
    de référence à 320 et 1440, interpolées). L'aperçu recalcule chaque cran
@@ -36,17 +37,32 @@ const TOKENS: [string, number, number, number, number][] = [
 const ECHELLE_TW = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80, 96, 112, 128, 144, 160];
 const versTw = (px: number) => ECHELLE_TW.reduce((a, b) => (Math.abs(b - px) < Math.abs(a - px) ? b : a));
 
-function jetons(largeurPx: number, tw = false): React.CSSProperties {
+/* La densité (règle Y5) : un cran d'écart sur l'échelle commune. Le site
+   entier est décalé par tokens.css ; l'aperçu, qui recalcule ses jetons
+   pour SA largeur, applique le même décalage ici. */
+const L_INLINE = ["--rr-inline-xs", "--rr-inline-sm", "--rr-inline-unit", "--rr-inline-xl", "--rr-inline-lg", "--rr-inline-2xl"];
+const L_BLOCK = ["--rr-block-xs", "--rr-block-sm", "--rr-block-md", "--rr-block-control", "--rr-block-unit", "--rr-block-xl", "--rr-block-card", "--rr-block-page"];
+function cranSource(nom: string, compact: boolean): string {
+  if (!compact) return nom;
+  const base = nom === "--rr-block-lg" ? "--rr-block-card" : nom;
+  const l = L_INLINE.includes(base) ? L_INLINE : L_BLOCK.includes(base) ? L_BLOCK : null;
+  if (!l) return nom;
+  return l[Math.max(0, l.indexOf(base) - 1)];
+}
+function calcPx(nom: string, largeurPx: number, compact: boolean): number {
+  const t = TOKENS.find(([n]) => n === cranSource(nom, compact))!;
+  return Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeurPx) / 100));
+}
+function jetons(largeurPx: number, tw = false, compact = false): React.CSSProperties {
   const o: Record<string, string> = {};
-  for (const [nom, min, c, k, max] of TOKENS) {
-    const px = Math.min(max * 16, Math.max(min * 16, c * 16 + (k * largeurPx) / 100));
+  for (const [nom] of TOKENS) {
+    const px = calcPx(nom, largeurPx, compact);
     o[nom] = tw ? `${versTw(px)}px` : `${px.toFixed(2)}px`;
   }
   return o as React.CSSProperties;
 }
-const lirePx = (largeur: number, nom: string, tw = false) => {
-  const t = TOKENS.find(([n]) => n === nom)!;
-  const px = Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeur) / 100));
+const lirePx = (largeur: number, nom: string, tw = false, compact = false) => {
+  const px = calcPx(nom, largeur, compact);
   return tw ? String(versTw(px)) : px.toFixed(1);
 };
 
@@ -59,10 +75,11 @@ function E({ j, h, voir }: { j: string; h?: boolean; voir: boolean }) {
 }
 
 /* La carte annotée — construite avec des blocs d'espace explicites. */
-function CarteAnnotee({ voir, compact }: { voir: boolean; compact: boolean }) {
-  const padV = compact ? "--rr-block-unit" : "--rr-block-card";
-  const padH = compact ? "--rr-inline-xl" : "--rr-inline-2xl";
-  const freres = compact ? "--rr-block-sm" : "--rr-block-md";
+function CarteAnnotee({ voir }: { voir: boolean }) {
+  /* Les noms restent les mêmes en compact : c'est le jeton qui descend d'un cran. */
+  const padV = "--rr-block-card";
+  const padH = "--rr-inline-2xl";
+  const freres = "--rr-block-md";
   const Ligne = ({ children }: { children: React.ReactNode }) => (
     <span style={{ display: "flex", alignItems: "stretch" }}>
       <E j={padH} h voir={voir} /><span style={{ flex: 1, minWidth: 0 }}>{children}</span><E j={padH} h voir={voir} />
@@ -192,7 +209,7 @@ function Regles({ ids }: { ids: string[] }) {
 
 export default function Vue() {
   const [voir, setVoir] = useState(true);
-  const [compact, setCompact] = useState(false);
+  const { compact } = useDensite();
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("React");
@@ -208,30 +225,31 @@ export default function Vue() {
           <p className="kicker">Fondation · Le rythme (espacement)</p>
           <h1>Chaque distance de cette page a une raison</h1>
           <p className="chapo">
-            Cette page définit comment ce système espace les choses — et vous laisse voir
-            chaque règle agir, la régler, et la casser. <b>Chaque règle porte son pourquoi,
-            sa source vérifiable, et l&apos;aveu daté de nos divergences</b> — y compris
-            quand nous avons changé d&apos;avis. Sous chaque banc d&apos;essai,
-            « d&apos;où ça vient » se déplie.
+            Espacer, c&apos;est décider qui est lié à qui : quand une distance est
+            arbitraire, la page ment. Ici, toute distance sort d&apos;une échelle unique, et
+            <b> chaque règle porte son pourquoi, sa source vérifiable, et l&apos;aveu daté de
+            nos divergences</b> — y compris quand nous avons changé d&apos;avis. Sous chaque
+            banc d&apos;essai, « d&apos;où ça vient » se déplie.
           </p>
         </div>
 
         <section className="bloc-section">
           <p className="kicker">01 · L&apos;échelle</p>
           <h2>L&apos;échelle vit — tirez la poignée</h2>
-          <p className="sourd">Cette carte est construite avec les vrais espaces du système.
-          Redimensionnez la feuille : chaque distance glisse entre ses deux bornes, et
-          « voir les espaces » les colore, avec leur nom.</p>
+          <p className="sourd">Des distances décidées au cas par cas finissent par se
+          contredire. Ici, chaque espace de cette carte est un jeton de l&apos;échelle commune,
+          qui glisse entre deux bornes selon la largeur — « voir les espaces » les nomme, la
+          poignée les fait vivre.</p>
           <Apercu outils={
             <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
-              <CarteAnnotee voir={voir} compact={compact} />
+            <div style={{ ...jetons(l, tw, compact), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
+              <CarteAnnotee voir={voir} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
-                à {Math.round(l)} px : padding {lirePx(l, compact ? "--rr-block-unit" : "--rr-block-card", tw)} px ·
-                écart {lirePx(l, compact ? "--rr-block-sm" : "--rr-block-md", tw)} px{tw && " · accroché à l'échelle Tailwind"}
+                à {Math.round(l)} px : padding {lirePx(l, "--rr-block-card", tw, compact)} px ·
+                écart {lirePx(l, "--rr-block-md", tw, compact)} px{compact && " · compact : un cran plus bas"}{tw && " · accroché à l'échelle Tailwind"}
               </span>
             </div>
           )} pied={
@@ -249,8 +267,8 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">02 · La densité</p>
           <h2>La densité — un cran d&apos;écart, rien d&apos;autre</h2>
-          <p className="sourd">Le réglage « densité » (à droite) décale chaque espace de la carte
-          ci-dessus d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
+          <p className="sourd">Le réglage « densité » (à droite) décale chaque espace du site
+          entier — cette page comprise — d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
           et remarquez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
@@ -263,8 +281,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">03 · La proximité</p>
           <h2>La proximité — l&apos;espace est une information</h2>
-          <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
-          Cassez les deux règles et voyez la page mentir — l&apos;œil vous le dira avant nous.</p>
+          <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort —
+          quand une distance ment, la page raconte autre chose. Un libellé équidistant flotte
+          entre deux champs ; un titre mal espacé change de camp. Les deux casses le
+          démontrent.</p>
           <Apercu outils={
             <>
               <button className={`bouton ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
@@ -275,7 +295,7 @@ export default function Vue() {
               </button>
             </>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
+            <div style={{ ...jetons(l, tw, compact), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
           )} pied={
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
               <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
@@ -289,8 +309,9 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">04 · L&apos;adaptation</p>
           <h2>Votre stack, pas la nôtre</h2>
-          <p className="sourd">Le réglage « adaptation » (à droite) traduit le même cran dans
-          votre environnement — copiez, c&apos;est le même système.</p>
+          <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
+          qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
+          Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
           <PanneauCode langage={`${fw} · ${styl}`} code={SNIPPETS[fw][styl]} />
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
@@ -302,13 +323,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
-        <div className="bloc">
-          <span className="mono sourd">Densité</span>
-          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            <button className={`bouton ${!compact ? "on" : ""}`} onClick={() => setCompact(false)}>Confortable</button>
-            <button className={`bouton ${compact ? "on" : ""}`} onClick={() => setCompact(true)}>Compact</button>
-          </div>
-        </div>
+        <Densite />
         <div className="bloc">
           <span className="mono sourd">Adaptation</span>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>

@@ -1,4 +1,5 @@
 import { Navigation } from "./nav";
+import { Densite } from "./densite";
 
 export default function Accueil() {
   return (
@@ -80,6 +81,7 @@ export default function Accueil() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Densite />
         <p className="sourd" style={{ fontSize: "0.75rem" }}>Chaque fondation apporte ses
         réglages : densité et adaptation sur le rythme, zoom lecteur et adaptation sur la
         typographie. Le thème arrivera avec sa fondation couleur.</p>
