@@ -135,16 +135,15 @@ pre.code {
 .apercu-piste { position: relative;
   background-color: var(--p-fond);
   background-image:
-    linear-gradient(45deg, rgba(28,24,50,0.045) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(28,24,50,0.045) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(28,24,50,0.045) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(28,24,50,0.045) 75%);
+    linear-gradient(45deg, rgba(28,24,50,0.06) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(28,24,50,0.06) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(28,24,50,0.06) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(28,24,50,0.06) 75%);
   background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
 .apercu-cadre {
   position: relative; max-width: 100%; overflow: hidden; min-height: 100%;
-  background: var(--p-papier); border-right: 1px solid var(--p-trait);
-  box-shadow: 12px 0 28px -20px rgba(28, 24, 50, 0.35);
+  border-right: 1px solid var(--p-trait);
 }
 .apercu-scene { padding: var(--rr-block-page) var(--rr-inline-2xl);
   display: grid; justify-items: stretch; text-align: left; }

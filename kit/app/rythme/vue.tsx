@@ -87,9 +87,7 @@ function CarteAnnotee({ voir, compact }: { voir: boolean; compact: boolean }) {
   );
 }
 
-function Proximite() {
-  const [casseY1, setCasseY1] = useState(false);
-  const [casseY2, setCasseY2] = useState(false);
+function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean }) {
   const labelMarge = casseY1
     ? { marginBottom: "var(--rr-block-card)", marginTop: "var(--rr-block-card)" }
     : { marginBottom: "var(--rr-block-md)", marginTop: "var(--rr-block-card)" };
@@ -98,14 +96,6 @@ function Proximite() {
     : { marginTop: "var(--rr-block-page)", marginBottom: "var(--rr-block-md)" };
   return (
     <div style={{ display: "grid", gap: "var(--rr-block-unit)", width: "100%", maxWidth: "26rem" }}>
-      <div className="rang">
-        <button className={`bouton ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
-          {casseY1 ? "Réparer le libellé" : "Casser le libellé"}
-        </button>
-        <button className={`bouton ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
-          {casseY2 ? "Réparer le titre" : "Casser le titre"}
-        </button>
-      </div>
       <div className="carte" style={{ gap: 0, background: "var(--p-papier)" }}>
         <p className="sourd" style={{ margin: 0 }}>Un paragraphe qui précède la section.</p>
         <h2 style={titreMarges}>Vos coordonnées</h2>
@@ -203,6 +193,8 @@ function Regles({ ids }: { ids: string[] }) {
 export default function Vue() {
   const [voir, setVoir] = useState(true);
   const [compact, setCompact] = useState(false);
+  const [casseY1, setCasseY1] = useState(false);
+  const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("React");
   const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
   const tw = styl === "Tailwind";
@@ -273,8 +265,17 @@ export default function Vue() {
           <h2>La proximité — l&apos;espace est une information</h2>
           <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
           Cassez les deux règles et voyez la page mentir — l&apos;œil vous le dira avant nous.</p>
-          <Apercu enfants={(l) => (
-            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start" }}><Proximite /></div>
+          <Apercu outils={
+            <>
+              <button className={`bouton ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
+                {casseY1 ? "Réparer le libellé" : "Casser le libellé"}
+              </button>
+              <button className={`bouton ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
+                {casseY2 ? "Réparer le titre" : "Casser le titre"}
+              </button>
+            </>
+          } enfants={(l) => (
+            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
           )} pied={
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
               <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
