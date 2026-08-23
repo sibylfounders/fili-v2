@@ -96,12 +96,15 @@ export function Apercu({ enfants, outils, pied }: {
   );
 }
 
-export function PanneauCode({ langage, code }: { langage: string; code: string }) {
+export function PanneauCode({ langage, code, outils }: { langage: string; code: string; outils?: React.ReactNode }) {
   const [copie, setCopie] = React.useState(false);
   return (
     <div className="panneau-code">
       <div className="panneau-code-tete">
-        <span className="mono sourd">{langage}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--rr-inline-sm)" }}>
+          {outils}
+          <span className="mono sourd">{langage}</span>
+        </div>
         <button className="bouton" onClick={() => {
           navigator.clipboard.writeText(code).then(() => {
             setCopie(true); setTimeout(() => setCopie(false), 1600);

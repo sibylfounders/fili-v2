@@ -257,7 +257,7 @@ export default function Vue() {
   const [justif, setJustif] = useState(false);
   const [petit, setPetit] = useState(false);
   const [mauvaisNom, setMauvaisNom] = useState(false);
-  const [fw, setFw] = useState<"React" | "Angular" | "HTML">("React");
+  const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
   const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
 
   return (
@@ -437,7 +437,11 @@ export default function Vue() {
           <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
           Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
-          <PanneauCode langage={`${fw} · ${styl}`} code={SNIPPETS[fw][styl]} />
+          <PanneauCode langage={styl} outils={
+            <>{(["React", "Angular", "HTML"] as const).map((f) => (
+              <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
+            ))}</>
+          } code={SNIPPETS[fw][styl]} />
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul jeu de
             jetons produit des variables CSS natives et une sortie Tailwind jumelle ; React,
@@ -451,11 +455,6 @@ export default function Vue() {
         <Densite />
         <div className="bloc">
           <span className="mono sourd">Adaptation</span>
-          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            {(["React", "Angular", "HTML"] as const).map((f) => (
-              <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-            ))}
-          </div>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
             {(["CSS natif", "Tailwind"] as const).map((s) => (
               <button key={s} className={`bouton ${styl === s ? "on" : ""}`} onClick={() => setStyl(s)}>{s}</button>
