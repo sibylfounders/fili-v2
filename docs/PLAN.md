@@ -4,7 +4,8 @@
 > pas : `system-map.md` dit où on en est, `journal.md` dit pourquoi on en est là,
 > celui-ci dit ce qu'on fait ensuite et dans quel ordre.
 >
-> **Arrêté le 23 août 2026** — validation d'Auteur du « cap du kit ». Le plan
+> **Arrêté le 23 août 2026** — validation d'Auteur du « cap du kit ». **Amendé
+> le soir même** (journal #104) : le kit se reconstruit à neuf. Le plan
 > précédent (arrêté le 11 août, relevé le 12) vit dans l'historique du dépôt ;
 > rien n'en est supprimé, tout se rouvre par une entrée de journal. Ce fichier
 > se réécrit quand la direction change, et ce changement passe par une entrée
@@ -15,7 +16,9 @@
 ## Le cap
 
 **Le kit se reconstruit par les notions mères — Principes, Langages,
-Fondations — dans le kit existant.** Composants et patterns sont **gelés**
+Fondations — dans un kit neuf : `kit/`, né le 23 août.** L'ancien kit est
+devenu **`sources/`** — la carrière, gelée : on y puise, on n'y construit
+plus. Composants et patterns sont **gelés**
 jusqu'au verrou des fondations : toute reprise anticipée serait une rupture
 déclarée, jamais un glissement.
 
@@ -75,6 +78,17 @@ Figma — d'autres peuvent naître). Les composants React du site sont une
 implémentation de démonstration, jamais la référence : un portage futur
 n'invalide rien, parce que rien de normatif ne vit dans le code d'exemple.
 La spec est la vérité, le code la démontre.
+
+**L'adaptation est une exigence de naissance** (décision d'Auteur du 23 août) :
+React, Angular et HTML, en CSS natif et en Tailwind — « c'est ce que demande
+le marché ». Les jetons sortent en double cible dès le premier jour, et les
+démonstrations du kit s'accrochent aux règles de la stack choisie.
+
+**La méthode de matérialisation** : chaque famille jugée en séance naît
+directement en page vivante du kit neuf — gabarit arrêté à l'œil : navigation
+· contenu (1024 px, centré) · theming & playground ; aperçus redimensionnables
+portés de l'atelier ; les règles et leurs sources dans les dépliants « d'où ça
+vient » de leur démonstration.
 
 ---
 

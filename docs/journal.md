@@ -49,6 +49,65 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #104 — Le kit se reconstruit à neuf : kit/ naît, l'existant devient sources/
+*2026-08-23 · Statut : 🟢 Verrouillé (décisions d'Auteur en séance) · Révise : #102 · Thread « le kit avance sous mes yeux »*
+
+**Contexte** — La première matérialisation, faite dans l'existant, a révélé le
+malentendu : l'Auteur voulait un kit neuf ; l'existant — atelier compris —
+n'est qu'une source.
+
+**Décision** — Un kit neuf naît dans le dépôt (`kit/`, Next.js, zéro héritage) ;
+l'ancien devient `sources/` (git mv, carrière gelée, historique suivi).
+Exigences d'Auteur : adaptation multi-stack dès la naissance — React, Angular,
+HTML × CSS natif, Tailwind, « c'est ce que demande le marché » — et jetons en
+double sortie (variables CSS + jumelle Tailwind). Les jetons du rythme sont
+LUS sur l'étalon Semantic Rhythm à 320 et 1440 (méthode du crash-test) puis
+interpolés. Le gabarit des pages de famille est arrêté sur retours d'œil
+successifs : navigation · contenu 1024 px centré · theming & playground ;
+aperçus redimensionnables portés de l'atelier (paliers 320/768/1024, 1024 par
+défaut) ; « voir les espaces » dans la box au survol et au focus ; les règles
+et leurs sources vivent dans les dépliants « d'où ça vient » de leur
+démonstration ; en mode Tailwind, les démos s'accrochent à l'échelle Tailwind
+(note d'Auteur : jamais de décimales côté Tailwind).
+
+**Sens produit / UX** — La page de famille EST la documentation : on comprend
+en jouant — tirer la poignée fait vivre l'échelle, casser une règle montre la
+faute — et chaque affirmation dit d'où elle vient. Écrite pour un lecteur
+externe, sans jargon interne.
+
+**Alternatives écartées** — Matérialiser dans le kit existant (fait le matin,
+rejeté : ce n'était pas la direction voulue) ; la coupe doc|sources en deux
+colonnes au centre (rejetée à l'œil) ; un bloc de règles en bas de page
+(rejeté : sans intérêt hors de sa démonstration).
+
+**Conséquences** — `docs/PLAN.md` amendé. La typographie est la prochaine
+fondation ; chaque famille jugée naîtra désormais directement en page vivante
+du kit neuf.
+
+**Pièces** — `kit/` · `claude/seance-rythme-2026-08-23.md` · `sources/`.
+
+---
+
+## #103 — Reprise du rythme : neuf règles actées en séance, un renversement d'Auteur, la famille au corpus
+*2026-08-23 · Statut : 🟢 acté (séance de passage, verdict règle par règle) · Thread « le kit avance sous mes yeux »*
+
+Reprise du rythme — neuf règles de code, une mesure de rendu. La phase 1 du
+cap ouvre sur l'espacement : les 22 lois vivantes deviennent neuf règles au
+moule V2, jugées une par une (9/9 actées). Y8 est renversée en séance :
+l'échelle devient responsive — position GOV.UK adoptée, alignée sur l'Échelle
+Semantic Rhythm qui produit déjà des jetons fluides ; la loi du fonds
+contredisait l'étalon, et la variation vit désormais dans le jeton, jamais
+dans un écran. Y9 consacre le passage en rem (#069) ; le fonds disait
+l'inverse et sa propre bibliographie l'avait fissuré. Cinq couvertures
+Gardien sont dites avec leurs nuances, la question du facteur (2 contre 3)
+est nommée et portée au contrat avec les valeurs, une mesure de rendu est
+consignée pour le futur instrument. Le corpus — aujourd'hui sous `sources/` —
+porte la famille en 2.0.0, les verdicts inscrits dans chaque règle.
+Pièces : `claude/reprise-rythme-regles.md` · `claude/seance-rythme-2026-08-23.md` ·
+`sources/apps/site/content/md/foundations/SPACING-UX.md`.
+
+---
+
 ## #102 — Le kit change de cap : reconstruction par les notions mères, composants gelés jusqu'au verrou des fondations
 *2026-08-23 · Statut : 🟢 Verrouillé (validation d'Auteur du « cap du kit ») · Thread « le kit avance sous mes yeux »*
 
