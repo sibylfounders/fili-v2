@@ -174,6 +174,24 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
 ];
 
+/* Les règles vivent dans les dépliants « d'où ça vient » de leur démonstration. */
+function Regles({ ids }: { ids: string[] }) {
+  return (
+    <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+      {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
+        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-xs)" }}>
+          <b style={{ color: "var(--p-encre)" }}><span className="badge">règle {r.nom}</span> {r.titre}</b>
+          <span>{r.enonce}</span>
+          {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
+          <span style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((sc, i) => (
+            <span key={sc.t}>{i > 0 && " · "}{sc.h === "#" ? sc.t : <a href={sc.h}>{sc.t}</a>}</span>
+          ))}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Vue() {
   const [voir, setVoir] = useState(true);
   const [compact, setCompact] = useState(false);
@@ -201,7 +219,7 @@ export default function Vue() {
           <h2>L&apos;échelle vit — tirez la poignée</h2>
           <p className="sourd">Cette carte est construite avec les vrais espaces du système.
           Redimensionnez l&apos;aperçu : chaque distance glisse entre ses deux bornes.
-          « Voir les espaces » les colore, avec leur nom.</p>
+          Survolez la box : « voir les espaces » les colore, avec leur nom.</p>
           <Apercu outils={
             <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
               {voir ? "Masquer les espaces" : "Voir les espaces"}
@@ -220,9 +238,8 @@ export default function Vue() {
             (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
             vertical). Les valeurs de cette page ont été <b>lues mécaniquement</b> sur ce
             générateur à 320 et 1440 px — jamais recopiées — puis interpolées (écart mesuré :
-            moins d&apos;un pixel). L&apos;échelle fluide est la position de
-            <a href="https://design-system.service.gov.uk/styles/spacing/"> GOV.UK</a>, adoptée
-            le 23 août 2026 — voir la règle 8.</p>
+            moins d&apos;un pixel).</p>
+            <Regles ids={["y8", "y9", "y3", "y7", "y4"]} />
           </div></details>
         </section>
 
@@ -233,8 +250,9 @@ export default function Vue() {
           et remarquez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
-            changement de marque. Un cran d&apos;écart reste dans le système. <b>Décision interne,
-            testée sur notre application témoin</b> avant d&apos;entrer ici (12 août 2026).</p>
+            changement de marque. Un cran d&apos;écart reste dans le système — décision testée sur
+            notre application témoin avant d&apos;entrer ici.</p>
+            <Regles ids={["y5", "y6"]} />
           </div></details>
         </section>
 
@@ -246,10 +264,8 @@ export default function Vue() {
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
             systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
-            parfaites portaient des dizaines de distances qui mentaient.
-            <a href="https://www.nngroup.com/articles/gestalt-proximity/"> NN/g</a> ·
-            <a href="https://carbondesignsystem.com/elements/spacing/overview/"> Carbon</a> ·
-            <a href="https://polaris.shopify.com/design/layout"> Polaris</a></p>
+            parfaites portaient des dizaines de distances qui mentaient.</p>
+            <Regles ids={["y1", "y2"]} />
           </div></details>
         </section>
 
@@ -264,23 +280,6 @@ export default function Vue() {
             Angular ou HTML n&apos;en sont que des consommateurs.</p>
           </div></details>
         </section>
-
-        <div>
-          <h2 style={{ marginBottom: "var(--rr-block-unit)" }}>Les neuf règles, avec leurs raisons</h2>
-          <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
-            {REGLES.map((r) => (
-              <section key={r.id} id={r.id} className="carte" style={{ background: "var(--p-papier)", gap: "var(--rr-block-md)" }}>
-                <b><span className="badge">règle {r.nom}</span> {r.titre}</b>
-                <span>{r.enonce}</span>
-                <span className="sourd">{r.pourquoi}</span>
-                {r.div && <div className="divergence" style={{ fontSize: "0.875rem" }}>{r.div}</div>}
-                <span className="sourd" style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((s, i) => (
-                  <span key={s.t}>{i > 0 && " · "}{s.h === "#" ? s.t : <a href={s.h}>{s.t}</a>}</span>
-                ))}</span>
-              </section>
-            ))}
-          </div>
-        </div>
       </main>
 
       <aside className="reglages">
