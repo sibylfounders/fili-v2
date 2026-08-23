@@ -29,17 +29,25 @@ const TOKENS: [string, number, number, number, number][] = [
   ["--rr-control", 2.75, 2.7029, 0.2357, 2.915],
 ];
 
-function jetons(largeurPx: number): React.CSSProperties {
+/* L'échelle d'espacement par défaut de Tailwind, en px : pas de 2 px jusqu'à 14,
+   puis pas de 4 jusqu'à 48, puis les grands crans. Quand l'adaptation est
+   « Tailwind », chaque valeur s'accroche au cran Tailwind le plus proche —
+   plus de décimales (note d'Auteur du 23 août). */
+const ECHELLE_TW = [0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80, 96, 112, 128, 144, 160];
+const versTw = (px: number) => ECHELLE_TW.reduce((a, b) => (Math.abs(b - px) < Math.abs(a - px) ? b : a));
+
+function jetons(largeurPx: number, tw = false): React.CSSProperties {
   const o: Record<string, string> = {};
   for (const [nom, min, c, k, max] of TOKENS) {
     const px = Math.min(max * 16, Math.max(min * 16, c * 16 + (k * largeurPx) / 100));
-    o[nom] = `${px.toFixed(2)}px`;
+    o[nom] = tw ? `${versTw(px)}px` : `${px.toFixed(2)}px`;
   }
   return o as React.CSSProperties;
 }
-const lirePx = (largeur: number, nom: string) => {
+const lirePx = (largeur: number, nom: string, tw = false) => {
   const t = TOKENS.find(([n]) => n === nom)!;
-  return Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeur) / 100)).toFixed(1);
+  const px = Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeur) / 100));
+  return tw ? String(versTw(px)) : px.toFixed(1);
 };
 
 /* Un espace rendu visible : c'est un VRAI espace de la carte (il porte le jeton),
@@ -197,6 +205,7 @@ export default function Vue() {
   const [compact, setCompact] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("React");
   const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
+  const tw = styl === "Tailwind";
 
   return (
     <div className="coquille">
@@ -225,11 +234,11 @@ export default function Vue() {
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
           } enfants={(l) => (
-            <div style={{ ...jetons(l), width: "100%", display: "grid", justifyItems: "center", gap: "var(--rr-block-unit)" }}>
+            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "center", gap: "var(--rr-block-unit)" }}>
               <CarteAnnotee voir={voir} compact={compact} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
-                à {Math.round(l)} px : padding {lirePx(l, compact ? "--rr-block-unit" : "--rr-block-card")} px ·
-                écart {lirePx(l, compact ? "--rr-block-sm" : "--rr-block-md")} px
+                à {Math.round(l)} px : padding {lirePx(l, compact ? "--rr-block-unit" : "--rr-block-card", tw)} px ·
+                écart {lirePx(l, compact ? "--rr-block-sm" : "--rr-block-md", tw)} px{tw && " · accroché à l'échelle Tailwind"}
               </span>
             </div>
           )} />
@@ -260,7 +269,7 @@ export default function Vue() {
           <h2>La proximité — l&apos;espace est une information</h2>
           <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
           Cassez les deux règles et voyez la page mentir — l&apos;œil vous le dira avant nous.</p>
-          <Apercu enfants={(l) => (<div style={{ ...jetons(l), width: "100%", display: "grid", justifyItems: "center" }}><Proximite /></div>)} />
+          <Apercu enfants={(l) => (<div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "center" }}><Proximite /></div>)} />
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
             systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
