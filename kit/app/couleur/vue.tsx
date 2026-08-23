@@ -7,11 +7,11 @@ import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme, useTheme, useSchemeSysteme } from "../theme";
 
 /* La page vivante de la famille couleur (COLOR-UX.md 2.0.0, C1–C16).
-   Particularité assumée : cette page est LA SEULE du site rendue dans la
-   vraie famille (--c-*), via le pont déclaré dans globals.css — le reste
-   du site garde la palette provisoire jusqu'à l'accord d'Auteur. Tous les
-   rapports de contraste affichés ici sont MESURÉS sur la page rendue
-   (l'esprit de M1) : jamais recopiés depuis une table. */
+   La famille porte TOUT le site — le theming est global, jamais page
+   par page (décision d'Auteur, 23 août) — et son API parle anglais,
+   conventions marché, alignée sur le registre. Tous les rapports de
+   contraste affichés ici sont MESURÉS sur la page rendue (l'esprit de
+   M1) : jamais recopiés depuis une table. */
 
 /* ── Le contraste, calculé comme la norme le définit (S8) ── */
 function lineaire(c: number): number {
@@ -55,20 +55,20 @@ function resoudre(host: HTMLElement, variable: string): number[] | null {
 
 /* ── La table des paires déclarées (C7) — tout emploi hors d'elle est une faute ── */
 const PAIRES: [string, string, string, number][] = [
-  ["--c-encre", "--c-papier", "l'encre sur le papier", 4.5],
-  ["--c-encre", "--c-fond", "l'encre sur le fond", 4.5],
-  ["--c-sourd", "--c-papier", "le texte second sur le papier", 4.5],
-  ["--c-sourd", "--c-fond", "le texte second sur le fond", 4.5],
-  ["--c-accent", "--c-papier", "le lien sur le papier", 4.5],
-  ["--c-accent-survol", "--c-papier", "le lien survolé — C8", 4.5],
-  ["--c-sur-accent", "--c-accent", "le texte de l'action pleine", 4.5],
-  ["--c-accent", "--c-accent-doux", "le badge sur son fond doux", 4.5],
-  ["--c-sur-accent-doux", "--c-accent-doux", "le texte sur fond doux", 4.5],
-  ["--c-erreur", "--c-erreur-doux", "l'erreur sur son fond doux", 4.5],
-  ["--c-sur-erreur", "--c-erreur", "le texte sur l'erreur pleine", 4.5],
-  ["--c-succes", "--c-succes-doux", "le succès sur son fond doux", 4.5],
-  ["--c-sur-succes", "--c-succes", "le texte sur le succès plein", 4.5],
-  ["--c-trait-net", "--c-papier", "la bordure délimitante (seuil 3:1)", 3],
+  ["--text-primary", "--surface", "l'encre sur le papier", 4.5],
+  ["--text-primary", "--bg", "l'encre sur le fond", 4.5],
+  ["--text-secondary", "--surface", "le texte second sur le papier", 4.5],
+  ["--text-secondary", "--bg", "le texte second sur le fond", 4.5],
+  ["--primary", "--surface", "le lien sur le papier", 4.5],
+  ["--primary-hover", "--surface", "le lien survolé — C8", 4.5],
+  ["--on-primary", "--primary", "le texte de l'action pleine", 4.5],
+  ["--primary", "--primary-subtle", "le badge sur son fond doux", 4.5],
+  ["--on-primary-subtle", "--primary-subtle", "le texte sur fond doux", 4.5],
+  ["--danger", "--danger-subtle", "l'erreur sur son fond doux", 4.5],
+  ["--on-danger", "--danger", "le texte sur l'erreur pleine", 4.5],
+  ["--success", "--success-subtle", "le succès sur son fond doux", 4.5],
+  ["--on-success", "--success", "le texte sur le succès plein", 4.5],
+  ["--border-strong", "--surface", "la bordure délimitante (seuil 3:1)", 3],
 ];
 
 const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi?: string; div?: string; src: { t: string; h: string }[] }[] = [
@@ -143,10 +143,10 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
 
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
+    <div style={{ display: "grid", gap: "var(--space-block-xl)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-sm)", maxWidth: "var(--t-mesure)" }}>
-          <b style={{ color: "var(--p-encre)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
+        <div key={r.id} style={{ display: "grid", gap: "var(--space-block-sm)", maxWidth: "var(--measure)" }}>
+          <b style={{ color: "var(--text-primary)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.pourquoi && <span className="sourd">{r.pourquoi}</span>}
           {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
@@ -161,9 +161,9 @@ function Regles({ ids }: { ids: string[] }) {
 
 /* ── 01 · Le nuancier : les rôles, groupés par registre, valeurs lues au rendu ── */
 const REGISTRES: [string, [string, string][]][] = [
-  ["Marque", [["accent", "--c-accent"], ["accent-survol", "--c-accent-survol"], ["sur-accent", "--c-sur-accent"], ["accent-doux", "--c-accent-doux"], ["sur-accent-doux", "--c-sur-accent-doux"]]],
-  ["Sémantique", [["erreur", "--c-erreur"], ["erreur-doux", "--c-erreur-doux"], ["sur-erreur", "--c-sur-erreur"], ["succès", "--c-succes"], ["succès-doux", "--c-succes-doux"], ["sur-succès", "--c-sur-succes"]]],
-  ["Neutres", [["fond", "--c-fond"], ["papier", "--c-papier"], ["encre", "--c-encre"], ["sourd", "--c-sourd"], ["trait", "--c-trait"], ["trait-net", "--c-trait-net"]]],
+  ["Marque", [["primary", "--primary"], ["primary-hover", "--primary-hover"], ["on-primary", "--on-primary"], ["primary-subtle", "--primary-subtle"], ["on-primary-subtle", "--on-primary-subtle"]]],
+  ["Sémantique", [["danger", "--danger"], ["danger-subtle", "--danger-subtle"], ["on-danger", "--on-danger"], ["success", "--success"], ["success-subtle", "--success-subtle"], ["on-success", "--on-success"]]],
+  ["Neutres", [["bg", "--bg"], ["surface", "--surface"], ["text-primary", "--text-primary"], ["text-secondary", "--text-secondary"], ["border", "--border"], ["border-strong", "--border-strong"]]],
 ];
 
 function Nuancier({ cle }: { cle: string }) {
@@ -179,16 +179,16 @@ function Nuancier({ cle }: { cle: string }) {
     setValeurs(v);
   }, [cle]);
   return (
-    <div ref={ref} style={{ display: "grid", gap: "var(--rr-block-unit)", width: "100%" }}>
+    <div ref={ref} style={{ display: "grid", gap: "var(--space-block-unit)", width: "100%" }}>
       {REGISTRES.map(([registre, jetons]) => (
-        <div key={registre} style={{ display: "grid", gap: "var(--rr-block-md)" }}>
-          <span className="mono" style={{ color: "var(--c-sourd)" }}>{registre}</span>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--rr-inline-unit)" }}>
+        <div key={registre} style={{ display: "grid", gap: "var(--space-block-md)" }}>
+          <span className="mono" style={{ color: "var(--text-secondary)" }}>{registre}</span>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-inline-unit)" }}>
             {jetons.map(([nom, cssVar]) => (
-              <div key={cssVar} style={{ display: "grid", gap: "var(--rr-block-xs)", justifyItems: "start" }}>
-                <span style={{ width: "calc(4 * var(--rr-block-unit))", height: "calc(2.6 * var(--rr-block-unit))", borderRadius: "var(--rr-radius)", background: `var(${cssVar})`, border: "1px solid var(--c-trait)" }} />
+              <div key={cssVar} style={{ display: "grid", gap: "var(--space-block-xs)", justifyItems: "start" }}>
+                <span style={{ width: "calc(4 * var(--space-block-unit))", height: "calc(2.6 * var(--space-block-unit))", borderRadius: "var(--radius)", background: `var(${cssVar})`, border: "1px solid var(--border)" }} />
                 <span className="mono" style={{ fontSize: "0.625rem" }}>{nom}</span>
-                <span className="mono" style={{ fontSize: "0.625rem", color: "var(--c-sourd)", fontWeight: 400 }}>{valeurs[cssVar] ?? "…"}</span>
+                <span className="mono" style={{ fontSize: "0.625rem", color: "var(--text-secondary)", fontWeight: 400 }}>{valeurs[cssVar] ?? "…"}</span>
               </div>
             ))}
           </div>
@@ -201,13 +201,13 @@ function Nuancier({ cle }: { cle: string }) {
 /* ── 02 · Les alertes : le couple, et le canal qui n'est pas une couleur ── */
 function Alerte({ ton, couleurSeule }: { ton: "erreur" | "succes"; couleurSeule: boolean }) {
   const t = ton === "erreur"
-    ? { doux: "var(--c-erreur-doux)", plein: "var(--c-erreur)", icone: "⚠", mot: "Erreur", msg: "le dossier n'a pas pu être enregistré." }
-    : { doux: "var(--c-succes-doux)", plein: "var(--c-succes)", icone: "✓", mot: "Succès", msg: "le dossier est enregistré." };
+    ? { doux: "var(--danger-subtle)", plein: "var(--danger)", icone: "⚠", mot: "Erreur", msg: "le dossier n'a pas pu être enregistré." }
+    : { doux: "var(--success-subtle)", plein: "var(--success)", icone: "✓", mot: "Succès", msg: "le dossier est enregistré." };
   return (
     <div style={{
-      background: t.doux, color: couleurSeule ? "var(--c-encre)" : t.plein,
+      background: t.doux, color: couleurSeule ? "var(--text-primary)" : t.plein,
       border: `1px solid ${t.plein}`, borderInlineStart: `4px solid ${t.plein}`,
-      borderRadius: "var(--rr-radius)", padding: "var(--rr-block-unit) var(--rr-inline-unit)",
+      borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)",
       fontSize: "0.875rem", maxWidth: "28rem", width: "100%", textAlign: "left",
     }}>
       {couleurSeule
@@ -232,24 +232,24 @@ function TableauPaires({ grisPale }: { grisPale: boolean }) {
     const clair = lire(clairRef.current), sombre = lire(sombreRef.current);
     setLignes(PAIRES.map((_, i) => ({ clair: clair[i], sombre: sombre[i] })));
   }, [grisPale]);
-  const paleClair: React.CSSProperties = { ["--c-sourd" as any]: "#9CA3AF" };
-  const paleSombre: React.CSSProperties = { ["--c-sourd" as any]: "#6B7280" };
+  const paleClair: React.CSSProperties = { ["--text-secondary" as any]: "#9CA3AF" };
+  const paleSombre: React.CSSProperties = { ["--text-secondary" as any]: "#6B7280" };
   const Cellule = ({ r, seuil }: { r: number; seuil: number }) => (
     <td><span className={`badge ${r > 0 && r < seuil ? "ko" : ""}`}>{fmt(r)}</span></td>
   );
   return (
     <div style={{ width: "100%", overflowX: "auto" }}>
       {/* deux sondes hors écran, une par thème — la table lit les deux d'un coup */}
-      <div ref={clairRef} data-theme="clair" style={grisPale ? paleClair : undefined} hidden />
-      <div ref={sombreRef} data-theme="sombre" style={grisPale ? paleSombre : undefined} hidden />
+      <div ref={clairRef} data-theme="light" style={grisPale ? paleClair : undefined} hidden />
+      <div ref={sombreRef} data-theme="dark" style={grisPale ? paleSombre : undefined} hidden />
       <table className="tableau" style={{ width: "100%" }}>
         <thead><tr><th>Paire déclarée</th><th>Seuil</th><th>Thème clair</th><th>Thème sombre</th></tr></thead>
         <tbody>
           {PAIRES.map(([texte, fond, libelle, seuil], i) => (
             <tr key={libelle}>
               <td style={{ whiteSpace: "normal" }}>{libelle}<br />
-                <span className="mono" style={{ color: "var(--c-sourd)", fontWeight: 400, fontSize: "0.625rem" }}>{texte} / {fond}</span></td>
-              <td className="mono" style={{ color: "var(--c-sourd)" }}>{seuil === 3 ? "3:1" : "4,5:1"}</td>
+                <span className="mono" style={{ color: "var(--text-secondary)", fontWeight: 400, fontSize: "0.625rem" }}>{texte} / {fond}</span></td>
+              <td className="mono" style={{ color: "var(--text-secondary)" }}>{seuil === 3 ? "3:1" : "4,5:1"}</td>
               <Cellule r={lignes[i]?.clair ?? 0} seuil={seuil} />
               <Cellule r={lignes[i]?.sombre ?? 0} seuil={seuil} />
             </tr>
@@ -266,20 +266,20 @@ function MiniEcran({ cle }: { cle: string }) {
   const [r, setR] = useState(0);
   useEffect(() => {
     if (!ref.current) return;
-    const a = resoudre(ref.current, "--c-sur-accent"), b = resoudre(ref.current, "--c-accent");
+    const a = resoudre(ref.current, "--on-primary"), b = resoudre(ref.current, "--primary");
     if (a && b) setR(contraste(a, b));
   }, [cle]);
   return (
     <div ref={ref} style={{
-      background: "var(--c-fond)", color: "var(--c-encre)", border: "1px solid var(--c-trait)",
-      borderRadius: "var(--rr-radius-card)", padding: "var(--rr-block-card) var(--rr-inline-2xl)",
-      display: "grid", gap: "var(--rr-block-unit)", justifyItems: "start", textAlign: "left", minWidth: 0,
+      background: "var(--bg)", color: "var(--text-primary)", border: "1px solid var(--border)",
+      borderRadius: "var(--radius-card)", padding: "var(--space-block-card) var(--space-inline-2xl)",
+      display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", textAlign: "left", minWidth: 0,
     }}>
       <b>Le même écran</b>
-      <span style={{ color: "var(--c-sourd)", fontSize: "0.8125rem" }}>Chaque rôle a résolu la valeur de son thème — aucun composant n&apos;a changé.</span>
+      <span style={{ color: "var(--text-secondary)", fontSize: "0.8125rem" }}>Chaque rôle a résolu la valeur de son thème — aucun composant n&apos;a changé.</span>
       <span style={{
-        background: "var(--c-accent)", color: "var(--c-sur-accent)", borderRadius: "var(--rr-radius)",
-        padding: "var(--rr-block-md) var(--rr-inline-xl)", fontWeight: 600, fontSize: "0.875rem",
+        background: "var(--primary)", color: "var(--on-primary)", borderRadius: "var(--radius)",
+        padding: "var(--space-block-md) var(--space-inline-xl)", fontWeight: 600, fontSize: "0.875rem",
       }}>Enregistrer</span>
       <span className={`badge ${r > 0 && r < 4.5 ? "ko" : ""}`}>
         texte de l&apos;action : {fmt(r)}{r > 0 && r < 4.5 ? " — illisible, C14 mord" : ""}
@@ -292,10 +292,10 @@ function MiniEcran({ cle }: { cle: string }) {
 const GRIS_TEINTES: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#766F68"], ["gris bleuté", "#67737F"]];
 function TeinteConstante() {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--rr-inline-unit)", width: "100%" }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-inline-unit)", width: "100%" }}>
       {GRIS_TEINTES.map(([nom, hex]) => (
-        <div key={hex} style={{ display: "grid", gap: "var(--rr-block-xs)", justifyItems: "start" }}>
-          <span style={{ width: "calc(5 * var(--rr-block-unit))", height: "calc(2.6 * var(--rr-block-unit))", borderRadius: "var(--rr-radius)", background: hex }} />
+        <div key={hex} style={{ display: "grid", gap: "var(--space-block-xs)", justifyItems: "start" }}>
+          <span style={{ width: "calc(5 * var(--space-block-unit))", height: "calc(2.6 * var(--space-block-unit))", borderRadius: "var(--radius)", background: hex }} />
           <span className="mono" style={{ fontSize: "0.625rem" }}>{nom} {hex}</span>
           <span className="badge">{fmt(contraste(hexVers(hex), hexVers("#FFFFFF")))} sur blanc</span>
         </div>
@@ -306,12 +306,12 @@ function TeinteConstante() {
 
 const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
-    Tailwind: `// tailwind.config : theme.extend.colors <- couleur (tokens.tailwind.mjs)
-// chaque classe résout var(--c-…) — le thème se résout au rendu, jamais
+    Tailwind: `// tailwind.config : theme.extend.colors <- color (tokens.tailwind.mjs)
+// chaque classe résout var(--danger-…) — le thème se résout au rendu, jamais
 // dans une classe (C12)
 export function AlerteErreur({ enfants }) {
   return (
-    <div role="alert" className="bg-erreur-doux text-erreur rounded-rr">
+    <div role="alert" className="bg-danger-subtle text-danger rounded">
       <b>⚠ Erreur</b> — {enfants}
       {/* l'icône et le mot restent : jamais la couleur seule (C6) */}
     </div>
@@ -331,7 +331,7 @@ export function AlerteErreur({ enfants }) {
 }
 
 /* globals.css — le câblage :
-   --destructive: var(--c-erreur); --background: var(--c-fond); … */`,
+   --destructive: var(--danger); --background: var(--bg); … */`,
     "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
 export function AlerteErreur({ enfants }) {
   return (
@@ -343,9 +343,9 @@ export function AlerteErreur({ enfants }) {
 
 /* styles.css — les rôles, jamais les valeurs (C1) */
 .alerte-erreur {
-  background: var(--c-erreur-doux);
-  color: var(--c-erreur);          /* paire déclarée, mesurée (C7) */
-  border: 1px solid var(--c-erreur);
+  background: var(--danger-subtle);
+  color: var(--danger);          /* paire déclarée, mesurée (C7) */
+  border: 1px solid var(--danger);
 }
 /* le thème sombre ne se code pas ici : chaque jeton résout sa
    valeur par thème dans tokens.css (C12, C13) */`,
@@ -354,7 +354,7 @@ export function AlerteErreur({ enfants }) {
     Tailwind: `@Component({
   selector: "kit-alerte-erreur",
   template: \`
-    <div role="alert" class="bg-erreur-doux text-erreur rounded-rr">
+    <div role="alert" class="bg-danger-subtle text-danger rounded">
       <b>⚠ Erreur</b> — <ng-content />
     </div>\`,
 })
@@ -375,18 +375,18 @@ export class AlerteErreur {}`,
     <div role="alert" class="alerte alerte-erreur">
       <b>⚠ Erreur</b> — <ng-content />
     </div>\`,
-  styleUrl: "./alerte.css", // mêmes classes : var(--c-erreur), var(--c-erreur-doux)
+  styleUrl: "./alerte.css", // mêmes classes : var(--danger), var(--danger-subtle)
 })
 export class AlerteErreur {}`,
   },
   HTML: {
-    Tailwind: `<div role="alert" class="bg-erreur-doux text-erreur rounded-rr">
+    Tailwind: `<div role="alert" class="bg-danger-subtle text-danger rounded">
   <b>⚠ Erreur</b> — les classes résolvent les jetons ; le thème
   se résout au rendu.
 </div>`,
     shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste
      que l'essentiel — ses classes, câblées sur nos jetons -->
-<div role="alert" class="bg-erreur-doux text-erreur border rounded-rr">
+<div role="alert" class="bg-danger-subtle text-danger border rounded">
   <b>⚠ Erreur</b> — le canal redondant reste (C6).
 </div>`,
     "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" /><!-- les deux thèmes vivent ici -->
@@ -398,7 +398,7 @@ export class AlerteErreur {}`,
 };
 
 export default function Vue() {
-  const [demoTheme, setDemoTheme] = useState<"clair" | "sombre">("clair");
+  const [demoTheme, setDemoTheme] = useState<"light" | "dark">("light");
   const [dur, setDur] = useState(false);
   const [couleurSeule, setCouleurSeule] = useState(false);
   const [gris, setGris] = useState(false);
@@ -409,12 +409,12 @@ export default function Vue() {
   const { styl } = useAdaptation();
   const { theme } = useTheme();
   const sysSombre = useSchemeSysteme();
-  const themeEffectif = theme === "systeme" ? (sysSombre ? "sombre" : "clair") : theme;
-  const paleEffectif: React.CSSProperties = { ["--c-sourd" as any]: themeEffectif === "sombre" ? "#6B7280" : "#9CA3AF" };
-  const actionSombreStyle: React.CSSProperties = { ["--c-accent" as any]: "#312E81" };
+  const themeEffectif = theme === "system" ? (sysSombre ? "dark" : "light") : theme;
+  const paleEffectif: React.CSSProperties = { ["--text-secondary" as any]: themeEffectif === "dark" ? "#6B7280" : "#9CA3AF" };
+  const actionSombreStyle: React.CSSProperties = { ["--primary" as any]: "#312E81" };
 
   return (
-    <div className="coquille pont-couleur">
+    <div className="coquille">
       <Navigation actif="couleur" />
 
       <main className="contenu">
@@ -440,9 +440,9 @@ export default function Vue() {
           en dur est invisible en clair… et reste claire quand le thème bascule.</p>
           <Apercu outils={
             <>
-              {(["clair", "sombre"] as const).map((t) => (
+              {([["light", "clair"], ["dark", "sombre"]] as const).map(([t, nom]) => (
                 <button key={t} className={`bouton ${demoTheme === t ? "on" : ""}`} onClick={() => setDemoTheme(t)}>
-                  aperçu {t}
+                  aperçu {nom}
                 </button>
               ))}
               <button className={`bouton casse ${dur ? "on" : ""}`} onClick={() => setDur(!dur)}>
@@ -451,20 +451,20 @@ export default function Vue() {
             </>
           } enfants={() => (
             <div data-theme={demoTheme} style={{
-              width: "100%", background: "var(--c-fond)", color: "var(--c-encre)",
-              borderRadius: "var(--rr-radius)", padding: "var(--rr-block-card) var(--rr-inline-2xl)",
-              display: "grid", gap: "var(--rr-block-card)", textAlign: "left",
+              width: "100%", background: "var(--bg)", color: "var(--text-primary)",
+              borderRadius: "var(--radius)", padding: "var(--space-block-card) var(--space-inline-2xl)",
+              display: "grid", gap: "var(--space-block-card)", textAlign: "left",
             }}>
               <Nuancier cle={demoTheme} />
-              <div style={{ display: "grid", gap: "var(--rr-block-sm)", justifyItems: "start" }}>
+              <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
                 <div style={dur
-                  ? { background: "#EFEDFC", color: "#5D51E8", border: "1px solid #5D51E8", borderRadius: "var(--rr-radius)", padding: "var(--rr-block-unit) var(--rr-inline-unit)", fontSize: "0.875rem" }
-                  : { background: "var(--c-accent-doux)", color: "var(--c-sur-accent-doux)", border: "1px solid var(--c-accent)", borderRadius: "var(--rr-radius)", padding: "var(--rr-block-unit) var(--rr-inline-unit)", fontSize: "0.875rem" }}>
-                  {dur ? "Cette carte est peinte par valeur : #EFEDFC, #5D51E8." : "Cette carte est peinte par rôle : accent-doux, sur-accent-doux."}
+                  ? { background: "#EFEDFC", color: "#5D51E8", border: "1px solid #5D51E8", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }
+                  : { background: "var(--primary-subtle)", color: "var(--on-primary-subtle)", border: "1px solid var(--primary)", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }}>
+                  {dur ? "Cette carte est peinte par valeur : #EFEDFC, #5D51E8." : "Cette carte est peinte par rôle : primary-subtle, on-primary-subtle."}
                 </div>
                 {dur && (
-                  <span className={`badge ${demoTheme === "sombre" ? "ko" : ""}`}>
-                    {demoTheme === "sombre"
+                  <span className={`badge ${demoTheme === "dark" ? "ko" : ""}`}>
+                    {demoTheme === "dark"
                       ? "restée claire — la valeur en dur ignore le thème (C1, C12)"
                       : "identique à l'œil — en clair, rien ne signale la faute : basculez l'aperçu en sombre"}
                   </span>
@@ -496,7 +496,7 @@ export default function Vue() {
               </button>
             </>
           } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)", justifyItems: "start", filter: gris ? "grayscale(1)" : undefined }}>
+            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", filter: gris ? "grayscale(1)" : undefined }}>
               <Alerte ton="erreur" couleurSeule={couleurSeule} />
               <Alerte ton="succes" couleurSeule={couleurSeule} />
               {couleurSeule && gris && (
@@ -525,8 +525,8 @@ export default function Vue() {
               {grisPale ? "Réparer : remonter le gris" : "Casser : le gris d'avant l'arbitrage"}
             </button>
           } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
-              <p style={{ color: "var(--c-sourd)", maxWidth: "var(--t-mesure)", fontSize: "0.875rem" }}>
+            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
+              <p style={{ color: "var(--text-secondary)", maxWidth: "var(--measure)", fontSize: "0.875rem" }}>
                 Ce paragraphe est du texte second — des métadonnées, diraient certains.
                 L&apos;ancien registre le laissait descendre à 2,5:1 « parce que c&apos;est
                 accessoire » ; la norme ne connaît pas cette exception, et l&apos;arbitrage
@@ -546,17 +546,17 @@ export default function Vue() {
           <p className="kicker">04 · Les états</p>
           <h2>Un survol est un jeton, pas un filtre</h2>
           <p className="sourd">Survolez les deux boutons. Le premier prend
-          <span className="mono"> accent-survol</span> — un jeton du registre, présent dans
+          <span className="mono"> primary-hover</span> — un jeton du registre, présent dans
           la table des paires. Le second s&apos;assombrit par un filtre : la couleur
           produite n&apos;existe dans aucun registre, aucune table ne peut la vérifier,
           aucun instrument ne la verra jamais. Quant au désactivé : il n&apos;a pas de
           jetons — et c&apos;est une décision, pas un oubli.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--rr-inline-unit)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--space-inline-unit)" }}>
             <div className="carte">
               <span className="mono sourd">Le survol par jeton</span>
               <div><button className="bouton demo-plein jeton">Enregistrer</button></div>
               <span className="sourd" style={{ fontSize: "0.8125rem" }}>Au survol :
-              <span className="mono"> --c-accent-survol</span> — sa paire est déclarée et
+              <span className="mono"> --primary-hover</span> — sa paire est déclarée et
               mesurée au même seuil que le repos (C8).</span>
             </div>
             <div className="carte">
@@ -599,18 +599,18 @@ export default function Vue() {
               {actionSombre ? "Réparer : éclaircir l'action" : "Casser : une action sombre en sombre"}
             </button>
           } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)", textAlign: "left" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--rr-inline-unit)" }}>
-                <div data-theme="clair" style={{ display: "grid", gap: "var(--rr-block-sm)" }}>
-                  <span className="mono" style={{ color: "var(--c-sourd)" }}>thème clair</span>
+            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)" }}>
+                <div data-theme="light" style={{ display: "grid", gap: "var(--space-block-sm)" }}>
+                  <span className="mono" style={{ color: "var(--text-secondary)" }}>thème clair</span>
                   <MiniEcran cle={`clair-${actionSombre}`} />
                 </div>
-                <div data-theme="sombre" style={{ display: "grid", gap: "var(--rr-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
-                  <span className="mono" style={{ color: "var(--c-sourd)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
+                <div data-theme="dark" style={{ display: "grid", gap: "var(--space-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
+                  <span className="mono" style={{ color: "var(--text-secondary)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
                   <MiniEcran cle={`sombre-${actionSombre}`} />
                 </div>
               </div>
-              <div style={{ display: "grid", gap: "var(--rr-block-sm)", justifyItems: "start" }}>
+              <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
                 <span className="mono sourd">Teinter un neutre, à luminance constante — l&apos;opération gratuite (C15)</span>
                 <TeinteConstante />
                 <span className="sourd" style={{ fontSize: "0.75rem" }}>Valeurs d&apos;étude
@@ -656,10 +656,10 @@ export default function Vue() {
         <Adaptation />
         <div className="bloc">
           <span className="mono sourd">La famille</span>
-          <p className="sourd" style={{ fontSize: "0.75rem" }}>Cette page est rendue dans la
-          vraie famille couleur (COLOR-UX 2.0.0) : le thème agit pleinement ici. Le reste
-          du site garde la palette provisoire jusqu&apos;à validation — la bascule est
-          prête.</p>
+          <p className="sourd" style={{ fontSize: "0.75rem" }}>La famille couleur
+          (COLOR-UX 2.0.0) porte tout le site, dans les deux thèmes — le theming est
+          global, jamais page par page. Son API parle anglais, alignée sur le
+          registre : bg, surface, text-primary, primary, danger…</p>
         </div>
       </aside>
     </div>

@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 /* L'adaptation est un réglage de theming global : Tailwind (défaut),
-   shadcn (le site prend la livrée shadcn/ui — neutres zinc, primaire encre,
-   rayons md, contrôles h-9), HTML natif (décimales calculées, valeurs
-   fluides). Mémorisé d'une page et d'une visite à l'autre. */
+   shadcn (géométrie shadcn/ui — rayons md, contrôles h-9 ; la couleur
+   vient toujours de la famille, dans les deux thèmes), HTML natif
+   (décimales calculées, valeurs fluides). Mémorisé d'une page et d'une
+   visite à l'autre. */
 
 const CLE = "kit-adaptation";
 export type Adapt = "tailwind" | "shadcn" | "html";
@@ -39,7 +40,7 @@ export function Adaptation() {
   return (
     <div className="bloc">
       <span className="mono sourd">Adaptation — tout le site</span>
-      <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
         {CHOIX.map(([a, nom]) => (
           <button key={a} className={`bouton ${adaptation === a ? "on" : ""}`} onClick={() => changer(a)}>{nom}</button>
         ))}

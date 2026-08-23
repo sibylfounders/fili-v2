@@ -4,8 +4,11 @@
  * pointent sur les variables, jamais sur des valeurs — le rythme continue
  * de vivre après compilation (doctrine du kit géométrie, conservée).
  *
- * Usage : import { rythme } from './tokens.tailwind.mjs'
- * puis dans tailwind.config : theme.extend.spacing = rythme.spacing, etc.
+ * NOMMAGE (décision d'Auteur, 23 août 2026) : l'API du kit parle anglais,
+ * conventions marché — la doctrine et les pages restent en français.
+ *
+ * Usage : import { rhythm, typography, color } from './tokens.tailwind.mjs'
+ * puis dans tailwind.config : theme.extend.spacing = rhythm.spacing, etc.
  *
  * NOTE D'AUTEUR (23 août 2026) : si un consommateur Tailwind exige un thème
  * à valeurs littérales (sans variables), les valeurs sortiront ARRONDIES —
@@ -13,88 +16,98 @@
  * utilitaires pointent sur les variables (le cas ici), la question ne se
  * pose pas : la variable se résout au rendu.
  */
-export const rythme = {
+export const rhythm = {
   spacing: {
-    'inline-xs': 'var(--rr-inline-xs)',
-    'inline-sm': 'var(--rr-inline-sm)',
-    'inline-unit': 'var(--rr-inline-unit)',
-    'inline-lg': 'var(--rr-inline-lg)',
-    'inline-xl': 'var(--rr-inline-xl)',
-    'inline-2xl': 'var(--rr-inline-2xl)',
-    'block-xs': 'var(--rr-block-xs)',
-    'block-sm': 'var(--rr-block-sm)',
-    'block-md': 'var(--rr-block-md)',
-    'block-control': 'var(--rr-block-control)',
-    'block-card': 'var(--rr-block-card)',
-    'block-unit': 'var(--rr-block-unit)',
-    'block-lg': 'var(--rr-block-lg)',
-    'block-xl': 'var(--rr-block-xl)',
-    'block-page': 'var(--rr-block-page)',
+    'inline-xs': 'var(--space-inline-xs)',
+    'inline-sm': 'var(--space-inline-sm)',
+    'inline-unit': 'var(--space-inline-unit)',
+    'inline-lg': 'var(--space-inline-lg)',
+    'inline-xl': 'var(--space-inline-xl)',
+    'inline-2xl': 'var(--space-inline-2xl)',
+    'block-xs': 'var(--space-block-xs)',
+    'block-sm': 'var(--space-block-sm)',
+    'block-md': 'var(--space-block-md)',
+    'block-control': 'var(--space-block-control)',
+    'block-card': 'var(--space-block-card)',
+    'block-unit': 'var(--space-block-unit)',
+    'block-lg': 'var(--space-block-lg)',
+    'block-xl': 'var(--space-block-xl)',
+    'block-page': 'var(--space-block-page)',
   },
   borderRadius: {
-    rr: 'var(--rr-radius)',
-    'rr-card': 'var(--rr-radius-card)',
-    'rr-shell': 'var(--rr-radius-shell)',
+    DEFAULT: 'var(--radius)',
+    card: 'var(--radius-card)',
+    shell: 'var(--radius-shell)',
   },
-  height: { 'rr-control': 'var(--rr-control)' },
-  fontSize: { 'rr-type': 'var(--rr-type)' },
+  height: { control: 'var(--control-height)' },
+  fontSize: { base: 'var(--font-size-base)' },
 };
 
 /* Sortie jumelle — typographie (même origine que tokens.css ; les valeurs
    littérales d'un thème Tailwind sortiraient ARRONDIES, note d'Auteur). */
-export const typo = {
+export const typography = {
   fontFamily: {
-    interface: "var(--t-interface)",
-    code: "var(--t-code)",
+    sans: "var(--font-sans)",
+    mono: "var(--font-mono)",
   },
   fontSize: {
-    corps: "var(--t-corps)",
-    "titre-3": "var(--t-titre-3)",
-    "titre-2": "var(--t-titre-2)",
-    "titre-1": "var(--t-titre-1)",
-    affiche: "var(--t-affiche)",
+    body: "var(--font-size-body)",
+    h3: "var(--font-size-h3)",
+    h2: "var(--font-size-h2)",
+    h1: "var(--font-size-h1)",
+    display: "var(--font-size-display)",
   },
   lineHeight: {
-    courant: "var(--t-interligne-courant)",
-    titre: "var(--t-interligne-titre)",
+    body: "var(--leading-body)",
+    heading: "var(--leading-heading)",
   },
-  maxWidth: { mesure: "var(--t-mesure)" },
-  letterSpacing: { etiquette: "var(--t-interlettrage-etiquette)" },
+  maxWidth: { measure: "var(--measure)" },
+  letterSpacing: { label: "var(--tracking-label)" },
 };
 
 
 /* Sortie jumelle — couleur (COLOR-UX.md 2.0.0). Les utilitaires pointent
    sur les variables : le thème (clair/sombre) se résout au rendu, jamais
-   dans une classe — un thème littéral figerait un seul des deux thèmes. */
-export const couleur = {
+   dans une classe — un thème littéral figerait un seul des deux thèmes.
+   Les deux rôles de texte suivent la convention foreground du marché. */
+export const color = {
   colors: {
-    fond: "var(--c-fond)",
-    papier: "var(--c-papier)",
-    encre: "var(--c-encre)",
-    sourd: "var(--c-sourd)",
-    trait: "var(--c-trait)",
-    "trait-net": "var(--c-trait-net)",
-    accent: "var(--c-accent)",
-    "accent-survol": "var(--c-accent-survol)",
-    "sur-accent": "var(--c-sur-accent)",
-    "accent-doux": "var(--c-accent-doux)",
-    "sur-accent-doux": "var(--c-sur-accent-doux)",
-    erreur: "var(--c-erreur)",
-    "erreur-doux": "var(--c-erreur-doux)",
-    "sur-erreur": "var(--c-sur-erreur)",
-    succes: "var(--c-succes)",
-    "succes-doux": "var(--c-succes-doux)",
-    "sur-succes": "var(--c-sur-succes)",
+    background: "var(--bg)",
+    surface: "var(--surface)",
+    foreground: "var(--text-primary)",
+    "muted-foreground": "var(--text-secondary)",
+    border: "var(--border)",
+    "border-strong": "var(--border-strong)",
+    primary: {
+      DEFAULT: "var(--primary)",
+      hover: "var(--primary-hover)",
+      subtle: "var(--primary-subtle)",
+    },
+    "on-primary": {
+      DEFAULT: "var(--on-primary)",
+      subtle: "var(--on-primary-subtle)",
+    },
+    danger: {
+      DEFAULT: "var(--danger)",
+      subtle: "var(--danger-subtle)",
+    },
+    "on-danger": "var(--on-danger)",
+    success: {
+      DEFAULT: "var(--success)",
+      subtle: "var(--success-subtle)",
+    },
+    "on-success": "var(--on-success)",
+    code: { bg: "var(--code-bg)", text: "var(--code-text)" },
   },
 };
 
 /* ── Le thème Tailwind LITTÉRAL — deux échelles assumées (décision d'Auteur,
    23 août) : Tailwind garde sa grille 4-16, valeurs ARRONDIES au cran le plus
    proche, jamais de décimales ; le CSS natif garde les décimales calculées
-   via les variables (rythme.spacing ci-dessus). On ne mélange jamais les
+   via les variables (rhythm.spacing ci-dessus). On ne mélange jamais les
    deux : un projet choisit son échelle et s'y tient. min = borne 320 px,
    max = borne 1440 px (thème par régime, la fluidité reste aux variables). */
-export const rythmeLitteral = {
+export const rhythmLiteral = {
   spacing: {
     "inline-xs": { min: "4px", max: "8px" }, /* calculé : 4.8 → 7.2 px */
     "inline-sm": { min: "6px", max: "10px" }, /* calculé : 6.2 → 9.4 px */

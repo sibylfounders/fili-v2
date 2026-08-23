@@ -101,7 +101,7 @@ export function PanneauCode({ langage, code, outils }: { langage: string; code: 
   return (
     <div className="panneau-code">
       <div className="panneau-code-tete">
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--rr-inline-sm)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-inline-sm)" }}>
           {outils}
           <span className="mono sourd">{langage}</span>
         </div>

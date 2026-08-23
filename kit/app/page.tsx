@@ -1,5 +1,6 @@
 import { Navigation } from "./nav";
 import { Densite } from "./densite";
+import { Theme } from "./theme";
 
 export default function Accueil() {
   return (
@@ -26,10 +27,10 @@ export default function Accueil() {
               <span className="mono sourd">Fondation</span>
               <span className="tuile-titre">Le rythme</span>
               <span className="tuile-specimen" aria-hidden>
-                <span className="barre" style={{ width: "calc(8 * var(--rr-inline-unit))" }} />
-                <span className="barre" style={{ width: "calc(5 * var(--rr-inline-unit))" }} />
-                <span className="barre" style={{ width: "calc(3 * var(--rr-inline-unit))" }} />
-                <span className="barre" style={{ width: "calc(2 * var(--rr-inline-unit))" }} />
+                <span className="barre" style={{ width: "calc(8 * var(--space-inline-unit))" }} />
+                <span className="barre" style={{ width: "calc(5 * var(--space-inline-unit))" }} />
+                <span className="barre" style={{ width: "calc(3 * var(--space-inline-unit))" }} />
+                <span className="barre" style={{ width: "calc(2 * var(--space-inline-unit))" }} />
               </span>
               <span className="sourd">Neuf règles d&apos;espacement, une échelle générée —
               chaque distance a une raison, et vous pouvez la tirer.</span>
@@ -38,7 +39,7 @@ export default function Accueil() {
             <a href="/typo" className="tuile">
               <span className="mono sourd">Fondation</span>
               <span className="tuile-titre">La typographie</span>
-              <span className="tuile-specimen" style={{ fontSize: "var(--t-titre-1)", fontWeight: 600, letterSpacing: "-0.02em", lineHeight: 1.1 }} aria-hidden>
+              <span className="tuile-specimen" style={{ fontSize: "var(--font-size-h1)", fontWeight: 600, letterSpacing: "-0.02em", lineHeight: 1.1 }} aria-hidden>
                 Aa Bb Éé 013
               </span>
               <span className="sourd">Onze règles de composition, deux mesures de rendu —
@@ -48,9 +49,9 @@ export default function Accueil() {
             <a href="/couleur" className="tuile">
               <span className="mono sourd">Fondation</span>
               <span className="tuile-titre">La couleur</span>
-              <span className="tuile-specimen" style={{ flexDirection: "row", alignItems: "center", gap: "var(--rr-inline-sm)" }} aria-hidden>
-                {["var(--c-accent)", "var(--c-erreur)", "var(--c-succes)", "var(--c-encre)", "var(--c-trait)"].map((c) => (
-                  <span key={c} style={{ width: "calc(2 * var(--rr-block-unit))", height: "calc(2 * var(--rr-block-unit))", borderRadius: "999px", background: c, border: "1px solid var(--c-trait)" }} />
+              <span className="tuile-specimen" style={{ flexDirection: "row", alignItems: "center", gap: "var(--space-inline-sm)" }} aria-hidden>
+                {["var(--primary)", "var(--danger)", "var(--success)", "var(--text-primary)", "var(--border)"].map((c) => (
+                  <span key={c} style={{ width: "calc(2 * var(--space-block-unit))", height: "calc(2 * var(--space-block-unit))", borderRadius: "999px", background: c, border: "1px solid var(--border)" }} />
                 ))}
               </span>
               <span className="sourd">Seize règles, trois registres, deux thèmes — chaque
@@ -83,7 +84,7 @@ export default function Accueil() {
         <section className="bloc-section">
           <p className="kicker">03 · La règle du jeu</p>
           <h2>Les fondations d&apos;abord, les composants ensuite</h2>
-          <p className="sourd" style={{ maxWidth: "var(--t-mesure)" }}>Composants et patterns sont
+          <p className="sourd" style={{ maxWidth: "var(--measure)" }}>Composants et patterns sont
           gelés jusqu&apos;au verrou des fondations. Chaque composant naîtra ensuite avec sa
           fiche « les lois qui m&apos;ont construit » — et le normatif restera la règle et le
           jeton : React, Angular, HTML, CSS natif ou Tailwind n&apos;en sont que des
@@ -93,11 +94,12 @@ export default function Accueil() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Theme />
         <Densite />
-        <p className="sourd" style={{ fontSize: "0.75rem" }}>Chaque fondation apporte ses
-        réglages : densité et adaptation sur le rythme, zoom lecteur sur la typographie,
-        thème clair/sombre sur la couleur — où il se règle et s&apos;éprouve, avant de
-        s&apos;étendre au site entier.</p>
+        <p className="sourd" style={{ fontSize: "0.75rem" }}>Le thème et la densité
+        gouvernent tout le site — jamais une page à la fois. Chaque fondation ajoute
+        ses propres réglages sur sa page : zoom lecteur sur la typographie, largeur
+        d&apos;aperçu sur chaque banc.</p>
       </aside>
     </div>
   );

@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="fr" suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html:
-          `try{var d=localStorage.getItem("kit-densite");if(d==="compact"||d==="aere")document.documentElement.dataset.densite=d;var a=localStorage.getItem("kit-adaptation");if(a==="shadcn"||a==="html")document.documentElement.dataset.adaptation=a;var t=localStorage.getItem("kit-theme");if(t==="clair"||t==="sombre")document.documentElement.dataset.theme=t}catch(e){}` }} />
+          `try{var d=localStorage.getItem("kit-density");if(d==="compact"||d==="airy")document.documentElement.dataset.density=d;var a=localStorage.getItem("kit-adaptation");if(a==="shadcn"||a==="html")document.documentElement.dataset.adaptation=a;var t=localStorage.getItem("kit-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}` }} />
         <header className="chrome">
           <b>Kit</b>
           <span className="sourd" style={{ fontSize: "0.8125rem" }}>

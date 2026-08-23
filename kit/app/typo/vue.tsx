@@ -4,16 +4,17 @@ import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
+import { Theme } from "../theme";
 
 /* L'échelle de travail des corps — mêmes valeurs que tokens.css.
    L'aperçu recalcule chaque échelon pour SA largeur, et le « zoom lecteur »
    multiplie la part rem : c'est exactement ce que fait le zoom du navigateur,
    et c'est pour ça que le vw seul échoue (T3). */
 const ECHELONS: [string, string, number, number, number, number][] = [
-  ["--t-titre-1", "titre 1", 1.6, 1.4571, 0.7143, 2.1],
-  ["--t-titre-2", "titre 2", 1.3, 1.2429, 0.2857, 1.5],
-  ["--t-titre-3", "titre 3", 1.15, 1.1214, 0.1429, 1.25],
-  ["--t-corps", "corps", 1.0, 0.9571, 0.2143, 1.15],
+  ["--font-size-h1", "titre 1", 1.6, 1.4571, 0.7143, 2.1],
+  ["--font-size-h2", "titre 2", 1.3, 1.2429, 0.2857, 1.5],
+  ["--font-size-h3", "titre 3", 1.15, 1.1214, 0.1429, 1.25],
+  ["--font-size-body", "corps", 1.0, 0.9571, 0.2143, 1.15],
 ];
 
 function corpsPx(nom: string, largeur: number, zoom: number, vwSeul: boolean): number {
@@ -84,10 +85,10 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
 
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
+    <div style={{ display: "grid", gap: "var(--space-block-xl)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-sm)", maxWidth: "var(--t-mesure)" }}>
-          <b style={{ color: "var(--p-encre)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
+        <div key={r.id} style={{ display: "grid", gap: "var(--space-block-sm)", maxWidth: "var(--measure)" }}>
+          <b style={{ color: "var(--text-primary)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.pourquoi && <span className="sourd">{r.pourquoi}</span>}
           {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
@@ -105,14 +106,14 @@ function Regles({ ids }: { ids: string[] }) {
 function Specimen({ largeur, zoom, vwSeul }: { largeur: number; zoom: number; vwSeul: boolean }) {
   const px = (nom: string) => corpsPx(nom, largeur, zoom, vwSeul);
   return (
-    <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-md)", textAlign: "left" }}>
-      <div style={{ fontSize: `${px("--t-titre-1")}px`, lineHeight: "var(--t-interligne-titre)", fontWeight: 600, letterSpacing: "-0.02em" }}>
+    <div style={{ width: "100%", display: "grid", gap: "var(--space-block-md)", textAlign: "left" }}>
+      <div style={{ fontSize: `${px("--font-size-h1")}px`, lineHeight: "var(--leading-heading)", fontWeight: 600, letterSpacing: "-0.02em" }}>
         Portez ce vieux whisky
       </div>
-      <div style={{ fontSize: `${px("--t-titre-2")}px`, lineHeight: "var(--t-interligne-titre)", fontWeight: 600 }}>
+      <div style={{ fontSize: `${px("--font-size-h2")}px`, lineHeight: "var(--leading-heading)", fontWeight: 600 }}>
         au juge blond qui fume
       </div>
-      <div style={{ fontSize: `${px("--t-corps")}px`, lineHeight: "var(--t-interligne-courant)", maxWidth: "var(--t-mesure)" }}>
+      <div style={{ fontSize: `${px("--font-size-body")}px`, lineHeight: "var(--leading-body)", maxWidth: "var(--measure)" }}>
         Le corps courant ne descend jamais sous l&apos;équivalent 16 px, et chaque
         échelon glisse entre ses deux bornes — celles-ci, vous les voyez bouger.
       </div>
@@ -137,8 +138,8 @@ function Mesure({ largeur, sansBorne, serre }: { largeur: number; sansBorne: boo
   }, [largeur, sansBorne, serre]);
   const horsPlage = parLigne > 80;
   return (
-    <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)", justifyItems: "start", textAlign: "left" }}>
-      <p ref={pRef} style={{ position: "relative", maxWidth: sansBorne ? "none" : "var(--t-mesure)", width: sansBorne ? "100%" : undefined, lineHeight: serre ? 1.25 : "var(--t-interligne-courant)", fontSize: "var(--t-corps)" }}>
+    <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", textAlign: "left" }}>
+      <p ref={pRef} style={{ position: "relative", maxWidth: sansBorne ? "none" : "var(--measure)", width: sansBorne ? "100%" : undefined, lineHeight: serre ? 1.25 : "var(--leading-body)", fontSize: "var(--font-size-body)" }}>
         <span ref={zRef} aria-hidden style={{ position: "absolute", visibility: "hidden", whiteSpace: "pre" }}>00000000000000000000</span>
         La lisibilité d&apos;un paragraphe dépend plus de sa mesure que de sa taille :
         au-delà d&apos;une certaine longueur de ligne, l&apos;œil perd le retour à la ligne
@@ -159,19 +160,19 @@ function Arbre({ saut }: { saut: boolean }) {
     ? [["h1 · Le dossier", 0, false], ["h2 · Première partie", 1, false], ["h4 · Un détail", 3, true], ["h2 · Deuxième partie", 1, false]]
     : [["h1 · Le dossier", 0, false], ["h2 · Première partie", 1, false], ["h3 · Sous-partie", 2, false], ["h2 · Deuxième partie", 1, false]];
   return (
-    <div style={{ width: "100%", maxWidth: "28rem", display: "grid", gap: "var(--rr-block-sm)", textAlign: "left" }}>
+    <div style={{ width: "100%", maxWidth: "28rem", display: "grid", gap: "var(--space-block-sm)", textAlign: "left" }}>
       {saut && (
-        <div className="mono" style={{ color: "var(--p-rouge)", marginLeft: "calc(2 * var(--rr-inline-2xl))" }}>
+        <div className="mono" style={{ color: "var(--danger)", marginLeft: "calc(2 * var(--space-inline-2xl))" }}>
           h3 manquant — le lecteur d&apos;écran conclut à du contenu disparu
         </div>
       )}
       {rangs.map(([txt, prof, ko]) => (
         <div key={txt} className="mono" style={{
-          marginLeft: `calc(${prof} * var(--rr-inline-2xl))`,
-          padding: "var(--rr-block-md) var(--rr-inline-unit)",
-          background: ko ? "var(--p-rouge-doux)" : "var(--p-accent-doux)",
-          color: ko ? "var(--p-rouge)" : "var(--p-accent)",
-          borderRadius: "var(--rr-radius)", fontSize: "0.75rem",
+          marginLeft: `calc(${prof} * var(--space-inline-2xl))`,
+          padding: "var(--space-block-md) var(--space-inline-unit)",
+          background: ko ? "var(--danger-subtle)" : "var(--primary-subtle)",
+          color: ko ? "var(--danger)" : "var(--primary)",
+          borderRadius: "var(--radius)", fontSize: "0.75rem",
         }}>{txt}</div>
       ))}
     </div>
@@ -180,12 +181,12 @@ function Arbre({ saut }: { saut: boolean }) {
 
 const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
-    Tailwind: `// tailwind.config : theme.extend <- typo (tokens.tailwind.mjs)
-// chaque classe résout var(--t-…) — un thème littéral sortirait ARRONDI
+    Tailwind: `// tailwind.config : theme.extend <- typography (tokens.tailwind.mjs)
+// chaque classe résout var(--font-size-…) — un thème littéral sortirait ARRONDI
 export function Article({ titre, enfants }) {
   return (
-    <article className="font-interface text-corps leading-courant max-w-mesure">
-      <h2 className="text-titre-2 leading-titre font-semibold">{titre}</h2>
+    <article className="font-sans text-body leading-body max-w-measure">
+      <h2 className="text-h2 leading-heading font-semibold">{titre}</h2>
       {enfants}
     </article>
   );
@@ -196,8 +197,8 @@ import { Card, CardContent } from "@/components/ui/card";
 export function Article({ titre, enfants }) {
   return (
     <Card>
-      <CardContent className="font-interface text-corps leading-courant max-w-mesure">
-        <h2 className="text-titre-2 leading-titre font-semibold">{titre}</h2>
+      <CardContent className="font-sans text-body leading-body max-w-measure">
+        <h2 className="text-h2 leading-heading font-semibold">{titre}</h2>
         {enfants}
       </CardContent>
     </Card>
@@ -215,12 +216,12 @@ export function Article({ titre, enfants }) {
 
 /* styles.css — tout sort des jetons, rien en dur */
 .texte-courant {
-  font: 400 var(--t-corps) / var(--t-interligne-courant) var(--t-interface);
-  max-width: var(--t-mesure);           /* T5 : qui glisse se borne */
+  font: 400 var(--font-size-body) / var(--leading-body) var(--font-sans);
+  max-width: var(--measure);           /* T5 : qui glisse se borne */
 }
 .titre-2 {
-  font-size: var(--t-titre-2);          /* T2/T3 : clamp() avec du rem partout */
-  line-height: var(--t-interligne-titre);
+  font-size: var(--font-size-h2);          /* T2/T3 : clamp() avec du rem partout */
+  line-height: var(--leading-heading);
   font-weight: 600;                     /* T7 : le demi-gras porte les titres */
 }`,
   },
@@ -228,8 +229,8 @@ export function Article({ titre, enfants }) {
     Tailwind: `@Component({
   selector: "kit-article",
   template: \`
-    <article class="font-interface text-corps leading-courant max-w-mesure">
-      <h2 class="text-titre-2 leading-titre font-semibold">{{ titre }}</h2>
+    <article class="font-sans text-body leading-body max-w-measure">
+      <h2 class="text-h2 leading-heading font-semibold">{{ titre }}</h2>
       <ng-content />
     </article>\`,
 })
@@ -239,8 +240,8 @@ export class Article { @Input() titre = ""; }`,
   selector: "kit-article",
   template: \`
     <hlm-card>
-      <div hlmCardContent class="font-interface text-corps leading-courant max-w-mesure">
-        <h2 class="text-titre-2 leading-titre font-semibold">{{ titre }}</h2>
+      <div hlmCardContent class="font-sans text-body leading-body max-w-measure">
+        <h2 class="text-h2 leading-heading font-semibold">{{ titre }}</h2>
         <ng-content />
       </div>
     </hlm-card>\`,
@@ -253,19 +254,19 @@ export class Article { @Input() titre = ""; }`,
       <h2 class="titre-2">{{ titre }}</h2>
       <ng-content />
     </article>\`,
-  styleUrl: "./article.css", // mêmes classes : var(--t-corps), var(--t-mesure)…
+  styleUrl: "./article.css", // mêmes classes : var(--font-size-body), var(--measure)…
 })
 export class Article { @Input() titre = ""; }`,
   },
   HTML: {
-    Tailwind: `<article class="font-interface text-corps leading-courant max-w-mesure">
-  <h2 class="text-titre-2 leading-titre font-semibold">Le titre</h2>
+    Tailwind: `<article class="font-sans text-body leading-body max-w-measure">
+  <h2 class="text-h2 leading-heading font-semibold">Le titre</h2>
   <p>Les classes résolvent les jetons — le système reste le même.</p>
 </article>`,
     shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
      l'essentiel — ses classes Tailwind, qui résolvent nos jetons -->
-<article class="font-interface text-corps leading-courant max-w-mesure border bg-card">
-  <h2 class="text-titre-2 leading-titre font-semibold">Le titre</h2>
+<article class="font-sans text-body leading-body max-w-measure border bg-card">
+  <h2 class="text-h2 leading-heading font-semibold">Le titre</h2>
 </article>`,
     "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
 <link rel="stylesheet" href="kit/fontes.css" /><!-- T11 : fontes livrées -->
@@ -327,11 +328,11 @@ export default function Vue() {
               </button>
             </>
           } enfants={(l) => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)" }}>
+            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)" }}>
               <Specimen largeur={l} zoom={zoom} vwSeul={vwSeul} />
-              <span className={`mono ${vwSeul && zoom > 1 ? "" : "sourd"}`} style={{ fontSize: "0.6875rem", color: vwSeul && zoom > 1 ? "var(--p-rouge)" : undefined }}>
-                à {Math.round(l)} px, zoom ×{zoom === 1.5 ? "1,5" : zoom} : titre 1 = {corpsPx("--t-titre-1", l, zoom, vwSeul).toFixed(0)} px ·
-                corps = {corpsPx("--t-corps", l, zoom, vwSeul).toFixed(0)} px
+              <span className={`mono ${vwSeul && zoom > 1 ? "" : "sourd"}`} style={{ fontSize: "0.6875rem", color: vwSeul && zoom > 1 ? "var(--danger)" : undefined }}>
+                à {Math.round(l)} px, zoom ×{zoom === 1.5 ? "1,5" : zoom} : titre 1 = {corpsPx("--font-size-h1", l, zoom, vwSeul).toFixed(0)} px ·
+                corps = {corpsPx("--font-size-body", l, zoom, vwSeul).toFixed(0)} px
                 {vwSeul && zoom > 1 && " — le zoom ne mord plus : échec WCAG 1.4.4"}
               </span>
             </div>
@@ -392,7 +393,7 @@ export default function Vue() {
           <p className="sourd">Quatre dérives ordinaires, et aucune ne produit d&apos;erreur
           nulle part — c&apos;est bien le problème. Chaque carte porte la règle qui
           l&apos;arrête, et le moyen de la voir échouer.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--rr-inline-unit)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--space-inline-unit)" }}>
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">La graisse</span>
@@ -447,11 +448,11 @@ export default function Vue() {
               {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
             </button>
           } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)", textAlign: "left", fontFamily: mauvaisNom ? '"Geist Text", ui-sans-serif, system-ui, sans-serif' : "var(--t-interface)" }}>
-              <div style={{ fontSize: "var(--t-titre-2)", fontWeight: 600, lineHeight: "var(--t-interligne-titre)" }}>
+            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", fontFamily: mauvaisNom ? '"Geist Text", ui-sans-serif, system-ui, sans-serif' : "var(--font-sans)" }}>
+              <div style={{ fontSize: "var(--font-size-h2)", fontWeight: 600, lineHeight: "var(--leading-heading)" }}>
                 Portez ce vieux whisky au juge blond qui fume
               </div>
-              <p style={{ maxWidth: "var(--t-mesure)" }}>Ce paragraphe est rendu dans la fonte que
+              <p style={{ maxWidth: "var(--measure)" }}>Ce paragraphe est rendu dans la fonte que
               ses styles déclarent{mauvaisNom ? "… sauf que « Geist Text » n'existe dans aucun fichier livré : vous lisez la police système de secours, et rien ne vous l'a dit." : " — « Geist », livrée dans le dépôt, au nom exact, avec sa pile de secours."}</p>
               <span className={`badge ${mauvaisNom ? "ko" : ""}`}>{mauvaisNom ? "nom orphelin — produit entier en police système, en silence" : "Geist — déclarée, livrée, vérifiable"}</span>
             </div>
@@ -483,6 +484,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Theme />
         <Densite />
         <Adaptation />
         <div className="bloc">
@@ -491,8 +493,8 @@ export default function Vue() {
           JetBrains Mono (code) — livrées avec le kit (règle T11).</p>
         </div>
         <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
-        (poignée, paliers, double-clic). Le thème est arrivé avec la fondation couleur —
-        il se règle et s&apos;éprouve sur sa page, avant de s&apos;étendre au site entier.</p>
+        (poignée, paliers, double-clic). Le thème est global — la fondation couleur
+        porte le site entier, cette page comprise.</p>
       </aside>
     </div>
   );

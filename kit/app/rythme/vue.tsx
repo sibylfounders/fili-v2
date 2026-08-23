@@ -4,31 +4,32 @@ import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
 import { Densite, useDensite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
+import { Theme } from "../theme";
 
 /* Constantes des jetons — mêmes que tokens.css (valeurs lues sur le générateur
    de référence à 320 et 1440, interpolées). L'aperçu recalcule chaque cran
    pour SA largeur : redimensionner l'aperçu fait vivre l'échelle. */
 const TOKENS: [string, number, number, number, number][] = [
-  ["--rr-inline-xs", 0.3001, 0.2572, 0.2144, 0.4501],
-  ["--rr-inline-sm", 0.39, 0.3343, 0.2786, 0.585],
-  ["--rr-inline-unit", 0.6, 0.5143, 0.4286, 0.9],
-  ["--rr-inline-lg", 0.8487, 0.7274, 0.6062, 1.273],
-  ["--rr-inline-xl", 0.66, 0.5657, 0.4714, 0.99],
-  ["--rr-inline-2xl", 1.2, 1.0286, 0.8571, 1.8],
-  ["--rr-block-xs", 0.135, 0.1239, 0.0557, 0.1741],
-  ["--rr-block-sm", 0.1688, 0.1549, 0.0697, 0.2176],
-  ["--rr-block-md", 0.2363, 0.2168, 0.0975, 0.3046],
-  ["--rr-block-control", 0.4725, 0.4335, 0.195, 0.609],
-  ["--rr-block-card", 0.9547, 0.8759, 0.394, 1.2306],
-  ["--rr-block-unit", 0.6752, 0.6195, 0.2787, 0.8703],
-  ["--rr-block-lg", 0.9547, 0.8759, 0.394, 1.2306],
-  ["--rr-block-xl", 0.8438, 0.7741, 0.3482, 1.0875],
-  ["--rr-block-page", 1.35, 1.2386, 0.5571, 1.74],
-  ["--rr-type", 0.96, 0.9286, 0.1571, 1.07],
-  ["--rr-radius", 0.645, 0.5893, 0.2786, 0.84],
-  ["--rr-radius-card", 0.7418, 0.6777, 0.3204, 0.966],
-  ["--rr-radius-shell", 0.8708, 0.7955, 0.3761, 1.134],
-  ["--rr-control", 2.75, 2.7029, 0.2357, 2.915],
+  ["--space-inline-xs", 0.3001, 0.2572, 0.2144, 0.4501],
+  ["--space-inline-sm", 0.39, 0.3343, 0.2786, 0.585],
+  ["--space-inline-unit", 0.6, 0.5143, 0.4286, 0.9],
+  ["--space-inline-lg", 0.8487, 0.7274, 0.6062, 1.273],
+  ["--space-inline-xl", 0.66, 0.5657, 0.4714, 0.99],
+  ["--space-inline-2xl", 1.2, 1.0286, 0.8571, 1.8],
+  ["--space-block-xs", 0.135, 0.1239, 0.0557, 0.1741],
+  ["--space-block-sm", 0.1688, 0.1549, 0.0697, 0.2176],
+  ["--space-block-md", 0.2363, 0.2168, 0.0975, 0.3046],
+  ["--space-block-control", 0.4725, 0.4335, 0.195, 0.609],
+  ["--space-block-card", 0.9547, 0.8759, 0.394, 1.2306],
+  ["--space-block-unit", 0.6752, 0.6195, 0.2787, 0.8703],
+  ["--space-block-lg", 0.9547, 0.8759, 0.394, 1.2306],
+  ["--space-block-xl", 0.8438, 0.7741, 0.3482, 1.0875],
+  ["--space-block-page", 1.35, 1.2386, 0.5571, 1.74],
+  ["--font-size-base", 0.96, 0.9286, 0.1571, 1.07],
+  ["--radius", 0.645, 0.5893, 0.2786, 0.84],
+  ["--radius-card", 0.7418, 0.6777, 0.3204, 0.966],
+  ["--radius-shell", 0.8708, 0.7955, 0.3761, 1.134],
+  ["--control-height", 2.75, 2.7029, 0.2357, 2.915],
 ];
 
 /* L'échelle d'espacement par défaut de Tailwind, en px : pas de 2 px jusqu'à 14,
@@ -41,11 +42,11 @@ const versTw = (px: number) => ECHELLE_TW.reduce((a, b) => (Math.abs(b - px) < M
 /* La densité (règle Y5) : un cran d'écart sur l'échelle commune. Le site
    entier est décalé par tokens.css ; l'aperçu, qui recalcule ses jetons
    pour SA largeur, applique le même décalage ici. */
-const L_INLINE = ["--rr-inline-xs", "--rr-inline-sm", "--rr-inline-unit", "--rr-inline-xl", "--rr-inline-lg", "--rr-inline-2xl"];
-const L_BLOCK = ["--rr-block-xs", "--rr-block-sm", "--rr-block-md", "--rr-block-control", "--rr-block-unit", "--rr-block-xl", "--rr-block-card", "--rr-block-page"];
+const L_INLINE = ["--space-inline-xs", "--space-inline-sm", "--space-inline-unit", "--space-inline-xl", "--space-inline-lg", "--space-inline-2xl"];
+const L_BLOCK = ["--space-block-xs", "--space-block-sm", "--space-block-md", "--space-block-control", "--space-block-unit", "--space-block-xl", "--space-block-card", "--space-block-page"];
 function cranSource(nom: string, dec: number): string {
   if (dec === 0) return nom;
-  const base = nom === "--rr-block-lg" ? "--rr-block-card" : nom;
+  const base = nom === "--space-block-lg" ? "--space-block-card" : nom;
   const l = L_INLINE.includes(base) ? L_INLINE : L_BLOCK.includes(base) ? L_BLOCK : null;
   if (!l) return nom;
   return l[Math.min(l.length - 1, Math.max(0, l.indexOf(base) + dec))];
@@ -71,7 +72,7 @@ const lirePx = (largeur: number, nom: string, tw = false, dec = 0) => {
 /* Un espace rendu visible : c'est un VRAI espace de la carte (il porte le jeton),
    pas une illustration — l'interrupteur ne fait que le colorer. */
 function E({ j, h, voir, role }: { j: string; h?: boolean; voir: boolean; role?: string }) {
-  const cran = j.replace("--rr-inline-", "").replace("--rr-block-", "");
+  const cran = j.replace("--space-inline-", "").replace("--space-block-", "");
   return <span className={`espace ${h ? "h" : ""} ${voir ? "vu" : ""}`}
     data-nom={voir ? `${role ?? (h ? "inline" : "stack")} · ${cran}` : undefined}
     style={h ? { width: `var(${j})` } : { height: `var(${j})` }} />;
@@ -80,9 +81,9 @@ function E({ j, h, voir, role }: { j: string; h?: boolean; voir: boolean; role?:
 /* La carte annotée — construite avec des blocs d'espace explicites. */
 function CarteAnnotee({ voir }: { voir: boolean }) {
   /* Les noms restent les mêmes en compact : c'est le jeton qui descend d'un cran. */
-  const padV = "--rr-block-card";
-  const padH = "--rr-inline-2xl";
-  const freres = "--rr-block-md";
+  const padV = "--space-block-card";
+  const padH = "--space-inline-2xl";
+  const freres = "--space-block-md";
   const Ligne = ({ children }: { children: React.ReactNode }) => (
     <span style={{ display: "flex", alignItems: "stretch" }}>
       <E j={padH} h voir={voir} role="inset" /><span style={{ flex: 1, minWidth: 0 }}>{children}</span><E j={padH} h voir={voir} role="inset" />
@@ -98,7 +99,7 @@ function CarteAnnotee({ voir }: { voir: boolean }) {
       <Ligne>
         <span style={{ display: "flex" }}>
           <button className="bouton">Message</button>
-          <E j="--rr-inline-sm" h voir={voir} />
+          <E j="--space-inline-sm" h voir={voir} />
           <button className="bouton on">Suivre</button>
         </span>
       </Ligne>
@@ -109,19 +110,19 @@ function CarteAnnotee({ voir }: { voir: boolean }) {
 
 function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean }) {
   const labelMarge = casseY1
-    ? { marginBottom: "var(--rr-block-card)", marginTop: "var(--rr-block-card)" }
-    : { marginBottom: "var(--rr-block-md)", marginTop: "var(--rr-block-card)" };
+    ? { marginBottom: "var(--space-block-card)", marginTop: "var(--space-block-card)" }
+    : { marginBottom: "var(--space-block-md)", marginTop: "var(--space-block-card)" };
   const titreMarges = casseY2
-    ? { marginTop: "var(--rr-block-unit)", marginBottom: "var(--rr-block-unit)" }
-    : { marginTop: "var(--rr-block-page)", marginBottom: "var(--rr-block-md)" };
+    ? { marginTop: "var(--space-block-unit)", marginBottom: "var(--space-block-unit)" }
+    : { marginTop: "var(--space-block-page)", marginBottom: "var(--space-block-md)" };
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-unit)", width: "100%", maxWidth: "26rem" }}>
-      <div className="carte" style={{ gap: 0, background: "var(--p-papier)" }}>
+    <div style={{ display: "grid", gap: "var(--space-block-unit)", width: "100%", maxWidth: "26rem" }}>
+      <div className="carte" style={{ gap: 0, background: "var(--surface)" }}>
         <p className="sourd" style={{ margin: 0 }}>Un paragraphe qui précède la section.</p>
         <h2 style={titreMarges}>Vos coordonnées</h2>
         <div>
           <label className="mono" style={{ display: "block", ...labelMarge }}>Adresse e-mail</label>
-          <input readOnly value="prenom@exemple.fr" style={{ height: "var(--rr-control)", width: "100%", border: "1px solid var(--p-trait)", borderRadius: "var(--rr-radius)", padding: "0 var(--rr-inline-unit)", font: "inherit", background: "var(--p-fond)" }} />
+          <input readOnly value="prenom@exemple.fr" style={{ height: "var(--control-height)", width: "100%", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "0 var(--space-inline-unit)", font: "inherit", background: "var(--bg)" }} />
         </div>
       </div>
       {(casseY1 || casseY2) && (
@@ -167,9 +168,9 @@ export function Fiche({ enfants }) {
 }
 
 /* styles.css — tout sort des jetons, rien en dur */
-.fiche { padding: var(--rr-block-card) var(--rr-inline-2xl);
-         border-radius: var(--rr-radius-card); }
-.pile  { display: grid; gap: var(--rr-block-md); }  /* stack, un cran sous l'inset — Y1 */`,
+.fiche { padding: var(--space-block-card) var(--space-inline-2xl);
+         border-radius: var(--radius-card); }
+.pile  { display: grid; gap: var(--space-block-md); }  /* stack, un cran sous l'inset — Y1 */`,
   },
   Angular: {
     Tailwind: `@Component({
@@ -198,7 +199,7 @@ export class Fiche {}`,
     <section class="fiche">
       <div class="pile"><ng-content /></div>
     </section>\`,
-  styleUrl: "./fiche.css", // mêmes classes : var(--rr-block-card), var(--rr-block-md)…
+  styleUrl: "./fiche.css", // mêmes classes : var(--space-block-card), var(--space-block-md)…
 })
 export class Fiche {}`,
   },
@@ -220,8 +221,8 @@ export class Fiche {}`,
 </section>
 
 <style>
-  .fiche { padding: var(--rr-block-card) var(--rr-inline-2xl); }
-  .fiche p { margin-block: var(--rr-block-md); }
+  .fiche { padding: var(--space-block-card) var(--space-inline-2xl); }
+  .fiche p { margin-block: var(--space-block-md); }
 </style>`,
   },
 };
@@ -277,7 +278,7 @@ function Correspondance() {
         <tbody>
           {TOKENS.filter(([n]) => n.includes("inline-") || n.includes("block-")).map(([n, min, , , max]) => (
             <tr key={n}>
-              <td>{n.replace("--rr-", "")}</td>
+              <td>{n.replace("--space-", "")}</td>
               <td>{(min * 16).toFixed(1)} → {(max * 16).toFixed(1)}</td>
               <td>{versTw(min * 16)} → {versTw(max * 16)}</td>
             </tr>
@@ -291,10 +292,10 @@ function Correspondance() {
 /* Les règles vivent dans les dépliants « Règles & sources » de leur démonstration. */
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
+    <div style={{ display: "grid", gap: "var(--space-block-xl)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-sm)", maxWidth: "var(--t-mesure)" }}>
-          <b style={{ color: "var(--p-encre)" }}><span className="badge">règle {r.nom}</span> {r.titre}</b>
+        <div key={r.id} style={{ display: "grid", gap: "var(--space-block-sm)", maxWidth: "var(--measure)" }}>
+          <b style={{ color: "var(--text-primary)" }}><span className="badge">règle {r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
           <span style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((sc, i) => (
@@ -309,7 +310,7 @@ function Regles({ ids }: { ids: string[] }) {
 export default function Vue() {
   const [voir, setVoir] = useState(true);
   const { densite } = useDensite();
-  const dec = densite === "compact" ? -1 : densite === "aere" ? 1 : 0;
+  const dec = densite === "compact" ? -1 : densite === "airy" ? 1 : 0;
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
@@ -343,11 +344,11 @@ export default function Vue() {
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw, dec), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
+            <div style={{ ...jetons(l, tw, dec), width: "100%", display: "grid", justifyItems: "start", gap: "var(--space-block-unit)" }}>
               <CarteAnnotee voir={voir} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
-                à {Math.round(l)} px : padding {lirePx(l, "--rr-block-card", tw, dec)} px ·
-                écart {lirePx(l, "--rr-block-md", tw, dec)} px{dec === -1 && " · compact : un cran plus bas"}{dec === 1 && " · aéré : un cran plus haut"}{tw && " · accroché à l'échelle Tailwind"}
+                à {Math.round(l)} px : padding {lirePx(l, "--space-block-card", tw, dec)} px ·
+                écart {lirePx(l, "--space-block-md", tw, dec)} px{dec === -1 && " · compact : un cran plus bas"}{dec === 1 && " · aéré : un cran plus haut"}{tw && " · accroché à l'échelle Tailwind"}
               </span>
             </div>
           )} pied={
@@ -428,11 +429,12 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Theme />
         <Densite />
         <Adaptation />
         <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
-        (poignée, paliers, double-clic). Le thème est arrivé avec la fondation couleur —
-        il se règle et s&apos;éprouve sur sa page, avant de s&apos;étendre au site entier.</p>
+        (poignée, paliers, double-clic). Le thème est global — la fondation couleur
+        porte le site entier, cette page comprise.</p>
       </aside>
     </div>
   );
