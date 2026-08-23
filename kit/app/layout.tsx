@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Kit",
   description:
-    "Le kit neuf de Fili — fondations d'abord, chaque élément montre ses lois.",
+    "Un design system qui montre ses raisons : chaque règle porte son pourquoi, sa preuve et ses limites.",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -14,11 +14,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <header className="chrome">
           <b>Kit</b>
-          <span className="sourd mono">fondations d&apos;abord</span>
-          <nav>
-            <a href="/">Accueil</a>
-            <a href="/rythme">Rythme</a>
-          </nav>
+          <span className="sourd" style={{ fontSize: "0.8125rem" }}>
+            un design system qui montre ses raisons
+          </span>
         </header>
         {children}
       </body>
