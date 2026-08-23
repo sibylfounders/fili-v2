@@ -76,10 +76,11 @@ pre.code {
   padding: var(--rr-block-sm) var(--rr-inline-sm); border-radius: var(--rr-radius); }
 .navigation a.actif { background: var(--p-accent-doux); color: var(--p-accent); font-weight: 600; }
 .navigation .venir { color: var(--p-sourd); padding: var(--rr-block-sm) var(--rr-inline-sm); }
-.contenu { padding: calc(1.4 * var(--rr-block-page)) var(--rr-inline-2xl) calc(2.5 * var(--rr-block-page));
+.contenu { padding: calc(2.2 * var(--rr-block-page)) var(--rr-inline-2xl) calc(2.5 * var(--rr-block-page));
   display: grid; gap: calc(1.5 * var(--rr-block-page)); min-width: 0;
   max-width: 64rem; width: 100%; margin-inline: auto; justify-self: center; }
-.tete-page { display: grid; gap: var(--rr-block-unit); }
+.tete-page { display: grid; gap: var(--rr-block-card); padding-bottom: var(--rr-block-page); }
+.tete-page h1 { margin-block: var(--rr-block-md); }
 .chapo { font-size: var(--t-titre-3); line-height: 1.55; color: var(--p-sourd); max-width: var(--t-mesure); }
 .chapo b { color: var(--p-encre); }
 .kicker { font: 700 0.6875rem/1 var(--t-code); letter-spacing: 0.1em;
