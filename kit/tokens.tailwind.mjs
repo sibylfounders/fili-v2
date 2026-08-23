@@ -6,6 +6,12 @@
  *
  * Usage : import { rythme } from './tokens.tailwind.mjs'
  * puis dans tailwind.config : theme.extend.spacing = rythme.spacing, etc.
+ *
+ * NOTE D'AUTEUR (23 août 2026) : si un consommateur Tailwind exige un thème
+ * à valeurs littérales (sans variables), les valeurs sortiront ARRONDIES —
+ * jamais de décimales à quatre chiffres dans un thème Tailwind. Tant que les
+ * utilitaires pointent sur les variables (le cas ici), la question ne se
+ * pose pas : la variable se résout au rendu.
  */
 export const rythme = {
   spacing: {
