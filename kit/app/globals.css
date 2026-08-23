@@ -253,3 +253,9 @@ details.prov p { max-width: var(--t-mesure); } /* T5 : qui glisse se borne — c
 .bouton.casse { color: var(--p-rouge); border: 1px dashed var(--p-rouge); background: var(--p-papier); }
 .bouton.casse:hover { background: var(--p-rouge-doux); }
 .bouton.casse.on { background: var(--p-rouge); border: 1px solid var(--p-rouge); color: #fff; }
+
+/* ── La table de correspondance des échelles ── */
+.tableau { border-collapse: collapse; font-size: 0.6875rem; }
+.tableau th, .tableau td { text-align: left; padding: var(--rr-block-sm) var(--rr-inline-unit);
+  border-bottom: 1px solid var(--p-trait); white-space: nowrap; }
+.tableau th { color: var(--p-sourd); font-weight: 700; }

@@ -61,3 +61,30 @@ export const typo = {
   maxWidth: { mesure: "var(--t-mesure)" },
   letterSpacing: { etiquette: "var(--t-interlettrage-etiquette)" },
 };
+
+
+/* ── Le thème Tailwind LITTÉRAL — deux échelles assumées (décision d'Auteur,
+   23 août) : Tailwind garde sa grille 4-16, valeurs ARRONDIES au cran le plus
+   proche, jamais de décimales ; le CSS natif garde les décimales calculées
+   via les variables (rythme.spacing ci-dessus). On ne mélange jamais les
+   deux : un projet choisit son échelle et s'y tient. min = borne 320 px,
+   max = borne 1440 px (thème par régime, la fluidité reste aux variables). */
+export const rythmeLitteral = {
+  spacing: {
+    "inline-xs": { min: "4px", max: "8px" }, /* calculé : 4.8 → 7.2 px */
+    "inline-sm": { min: "6px", max: "10px" }, /* calculé : 6.2 → 9.4 px */
+    "inline-unit": { min: "10px", max: "14px" }, /* calculé : 9.6 → 14.4 px */
+    "inline-lg": { min: "14px", max: "20px" }, /* calculé : 13.6 → 20.4 px */
+    "inline-xl": { min: "10px", max: "16px" }, /* calculé : 10.6 → 15.8 px */
+    "inline-2xl": { min: "20px", max: "28px" }, /* calculé : 19.2 → 28.8 px */
+    "block-xs": { min: "2px", max: "2px" }, /* calculé : 2.2 → 2.8 px */
+    "block-sm": { min: "2px", max: "4px" }, /* calculé : 2.7 → 3.5 px */
+    "block-md": { min: "4px", max: "4px" }, /* calculé : 3.8 → 4.9 px */
+    "block-control": { min: "8px", max: "10px" }, /* calculé : 7.6 → 9.7 px */
+    "block-card": { min: "16px", max: "20px" }, /* calculé : 15.3 → 19.7 px */
+    "block-unit": { min: "10px", max: "14px" }, /* calculé : 10.8 → 13.9 px */
+    "block-lg": { min: "16px", max: "20px" }, /* calculé : 15.3 → 19.7 px */
+    "block-xl": { min: "14px", max: "16px" }, /* calculé : 13.5 → 17.4 px */
+    "block-page": { min: "20px", max: "28px" }, /* calculé : 21.6 → 27.8 px */
+  },
+};

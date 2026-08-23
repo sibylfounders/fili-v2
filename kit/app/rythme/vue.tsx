@@ -188,6 +188,27 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
 ];
 
+/* La correspondance des deux échelles — calculée en direct depuis TOKENS,
+   jamais recopiée : décimales pour le CSS natif, grille 4-16 pour Tailwind. */
+function Correspondance() {
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table className="tableau mono">
+        <thead><tr><th>cran</th><th>calculé (px, 320 → 1440)</th><th>Tailwind (accroché 4-16)</th></tr></thead>
+        <tbody>
+          {TOKENS.filter(([n]) => n.includes("inline-") || n.includes("block-")).map(([n, min, , , max]) => (
+            <tr key={n}>
+              <td>{n.replace("--rr-", "")}</td>
+              <td>{(min * 16).toFixed(1)} → {(max * 16).toFixed(1)}</td>
+              <td>{versTw(min * 16)} → {versTw(max * 16)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 /* Les règles vivent dans les dépliants « Règles & sources » de leur démonstration. */
 function Regles({ ids }: { ids: string[] }) {
   return (
@@ -319,6 +340,10 @@ export default function Vue() {
             <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
             calcul produit des variables CSS natives et une sortie Tailwind jumelle ; React,
             Angular ou HTML n&apos;en sont que des consommateurs.</p>
+            <p><b>Deux échelles assumées</b> : le CSS natif garde les décimales calculées ;
+            Tailwind s&apos;accroche à sa grille 4-16, valeurs arrondies, jamais de décimales.
+            On ne mélange pas les deux — la correspondance, cran par cran :</p>
+            <Correspondance />
           </div></details>
         </section>
       </main>
