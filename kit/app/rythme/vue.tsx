@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Navigation } from "../nav";
+import { Apercu, PanneauCode } from "../apercu";
 
-/* Les jetons du rythme — mêmes constantes que tokens.css (valeurs lues sur
-   le générateur de référence à 320 et 1440, interpolées). La simulation de
-   largeur recalcule chaque cran par la même formule. */
+/* Constantes des jetons — mêmes que tokens.css (valeurs lues sur le générateur
+   de référence à 320 et 1440, interpolées). L'aperçu recalcule chaque cran
+   pour SA largeur : redimensionner l'aperçu fait vivre l'échelle. */
 const TOKENS: [string, number, number, number, number][] = [
   ["--rr-inline-xs", 0.3001, 0.2572, 0.2144, 0.4501],
   ["--rr-inline-sm", 0.39, 0.3343, 0.2786, 0.585],
@@ -28,47 +29,52 @@ const TOKENS: [string, number, number, number, number][] = [
   ["--rr-control", 2.75, 2.7029, 0.2357, 2.915],
 ];
 
-function jetonsSimules(largeurPx: number): Record<string, string> {
+function jetons(largeurPx: number): React.CSSProperties {
   const o: Record<string, string> = {};
   for (const [nom, min, c, k, max] of TOKENS) {
     const px = Math.min(max * 16, Math.max(min * 16, c * 16 + (k * largeurPx) / 100));
     o[nom] = `${px.toFixed(2)}px`;
   }
-  return o;
+  return o as React.CSSProperties;
+}
+const lirePx = (largeur: number, nom: string) => {
+  const t = TOKENS.find(([n]) => n === nom)!;
+  return Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeur) / 100)).toFixed(1);
+};
+
+/* Un espace rendu visible : c'est un VRAI espace de la carte (il porte le jeton),
+   pas une illustration — l'interrupteur ne fait que le colorer. */
+function E({ j, h, voir }: { j: string; h?: boolean; voir: boolean }) {
+  return <span className={`espace ${h ? "h" : ""} ${voir ? "vu" : ""}`}
+    data-nom={voir ? j.replace("--rr-", "") : undefined}
+    style={h ? { width: `var(${j})` } : { height: `var(${j})` }} />;
 }
 
-function Cran({ nom }: { nom: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [px, setPx] = useState("…");
-  useEffect(() => {
-    const lire = () => {
-      if (ref.current) setPx(`${ref.current.getBoundingClientRect().width.toFixed(1)} px`);
-    };
-    lire();
-    const ro = new ResizeObserver(lire);
-    if (ref.current) ro.observe(ref.current);
-    return () => ro.disconnect();
-  }, []);
-  return (
-    <div className="rang" style={{ gap: "var(--rr-inline-unit)" }}>
-      <span className="mono" style={{ width: "8.5rem", color: "var(--p-sourd)" }}>{nom.replace("--rr-", "")}</span>
-      <div ref={ref} className="barre" style={{ width: `var(${nom})` }} />
-      <span className="mono mesure">{px}</span>
-    </div>
+/* La carte annotée — construite avec des blocs d'espace explicites. */
+function CarteAnnotee({ voir, compact }: { voir: boolean; compact: boolean }) {
+  const padV = compact ? "--rr-block-unit" : "--rr-block-card";
+  const padH = compact ? "--rr-inline-xl" : "--rr-inline-2xl";
+  const freres = compact ? "--rr-block-sm" : "--rr-block-md";
+  const Ligne = ({ children }: { children: React.ReactNode }) => (
+    <span style={{ display: "flex", alignItems: "stretch" }}>
+      <E j={padH} h voir={voir} /><span style={{ flex: 1, minWidth: 0 }}>{children}</span><E j={padH} h voir={voir} />
+    </span>
   );
-}
-
-function Densite({ compact }: { compact: boolean }) {
-  const pad = compact ? "var(--rr-block-unit) var(--rr-inline-xl)" : "var(--rr-block-card) var(--rr-inline-2xl)";
-  const gap = compact ? "var(--rr-block-sm)" : "var(--rr-block-md)";
   return (
-    <div className="carte" style={{ padding: pad, gap, background: "var(--p-papier)" }}>
-      <b>Léa Fontan</b>
-      <span className="sourd">UX Designer — mêmes emplacements, même ordre, quelle que soit la densité.</span>
-      <div className="rang">
-        <button className="bouton">Message</button>
-        <button className="bouton on">Suivre</button>
-      </div>
+    <div className="carte-demo">
+      <E j={padV} voir={voir} />
+      <Ligne><b>Léa Fontan</b></Ligne>
+      <E j={freres} voir={voir} />
+      <Ligne><span className="sourd" style={{ fontSize: "0.875em" }}>UX Designer — chaque distance de cette carte est un jeton de l&apos;échelle.</span></Ligne>
+      <E j={freres} voir={voir} />
+      <Ligne>
+        <span style={{ display: "flex" }}>
+          <button className="bouton">Message</button>
+          <E j="--rr-inline-sm" h voir={voir} />
+          <button className="bouton on">Suivre</button>
+        </span>
+      </Ligne>
+      <E j={padV} voir={voir} />
     </div>
   );
 }
@@ -83,13 +89,13 @@ function Proximite() {
     ? { marginTop: "var(--rr-block-unit)", marginBottom: "var(--rr-block-unit)" }
     : { marginTop: "var(--rr-block-page)", marginBottom: "var(--rr-block-md)" };
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+    <div style={{ display: "grid", gap: "var(--rr-block-unit)", width: "100%", maxWidth: "26rem" }}>
       <div className="rang">
         <button className={`bouton ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
-          {casseY1 ? "Réparer le libellé" : "Casser la règle 1 — libellé équidistant"}
+          {casseY1 ? "Réparer le libellé" : "Casser le libellé"}
         </button>
         <button className={`bouton ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
-          {casseY2 ? "Réparer le titre" : "Casser la règle 2 — titre qui flotte"}
+          {casseY2 ? "Réparer le titre" : "Casser le titre"}
         </button>
       </div>
       <div className="carte" style={{ gap: 0, background: "var(--p-papier)" }}>
@@ -100,10 +106,12 @@ function Proximite() {
           <input readOnly value="prenom@exemple.fr" style={{ height: "var(--rr-control)", width: "100%", border: "1px solid var(--p-trait)", borderRadius: "var(--rr-radius)", padding: "0 var(--rr-inline-unit)", font: "inherit", background: "var(--p-fond)" }} />
         </div>
       </div>
-      <p className="sourd" style={{ fontSize: "0.875em" }}>
-        Cassé, l&apos;espace ment : le libellé semble appartenir au champ du dessus,
-        le titre flotte entre deux blocs — et vous le voyez sans qu&apos;on vous l&apos;explique.
-      </p>
+      {(casseY1 || casseY2) && (
+        <div className="oeil">
+          {casseY1 && <span>👁 Le libellé flotte à mi-chemin : l&apos;œil ne sait plus à quel champ il appartient. </span>}
+          {casseY2 && <span>👁 Le titre est aussi proche du paragraphe qu&apos;il ferme que de la section qu&apos;il ouvre : il n&apos;introduit plus rien.</span>}
+        </div>
+      )}
     </div>
   );
 }
@@ -139,7 +147,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "La grille 8pt", h: "https://spec.fm/specifics/8-pt-grid" }, { t: "Carbon — Spacing", h: "https://carbondesignsystem.com/elements/spacing/overview/" }] },
   { id: "y4", nom: "4", titre: "L'interligne suit la lisibilité, pas la grille",
     enonce: "Aucun interligne n'est recalé sur la grille sans une décision explicite et datée.",
-    pourquoi: "La grille stricte des livres suppose des corps fixes ; forcer l'interligne dessus dégrade la lecture. Ici, la lisibilité prime, et l'exception se décide, elle ne se subit pas.",
+    pourquoi: "La grille stricte des livres suppose des corps fixes ; forcer l'interligne dessus dégrade la lecture. La lisibilité prime — l'exception se décide, elle ne se subit pas.",
     src: [{ t: "WCAG 1.4.8 — Visual Presentation", h: "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html" }] },
   { id: "y5", nom: "5", titre: "La densité est un décalage d'un cran",
     enonce: "Compact = confortable décalé d'exactement un cran sur l'échelle commune. Jamais une valeur propre, jamais un multiplicateur.",
@@ -156,29 +164,21 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Atlassian — Grid", h: "https://atlassian.design/foundations/grid-beta" }, { t: "Carbon — 2x Grid", h: "https://carbondesignsystem.com/elements/2x-grid/overview/" }] },
   { id: "y8", nom: "8", titre: "Les crans sont responsives — c'est le jeton qui varie, jamais l'écran",
     enonce: "Chaque cran peut résoudre une valeur différente selon le régime, ou glisser entre deux bornes — mais la variation vit dans la définition du jeton, une fois. Aucun écran ne redéfinit un cran.",
-    pourquoi: "Sur petit écran, les espaces doivent pouvoir se resserrer sans casser la logique. Et si chaque écran bricolait ses propres valeurs, le système n'existerait plus.",
+    pourquoi: "Sur petit écran, les espaces doivent pouvoir se resserrer sans casser la logique. Et si chaque écran bricolait ses valeurs, le système n'existerait plus.",
     div: "Nous avions d'abord écrit l'inverse (des crans figés). Décision revue le 23 août 2026 : notre échelle de référence était déjà fluide, et la position de GOV.UK s'est révélée la bonne. Le changement est daté et motivé.",
     src: [{ t: "GOV.UK — Spacing", h: "https://design-system.service.gov.uk/styles/spacing/" }] },
   { id: "y9", nom: "9", titre: "La géométrie d'espacement vit en rem",
     enonce: "Les jetons d'espacement s'expriment en rem (base 16). Restent en pixels, par décision explicite : la cible du doigt, les traits d'un pixel, la largeur d'écran minimale.",
-    pourquoi: "Quand l'utilisateur agrandit le texte, les espaces qui l'entourent doivent suivre — sinon la page casse au premier réglage d'accessibilité. Ce qui ne doit pas grandir est nommé, rien d'autre ne reste en pixels.",
+    pourquoi: "Quand l'utilisateur agrandit le texte, les espaces qui l'entourent doivent suivre — sinon la page casse au premier réglage d'accessibilité.",
     div: "Nous avions d'abord écrit l'inverse (espacement en pixels). Décision revue le 12 août 2026, vérifiée sur quatre-vingt-dix mesures.",
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
 ];
 
 export default function Vue() {
-  const [largeur, setLargeur] = useState<number | null>(null);
+  const [voir, setVoir] = useState(true);
   const [compact, setCompact] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("React");
   const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
-
-  const simulation = largeur !== null ? (jetonsSimules(largeur) as React.CSSProperties) : undefined;
-  const Scene = ({ children }: { children: React.ReactNode }) => (
-    <div className="scene" style={largeur !== null ? { ...simulation, maxWidth: `${largeur}px` } : undefined}>
-      {largeur !== null && <p className="mono sourd" style={{ margin: "0 0 var(--rr-block-unit)" }}>largeur simulée : {largeur} px</p>}
-      {children}
-    </div>
-  );
 
   return (
     <div className="coquille">
@@ -188,102 +188,96 @@ export default function Vue() {
         <div>
           <p className="mono sourd">Fondation · Le rythme (espacement)</p>
           <h1>Chaque distance de cette page a une raison</h1>
-          <p className="sourd" style={{ marginTop: "var(--rr-block-md)" }}>
-            Cette page définit comment ce système espace les choses — et vous laisse
-            voir chaque règle agir, la régler, et la casser. Ce qui la distingue des
-            documentations habituelles : <b style={{ color: "var(--p-encre)" }}>chaque règle porte son pourquoi, sa source
-            vérifiable, et l&apos;aveu daté de nos divergences</b> — y compris quand nous
-            avons changé d&apos;avis. La colonne de droite de chaque section dit d&apos;où
-            viennent les affirmations de gauche.
+          <p className="sourd" style={{ marginTop: "var(--rr-block-md)", maxWidth: "42rem" }}>
+            Cette page définit comment ce système espace les choses — et vous laisse voir
+            chaque règle agir, la régler, et la casser. Ce qui la distingue des documentations
+            habituelles : <b style={{ color: "var(--p-encre)" }}>chaque règle porte son pourquoi,
+            sa source vérifiable, et l&apos;aveu daté de nos divergences</b> — y compris quand
+            nous avons changé d&apos;avis. Sous chaque démonstration, « d&apos;où ça vient » se déplie.
           </p>
         </div>
 
-        <section className="section">
-          <div className="doc">
-            <h2>L&apos;échelle — des espacements qui respirent avec l&apos;écran</h2>
-            <p className="sourd">Toutes les distances du système sortent d&apos;une seule échelle,
-            en deux axes (horizontal, vertical). Chaque cran glisse entre deux bornes selon la
-            largeur : utilisez le réglage « largeur simulée » à droite, ou redimensionnez la fenêtre.</p>
-            <Scene>
-              <div style={{ display: "grid", gap: "var(--rr-block-md)" }}>
-                {["--rr-inline-xs", "--rr-inline-sm", "--rr-inline-unit", "--rr-inline-xl", "--rr-inline-lg", "--rr-inline-2xl", "--rr-block-unit", "--rr-block-card", "--rr-block-page"].map((c) => <Cran key={c} nom={c} />)}
-              </div>
-            </Scene>
+        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+          <h2>L&apos;échelle vit — tirez la poignée</h2>
+          <p className="sourd">Cette carte est construite avec les vrais espaces du système.
+          Redimensionnez l&apos;aperçu : chaque distance glisse entre ses deux bornes.
+          « Voir les espaces » les colore, avec leur nom.</p>
+          <div className="rang">
+            <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
+              {voir ? "Masquer les espaces" : "Voir les espaces"}
+            </button>
           </div>
-          <aside className="sources-col">
-            <h4>D&apos;où viennent ces valeurs</h4>
-            <p>D&apos;un <b>générateur</b> : trois décisions entrent (unité de base, ratio, rayon),
-            toute la géométrie sort. Les valeurs de cette page ont été <b>lues mécaniquement</b> sur
-            ce générateur à 320 et 1440 px — jamais recopiées à la main — puis interpolées. Écart
-            d&apos;interpolation mesuré : moins d&apos;un pixel.</p>
-            <div className="divergence">Échelle fluide : position adoptée de GOV.UK, contre notre
-            premier choix — voir la règle 8 ci-dessous.</div>
-            <p><a href="https://design-system.service.gov.uk/styles/spacing/">GOV.UK — Spacing</a> · <a href="https://spec.fm/specifics/8-pt-grid">la grille 8pt</a></p>
-          </aside>
+          <Apercu enfants={(l) => (
+            <div style={{ ...jetons(l), width: "100%", display: "grid", justifyItems: "center", gap: "var(--rr-block-unit)" }}>
+              <CarteAnnotee voir={voir} compact={compact} />
+              <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
+                à {Math.round(l)} px : padding {lirePx(l, compact ? "--rr-block-unit" : "--rr-block-card")} px ·
+                écart {lirePx(l, compact ? "--rr-block-sm" : "--rr-block-md")} px
+              </span>
+            </div>
+          )} />
+          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <p>Toutes les distances sortent d&apos;<b>un générateur</b> : trois décisions entrent
+            (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
+            vertical). Les valeurs de cette page ont été <b>lues mécaniquement</b> sur ce
+            générateur à 320 et 1440 px — jamais recopiées — puis interpolées (écart mesuré :
+            moins d&apos;un pixel). L&apos;échelle fluide est la position de
+            <a href="https://design-system.service.gov.uk/styles/spacing/"> GOV.UK</a>, adoptée
+            le 23 août 2026 — voir la règle 8.</p>
+          </div></details>
         </section>
 
-        <section className="section">
-          <div className="doc">
-            <h2>La densité — un cran d&apos;écart, rien d&apos;autre</h2>
-            <p className="sourd">Le réglage « densité » à droite décale les espacements d&apos;exactement
-            un cran. Regardez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
-            <Scene><Densite compact={compact} /></Scene>
-          </div>
-          <aside className="sources-col">
-            <h4>Pourquoi pas un pourcentage</h4>
-            <p>Un « mode compact à 80 % » fabrique des valeurs hors échelle, introuvables au moment
-            de changer la marque. Un cran d&apos;écart reste dans le système. <b>Décision interne,
-            testée sur notre application témoin</b> avant d&apos;entrer ici.</p>
-          </aside>
+        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+          <h2>La densité — un cran d&apos;écart, rien d&apos;autre</h2>
+          <p className="sourd">Le réglage « densité » (à droite) décale chaque espace de la carte
+          ci-dessus d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
+          et remarquez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
+          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
+            changement de marque. Un cran d&apos;écart reste dans le système. <b>Décision interne,
+            testée sur notre application témoin</b> avant d&apos;entrer ici (12 août 2026).</p>
+          </div></details>
         </section>
 
-        <section className="section">
-          <div className="doc">
-            <h2>La proximité — l&apos;espace est une information</h2>
-            <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
-            Cassez les deux règles ci-dessous et voyez la page mentir.</p>
-            <Scene><Proximite /></Scene>
-          </div>
-          <aside className="sources-col">
-            <h4>La preuve</h4>
-            <p>C&apos;est la loi de proximité (Gestalt), formulée presque mot pour mot par les grands
-            systèmes — et la faute la plus fréquente de nos audits : des pages déclarées parfaites
-            portaient des dizaines de distances qui mentaient.</p>
-            <p><a href="https://www.nngroup.com/articles/gestalt-proximity/">NN/g — Proximity Principle</a> · <a href="https://carbondesignsystem.com/elements/spacing/overview/">Carbon — Spacing</a> · <a href="https://polaris.shopify.com/design/layout">Polaris — Layout</a></p>
-          </aside>
+        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+          <h2>La proximité — l&apos;espace est une information</h2>
+          <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
+          Cassez les deux règles et voyez la page mentir — l&apos;œil vous le dira avant nous.</p>
+          <Apercu enfants={(l) => (<div style={{ ...jetons(l), width: "100%", display: "grid", justifyItems: "center" }}><Proximite /></div>)} />
+          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
+            systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
+            parfaites portaient des dizaines de distances qui mentaient.
+            <a href="https://www.nngroup.com/articles/gestalt-proximity/"> NN/g</a> ·
+            <a href="https://carbondesignsystem.com/elements/spacing/overview/"> Carbon</a> ·
+            <a href="https://polaris.shopify.com/design/layout"> Polaris</a></p>
+          </div></details>
         </section>
 
-        <section className="section">
-          <div className="doc">
-            <h2>Votre stack, pas la nôtre</h2>
-            <p className="sourd">Les réglages « adaptation » à droite montrent le même cran consommé
-            dans votre environnement — le choix est affiché ci-dessous.</p>
-            <pre className="code">{SNIPPETS[fw][styl]}</pre>
-          </div>
-          <aside className="sources-col">
-            <h4>Pourquoi c&apos;est possible</h4>
-            <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul calcul
-            produit des variables CSS natives et une sortie Tailwind jumelle ; React, Angular ou HTML
-            n&apos;en sont que des consommateurs. Changer de stack ne change rien au système.</p>
-          </aside>
+        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+          <h2>Votre stack, pas la nôtre</h2>
+          <p className="sourd">Le réglage « adaptation » (à droite) traduit le même cran dans
+          votre environnement — copiez, c&apos;est le même système.</p>
+          <PanneauCode langage={`${fw} · ${styl}`} code={SNIPPETS[fw][styl]} />
+          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
+            calcul produit des variables CSS natives et une sortie Tailwind jumelle ; React,
+            Angular ou HTML n&apos;en sont que des consommateurs.</p>
+          </div></details>
         </section>
 
         <div>
           <h2 style={{ marginBottom: "var(--rr-block-unit)" }}>Les neuf règles, avec leurs raisons</h2>
-          <div style={{ display: "grid", gap: "var(--rr-block-card)" }}>
+          <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
             {REGLES.map((r) => (
-              <section key={r.id} id={r.id} className="section carte" style={{ background: "var(--p-papier)" }}>
-                <div className="doc" style={{ gap: "var(--rr-block-md)" }}>
-                  <b><span className="badge">règle {r.nom}</span> {r.titre}</b>
-                  <span>{r.enonce}</span>
-                  <span className="sourd">{r.pourquoi}</span>
-                </div>
-                <aside className="sources-col">
-                  {r.div && <div className="divergence">{r.div}</div>}
-                  <p>{r.src.map((s, i) => (
-                    <span key={s.t}>{i > 0 && " · "}{s.h === "#" ? s.t : <a href={s.h}>{s.t}</a>}</span>
-                  ))}</p>
-                </aside>
+              <section key={r.id} id={r.id} className="carte" style={{ background: "var(--p-papier)", gap: "var(--rr-block-md)" }}>
+                <b><span className="badge">règle {r.nom}</span> {r.titre}</b>
+                <span>{r.enonce}</span>
+                <span className="sourd">{r.pourquoi}</span>
+                {r.div && <div className="divergence" style={{ fontSize: "0.875rem" }}>{r.div}</div>}
+                <span className="sourd" style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((s, i) => (
+                  <span key={s.t}>{i > 0 && " · "}{s.h === "#" ? s.t : <a href={s.h}>{s.t}</a>}</span>
+                ))}</span>
               </section>
             ))}
           </div>
@@ -292,19 +286,6 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
-        <div className="bloc">
-          <span className="mono sourd">Largeur simulée</span>
-          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            <button className={`bouton ${largeur === null ? "on" : ""}`} onClick={() => setLargeur(null)}>Fenêtre</button>
-            <button className={`bouton ${largeur !== null ? "on" : ""}`} onClick={() => setLargeur(768)}>Simulée</button>
-          </div>
-          {largeur !== null && (
-            <>
-              <input type="range" min={320} max={1440} step={1} value={largeur} onChange={(e) => setLargeur(Number(e.target.value))} />
-              <span className="mono mesure">{largeur} px</span>
-            </>
-          )}
-        </div>
         <div className="bloc">
           <span className="mono sourd">Densité</span>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
@@ -325,8 +306,8 @@ export default function Vue() {
             ))}
           </div>
         </div>
-        <p className="sourd" style={{ fontSize: "0.75rem" }}>Ces réglages agissent sur toutes les
-        démonstrations de la page. Le thème (couleurs) arrivera avec sa fondation.</p>
+        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque aperçu
+        (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
       </aside>
     </div>
   );
