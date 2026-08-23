@@ -4,167 +4,92 @@
 > pas : `system-map.md` dit où on en est, `journal.md` dit pourquoi on en est là,
 > celui-ci dit ce qu'on fait ensuite et dans quel ordre.
 >
-> Arrêté le 11 août 2026 à la suite de la décision `#061`, **relevé le 12 août** :
-> le premier temps est terminé, et le rem du deuxième aussi. — on garde la machine,
-> on arrête l'appareil de preuve. Il se réécrit quand la direction change, et ce
-> changement passe par une entrée de journal.
+> **Arrêté le 23 août 2026** — validation d'Auteur du « cap du kit ». Le plan
+> précédent (arrêté le 11 août, relevé le 12) vit dans l'historique du dépôt ;
+> rien n'en est supprimé, tout se rouvre par une entrée de journal. Ce fichier
+> se réécrit quand la direction change, et ce changement passe par une entrée
+> de journal.
 
 ---
 
-## Où on est
+## Le cap
 
-Un robot qui bloque le mauvais code avant qu'il parte, et qui marche : trente
-règles, chacune sabotée exprès pour prouver qu'elle sait dire non.
+**Le kit se reconstruit par les notions mères — Principes, Langages,
+Fondations — dans le kit existant.** Composants et patterns sont **gelés**
+jusqu'au verrou des fondations : toute reprise anticipée serait une rupture
+déclarée, jamais un glissement.
 
-Une chaîne qui calcule les espaces, les rayons, les couleurs et les tailles à
-partir de sept décisions, et rien d'autre.
-
-Sept écrans qui servent de banc d'essai.
-
-Un fichier de règles que l'IA lit avant d'écrire — `REGLES.md`.
-
-Une marge qui commande l'arrondi, une zone de clic qui ne rétrécit pas avec le
-contour, et des longueurs affichées à l'entier — les trois décisions du 12 août.
-
-**Ce qui manque : la sortie — et une décision, donner ou non des yeux au dépôt.** Il y en avait une
-dizaine le 11 août ; **elles sont toutes réglées** — entrées, absorbées ou écartées.
-
----
-
-## Où on va
-
-**Un outil qui empêche une IA de produire de la bouillie visuelle, et qu'on peut
-poser sur un projet qui n'est pas Fili.**
-
-On y sera le jour où quelqu'un qui ne connaît pas la doctrine — une autre IA, un
-développeur, l'Auteur dans six mois — écrit un écran correct avec, sans que
-personne intervienne.
-
----
-
-## 1 · Les règles qui changent le résultat tout de suite
-
-Elles ne touchent pas au moteur. Chacune tient dans une séance de travail, et
-l'effet se voit sur les écrans le jour même.
-
-### ✅ La profondeur se lit au contraste — *fait, `#062`*
-
-Une surface qui **regroupe** d'autres surfaces reste proche du fond. Une surface
-qui **porte** du contenu s'en écarte. La hiérarchie se lit donc sans une seule
-ombre portée, et elle survit au thème sombre, à l'impression et à un écran mal
-réglé.
-
-Sur chaque surface, l'encre suit le même ordre : la donnée au contraste le plus
-fort, le cadrage en dessous, la reformulation encore en dessous.
-
-**La forme vérifiable de la règle** — une information déclarée secondaire ne peut
-pas être plus contrastée que la principale. Un contraste est un nombre, et le
-système sait déjà les calculer.
-
-**Son prix** — il faut que chaque élément déclare son rang. Le système ne sait
-aujourd'hui marquer que la section qui compte d'abord ; c'est le même geste, à
-étendre.
-
-**Ses trois suites** — une surface qui ne regroupe ni ne porte est une surface de
-trop · une liste de liens vit nue, seul l'élément actif reçoit une surface · une
-surface d'appel double son épaisseur verticale.
-
-### ✅ Un signal par intention — *fait, `#065`*
-
-Jamais une pastille, plus une flèche, plus une couleur pour dire une seule chose.
-
-### ✅ Les composants sortent de la chaîne des rayons — *fait, `#063` et `#064`*
-
-Un bouton, un champ, une pilule, un interrupteur gardent un rayon propre, qui ne
-bouge ni avec la profondeur ni avec le thème. Il serait contre-productif qu'un
-bouton change d'arrondi selon l'endroit où il tombe.
-
----
-
-## 2 · Les règles qui touchent le moteur
-
-Plus lourdes : elles retouchent ce qui calcule. Chacune se regarde en avant/après
-avant d'être gardée.
-
-**✅ Tout en rem, base 16** — *fait le 12 août, `#069`*. Restent en pixels la cible
-au doigt, les traits d'un pixel et la largeur d'écran minimale : ils ne doivent pas
-grandir avec le texte. Vérifié sur quatre-vingt-dix mesures : aucune valeur ne
-bouge à taille de texte normale.
-
-**✅ L'écart sur « même surface ou pas »** — *fait le 12 août, `#074`*. Elle
-s'ajoute à la profondeur au lieu de la remplacer, le saut vaut deux crans — soit la
-marge du niveau —, et une frontière n'est pas un écart plus grand : **c'est un
-groupe**, parce qu'un enfant ne réclame jamais d'espace.
-
-**✅ Le curseur de densité** — *fait le 12 août, `#076`*. Il est **local**, et il
-décale d'un cran dans l'échelle au lieu de multiplier : régler la densité du produit
-entier, la base sait déjà le faire. En le préparant, une faute d'accessibilité est
-apparue — deux cibles voisines étaient trop près, `#075`.
-
-**✅ Les trois règles de coin** — *faites le 12 août, `#073`, et il n'en restait
-qu'une*. La bande de tolérance mesurait la mauvaise chose ; la saturation était déjà
-couverte trois fois plus strictement. Seul le dégagement est écrit — et il ne mord
-que sur la pastille, dont l'arrondi ne descend pas de la chaîne.
-
----
-
-## 3 · Armer le robot
-
-Six contrôles d'audit sont écrits. **Le robot n'en applique qu'un** — celui de
-proximité. Les cinq autres se branchent une fois que les règles du dessus
-existent ; avant, ils n'auraient rien à vérifier.
-
-1. ~~Aucun enfant plus rond que son parent.~~ — *mort avec sa règle, `#073`*
-2. ✅ *Réécrit : toute surface de papier déclare un contour — `#078`. La règle
-   du plan ne trouvait rien à vérifier, sa voisine condamnait neuf compositions
-   justes.*
-3. ✅ *Mesuré vert sur les 30 témoins — `#080`. Demande un rendu, donc non gardé.*
-4. 🔴 *Infaisable en l'état — `#080`. Il faudrait déclarer quelles icônes se
-   comparent ; la mesure brute donne 25 faux positifs.*
-5. ✅ *Mesuré vert à 320 et 390 sur les 30 témoins — `#080`. Demande un rendu.*
-6. L'écart entre surfaces au moins égal au padding qui les habille. ✅ *en place*
-7. ✅ *Aucune pile ne distribue deux cibles avec un écart trop fin — `#077`, ajouté en route.*
-
----
-
-## 4 · La sortie
-
-Poser le tout sur un projet qui n'est pas Fili, et regarder ce que ça donne.
-
-C'est la seule épreuve qu'on garde. C'est aussi la seule qui puisse répondre à la
-question posée le 11 août — *qu'est-ce que ce système apporte ?* — parce que
-personne ne peut y répondre depuis l'intérieur.
-
----
-
-## Mis de côté, avec la condition qui les rouvre
-
-**Le rognage du texte** (`#072`). Le défaut est chiffré : cinq points et demi de
-blanc subi par bord sur l'axe vertical, la moitié d'un cran. Le remède coûte un
-double régime tant qu'un écran sur six ne le prend pas en charge. Se rouvre si la
-prise en charge monte, ou si le blanc propre à nos trois fontes diffère beaucoup
-de l'une à l'autre — ce relevé reste à faire.
-
-**Les composants qui suivent leur surface** (`#070`). Essayé et écarté : la
-contrainte d'outil avait disparu, mais un bouton qui grossit selon sa profondeur
-dit la structure au lieu de dire le sens. Fermé.
-
-**La grille de quatre** (`#071`). Mesurée : elle donne le même écart à deux
-profondeurs d'emboîtement. Fermée.
-
----
-
-## Ce qui n'est plus sur le chemin
-
-Le protocole de jugement et ses neuf points de passage. Les séances. Les témoins
-datés à chaque génération. Les épreuves qui restaient. Finir le produit Fili.
-
-Rien n'est supprimé : tout dort au dépôt et se rouvre par une entrée de journal.
-**Les sept écrans ne sont plus une fin — ils sont le banc d'essai.**
+**L'identité du kit** : chaque élément d'interface montre les lois qui l'ont
+construit — identifiants cliquables, énoncé en clair, source et arbitrage
+datés, playground qui montre la règle en action, theming qui prouve qu'elle
+tient sous réglages. Pas un design system de plus : un design system qui
+montre ses raisons.
 
 ---
 
 ## L'ordre
 
-Le temps 3 dépend des temps 1 et 2. Le temps 4 dépend des trois autres.
-À l'intérieur des temps 1 et 2, l'ordre est libre.
+### Phase 1 · Typographie & Rythme — les deux fondations à écrire
+
+Les seules familles sans paquet de reprise. Pour chacune : inventaire, puis
+règles sur papier au moule V2 (énoncé, mesure décidable sans contexte, test
+esquissé, dépendance dite), présentées une par une à l'Auteur, verdict à
+chaque fois. La typographie part de ses trois verdicts de ménage et des
+sources déjà arbitrées ; le rythme part de l'Échelle Semantic Rhythm, qui
+fait foi.
+
+### Phase 2 · Les quatre paquets écrits entrent au corpus
+
+Arrondis, tactile, couleur, bordures — famille par famille, avec leurs
+exécutions commandées (la remontée du gris pâle au registre, la correction
+des superposés) et la tenue (l'entrée bordures au journal). La carte des
+écarts du 23 août fait foi sur le détail.
+
+### Phase 3 · Les cinq familles restantes
+
+Surfaces, élévation, grille, iconographie, superpositions — même mécanique.
+L'ordre interne se choisit au fil de l'eau.
+
+### Phase 4 · Le verrou, puis les composants
+
+Fondations complètes et verrouillées → reprise des composants et patterns
+un à un, chacun naissant avec sa fiche « les lois qui m'ont construit »,
+spécifiée en langage de règles avant d'être implémentée.
+
+### ∥ Le fil continu : l'atelier
+
+Theming et playground suivent chaque phase : chaque fondation reprise devient
+aussitôt visible et réglable dans l'atelier. Le registre des composants typés
+et l'instrument de rendu gardent leurs threads propres ; les règles qui en
+dépendent portent « refus de statuer » en attendant, comme écrit dans les
+paquets.
+
+---
+
+## La doctrine d'agnosticisme
+
+**Le normatif, c'est la règle et le jeton. Toute implémentation n'est qu'un
+exemple.** Les règles vivent en markdown avec leurs identifiants stables ;
+les jetons sortent d'un seul calcul vers plusieurs cibles (CSS, Tailwind,
+Figma — d'autres peuvent naître). Les composants React du site sont une
+implémentation de démonstration, jamais la référence : un portage futur
+n'invalide rien, parce que rien de normatif ne vit dans le code d'exemple.
+La spec est la vérité, le code la démontre.
+
+---
+
+## Ce que ce plan ne décide pas
+
+Le nommage du code (français, choix d'identité — un passage aux conventions
+du marché serait son propre chantier, sur décision d'Auteur) · le sort du
+site public et des deux branches GitHub · la forme exacte des fiches de lois
+(se dessine au premier composant de la phase 4) · l'ordre interne de la
+phase 3.
+
+---
+
+## L'ordre des dépendances
+
+La phase 2 peut s'intercaler dans la phase 1 (matière déjà validée, familles
+indépendantes). La phase 3 suit. La phase 4 dépend de toutes les autres.
+L'atelier avance en parallèle de tout.
