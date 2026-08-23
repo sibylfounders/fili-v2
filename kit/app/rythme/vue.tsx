@@ -166,12 +166,12 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.4.8 — Visual Presentation", h: "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html" }] },
   { id: "y5", nom: "5", titre: "La densité est un décalage d'un cran",
     enonce: "Compact = confortable décalé d'exactement un cran sur l'échelle commune. Jamais une valeur propre, jamais un multiplicateur.",
-    pourquoi: "Un « ×0,8 » fabrique des valeurs hors échelle, invisibles au changement de marque. Un cran d'écart reste dans le système — décision testée sur notre application témoin.",
-    src: [{ t: "Décision interne, testée (12 août 2026)", h: "#" }] },
+    pourquoi: "Un « ×0,8 » fabrique des valeurs hors échelle, invisibles au changement de marque. Un cran d'écart reste dans le système.",
+    src: [{ t: "Règle interne du système", h: "#" }] },
   { id: "y6", nom: "6", titre: "La densité ne change jamais la structure",
     enonce: "L'ordre des emplacements et la présence des éléments restent identiques d'une densité à l'autre.",
     pourquoi: "Un mode compact qui masque ou réordonne, c'est deux produits dans un — et un apprentissage cassé.",
-    src: [{ t: "Décision interne", h: "#" }] },
+    src: [{ t: "Règle interne du système", h: "#" }] },
   { id: "y7", nom: "7", titre: "Deux régimes, un seul seuil",
     enonce: "Mobile et desktop, séparés par un seuil de largeur unique.",
     pourquoi: "On n'ajoute pas des paliers par imitation : un troisième régime naîtra d'un besoin réel, documenté et daté.",
@@ -180,12 +180,10 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
   { id: "y8", nom: "8", titre: "Les crans sont responsives — c'est le jeton qui varie, jamais l'écran",
     enonce: "Chaque cran peut résoudre une valeur différente selon le régime, ou glisser entre deux bornes — mais la variation vit dans la définition du jeton, une fois. Aucun écran ne redéfinit un cran.",
     pourquoi: "Sur petit écran, les espaces doivent pouvoir se resserrer sans casser la logique. Et si chaque écran bricolait ses valeurs, le système n'existerait plus.",
-    div: "Nous avions d'abord écrit l'inverse (des crans figés). Décision revue le 23 août 2026 : notre échelle de référence était déjà fluide, et la position de GOV.UK s'est révélée la bonne. Le changement est daté et motivé.",
     src: [{ t: "GOV.UK — Spacing", h: "https://design-system.service.gov.uk/styles/spacing/" }] },
   { id: "y9", nom: "9", titre: "La géométrie d'espacement vit en rem",
     enonce: "Les jetons d'espacement s'expriment en rem (base 16). Restent en pixels, par décision explicite : la cible du doigt, les traits d'un pixel, la largeur d'écran minimale.",
     pourquoi: "Quand l'utilisateur agrandit le texte, les espaces qui l'entourent doivent suivre — sinon la page casse au premier réglage d'accessibilité.",
-    div: "Nous avions d'abord écrit l'inverse (espacement en pixels). Décision revue le 12 août 2026, vérifiée sur quatre-vingt-dix mesures.",
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
 ];
 
@@ -227,15 +225,14 @@ export default function Vue() {
           <p className="chapo">
             Espacer, c&apos;est décider qui est lié à qui : quand une distance est
             arbitraire, la page ment. Ici, toute distance sort d&apos;une échelle unique, et
-            <b> chaque règle porte son pourquoi, sa source vérifiable, et l&apos;aveu daté de
-            nos divergences</b> — y compris quand nous avons changé d&apos;avis. Sous chaque
-            banc d&apos;essai, « d&apos;où ça vient » se déplie.
+            <b> chaque règle porte son pourquoi, sa source vérifiable, et ses divergences
+            assumées</b>. Sous chaque banc d&apos;essai, « d&apos;où ça vient » se déplie.
           </p>
         </div>
 
         <section className="bloc-section">
           <p className="kicker">01 · L&apos;échelle</p>
-          <h2>L&apos;échelle vit — tirez la poignée</h2>
+          <h2>Chaque distance vient d&apos;une seule échelle</h2>
           <p className="sourd">Des distances décidées au cas par cas finissent par se
           contredire. Ici, chaque espace de cette carte est un jeton de l&apos;échelle commune,
           qui glisse entre deux bornes selon la largeur — « voir les espaces » les nomme, la
@@ -256,9 +253,7 @@ export default function Vue() {
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
               <p>Toutes les distances sortent d&apos;<b>un générateur</b> : trois décisions entrent
               (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
-              vertical). Les valeurs de cette page ont été <b>lues mécaniquement</b> sur ce
-              générateur à 320 et 1440 px — jamais recopiées — puis interpolées (écart mesuré :
-              moins d&apos;un pixel).</p>
+              vertical). Aucune valeur n&apos;est écrite à la main.</p>
               <Regles ids={["y8", "y9", "y3", "y7", "y4"]} />
             </div></details>
           } />
@@ -266,21 +261,20 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">02 · La densité</p>
-          <h2>La densité — un cran d&apos;écart, rien d&apos;autre</h2>
+          <h2>Un mode compact qui reste dans le système</h2>
           <p className="sourd">Le réglage « densité » (à droite) décale chaque espace du site
           entier — cette page comprise — d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
           et remarquez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
-            changement de marque. Un cran d&apos;écart reste dans le système — décision testée sur
-            notre application témoin avant d&apos;entrer ici.</p>
+            changement de marque. Un cran d&apos;écart, lui, reste dans le système.</p>
             <Regles ids={["y5", "y6"]} />
           </div></details>
         </section>
 
         <section className="bloc-section">
           <p className="kicker">03 · La proximité</p>
-          <h2>La proximité — l&apos;espace est une information</h2>
+          <h2>Quand une distance ment, la page ment</h2>
           <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort —
           quand une distance ment, la page raconte autre chose. Un libellé équidistant flotte
           entre deux champs ; un titre mal espacé change de camp. Les deux casses le
@@ -299,8 +293,8 @@ export default function Vue() {
           )} pied={
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
               <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
-              systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
-              parfaites portaient des dizaines de distances qui mentaient.</p>
+              systèmes — et la faute la plus fréquente des interfaces : des distances qui
+              racontent autre chose que le contenu.</p>
               <Regles ids={["y1", "y2"]} />
             </div></details>
           } />
@@ -308,7 +302,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">04 · L&apos;adaptation</p>
-          <h2>Votre stack, pas la nôtre</h2>
+          <h2>Le même système, dans votre stack</h2>
           <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
           Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>

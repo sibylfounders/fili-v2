@@ -13,7 +13,7 @@ export default function Accueil() {
           <p className="chapo">
             Pas un design system de plus : un système où <b>chaque élément d&apos;interface
             remonte aux lois qui l&apos;ont construit</b> — l&apos;énoncé en clair, la source
-            vérifiable, l&apos;arbitrage daté. Et où chaque loi se règle, se casse et se
+            vérifiable, la raison assumée. Et où chaque loi se règle, se casse et se
             regarde agir, sur des bancs d&apos;essai vivants.
           </p>
         </div>
@@ -23,7 +23,7 @@ export default function Accueil() {
           <h2>Deux fondations vivantes, sept en chemin</h2>
           <div className="tuiles">
             <a href="/rythme" className="tuile">
-              <span className="mono sourd">Fondation · actée le 23 août 2026</span>
+              <span className="mono sourd">Fondation</span>
               <span className="tuile-titre">Le rythme</span>
               <span className="tuile-specimen" aria-hidden>
                 <span className="barre" style={{ width: "calc(8 * var(--rr-inline-unit))" }} />
@@ -36,7 +36,7 @@ export default function Accueil() {
               <span className="tuile-appel">Ouvrir la fondation →</span>
             </a>
             <a href="/typo" className="tuile">
-              <span className="mono sourd">Fondation · actée le 23 août 2026</span>
+              <span className="mono sourd">Fondation</span>
               <span className="tuile-titre">La typographie</span>
               <span className="tuile-specimen" style={{ fontSize: "var(--t-titre-1)", fontWeight: 600, letterSpacing: "-0.02em", lineHeight: 1.1 }} aria-hidden>
                 Aa Bb Éé 013
@@ -58,10 +58,10 @@ export default function Accueil() {
             <span className="sourd">Un énoncé, une mesure décidable sans contexte, un test qui
             sait la casser, une dépendance dite — et ses sources citées comme motifs, jamais
             comme exigences.</span></div>
-            <div className="regle"><b>2 · Elle passe en séance.</b>
-            <span className="sourd">Verdict règle par règle, par l&apos;auteur du système.
-            Les renversements sont conservés, datés et motivés — y compris quand nous avons
-            changé d&apos;avis.</span></div>
+            <div className="regle"><b>2 · Elle est arbitrée.</b>
+            <span className="sourd">Chaque règle est acceptée, amendée ou rejetée par
+            l&apos;auteur du système — et peut être renversée plus tard, jamais en
+            silence.</span></div>
             <div className="regle"><b>3 · Elle devient page vivante.</b>
             <span className="sourd">Un banc d&apos;essai où on la règle, où on la casse, où on
             la voit mordre. Une loi qu&apos;on peut voir agir vaut dix pages de doctrine.</span></div>

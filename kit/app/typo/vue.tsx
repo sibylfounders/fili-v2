@@ -35,11 +35,11 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.3.1 — techniques WAI", h: "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html" }] },
   { id: "g1", nom: "G1", titre: "Exactement un h1 par page",
     enonce: "Ni deux, ni zéro : le h1 est le titre du document, pas le plus gros texte de la page.",
-    pourquoi: "Le référencement lit le h1 comme le sujet de la page — l'absence coûte autant que la duplication. Arbitrage daté (31 juillet 2026, motif SEO). Déjà tenu par notre garde-fou automatique.",
+    pourquoi: "Le référencement lit le h1 comme le sujet de la page — l'absence coûte autant que la duplication. Déjà tenu par un garde-fou automatique.",
     src: [{ t: "MDN — Heading elements", h: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements" }] },
   { id: "t2", nom: "T2", titre: "La taille glisse",
     enonce: "Les tailles varient continûment entre deux bornes selon la largeur — pas de paliers de media queries. La variation vit dans le jeton, jamais dans un écran.",
-    pourquoi: "C'est le jumeau typographique de la règle 8 du rythme, tranchée le même jour : si chaque écran redéfinissait ses corps, le système n'existerait plus.",
+    pourquoi: "C'est le jumeau typographique de la règle 8 du rythme : si chaque écran redéfinissait ses corps, le système n'existerait plus.",
     src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }] },
   { id: "t3", nom: "T3", titre: "Le zoom garde ses droits",
     enonce: "Jamais de taille en unités d'écran seules (vw). Toute taille fluide porte une part rem dans ses trois parties : minimum, préférée, maximum.",
@@ -50,7 +50,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     pourquoi: "Sous ce ratio, le texte atteint ses 200 % de zoom sur les largeurs usuelles. Et même conforme, on teste au zoom réel, pas à la formule (mesure M1).",
     src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }] },
   { id: "t5", nom: "T5", titre: "Qui glisse se borne",
-    enonce: "Tout bloc de texte courant porte une largeur maximale exprimée en ch — jamais en pixels. La règle exige la borne ; la valeur exacte est un arbitrage de registre.",
+    enonce: "Tout bloc de texte courant porte une largeur maximale exprimée en ch — jamais en pixels. La règle exige la borne ; la valeur exacte reste un choix du système, documenté.",
     pourquoi: "Sans borne, la taille monte en butée pendant que la ligne s'allonge : la fluidité dégrade la lecture qu'elle devait servir. Les plages publiées divergent (45–75 Bringhurst, 40–60 Material) — on cite les sources comme motif, jamais comme exigence.",
     div: "Une max-width de 65ch laisse passer plus de 65 caractères : ch mesure la chasse du « 0 », pas la moyenne. D'où la mesure au rendu (M2) plutôt que la confiance en la déclaration.",
     src: [{ t: "Butterick — Practical Typography", h: "https://practicaltypography.com/summary-of-key-rules.html" }, { t: "MDN — CSS length units", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/length" }] },
@@ -68,7 +68,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Butterick — Practical Typography", h: "https://practicaltypography.com/summary-of-key-rules.html" }, { t: "MDN — text-transform", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform" }] },
   { id: "t9", nom: "T9", titre: "Fer à gauche, jamais justifié, centré réservé",
     enonce: "Début de ligne aligné par défaut ; aucun texte d'interface justifié ; le centrage est réservé aux titres courts, jamais à un paragraphe.",
-    div: "Les études empiriques sur la justification sont non concluantes — notre fonds le reconnaît. La règle tient sur WCAG 1.4.8 et sur les rivières d'espace sans césure fiable. Dit, pas caché.",
+    div: "Les études empiriques sur la justification sont non concluantes. La règle tient sur WCAG 1.4.8 et sur les rivières d'espace sans césure fiable. Dit, pas caché.",
     src: [{ t: "WCAG 1.4.8 — Visual Presentation", h: "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html" }] },
   { id: "t10", nom: "T10", titre: "Jamais sous l'équivalent 16 px",
     enonce: "Le texte courant ne descend jamais sous 16 px d'équivalent, en rem — les champs de saisie non plus.",
@@ -76,9 +76,9 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "CSS-Tricks — 16px form zoom", h: "https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/" }, { t: "MDN — font-size", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size" }] },
   { id: "t11", nom: "T11", titre: "La fonte déclarée est la fonte livrée",
     enonce: "Toute famille déclarée est appariée à un fichier versé au dépôt, au nom strictement identique, avec sa pile de secours. Aucun nom orphelin.",
-    pourquoi: "Un nom qui ne correspond pas ne produit aucune erreur : il produit un produit entier en police système, en silence. C'est arrivé ici — dix-sept versions de notre application témoin durant, personne n'a rien vu.",
-    div: "Règle née chez nous, de cet incident — pas importée d'une source. Les familles de ce kit sont arbitrées et livrées : Geist, JetBrains Mono.",
-    src: [{ t: "Incident documenté au journal (#058)", h: "#" }] },
+    pourquoi: "Un nom qui ne correspond pas ne produit aucune erreur : il produit un produit entier en police système — et rien, nulle part, ne le signale.",
+    div: "Les familles de ce kit sont livrées avec lui : Geist, et JetBrains Mono pour le code.",
+    src: [{ t: "Règle interne du système", h: "#" }] },
 ];
 
 function Regles({ ids }: { ids: string[] }) {
@@ -269,9 +269,8 @@ export default function Vue() {
           <p className="kicker">Fondation · La typographie</p>
           <h1>Chaque lettre de cette page sait pourquoi</h1>
           <p className="chapo">
-            La typographie de ce système tient en <b>onze règles, passées une par une en
-            séance le 23 août 2026</b> — chacune née d&apos;un problème réel, avec son pourquoi,
-            sa source, et l&apos;aveu de nos tensions. Chaque banc d&apos;essai les montre à
+            La typographie de ce système tient en <b>onze règles</b> — chacune née
+            d&apos;un problème réel, avec son pourquoi, sa source, et ses limites dites. Chaque banc d&apos;essai les montre à
             l&apos;œuvre, réglables et cassables. Vous les lisez déjà dans les fontes
             qu&apos;elles imposent : Geist, et JetBrains Mono pour le code — livrées avec le
             kit, c&apos;est la règle T11.
@@ -280,7 +279,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">01 · L&apos;échelle et le zoom</p>
-          <h2>L&apos;échelle glisse — et le zoom garde ses droits</h2>
+          <h2>Le texte grandit avec l&apos;écran — et avec le lecteur</h2>
           <p className="sourd">Une taille figée casse au premier écran étroit ; une taille en
           unités d&apos;écran ignore le zoom du lecteur — échec invisible en test, bloquant pour
           qui en dépend. Ici chaque échelon glisse entre deux bornes, et sa part rem laisse le
@@ -307,9 +306,9 @@ export default function Vue() {
             </div>
           )} pied={
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
-              <p>L&apos;échelle affichée est une échelle de travail conforme aux règles actées —
-              ses valeurs exactes restent un arbitrage de registre, déclaré, pas subi. Le rapport
-              max/min du plus grand échelon reste loin du plafond de 2,5.</p>
+              <p>L&apos;échelle affichée respecte les règles ci-dessous ; ses valeurs exactes
+              peuvent changer sans les enfreindre. Le rapport max/min du plus grand échelon
+              reste loin du plafond de 2,5.</p>
               <Regles ids={["t2", "t3", "t4"]} />
             </div></details>
           } />
@@ -317,7 +316,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">02 · La mesure et l&apos;air</p>
-          <h2>La mesure et l&apos;air — le paragraphe se défend</h2>
+          <h2>Ni lignes interminables, ni texte étouffé</h2>
           <p className="sourd">Une ligne trop longue égare l&apos;œil au retour ; un interligne
           serré étouffe la lecture. La borne en ch et le plancher de 1,5 tiennent le
           paragraphe — et le compteur lit la ligne réelle sur la page rendue, jamais la
@@ -340,7 +339,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">03 · La hiérarchie</p>
-          <h2>Le sens et la taille, séparés — et jamais de barreau manquant</h2>
+          <h2>Un titre sauté, un lecteur perdu</h2>
           <p className="sourd">Un niveau de titre sauté, et le lecteur d&apos;écran conclut à du
           contenu manquant : l&apos;arbre des titres est une échelle, chaque barreau compte. Le
           sens suit la structure, la taille suit le design. (Les titres ci-dessous sont
@@ -358,7 +357,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">04 · Les pièges</p>
-          <h2>Quatre pièges connus — cassez-les un par un</h2>
+          <h2>Les quatre fautes que rien ne signale</h2>
           <p className="sourd">Quatre dérives ordinaires, et aucune ne produit d&apos;erreur
           nulle part — c&apos;est bien le problème. Chaque carte porte la règle qui
           l&apos;arrête, et le moyen de la voir échouer.</p>
@@ -408,11 +407,10 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">05 · La fonte livrée</p>
-          <h2>La fonte déclarée est la fonte livrée</h2>
+          <h2>La police système qui remplace la vôtre, en silence</h2>
           <p className="sourd">Un nom de famille qui ne correspond à aucun fichier livré ne
-          déclenche rien : le produit entier passe en police système, en silence. C&apos;est
-          arrivé ici, dix-sept versions durant — d&apos;où la règle la plus chèrement payée du
-          corpus.</p>
+          déclenche rien : le produit entier passe en police système, en silence. La règle ferme
+          cette porte : déclarée = livrée, au nom exact, avec sa pile de secours.</p>
           <Apercu outils={
             <button className={`bouton ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
               {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
@@ -435,7 +433,7 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">06 · L&apos;adaptation</p>
-          <h2>Votre stack, pas la nôtre</h2>
+          <h2>Le même système, dans votre stack</h2>
           <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
           Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
@@ -467,7 +465,7 @@ export default function Vue() {
         <div className="bloc">
           <span className="mono sourd">Familles livrées</span>
           <p className="sourd" style={{ fontSize: "0.75rem" }}>Geist (interface) ·
-          JetBrains Mono (code) — arbitrées le 23 août, fichiers au dépôt (T11).</p>
+          JetBrains Mono (code) — livrées avec le kit (règle T11).</p>
         </div>
         <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
         (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
