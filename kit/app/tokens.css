@@ -73,6 +73,7 @@
   --t-titre-3: clamp(1.1500rem, 1.1214rem + 0.1429vw, 1.2500rem);
   --t-titre-2: clamp(1.3000rem, 1.2429rem + 0.2857vw, 1.5000rem);
   --t-titre-1: clamp(1.6000rem, 1.4571rem + 0.7143vw, 2.1000rem);
+  --t-affiche: clamp(2.2000rem, 1.8571rem + 1.7143vw, 3.4000rem);
 
   --t-interligne-courant: 1.6;  /* T6 : jamais sous 1,5 pour le texte courant */
   --t-interligne-titre: 1.2;    /* les grands corps ont le droit de serrer */

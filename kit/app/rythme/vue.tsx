@@ -212,47 +212,50 @@ export default function Vue() {
       <Navigation actif="rythme" />
 
       <main className="contenu">
-        <div>
-          <p className="mono sourd">Fondation · Le rythme (espacement)</p>
+        <div className="tete-page">
+          <p className="kicker">Fondation · Le rythme (espacement)</p>
           <h1>Chaque distance de cette page a une raison</h1>
-          <p className="sourd" style={{ marginTop: "var(--rr-block-md)", maxWidth: "42rem" }}>
+          <p className="chapo">
             Cette page définit comment ce système espace les choses — et vous laisse voir
-            chaque règle agir, la régler, et la casser. Ce qui la distingue des documentations
-            habituelles : <b style={{ color: "var(--p-encre)" }}>chaque règle porte son pourquoi,
-            sa source vérifiable, et l&apos;aveu daté de nos divergences</b> — y compris quand
-            nous avons changé d&apos;avis. Sous chaque démonstration, « d&apos;où ça vient » se déplie.
+            chaque règle agir, la régler, et la casser. <b>Chaque règle porte son pourquoi,
+            sa source vérifiable, et l&apos;aveu daté de nos divergences</b> — y compris
+            quand nous avons changé d&apos;avis. Sous chaque banc d&apos;essai,
+            « d&apos;où ça vient » se déplie.
           </p>
         </div>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">01 · L&apos;échelle</p>
           <h2>L&apos;échelle vit — tirez la poignée</h2>
           <p className="sourd">Cette carte est construite avec les vrais espaces du système.
-          Redimensionnez l&apos;aperçu : chaque distance glisse entre ses deux bornes.
-          Survolez la box : « voir les espaces » les colore, avec leur nom.</p>
+          Redimensionnez la feuille : chaque distance glisse entre ses deux bornes, et
+          « voir les espaces » les colore, avec leur nom.</p>
           <Apercu outils={
             <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "center", gap: "var(--rr-block-unit)" }}>
+            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
               <CarteAnnotee voir={voir} compact={compact} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
                 à {Math.round(l)} px : padding {lirePx(l, compact ? "--rr-block-unit" : "--rr-block-card", tw)} px ·
                 écart {lirePx(l, compact ? "--rr-block-sm" : "--rr-block-md", tw)} px{tw && " · accroché à l'échelle Tailwind"}
               </span>
             </div>
-          )} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <p>Toutes les distances sortent d&apos;<b>un générateur</b> : trois décisions entrent
-            (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
-            vertical). Les valeurs de cette page ont été <b>lues mécaniquement</b> sur ce
-            générateur à 320 et 1440 px — jamais recopiées — puis interpolées (écart mesuré :
-            moins d&apos;un pixel).</p>
-            <Regles ids={["y8", "y9", "y3", "y7", "y4"]} />
-          </div></details>
+          )} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <p>Toutes les distances sortent d&apos;<b>un générateur</b> : trois décisions entrent
+              (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
+              vertical). Les valeurs de cette page ont été <b>lues mécaniquement</b> sur ce
+              générateur à 320 et 1440 px — jamais recopiées — puis interpolées (écart mesuré :
+              moins d&apos;un pixel).</p>
+              <Regles ids={["y8", "y9", "y3", "y7", "y4"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">02 · La densité</p>
           <h2>La densité — un cran d&apos;écart, rien d&apos;autre</h2>
           <p className="sourd">Le réglage « densité » (à droite) décale chaque espace de la carte
           ci-dessus d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
@@ -265,20 +268,25 @@ export default function Vue() {
           </div></details>
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">03 · La proximité</p>
           <h2>La proximité — l&apos;espace est une information</h2>
           <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort.
           Cassez les deux règles et voyez la page mentir — l&apos;œil vous le dira avant nous.</p>
-          <Apercu enfants={(l) => (<div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "center" }}><Proximite /></div>)} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
-            systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
-            parfaites portaient des dizaines de distances qui mentaient.</p>
-            <Regles ids={["y1", "y2"]} />
-          </div></details>
+          <Apercu enfants={(l) => (
+            <div style={{ ...jetons(l, tw), width: "100%", display: "grid", justifyItems: "start" }}><Proximite /></div>
+          )} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
+              systèmes — et la faute la plus fréquente de nos audits : des pages déclarées
+              parfaites portaient des dizaines de distances qui mentaient.</p>
+              <Regles ids={["y1", "y2"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">04 · L&apos;adaptation</p>
           <h2>Votre stack, pas la nôtre</h2>
           <p className="sourd">Le réglage « adaptation » (à droite) traduit le même cran dans
           votre environnement — copiez, c&apos;est le même système.</p>
@@ -313,7 +321,7 @@ export default function Vue() {
             ))}
           </div>
         </div>
-        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque aperçu
+        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
         (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
       </aside>
     </div>

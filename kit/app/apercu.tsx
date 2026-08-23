@@ -1,11 +1,12 @@
 "use client";
 import * as React from "react";
 
-/* L'aperçu redimensionnable — porté de l'atelier, adapté aux jetons du kit
-   neuf : fond damier, paliers cliquables (l'alternative sans glisser),
-   poignée au pointeur ET au clavier, pastille de largeur, double-clic pour
-   revenir au repère par défaut. Les paliers sont des repères d'inspection,
-   pas des états. Par défaut : 1024 px (choix d'Auteur du 23 août). */
+/* Le banc d'essai — porté de l'atelier, recomposé le 23 août :
+   une tête d'outils toujours visibles (plus rien ne se cache au survol),
+   le cadre est une feuille de papier collée à gauche, le damier n'est
+   plus que la marge — la part d'écran que la largeur simulée ne couvre
+   pas. Poignée au pointeur ET au clavier, paliers cliquables, pastille
+   de largeur, double-clic pour revenir à 1024 px. */
 
 const MIN = 260;
 const DEFAUT = 1024;
@@ -17,7 +18,11 @@ const PALIERS: { label: string; w: number }[] = [
   { label: "1024 px", w: 1024 },
 ];
 
-export function Apercu({ enfants, outils }: { enfants: (largeur: number) => React.ReactNode; outils?: React.ReactNode }) {
+export function Apercu({ enfants, outils, pied }: {
+  enfants: (largeur: number) => React.ReactNode;
+  outils?: React.ReactNode;
+  pied?: React.ReactNode;
+}) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const [w, setW] = React.useState(DEFAUT);
   const [max, setMax] = React.useState(0);
@@ -56,21 +61,23 @@ export function Apercu({ enfants, outils }: { enfants: (largeur: number) => Reac
   };
 
   return (
-    <div className="apercu">
-      <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
-        {PALIERS.filter((p) => max === 0 || p.w <= max).map((p) => {
-          const actif = courante === p.w;
-          return (
-            <button key={p.label} className={`bouton ${actif ? "on" : ""}`} aria-pressed={actif}
-              onClick={() => setW(borne(p.w))} title={`Aperçu à ${p.w} px`}>
-              {p.label}
-            </button>
-          );
-        })}
+    <div className="banc">
+      <div className="banc-tete">
+        <div className="banc-outils">{outils}</div>
+        <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
+          {PALIERS.filter((p) => max === 0 || p.w <= max).map((p) => {
+            const actif = courante === p.w;
+            return (
+              <button key={p.label} className={`bouton ${actif ? "on" : ""}`} aria-pressed={actif}
+                onClick={() => setW(borne(p.w))} title={`Aperçu à ${p.w} px`}>
+                {p.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
       <div ref={wrapRef} className="apercu-piste">
         <div className="apercu-cadre" style={{ width: `${courante}px` }}>
-          {outils ? <div className="apercu-outils">{outils}</div> : null}
           <div className="apercu-scene">{courante > 0 ? enfants(courante) : null}</div>
           <span className="puce-w mono">{courante} px</span>
         </div>
@@ -84,6 +91,7 @@ export function Apercu({ enfants, outils }: { enfants: (largeur: number) => Reac
           <span className="poignee-trait" />
         </div>
       </div>
+      {pied ? <div className="banc-pied">{pied}</div> : null}
     </div>
   );
 }

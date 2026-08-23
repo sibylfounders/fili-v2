@@ -264,26 +264,26 @@ export default function Vue() {
       <Navigation actif="typo" />
 
       <main className="contenu">
-        <div>
-          <p className="mono sourd">Fondation · La typographie</p>
+        <div className="tete-page">
+          <p className="kicker">Fondation · La typographie</p>
           <h1>Chaque lettre de cette page sait pourquoi</h1>
-          <p className="sourd" style={{ marginTop: "var(--rr-block-md)", maxWidth: "42rem" }}>
+          <p className="chapo">
             Cette page définit comment ce système compose le texte — et vous laisse voir chaque
-            règle agir, la régler, et la casser. <b style={{ color: "var(--p-encre)" }}>Onze règles,
-            passées une par une en séance le 23 août 2026, chacune avec son pourquoi, sa source,
-            et l&apos;aveu de nos tensions.</b> Vous la lisez déjà dans les fontes qu&apos;elle
-            impose : Geist, et JetBrains Mono pour le code — livrées avec le kit, c&apos;est
-            la règle T11.
+            règle agir, la régler, et la casser. <b>Onze règles, passées une par une en séance
+            le 23 août 2026</b>, chacune avec son pourquoi, sa source, et l&apos;aveu de nos
+            tensions. Vous la lisez déjà dans les fontes qu&apos;elle impose : Geist, et
+            JetBrains Mono pour le code — livrées avec le kit, c&apos;est la règle T11.
           </p>
         </div>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">01 · L&apos;échelle et le zoom</p>
           <h2>L&apos;échelle glisse — et le zoom garde ses droits</h2>
           <p className="sourd">Tirez la poignée : chaque échelon glisse entre ses deux bornes.
           Puis montez le « zoom lecteur » — c&apos;est la part rem qui répond. Cassez en « vw seul »
           et refaites le geste : plus rien ne bouge. C&apos;est ça, l&apos;échec silencieux.</p>
           <Apercu outils={
-            <span style={{ display: "inline-flex", gap: "var(--rr-inline-sm)" }}>
+            <>
               {[1, 1.5, 2].map((z) => (
                 <button key={z} className={`bouton ${zoom === z ? "on" : ""}`} onClick={() => setZoom(z)}>
                   zoom ×{z === 1.5 ? "1,5" : z}
@@ -292,7 +292,7 @@ export default function Vue() {
               <button className={`bouton ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>
                 {vwSeul ? "Réparer" : "Casser : vw seul"}
               </button>
-            </span>
+            </>
           } enfants={(l) => (
             <div style={{ width: "100%", display: "grid", gap: "var(--rr-block-unit)" }}>
               <Specimen largeur={l} zoom={zoom} vwSeul={vwSeul} />
@@ -302,36 +302,40 @@ export default function Vue() {
                 {vwSeul && zoom > 1 && " — le zoom ne mord plus : échec WCAG 1.4.4"}
               </span>
             </div>
-          )} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <p>L&apos;échelle affichée est une échelle de travail conforme aux règles actées —
-            ses valeurs exactes restent un arbitrage de registre, déclaré, pas subi. Le rapport
-            max/min du plus grand échelon est de 1,31 : loin du plafond de 2,5.</p>
-            <Regles ids={["t2", "t3", "t4"]} />
-          </div></details>
+          )} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <p>L&apos;échelle affichée est une échelle de travail conforme aux règles actées —
+              ses valeurs exactes restent un arbitrage de registre, déclaré, pas subi. Le rapport
+              max/min du plus grand échelon reste loin du plafond de 2,5.</p>
+              <Regles ids={["t2", "t3", "t4"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">02 · La mesure et l&apos;air</p>
           <h2>La mesure et l&apos;air — le paragraphe se défend</h2>
           <p className="sourd">Le compteur mesure la ligne réelle, en caractères, sur la page
-          rendue — pas la déclaration. Élargissez l&apos;aperçu, cassez la borne, et regardez-le
+          rendue — pas la déclaration. Élargissez la feuille, cassez la borne, et regardez-le
           passer au rouge.</p>
           <Apercu outils={
-            <span style={{ display: "inline-flex", gap: "var(--rr-inline-sm)" }}>
+            <>
               <button className={`bouton ${sansBorne ? "on" : ""}`} onClick={() => setSansBorne(!sansBorne)}>
                 {sansBorne ? "Réparer la borne" : "Casser la borne"}
               </button>
               <button className={`bouton ${serre ? "on" : ""}`} onClick={() => setSerre(!serre)}>
                 {serre ? "Rendre l'air" : "Casser l'interligne"}
               </button>
-            </span>
-          } enfants={(l) => <Mesure largeur={l} sansBorne={sansBorne} serre={serre} />} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <Regles ids={["t5", "t6"]} />
-          </div></details>
+            </>
+          } enfants={(l) => <Mesure largeur={l} sansBorne={sansBorne} serre={serre} />} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <Regles ids={["t5", "t6"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">03 · La hiérarchie</p>
           <h2>Le sens et la taille, séparés — et jamais de barreau manquant</h2>
           <p className="sourd">Les niveaux de titre sont l&apos;échelle que le lecteur d&apos;écran
           descend. Sautez un barreau et voyez ce qu&apos;il reste de l&apos;arbre. (Les titres
@@ -340,13 +344,15 @@ export default function Vue() {
             <button className={`bouton ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>
               {saut ? "Réparer" : "Casser : sauter un niveau"}
             </button>
-          } enfants={() => <Arbre saut={saut} />} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <Regles ids={["p01", "t1", "g1"]} />
-          </div></details>
+          } enfants={() => <Arbre saut={saut} />} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <Regles ids={["p01", "t1", "g1"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">04 · Les pièges</p>
           <h2>Quatre pièges connus — cassez-les un par un</h2>
           <p className="sourd">Chaque carte casse une seule règle. Aucune ne produit d&apos;erreur
           nulle part : c&apos;est bien le problème.</p>
@@ -394,7 +400,8 @@ export default function Vue() {
           </div></details>
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">05 · La fonte livrée</p>
           <h2>La fonte déclarée est la fonte livrée</h2>
           <p className="sourd">Notre règle la plus chèrement payée. Déclarez un nom qui
           n&apos;existe pas : aucune erreur, aucun avertissement — juste un autre produit.</p>
@@ -411,13 +418,15 @@ export default function Vue() {
               ses styles déclarent{mauvaisNom ? "… sauf que « Geist Text » n'existe dans aucun fichier livré : vous lisez la police système de secours, et rien ne vous l'a dit." : " — « Geist », livrée dans le dépôt, au nom exact, avec sa pile de secours."}</p>
               <span className={`badge ${mauvaisNom ? "ko" : ""}`}>{mauvaisNom ? "nom orphelin — produit entier en police système, en silence" : "Geist — déclarée, livrée, vérifiable"}</span>
             </div>
-          )} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
-            <Regles ids={["t11"]} />
-          </div></details>
+          )} pied={
+            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+              <Regles ids={["t11"]} />
+            </div></details>
+          } />
         </section>
 
-        <section style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+        <section className="bloc-section">
+          <p className="kicker">06 · L&apos;adaptation</p>
           <h2>Votre stack, pas la nôtre</h2>
           <p className="sourd">Le réglage « adaptation » (à droite) traduit les mêmes jetons dans
           votre environnement — copiez, c&apos;est le même système.</p>
@@ -450,7 +459,7 @@ export default function Vue() {
           <p className="sourd" style={{ fontSize: "0.75rem" }}>Geist (interface) ·
           JetBrains Mono (code) — arbitrées le 23 août, fichiers au dépôt (T11).</p>
         </div>
-        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque aperçu
+        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
         (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
       </aside>
     </div>

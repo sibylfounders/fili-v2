@@ -18,8 +18,8 @@ a { color: var(--p-accent); }
   padding: var(--rr-block-page) var(--rr-inline-2xl) calc(2 * var(--rr-block-page));
   display: grid; gap: var(--rr-block-page);
 }
-h1 { font-size: 1.75em; letter-spacing: -0.02em; margin: 0; line-height: 1.15; }
-h2 { font-size: 1.15em; margin: 0; }
+h1 { font-size: var(--t-affiche); letter-spacing: -0.025em; margin: 0; line-height: 1.08; text-wrap: balance; }
+h2 { font-size: var(--t-titre-2); letter-spacing: -0.015em; margin: 0; line-height: var(--t-interligne-titre); text-wrap: balance; }
 p { margin: 0; }
 .sourd { color: var(--p-sourd); }
 .carte {
@@ -76,9 +76,17 @@ pre.code {
   padding: var(--rr-block-sm) var(--rr-inline-sm); border-radius: var(--rr-radius); }
 .navigation a.actif { background: var(--p-accent-doux); color: var(--p-accent); font-weight: 600; }
 .navigation .venir { color: var(--p-sourd); padding: var(--rr-block-sm) var(--rr-inline-sm); }
-.contenu { padding: var(--rr-block-page) var(--rr-inline-2xl);
-  display: grid; gap: var(--rr-block-page); min-width: 0;
+.contenu { padding: calc(1.4 * var(--rr-block-page)) var(--rr-inline-2xl) calc(2.5 * var(--rr-block-page));
+  display: grid; gap: calc(1.5 * var(--rr-block-page)); min-width: 0;
   max-width: 64rem; width: 100%; margin-inline: auto; justify-self: center; }
+.tete-page { display: grid; gap: var(--rr-block-unit); }
+.chapo { font-size: var(--t-titre-3); line-height: 1.55; color: var(--p-sourd); max-width: var(--t-mesure); }
+.chapo b { color: var(--p-encre); }
+.kicker { font: 700 0.6875rem/1 var(--t-code); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--p-accent); }
+.bloc-section { display: grid; gap: var(--rr-block-unit);
+  border-top: 1px solid var(--p-trait); padding-top: calc(1.1 * var(--rr-block-page)); }
+.bloc-section > p.sourd { max-width: var(--t-mesure); }
 .reglages {
   position: sticky; top: 0; padding: var(--rr-block-page) var(--rr-inline-2xl);
   border-left: 1px solid var(--p-trait); display: grid; gap: var(--rr-block-card);
@@ -111,23 +119,35 @@ pre.code {
   .sources-col { border-left: 0; border-top: 2px solid var(--p-trait); padding: var(--rr-block-unit) 0 0; }
 }
 
-/* ── L'aperçu redimensionnable (porté de l'atelier) ── */
-.apercu { position: relative; display: grid; gap: var(--rr-block-md); }
+/* ── Le banc d'essai : tête d'outils · cadre papier sur marge damier · pied ── */
+.banc { background: var(--p-papier); border: 1px solid var(--p-trait);
+  border-radius: var(--rr-radius-shell); overflow: hidden; }
+.banc-tete { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--rr-inline-unit); flex-wrap: wrap;
+  padding: var(--rr-block-md) var(--rr-inline-unit);
+  border-bottom: 1px solid var(--p-trait); }
+.banc-outils { display: flex; gap: var(--rr-inline-sm); flex-wrap: wrap; }
+.banc-tete .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem; }
+.banc-pied { border-top: 1px solid var(--p-trait); }
+.banc-pied details.prov { border: 0; border-radius: 0; background: transparent;
+  padding: var(--rr-block-unit) var(--rr-inline-2xl); }
 .apercu-cmds { display: flex; gap: var(--rr-inline-sm); justify-content: flex-end; flex-wrap: wrap; }
-.apercu-cmds .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem; }
-.apercu-piste { position: relative; }
-.apercu-cadre {
-  position: relative; max-width: 100%; overflow: hidden;
-  border: 1px solid var(--p-trait); border-radius: var(--rr-radius-card);
+.apercu-piste { position: relative;
   background-color: var(--p-fond);
   background-image:
-    linear-gradient(45deg, var(--p-papier) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--p-papier) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--p-papier) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--p-papier) 75%);
-  background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    linear-gradient(45deg, rgba(28,24,50,0.045) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(28,24,50,0.045) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(28,24,50,0.045) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(28,24,50,0.045) 75%);
+  background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
-.apercu-scene { padding: var(--rr-block-page) var(--rr-inline-2xl); display: grid; justify-items: center; }
+.apercu-cadre {
+  position: relative; max-width: 100%; overflow: hidden; min-height: 100%;
+  background: var(--p-papier); border-right: 1px solid var(--p-trait);
+  box-shadow: 12px 0 28px -20px rgba(28, 24, 50, 0.35);
+}
+.apercu-scene { padding: var(--rr-block-page) var(--rr-inline-2xl);
+  display: grid; justify-items: stretch; text-align: left; }
 .puce-w {
   position: absolute; bottom: 0.625rem; right: 0.625rem; pointer-events: none;
   background: var(--p-papier); border: 1px solid var(--p-trait);
@@ -169,16 +189,31 @@ pre.code {
 }
 
 /* ── Les sources en dépliant discret ── */
-details.prov { border-left: 2px solid var(--p-trait); padding-left: var(--rr-inline-unit); color: var(--p-sourd); font-size: 0.875rem; }
+details.prov { background: var(--p-papier); border: 1px solid var(--p-trait);
+  border-radius: var(--rr-radius-card); padding: var(--rr-block-unit) var(--rr-inline-2xl);
+  color: var(--p-sourd); font-size: 0.875rem; }
 details.prov summary { cursor: pointer; font: 700 0.6875rem/1.6 var(--t-code);
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--p-sourd); list-style: none; }
 details.prov summary::before { content: "▸ "; }
 details.prov[open] summary::before { content: "▾ "; }
 details.prov > div { display: grid; gap: var(--rr-block-md); padding-top: var(--rr-block-md); }
 
-/* Outils posés dans la box de l'aperçu — révélés au survol ou au focus clavier */
-.apercu-outils { position: absolute; top: 0.625rem; left: 0.625rem; z-index: 5;
-  opacity: 0; transition: opacity 0.15s; display: flex; gap: var(--rr-inline-sm); }
-.apercu-piste:hover .apercu-outils, .apercu-piste:focus-within .apercu-outils { opacity: 1; }
-.apercu-outils .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem;
-  box-shadow: 0 2px 8px rgba(28,24,50,0.12); }
+
+
+/* ── L'accueil : tuiles de fondations et étapes de méthode ── */
+.tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--rr-inline-unit); }
+.tuile { display: grid; gap: var(--rr-block-md); align-content: start;
+  background: var(--p-papier); border: 1px solid var(--p-trait);
+  border-radius: var(--rr-radius-shell);
+  padding: var(--rr-block-card) var(--rr-inline-2xl);
+  text-decoration: none; color: var(--p-encre);
+  transition: border-color 0.15s, box-shadow 0.15s; }
+.tuile:hover, .tuile:focus-visible { border-color: var(--p-accent);
+  box-shadow: 0 12px 32px -24px rgba(93, 81, 232, 0.5); }
+.tuile-titre { font-size: var(--t-titre-2); font-weight: 600; letter-spacing: -0.015em; }
+.tuile-specimen { display: flex; flex-direction: column; gap: var(--rr-block-sm);
+  padding: var(--rr-block-unit) 0; color: var(--p-encre); }
+.tuile-appel { color: var(--p-accent); font-weight: 600; font-size: 0.875rem; }
+.etapes { display: grid; gap: var(--rr-block-unit); max-width: var(--t-mesure); }
+.etapes .regle { display: grid; gap: var(--rr-block-xs); }

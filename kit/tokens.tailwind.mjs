@@ -52,6 +52,7 @@ export const typo = {
     "titre-3": "var(--t-titre-3)",
     "titre-2": "var(--t-titre-2)",
     "titre-1": "var(--t-titre-1)",
+    affiche: "var(--t-affiche)",
   },
   lineHeight: {
     courant: "var(--t-interligne-courant)",
