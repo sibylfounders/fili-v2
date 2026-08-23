@@ -68,9 +68,10 @@ const lirePx = (largeur: number, nom: string, tw = false, dec = 0) => {
 
 /* Un espace rendu visible : c'est un VRAI espace de la carte (il porte le jeton),
    pas une illustration — l'interrupteur ne fait que le colorer. */
-function E({ j, h, voir }: { j: string; h?: boolean; voir: boolean }) {
+function E({ j, h, voir, role }: { j: string; h?: boolean; voir: boolean; role?: string }) {
+  const cran = j.replace("--rr-inline-", "").replace("--rr-block-", "");
   return <span className={`espace ${h ? "h" : ""} ${voir ? "vu" : ""}`}
-    data-nom={voir ? j.replace("--rr-", "") : undefined}
+    data-nom={voir ? `${role ?? (h ? "inline" : "stack")} · ${cran}` : undefined}
     style={h ? { width: `var(${j})` } : { height: `var(${j})` }} />;
 }
 
@@ -82,12 +83,12 @@ function CarteAnnotee({ voir }: { voir: boolean }) {
   const freres = "--rr-block-md";
   const Ligne = ({ children }: { children: React.ReactNode }) => (
     <span style={{ display: "flex", alignItems: "stretch" }}>
-      <E j={padH} h voir={voir} /><span style={{ flex: 1, minWidth: 0 }}>{children}</span><E j={padH} h voir={voir} />
+      <E j={padH} h voir={voir} role="inset" /><span style={{ flex: 1, minWidth: 0 }}>{children}</span><E j={padH} h voir={voir} role="inset" />
     </span>
   );
   return (
     <div className="carte-demo">
-      <E j={padV} voir={voir} />
+      <E j={padV} voir={voir} role="inset" />
       <Ligne><b>Léa Fontan</b></Ligne>
       <E j={freres} voir={voir} />
       <Ligne><span className="sourd" style={{ fontSize: "0.875em" }}>UX Designer — chaque distance de cette carte est un jeton de l&apos;échelle.</span></Ligne>
@@ -99,7 +100,7 @@ function CarteAnnotee({ voir }: { voir: boolean }) {
           <button className="bouton on">Suivre</button>
         </span>
       </Ligne>
-      <E j={padV} voir={voir} />
+      <E j={padV} voir={voir} role="inset" />
     </div>
   );
 }
@@ -236,8 +237,8 @@ export default function Vue() {
           <h2>Chaque distance vient d&apos;une seule échelle</h2>
           <p className="sourd">Des distances décidées au cas par cas finissent par se
           contredire. Ici, chaque espace de cette carte est un jeton de l&apos;échelle commune,
-          qui glisse entre deux bornes selon la largeur — « voir les espaces » les nomme, la
-          poignée les fait vivre.</p>
+          qui glisse entre deux bornes selon la largeur — « voir les espaces » les nomme par leur
+          rôle — inset, stack, inline — et leur cran ; la poignée les fait vivre.</p>
           <Apercu outils={
             <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
               {voir ? "Masquer les espaces" : "Voir les espaces"}
