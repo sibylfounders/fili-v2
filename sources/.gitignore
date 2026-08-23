@@ -1,0 +1,28 @@
+node_modules/
+.next/
+out/
+dist-app/
+*.log
+.DS_Store
+.turbo/
+.env*
+_to_delete/
+_to_delete*/
+# `build/` sans barre attrapait AUSSI `dist/build/` — toute la moitié « mode build » de la
+# distribution n'était pas versionnée, alors que `dist/audit/` l'était. Ancré à la racine.
+/build/
+
+# artefacts du pont de fichiers (fichiers supprimés encore ouverts)
+.fuse_hidden*
+*.tsbuildinfo
+
+# fichier de travail du test des exemples du manifeste
+apps/site/exemples-manifeste.gen.tsx
+
+# Documents de PILOTAGE — jamais dans public/ : Next recopie public/ tel quel dans
+# la sortie et pages.yml la publie. Les prototypes assumés (fili-charte.html,
+# nav-carte-proto.html) restent servis, cf. cd276a5.
+apps/site/public/docs/test/fili-fils.md
+apps/site/public/docs/test/fili-roadmap.html
+apps/site/public/docs/test/fili-modele.html
+apps/site/public/docs/test/*.tar.gz

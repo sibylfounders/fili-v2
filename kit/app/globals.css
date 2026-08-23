@@ -1,0 +1,60 @@
+/* Styles du kit — ne consomment QUE les jetons (tokens.css).
+   Aucune valeur d'espace, de rayon ou de taille en dur : Y-règles à l'œuvre. */
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--p-fond); color: var(--p-encre);
+  font: 400 var(--rr-type)/1.6 ui-sans-serif, system-ui, sans-serif;
+}
+a { color: var(--p-accent); }
+.chrome {
+  display: flex; align-items: center; gap: var(--rr-inline-unit);
+  padding: var(--rr-block-unit) var(--rr-inline-2xl);
+  background: var(--p-papier); border-bottom: 1px solid var(--p-trait);
+}
+.chrome b { letter-spacing: -0.02em; }
+.chrome nav { display: flex; gap: var(--rr-inline-unit); margin-left: auto; }
+.page {
+  max-width: 46rem; margin: 0 auto;
+  padding: var(--rr-block-page) var(--rr-inline-2xl) calc(2 * var(--rr-block-page));
+  display: grid; gap: var(--rr-block-page);
+}
+h1 { font-size: 1.75em; letter-spacing: -0.02em; margin: 0; line-height: 1.15; }
+h2 { font-size: 1.15em; margin: 0; }
+p { margin: 0; }
+.sourd { color: var(--p-sourd); }
+.carte {
+  background: var(--p-papier); border: 1px solid var(--p-trait);
+  border-radius: var(--rr-radius-card); padding: var(--rr-block-card) var(--rr-inline-2xl);
+  display: grid; gap: var(--rr-block-unit);
+}
+.badge {
+  display: inline-block; font: 700 0.6875rem/1 ui-monospace, Menlo, monospace;
+  color: var(--p-accent); background: var(--p-accent-doux);
+  border-radius: var(--rr-radius); padding: var(--rr-block-sm) var(--rr-inline-sm);
+  text-decoration: none;
+}
+.badge.ko { color: var(--p-rouge); background: var(--p-rouge-doux); }
+.bouton {
+  height: var(--rr-control); padding: 0 var(--rr-inline-xl);
+  border: 1px solid var(--p-trait); border-radius: var(--rr-radius);
+  background: var(--p-papier); font: 600 0.875rem/1 inherit; cursor: pointer;
+}
+.bouton.on { background: var(--p-accent); border-color: var(--p-accent); color: #fff; }
+.rang { display: flex; gap: var(--rr-inline-unit); flex-wrap: wrap; align-items: center; }
+.mono { font: 600 0.75rem/1.5 ui-monospace, Menlo, monospace; }
+.mesure { color: var(--p-sourd); font-variant-numeric: tabular-nums; }
+.barre { background: var(--p-accent); border-radius: 2px; height: var(--rr-block-unit); }
+.regle { border-left: 3px solid var(--p-trait); padding-left: var(--rr-inline-xl); }
+.regle b { display: block; }
+.champ { display: grid; gap: var(--rr-block-md); }
+.champ input {
+  height: var(--rr-control); border: 1px solid var(--p-trait);
+  border-radius: var(--rr-radius); padding: 0 var(--rr-inline-unit);
+  font: inherit; background: var(--p-fond);
+}
+.casse .libelle-menteur { margin-bottom: var(--rr-block-card); margin-top: var(--rr-block-card); }
+pre.code {
+  margin: 0; padding: var(--rr-block-unit) var(--rr-inline-unit);
+  background: #1C1928; color: #C9C4F8; border-radius: var(--rr-radius);
+  font: 500 0.75rem/1.7 ui-monospace, Menlo, monospace; overflow-x: auto;
+}

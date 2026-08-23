@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   LES JETONS DU RYTHME — Échelle Semantic Rhythm (l'étalon fait foi, #050)
+
+   Valeurs LUES sur le générateur de l'Auteur aux largeurs 320 et 1440
+   (méthode du crash-test : jamais recopiées à la main), puis interpolées
+   en clamp() linéaire. Le générateur adoucit sa courbe en JavaScript, le
+   CSS interpole droit : écart déjà mesuré < 1 px sur toute la plage, dit.
+
+   Règles de la famille (séance du 2026-08-23, sources/…/SPACING-UX.md 2.0.0) :
+   Y8 — les crans sont responsives, la variation vit ICI, jamais dans un
+   écran. Y9 — tout en rem. Deux axes : inline (horizontal), block (vertical).
+
+   Sortie jumelle : tokens.tailwind.mjs — même calcul, autre cible.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Axe inline — horizontal */
+  --rr-inline-xs: clamp(0.3001rem, 0.2572rem + 0.2144vw, 0.4501rem);
+  --rr-inline-sm: clamp(0.3900rem, 0.3343rem + 0.2786vw, 0.5850rem);
+  --rr-inline-unit: clamp(0.6000rem, 0.5143rem + 0.4286vw, 0.9000rem);
+  --rr-inline-lg: clamp(0.8487rem, 0.7274rem + 0.6062vw, 1.2730rem);
+  --rr-inline-xl: clamp(0.6600rem, 0.5657rem + 0.4714vw, 0.9900rem);
+  --rr-inline-2xl: clamp(1.2000rem, 1.0286rem + 0.8571vw, 1.8000rem);
+
+  /* Axe block — vertical */
+  --rr-block-xs: clamp(0.1350rem, 0.1239rem + 0.0557vw, 0.1741rem);
+  --rr-block-sm: clamp(0.1688rem, 0.1549rem + 0.0697vw, 0.2176rem);
+  --rr-block-md: clamp(0.2363rem, 0.2168rem + 0.0975vw, 0.3046rem);
+  --rr-block-control: clamp(0.4725rem, 0.4335rem + 0.1950vw, 0.6090rem);
+  --rr-block-card: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
+  --rr-block-unit: clamp(0.6752rem, 0.6195rem + 0.2787vw, 0.8703rem);
+  --rr-block-lg: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
+  --rr-block-xl: clamp(0.8438rem, 0.7741rem + 0.3482vw, 1.0875rem);
+  --rr-block-page: clamp(1.3500rem, 1.2386rem + 0.5571vw, 1.7400rem);
+
+  /* Type, rayons, contrôle */
+  --rr-type: clamp(0.9600rem, 0.9286rem + 0.1571vw, 1.0700rem);
+  --rr-radius: clamp(0.6450rem, 0.5893rem + 0.2786vw, 0.8400rem);
+  --rr-radius-card: clamp(0.7418rem, 0.6777rem + 0.3204vw, 0.9660rem);
+  --rr-radius-shell: clamp(0.8708rem, 0.7955rem + 0.3761vw, 1.1340rem);
+  --rr-control: clamp(2.7500rem, 2.7029rem + 0.2357vw, 2.9150rem);
+}
+
+/* ── PROVISOIRE, HORS CORPUS — déclaré, pas subi ──────────────────────
+   La famille couleur n'est pas encore reprise dans le kit neuf ; ces
+   teintes de travail permettent aux pages de s'afficher. Elles seront
+   remplacées par la reprise couleur, et rien d'autre ne doit les citer. */
+:root {
+  --p-fond: #F6F6FB; --p-papier: #FFFFFF; --p-encre: #1C1832;
+  --p-sourd: #67628A; --p-trait: #E3E1F0; --p-accent: #5D51E8;
+  --p-accent-doux: #EFEDFC; --p-rouge: #D6336C; --p-rouge-doux: #FDE8EE;
+  --p-vert: #0E7C5B; --p-vert-doux: #E2F5EE;
+}
