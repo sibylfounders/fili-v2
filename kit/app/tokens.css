@@ -92,8 +92,10 @@
    T10 : le corps courant ne descend jamais sous 1rem. Ses VALEURS exactes
    restent un arbitrage de registre à venir — déclaré, pas subi. */
 :root {
-  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  /* Les secours « Fallback » portent les métriques mesurées de la fonte
+     livrée (fontes.css) : la bascule de police ne déplace plus rien. */
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Menlo, monospace;
 
   --font-size-body:   clamp(1.0000rem, 0.9571rem + 0.2143vw, 1.1500rem);
   --font-size-h3: clamp(1.1500rem, 1.1214rem + 0.1429vw, 1.2500rem);

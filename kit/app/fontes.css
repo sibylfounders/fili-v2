@@ -6,6 +6,33 @@
    styles réclament, piles de secours déclarées dans tokens.css.
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ── Les secours à métriques calées — le remède au saut de mise en page.
+   En attendant la fonte livrée, le texte se peint dans la police système ;
+   si ses métriques diffèrent, le titre se re-coupe à l'arrivée de la vraie
+   fonte (le « flash » constaté le 23 août). Ces deux @font-face donnent à
+   la police de secours LES MÉTRIQUES DE LA FONTE LIVRÉE — mesurées sur les
+   fichiers du dépôt (fontkit : upm, ascender, descender, largeur moyenne
+   pondérée), jamais recopiées ; formule et métriques de référence
+   Arial / Courier New : celles qu'embarque next/font. La bascule ne
+   déplace alors plus rien. Complément : les fichiers latins sont
+   préchargés dans app/layout.tsx. */
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial");
+  size-adjust: 113.87%;      /* Geist 519.58/1000 ÷ Arial 934.51/2048 */
+  ascent-override: 88.26%;   /* 1005/1000, rapporté au size-adjust */
+  descent-override: 25.91%;  /* 295/1000, idem */
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Courier New");
+  size-adjust: 99.98%;       /* 600/1000 ÷ 1229/2048 — quasi identiques */
+  ascent-override: 102.02%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
 @font-face {
   font-family: "Geist";
   font-style: normal;

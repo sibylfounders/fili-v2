@@ -1,29 +1,32 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /* L'adaptation est un réglage de theming global : Tailwind (défaut),
    shadcn (géométrie shadcn/ui — rayons md, contrôles h-9 ; la couleur
    vient toujours de la famille, dans les deux thèmes), HTML natif
    (décimales calculées, valeurs fluides). Mémorisé d'une page et d'une
-   visite à l'autre. */
+   visite à l'autre.
+
+   État lu depuis <html> par useSyncExternalStore, calé pendant
+   l'hydratation : le réglage affiché ne repasse jamais par sa valeur
+   par défaut au chargement. */
 
 const CLE = "kit-adaptation";
 export type Adapt = "tailwind" | "shadcn" | "html";
 
 const lire = (): Adapt => {
-  if (typeof document === "undefined") return "tailwind";
   const a = document.documentElement.dataset.adaptation;
   return a === "shadcn" || a === "html" ? a : "tailwind";
 };
 
+const abonner = (cb: () => void) => {
+  const mo = new MutationObserver(cb);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-adaptation"] });
+  return () => mo.disconnect();
+};
+
 export function useAdaptation() {
-  const [adaptation, setAdaptation] = useState<Adapt>("tailwind");
-  useEffect(() => {
-    setAdaptation(lire());
-    const mo = new MutationObserver(() => setAdaptation(lire()));
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-adaptation"] });
-    return () => mo.disconnect();
-  }, []);
+  const adaptation = useSyncExternalStore(abonner, lire, () => "tailwind" as Adapt);
   const changer = (a: Adapt) => {
     if (a === "tailwind") delete document.documentElement.dataset.adaptation;
     else document.documentElement.dataset.adaptation = a;

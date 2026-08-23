@@ -1,30 +1,34 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 /* Le thème est un réglage de theming GLOBAL — jamais page par page
    (décision d'Auteur, 23 août) : Clair, Système (défaut — le sombre
    s'active sur la préférence du système, règle C13), Sombre. Posé en
    attribut sur <html> (valeurs API : light / dark), résolu par les
    jetons de tokens.css (une valeur par thème et par rôle, règle C12),
-   mémorisé d'une page et d'une visite à l'autre. */
+   mémorisé d'une page et d'une visite à l'autre.
+
+   L'état est lu depuis <html> par useSyncExternalStore : le script de
+   layout.tsx pose l'attribut avant toute peinture, et React se cale
+   dessus PENDANT l'hydratation — le réglage affiché ne repasse jamais
+   par sa valeur par défaut au chargement (le « flash » du 23 août). */
 
 const CLE = "kit-theme";
 export type Thème = "light" | "system" | "dark";
 
 const lire = (): Thème => {
-  if (typeof document === "undefined") return "system";
   const t = document.documentElement.dataset.theme;
   return t === "light" || t === "dark" ? t : "system";
 };
 
+const abonner = (cb: () => void) => {
+  const mo = new MutationObserver(cb);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => mo.disconnect();
+};
+
 export function useTheme() {
-  const [theme, setTheme] = useState<Thème>("system");
-  useEffect(() => {
-    setTheme(lire());
-    const mo = new MutationObserver(() => setTheme(lire()));
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
+  const theme = useSyncExternalStore(abonner, lire, () => "system" as Thème);
   const changer = (t: Thème) => {
     if (t === "system") delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = t;

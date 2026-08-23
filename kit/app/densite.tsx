@@ -1,30 +1,33 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /* La densité est un réglage de theming : elle s'applique à tout le site
    (attribut sur <html>, décalage d'un cran dans tokens.css — règle Y5)
    et se mémorise d'une page et d'une visite à l'autre.
    Trois crans : Aéré (un cran plus haut) · Confortable · Compact (un cran
    plus bas). Valeurs API en anglais : airy / comfortable / compact
-   (décision d'Auteur, 23 août — l'API du kit parle anglais). */
+   (décision d'Auteur, 23 août — l'API du kit parle anglais).
+
+   État lu depuis <html> par useSyncExternalStore, calé pendant
+   l'hydratation : le réglage affiché ne repasse jamais par sa valeur
+   par défaut au chargement. */
 
 const CLE = "kit-density";
 export type Densité = "airy" | "comfortable" | "compact";
 
 const lire = (): Densité => {
-  if (typeof document === "undefined") return "comfortable";
   const d = document.documentElement.dataset.density;
   return d === "compact" || d === "airy" ? d : "comfortable";
 };
 
+const abonner = (cb: () => void) => {
+  const mo = new MutationObserver(cb);
+  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-density"] });
+  return () => mo.disconnect();
+};
+
 export function useDensite() {
-  const [densite, setDensite] = useState<Densité>("comfortable");
-  useEffect(() => {
-    setDensite(lire());
-    const mo = new MutationObserver(() => setDensite(lire()));
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-density"] });
-    return () => mo.disconnect();
-  }, []);
+  const densite = useSyncExternalStore(abonner, lire, () => "comfortable" as Densité);
   const changer = (d: Densité) => {
     if (d === "comfortable") delete document.documentElement.dataset.density;
     else document.documentElement.dataset.density = d;
