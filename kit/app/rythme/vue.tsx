@@ -134,7 +134,28 @@ function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean })
 
 const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
-    "CSS natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
+    Tailwind: `// tailwind.config : theme.extend.spacing <- rythme.spacing (variables, fluide)
+// ou rythmeLitteral (grille 4-16, arrondie) — jamais les deux à la fois
+export function Fiche({ enfants }) {
+  return (
+    <section className="p-block-card px-inline-2xl rounded-card">
+      <div className="grid gap-block-md">{enfants}</div>
+    </section>
+  );
+}`,
+    shadcn: `// shadcn/ui vit sur Tailwind — donc sur nos jetons, via theme.extend
+import { Card, CardContent } from "@/components/ui/card";
+
+export function Fiche({ enfants }) {
+  return (
+    <Card className="rounded-card">
+      <CardContent className="p-block-card px-inline-2xl grid gap-block-md">
+        {enfants}
+      </CardContent>
+    </Card>
+  );
+}`,
+    "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
 export function Fiche({ enfants }) {
   return (
     <section className="fiche">   {/* inset : block-card / inline-2xl */}
@@ -147,26 +168,8 @@ export function Fiche({ enfants }) {
 .fiche { padding: var(--rr-block-card) var(--rr-inline-2xl);
          border-radius: var(--rr-radius-card); }
 .pile  { display: grid; gap: var(--rr-block-md); }  /* stack, un cran sous l'inset — Y1 */`,
-    Tailwind: `// tailwind.config : theme.extend.spacing ← rythme.spacing (variables, fluide)
-// ou rythmeLitteral (grille 4-16, arrondie) — jamais les deux à la fois
-export function Fiche({ enfants }) {
-  return (
-    <section className="p-block-card px-inline-2xl rounded-card">
-      <div className="grid gap-block-md">{enfants}</div>
-    </section>
-  );
-}`,
   },
   Angular: {
-    "CSS natif": `@Component({
-  selector: "kit-fiche",
-  template: \`
-    <section class="fiche">
-      <div class="pile"><ng-content /></div>
-    </section>\`,
-  styleUrl: "./fiche.css", // mêmes classes : var(--rr-block-card), var(--rr-block-md)…
-})
-export class Fiche {}`,
     Tailwind: `@Component({
   selector: "kit-fiche",
   template: \`
@@ -175,9 +178,40 @@ export class Fiche {}`,
     </section>\`,
 })
 export class Fiche {}`,
+    shadcn: `// shadcn est né côté React ; côté Angular son esprit vit dans spartan/ui —
+// mêmes classes Tailwind, donc mêmes jetons
+@Component({
+  selector: "kit-fiche",
+  template: \`
+    <hlm-card class="rounded-card">
+      <div hlmCardContent class="p-block-card px-inline-2xl grid gap-block-md">
+        <ng-content />
+      </div>
+    </hlm-card>\`,
+})
+export class Fiche {}`,
+    "HTML natif": `@Component({
+  selector: "kit-fiche",
+  template: \`
+    <section class="fiche">
+      <div class="pile"><ng-content /></div>
+    </section>\`,
+  styleUrl: "./fiche.css", // mêmes classes : var(--rr-block-card), var(--rr-block-md)…
+})
+export class Fiche {}`,
   },
   HTML: {
-    "CSS natif": `<link rel="stylesheet" href="kit/tokens.css" />
+    Tailwind: `<section class="p-block-card px-inline-2xl rounded-card">
+  <div class="grid gap-block-md">
+    <p>Les classes résolvent les jetons — le système reste le même.</p>
+  </div>
+</section>`,
+    shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
+     l'essentiel — ses classes Tailwind, qui résolvent nos jetons -->
+<section class="p-block-card px-inline-2xl rounded-card border bg-card">
+  <div class="grid gap-block-md">…</div>
+</section>`,
+    "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
 
 <section class="fiche">
   <p>Chaque distance vient d'un jeton — inset, stack, inline.</p>
@@ -187,11 +221,6 @@ export class Fiche {}`,
   .fiche { padding: var(--rr-block-card) var(--rr-inline-2xl); }
   .fiche p { margin-block: var(--rr-block-md); }
 </style>`,
-    Tailwind: `<section class="p-block-card px-inline-2xl rounded-card">
-  <div class="grid gap-block-md">
-    <p>Les classes résolvent les jetons — le système reste le même.</p>
-  </div>
-</section>`,
   },
 };
 
@@ -282,8 +311,8 @@ export default function Vue() {
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
-  const tw = styl === "Tailwind";
+  const [styl, setStyl] = useState<"Tailwind" | "shadcn" | "HTML natif">("Tailwind");
+  const tw = styl !== "HTML natif"; /* shadcn vit sur Tailwind */
 
   return (
     <div className="coquille">
@@ -380,7 +409,7 @@ export default function Vue() {
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
           Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
           <PanneauCode langage={styl} outils={
-            <>{(["React", "Angular", "HTML"] as const).map((f) => (
+            <>{(["HTML", "React", "Angular"] as const).map((f) => (
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
             ))}</>
           } code={SNIPPETS[fw][styl]} />
@@ -402,7 +431,7 @@ export default function Vue() {
         <div className="bloc">
           <span className="mono sourd">Adaptation</span>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            {(["CSS natif", "Tailwind"] as const).map((s) => (
+            {(["Tailwind", "shadcn", "HTML natif"] as const).map((s) => (
               <button key={s} className={`bouton ${styl === s ? "on" : ""}`} onClick={() => setStyl(s)}>{s}</button>
             ))}
           </div>

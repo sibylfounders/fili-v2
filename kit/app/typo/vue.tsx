@@ -177,9 +177,32 @@ function Arbre({ saut }: { saut: boolean }) {
   );
 }
 
-const SNIPPETS: Record<"React" | "Angular" | "HTML", Record<"CSS natif" | "Tailwind", string>> = {
+const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
-    "CSS natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
+    Tailwind: `// tailwind.config : theme.extend <- typo (tokens.tailwind.mjs)
+// chaque classe résout var(--t-…) — un thème littéral sortirait ARRONDI
+export function Article({ titre, enfants }) {
+  return (
+    <article className="font-interface text-corps leading-courant max-w-mesure">
+      <h2 className="text-titre-2 leading-titre font-semibold">{titre}</h2>
+      {enfants}
+    </article>
+  );
+}`,
+    shadcn: `// shadcn/ui vit sur Tailwind — la typo du système passe par les mêmes classes
+import { Card, CardContent } from "@/components/ui/card";
+
+export function Article({ titre, enfants }) {
+  return (
+    <Card>
+      <CardContent className="font-interface text-corps leading-courant max-w-mesure">
+        <h2 className="text-titre-2 leading-titre font-semibold">{titre}</h2>
+        {enfants}
+      </CardContent>
+    </Card>
+  );
+}`,
+    "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
 export function Article({ titre, enfants }) {
   return (
     <article className="texte-courant">
@@ -199,28 +222,8 @@ export function Article({ titre, enfants }) {
   line-height: var(--t-interligne-titre);
   font-weight: 600;                     /* T7 : le demi-gras porte les titres */
 }`,
-    Tailwind: `// tailwind.config : theme.extend ← typo (tokens.tailwind.mjs)
-// chaque classe résout var(--t-…) — un thème littéral sortirait ARRONDI
-export function Article({ titre, enfants }) {
-  return (
-    <article className="font-interface text-corps leading-courant max-w-mesure">
-      <h2 className="text-titre-2 leading-titre font-semibold">{titre}</h2>
-      {enfants}
-    </article>
-  );
-}`,
   },
   Angular: {
-    "CSS natif": `@Component({
-  selector: "kit-article",
-  template: \`
-    <article class="texte-courant">
-      <h2 class="titre-2">{{ titre }}</h2>
-      <ng-content />
-    </article>\`,
-  styleUrl: "./article.css", // mêmes classes : var(--t-corps), var(--t-mesure)…
-})
-export class Article { @Input() titre = ""; }`,
     Tailwind: `@Component({
   selector: "kit-article",
   template: \`
@@ -230,18 +233,45 @@ export class Article { @Input() titre = ""; }`,
     </article>\`,
 })
 export class Article { @Input() titre = ""; }`,
+    shadcn: `// côté Angular, l'esprit shadcn vit dans spartan/ui — mêmes classes Tailwind
+@Component({
+  selector: "kit-article",
+  template: \`
+    <hlm-card>
+      <div hlmCardContent class="font-interface text-corps leading-courant max-w-mesure">
+        <h2 class="text-titre-2 leading-titre font-semibold">{{ titre }}</h2>
+        <ng-content />
+      </div>
+    </hlm-card>\`,
+})
+export class Article { @Input() titre = ""; }`,
+    "HTML natif": `@Component({
+  selector: "kit-article",
+  template: \`
+    <article class="texte-courant">
+      <h2 class="titre-2">{{ titre }}</h2>
+      <ng-content />
+    </article>\`,
+  styleUrl: "./article.css", // mêmes classes : var(--t-corps), var(--t-mesure)…
+})
+export class Article { @Input() titre = ""; }`,
   },
   HTML: {
-    "CSS natif": `<link rel="stylesheet" href="kit/tokens.css" />
+    Tailwind: `<article class="font-interface text-corps leading-courant max-w-mesure">
+  <h2 class="text-titre-2 leading-titre font-semibold">Le titre</h2>
+  <p>Les classes résolvent les jetons — le système reste le même.</p>
+</article>`,
+    shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
+     l'essentiel — ses classes Tailwind, qui résolvent nos jetons -->
+<article class="font-interface text-corps leading-courant max-w-mesure border bg-card">
+  <h2 class="text-titre-2 leading-titre font-semibold">Le titre</h2>
+</article>`,
+    "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
 <link rel="stylesheet" href="kit/fontes.css" /><!-- T11 : fontes livrées -->
 
 <article class="texte-courant">
   <h2 class="titre-2">Le titre</h2>
   <p>Le corps courant — jamais sous 16 px, borné en ch, interligne 1,6.</p>
-</article>`,
-    Tailwind: `<article class="font-interface text-corps leading-courant max-w-mesure">
-  <h2 class="text-titre-2 leading-titre font-semibold">Le titre</h2>
-  <p>Les classes résolvent les jetons — le système reste le même.</p>
 </article>`,
   },
 };
@@ -258,7 +288,7 @@ export default function Vue() {
   const [petit, setPetit] = useState(false);
   const [mauvaisNom, setMauvaisNom] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const [styl, setStyl] = useState<"CSS natif" | "Tailwind">("CSS natif");
+  const [styl, setStyl] = useState<"Tailwind" | "shadcn" | "HTML natif">("Tailwind");
 
   return (
     <div className="coquille">
@@ -438,7 +468,7 @@ export default function Vue() {
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
           Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
           <PanneauCode langage={styl} outils={
-            <>{(["React", "Angular", "HTML"] as const).map((f) => (
+            <>{(["HTML", "React", "Angular"] as const).map((f) => (
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
             ))}</>
           } code={SNIPPETS[fw][styl]} />
@@ -456,7 +486,7 @@ export default function Vue() {
         <div className="bloc">
           <span className="mono sourd">Adaptation</span>
           <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            {(["CSS natif", "Tailwind"] as const).map((s) => (
+            {(["Tailwind", "shadcn", "HTML natif"] as const).map((s) => (
               <button key={s} className={`bouton ${styl === s ? "on" : ""}`} onClick={() => setStyl(s)}>{s}</button>
             ))}
           </div>
