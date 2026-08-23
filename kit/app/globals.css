@@ -119,20 +119,18 @@ pre.code {
   .sources-col { border-left: 0; border-top: 2px solid var(--p-trait); padding: var(--rr-block-unit) 0 0; }
 }
 
-/* ── Le banc d'essai : tête d'outils · cadre papier sur marge damier · pied ── */
-.banc { background: var(--p-papier); border: 1px solid var(--p-trait);
-  border-radius: var(--rr-radius-shell); overflow: hidden; }
-.banc-tete { display: flex; align-items: center; justify-content: space-between;
-  gap: var(--rr-inline-unit); flex-wrap: wrap;
-  padding: var(--rr-block-md) var(--rr-inline-unit);
-  border-bottom: 1px solid var(--p-trait); }
-.banc-outils { display: flex; gap: var(--rr-inline-sm); flex-wrap: wrap; }
-.banc-tete .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem; }
-.banc-pied { border-top: 1px solid var(--p-trait); }
-.banc-pied details.prov { border: 0; border-radius: 0; background: transparent;
-  padding: var(--rr-block-unit) var(--rr-inline-2xl); }
+/* ── L'aperçu : tout le bloc est la surface redimensionnable ;
+      la barre d'options vit au-dessus, « d'où ça vient » en dessous ── */
+.apercu { display: grid; gap: var(--rr-block-md); }
+.apercu-tete { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--rr-inline-unit); flex-wrap: wrap; }
+.apercu-outils { display: flex; gap: var(--rr-inline-sm); flex-wrap: wrap; }
+.apercu-tete .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem; }
 .apercu-cmds { display: flex; gap: var(--rr-inline-sm); justify-content: flex-end; flex-wrap: wrap; }
-.apercu-piste { position: relative;
+.apercu-piste { position: relative; }
+.apercu-cadre {
+  position: relative; max-width: 100%; overflow: hidden;
+  border: 1px solid var(--p-trait); border-radius: var(--rr-radius-card);
   background-color: var(--p-fond);
   background-image:
     linear-gradient(45deg, rgba(28,24,50,0.06) 25%, transparent 25%),
@@ -140,10 +138,6 @@ pre.code {
     linear-gradient(45deg, transparent 75%, rgba(28,24,50,0.06) 75%),
     linear-gradient(-45deg, transparent 75%, rgba(28,24,50,0.06) 75%);
   background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
-}
-.apercu-cadre {
-  position: relative; max-width: 100%; overflow: hidden; min-height: 100%;
-  border-right: 1px solid var(--p-trait);
 }
 .apercu-scene { padding: var(--rr-block-page) var(--rr-inline-2xl);
   display: grid; justify-items: stretch; text-align: left; }

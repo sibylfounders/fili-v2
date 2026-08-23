@@ -61,9 +61,9 @@ export function Apercu({ enfants, outils, pied }: {
   };
 
   return (
-    <div className="banc">
-      <div className="banc-tete">
-        <div className="banc-outils">{outils}</div>
+    <div className="apercu">
+      <div className="apercu-tete">
+        <div className="apercu-outils">{outils}</div>
         <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
           {PALIERS.filter((p) => max === 0 || p.w <= max).map((p) => {
             const actif = courante === p.w;
@@ -91,7 +91,7 @@ export function Apercu({ enfants, outils, pied }: {
           <span className="poignee-trait" />
         </div>
       </div>
-      {pied ? <div className="banc-pied">{pied}</div> : null}
+      {pied}
     </div>
   );
 }
