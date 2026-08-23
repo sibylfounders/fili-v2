@@ -247,3 +247,9 @@ details.prov > div { display: grid; gap: var(--rr-block-md); padding-top: var(--
 .tuile-appel { color: var(--p-accent); font-weight: 600; font-size: 0.875rem; }
 .etapes { display: grid; gap: var(--rr-block-unit); max-width: var(--t-mesure); }
 .etapes .regle { display: grid; gap: var(--rr-block-xs); }
+
+/* ── Le bouton de casse : il annonce la couleur — pointillé rouge au repos,
+      plein quand la casse est active ── */
+.bouton.casse { color: var(--p-rouge); border: 1px dashed var(--p-rouge); background: var(--p-papier); }
+.bouton.casse:hover { background: var(--p-rouge-doux); }
+.bouton.casse.on { background: var(--p-rouge); border: 1px solid var(--p-rouge); color: #fff; }

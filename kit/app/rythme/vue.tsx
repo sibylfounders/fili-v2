@@ -281,10 +281,10 @@ export default function Vue() {
           démontrent.</p>
           <Apercu outils={
             <>
-              <button className={`bouton ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
+              <button className={`bouton casse ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
                 {casseY1 ? "Réparer le libellé" : "Casser le libellé"}
               </button>
-              <button className={`bouton ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
+              <button className={`bouton casse ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
                 {casseY2 ? "Réparer le titre" : "Casser le titre"}
               </button>
             </>

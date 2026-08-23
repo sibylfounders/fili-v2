@@ -291,7 +291,7 @@ export default function Vue() {
                   zoom ×{z === 1.5 ? "1,5" : z}
                 </button>
               ))}
-              <button className={`bouton ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>
+              <button className={`bouton casse ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>
                 {vwSeul ? "Réparer" : "Casser : vw seul"}
               </button>
             </>
@@ -323,10 +323,10 @@ export default function Vue() {
           déclaration.</p>
           <Apercu outils={
             <>
-              <button className={`bouton ${sansBorne ? "on" : ""}`} onClick={() => setSansBorne(!sansBorne)}>
+              <button className={`bouton casse ${sansBorne ? "on" : ""}`} onClick={() => setSansBorne(!sansBorne)}>
                 {sansBorne ? "Réparer la borne" : "Casser la borne"}
               </button>
-              <button className={`bouton ${serre ? "on" : ""}`} onClick={() => setSerre(!serre)}>
+              <button className={`bouton casse ${serre ? "on" : ""}`} onClick={() => setSerre(!serre)}>
                 {serre ? "Rendre l'air" : "Casser l'interligne"}
               </button>
             </>
@@ -345,7 +345,7 @@ export default function Vue() {
           sens suit la structure, la taille suit le design. (Les titres ci-dessous sont
           dessinés, pas réels : cette page garde son unique h1 — règle G1.)</p>
           <Apercu outils={
-            <button className={`bouton ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>
+            <button className={`bouton casse ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>
               {saut ? "Réparer" : "Casser : sauter un niveau"}
             </button>
           } enfants={() => <Arbre saut={saut} />} pied={
@@ -365,7 +365,7 @@ export default function Vue() {
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">La graisse</span>
-                <button className={`bouton ${gras ? "on" : ""}`} onClick={() => setGras(!gras)}>{gras ? "Réparer" : "Casser"}</button>
+                <button className={`bouton casse ${gras ? "on" : ""}`} onClick={() => setGras(!gras)}>{gras ? "Réparer" : "Casser"}</button>
               </div>
               <p style={{ fontWeight: gras ? 600 : 400 }}>Un texte long en demi-gras n&apos;appuie
               plus rien : quand tout est important, rien ne l&apos;est. Le demi-gras appartient
@@ -374,7 +374,7 @@ export default function Vue() {
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">Les capitales</span>
-                <button className={`bouton ${tape ? "on" : ""}`} onClick={() => setTape(!tape)}>{tape ? "Réparer" : "Casser"}</button>
+                <button className={`bouton casse ${tape ? "on" : ""}`} onClick={() => setTape(!tape)}>{tape ? "Réparer" : "Casser"}</button>
               </div>
               <p style={tape ? { textTransform: "uppercase" } : undefined}>Les capitales sur du
               texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu de lire.
@@ -383,7 +383,7 @@ export default function Vue() {
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">La justification</span>
-                <button className={`bouton ${justif ? "on" : ""}`} onClick={() => setJustif(!justif)}>{justif ? "Réparer" : "Casser"}</button>
+                <button className={`bouton casse ${justif ? "on" : ""}`} onClick={() => setJustif(!justif)}>{justif ? "Réparer" : "Casser"}</button>
               </div>
               <p style={{ textAlign: justif ? "justify" : "start", maxWidth: "14rem" }}>Sur une
               colonne étroite et sans césure fiable, la justification creuse des rivières
@@ -392,7 +392,7 @@ export default function Vue() {
             <div className="carte">
               <div className="rang" style={{ justifyContent: "space-between" }}>
                 <span className="mono sourd">Les 16 px du champ</span>
-                <button className={`bouton ${petit ? "on" : ""}`} onClick={() => setPetit(!petit)}>{petit ? "Réparer" : "Casser"}</button>
+                <button className={`bouton casse ${petit ? "on" : ""}`} onClick={() => setPetit(!petit)}>{petit ? "Réparer" : "Casser"}</button>
               </div>
               <div className="champ">
                 <input readOnly value="prenom@exemple.fr" style={{ fontSize: petit ? "0.875rem" : "1rem" }} />
@@ -412,7 +412,7 @@ export default function Vue() {
           déclenche rien : le produit entier passe en police système, en silence. La règle ferme
           cette porte : déclarée = livrée, au nom exact, avec sa pile de secours.</p>
           <Apercu outils={
-            <button className={`bouton ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
+            <button className={`bouton casse ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
               {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
             </button>
           } enfants={() => (
