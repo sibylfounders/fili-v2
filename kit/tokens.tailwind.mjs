@@ -39,3 +39,24 @@ export const rythme = {
   height: { 'rr-control': 'var(--rr-control)' },
   fontSize: { 'rr-type': 'var(--rr-type)' },
 };
+
+/* Sortie jumelle — typographie (même origine que tokens.css ; les valeurs
+   littérales d'un thème Tailwind sortiraient ARRONDIES, note d'Auteur). */
+export const typo = {
+  fontFamily: {
+    interface: "var(--t-interface)",
+    code: "var(--t-code)",
+  },
+  fontSize: {
+    corps: "var(--t-corps)",
+    "titre-3": "var(--t-titre-3)",
+    "titre-2": "var(--t-titre-2)",
+    "titre-1": "var(--t-titre-1)",
+  },
+  lineHeight: {
+    courant: "var(--t-interligne-courant)",
+    titre: "var(--t-interligne-titre)",
+  },
+  maxWidth: { mesure: "var(--t-mesure)" },
+  letterSpacing: { etiquette: "var(--t-interlettrage-etiquette)" },
+};

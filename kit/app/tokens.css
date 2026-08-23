@@ -51,3 +51,31 @@
   --p-accent-doux: #EFEDFC; --p-rouge: #D6336C; --p-rouge-doux: #FDE8EE;
   --p-vert: #0E7C5B; --p-vert-doux: #E2F5EE;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES JETONS DE TYPOGRAPHIE — famille reprise en séance le 23 août 2026
+   (TYPOGRAPHY-UX.md 2.0.0 : T1–T11, M1–M2).
+
+   Les FAMILLES sont arbitrées au registre (Auteur, 23 août) : Geist pour
+   l'interface, JetBrains Mono pour le code — fichiers livrés au dépôt,
+   piles de secours déclarées (T11).
+
+   L'ÉCHELLE ci-dessous est une échelle de travail conforme aux règles
+   actées — T2 : elle glisse, la variation vit ici ; T3 : du rem dans les
+   trois parties de chaque clamp() ; T4 : aucun échelon au-delà de 2,5× ;
+   T10 : le corps courant ne descend jamais sous 1rem. Ses VALEURS exactes
+   restent un arbitrage de registre à venir — déclaré, pas subi. */
+:root {
+  --t-interface: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --t-code: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --t-corps:   clamp(1.0000rem, 0.9571rem + 0.2143vw, 1.1500rem);
+  --t-titre-3: clamp(1.1500rem, 1.1214rem + 0.1429vw, 1.2500rem);
+  --t-titre-2: clamp(1.3000rem, 1.2429rem + 0.2857vw, 1.5000rem);
+  --t-titre-1: clamp(1.6000rem, 1.4571rem + 0.7143vw, 2.1000rem);
+
+  --t-interligne-courant: 1.6;  /* T6 : jamais sous 1,5 pour le texte courant */
+  --t-interligne-titre: 1.2;    /* les grands corps ont le droit de serrer */
+  --t-mesure: 65ch;             /* T5 : la borne existe et vit en ch — la valeur, au registre */
+  --t-interlettrage-etiquette: 0.08em; /* T8 : capitales toujours espacées (5–12 %) */
+}

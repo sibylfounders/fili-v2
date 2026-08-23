@@ -49,6 +49,23 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #105 — Reprise de la typographie : onze règles gardées sur onze, la fonte déclarée est la fonte livrée
+*2026-08-23 · Statut : 🟢 Verrouillé (séance de passage, verdicts d'Auteur) · Thread « le kit avance sous mes yeux »*
+
+Reprise de la typographie — onze règles de code, deux mesures de rendu.
+Séance de passage du 23 août : onze règles gardées sur onze, dont T11, née de
+la leçon du témoin — la fonte déclarée est la fonte livrée, dépendance ferme
+au versement des fichiers de fonte. Le pont du rythme est honoré (T6), le
+jumeau de Y8 est écrit (T2). Les tensions sont dites ; les valeurs restent au
+registre, arbitrées. Zéro code, zéro contrat ouvert.
+
+**Arbitrage de registre du même jour** — les familles du kit : Geist
+(interface) et JetBrains Mono (code), fichiers versés au dépôt du kit,
+conformément à T11. Point de départ hérité du témoin, choisi — pas subi.
+
+Pièces : `claude/reprise-typo-regles.md` · corpus
+`sources/apps/site/content/md/foundations/TYPOGRAPHY-UX.md` 2.0.0.
+
 ## #104 — Le kit se reconstruit à neuf : kit/ naît, l'existant devient sources/
 *2026-08-23 · Statut : 🟢 Verrouillé (décisions d'Auteur en séance) · Révise : #102 · Thread « le kit avance sous mes yeux »*
 
