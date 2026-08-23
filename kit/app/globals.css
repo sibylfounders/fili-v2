@@ -92,8 +92,7 @@ pre.code {
 .chapo b { color: var(--p-encre); }
 .kicker { font: 700 0.6875rem/1 var(--t-code); letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--p-accent); }
-.bloc-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--rr-block-card);
-  border-top: 1px solid var(--p-trait); padding-top: calc(1.3 * var(--rr-block-page)); }
+.bloc-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--rr-block-card); }
 .bloc-section > p.sourd { max-width: var(--t-mesure); }
 .reglages {
   grid-area: regl; position: sticky; top: 3.5rem;
