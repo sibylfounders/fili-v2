@@ -220,7 +220,10 @@ pre.code {
 /* ── Les sources en dépliant discret ── */
 details.prov { background: var(--p-papier); border: 1px solid var(--p-trait);
   border-radius: var(--rr-radius-card); padding: var(--rr-block-card) calc(1.5 * var(--rr-inline-2xl));
-  color: var(--p-sourd); font-size: 0.875rem; }
+  color: var(--p-sourd); font-size: 0.875rem;
+  width: fit-content; max-width: 100%; min-width: 0; }
+/* la bordure épouse le contenu : fermé, une pastille ; ouvert, la largeur
+   de la mesure — jamais une boîte à moitié vide */
 details.prov summary { cursor: pointer; font: 700 0.6875rem/1.6 var(--t-code);
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--p-sourd); list-style: none; }
 details.prov summary::before { content: "▸ "; }
