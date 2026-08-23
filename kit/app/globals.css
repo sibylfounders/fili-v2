@@ -175,3 +175,10 @@ details.prov summary { cursor: pointer; font: 700 0.6875rem/1.6 ui-monospace, Me
 details.prov summary::before { content: "▸ "; }
 details.prov[open] summary::before { content: "▾ "; }
 details.prov > div { display: grid; gap: var(--rr-block-md); padding-top: var(--rr-block-md); }
+
+/* Outils posés dans la box de l'aperçu — révélés au survol ou au focus clavier */
+.apercu-outils { position: absolute; top: 0.625rem; left: 0.625rem; z-index: 5;
+  opacity: 0; transition: opacity 0.15s; display: flex; gap: var(--rr-inline-sm); }
+.apercu-piste:hover .apercu-outils, .apercu-piste:focus-within .apercu-outils { opacity: 1; }
+.apercu-outils .bouton { height: 1.75rem; padding: 0 var(--rr-inline-sm); font-size: 0.6875rem;
+  box-shadow: 0 2px 8px rgba(28,24,50,0.12); }

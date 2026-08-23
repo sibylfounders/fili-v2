@@ -17,7 +17,7 @@ const PALIERS: { label: string; w: number }[] = [
   { label: "1024 px", w: 1024 },
 ];
 
-export function Apercu({ enfants }: { enfants: (largeur: number) => React.ReactNode }) {
+export function Apercu({ enfants, outils }: { enfants: (largeur: number) => React.ReactNode; outils?: React.ReactNode }) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const [w, setW] = React.useState(DEFAUT);
   const [max, setMax] = React.useState(0);
@@ -70,6 +70,7 @@ export function Apercu({ enfants }: { enfants: (largeur: number) => React.ReactN
       </div>
       <div ref={wrapRef} className="apercu-piste">
         <div className="apercu-cadre" style={{ width: `${courante}px` }}>
+          {outils ? <div className="apercu-outils">{outils}</div> : null}
           <div className="apercu-scene">{courante > 0 ? enfants(courante) : null}</div>
           <span className="puce-w mono">{courante} px</span>
         </div>

@@ -202,12 +202,11 @@ export default function Vue() {
           <p className="sourd">Cette carte est construite avec les vrais espaces du système.
           Redimensionnez l&apos;aperçu : chaque distance glisse entre ses deux bornes.
           « Voir les espaces » les colore, avec leur nom.</p>
-          <div className="rang">
+          <Apercu outils={
             <button className={`bouton ${voir ? "on" : ""}`} onClick={() => setVoir(!voir)}>
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
-          </div>
-          <Apercu enfants={(l) => (
+          } enfants={(l) => (
             <div style={{ ...jetons(l), width: "100%", display: "grid", justifyItems: "center", gap: "var(--rr-block-unit)" }}>
               <CarteAnnotee voir={voir} compact={compact} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
