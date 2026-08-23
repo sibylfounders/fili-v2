@@ -49,6 +49,86 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #102 — Le kit change de cap : reconstruction par les notions mères, composants gelés jusqu'au verrou des fondations
+*2026-08-23 · Statut : 🟢 Verrouillé (validation d'Auteur du « cap du kit ») · Thread « le kit avance sous mes yeux »*
+
+**Contexte** — Le thread kit rouvre après le rangement du dépôt. La carte des
+écarts du 23 août montre que rien des cinq paquets d'août n'est entré au
+corpus. L'Auteur pose la question de direction : patcher, ou reconstruire par
+les notions mères.
+
+**Décision** — Le kit se reconstruit par les Fondations (avec Principes et
+Langages), dans le kit existant. Ordre : typographie & rythme d'abord (seules
+familles sans paquet — inventaire puis règles au moule V2, verdict d'Auteur
+règle par règle), puis entrée au corpus des quatre paquets écrits, puis les
+cinq familles restantes. Composants et patterns gelés jusqu'au verrou des
+fondations ; chacun naîtra ensuite avec sa fiche « les lois qui m'ont
+construit ». Doctrine d'agnosticisme : le normatif est la règle et le jeton ;
+toute implémentation n'est qu'un exemple. L'atelier (theming, playground)
+suit chaque phase.
+
+**Sens produit / UX** — Un design system qui montre ses raisons : le visiteur
+remonte de chaque élément aux lois qui l'ont construit. C'est l'identité du
+kit, et la démonstration vivante de ce que Sibyl vend.
+
+**Alternatives écartées** — Un kit neuf depuis une page blanche (refaire 37
+sujets et la chaîne de vérification pour un gain incertain) ; appliquer les
+paquets sans rouvrir la direction (aurait laissé la typographie et le rythme,
+priorités d'Auteur, en dernier).
+
+**Conséquences** — `docs/PLAN.md` réécrit (commit d8c2858). La phase 1 ouvre
+sur la typographie et le rythme. La carte du système devra refléter le gel
+des composants à la prochaine tenue.
+
+**Pièces** — `docs/PLAN.md` · `claude/cap-du-kit-2026-08-23.md`.
+
+---
+
+## #101 — Reprise des bordures : douze règles de code, et le rôle du trait se déclare au registre
+*2026-08-16, validé le 2026-08-22 · Statut : 🟢 acté (accord d'Auteur du 2026-08-22 ; versé le 2026-08-23 — le thread du 22 août n'avait pas accès au dépôt, texte déposé « à coller » dans `claude/reprise-bordures-regles.md` et versé tel quel) · Thread « reprise des lois de l'étude de mise en page »*
+
+Reprise des bordures — douze règles de code, deux mesures de rendu, quatre
+arbitrages, validées une par une. Le cinquième paquet de la reprise des
+lois de l'étude est rédigé et accepté : les 24 lois vivantes des
+bordures deviennent douze règles au moule V2 — quatre paires disant la
+même chose sur les deux couches du fonds sont fusionnées en le disant — et
+deux mesures consignées pour le futur instrument de rendu, qui n'est pas
+construit. Les quatre arbitrages d'Auteur du 16 août sont confirmés : le
+rôle du trait se déclare désormais au registre, ce qui rend vérifiable la
+loi que le fonds disait « non décidable par un script » et fait naître une
+règle nouvelle ; l'anneau qui s'ajoute à la bordure d'état, que le fonds
+avait déclassé en préférence après benchmark, est remis en règle comme
+parti pris assumé avec sa tension consignée ; la limite de l'anneau
+monochrome sur fond imprévisible reste une dette ouverte avec sa condition
+de réouverture nommée ; et les exigences à cheval sur deux familles — le
+rayon de l'anneau, déjà chez les arrondis, et le contraste forcé du
+système, déjà chez la couleur — sont dites une seule fois dans un
+paragraphe de ponts, qui ferme au passage la dette de pont laissée ouverte
+par les arrondis. La séance de passage a produit quatre choses que le
+document ne portait pas : une réserve d'Auteur sur la clause « un fond
+non déclaré est interdit » (B1), à repeser à l'ouverture du contrat ; une
+frontière nommée entre l'épaisseur de bordure et la largeur de l'anneau,
+sans quoi un anneau de deux pixels ferait rougir la règle de l'épaisseur
+unique (B3) ; deux intentions de valeur portées au registre — largeur
+d'anneau possible à deux pixels et anneau accordé à l'état du composant,
+teinte laissée ouverte parce qu'un cran pâle sur fond clair ne tiendrait
+pas le seuil, l'anneau se détachant du fond de la page et non de la
+bordure (B5) ; et un arbitrage rendu par l'architecte sur délégation
+explicite de l'Auteur, avec son motif et son auteur écrits (B10 — l'anneau
+est un signal de clavier, parce que sans elle la règle qui interdit de
+supprimer le focus ne tient pas). Un « non » initial sur la lisibilité du
+trait est tombé de lui-même : la souplesse demandée sur les bordures
+décoratives existait déjà, portée par l'exemption des rôles grouper et
+séparer — c'est ce que la déclaration du rôle achète. Trois tensions de
+source sont consignées telles quelles : nous sommes le seul système relevé
+à tenir une épaisseur de trait unique, minoritaires à ne pas épaissir le
+trait à l'état, et sans consensus de marché sur la technique de l'anneau.
+Quatre règles sur douze déclarent leur dépendance au registre typé et
+refuseront de statuer sans lui. Zéro code, zéro contrat ouvert, aucune
+assertion ajoutée au Gardien. Pièce : `claude/reprise-bordures-regles.md`.
+
+---
+
 ## #100 — Reprise de la couleur : seize règles de code, et le texte pâle remonte au-dessus du seuil
 *2026-08-13 · Statut : 🟢 acté (accord d'Auteur ; arbitrage d'Auteur sur le texte pâle) · Thread « reprise des lois de l'étude de mise en page »*
 
