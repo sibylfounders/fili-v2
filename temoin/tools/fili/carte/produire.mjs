@@ -17,7 +17,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const SOURCE = path.join(RACINE, 'system-map.md')
+const SOURCE = path.join(RACINE, '..', 'docs', 'system-map.md')
 
 /* Les cinq tableaux attendus, avec leur en-tête exacte. L'en-tête EST le
    contrat : si elle change, le document a changé de forme, et une forme

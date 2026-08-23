@@ -14,7 +14,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const SOURCE = path.join(RACINE, 'journal.md')
+const SOURCE = path.join(RACINE, '..', 'docs', 'journal.md')
 
 const TETE = /^## (#\d{3}) — (.+)$/
 const SOUS = /^\*(\d{4}-\d{2}-\d{2}) · Statut : (.+?)\*$/

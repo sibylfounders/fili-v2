@@ -377,5 +377,5 @@ d'abord, la solution ensuite, un seul de chaque.
 Puis lance \`npm run qpm\`. S'il rougit, c'est toi qui as tort, pas lui.
 `
 
-fs.writeFileSync(path.join(RACINE, 'REGLES.md'), md)
+fs.writeFileSync(path.join(RACINE, '..', 'docs', 'REGLES.md'), md)
 console.log(`regles: REGLES.md — ${prof.length} profondeurs, ${composants.length} composants, ${crans(pal.neutres).length + crans(pal.etats).length} couleurs`)

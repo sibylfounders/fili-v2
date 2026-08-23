@@ -34,6 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    # L'app témoin vit dans temoin/ (rangement du 2026-08-23).
+    defaults:
+      run:
+        working-directory: temoin
+
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
@@ -43,6 +48,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+          cache-dependency-path: temoin/package-lock.json
 
       # `npm ci` et non `npm install` : installation reproductible à partir du
       # lockfile. Une CI qui résout ses versions à chaud ne prouve rien sur ce

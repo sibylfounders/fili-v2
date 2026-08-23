@@ -16,6 +16,9 @@ set -e
 
 echo "── Garde-fou Fili ───────────────────────────────────────────"
 
+# L'app témoin vit dans temoin/ depuis le rangement du 2026-08-23.
+cd "$(git rev-parse --show-toplevel)/temoin"
+
 # S2 tourne toujours : zéro dépendance, donc jamais d'excuse pour le sauter.
 # --no-build évite deux builds complets à chaque commit ; T8 reste alors
 # BLOQUÉ, donc jamais compté comme PASS. Le build reproductible se vérifie

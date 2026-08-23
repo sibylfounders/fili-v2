@@ -24,9 +24,6 @@ dist-ssr
 *.sw?
 
 # Feuille de style produite pour le rendu des témoins — artefact, pas une pièce.
-temoins/.style.css
-public/temoins
+temoin/temoins/.style.css
+temoin/public/temoins
 
-# Copie de travail imbriquee (apparue le 2026-08-11) : un depot dans le depot.
-# Elle n'appartient pas a cette ligne de travail et fait echouer le garde-fou.
-/fili-v2/

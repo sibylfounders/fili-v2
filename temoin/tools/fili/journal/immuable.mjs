@@ -22,8 +22,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const JOURNAL = path.join(RACINE, 'journal.md')
-const SCEAU = path.join(RACINE, 'journal.empreintes.json')
+const JOURNAL = path.join(RACINE, '..', 'docs', 'journal.md')
+const SCEAU = path.join(RACINE, '..', 'docs', 'journal.empreintes.json')
 
 /* Une entrée commence à un titre de niveau 2 portant son numéro : « ## #012 — … ».
    Le découpage est déterministe et ne dépend d'aucune interprétation. */
