@@ -84,7 +84,7 @@ pre.code {
   background: var(--p-papier); border-inline: 1px solid var(--p-trait);
   padding: calc(2.2 * var(--rr-block-page)) calc(2 * var(--rr-inline-2xl)) calc(2.5 * var(--rr-block-page));
   display: grid; grid-template-columns: minmax(0, 1fr);
-  gap: calc(1.75 * var(--rr-block-page)); align-content: start; }
+  gap: calc(2.4 * var(--rr-block-page)); align-content: start; }
 .contenu > * { width: 100%; max-width: 64rem; margin-inline: auto; min-width: 0; }
 .tete-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--rr-block-card); padding-bottom: var(--rr-block-page); }
 .tete-page h1 { margin-block: var(--rr-block-md); }
@@ -221,8 +221,8 @@ pre.code {
 /* le dépliant n'est pas une carte : un simple filet de rive, du texte */
 details.prov { border-left: 2px solid var(--p-trait); padding-left: var(--rr-inline-xl);
   color: var(--p-sourd); font-size: 0.875rem; min-width: 0; }
-details.prov summary { cursor: pointer; font: 700 0.6875rem/1.6 var(--t-code);
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--p-sourd); list-style: none; }
+details.prov summary { cursor: pointer; font: 600 0.8125rem/1.6 var(--t-interface);
+  color: var(--p-sourd); list-style: none; }
 details.prov summary::before { content: "▸ "; }
 details.prov[open] summary::before { content: "▾ "; }
 details.prov > div { display: grid; gap: var(--rr-block-xl); padding-top: var(--rr-block-unit); }

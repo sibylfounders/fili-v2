@@ -263,9 +263,11 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">02 · La densité</p>
           <h2>Un mode compact qui reste dans le système</h2>
-          <p className="sourd">Le réglage « densité » (à droite) décale chaque espace du site
-          entier — cette page comprise — d&apos;exactement un cran. Activez « voir les espaces » et regardez-les changer —
-          et remarquez ce qui ne change pas : l&apos;ordre et la présence de chaque élément.</p>
+          <p className="sourd">Un « mode compact à 80 % » fabriquerait des valeurs hors
+          système, introuvables au changement de marque. Ici, la densité (réglage à droite)
+          décale chaque espace du site — cette page comprise — d&apos;exactement un cran sur
+          l&apos;échelle commune. Ce qui ne bouge jamais : l&apos;ordre et la présence de
+          chaque élément.</p>
           <details className="prov"><summary>D&apos;où ça vient</summary><div>
             <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
             changement de marque. Un cran d&apos;écart, lui, reste dans le système.</p>
