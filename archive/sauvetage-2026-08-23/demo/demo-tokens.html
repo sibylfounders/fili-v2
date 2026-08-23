@@ -1,0 +1,148 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deux composants, un seul jeu de décisions</title>
+<style>
+/* ══ LES DÉCISIONS MAÎTRESSES — tout le reste est calculé ══ */
+:root{
+  --decision-base: 16px;     /* 1 · l'unité d'espacement        */
+  --decision-q: 2;           /* 2 · le diviseur de la chaîne    */
+  --decision-R: 16px;        /* 3 · le rayon de la surface      */
+
+  /* ── dérivés (aucune valeur libre ci-dessous) ── */
+  --pad-surface: calc(var(--decision-base) * 1.5);              /* 24 */
+  --pad-bloc:    var(--decision-base);                          /* 16 */
+  --gap-freres:  calc(var(--pad-surface) / var(--decision-q));  /* 12 */
+  --gap-intime:  calc(var(--pad-bloc) / var(--decision-q));     /*  8 */
+  --r-surface:   var(--decision-R);                             /* 16 */
+  --r-enfant:    calc(var(--decision-R) / var(--decision-q));   /*  8 */
+
+  --page:#EDEDF5; --ink:#170F49; --mut:#6E6893; --soft:#A5A0C4;
+  --acc:#5D51E8; --sec:#F4F4FA; --rail:#E3E1F0; --ko:#E11D48;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+  font:400 16px/1.5 "Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  padding:2.5rem 1.25rem 3rem}
+h1{font-size:1.375rem;letter-spacing:-.02em;margin:0 0 .375rem;text-align:center}
+.sous{color:var(--mut);font-size:.9375rem;margin:0 0 1.75rem;text-align:center;max-width:34rem}
+
+/* le pupitre des décisions */
+.pupitre{display:flex;gap:.625rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.25rem}
+.pupitre button{border:0;cursor:pointer;font:600 .8125rem/1 inherit;color:var(--ink);
+  background:#fff;border-radius:999px;padding:.625rem 1rem;
+  box-shadow:0 .375rem 1rem -0.5rem rgba(23,15,73,.35)}
+.pupitre button.on{background:var(--acc);color:#fff}
+
+.duo{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.colonne{display:flex;flex-direction:column;align-items:center;gap:.875rem}
+.etiq{font:700 .625rem/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--soft)}
+
+/* ══ COMPOSANT A · le formulaire — ne consomme QUE les dérivés ══ */
+.carte{width:20.5rem;background:#fff;border-radius:var(--r-surface);
+  padding:var(--pad-surface);box-shadow:0 1.5rem 3rem -1.5rem rgba(23,15,73,.35);
+  transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.carte *{transition:inherit}
+.titre{font-weight:700;font-size:1.0625rem;margin:0 0 var(--gap-freres)}
+.champ{margin-bottom:var(--gap-freres)}
+.libelle{display:block;font-size:.8125rem;font-weight:600;margin-bottom:var(--gap-intime)}
+.saisie{width:100%;height:2.75rem;border:1px solid var(--rail);background:var(--sec);
+  border-radius:var(--r-enfant);padding:0 var(--pad-bloc);font:inherit;color:var(--mut)}
+.actions{display:flex;justify-content:flex-end;gap:var(--gap-intime);
+  margin-top:var(--pad-surface)}
+.btn{border:0;cursor:pointer;font:700 .875rem/1 inherit;
+  border-radius:var(--r-enfant);padding:0 var(--pad-bloc);height:2.625rem}
+.btn.p{background:var(--acc);color:#fff}
+.btn.s{background:var(--sec);color:var(--ink);box-shadow:inset 0 0 0 1px var(--rail)}
+
+/* ══ COMPOSANT B · la carte de profil — les MÊMES dérivés ══ */
+.profil{width:17.5rem;background:#fff;border-radius:var(--r-surface);
+  padding:var(--pad-surface);box-shadow:0 1.5rem 3rem -1.5rem rgba(23,15,73,.35);
+  transition:all .6s cubic-bezier(.2,.8,.2,1)}
+.profil *{transition:inherit}
+.tete{display:flex;align-items:center;gap:var(--gap-intime);margin-bottom:var(--gap-freres)}
+.avatar{width:2.75rem;height:2.75rem;border-radius:var(--r-enfant);
+  background:linear-gradient(135deg,#8F7BFF,#5D51E8)}
+.nom{font-weight:700;font-size:.9375rem}
+.role{font-size:.75rem;color:var(--mut)}
+.bio{background:var(--sec);border-radius:var(--r-enfant);padding:var(--pad-bloc);
+  font-size:.8125rem;color:var(--mut);margin-bottom:var(--gap-freres)}
+.profil .actions{margin-top:var(--pad-surface)}
+
+/* la lecture en direct */
+.lecture{margin-top:2rem;background:#1C1928;color:#C9C4F8;border-radius:.875rem;
+  padding:1rem 1.25rem;font:500 .75rem/1.9 ui-monospace,Menlo,monospace}
+.lecture b{color:#fff}
+.lecture .a{color:#8F7BFF}
+</style></head><body>
+
+<h1>Deux composants, un seul jeu de décisions</h1>
+<p class="sous">Trois décisions maîtresses. Chaque cote des deux composants est <b>calculée</b> —
+aucune valeur n'est écrite deux fois. Change une décision : les deux suivent, ensemble.</p>
+
+<div class="pupitre">
+  <button class="on" data-d="base" data-v="16px">base 16</button>
+  <button data-d="base" data-v="20px">base 20</button>
+  <button class="on" data-d="q" data-v="2">diviseur 2</button>
+  <button data-d="q" data-v="1.5">diviseur 1,5</button>
+  <button class="on" data-d="R" data-v="16px">rayon 16</button>
+  <button data-d="R" data-v="24px">rayon 24</button>
+</div>
+
+<div class="duo">
+  <div class="colonne"><span class="etiq">Composant A · Formulaire</span>
+    <div class="carte">
+      <p class="titre">Créer un compte</p>
+      <div class="champ"><label class="libelle">Adresse e-mail</label>
+        <input class="saisie" value="prenom@exemple.fr" readonly></div>
+      <div class="champ" style="margin-bottom:0"><label class="libelle">Mot de passe</label>
+        <input class="saisie" value="••••••••••" readonly></div>
+      <div class="actions"><button class="btn s">Annuler</button>
+        <button class="btn p">Créer</button></div>
+    </div>
+  </div>
+  <div class="colonne"><span class="etiq">Composant B · Carte de profil</span>
+    <div class="profil">
+      <div class="tete"><span class="avatar"></span>
+        <div><div class="nom">Léa Fontan</div><div class="role">UX Designer</div></div></div>
+      <div class="bio">« Même structure que l'inscription… et plus jamais de 20 px au pif. »</div>
+      <div class="actions"><button class="btn s">Message</button>
+        <button class="btn p">Suivre</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="lecture" id="lecture"></div>
+
+<script>
+(function(){
+  var rc=document.documentElement;
+  document.querySelectorAll('.pupitre button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('[data-d="'+b.dataset.d+'"]').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');
+      rc.style.setProperty('--decision-'+b.dataset.d, b.dataset.v);
+      lire(); setTimeout(lire,700);
+    });
+  });
+  function px(el,prop){ return Math.round(parseFloat(getComputedStyle(el).getPropertyValue(prop)))+' px'; }
+  function lire(){
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      var c=document.querySelector('.carte'), s=document.querySelector('.saisie');
+      var ch=document.querySelector('.champ'), li=document.querySelector('.libelle');
+      document.getElementById('lecture').innerHTML=
+        '<b>décisions</b> → base '+getComputedStyle(rc).getPropertyValue('--decision-base').trim()
+        +' · diviseur '+getComputedStyle(rc).getPropertyValue('--decision-q').trim()
+        +' · rayon '+getComputedStyle(rc).getPropertyValue('--decision-R').trim()
+        +'<br><b>dérivés partagés</b> → <span class="a">padding surface</span> '+px(c,'padding-top')
+        +' · <span class="a">écart frères</span> '+px(ch,'margin-bottom')
+        +' · <span class="a">écart intime</span> '+px(li,'margin-bottom')
+        +' · <span class="a">rayon surface</span> '+px(c,'border-radius')
+        +' · <span class="a">rayon enfant</span> '+px(s,'border-radius');
+    });});
+  }
+  lire();
+})();
+</script>
+</body></html>

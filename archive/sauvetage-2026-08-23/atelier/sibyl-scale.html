@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sibyl Scale — générateur d'échelle de surfaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#EEEEEE; --l1:#F7F7F7; --l2:#FFFFFF; --l3:#F1F1F4; --rail:#E4E4E4;
+  --ink:#111; --mut:#555; --soft:#8A8A8A; --acc:#4F46E5;
+  --gap:0.75rem; --edge:calc(var(--gap) * 2);
+  --r1:0.75rem; --r2:0.375rem; --r3:0.1875rem;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--page); color:var(--ink);
+  font-family:'Plus Jakarta Sans',Inter,-apple-system,sans-serif;
+  font-size:0.875rem; line-height:1.55; -webkit-font-smoothing:antialiased;
+  padding:var(--edge)}
+.wrap{max-width:76rem; margin:0 auto; display:flex; flex-direction:column; gap:var(--edge)}
+h1{font-size:clamp(1.5rem,3vw,2rem); font-weight:600; letter-spacing:-0.02em;
+   line-height:1.15; margin:0.5rem 0 0}
+h2{font-size:1.25rem; font-weight:600; letter-spacing:-0.01em; margin:0; flex:1}
+.ftitle{display:flex; align-items:flex-end; gap:0.5rem; margin-top:var(--gap)}
+p.note{margin:0; color:var(--mut); max-width:72ch}
+.kicker{font-size:0.75rem; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:var(--acc)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.cols{display:flex; gap:var(--edge); align-items:flex-start}
+.col-c{width:24rem; flex:none; display:flex; flex-direction:column; gap:var(--edge)}
+.col-p{flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--edge)}
+
+.card{background:var(--l1); border-radius:var(--r1); padding:1.5rem;
+      display:flex; flex-direction:column; gap:var(--gap)}
+.ctl label{display:block; font-size:0.71875rem; font-weight:600; text-transform:uppercase;
+           letter-spacing:0.07em; color:var(--mut); margin-bottom:0.375rem}
+.chips{display:flex; flex-wrap:wrap; gap:0.5rem}
+.chips button{border:0; cursor:pointer; font:500 0.8125rem/1.2 inherit; text-align:left;
+  padding:0.5rem 0.75rem; border-radius:0.375rem; background:var(--l2); color:var(--ink)}
+.chips button small{display:block; color:var(--soft); font-size:0.6875rem}
+.chips button.on{background:var(--acc); color:#fff}
+.chips button.on small{color:rgba(255,255,255,.7)}
+input[type=range]{width:100%; accent-color:var(--acc)}
+.rowc{display:flex; align-items:center; gap:0.75rem}
+.val{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; font-weight:600;
+     background:var(--ink); color:#fff; padding:0.1875rem 0.5625rem; border-radius:0.3125rem}
+.check{display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut); cursor:pointer}
+.check input{accent-color:var(--acc)}
+
+/* la gamme, façon typescale : une barre par cran */
+.scale{display:flex; flex-direction:column; gap:0.5rem}
+.step{display:flex; align-items:center; gap:0.75rem}
+.step .n{width:8.5rem; flex:none; font-size:0.8125rem; color:var(--mut)}
+.step .b{height:1.25rem; border-radius:0.25rem; background:var(--acc); opacity:.9}
+.step .v{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; color:var(--ink); font-weight:600}
+.step.dim .b{background:#B9B2F6}
+
+/* tokens */
+pre{margin:0; background:#16141F; color:#E6E4F2; border-radius:var(--r2);
+    padding:1rem 1.125rem; font:400 0.75rem/1.7 ui-monospace,Menlo,Consolas,monospace;
+    overflow:auto; white-space:pre}
+pre b{color:#A79FF4; font-weight:400}
+.copy{align-self:flex-start; border:0; cursor:pointer; font:600 0.8125rem/1 inherit;
+      padding:0.625rem 1rem; border-radius:0.5rem; background:var(--ink); color:#fff}
+
+/* aperçu */
+.pv{display:flex; flex-direction:column; gap:var(--gap)}
+.c1{background:var(--l1); border-radius:var(--r1); padding:var(--p1);
+    display:flex; flex-direction:column; gap:var(--gap)}
+.c1 .t{font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em}
+.c2{background:var(--l2); border-radius:var(--r2); padding:var(--p2);
+    display:flex; flex-direction:column; gap:calc(var(--gap) / 2)}
+.row{display:flex; align-items:center; gap:0.75rem}
+.row .lab{font-weight:500; flex:1; min-width:0}
+.row .num{font-variant-numeric:tabular-nums; color:var(--mut)}
+.bar{height:0.75rem; border-radius:9999rem; background:var(--rail); overflow:hidden; width:100%}
+.bar i{display:block; height:100%; border-radius:9999rem; background:var(--acc)}
+.c3{background:var(--l3); border-radius:var(--r3); padding:var(--p3);
+    display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut)}
+.c3 .dot{width:0.5rem; height:0.5rem; border-radius:9999rem; background:var(--acc); flex:none}
+
+@media (max-width:64em){ .cols{flex-direction:column} .col-c{width:100%} }
+</style></head>
+<body><div class="wrap">
+
+  <div>
+    <div class="kicker">Sibyl — générateur</div>
+    <h1>Sibyl Scale — l'échelle des surfaces</h1>
+  </div>
+
+  <p class="note">Ce que typescale.com fait pour les corps de texte —
+  <span class="mono">base × ratio<sup>n</sup></span> — appliqué aux surfaces&nbsp;:
+  <span class="mono">padding = base ÷ ratio<sup>profondeur</sup></span>.
+  Une base, un intervalle, et toute la géométrie s'écrit. La typographie du système est
+  déjà à l'octave (12→24, 20→40), les rayons aussi (÷2 par niveau)&nbsp;: ici on choisit
+  l'intervalle de l'<em>espace</em>. Le gap vaut base÷2, le bord structurel vaut la base.</p>
+
+  <div class="cols">
+
+    <div class="col-c">
+      <div class="card">
+        <div class="ctl"><label>Base — padding du niveau 1</label>
+          <div class="rowc">
+            <input type="range" id="base" min="16" max="32" step="1" value="24">
+            <span class="val" id="vbase">24</span>
+          </div>
+        </div>
+        <div class="ctl"><label>Intervalle</label>
+          <div class="chips" id="chips">
+            <button data-r="1.25">Tierce majeure<small>1,25 — 5:4</small></button>
+            <button data-r="1.333">Quarte juste<small>1,333 — 4:3</small></button>
+            <button data-r="1.414">Triton<small>1,414 — √2</small></button>
+            <button data-r="1.5">Quinte juste<small>1,5 — 3:2</small></button>
+            <button data-r="1.618" class="on">Nombre d'or<small>1,618 — φ</small></button>
+            <button data-r="2">Octave<small>2 — le cœur actuel</small></button>
+          </div>
+        </div>
+        <div class="ctl"><label>Réglage fin</label>
+          <div class="rowc">
+            <input type="range" id="ratio" min="1.2" max="2.2" step="0.001" value="1.618">
+            <span class="val" id="vratio">1,618</span>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="snap">
+          Caler sur la grille de 4 (arrondi au multiple le plus proche)</label>
+      </div>
+
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">Tokens générés</h2></div>
+        <pre id="css"></pre>
+        <button class="copy" id="copy">Copier le CSS</button>
+      </div>
+    </div>
+
+    <div class="col-p">
+
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">La gamme</h2>
+          <span class="mono" style="font-size:0.71875rem; color:var(--soft)" id="ivname"></span></div>
+        <div class="scale" id="scale"></div>
+      </div>
+
+      <div class="ftitle"><h2>Aperçu — trois niveaux réels</h2></div>
+      <div class="pv" id="pv" style="--p1:1.5rem; --p2:0.9375rem; --p3:0.5625rem">
+        <div class="c1"><div class="t">Rétention par cohorte</div>
+          <div class="c2"><div class="row"><span class="lab">02 juin</span><span class="num">46&nbsp;%</span></div>
+            <span class="bar"><i style="width:46%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — meilleure semaine du mois</div></div>
+          <div class="c2"><div class="row"><span class="lab">09 juin</span><span class="num">48&nbsp;%</span></div>
+            <span class="bar"><i style="width:48%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — stable sur trois relevés</div></div>
+          <div class="c2"><div class="row"><span class="lab">16 juin</span><span class="num">44&nbsp;%</span></div>
+            <span class="bar"><i style="width:44%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — retrait sur les comptes gratuits</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="note">Note&nbsp;: l'octave (÷2) reste la loi des <em>rayons</em> et de la
+  <em>typographie</em> — elle n'est pas remise en cause ici. L'intervalle choisi ne pilote
+  que la descente des paddings. Si l'oreille est bonne conseillère&nbsp;: le triton (√2) a la
+  propriété de s'emboîter dans l'octave — deux crans de √2 en font une — ce qui donnerait
+  au système un niveau intermédiaire légitime au lieu d'une seconde loi.</p>
+
+<script>
+(function(){
+  var base=document.getElementById('base'), ratio=document.getElementById('ratio'),
+      vbase=document.getElementById('vbase'), vratio=document.getElementById('vratio'),
+      snap=document.getElementById('snap'), chips=document.querySelectorAll('#chips button'),
+      scale=document.getElementById('scale'), css=document.getElementById('css'),
+      pv=document.getElementById('pv'), ivname=document.getElementById('ivname'),
+      copy=document.getElementById('copy');
+  var NAMES=[[1.25,'tierce majeure'],[1.333,'quarte juste'],[1.414,'triton (√2)'],
+             [1.5,'quinte juste'],[1.618,'nombre d’or'],[2,'octave']];
+  function fmt(x){ return (Math.round(x*10)/10).toString().replace('.',','); }
+  function rem(x){ return (Math.round(x/16*10000)/10000).toString(); }
+  function go(){
+    var B=+base.value, R=+ratio.value, doSnap=snap.checked;
+    var raw=[B, B/R, B/(R*R)];
+    var pads=raw.map(function(x){ return doSnap ? Math.max(4, Math.round(x/4)*4) : x; });
+    var gap=B/2, edge=B;
+    vbase.textContent=B; vratio.textContent=fmt(R);
+    var named=NAMES.find(function(n){ return Math.abs(n[0]-R)<0.004; });
+    ivname.textContent = named ? named[1]+' — ÷'+fmt(R) : '÷'+fmt(R);
+    chips.forEach(function(b){ b.className = Math.abs(+b.dataset.r-R)<0.004 ? 'on':''; });
+
+    var maxW=B;
+    var rows=[['bord structurel',edge,1],['padding niveau 1',pads[0],0],
+              ['padding niveau 2',pads[1],0],['padding niveau 3',pads[2],0],
+              ['gap',gap,1]];
+    scale.innerHTML=rows.map(function(r){
+      var w=Math.max(6, r[1]/maxW*100);
+      return '<div class="step'+(r[2]?' dim':'')+'">'
+        +'<span class="n">'+r[0]+'</span>'
+        +'<span class="b" style="width:'+w+'%"></span>'
+        +'<span class="v">'+fmt(r[1])+'</span></div>';
+    }).join('');
+
+    pv.style.setProperty('--p1', rem(pads[0])+'rem');
+    pv.style.setProperty('--p2', rem(pads[1])+'rem');
+    pv.style.setProperty('--p3', rem(pads[2])+'rem');
+
+    css.innerHTML=[
+      '<b>:root</b> {',
+      '  <b>--scale-base:</b> '+rem(B)+'rem;   <b>/* '+B+' */</b>',
+      '  <b>--scale-ratio:</b> '+R+';',
+      '  <b>--pad-1:</b> '+rem(pads[0])+'rem;'+(doSnap?'  <b>/* calé */</b>':''),
+      '  <b>--pad-2:</b> '+rem(pads[1])+'rem;',
+      '  <b>--pad-3:</b> '+rem(pads[2])+'rem;',
+      '  <b>--gap:</b>  '+rem(gap)+'rem;   <b>/* base ÷ 2 */</b>',
+      '  <b>--edge:</b> '+rem(edge)+'rem;   <b>/* = base */</b>',
+      '  <b>/* rayons : octave, inchangée */</b>',
+      '  <b>--r-1:</b> 0.75rem; <b>--r-2:</b> 0.375rem; <b>--r-3:</b> 0.1875rem;',
+      '}'].join('\n');
+  }
+  base.addEventListener('input',go);
+  ratio.addEventListener('input',go);
+  snap.addEventListener('change',go);
+  chips.forEach(function(b){ b.addEventListener('click',function(){
+    ratio.value=b.dataset.r; go(); }); });
+  copy.addEventListener('click',function(){
+    navigator.clipboard.writeText(css.textContent).then(function(){
+      copy.textContent='Copié ✓';
+      setTimeout(function(){ copy.textContent='Copier le CSS'; }, 1400);
+    });
+  });
+  go();
+})();
+</script>
+</div></body></html>

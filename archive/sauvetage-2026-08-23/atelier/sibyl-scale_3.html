@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sibyl Scale — générateur d'échelle de surfaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#EEEEEE; --l1:#F7F7F7; --l2:#FFFFFF; --l3:#F1F1F4; --rail:#E4E4E4;
+  --ink:#111; --mut:#555; --soft:#8A8A8A; --acc:#4F46E5;
+  --gap:0.75rem; --edge:calc(var(--gap) * 2);
+  --r1:0.75rem; --r2:0.375rem; --r3:0.1875rem;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--page); color:var(--ink);
+  font-family:'Plus Jakarta Sans',Inter,-apple-system,sans-serif;
+  font-size:0.875rem; line-height:1.55; -webkit-font-smoothing:antialiased;
+  padding:var(--edge)}
+.wrap{max-width:76rem; margin:0 auto; display:flex; flex-direction:column; gap:var(--edge)}
+h1{font-size:clamp(1.5rem,3vw,2rem); font-weight:600; letter-spacing:-0.02em;
+   line-height:1.15; margin:0.5rem 0 0}
+h2{font-size:1.25rem; font-weight:600; letter-spacing:-0.01em; margin:0; flex:1}
+.ftitle{display:flex; align-items:flex-end; gap:0.5rem; margin-top:var(--gap)}
+p.note{margin:0; color:var(--mut); max-width:72ch}
+.kicker{font-size:0.75rem; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:var(--acc)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.cols{display:flex; gap:var(--edge); align-items:flex-start}
+.col-c{width:24rem; flex:none; display:flex; flex-direction:column; gap:var(--edge)}
+.col-p{flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--edge)}
+
+.card{background:var(--l1); border-radius:var(--r1); padding:1.5rem;
+      display:flex; flex-direction:column; gap:var(--gap)}
+.ctl label{display:block; font-size:0.71875rem; font-weight:600; text-transform:uppercase;
+           letter-spacing:0.07em; color:var(--mut); margin-bottom:0.375rem}
+.chips{display:flex; flex-wrap:wrap; gap:0.5rem}
+.chips button{border:0; cursor:pointer; font:500 0.8125rem/1.2 inherit; text-align:left;
+  padding:0.5rem 0.75rem; border-radius:0.375rem; background:var(--l2); color:var(--ink)}
+.chips button small{display:block; color:var(--soft); font-size:0.6875rem}
+.chips button.on{background:var(--acc); color:#fff}
+.chips button.on small{color:rgba(255,255,255,.7)}
+input[type=range]{width:100%; accent-color:var(--acc)}
+.rowc{display:flex; align-items:center; gap:0.75rem}
+.val{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; font-weight:600;
+     background:var(--ink); color:#fff; padding:0.1875rem 0.5625rem; border-radius:0.3125rem}
+.check{display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut); cursor:pointer}
+.check input{accent-color:var(--acc)}
+
+/* la gamme, façon typescale : une barre par cran */
+.scale{display:flex; flex-direction:column; gap:0.5rem}
+.step{display:flex; align-items:center; gap:0.75rem}
+.step .n{width:8.5rem; flex:none; font-size:0.8125rem; color:var(--mut)}
+.step .b{height:1.25rem; border-radius:0.25rem; background:var(--acc); opacity:.9}
+.step .v{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; color:var(--ink); font-weight:600}
+.step.dim .b{background:#B9B2F6}
+
+/* tokens */
+pre{margin:0; background:#16141F; color:#E6E4F2; border-radius:var(--r2);
+    padding:1rem 1.125rem; font:400 0.75rem/1.7 ui-monospace,Menlo,Consolas,monospace;
+    overflow:auto; white-space:pre}
+pre b{color:#A79FF4; font-weight:400}
+.copy{align-self:flex-start; border:0; cursor:pointer; font:600 0.8125rem/1 inherit;
+      padding:0.625rem 1rem; border-radius:0.5rem; background:var(--ink); color:#fff}
+
+/* aperçu */
+.pv{display:flex; flex-direction:column; gap:var(--gap)}
+.c1{background:var(--l1); border-radius:var(--r1); padding:var(--p1);
+    display:flex; flex-direction:column; gap:var(--gap)}
+.c1 .t{font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em}
+.c2{background:var(--l2); border-radius:var(--r2); padding:var(--p2);
+    display:flex; flex-direction:column; gap:calc(var(--gap) / 2)}
+.row{display:flex; align-items:center; gap:0.75rem}
+.row .lab{font-weight:500; flex:1; min-width:0}
+.row .num{font-variant-numeric:tabular-nums; color:var(--mut)}
+.bar{height:0.75rem; border-radius:9999rem; background:var(--rail); overflow:hidden; width:100%}
+.bar i{display:block; height:100%; border-radius:9999rem; background:var(--acc)}
+.c3{background:var(--l3); border-radius:var(--r3); padding:var(--p3);
+    display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut)}
+.c3 .dot{width:0.5rem; height:0.5rem; border-radius:9999rem; background:var(--acc); flex:none}
+
+/* ---- le sélecteur : deux questions, un token ---- */
+.quiz{display:flex; flex-direction:column; gap:0.75rem}
+.q{font-size:0.8125rem; font-weight:600}
+.ans{background:var(--l2); border-radius:var(--r2); padding:1rem 1.125rem;
+     display:flex; flex-direction:column; gap:0.25rem}
+.ans .tok{font-family:ui-monospace,Menlo,monospace; font-weight:600; font-size:1rem}
+.ans .tok em{font-style:normal; color:var(--acc)}
+.ans .why{font-size:0.8125rem; color:var(--mut)}
+
+/* ---- annotations sur l'aperçu ---- */
+.c1,.c2,.c3{position:relative}
+.w{display:none; position:absolute; top:-0.5625rem; right:0.75rem; z-index:2;
+   font-family:ui-monospace,Menlo,monospace; font-size:0.625rem; font-weight:600;
+   background:var(--ink); color:#fff; padding:0.125rem 0.4375rem; border-radius:9999rem;
+   white-space:nowrap}
+.pv.show .w{display:inline-block}
+.toggle{align-self:flex-start; border:0; cursor:pointer; font:600 0.8125rem/1 inherit;
+        padding:0.5rem 0.875rem; border-radius:9999rem; background:var(--l2); color:var(--acc)}
+.toggle.on{background:var(--acc); color:#fff}
+
+@media (max-width:64em){ .cols{flex-direction:column} .col-c{width:100%} }
+</style></head>
+<body><div class="wrap">
+
+  <div>
+    <div class="kicker">Sibyl — générateur</div>
+    <h1>Sibyl Scale — l'échelle des surfaces</h1>
+  </div>
+
+  <p class="note">Ce que typescale.com fait pour les corps de texte —
+  <span class="mono">base × ratio<sup>n</sup></span> — appliqué aux surfaces&nbsp;:
+  <span class="mono">padding = base ÷ ratio<sup>profondeur</sup></span>.
+  Une base, un intervalle, et toute la géométrie s'écrit. La typographie du système est
+  déjà à l'octave (12→24, 20→40), les rayons aussi (÷2 par niveau)&nbsp;: ici on choisit
+  l'intervalle de l'<em>espace</em>. Le gap vaut base÷2, le bord structurel vaut la base.</p>
+
+  <div class="cols">
+
+    <div class="col-c">
+      <div class="card">
+        <div class="ctl"><label>Base — padding du niveau 1</label>
+          <div class="rowc">
+            <input type="range" id="base" min="16" max="32" step="1" value="24">
+            <span class="val" id="vbase">24</span>
+          </div>
+        </div>
+        <div class="ctl"><label>Intervalle</label>
+          <div class="chips" id="chips">
+            <button data-r="1.25">Tierce majeure<small>1,25 — 5:4</small></button>
+            <button data-r="1.333">Quarte juste<small>1,333 — 4:3</small></button>
+            <button data-r="1.414">Triton<small>1,414 — √2</small></button>
+            <button data-r="1.5">Quinte juste<small>1,5 — 3:2</small></button>
+            <button data-r="1.618" class="on">Nombre d'or<small>1,618 — φ</small></button>
+            <button data-r="2">Octave<small>2 — le cœur actuel</small></button>
+          </div>
+        </div>
+        <div class="ctl"><label>Réglage fin</label>
+          <div class="rowc">
+            <input type="range" id="ratio" min="1.2" max="2.2" step="0.001" value="1.618">
+            <span class="val" id="vratio">1,618</span>
+          </div>
+        </div>
+        <div class="ctl"><label>Arrondi — rayon racine (conteneur)</label>
+          <div class="rowc">
+            <input type="range" id="rad" min="0" max="48" step="1" value="24">
+            <span class="val" id="vrad">24</span>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="snap">
+          Caler sur la grille de 4 (arrondi au multiple le plus proche)</label>
+      </div>
+
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">Tokens générés</h2></div>
+        <pre id="css"></pre>
+        <button class="copy" id="copy">Copier le CSS</button>
+      </div>
+    </div>
+
+    <div class="col-p">
+
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">La gamme</h2>
+          <span class="mono" style="font-size:0.71875rem; color:var(--soft)" id="ivname"></span></div>
+        <div class="scale" id="scale"></div>
+      </div>
+
+      <div class="ftitle"><h2>Aperçu — trois niveaux réels</h2>
+        <button class="toggle" id="tgw">Voir les décisions</button></div>
+      <div class="pv" id="pv" style="--p1:1.5rem; --p2:0.9375rem; --p3:0.5625rem">
+        <div class="c1"><span class="w" id="w1"></span><div class="t">Rétention par cohorte</div>
+          <div class="c2"><span class="w" id="w2"></span><div class="row"><span class="lab">02 juin</span><span class="num">46&nbsp;%</span></div>
+            <span class="bar"><i style="width:46%"></i></span>
+            <div class="c3"><span class="w" id="w3"></span><span class="dot"></span>J7 — meilleure semaine du mois</div></div>
+          <div class="c2"><div class="row"><span class="lab">09 juin</span><span class="num">48&nbsp;%</span></div>
+            <span class="bar"><i style="width:48%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — stable sur trois relevés</div></div>
+          <div class="c2"><div class="row"><span class="lab">16 juin</span><span class="num">44&nbsp;%</span></div>
+            <span class="bar"><i style="width:44%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — retrait sur les comptes gratuits</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ftitle"><h2>Quel cran, quand&nbsp;? — le sélecteur</h2></div>
+  <div class="card">
+    <div class="quiz">
+      <div class="q">1. Tu règles quoi&nbsp;?</div>
+      <div class="chips" id="q1">
+        <button data-k="espace" class="on">Un espace<small>entre deux choses</small></button>
+        <button data-k="padding">Un padding<small>l'épaisseur d'une surface</small></button>
+        <button data-k="coin">Un coin<small>le rayon d'une boîte</small></button>
+      </div>
+      <div class="q" id="q2t">2. Les deux choses sont…</div>
+      <div class="chips" id="q2"></div>
+      <div class="ans" id="ans"></div>
+    </div>
+  </div>
+
+  <p class="note">Note&nbsp;: l'octave (÷2) reste la loi des <em>rayons</em> et de la
+  <em>typographie</em> — elle n'est pas remise en cause ici. L'intervalle choisi ne pilote
+  que la descente des paddings. Si l'oreille est bonne conseillère&nbsp;: le triton (√2) a la
+  propriété de s'emboîter dans l'octave — deux crans de √2 en font une — ce qui donnerait
+  au système un niveau intermédiaire légitime au lieu d'une seconde loi.</p>
+
+<script>
+(function(){
+  var rad=document.getElementById('rad'), vrad=document.getElementById('vrad');
+  var base=document.getElementById('base'), ratio=document.getElementById('ratio'),
+      vbase=document.getElementById('vbase'), vratio=document.getElementById('vratio'),
+      snap=document.getElementById('snap'), chips=document.querySelectorAll('#chips button'),
+      scale=document.getElementById('scale'), css=document.getElementById('css'),
+      pv=document.getElementById('pv'), ivname=document.getElementById('ivname'),
+      copy=document.getElementById('copy');
+  var NAMES=[[1.25,'tierce majeure'],[1.333,'quarte juste'],[1.414,'triton (√2)'],
+             [1.5,'quinte juste'],[1.618,'nombre d’or'],[2,'octave']];
+  function fmt(x){ return (Math.round(x*10)/10).toString().replace('.',','); }
+  function rem(x){ return (Math.round(x/16*10000)/10000).toString(); }
+  function go(){
+    var B=+base.value, R=+ratio.value, doSnap=snap.checked;
+    var R0=+rad.value, rr=[R0/2, R0/4, R0/8];
+    vrad.textContent=R0;
+    var raw=[B, B/R, B/(R*R)];
+    var pads=raw.map(function(x){ return doSnap ? Math.max(4, Math.round(x/4)*4) : x; });
+    var gap=B/2, edge=B;
+    vbase.textContent=B; vratio.textContent=fmt(R);
+    var named=NAMES.find(function(n){ return Math.abs(n[0]-R)<0.004; });
+    ivname.textContent = named ? named[1]+' — ÷'+fmt(R) : '÷'+fmt(R);
+    chips.forEach(function(b){ b.className = Math.abs(+b.dataset.r-R)<0.004 ? 'on':''; });
+
+    var maxW=B;
+    var rows=[['bord structurel',edge,1],['padding niveau 1',pads[0],0],
+              ['padding niveau 2',pads[1],0],['padding niveau 3',pads[2],0],
+              ['gap',gap,1]];
+    scale.innerHTML=rows.map(function(r){
+      var w=Math.max(6, r[1]/maxW*100);
+      return '<div class="step'+(r[2]?' dim':'')+'">'
+        +'<span class="n">'+r[0]+'</span>'
+        +'<span class="b" style="width:'+w+'%"></span>'
+        +'<span class="v">'+fmt(r[1])+'</span></div>';
+    }).join('');
+
+    pv.style.setProperty('--p1', rem(pads[0])+'rem');
+    pv.style.setProperty('--p2', rem(pads[1])+'rem');
+    pv.style.setProperty('--p3', rem(pads[2])+'rem');
+    pv.style.setProperty('--r1', rem(rr[0])+'rem');
+    pv.style.setProperty('--r2', rem(rr[1])+'rem');
+    pv.style.setProperty('--r3', rem(rr[2])+'rem');
+
+    window.SCALE={B:B, pads:pads, gap:gap, edge:edge, r:rr, R0:R0, fmt:fmt};
+    var w1=document.getElementById('w1'), w2=document.getElementById('w2'), w3=document.getElementById('w3');
+    if(w1){ w1.textContent='pad-1 '+fmt(pads[0])+' · r-1 '+fmt(rr[0])+' — profondeur 1';
+            w2.textContent='pad-2 '+fmt(pads[1])+' · r-2 '+fmt(rr[1])+' — profondeur 2';
+            w3.textContent='pad-3 '+fmt(pads[2])+' · r-3 '+fmt(rr[2])+' — profondeur 3'; }
+    if(window.renderAns) window.renderAns();
+    css.innerHTML=[
+      '<b>:root</b> {',
+      '  <b>--scale-base:</b> '+rem(B)+'rem;   <b>/* '+B+' */</b>',
+      '  <b>--scale-ratio:</b> '+R+';',
+      '  <b>--pad-1:</b> '+rem(pads[0])+'rem;'+(doSnap?'  <b>/* calé */</b>':''),
+      '  <b>--pad-2:</b> '+rem(pads[1])+'rem;',
+      '  <b>--pad-3:</b> '+rem(pads[2])+'rem;',
+      '  <b>--gap:</b>  '+rem(gap)+'rem;   <b>/* base ÷ 2 */</b>',
+      '  <b>--edge:</b> '+rem(edge)+'rem;   <b>/* = base */</b>',
+      '  <b>/* rayons : racine '+R0+', octave (÷2 par niveau) */</b>',
+      '  <b>--r-1:</b> '+rem(rr[0])+'rem; <b>--r-2:</b> '+rem(rr[1])+'rem; <b>--r-3:</b> '+rem(rr[2])+'rem;',
+      '}'].join('\n');
+  }
+  window.SCALE={};
+  base.addEventListener('input',go);
+  ratio.addEventListener('input',go);
+  rad.addEventListener('input',go);
+  snap.addEventListener('change',go);
+  chips.forEach(function(b){ b.addEventListener('click',function(){
+    ratio.value=b.dataset.r; go(); }); });
+  copy.addEventListener('click',function(){
+    navigator.clipboard.writeText(css.textContent).then(function(){
+      copy.textContent='Copié ✓';
+      setTimeout(function(){ copy.textContent='Copier le CSS'; }, 1400);
+    });
+  });
+  go();
+
+  /* ---- annotations ---- */
+  var tgw=document.getElementById('tgw');
+  tgw.addEventListener('click',function(){
+    pv.classList.toggle('show');
+    tgw.classList.toggle('on');
+    tgw.textContent = pv.classList.contains('show') ? 'Masquer les décisions' : 'Voir les décisions';
+  });
+
+  /* ---- sélecteur : le cran est donné par la structure, jamais choisi ---- */
+  var Q2={
+    espace:[
+      ['meme','dans la même surface','--gap','g',
+       'Deux contenus frères, même surface : l\u2019écart entre les choses.'],
+      ['soeurs','deux surfaces voisines','--edge','e',
+       'Deux surfaces sœurs se séparent d\u2019un bord — sinon elles se collent plus que leur propre contenu.'],
+      ['fenetre','contre un bord de fenêtre ou de menu','--edge','e',
+       'Frontière structurelle : le bord vaut deux gaps.'],
+      ['image','sous une image','--edge','e',
+       'Une image est une masse visuelle : sa séparation est une frontière, pas un interligne.'],
+      ['titre','avant un titre de section','--edge','e',
+       'Le titre libre porte l\u2019espacement de sa section : deux gaps avant lui.']],
+    padding:[
+      ['p1','surface de profondeur 1','--pad-1','p0',
+       'La profondeur choisit le cran : niveau 1 = base.'],
+      ['p2','surface de profondeur 2','--pad-2','p1',
+       'Niveau 2 = base ÷ ratio.'],
+      ['p3','surface de profondeur 3','--pad-3','p2',
+       'Niveau 3 = base ÷ ratio².'],
+      ['hero','surface d\u2019appel (héros)','calc(--pad-1 × 2)','h',
+       'Une surface d\u2019appel double son épaisseur verticale.']],
+    coin:[
+      ['r1','surface de profondeur 1','--r-1','r',
+       'La profondeur choisit le rayon, à l\u2019octave : rayon racine ÷ 2.'],
+      ['r2','surface de profondeur 2','--r-2','r',
+       'Un niveau plus bas, un rayon moitié : racine ÷ 4.'],
+      ['r3','surface de profondeur 3','--r-3','r',
+       'La chaîne continue : racine ÷ 8.'],
+      ['ctl','composant (bouton, pilule, champ)','--ctl','r',
+       'Rayon intrinsèque, hors theming : il serait contre-productif qu\u2019un bouton change d\u2019arrondi.']]
+  };
+  var QT={espace:'2. Les deux choses sont…', padding:'2. À quelle profondeur ?', coin:'2. Surface ou composant ?'};
+  var q1=document.getElementById('q1'), q2=document.getElementById('q2'),
+      q2t=document.getElementById('q2t'), ansEl=document.getElementById('ans');
+  var cat='espace', pick=0;
+  function val(kind, idx){
+    var S=window.SCALE;
+    if(kind==='g') return S.fmt(S.gap);
+    if(kind==='e') return S.fmt(S.edge);
+    if(kind==='h') return S.fmt(S.pads[0]*2)+' (vertical)';
+    if(kind==='p0') return S.fmt(S.pads[0]);
+    if(kind==='p1') return S.fmt(S.pads[1]);
+    if(kind==='p2') return S.fmt(S.pads[2]);
+    if(kind==='r'){
+      var t=Q2[cat][idx][2];
+      if(t==='--ctl') return '12 — fixe';
+      return S.fmt(S.r[{'--r-1':0,'--r-2':1,'--r-3':2}[t]]); }
+    return '';
+  }
+  window.renderAns=function(){
+    var o=Q2[cat][pick];
+    ansEl.innerHTML='<span class="tok"><em>'+o[2]+'</em> — '+val(o[3],pick)+'</span>'
+      +'<span class="why">'+o[4]+'</span>';
+  };
+  function renderQ2(){
+    q2t.textContent=QT[cat];
+    q2.innerHTML=Q2[cat].map(function(o,i){
+      return '<button data-i="'+i+'"'+(i===pick?' class="on"':'')+'>'+o[1]+'</button>';
+    }).join('');
+  }
+  q1.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    cat=b.dataset.k; pick=0;
+    [].forEach.call(q1.querySelectorAll('button'),function(x){x.className=x===b?'on':'';});
+    renderQ2(); window.renderAns();
+  });
+  q2.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    pick=+b.dataset.i;
+    [].forEach.call(q2.querySelectorAll('button'),function(x){x.className=x===b?'on':'';});
+    window.renderAns();
+  });
+  renderQ2(); window.renderAns();
+})();
+</script>
+</div></body></html>

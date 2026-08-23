@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sibyl Scale — générateur d'échelle de surfaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#EEEEEE; --l1:#F7F7F7; --l2:#FFFFFF; --l3:#F1F1F4; --rail:#E4E4E4;
+  --ink:#111; --mut:#555; --soft:#8A8A8A; --acc:#4F46E5;
+  --gap:0.75rem; --edge:calc(var(--gap) * 2);
+  --r1:0.75rem; --r2:0.375rem; --r3:0.1875rem;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--page); color:var(--ink);
+  font-family:'Plus Jakarta Sans',Inter,-apple-system,sans-serif;
+  font-size:0.875rem; line-height:1.55; -webkit-font-smoothing:antialiased;
+  padding:var(--edge)}
+.wrap{max-width:76rem; margin:0 auto; display:flex; flex-direction:column; gap:var(--edge)}
+h1{font-size:clamp(1.5rem,3vw,2rem); font-weight:600; letter-spacing:-0.02em;
+   line-height:1.15; margin:0.5rem 0 0}
+.head-blk{padding:calc(var(--edge) * 1.5) 0 var(--gap)}
+h2{font-size:1.25rem; font-weight:600; letter-spacing:-0.01em; margin:0; flex:1}
+.ftitle{display:flex; align-items:flex-end; gap:0.5rem; margin-top:var(--gap)}
+p.note{margin:0; color:var(--mut); max-width:72ch}
+.kicker{font-size:0.75rem; font-weight:600; letter-spacing:0.09em; text-transform:uppercase; color:var(--acc)}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.cols{display:flex; gap:var(--edge); align-items:flex-start}
+.col-c{width:24rem; flex:none; display:flex; flex-direction:column; gap:var(--edge)}
+.col-p{flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--edge)}
+
+.card{background:var(--l1); border-radius:var(--r1); padding:1.5rem;
+      display:flex; flex-direction:column; gap:var(--gap)}
+.ctl label{display:block; font-size:0.71875rem; font-weight:600; text-transform:uppercase;
+           letter-spacing:0.07em; color:var(--mut); margin-bottom:0.375rem}
+.chips{display:flex; flex-wrap:wrap; gap:0.5rem}
+.chips button{border:0; cursor:pointer; font:500 0.8125rem/1.2 inherit; text-align:left;
+  padding:0.5rem 0.75rem; border-radius:0.375rem; background:var(--l2); color:var(--ink)}
+.chips button small{display:block; color:var(--soft); font-size:0.6875rem}
+.chips button.on{background:var(--acc); color:#fff}
+.chips button.on small{color:rgba(255,255,255,.7)}
+input[type=range]{width:100%; accent-color:var(--acc)}
+.rowc{display:flex; align-items:center; gap:0.75rem}
+.val{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; font-weight:600;
+     background:var(--ink); color:#fff; padding:0.1875rem 0.5625rem; border-radius:0.3125rem}
+.check{display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut); cursor:pointer}
+.check input{accent-color:var(--acc)}
+.sub{background:var(--l2); border-radius:var(--r2); padding:0.75rem 1rem;
+     display:flex; flex-direction:column; gap:0.125rem}
+.sub .chips button{background:var(--page)}
+.sub .chips button.on{background:var(--acc)}
+.grouplab{font-size:0.71875rem; font-weight:600; letter-spacing:0.07em;
+          text-transform:uppercase; color:var(--mut); flex:1}
+.tip{display:inline-flex; width:1rem; height:1rem; border-radius:9999rem;
+     background:var(--rail); color:var(--mut); font-size:0.6875rem; font-weight:600;
+     align-items:center; justify-content:center; cursor:help; flex:none;
+     font-style:normal; text-transform:none; letter-spacing:0}
+[data-t]{position:relative}
+[data-t]:hover::after,[data-t]:focus::after{
+  content:attr(data-t); position:absolute; left:0; bottom:calc(100% + 0.4375rem);
+  background:var(--ink); color:#fff; padding:0.5625rem 0.75rem; border-radius:0.375rem;
+  font:400 0.75rem/1.5 'Plus Jakarta Sans',Inter,sans-serif; text-transform:none;
+  letter-spacing:0; width:16rem; white-space:normal; z-index:9; pointer-events:none}
+.switch{display:inline-flex; align-items:center; gap:0.5rem; cursor:pointer;
+        font-size:0.8125rem; color:var(--mut); position:static}
+.switch input{position:absolute; opacity:0; width:0; height:0}
+.switch .k2{width:2.25rem; height:1.25rem; border-radius:9999rem; background:var(--rail);
+            position:relative; transition:background 0.15s; flex:none}
+.switch .k2::after{content:""; position:absolute; top:0.125rem; left:0.125rem;
+            width:1rem; height:1rem; border-radius:9999rem; background:#fff;
+            transition:left 0.15s}
+.switch input:checked + .k2{background:var(--acc)}
+.switch input:checked + .k2::after{left:1.125rem}
+.sep{height:0.0625rem; background:var(--rail); flex:none; margin:0.375rem 0}
+.gh{display:flex; align-items:baseline; gap:0.5rem}
+.gh b{font-size:0.71875rem; font-weight:600; letter-spacing:0.07em; text-transform:uppercase}
+.gh span{font-size:0.75rem; color:var(--soft)}
+
+/* la gamme, façon typescale : une barre par cran */
+.scale{display:flex; flex-direction:column; gap:0.5rem}
+.step{display:flex; align-items:center; gap:0.75rem}
+.step .n{width:8.5rem; flex:none; font-size:0.8125rem; color:var(--mut)}
+.step .tr{flex:1; min-width:0}
+.step .b{display:block; height:1.25rem; border-radius:0.25rem; background:var(--acc); opacity:.9}
+.step .v{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; color:var(--ink); font-weight:600}
+.step.dim .b{background:#B9B2F6}
+
+/* tokens */
+pre{margin:0; background:#16141F; color:#E6E4F2; border-radius:var(--r2);
+    padding:1rem 1.125rem; font:400 0.75rem/1.7 ui-monospace,Menlo,Consolas,monospace;
+    overflow:auto; white-space:pre}
+pre b{color:#A79FF4; font-weight:400}
+.copy{align-self:flex-start; border:0; cursor:pointer; font:600 0.8125rem/1 inherit;
+      padding:0.625rem 1rem; border-radius:0.5rem; background:var(--ink); color:#fff}
+
+/* aperçu */
+.pv{display:flex; flex-direction:column; gap:var(--gap)}
+.c1{background:var(--l1); border-radius:var(--r1); padding:var(--p1);
+    display:flex; flex-direction:column; gap:var(--gap)}
+.c1 .t{font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em}
+.c2{background:var(--l2); border-radius:var(--r2); padding:var(--p2);
+    display:flex; flex-direction:column; gap:calc(var(--gap) / 2)}
+.row{display:flex; align-items:center; gap:0.75rem}
+.row .lab{font-weight:500; flex:1; min-width:0}
+.row .num{font-variant-numeric:tabular-nums; color:var(--mut)}
+.bar{height:0.75rem; border-radius:9999rem; background:var(--rail); overflow:hidden; width:100%}
+.bar i{display:block; height:100%; border-radius:9999rem; background:var(--acc)}
+.c3{background:var(--l3); border-radius:var(--r3); padding:var(--p3);
+    display:flex; align-items:center; gap:0.5rem; font-size:0.8125rem; color:var(--mut)}
+.c3 .dot{width:0.5rem; height:0.5rem; border-radius:9999rem; background:var(--acc); flex:none}
+
+/* ---- le sélecteur : deux questions, un token ---- */
+.quiz{display:flex; flex-direction:column; gap:0.75rem}
+.q{font-size:0.8125rem; font-weight:600}
+.ans{background:var(--l2); border-radius:var(--r2); padding:1rem 1.125rem;
+     display:flex; flex-direction:column; gap:0.25rem}
+.ans .tok{font-family:ui-monospace,Menlo,monospace; font-weight:600; font-size:1rem}
+.ans .tok em{font-style:normal; color:var(--acc)}
+.ans .why{font-size:0.8125rem; color:var(--mut)}
+
+/* ---- annotations sur l'aperçu ---- */
+.c1,.c2,.c3{position:relative}
+.w{display:none; position:absolute; top:-0.5625rem; right:0.75rem; z-index:2;
+   font-family:ui-monospace,Menlo,monospace; font-size:0.625rem; font-weight:600;
+   background:var(--ink); color:#fff; padding:0.125rem 0.4375rem; border-radius:9999rem;
+   white-space:nowrap}
+.pv.show .w{display:inline-block}
+.toggle{align-self:flex-start; border:0; cursor:pointer; font:600 0.8125rem/1 inherit;
+        padding:0.5rem 0.875rem; border-radius:9999rem; background:var(--l2); color:var(--acc)}
+.toggle.on{background:var(--acc); color:#fff}
+
+/* ---- fausse fenêtre : l'aperçu d'abord ---- */
+.frame{border-radius:var(--r1); overflow:hidden;
+       box-shadow:0 0 0 0.0625rem rgba(23,15,73,.08),
+                  0 0.75rem 2rem rgba(23,15,73,.14),
+                  0 0.125rem 0.375rem rgba(23,15,73,.08)}
+.chrome{display:flex; align-items:center; gap:0.75rem; background:#16141F;
+        padding:0.5rem 0.875rem}
+.dots{display:flex; gap:0.375rem; flex:none}
+.dots i{width:0.625rem; height:0.625rem; border-radius:9999rem; display:block}
+.dots i:nth-child(1){background:#F0655B}
+.dots i:nth-child(2){background:#F5C04D}
+.dots i:nth-child(3){background:#57C48A}
+.fname{font-family:ui-monospace,Menlo,monospace; font-size:0.71875rem; color:#B9B5D6;
+       flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.toggle.sm{padding:0.3125rem 0.625rem; font-size:0.71875rem;
+           background:rgba(255,255,255,.14); color:#fff}
+.toggle.sm.on{background:var(--acc)}
+.page-in .c1{background:#F6F6FB}
+.page-in .c3{background:#F0F0F7}
+.page-in .bar{background:#E2E2EE}
+.page-in{background:#E7E7F0; padding:var(--edge);
+         display:flex; flex-direction:column; gap:var(--edge)}
+.ph{display:flex; align-items:center; gap:0.5rem}
+.pdot{width:1.25rem; height:1.25rem; border-radius:var(--r3); background:var(--acc); flex:none}
+.pname{font-weight:600}
+.btnc{border:0; cursor:pointer; background:var(--ink); color:#fff;
+      font:600 0.75rem/1 inherit; padding:0.5rem 0.875rem; border-radius:0.75rem}
+.duo2{display:flex; gap:var(--edge); align-items:stretch}
+.duo2 > .card{flex:1; min-width:0}
+.duo2 pre{flex:1}
+.duo2 .scale{flex:1; gap:var(--gap)}
+.duo2 .step{flex:1; min-height:2.5rem; align-items:center;
+            background:var(--l2); border-radius:var(--r2); padding:0.375rem 1rem}
+.duo2 .step .tr{align-self:stretch; display:flex; align-items:center}
+.duo2 .step .b{height:clamp(1.25rem, 55%, 2rem)}
+@media (max-width:64em){ .duo2{flex-direction:column} }
+.val.fl{background:var(--acc)}
+.val{transition:background 0.2s}
+
+@media (max-width:64em){ .cols{flex-direction:column; align-items:stretch} .col-c,.col-p{width:100%; flex:none} }
+
+/* ================= documentation ================= */
+.doc{display:flex; flex-direction:column; gap:var(--edge)}
+.doc .card{gap:var(--gap)}
+.doc h3{margin:0; font-size:1rem; font-weight:600; letter-spacing:-0.01em}
+.cap{font-size:0.8125rem; color:var(--soft); line-height:1.55}
+.atom{background:var(--l2); border-radius:var(--r2); padding:0.625rem 0.875rem;
+      display:flex; gap:0.625rem; align-items:baseline; font-size:0.8125rem; line-height:1.5}
+.atom b{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:0.75rem;
+        color:var(--acc); white-space:nowrap; font-weight:600; flex:none}
+.fduo{display:flex; gap:var(--edge)}
+.fduo > *{flex:1; min-width:0}
+.doc svg{width:100%; height:auto; display:block}
+/* la chaîne vivante — pilotée par les curseurs */
+.lvl{background:var(--l2); border-radius:var(--dr1,0.75rem); padding:var(--dp1,1.5rem);
+     position:relative}
+.lvl2{background:var(--l3); border-radius:var(--dr2,0.375rem); padding:var(--dp2,0.9375rem);
+      position:relative}
+.lvl3{background:var(--l2); border-radius:var(--dr3,0.1875rem); padding:var(--dp3,0.5625rem);
+      font-size:0.8125rem; color:var(--mut); position:relative;
+      box-shadow:inset 0 0 0 0.0625rem var(--rail)}
+.lvl .lb{position:absolute; top:0.25rem; right:0.625rem;
+     font-family:ui-monospace,Menlo,monospace; font-size:0.625rem; color:var(--soft)}
+/* schéma des espaces */
+.sprow{display:flex; align-items:stretch; height:4.5rem}
+.spblk{flex:1; background:var(--l2); border-radius:var(--r2);
+       box-shadow:inset 0 0 0 0.0625rem var(--rail)}
+.spgap{width:0.75rem; flex:none; background:rgba(93,81,232,.30); position:relative}
+.spgap.w24{width:1.5rem}
+.spgap i{position:absolute; left:50%; transform:translateX(-50%); bottom:-1.375rem;
+  font:600 0.6875rem/1 ui-monospace,Menlo,monospace; color:var(--acc); font-style:normal}
+.spwrap{background:var(--l3); border-radius:var(--r1); padding:0.75rem; padding-bottom:1.75rem}
+/* weber */
+.wb{display:flex; flex-direction:column; gap:0.375rem}
+.wb .r{display:flex; align-items:center; gap:0.5rem}
+.wb .r i{display:block; height:1rem; border-radius:9999rem; background:var(--acc); font-style:normal}
+.wb .r span{font:600 0.6875rem/1 ui-monospace,Menlo,monospace; color:var(--mut)}
+/* table sélecteur */
+.tbl{overflow-x:auto}
+.doc table{border-collapse:collapse; width:100%; font-size:0.8125rem}
+.doc th{text-align:left; font-weight:600; padding:0.375rem 0.75rem 0.375rem 0;
+   border-bottom:0.0625rem solid var(--rail); font-size:0.75rem; color:var(--mut)}
+.doc td{padding:0.4375rem 0.75rem 0.4375rem 0; border-bottom:0.0625rem solid var(--rail)}
+.doc td.m{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; white-space:nowrap}
+/* le labo concentrique — jouet de la section 1 */
+.cc{display:flex; gap:var(--edge)}
+.cc > *{flex:1; min-width:0; display:flex; flex-direction:column; gap:0.375rem}
+.ccout{background:#DDDDE6; width:100%; aspect-ratio:1.35}
+.ccin{background:var(--l2); width:100%; height:100%}
+.cczoom{overflow:hidden; border-radius:var(--r2); aspect-ratio:1.35; background:#DDDDE6}
+.ccsc{width:100%; height:100%; transform:scale(2.8); transform-origin:0 0}
+.ccbar{display:flex; gap:1rem; align-items:center; flex-wrap:wrap}
+.ccbar label{font-size:0.71875rem; font-weight:600; text-transform:uppercase;
+  letter-spacing:0.07em; color:var(--mut)}
+.ccbar input{width:9rem; accent-color:var(--acc)}
+.ccro{font-family:ui-monospace,Menlo,monospace; font-size:0.75rem; color:var(--mut)}
+.ccro b{color:var(--ink)}
+.fcode{font-family:ui-monospace,Menlo,monospace; font-size:0.8125rem; font-weight:600;
+       background:var(--l2); border-radius:var(--r2); padding:0.5rem 0.75rem;
+       margin-bottom:0.375rem}
+@media (max-width:48em){ .fduo{flex-direction:column} .cc{flex-wrap:wrap} .cc > *{flex:1 1 40%} }
+
+/* jouets de la doc */
+.grpbox{display:flex; gap:0.75rem; border-radius:var(--r1); padding:0;
+        background:transparent; transition:background .25s, padding .25s}
+.grpbox.on{background:var(--l3); padding:0.75rem}
+.gmini{flex:1; background:var(--l2); border-radius:var(--r2); padding:0.75rem 1rem;
+       font-size:0.875rem; font-weight:500; display:flex; align-items:center; gap:0.5rem;
+       box-shadow:inset 0 0 0 0.0625rem var(--rail)}
+.gdot{width:0.625rem; height:0.625rem; border-radius:9999rem; background:var(--acc); flex:none}
+.spgap, .spgap.w24{transition:width .2s}
+.wb .r i{transition:width .35s, opacity .35s}
+#audRows{display:flex; flex-direction:column; gap:var(--gap)}
+.aud .ok{margin-left:auto; font-style:normal; font-weight:700; color:#3D9A50;
+         opacity:0; transform:scale(.4); transition:opacity .25s, transform .25s; flex:none}
+.aud.done .ok{opacity:1; transform:scale(1)}
+.sigok{background:var(--acc-soft, #EDEBFD); color:var(--acc); font-weight:600;
+       padding:0.125rem 0.5rem; border-radius:9999rem; font-size:0.875rem;
+       font-variant-numeric:tabular-nums}
+.sigbad{background:#DFF5E6; color:#1F7A38; font-weight:700; text-decoration:underline;
+        border:0.125rem solid #1F7A38; padding:0.125rem 0.5rem; border-radius:9999rem;
+        font-size:1rem}
+.sigbad::before{content:"▲ "}
+.sigbad::after{content:" ↑ EN HAUSSE"}
+</style></head>
+<body><div class="wrap">
+
+  <div class="head-blk">
+    <div class="kicker">Sibyl — générateur</div>
+    <h1>Sibyl Scale — l'échelle des surfaces</h1>
+  </div>
+
+  <p class="note">Un système où l'on ne choisit plus les valeurs&nbsp;: on choisit une
+  <strong>intention</strong>, et les valeurs se dérivent. Trois nombres — une base d'espace,
+  un intervalle, un rayon racine — engendrent toute la géométrie d'un produit&nbsp;:
+  paddings par profondeur, espacements par relation, rayons par niveau. Le reste n'est
+  pas du goût, c'est de la structure&nbsp;: <em>la profondeur choisit le cran, la relation
+  choisit l'écart</em>. L'outil génère la gamme et les tokens&nbsp;; la documentation en
+  bas de page montre chaque règle, en images.</p>
+
+  <div class="cols">
+
+    <div class="col-c">
+      <div class="ftitle" style="margin-top:0"><b class="grouplab">Préréglages — l'intention</b>
+        <span class="tip" tabindex="0" data-t="Chaque préréglage écrit les trois curseurs ci-dessous — on affine ensuite librement.">i</span></div>
+      <div class="card">
+          <div class="chips" id="presets">
+            <button data-p="0">Outil expert<small>données — 20 · 4:3 · r 8</small></button>
+            <button data-p="1" class="on">Produit SaaS<small>défaut — 24 · √2 · r 24</small></button>
+            <button data-p="2">Grand public<small>chaleureux — 24 · 3:2 · r 32</small></button>
+            <button data-p="3">Ludique<small>lifestyle — 28 · φ · r 44</small></button>
+            <button data-p="4">Éditorial · luxe<small>aéré, vif — 32 · φ · r 4</small></button>
+            <button data-p="5">Technique<small>brutal — 16 · 5:4 · r 0</small></button>
+          </div>
+          <div style="font-size:0.8125rem; color:var(--mut); margin-top:0.375rem" id="pwhy"></div>
+      </div>
+
+      <div class="ftitle"><b class="grouplab">Réglages</b>
+        <span class="tip" tabindex="0" data-t="Écrits par le préréglage sélectionné, puis libres : tout réglage manuel garde la main et passe l'intention en « personnalisé ».">i</span></div>
+      <div class="card">
+        <div class="sub"><div class="ctl"><label>Base — padding du niveau 1</label>
+          <div class="rowc">
+            <input type="range" id="base" min="16" max="32" step="4" value="24">
+            <span class="val" id="vbase">24</span>
+          </div>
+        </div></div>
+        <div class="sub"><div class="ctl"><label>Intervalle</label>
+          <div class="chips" id="chips">
+            <button data-r="1.25">Tierce majeure<small>1,25 — 5:4</small></button>
+            <button data-r="1.333">Quarte juste<small>1,333 — 4:3</small></button>
+            <button data-r="1.414">Triton<small>1,414 — √2</small></button>
+            <button data-r="1.5">Quinte juste<small>1,5 — 3:2</small></button>
+            <button data-r="1.618" class="on">Nombre d'or<small>1,618 — φ</small></button>
+            <button data-r="2">Octave<small>2 — le cœur actuel</small></button>
+          </div>
+        <div class="rowc" style="margin-top:0.5rem">
+            <input type="range" id="ratio" min="1.2" max="2.2" step="0.001" value="1.618">
+            <span class="val" id="vratio">1,618</span>
+          </div>
+        </div></div>
+        <div class="sub"><div class="ctl"><label>Arrondi — rayon racine (conteneur)</label>
+          <div class="rowc">
+            <input type="range" id="rad" min="0" max="48" step="4" value="24">
+            <span class="val" id="vrad">24</span>
+          </div>
+        </div></div>
+        <div class="sub" style="flex-direction:row; align-items:center">
+        <label class="switch"><input type="checkbox" id="snap"><span class="k2"></span>
+          Grille de 4
+          <span class="tip" tabindex="0" data-t="Arrondit chaque valeur générée au multiple de 4 le plus proche — pour des tokens entiers à dicter dans Figma. L'écran, lui, accepte les décimales.">i</span></label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-p">
+
+  <div class="frame">
+    <div class="chrome"><span class="dots"><i></i><i></i><i></i></span>
+      <span class="fname">aperçu — cohortes.html</span>
+      <button class="toggle sm" id="tgw">Voir les décisions</button></div>
+    <div class="page-in">
+      <div class="ph"><span class="pdot"></span><span class="pname">Cohortes</span>
+        <span style="flex:1"></span><button class="btnc">Exporter</button></div>
+      <div class="pv" id="pv" style="--p1:1.5rem; --p2:0.9375rem; --p3:0.5625rem">
+        <div class="c1"><span class="w" id="w1"></span><div class="t">Rétention par cohorte</div>
+          <div class="c2"><span class="w" id="w2"></span><div class="row"><span class="lab">02 juin</span><span class="num">46&nbsp;%</span></div>
+            <span class="bar"><i style="width:46%"></i></span>
+            <div class="c3"><span class="w" id="w3"></span><span class="dot"></span>J7 — meilleure semaine du mois</div></div>
+          <div class="c2"><div class="row"><span class="lab">09 juin</span><span class="num">48&nbsp;%</span></div>
+            <span class="bar"><i style="width:48%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — stable sur trois relevés</div></div>
+          <div class="c2"><div class="row"><span class="lab">16 juin</span><span class="num">44&nbsp;%</span></div>
+            <span class="bar"><i style="width:44%"></i></span>
+            <div class="c3"><span class="dot"></span>J7 — retrait sur les comptes gratuits</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <div class="duo2">
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">La gamme</h2>
+          <span class="mono" style="font-size:0.71875rem; color:var(--soft)" id="ivname"></span></div>
+        <div class="scale" id="scale"></div>
+      </div>
+      <div class="card">
+        <div class="ftitle" style="margin:0"><h2 style="font-size:1rem">Tokens générés</h2></div>
+        <pre id="css"></pre>
+        <button class="copy" id="copy">Copier le CSS</button>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="ftitle"><b class="grouplab">Documentation — les règles, en images</b></div>
+
+  <div class="doc">
+
+    <div class="card">
+      <h3>1 · Le coin — concentrique, borné, puis libre</h3>
+      <div class="ccbar">
+        <label>Rayon intérieur</label><input type="range" id="ccR" min="8" max="36" step="1" value="20">
+        <label>Écart</label><input type="range" id="ccE" min="0" max="24" step="1" value="8">
+        <span class="ccro" id="ccro"></span>
+      </div>
+      <div class="cc">
+        <div><div class="fcode">outer <b style="color:#D9453B">r</b> = inner <b style="color:#2F6FD0">r</b> ✗</div>
+          <svg id="svL" viewBox="0 0 340 260"></svg></div>
+        <div><div class="fcode">outer <b style="color:#3D9A50">r</b> = inner <b style="color:#2F6FD0">r</b> + <span style="color:#A0A3BD">écart</span> ✓</div>
+          <svg id="svR" viewBox="0 0 340 260"></svg></div>
+      </div>
+      <div class="atom"><b>bande</b><span>R − écart ≤ r ≤ R. En dessous&nbsp;: trop carré.
+        Au-dessus&nbsp;: l'enfant plus rond que son parent — faute majeure. La contrainte
+        s'affaiblit avec la distance&nbsp;; loin du bord, l'objet reprend son rayon propre.</span></div>
+    </div>
+
+    <div class="card">
+      <h3>2 · La chaîne — le rayon et le padding sont une profondeur</h3>
+      <div class="lvl" id="chain"><span class="lb" id="chv1"></span>
+        <div class="lvl2"><span class="lb" id="chv2"></span>
+          <div class="lvl3"><span class="lb" id="chv3"></span>
+            Cette figure est branchée sur les curseurs — bouge-les, la chaîne suit.</div>
+        </div>
+      </div>
+      <div class="atom"><b>÷ niveau</b><span>La profondeur choisit — pas toi. Seuls les
+        composants (bouton, pilule, champ) gardent leur rayon à eux.</span></div>
+    </div>
+
+    <div class="fduo">
+      <div class="card">
+        <h3>3 · Le gris regroupe, le blanc porte</h3>
+        <label class="switch"><input type="checkbox" id="grpSw"><span class="k2"></span>
+          Envelopper dans un groupe</label>
+        <div class="grpbox" id="grpBox">
+          <div class="gmini"><span class="gdot"></span>Cohortes</div>
+          <div class="gmini"><span class="gdot"></span>Événements</div>
+        </div>
+        <div class="cap" id="grpCap">Posées sur la page : blanches — elles portent.</div>
+      </div>
+      <div class="card">
+        <h3>4 · 12 entre, 24 autour</h3>
+        <div class="ccbar"><label>Gap</label>
+          <input type="range" id="spg" min="6" max="18" step="1" value="12">
+          <span class="ccro" id="spro"></span></div>
+        <div class="spwrap">
+          <div class="sprow">
+            <div class="spblk"></div>
+            <div class="spgap" id="spg1"><i id="spl1">gap 12</i></div>
+            <div class="spblk"></div>
+            <div class="spgap w24" id="spg2"><i id="spl2">edge 24</i></div>
+            <div class="spblk"></div>
+          </div>
+        </div>
+        <div class="cap">Un seul curseur&nbsp;: le bord suit tout seul — edge = 2 × gap, toujours.</div>
+      </div>
+    </div>
+
+    <div class="fduo">
+      <div class="card">
+        <h3>5 · Pourquoi un diviseur, pas un −&nbsp;4</h3>
+        <div class="chips" id="wch">
+          <button data-w="0" class="on">− 4</button>
+          <button data-w="1">÷ √2</button>
+          <button data-w="2">÷ φ</button>
+        </div>
+        <div class="wb">
+          <div class="r"><i id="wb1" style="width:60%"></i><span id="wv1">24</span></div>
+          <div class="r"><i id="wb2" style="width:50%; opacity:.75"></i><span id="wv2">20</span></div>
+          <div class="r"><i id="wb3" style="width:40%; opacity:.55"></i><span id="wv3">16</span></div>
+        </div>
+        <div class="cap" id="wcap">L'œil lit les rapports, pas les différences — trois crans presque jumeaux.</div>
+      </div>
+      <div class="card">
+        <h3>6 · Un signal par intention</h3>
+        <label class="switch"><input type="checkbox" id="sigSw"><span class="k2"></span>
+          Tout dire en même temps</label>
+        <div style="background:var(--l2); border-radius:var(--r2); padding:0.875rem 1rem;
+             display:flex; align-items:center; gap:0.75rem">
+          <span style="font-size:0.875rem">Activation J7</span>
+          <span style="flex:1"></span>
+          <span id="sigDemo" class="sigok">+12,4&nbsp;%</span>
+        </div>
+        <div class="cap" id="sigCap">La pilule suffit&nbsp;: le fond porte le statut, le chiffre parle.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>7 · Quel cran, quand&nbsp;? — réponds à deux questions</h3>
+      <div class="quiz">
+        <div class="chips" id="dq1">
+          <button data-k="espace" class="on">Un espace</button>
+          <button data-k="padding">Un padding</button>
+          <button data-k="coin">Un coin</button>
+        </div>
+        <div class="chips" id="dq2"></div>
+        <div class="ans" id="dqa"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>8 · Les six invariants</h3>
+      <button class="copy" id="audBtn" style="align-self:flex-start">Lancer l'audit</button>
+      <div id="audRows">
+        <div class="atom aud"><b>i1</b><span>aucun enfant plus rond que son parent</span><em class="ok">✓</em></div>
+        <div class="atom aud"><b>i2</b><span>aucune surface plus épaisse que son contenant</span><em class="ok">✓</em></div>
+        <div class="atom aud"><b>i3</b><span>deux verticales par card, jamais trois</span><em class="ok">✓</em></div>
+        <div class="atom aud"><b>i4</b><span>icônes et jauges alignées au pixel entre sœurs</span><em class="ok">✓</em></div>
+        <div class="atom aud"><b>i5</b><span>zéro débord à 390&nbsp;px</span><em class="ok">✓</em></div>
+        <div class="atom aud"><b>i6</b><span>l'écart entre surfaces ≥ leur padding</span><em class="ok">✓</em></div>
+      </div>
+    </div>
+
+  </div>
+
+
+<script>
+(function(){
+  var rad=document.getElementById('rad'), vrad=document.getElementById('vrad');
+  var base=document.getElementById('base'), ratio=document.getElementById('ratio'),
+      vbase=document.getElementById('vbase'), vratio=document.getElementById('vratio'),
+      snap=document.getElementById('snap'), chips=document.querySelectorAll('#chips button'),
+      scale=document.getElementById('scale'), css=document.getElementById('css'),
+      pv=document.getElementById('pv'), ivname=document.getElementById('ivname'),
+      copy=document.getElementById('copy');
+  var NAMES=[[1.25,'tierce majeure'],[1.333,'quarte juste'],[1.414,'triton (√2)'],
+             [1.5,'quinte juste'],[1.618,'nombre d’or'],[2,'octave']];
+  function fmt(x){ return (Math.round(x*10)/10).toString().replace('.',','); }
+  function rem(x){ return (Math.round(x/16*10000)/10000).toString(); }
+  function go(){
+    var B=+base.value, R=+ratio.value, doSnap=snap.checked;
+    var R0=+rad.value, rr=[R0/2, R0/4, R0/8];
+    vrad.textContent=R0;
+    var raw=[B, B/R, B/(R*R)];
+    var pads=raw.map(function(x){ return doSnap ? Math.max(4, Math.round(x/4)*4) : x; });
+    var gap=B/2, edge=B;
+    vbase.textContent=B; vratio.textContent=fmt(R);
+    var named=NAMES.find(function(n){ return Math.abs(n[0]-R)<0.004; });
+    ivname.textContent = named ? named[1]+' — ÷'+fmt(R) : '÷'+fmt(R);
+    chips.forEach(function(b){ b.className = Math.abs(+b.dataset.r-R)<0.004 ? 'on':''; });
+
+    var maxW=B;
+    var rows=[['bord structurel',edge,1],['padding niveau 1',pads[0],0],
+              ['padding niveau 2',pads[1],0],['padding niveau 3',pads[2],0],
+              ['gap',gap,1]];
+    scale.innerHTML=rows.map(function(r){
+      var w=Math.max(6, r[1]/maxW*100);
+      return '<div class="step'+(r[2]?' dim':'')+'">'
+        +'<span class="n">'+r[0]+'</span>'
+        +'<span class="tr"><span class="b" style="width:'+w+'%"></span></span>'
+        +'<span class="v">'+fmt(r[1])+'</span></div>';
+    }).join('');
+
+    pv.style.setProperty('--p1', rem(pads[0])+'rem');
+    pv.style.setProperty('--p2', rem(pads[1])+'rem');
+    pv.style.setProperty('--p3', rem(pads[2])+'rem');
+    pv.style.setProperty('--r1', rem(rr[0])+'rem');
+    pv.style.setProperty('--r2', rem(rr[1])+'rem');
+    pv.style.setProperty('--r3', rem(rr[2])+'rem');
+    var ch=document.getElementById('chain');
+    if(ch){
+      ch.style.setProperty('--dp1', rem(pads[0])+'rem');
+      ch.style.setProperty('--dp2', rem(pads[1])+'rem');
+      ch.style.setProperty('--dp3', rem(pads[2])+'rem');
+      ch.style.setProperty('--dr1', rem(rr[0])+'rem');
+      ch.style.setProperty('--dr2', rem(rr[1])+'rem');
+      ch.style.setProperty('--dr3', rem(rr[2])+'rem');
+      document.getElementById('chv1').textContent='niveau 1 — r '+fmt(rr[0])+' · pad '+fmt(pads[0]);
+      document.getElementById('chv2').textContent='niveau 2 — r '+fmt(rr[1])+' · pad '+fmt(pads[1]);
+      document.getElementById('chv3').textContent='niveau 3 — r '+fmt(rr[2])+' · pad '+fmt(pads[2]);
+    }
+
+    window.SCALE={B:B, pads:pads, gap:gap, edge:edge, r:rr, R0:R0, fmt:fmt};
+    var w1=document.getElementById('w1'), w2=document.getElementById('w2'), w3=document.getElementById('w3');
+    if(w1){ w1.textContent='pad-1 '+fmt(pads[0])+' · r-1 '+fmt(rr[0])+' — profondeur 1';
+            w2.textContent='pad-2 '+fmt(pads[1])+' · r-2 '+fmt(rr[1])+' — profondeur 2';
+            w3.textContent='pad-3 '+fmt(pads[2])+' · r-3 '+fmt(rr[2])+' — profondeur 3'; }
+    css.innerHTML=[
+      '<b>:root</b> {',
+      '  <b>--scale-base:</b> '+rem(B)+'rem;   <b>/* '+B+' */</b>',
+      '  <b>--scale-ratio:</b> '+R+';',
+      '  <b>--pad-1:</b> '+rem(pads[0])+'rem;'+(doSnap?'  <b>/* calé */</b>':''),
+      '  <b>--pad-2:</b> '+rem(pads[1])+'rem;',
+      '  <b>--pad-3:</b> '+rem(pads[2])+'rem;',
+      '  <b>--gap:</b>  '+rem(gap)+'rem;   <b>/* base ÷ 2 */</b>',
+      '  <b>--edge:</b> '+rem(edge)+'rem;   <b>/* = base */</b>',
+      '  <b>/* rayons : racine '+R0+', octave (÷2 par niveau) */</b>',
+      '  <b>--r-1:</b> '+rem(rr[0])+'rem; <b>--r-2:</b> '+rem(rr[1])+'rem; <b>--r-3:</b> '+rem(rr[2])+'rem;',
+      '}'].join('\n');
+  }
+  window.SCALE={};
+  base.addEventListener('input',go);
+  ratio.addEventListener('input',go);
+  rad.addEventListener('input',go);
+  snap.addEventListener('change',go);
+  chips.forEach(function(b){ b.addEventListener('click',function(){
+    ratio.value=b.dataset.r; go(); }); });
+  copy.addEventListener('click',function(){
+    navigator.clipboard.writeText(css.textContent).then(function(){
+      copy.textContent='Copié ✓';
+      setTimeout(function(){ copy.textContent='Copier le CSS'; }, 1400);
+    });
+  });
+  go();
+
+  /* ---- labo concentrique : le coin en gros plan, annoté ---- */
+  var ccR=document.getElementById('ccR'), ccE=document.getElementById('ccE');
+  function corner(el, Ro, ri, E, col){
+    var k=3.2, ox=64, oy=48, W=340, H=260;
+    var Rk=Ro*k, rk=ri*k, Ek=E*k;
+    var h=[];
+    /* bords extérieurs (gris pâle) au-delà de l'arc */
+    h.push('<path d="M'+(ox+Rk)+' '+oy+' H '+W+'" stroke="#D9D9E2" stroke-width="3" fill="none"/>');
+    h.push('<path d="M'+ox+' '+(oy+Rk)+' V '+H+'" stroke="#D9D9E2" stroke-width="3" fill="none"/>');
+    /* surface intérieure */
+    h.push('<rect x="'+(ox+Ek)+'" y="'+(oy+Ek)+'" width="'+W+'" height="'+H+'" rx="'+rk+'" fill="#E8F1FE"/>');
+    /* arc extérieur coloré */
+    h.push('<path d="M'+(ox+Rk)+' '+oy+' A '+Rk+' '+Rk+' 0 0 0 '+ox+' '+(oy+Rk)+'" stroke="'+col+'" stroke-width="5" fill="none" stroke-linecap="round"/>');
+    /* arc intérieur bleu */
+    h.push('<path d="M'+(ox+Ek+rk)+' '+(oy+Ek)+' A '+rk+' '+rk+' 0 0 0 '+(ox+Ek)+' '+(oy+Ek+rk)+'" stroke="#2F6FD0" stroke-width="4" fill="none" stroke-linecap="round"/>');
+    /* étiquettes */
+    h.push('<text x="'+(ox-10)+'" y="'+(oy+Rk*0.55)+'" text-anchor="end" font-size="15" font-weight="700" font-family="ui-monospace,monospace" fill="'+col+'">'+Ro+'</text>');
+    h.push('<text x="'+(ox+Ek+rk+14)+'" y="'+(oy+Ek+rk+18)+'" font-size="15" font-weight="700" font-family="ui-monospace,monospace" fill="#2F6FD0">'+ri+'</text>');
+    if(E>0) h.push('<text x="'+(W-8)+'" y="'+(oy+Ek/2+5)+'" text-anchor="end" font-size="13" font-weight="600" font-family="ui-monospace,monospace" fill="#A0A3BD">'+E+'</text>');
+    el.innerHTML=h.join('');
+  }
+  function ccGo(){
+    var ri=+ccR.value, E=+ccE.value;
+    corner(document.getElementById('svL'), ri, ri, E, '#D9453B');
+    corner(document.getElementById('svR'), ri+E, ri, E, '#3D9A50');
+    document.getElementById('ccro').innerHTML=
+      'extérieur juste = '+ri+' + '+E+' = <b>'+(ri+E)+'</b>';
+  }
+  ccR.addEventListener('input',ccGo); ccE.addEventListener('input',ccGo); ccGo();
+
+  /* ---- les jouets de la doc ---- */
+  var grpSw=document.getElementById('grpSw');
+  grpSw.addEventListener('change',function(){
+    document.getElementById('grpBox').classList.toggle('on', grpSw.checked);
+    document.getElementById('grpCap').textContent = grpSw.checked
+      ? 'Groupées : le gris apparaît — il ne porte rien, il regroupe.'
+      : 'Posées sur la page : blanches — elles portent.';
+  });
+
+  var spg=document.getElementById('spg');
+  function spGo(){
+    var g=+spg.value;
+    document.getElementById('spg1').style.width=g+'px';
+    document.getElementById('spg2').style.width=(g*2)+'px';
+    document.getElementById('spl1').textContent='gap '+g;
+    document.getElementById('spl2').textContent='edge '+(g*2);
+    document.getElementById('spro').innerHTML='edge = 2 × '+g+' = <b>'+(g*2)+'</b>';
+  }
+  spg.addEventListener('input',spGo); spGo();
+
+  var WEB=[
+    {v:[24,20,16], cap:"L'œil lit les rapports, pas les différences — trois crans presque jumeaux."},
+    {v:[24,17,12], cap:'Chaque descente se voit — et deux crans de √2 font une octave.'},
+    {v:[24,14.8,9.2], cap:'Le nombre d\u2019or : le même écart perçu à chaque marche.'}];
+  document.getElementById('wch').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    [].forEach.call(this.querySelectorAll('button'),function(x){x.className=x===b?'on':'';});
+    var w=WEB[+b.dataset.w];
+    for(var i=0;i<3;i++){
+      document.getElementById('wb'+(i+1)).style.width=(w.v[i]/24*60)+'%';
+      document.getElementById('wv'+(i+1)).textContent=String(w.v[i]).replace('.',',');
+    }
+    document.getElementById('wcap').textContent=w.cap;
+  });
+
+  var sigSw=document.getElementById('sigSw');
+  sigSw.addEventListener('change',function(){
+    var d=document.getElementById('sigDemo');
+    d.className = sigSw.checked ? 'sigbad' : 'sigok';
+    document.getElementById('sigCap').textContent = sigSw.checked
+      ? 'Pastille + flèche + gras + souligné + « EN HAUSSE » : cinq signaux pour une information.'
+      : 'La pilule suffit : le fond porte le statut, le chiffre parle.';
+  });
+
+  var DQ={
+    espace:[['dans la même surface', function(S){return '--gap — '+S.fmt(S.gap);},
+             'Deux contenus frères : l\u2019écart entre les choses.'],
+            ['entre deux surfaces', function(S){return '--edge — '+S.fmt(S.edge);},
+             'Frontière : deux gaps, sinon les surfaces se collent.'],
+            ['sous une image', function(S){return '--edge — '+S.fmt(S.edge);},
+             'Une image est une masse : sa séparation est une frontière.']],
+    padding:[['profondeur 1', function(S){return '--pad-1 — '+S.fmt(S.pads[0]);},'La base.'],
+             ['profondeur 2', function(S){return '--pad-2 — '+S.fmt(S.pads[1]);},'Base ÷ ratio.'],
+             ['profondeur 3', function(S){return '--pad-3 — '+S.fmt(S.pads[2]);},'Base ÷ ratio².'],
+             ['héros', function(S){return '2 × pad-1 — '+S.fmt(S.pads[0]*2)+' (vertical)';},
+              'Une surface d\u2019appel double son épaisseur.']],
+    coin:[['surface, prof. 1', function(S){return '--r-1 — '+S.fmt(S.r[0]);},'Racine ÷ 2.'],
+          ['surface, prof. 2', function(S){return '--r-2 — '+S.fmt(S.r[1]);},'Racine ÷ 4.'],
+          ['surface, prof. 3', function(S){return '--r-3 — '+S.fmt(S.r[2]);},'Racine ÷ 8.'],
+          ['composant', function(){return '--ctl — 12, fixe';},
+           'Un bouton ne change pas d\u2019arrondi. Jamais.']]};
+  var dcat='espace', dpick=0;
+  var dq1=document.getElementById('dq1'), dq2=document.getElementById('dq2'),
+      dqa=document.getElementById('dqa');
+  function dRender(){
+    dq2.innerHTML=DQ[dcat].map(function(o,i){
+      return '<button data-i="'+i+'"'+(i===dpick?' class="on"':'')+'>'+o[0]+'</button>';
+    }).join('');
+    var o=DQ[dcat][dpick];
+    dqa.innerHTML='<span class="tok"><em>'+o[1](window.SCALE)+'</em></span>'
+      +'<span class="why">'+o[2]+'</span>';
+  }
+  dq1.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    dcat=b.dataset.k; dpick=0;
+    [].forEach.call(dq1.querySelectorAll('button'),function(x){x.className=x===b?'on':'';});
+    dRender();
+  });
+  dq2.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    dpick=+b.dataset.i; dRender();
+  });
+  dRender();
+
+  var audBtn=document.getElementById('audBtn'), audDone=false;
+  audBtn.addEventListener('click',function(){
+    if(audDone) return; audDone=true;
+    var rows=document.querySelectorAll('.aud'), i=0;
+    var t=setInterval(function(){
+      rows[i].classList.add('done'); i++;
+      audBtn.textContent=i+'/6 conformes'+(i===6?' ✓':'…');
+      if(i>=rows.length){ clearInterval(t); }
+    }, 260);
+  });
+
+  /* ---- l'intention : une marque est un point sur trois axes ----
+     rayon = ton de voix · base = densité d'information · intervalle = force de la hiérarchie */
+  var PRESETS=[
+    {n:'Outil expert', B:20, R:1.333, R0:8,
+     why:'Serré (base 20), hiérarchie douce (quarte) : l\u2019utilisateur vit dedans huit heures par jour, rien ne doit crier. Coins discrets : l\u2019outil s\u2019efface derrière les données.'},
+    {n:'Produit SaaS', B:24, R:1.414, R0:24,
+     why:'Le centre de gravité : base 24, triton (s\u2019emboîte dans l\u2019octave des rayons), coins affirmés sans rondeur. Neutre, professionnel, contemporain.'},
+    {n:'Grand public', B:24, R:1.5, R0:32,
+     why:'Coins généreux (32) : la rondeur rassure et invite. Quinte juste : une hiérarchie franche qui guide sans effort — pour un public qui ne veut pas apprendre l\u2019interface.'},
+    {n:'Ludique', B:28, R:1.618, R0:44,
+     why:'Tout est ample : base 28, nombre d\u2019or, coins presque pleins. L\u2019interface est un jouet — la géométrie doit sourire avant le contenu.'},
+    {n:'Éditorial · luxe', B:32, R:1.618, R0:4,
+     why:'Le paradoxe du luxe : un maximum d\u2019air (base 32, φ) et des coins presque vifs (4). La rondeur familiarise, l\u2019angle met à distance — le luxe se tient à distance.'},
+    {n:'Technique', B:16, R:1.25, R0:0,
+     why:'Base 16, tierce, zéro rayon : la densité d\u2019un terminal, la hiérarchie au minimum lisible. L\u2019honnêteté brutale comme signature.'}];
+  var pchips=document.getElementById('presets'), pwhy=document.getElementById('pwhy');
+  function applyPreset(i){
+    var pr=PRESETS[i];
+    base.value=pr.B; ratio.value=pr.R; rad.value=pr.R0;
+    [].forEach.call(pchips.querySelectorAll('button'),function(b,k){b.className=k===i?'on':'';});
+    pwhy.textContent=pr.why;
+    go();
+    [vbase,vratio,vrad].forEach(function(el){
+      el.classList.add('fl');
+      setTimeout(function(){ el.classList.remove('fl'); }, 700);
+    });
+  }
+  pchips.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    applyPreset(+b.dataset.p);
+  });
+  /* un réglage manuel sort du preset : l'intention devient personnalisée */
+  [base,ratio,rad].forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var on=pchips.querySelector('button.on');
+      var i=on?+on.dataset.p:-1;
+      if(i>=0){ var pr=PRESETS[i];
+        if(+base.value!==pr.B || Math.abs(+ratio.value-pr.R)>0.004 || +rad.value!==pr.R0){
+          on.className=''; pwhy.textContent='Réglage personnalisé — parti de « '+pr.n+' ».';
+        } }
+    });
+  });
+  applyPreset(1);
+
+  /* ---- annotations ---- */
+  var tgw=document.getElementById('tgw');
+  tgw.addEventListener('click',function(){
+    pv.classList.toggle('show');
+    tgw.classList.toggle('on');
+    tgw.textContent = pv.classList.contains('show') ? 'Masquer les décisions' : 'Voir les décisions';
+  });
+})();
+</script>
+</div></body></html>
