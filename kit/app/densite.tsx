@@ -3,36 +3,45 @@ import { useEffect, useState } from "react";
 
 /* La densité est un réglage de theming : elle s'applique à tout le site
    (attribut sur <html>, décalage d'un cran dans tokens.css — règle Y5)
-   et se mémorise d'une page et d'une visite à l'autre. */
+   et se mémorise d'une page et d'une visite à l'autre.
+   Trois crans : Aéré (un cran plus haut) · Confortable · Compact (un cran
+   plus bas). */
 
 const CLE = "kit-densite";
-const lireCompact = () =>
-  typeof document !== "undefined" && document.documentElement.dataset.densite === "compact";
+export type Densité = "aere" | "confortable" | "compact";
+
+const lire = (): Densité => {
+  if (typeof document === "undefined") return "confortable";
+  const d = document.documentElement.dataset.densite;
+  return d === "compact" || d === "aere" ? d : "confortable";
+};
 
 export function useDensite() {
-  const [compact, setCompact] = useState(false);
+  const [densite, setDensite] = useState<Densité>("confortable");
   useEffect(() => {
-    setCompact(lireCompact());
-    const mo = new MutationObserver(() => setCompact(lireCompact()));
+    setDensite(lire());
+    const mo = new MutationObserver(() => setDensite(lire()));
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-densite"] });
     return () => mo.disconnect();
   }, []);
-  const changer = (c: boolean) => {
-    if (c) document.documentElement.dataset.densite = "compact";
-    else delete document.documentElement.dataset.densite;
-    try { localStorage.setItem(CLE, c ? "compact" : "confortable"); } catch {}
+  const changer = (d: Densité) => {
+    if (d === "confortable") delete document.documentElement.dataset.densite;
+    else document.documentElement.dataset.densite = d;
+    try { localStorage.setItem(CLE, d); } catch {}
   };
-  return { compact, changer };
+  return { densite, changer };
 }
 
 export function Densite() {
-  const { compact, changer } = useDensite();
+  const { densite, changer } = useDensite();
+  const CHOIX: [Densité, string][] = [["aere", "Aéré"], ["confortable", "Confortable"], ["compact", "Compact"]];
   return (
     <div className="bloc">
       <span className="mono sourd">Densité — tout le site</span>
       <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-        <button className={`bouton ${!compact ? "on" : ""}`} onClick={() => changer(false)}>Confortable</button>
-        <button className={`bouton ${compact ? "on" : ""}`} onClick={() => changer(true)}>Compact</button>
+        {CHOIX.map(([d, nom]) => (
+          <button key={d} className={`bouton ${densite === d ? "on" : ""}`} onClick={() => changer(d)}>{nom}</button>
+        ))}
       </div>
     </div>
   );

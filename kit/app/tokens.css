@@ -52,6 +52,18 @@
    sur l'échelle commune — jamais une valeur propre, jamais un
    multiplicateur. S'applique à TOUT le site (attribut posé sur <html>,
    mémorisé d'une visite à l'autre). Le plus petit cran reste lui-même. */
+/* Densité aérée : chaque nom monte d'exactement un cran — le plus grand
+   cran reste lui-même. Même mécanique, autre direction. */
+[data-densite="aere"] {
+  --rr-inline-xs: var(--cran-i2); --rr-inline-sm: var(--cran-i3);
+  --rr-inline-unit: var(--cran-i4); --rr-inline-xl: var(--cran-i5);
+  --rr-inline-lg: var(--cran-i6);
+  --rr-block-xs: var(--cran-b2); --rr-block-sm: var(--cran-b3);
+  --rr-block-md: var(--cran-b4); --rr-block-control: var(--cran-b5);
+  --rr-block-unit: var(--cran-b6); --rr-block-xl: var(--cran-b7);
+  --rr-block-card: var(--cran-b8); --rr-block-lg: var(--cran-b8);
+}
+
 [data-densite="compact"] {
   --rr-inline-sm: var(--cran-i1); --rr-inline-unit: var(--cran-i2);
   --rr-inline-xl: var(--cran-i3); --rr-inline-lg: var(--cran-i4);

@@ -42,27 +42,27 @@ const versTw = (px: number) => ECHELLE_TW.reduce((a, b) => (Math.abs(b - px) < M
    pour SA largeur, applique le même décalage ici. */
 const L_INLINE = ["--rr-inline-xs", "--rr-inline-sm", "--rr-inline-unit", "--rr-inline-xl", "--rr-inline-lg", "--rr-inline-2xl"];
 const L_BLOCK = ["--rr-block-xs", "--rr-block-sm", "--rr-block-md", "--rr-block-control", "--rr-block-unit", "--rr-block-xl", "--rr-block-card", "--rr-block-page"];
-function cranSource(nom: string, compact: boolean): string {
-  if (!compact) return nom;
+function cranSource(nom: string, dec: number): string {
+  if (dec === 0) return nom;
   const base = nom === "--rr-block-lg" ? "--rr-block-card" : nom;
   const l = L_INLINE.includes(base) ? L_INLINE : L_BLOCK.includes(base) ? L_BLOCK : null;
   if (!l) return nom;
-  return l[Math.max(0, l.indexOf(base) - 1)];
+  return l[Math.min(l.length - 1, Math.max(0, l.indexOf(base) + dec))];
 }
-function calcPx(nom: string, largeurPx: number, compact: boolean): number {
-  const t = TOKENS.find(([n]) => n === cranSource(nom, compact))!;
+function calcPx(nom: string, largeurPx: number, dec: number): number {
+  const t = TOKENS.find(([n]) => n === cranSource(nom, dec))!;
   return Math.min(t[4] * 16, Math.max(t[1] * 16, t[2] * 16 + (t[3] * largeurPx) / 100));
 }
-function jetons(largeurPx: number, tw = false, compact = false): React.CSSProperties {
+function jetons(largeurPx: number, tw = false, dec = 0): React.CSSProperties {
   const o: Record<string, string> = {};
   for (const [nom] of TOKENS) {
-    const px = calcPx(nom, largeurPx, compact);
+    const px = calcPx(nom, largeurPx, dec);
     o[nom] = tw ? `${versTw(px)}px` : `${px.toFixed(2)}px`;
   }
   return o as React.CSSProperties;
 }
-const lirePx = (largeur: number, nom: string, tw = false, compact = false) => {
-  const px = calcPx(nom, largeur, compact);
+const lirePx = (largeur: number, nom: string, tw = false, dec = 0) => {
+  const px = calcPx(nom, largeur, dec);
   return tw ? String(versTw(px)) : px.toFixed(1);
 };
 
@@ -207,7 +207,8 @@ function Regles({ ids }: { ids: string[] }) {
 
 export default function Vue() {
   const [voir, setVoir] = useState(true);
-  const { compact } = useDensite();
+  const { densite } = useDensite();
+  const dec = densite === "compact" ? -1 : densite === "aere" ? 1 : 0;
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
@@ -242,11 +243,11 @@ export default function Vue() {
               {voir ? "Masquer les espaces" : "Voir les espaces"}
             </button>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw, compact), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
+            <div style={{ ...jetons(l, tw, dec), width: "100%", display: "grid", justifyItems: "start", gap: "var(--rr-block-unit)" }}>
               <CarteAnnotee voir={voir} />
               <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>
-                à {Math.round(l)} px : padding {lirePx(l, "--rr-block-card", tw, compact)} px ·
-                écart {lirePx(l, "--rr-block-md", tw, compact)} px{compact && " · compact : un cran plus bas"}{tw && " · accroché à l'échelle Tailwind"}
+                à {Math.round(l)} px : padding {lirePx(l, "--rr-block-card", tw, dec)} px ·
+                écart {lirePx(l, "--rr-block-md", tw, dec)} px{dec === -1 && " · compact : un cran plus bas"}{dec === 1 && " · aéré : un cran plus haut"}{tw && " · accroché à l'échelle Tailwind"}
               </span>
             </div>
           )} pied={
@@ -289,7 +290,7 @@ export default function Vue() {
               </button>
             </>
           } enfants={(l) => (
-            <div style={{ ...jetons(l, tw, compact), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
+            <div style={{ ...jetons(l, tw, dec), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
           )} pied={
             <details className="prov"><summary>D&apos;où ça vient</summary><div>
               <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
