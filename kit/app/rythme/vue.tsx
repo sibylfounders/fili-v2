@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
 import { Densite, useDensite } from "../densite";
+import { Adaptation, useAdaptation } from "../adaptation";
 
 /* Constantes des jetons — mêmes que tokens.css (valeurs lues sur le générateur
    de référence à 320 et 1440, interpolées). L'aperçu recalcule chaque cran
@@ -56,6 +57,7 @@ function calcPx(nom: string, largeurPx: number, dec: number): number {
 function jetons(largeurPx: number, tw = false, dec = 0): React.CSSProperties {
   const o: Record<string, string> = {};
   for (const [nom] of TOKENS) {
+    if (!nom.includes("inline-") && !nom.includes("block-")) continue;
     const px = calcPx(nom, largeurPx, dec);
     o[nom] = tw ? `${versTw(px)}px` : `${px.toFixed(2)}px`;
   }
@@ -311,8 +313,7 @@ export default function Vue() {
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const [styl, setStyl] = useState<"Tailwind" | "shadcn" | "HTML natif">("Tailwind");
-  const tw = styl !== "HTML natif"; /* shadcn vit sur Tailwind */
+  const { styl, tw } = useAdaptation();
 
   return (
     <div className="coquille">
@@ -428,14 +429,7 @@ export default function Vue() {
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
         <Densite />
-        <div className="bloc">
-          <span className="mono sourd">Adaptation</span>
-          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            {(["Tailwind", "shadcn", "HTML natif"] as const).map((s) => (
-              <button key={s} className={`bouton ${styl === s ? "on" : ""}`} onClick={() => setStyl(s)}>{s}</button>
-            ))}
-          </div>
-        </div>
+        <Adaptation />
         <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
         (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
       </aside>

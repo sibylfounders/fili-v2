@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Navigation } from "../nav";
 import { Apercu, PanneauCode } from "../apercu";
 import { Densite } from "../densite";
+import { Adaptation, useAdaptation } from "../adaptation";
 
 /* L'échelle de travail des corps — mêmes valeurs que tokens.css.
    L'aperçu recalcule chaque échelon pour SA largeur, et le « zoom lecteur »
@@ -288,7 +289,7 @@ export default function Vue() {
   const [petit, setPetit] = useState(false);
   const [mauvaisNom, setMauvaisNom] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const [styl, setStyl] = useState<"Tailwind" | "shadcn" | "HTML natif">("Tailwind");
+  const { styl } = useAdaptation();
 
   return (
     <div className="coquille">
@@ -483,14 +484,7 @@ export default function Vue() {
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
         <Densite />
-        <div className="bloc">
-          <span className="mono sourd">Adaptation</span>
-          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
-            {(["Tailwind", "shadcn", "HTML natif"] as const).map((s) => (
-              <button key={s} className={`bouton ${styl === s ? "on" : ""}`} onClick={() => setStyl(s)}>{s}</button>
-            ))}
-          </div>
-        </div>
+        <Adaptation />
         <div className="bloc">
           <span className="mono sourd">Familles livrées</span>
           <p className="sourd" style={{ fontSize: "0.75rem" }}>Geist (interface) ·

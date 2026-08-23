@@ -127,3 +127,16 @@
   --rr-block-card: var(--cran-b7); --rr-block-lg: var(--cran-b7);
   --rr-block-page: var(--cran-b8);
 }
+
+/* ── ADAPTATION SHADCN — le site entier prend la livrée shadcn/ui :
+   neutres zinc, primaire encre, rayons md fixes, contrôles h-9.
+   PROVISOIRE, HORS CORPUS couleur — même statut que la palette de
+   travail. Mémorisé via <html data-adaptation="shadcn">. */
+[data-adaptation="shadcn"] {
+  --p-fond: #fafafa; --p-papier: #ffffff; --p-encre: #18181b;
+  --p-sourd: #71717a; --p-trait: #e4e4e7; --p-accent: #18181b;
+  --p-accent-doux: #f4f4f5; --p-rouge: #ef4444; --p-rouge-doux: #fee2e2;
+  --p-vert: #16a34a; --p-vert-doux: #dcfce7;
+  --rr-radius: 0.375rem; --rr-radius-card: 0.5rem; --rr-radius-shell: 0.75rem;
+  --rr-control: 2.25rem;
+}
