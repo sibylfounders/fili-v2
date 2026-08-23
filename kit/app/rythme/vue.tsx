@@ -190,9 +190,9 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
 /* Les règles vivent dans les dépliants « d'où ça vient » de leur démonstration. */
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+    <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-xs)" }}>
+        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-sm)", maxWidth: "var(--t-mesure)" }}>
           <b style={{ color: "var(--p-encre)" }}><span className="badge">règle {r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}

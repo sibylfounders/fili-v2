@@ -83,9 +83,9 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
 
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--rr-block-unit)" }}>
+    <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-xs)" }}>
+        <div key={r.id} style={{ display: "grid", gap: "var(--rr-block-sm)", maxWidth: "var(--t-mesure)" }}>
           <b style={{ color: "var(--p-encre)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.pourquoi && <span className="sourd">{r.pourquoi}</span>}

@@ -225,7 +225,8 @@ details.prov summary { cursor: pointer; font: 700 0.6875rem/1.6 var(--t-code);
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--p-sourd); list-style: none; }
 details.prov summary::before { content: "▸ "; }
 details.prov[open] summary::before { content: "▾ "; }
-details.prov > div { display: grid; gap: var(--rr-block-md); padding-top: var(--rr-block-md); }
+details.prov > div { display: grid; gap: var(--rr-block-xl); padding-top: var(--rr-block-unit); }
+details.prov p { max-width: var(--t-mesure); } /* T5 : qui glisse se borne — chez nous aussi */
 
 
 
