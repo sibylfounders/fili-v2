@@ -187,7 +187,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
 ];
 
-/* Les règles vivent dans les dépliants « d'où ça vient » de leur démonstration. */
+/* Les règles vivent dans les dépliants « Règles & sources » de leur démonstration. */
 function Regles({ ids }: { ids: string[] }) {
   return (
     <div style={{ display: "grid", gap: "var(--rr-block-xl)" }}>
@@ -227,7 +227,7 @@ export default function Vue() {
             Espacer, c&apos;est décider qui est lié à qui : quand une distance est
             arbitraire, la page ment. Ici, toute distance sort d&apos;une échelle unique, et
             <b> chaque règle porte son pourquoi, sa source vérifiable, et ses divergences
-            assumées</b>. Sous chaque banc d&apos;essai, « d&apos;où ça vient » se déplie.
+            assumées</b>. Sous chaque banc d&apos;essai, « Règles &amp; sources » se déplie.
           </p>
         </div>
 
@@ -251,7 +251,7 @@ export default function Vue() {
               </span>
             </div>
           )} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <p>Toutes les distances sortent d&apos;<b>un générateur</b> : trois décisions entrent
               (unité de base, ratio, rayon), toute la géométrie sort, en deux axes (horizontal,
               vertical). Aucune valeur n&apos;est écrite à la main.</p>
@@ -268,7 +268,7 @@ export default function Vue() {
           décale chaque espace du site — cette page comprise — d&apos;exactement un cran sur
           l&apos;échelle commune. Ce qui ne bouge jamais : l&apos;ordre et la présence de
           chaque élément.</p>
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
             <p>Un « mode compact à 80 % » fabriquerait des valeurs hors échelle, introuvables au
             changement de marque. Un cran d&apos;écart, lui, reste dans le système.</p>
             <Regles ids={["y5", "y6"]} />
@@ -294,7 +294,7 @@ export default function Vue() {
           } enfants={(l) => (
             <div style={{ ...jetons(l, tw, dec), width: "100%", display: "grid", justifyItems: "start" }}><Proximite casseY1={casseY1} casseY2={casseY2} /></div>
           )} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
               systèmes — et la faute la plus fréquente des interfaces : des distances qui
               racontent autre chose que le contenu.</p>
@@ -314,7 +314,7 @@ export default function Vue() {
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
             ))}</>
           } code={SNIPPETS[fw][styl]} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
             <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
             calcul produit des variables CSS natives et une sortie Tailwind jumelle ; React,
             Angular ou HTML n&apos;en sont que des consommateurs.</p>

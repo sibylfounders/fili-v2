@@ -305,7 +305,7 @@ export default function Vue() {
               </span>
             </div>
           )} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <p>L&apos;échelle affichée respecte les règles ci-dessous ; ses valeurs exactes
               peuvent changer sans les enfreindre. Le rapport max/min du plus grand échelon
               reste loin du plafond de 2,5.</p>
@@ -331,7 +331,7 @@ export default function Vue() {
               </button>
             </>
           } enfants={(l) => <Mesure largeur={l} sansBorne={sansBorne} serre={serre} />} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <Regles ids={["t5", "t6"]} />
             </div></details>
           } />
@@ -349,7 +349,7 @@ export default function Vue() {
               {saut ? "Réparer" : "Casser : sauter un niveau"}
             </button>
           } enfants={() => <Arbre saut={saut} />} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <Regles ids={["p01", "t1", "g1"]} />
             </div></details>
           } />
@@ -400,7 +400,7 @@ export default function Vue() {
               </div>
             </div>
           </div>
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["t7", "t8", "t9", "t10"]} />
           </div></details>
         </section>
@@ -425,7 +425,7 @@ export default function Vue() {
               <span className={`badge ${mauvaisNom ? "ko" : ""}`}>{mauvaisNom ? "nom orphelin — produit entier en police système, en silence" : "Geist — déclarée, livrée, vérifiable"}</span>
             </div>
           )} pied={
-            <details className="prov"><summary>D&apos;où ça vient</summary><div>
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
               <Regles ids={["t11"]} />
             </div></details>
           } />
@@ -442,7 +442,7 @@ export default function Vue() {
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
             ))}</>
           } code={SNIPPETS[fw][styl]} />
-          <details className="prov"><summary>D&apos;où ça vient</summary><div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
             <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul jeu de
             jetons produit des variables CSS natives et une sortie Tailwind jumelle ; React,
             Angular ou HTML n&apos;en sont que des consommateurs.</p>
