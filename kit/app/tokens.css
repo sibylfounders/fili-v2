@@ -74,10 +74,11 @@
   --rr-block-lg: var(--cran-b6); --rr-block-page: var(--cran-b7);
 }
 
-/* ── PROVISOIRE, HORS CORPUS — déclaré, pas subi ──────────────────────
-   La famille couleur n'est pas encore reprise dans le kit neuf ; ces
-   teintes de travail permettent aux pages de s'afficher. Elles seront
-   remplacées par la reprise couleur, et rien d'autre ne doit les citer. */
+/* ── PROVISOIRE, HORS CORPUS — CONDAMNÉE (23 août 2026) ───────────────
+   La famille couleur est reprise : les jetons --c-* en fin de fichier la
+   remplacent. Ce bloc ne survit que le temps de montrer la page Couleur
+   à l'Auteur ; à son accord, les consommateurs --p-* basculent sur --c-*
+   et ce bloc disparaît. Rien de nouveau ne doit le citer. */
 :root {
   --p-fond: #F6F6FB; --p-papier: #FFFFFF; --p-encre: #1C1832;
   --p-sourd: #67628A; --p-trait: #E3E1F0; --p-accent: #5D51E8;
@@ -126,6 +127,91 @@
   --rr-block-unit: var(--cran-b5); --rr-block-xl: var(--cran-b6);
   --rr-block-card: var(--cran-b7); --rr-block-lg: var(--cran-b7);
   --rr-block-page: var(--cran-b8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES JETONS DE COULEUR — famille reprise le 23 août 2026
+   (sources/…/foundations/COLOR-UX.md 2.0.0 : C1–C16, M1–M3).
+
+   Les VALEURS sont celles du registre du dépôt
+   (sources/packages/tokens/src/tokens.source.mjs — crans nommés en
+   commentaire) : elles vivent ici et nulle part ailleurs (C1).
+
+   Trois registres étanches (C2), aucun jeton à cheval (C3) :
+   · NEUTRES    fond · papier · encre · sourd · trait · trait-net
+   · MARQUE     accent (+ survol, sur-accent, doux, sur-doux) — un seul
+                rôle de marque : un jeton naît d'un besoin réel (C4)
+   · SÉMANTIQUE erreur · succès, chacun avec son couple complet (C5)
+
+   Chaque jeton résout UNE valeur PAR THÈME (C12) ; le sombre s'active sur
+   la préférence du système et se règle en [data-theme] (C13). Les états
+   sont des jetons, jamais des calculs (C10). Aucun jeton de désactivé :
+   dette écrite, condition de sortie au corpus (C11). AUCUN jeton de texte
+   sous 4,5:1 sur ses fonds déclarés, dans les deux thèmes (C9 — arbitrage
+   du gris pâle appliqué : pas de jeton pâle dans cette famille).
+   En thème sombre, l'accent s'éclaircit — jamais l'inverse (C14).
+   Les paires déclarées se mesurent sur la page vivante /couleur, dans les
+   deux thèmes (C7, C8). Sortie jumelle : tokens.tailwind.mjs (couleur).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root, [data-theme="clair"] {
+  color-scheme: light;
+  /* Neutres */
+  --c-fond: #F3F4F6;        /* neutral.100 — le creux de la page */
+  --c-papier: #FFFFFF;      /* neutral.0   — la surface posée */
+  --c-encre: #111827;       /* neutral.900 — le texte courant */
+  --c-sourd: #4B5563;       /* neutral.600 — le texte second (≥ 4,5:1 partout) */
+  --c-trait: #E5E7EB;       /* neutral.200 — la séparation décorative */
+  --c-trait-net: #6B7280;   /* neutral.500 — la bordure délimitante (≥ 3:1) */
+  /* Marque */
+  --c-accent: #4F46E5;          /* indigo.600 */
+  --c-accent-survol: #4338CA;   /* indigo.700 — le survol est un jeton (C10) */
+  --c-sur-accent: #FFFFFF;      /* neutral.0 */
+  --c-accent-doux: #E0E7FF;     /* indigo.100 */
+  --c-sur-accent-doux: #3730A3; /* indigo.800 */
+  /* Sémantique — le couple complet dès la naissance (C5) */
+  --c-erreur: #B91C1C;          /* red.700 */
+  --c-erreur-doux: #FEE2E2;     /* red.100 */
+  --c-sur-erreur: #FFFFFF;      /* neutral.0 */
+  --c-succes: #15803D;          /* green.700 */
+  --c-succes-doux: #DCFCE7;     /* green.100 */
+  --c-sur-succes: #FFFFFF;      /* neutral.0 */
+}
+
+/* Le thème sombre — choisi explicitement… */
+[data-theme="sombre"] {
+  color-scheme: dark;
+  --c-fond: #030712;        /* neutral.950 */
+  --c-papier: #111827;      /* neutral.900 */
+  --c-encre: #FFFFFF;       /* neutral.0 */
+  --c-sourd: #9CA3AF;       /* neutral.400 */
+  --c-trait: #1F2937;       /* neutral.800 */
+  --c-trait-net: #9CA3AF;   /* neutral.400 */
+  --c-accent: #818CF8;          /* indigo.400 — l'action s'éclaircit (C14) */
+  --c-accent-survol: #A5B4FC;   /* indigo.300 */
+  --c-sur-accent: #030712;      /* neutral.950 */
+  --c-accent-doux: #1E1B4B;     /* indigo.950 */
+  --c-sur-accent-doux: #C7D2FE; /* indigo.200 */
+  --c-erreur: #F87171;          /* red.400 */
+  --c-erreur-doux: #450A0A;     /* red.950 */
+  --c-sur-erreur: #030712;      /* neutral.950 */
+  --c-succes: #4ADE80;          /* green.400 */
+  --c-succes-doux: #052E16;     /* green.950 */
+  --c-sur-succes: #030712;      /* neutral.950 */
+}
+
+/* …ou hérité de la préférence du système (C13). Bloc jumeau du précédent :
+   même table, autre porte d'entrée — la mécanique standard des deux thèmes. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="clair"]) {
+    color-scheme: dark;
+    --c-fond: #030712; --c-papier: #111827; --c-encre: #FFFFFF;
+    --c-sourd: #9CA3AF; --c-trait: #1F2937; --c-trait-net: #9CA3AF;
+    --c-accent: #818CF8; --c-accent-survol: #A5B4FC; --c-sur-accent: #030712;
+    --c-accent-doux: #1E1B4B; --c-sur-accent-doux: #C7D2FE;
+    --c-erreur: #F87171; --c-erreur-doux: #450A0A; --c-sur-erreur: #030712;
+    --c-succes: #4ADE80; --c-succes-doux: #052E16; --c-sur-succes: #030712;
+  }
 }
 
 /* ── ADAPTATION SHADCN — le site entier prend la livrée shadcn/ui :

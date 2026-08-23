@@ -230,6 +230,43 @@ details.prov p { max-width: var(--t-mesure); } /* T5 : qui glisse se borne — c
 
 
 
+/* ── PONT PROVISOIRE de la page Couleur — déclaré, pas caché ──────────
+   Tant que la palette n'est pas généralisée au site (accord d'Auteur
+   attendu), la page /couleur remappe localement les noms provisoires
+   --p-* sur la vraie famille --c-* : elle est ainsi rendue et themable
+   dans la famille réelle, sans toucher au reste du site. À la
+   généralisation, ce pont disparaît avec le bloc provisoire. */
+.pont-couleur {
+  --p-fond: var(--c-fond); --p-papier: var(--c-papier);
+  --p-encre: var(--c-encre); --p-sourd: var(--c-sourd);
+  --p-trait: var(--c-trait); --p-accent: var(--c-accent);
+  --p-accent-doux: var(--c-accent-doux);
+  --p-rouge: var(--c-erreur); --p-rouge-doux: var(--c-erreur-doux);
+  --p-vert: var(--c-succes); --p-vert-doux: var(--c-succes-doux);
+  background: var(--c-fond); color: var(--c-encre);
+}
+/* Les deux blancs codés en dur de la coquille deviennent des jetons ici
+   (C1) — indispensables au thème sombre : sur-accent y est sombre. */
+.pont-couleur .bouton.on { color: var(--c-sur-accent); }
+.pont-couleur .bouton.casse.on { color: var(--c-sur-erreur); }
+.pont-couleur .badge { color: var(--c-sur-accent-doux); }
+.pont-couleur .badge.ko { color: var(--c-erreur); }
+.pont-couleur a { color: var(--c-accent); }
+.pont-couleur a:hover { color: var(--c-accent-survol); }
+/* Le banc des états de la page Couleur — le survol par jeton (C10),
+   et la casse qui le remplace par un filtre pour le voir échouer */
+.pont-couleur .demo-plein { background: var(--c-accent); border-color: var(--c-accent); color: var(--c-sur-accent); }
+.pont-couleur .demo-plein.jeton:hover { background: var(--c-accent-survol); border-color: var(--c-accent-survol); }
+.pont-couleur .demo-plein.filtre:hover { filter: brightness(0.72); }
+/* Le damier de marge suit l'encre du thème au lieu d'un violet codé */
+.pont-couleur .apercu-cadre {
+  background-image:
+    linear-gradient(45deg, color-mix(in srgb, var(--c-encre) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--c-encre) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--c-encre) 6%, transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--c-encre) 6%, transparent) 75%);
+}
+
 /* ── L'accueil : tuiles de fondations et étapes de méthode ── */
 .tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: var(--rr-inline-unit); }

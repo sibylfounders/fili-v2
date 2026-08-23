@@ -491,7 +491,8 @@ export default function Vue() {
           JetBrains Mono (code) — livrées avec le kit (règle T11).</p>
         </div>
         <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
-        (poignée, paliers, double-clic). Le thème arrivera avec sa fondation couleur.</p>
+        (poignée, paliers, double-clic). Le thème est arrivé avec la fondation couleur —
+        il se règle et s&apos;éprouve sur sa page, avant de s&apos;étendre au site entier.</p>
       </aside>
     </div>
   );

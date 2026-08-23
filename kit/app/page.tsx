@@ -20,7 +20,7 @@ export default function Accueil() {
 
         <section className="bloc-section">
           <p className="kicker">01 · Les fondations</p>
-          <h2>Deux fondations vivantes, sept en chemin</h2>
+          <h2>Trois fondations vivantes, six en chemin</h2>
           <div className="tuiles">
             <a href="/rythme" className="tuile">
               <span className="mono sourd">Fondation</span>
@@ -45,9 +45,21 @@ export default function Accueil() {
               et les fontes livrées avec le kit, au nom exact.</span>
               <span className="tuile-appel">Ouvrir la fondation →</span>
             </a>
+            <a href="/couleur" className="tuile">
+              <span className="mono sourd">Fondation</span>
+              <span className="tuile-titre">La couleur</span>
+              <span className="tuile-specimen" style={{ flexDirection: "row", alignItems: "center", gap: "var(--rr-inline-sm)" }} aria-hidden>
+                {["var(--c-accent)", "var(--c-erreur)", "var(--c-succes)", "var(--c-encre)", "var(--c-trait)"].map((c) => (
+                  <span key={c} style={{ width: "calc(2 * var(--rr-block-unit))", height: "calc(2 * var(--rr-block-unit))", borderRadius: "999px", background: c, border: "1px solid var(--c-trait)" }} />
+                ))}
+              </span>
+              <span className="sourd">Seize règles, trois registres, deux thèmes — chaque
+              paire de contraste se mesure sous vos yeux, en clair et en sombre.</span>
+              <span className="tuile-appel">Ouvrir la fondation →</span>
+            </a>
           </div>
           <p className="sourd">Déjà écrites, en attente d&apos;entrée : arrondis · tactile ·
-          couleur · bordures. Puis : surfaces, élévation, grille, iconographie, superpositions.</p>
+          bordures. Puis : surfaces, élévation, grille, iconographie, superpositions, composition.</p>
         </section>
 
         <section className="bloc-section">
@@ -83,8 +95,9 @@ export default function Accueil() {
         <h3>Theming &amp; playground</h3>
         <Densite />
         <p className="sourd" style={{ fontSize: "0.75rem" }}>Chaque fondation apporte ses
-        réglages : densité et adaptation sur le rythme, zoom lecteur et adaptation sur la
-        typographie. Le thème arrivera avec sa fondation couleur.</p>
+        réglages : densité et adaptation sur le rythme, zoom lecteur sur la typographie,
+        thème clair/sombre sur la couleur — où il se règle et s&apos;éprouve, avant de
+        s&apos;étendre au site entier.</p>
       </aside>
     </div>
   );

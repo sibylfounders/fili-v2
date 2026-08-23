@@ -63,6 +63,31 @@ export const typo = {
 };
 
 
+/* Sortie jumelle — couleur (COLOR-UX.md 2.0.0). Les utilitaires pointent
+   sur les variables : le thème (clair/sombre) se résout au rendu, jamais
+   dans une classe — un thème littéral figerait un seul des deux thèmes. */
+export const couleur = {
+  colors: {
+    fond: "var(--c-fond)",
+    papier: "var(--c-papier)",
+    encre: "var(--c-encre)",
+    sourd: "var(--c-sourd)",
+    trait: "var(--c-trait)",
+    "trait-net": "var(--c-trait-net)",
+    accent: "var(--c-accent)",
+    "accent-survol": "var(--c-accent-survol)",
+    "sur-accent": "var(--c-sur-accent)",
+    "accent-doux": "var(--c-accent-doux)",
+    "sur-accent-doux": "var(--c-sur-accent-doux)",
+    erreur: "var(--c-erreur)",
+    "erreur-doux": "var(--c-erreur-doux)",
+    "sur-erreur": "var(--c-sur-erreur)",
+    succes: "var(--c-succes)",
+    "succes-doux": "var(--c-succes-doux)",
+    "sur-succes": "var(--c-sur-succes)",
+  },
+};
+
 /* ── Le thème Tailwind LITTÉRAL — deux échelles assumées (décision d'Auteur,
    23 août) : Tailwind garde sa grille 4-16, valeurs ARRONDIES au cran le plus
    proche, jamais de décimales ; le CSS natif garde les décimales calculées
