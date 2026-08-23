@@ -113,3 +113,17 @@
   --t-mesure: 65ch;             /* T5 : la borne existe et vit en ch — la valeur, au registre */
   --t-interlettrage-etiquette: 0.08em; /* T8 : capitales toujours espacées (5–12 %) */
 }
+
+/* Le châssis du site — navigation à gauche, réglages à droite — garde la
+   densité confortable quel que soit le réglage : la densité règle le
+   contenu, jamais les colonnes qui l'encadrent. */
+.navigation, .reglages {
+  --rr-inline-xs: var(--cran-i1); --rr-inline-sm: var(--cran-i2);
+  --rr-inline-unit: var(--cran-i3); --rr-inline-xl: var(--cran-i4);
+  --rr-inline-lg: var(--cran-i5); --rr-inline-2xl: var(--cran-i6);
+  --rr-block-xs: var(--cran-b1); --rr-block-sm: var(--cran-b2);
+  --rr-block-md: var(--cran-b3); --rr-block-control: var(--cran-b4);
+  --rr-block-unit: var(--cran-b5); --rr-block-xl: var(--cran-b6);
+  --rr-block-card: var(--cran-b7); --rr-block-lg: var(--cran-b7);
+  --rr-block-page: var(--cran-b8);
+}
