@@ -5,7 +5,7 @@ import { PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme, useTheme, useSchemeSysteme } from "../theme";
-import { derive, verifier, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
+import { derive, verifier, gamme, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
 
 /* La page vivante de la famille couleur (COLOR-UX.md, C1–C16),
    dérivée d'UNE décision d'entrée — primary — par kit/derivation.mjs,
@@ -186,6 +186,33 @@ const PROPORTIONS: { nom: string; jeton: string; sur: string; part: number; bord
   { nom: "border-strong", jeton: "--border-strong", sur: "--bg", part: 7 },
   { nom: "primary", jeton: "--primary", sur: "--on-primary", part: 5 },
 ];
+
+/* ── La gamme primitive 50–950, dérivée de la saisie — cliquer copie ── */
+function Gamme({ primaire }: { primaire: string }) {
+  const crans = useMemo(() => gamme(primaire) as [number, string][], [primaire]);
+  const [copie, setCopie] = useState<number | null>(null);
+  const copier = (cran: number, hex: string) => {
+    navigator.clipboard?.writeText(hex).catch(() => {});
+    setCopie(cran); setTimeout(() => setCopie(null), 1200);
+  };
+  return (
+    <div style={{ display: "grid", gap: "var(--space-block-xs)", width: "100%" }}>
+      <div style={{ display: "flex", width: "100%", borderRadius: "var(--radius)", overflow: "hidden", border: "1px solid var(--border)" }}>
+        {crans.map(([cran, hex]) => (
+          <button key={cran} onClick={() => copier(cran, hex)} title={`Copier ${hex}`} aria-label={`${cran} — ${hex}`}
+            style={{ flex: 1, minWidth: 0, height: "calc(3.2 * var(--space-block-unit))", background: hex, border: 0, cursor: "pointer" }} />
+        ))}
+      </div>
+      <div style={{ display: "flex", width: "100%" }}>
+        {crans.map(([cran]) => (
+          <span key={cran} className="mono" style={{ flex: 1, minWidth: 0, fontSize: "0.5625rem", fontWeight: 400, color: "var(--text-secondary)", textAlign: "center" }}>
+            {copie === cran ? "copié" : cran}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function Palette({ cle }: { cle: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -561,7 +588,7 @@ export default function Vue() {
 
   return (
     <div className="coquille famille-derivee">
-      <style>{cssDerive}</style>
+      <style dangerouslySetInnerHTML={{ __html: cssDerive }} />
       <Navigation actif="couleur" />
 
       <main className="contenu">
@@ -585,12 +612,18 @@ export default function Vue() {
             )}
             <span className={`badge ${fautesDerivation.length ? "ko" : ""}`}>
               {fautesDerivation.length
-                ? `${fautesDerivation.length} paire(s) sous le seuil — cette primaire ne tient pas`
-                : "40 paires · 2 thèmes — tout au seuil"}
+                ? `${fautesDerivation.length} paire(s) sous le seuil`
+                : "40 paires · 2 thèmes — AA par construction"}
             </span>
+            {paletteDerivee.meta.ajustee && (
+              <span className="badge" style={{ color: "var(--warning)", background: "var(--warning-subtle)" }}>
+                calée AA : {paletteDerivee.meta.saisie} → {paletteDerivee.meta.retenue} — seule la luminosité a bougé
+              </span>
+            )}
           </div>
           <p className="sourd" style={{ fontSize: "0.8125rem" }}>La marque et les neutres
           suivent primary ; les états gardent leurs ancres.</p>
+          <Gamme primaire={primaire} />
           <Palette cle={`${themeEffectif}-${primaire}`} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["p01", "c1", "c2", "c4"]} />

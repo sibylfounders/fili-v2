@@ -22,7 +22,11 @@
      un rouge — il devient le rouge de cette famille-là (C3 : jamais la
      marque pour un état).
    · CALAGE — toute paire déclarée sous son seuil est recalée par recherche
-     de clarté, jamais laissée en dessous (C7, C9).
+     de clarté, jamais laissée en dessous (C7, C9). LA PRIMAIRE AUSSI :
+     une primaire trop claire pour tenir 4,5:1 est assombrie à luminosité
+     seule — la règle de la charte (« quatre couleurs assombries d'un cran
+     ou deux ; aucune n'a changé de famille »), mécanisée. La conformité
+     AA n'est pas vérifiée après coup : elle est obtenue par construction.
 
    Régénérer les jetons : node kit/derivation.mjs --css > (bloc tokens.css)
    Vérifier une primaire :  node kit/derivation.mjs "#0E7C5B"            */
@@ -98,20 +102,22 @@ export function partenaire(fond, [C, H], cible, { versLeBas = true } = {}) {
   }
   return meilleur
 }
-/* Le côté le plus lisible : clair d'abord ou sombre d'abord, au mieux. */
+/* Le côté le plus lisible : teinté d'abord, pur ensuite, l'autre côté enfin. */
 function surCouleur(fond, [C, H], cible, prefere = 'clair') {
-  const clair = lchVersHex([0.985, Math.min(C, 0.02), H])
-  const sombre = lchVersHex([0.145, Math.min(C, 0.03), H])
-  const ordre = prefere === 'clair' ? [clair, sombre] : [sombre, clair]
+  const clairs = [lchVersHex([0.985, Math.min(C, 0.02), H]), '#FFFFFF']
+  const sombres = [lchVersHex([0.145, Math.min(C, 0.03), H]), '#000000']
+  const ordre = prefere === 'clair' ? [...clairs, ...sombres] : [...sombres, ...clairs]
   for (const hex of ordre) if (contraste(hex, fond) >= cible) return hex
-  return contraste(clair, fond) >= contraste(sombre, fond) ? clair : sombre
+  return ordre.reduce((a, b) => (contraste(a, fond) >= contraste(b, fond) ? a : b))
 }
-/* Une valeur ancrée, recalée si sa paire ne tient pas son seuil. */
+/* Une valeur ancrée, recalée si une de ses paires ne tient pas son seuil —
+   contre TOUS ses fonds : la contrainte la plus dure gagne. */
 function cale(hex, fonds, cible, [C, H], { versLeBas = true } = {}) {
-  if (fonds.every((f) => contraste(hex, f) >= cible)) return hex
-  let pire = fonds[0]
-  for (const f of fonds) if (contraste(hex, f) < contraste(hex, pire)) pire = f
-  return partenaire(pire, [C, H], cible, { versLeBas })
+  let retenu = hex
+  for (let passe = 0; passe < 2; passe++)
+    for (const f of fonds)
+      if (contraste(retenu, f) < cible) retenu = partenaire(f, [C, H], cible, { versLeBas })
+  return retenu
 }
 
 export const PRIMAIRE_DEFAUT = '#4F46E5'
@@ -147,17 +153,19 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   dark['text-secondary'] = cale(lchVersHex([0.714, 0.019, H]), [dark.bg, dark.surface], 4.5, [0.019, H], { versLeBas: false })
   dark['border-strong'] = cale(lchVersHex([0.714, 0.019, H]), [dark.bg, dark.surface], 3, [0.019, H], { versLeBas: false })
 
-  /* ── Marque — la décision, et ses partenaires calculées ── */
-  light.primary = rgbVersHex(hexVersRgb(primaire))
-  light['primary-hover'] = lchVersHex([Lp - 0.054, Cp, H])
-  light['on-primary'] = surCouleur(light.primary, [0.02, H], 4.5, 'clair')
+  /* ── Marque — la décision, calée AA si besoin, et ses partenaires ── */
   light['primary-subtle'] = lchVersHex([0.930, 0.033, H])
+  const saisie = rgbVersHex(hexVersRgb(primaire))
+  light.primary = cale(saisie, [light.bg, light['primary-subtle']], 4.5, [Cp, H])
+  const Lr = hexVersLch(light.primary)[0]
+  light['primary-hover'] = cale(lchVersHex([Lr - 0.054, Cp, H]), [light.bg], 4.5, [Cp, H])
+  light['on-primary'] = surCouleur(light.primary, [0.02, H], 4.5, 'clair')
   light['on-primary-subtle'] = cale(lchVersHex([0.398, 0.177, H]), [light['primary-subtle']], 4.5, [0.177, H])
 
-  dark.primary = lchVersHex([0.680, Cp, H])
-  dark['primary-hover'] = lchVersHex([0.785, Cp * 0.66, H])
-  dark['on-primary'] = surCouleur(dark.primary, [0.03, H], 4.5, 'sombre')
   dark['primary-subtle'] = lchVersHex([0.257, 0.086, H])
+  dark.primary = cale(lchVersHex([0.680, Cp, H]), [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { versLeBas: false })
+  dark['primary-hover'] = cale(lchVersHex([0.785, Cp * 0.66, H]), [dark.bg], 4.5, [Cp * 0.66, H], { versLeBas: false })
+  dark['on-primary'] = surCouleur(dark.primary, [0.03, H], 4.5, 'sombre')
   dark['on-primary-subtle'] = cale(lchVersHex([0.870, 0.062, H]), [dark['primary-subtle']], 4.5, [0.062, H], { versLeBas: false })
 
   /* ── Accent — l'anneau de focus : l'écart de la charte, conservé ── */
@@ -189,7 +197,26 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   light['code-bg'] = dark['code-bg'] = '#1C1928'
   light['code-text'] = dark['code-text'] = '#C9C4F8'
 
-  return { light, dark }
+  /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu. */
+  const meta = { saisie, retenue: light.primary, ajustee: saisie !== light.primary }
+  return { light, dark, meta }
+}
+
+/* La gamme primitive 50–950, dérivée de la primaire : les clartés de la
+   gamme de référence (l'indigo du registre), le chroma mis à l'échelle de
+   la primaire saisie, sa teinte partout. Une gamme d'ILLUSTRATION : les
+   rôles ne consomment jamais une primitive — elle montre l'échelle sur
+   laquelle les rôles se posent. */
+const GAMME_ANCRES = [
+  [50, 0.962, 0.018], [100, 0.930, 0.033], [200, 0.870, 0.062],
+  [300, 0.785, 0.104], [400, 0.680, 0.158], [500, 0.585, 0.204],
+  [600, 0.511, 0.230], [700, 0.457, 0.215], [800, 0.398, 0.177],
+  [900, 0.359, 0.135], [950, 0.257, 0.086],
+]
+export function gamme(primaire = PRIMAIRE_DEFAUT) {
+  const [, Cp, H] = hexVersLch(primaire)
+  const ratio = Cp / 0.230 /* le chroma de la saisie, rapporté au cran 600 de référence */
+  return GAMME_ANCRES.map(([cran, L, C]) => [cran, lchVersHex([L, C * ratio, H])])
 }
 
 /* Les paires déclarées (C7) — celles que la page mesure. */
