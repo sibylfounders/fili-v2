@@ -10,10 +10,13 @@
    Les règles du calcul :
    · NEUTRES — clartés et chromas de la charte, teinte = celle de primary :
      teinter un neutre à luminance quasi constante est gratuit (C15).
-   · MARQUE — primary est la décision ; hover, subtle et leurs textes sont
-     des ancres de clarté/chroma posées par la charte, à la teinte de primary.
-     Les textes « on-* » sont CHERCHÉS : la partenaire la plus proche qui
-     tient son seuil (C7).
+   · MARQUE — primary est la décision, et reste ENTIÈRE : l'aplat d'action
+     porte la couleur saisie telle quelle, son texte on-primary est CHERCHÉ
+     du côté qui tient (noir sur une marque claire, blanc sur une sombre).
+     Seul primary-text — le lien, du texte posé sur les fonds — est calé
+     AA quand la marque ne tient pas 4,5:1 : on assombrit le lien, jamais
+     la marque. hover, subtle et leurs textes sont des ancres de clarté et
+     de chroma posées par la charte, à la teinte de primary (C7).
    · ACCENT — l'anneau de focus garde l'écart de teinte que la charte lui
      donne face à primary (−55°) : il tourne avec la marque, sans jamais se
      confondre avec elle.
@@ -22,11 +25,10 @@
      un rouge — il devient le rouge de cette famille-là (C3 : jamais la
      marque pour un état).
    · CALAGE — toute paire déclarée sous son seuil est recalée par recherche
-     de clarté, jamais laissée en dessous (C7, C9). LA PRIMAIRE AUSSI :
-     une primaire trop claire pour tenir 4,5:1 est assombrie à luminosité
-     seule — la règle de la charte (« quatre couleurs assombries d'un cran
-     ou deux ; aucune n'a changé de famille »), mécanisée. La conformité
-     AA n'est pas vérifiée après coup : elle est obtenue par construction.
+     de clarté, jamais laissée en dessous (C7, C9) — la règle de la charte
+     (« assombries d'un cran ou deux ; aucune n'a changé de famille »),
+     mécanisée. La conformité AA n'est pas vérifiée après coup : elle est
+     obtenue par construction.
 
    Régénérer les jetons : node kit/derivation.mjs --css > (bloc tokens.css)
    Vérifier une primaire :  node kit/derivation.mjs "#0E7C5B"            */
@@ -153,19 +155,27 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   dark['text-secondary'] = cale(lchVersHex([0.714, 0.019, H]), [dark.bg, dark.surface], 4.5, [0.019, H], { versLeBas: false })
   dark['border-strong'] = cale(lchVersHex([0.714, 0.019, H]), [dark.bg, dark.surface], 3, [0.019, H], { versLeBas: false })
 
-  /* ── Marque — la décision, calée AA si besoin, et ses partenaires ── */
-  light['primary-subtle'] = lchVersHex([0.930, 0.033, H])
+  /* ── Marque — la décision reste entière ; seul le lien est calé ── */
   const saisie = rgbVersHex(hexVersRgb(primaire))
-  light.primary = cale(saisie, [light.bg, light['primary-subtle']], 4.5, [Cp, H])
-  const Lr = hexVersLch(light.primary)[0]
-  light['primary-hover'] = cale(lchVersHex([Lr - 0.054, Cp, H]), [light.bg], 4.5, [Cp, H])
-  light['on-primary'] = surCouleur(light.primary, [0.02, H], 4.5, 'clair')
+  const cote = (hex) => (luminance(hex) > 0.1833 ? 'sombre' : 'clair') /* le côté qui peut tenir 4,5:1 */
+
+  light['primary-subtle'] = lchVersHex([0.930, 0.033, H])
+  light.primary = saisie /* l'aplat de marque : jamais touché */
+  light['primary-hover'] = lchVersHex([Lp - 0.054, Cp, H])
+  light['on-primary'] = surCouleur(light.primary, [0.02, H], 4.5, cote(light.primary))
+  light['primary-text'] = cale(saisie, [light.bg, light.surface, light['primary-subtle']], 4.5, [Cp, H])
+  const Lt = hexVersLch(light['primary-text'])[0]
+  light['primary-text-hover'] = cale(lchVersHex([Lt - 0.05, Cp, H]), [light.bg, light.surface], 4.5, [Cp, H])
   light['on-primary-subtle'] = cale(lchVersHex([0.398, 0.177, H]), [light['primary-subtle']], 4.5, [0.177, H])
 
   dark['primary-subtle'] = lchVersHex([0.257, 0.086, H])
-  dark.primary = cale(lchVersHex([0.680, Cp, H]), [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { versLeBas: false })
-  dark['primary-hover'] = cale(lchVersHex([0.785, Cp * 0.66, H]), [dark.bg], 4.5, [Cp * 0.66, H], { versLeBas: false })
-  dark['on-primary'] = surCouleur(dark.primary, [0.03, H], 4.5, 'sombre')
+  dark.primary = Lp >= 0.62 ? saisie : lchVersHex([0.680, Cp, H]) /* une marque claire vit telle quelle en sombre */
+  const Lb = hexVersLch(dark.primary)[0]
+  dark['primary-hover'] = lchVersHex([Math.min(Lb + 0.08, 0.92), Cp * 0.66, H])
+  dark['on-primary'] = surCouleur(dark.primary, [0.03, H], 4.5, cote(dark.primary))
+  dark['primary-text'] = cale(dark.primary, [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { versLeBas: false })
+  const Ltd = hexVersLch(dark['primary-text'])[0]
+  dark['primary-text-hover'] = cale(lchVersHex([Math.min(Ltd + 0.05, 0.95), Cp * 0.66, H]), [dark.bg, dark.surface], 4.5, [Cp * 0.66, H], { versLeBas: false })
   dark['on-primary-subtle'] = cale(lchVersHex([0.870, 0.062, H]), [dark['primary-subtle']], 4.5, [0.062, H], { versLeBas: false })
 
   /* ── Accent — l'anneau de focus : l'écart de la charte, conservé ── */
@@ -197,8 +207,9 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   light['code-bg'] = dark['code-bg'] = '#1C1928'
   light['code-text'] = dark['code-text'] = '#C9C4F8'
 
-  /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu. */
-  const meta = { saisie, retenue: light.primary, ajustee: saisie !== light.primary }
+  /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu.
+     La marque (l'aplat) n'est jamais touchée ; seul le lien peut l'être. */
+  const meta = { saisie, aplat: light.primary, lien: light['primary-text'], lienAjuste: saisie !== light['primary-text'] }
   return { light, dark, meta }
 }
 
@@ -223,9 +234,9 @@ export function gamme(primaire = PRIMAIRE_DEFAUT) {
 export const PAIRES_DECLAREES = [
   ['text-primary', 'bg', 4.5], ['text-primary', 'surface', 4.5],
   ['text-secondary', 'bg', 4.5], ['text-secondary', 'surface', 4.5],
-  ['primary', 'bg', 4.5], ['primary-hover', 'bg', 4.5],
+  ['primary-text', 'bg', 4.5], ['primary-text', 'surface', 4.5], ['primary-text-hover', 'bg', 4.5],
   ['on-primary', 'primary', 4.5],
-  ['primary', 'primary-subtle', 4.5], ['on-primary-subtle', 'primary-subtle', 4.5],
+  ['primary-text', 'primary-subtle', 4.5], ['on-primary-subtle', 'primary-subtle', 4.5],
   ['danger', 'danger-subtle', 4.5], ['on-danger', 'danger', 4.5],
   ['success', 'success-subtle', 4.5], ['on-success', 'success', 4.5],
   ['warning', 'warning-subtle', 4.5], ['on-warning', 'warning', 4.5],
@@ -247,7 +258,7 @@ export function verifier(pal) {
 export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
   const ligne = (o, n) => `  --${n}: ${o[n]};`
   const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'border', 'border-strong',
-    'primary', 'primary-hover', 'on-primary', 'primary-subtle', 'on-primary-subtle', 'accent',
+    'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent',
     'danger', 'danger-subtle', 'on-danger', 'success', 'success-subtle', 'on-success',
     'warning', 'warning-subtle', 'on-warning', 'info', 'info-subtle', 'on-info', 'code-bg', 'code-text']
   const bloc = (o) => NOMS.map((n) => ligne(o, n)).join('\n')

@@ -178,6 +178,8 @@
   --primary: #4F46E5;
   --primary-hover: #4332D2;
   --on-primary: #F9FAFF;
+  --primary-text: #4F46E5;
+  --primary-text-hover: #4433D3;
   --primary-subtle: #E2E6FF;
   --on-primary-subtle: #3630A3;
   --accent: #0791B2;
@@ -207,8 +209,10 @@
   --border: #252736;
   --border-strong: #9FA2AF;
   --primary: #808BFC;
-  --primary-hover: #A7B3FF;
+  --primary-hover: #9DA9FF;
   --on-primary: #070916;
+  --primary-text: #808BFC;
+  --primary-text-hover: #929EFE;
   --primary-subtle: #1A1C4C;
   --on-primary-subtle: #C9D1FE;
   --accent: #0791B2;
@@ -239,8 +243,10 @@
     --border: #252736;
     --border-strong: #9FA2AF;
     --primary: #808BFC;
-    --primary-hover: #A7B3FF;
+    --primary-hover: #9DA9FF;
     --on-primary: #070916;
+    --primary-text: #808BFC;
+    --primary-text-hover: #929EFE;
     --primary-subtle: #1A1C4C;
     --on-primary-subtle: #C9D1FE;
     --accent: #0791B2;
@@ -260,6 +266,7 @@
     --code-text: #C9C4F8;
   }
 }
+
 
 
 /* ── ADAPTATION SHADCN — géométrie seule : rayons md fixes, contrôles

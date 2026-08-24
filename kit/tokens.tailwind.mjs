@@ -82,6 +82,8 @@ export const color = {
       DEFAULT: "var(--primary)",
       hover: "var(--primary-hover)",
       subtle: "var(--primary-subtle)",
+      text: "var(--primary-text)",
+      "text-hover": "var(--primary-text-hover)",
     },
     "on-primary": {
       DEFAULT: "var(--on-primary)",
@@ -97,6 +99,17 @@ export const color = {
       subtle: "var(--success-subtle)",
     },
     "on-success": "var(--on-success)",
+    warning: {
+      DEFAULT: "var(--warning)",
+      subtle: "var(--warning-subtle)",
+    },
+    "on-warning": "var(--on-warning)",
+    info: {
+      DEFAULT: "var(--info)",
+      subtle: "var(--info-subtle)",
+    },
+    "on-info": "var(--on-info)",
+    accent: "var(--accent)",
     code: { bg: "var(--code-bg)", text: "var(--code-text)" },
   },
 };

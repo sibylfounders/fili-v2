@@ -63,10 +63,11 @@ const PAIRES: [string, string, string, number][] = [
   ["--text-primary", "--surface", "l'encre sur le gris posé", 4.5],
   ["--text-secondary", "--bg", "le texte second sur le blanc", 4.5],
   ["--text-secondary", "--surface", "le texte second sur le gris", 4.5],
-  ["--primary", "--bg", "le lien sur le blanc", 4.5],
-  ["--primary-hover", "--bg", "le lien survolé — C8", 4.5],
-  ["--on-primary", "--primary", "le texte de l'action pleine", 4.5],
-  ["--primary", "--primary-subtle", "le badge sur son fond doux", 4.5],
+  ["--primary-text", "--bg", "le lien sur le blanc", 4.5],
+  ["--primary-text", "--surface", "le lien sur le gris", 4.5],
+  ["--primary-text-hover", "--bg", "le lien survolé — C8", 4.5],
+  ["--on-primary", "--primary", "le texte sur la marque pleine", 4.5],
+  ["--primary-text", "--primary-subtle", "le badge sur son fond doux", 4.5],
   ["--on-primary-subtle", "--primary-subtle", "le texte sur fond doux", 4.5],
   ["--danger", "--danger-subtle", "danger sur son fond doux", 4.5],
   ["--on-danger", "--danger", "le texte sur danger plein", 4.5],
@@ -615,9 +616,9 @@ export default function Vue() {
                 ? `${fautesDerivation.length} paire(s) sous le seuil`
                 : "40 paires · 2 thèmes — AA par construction"}
             </span>
-            {paletteDerivee.meta.ajustee && (
+            {paletteDerivee.meta.lienAjuste && (
               <span className="badge" style={{ color: "var(--warning)", background: "var(--warning-subtle)" }}>
-                calée AA : {paletteDerivee.meta.saisie} → {paletteDerivee.meta.retenue} — seule la luminosité a bougé
+                la marque reste entière — seul le lien est calé : {paletteDerivee.meta.saisie} → {paletteDerivee.meta.lien}
               </span>
             )}
           </div>

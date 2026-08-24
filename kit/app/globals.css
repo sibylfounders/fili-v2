@@ -5,8 +5,8 @@ body {
   margin: 0; background: var(--surface); color: var(--text-primary);
   font: 400 var(--font-size-base)/var(--leading-body) var(--font-sans);
 }
-a { color: var(--primary); }
-a:hover { color: var(--primary-hover); }
+a { color: var(--primary-text); }
+a:hover { color: var(--primary-text-hover); }
 .chrome {
   position: sticky; top: 0; z-index: 30; min-height: 3.5rem;
   display: flex; align-items: center; gap: var(--space-inline-unit);
@@ -32,7 +32,7 @@ p { margin: 0; }
 }
 .badge {
   display: inline-block; font: 700 0.6875rem/1 var(--font-mono);
-  color: var(--primary); background: var(--primary-subtle);
+  color: var(--primary-text); background: var(--primary-subtle);
   border-radius: var(--radius); padding: var(--space-block-sm) var(--space-inline-sm);
   text-decoration: none;
 }
@@ -80,7 +80,7 @@ pre.code {
   margin-top: var(--space-block-unit); }
 .navigation a { text-decoration: none; color: var(--text-primary);
   padding: var(--space-block-sm) var(--space-inline-sm); border-radius: var(--radius); }
-.navigation a.actif { background: var(--primary-subtle); color: var(--primary); font-weight: 600; }
+.navigation a.actif { background: var(--primary-subtle); color: var(--primary-text); font-weight: 600; }
 .navigation .venir { color: var(--text-secondary); padding: var(--space-block-sm) var(--space-inline-sm); }
 .contenu { grid-area: main; min-width: 0;
   background: var(--bg); border-inline: 1px solid var(--border);
@@ -93,7 +93,7 @@ pre.code {
 .chapo { font-size: var(--font-size-h3); line-height: 1.55; color: var(--text-secondary); max-width: var(--measure); }
 .chapo b { color: var(--text-primary); }
 .kicker { font: 700 0.6875rem/1 var(--font-mono); letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--primary); }
+  text-transform: uppercase; color: var(--primary-text); }
 .bloc-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-block-card); }
 .bloc-section > p.sourd { max-width: var(--measure); }
 .reglages {
@@ -273,7 +273,7 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 .tuile-titre { font-size: var(--font-size-h2); font-weight: 600; letter-spacing: -0.015em; }
 .tuile-specimen { display: flex; flex-direction: column; gap: var(--space-block-sm);
   padding: var(--space-block-unit) 0; color: var(--text-primary); }
-.tuile-appel { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
+.tuile-appel { color: var(--primary-text); font-weight: 600; font-size: 0.875rem; }
 .etapes { display: grid; gap: var(--space-block-unit); max-width: var(--measure); }
 .etapes .regle { display: grid; gap: var(--space-block-xs); }
 
