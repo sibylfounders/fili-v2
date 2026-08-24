@@ -172,13 +172,13 @@ function Regles({ ids }: { ids: string[] }) {
 
 /* ── 01 · La mosaïque de la charte : la palette composée comme une affiche,
    chaque tuile cliquable copie sa valeur — lue au rendu, elle suit le thème. ── */
-const TUILES: { nom: string; jeton: string; sur: string; col: string; row: string; bord?: boolean }[] = [
-  { nom: "primary", jeton: "--primary", sur: "--on-primary", col: "1 / 8", row: "1" },
-  { nom: "background", jeton: "--bg", sur: "--text-primary", col: "8 / 13", row: "1", bord: true },
-  { nom: "primary-subtle", jeton: "--primary-subtle", sur: "--on-primary-subtle", col: "1 / 4", row: "2 / 4" },
-  { nom: "text-primary", jeton: "--text-primary", sur: "--bg", col: "4 / 13", row: "2" },
-  { nom: "surface", jeton: "--surface", sur: "--text-primary", col: "4 / 9", row: "3", bord: true },
-  { nom: "border-strong", jeton: "--border-strong", sur: "--bg", col: "9 / 13", row: "3" },
+const TUILES: { nom: string; jeton: string; sur: string; col: string; row: string; registre: string; bord?: boolean }[] = [
+  { nom: "primary", jeton: "--primary", sur: "--on-primary", col: "1 / 8", row: "1", registre: "marque" },
+  { nom: "background", jeton: "--bg", sur: "--text-primary", col: "8 / 13", row: "1", registre: "neutre", bord: true },
+  { nom: "primary-subtle", jeton: "--primary-subtle", sur: "--on-primary-subtle", col: "1 / 4", row: "2 / 4", registre: "marque" },
+  { nom: "text-primary", jeton: "--text-primary", sur: "--bg", col: "4 / 13", row: "2", registre: "neutre" },
+  { nom: "surface", jeton: "--surface", sur: "--text-primary", col: "4 / 9", row: "3", registre: "neutre", bord: true },
+  { nom: "border-strong", jeton: "--border-strong", sur: "--bg", col: "9 / 13", row: "3", registre: "neutre" },
 ];
 const PROPORTIONS: { nom: string; jeton: string; sur: string; part: number; bord?: boolean }[] = [
   { nom: "background", jeton: "--bg", sur: "--text-primary", part: 56, bord: true },
@@ -247,7 +247,10 @@ function Palette({ cle }: { cle: string }) {
               display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between",
               padding: "var(--space-block-md) var(--space-inline-unit)", cursor: "pointer", font: "inherit", textAlign: "left", minWidth: 0, overflow: "hidden",
             }}>
-              <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
+              <span style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", width: "100%", gap: "var(--space-inline-sm)" }}>
+                <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
+                <span className="mono" style={{ fontWeight: 400, fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>{t.registre}</span>
+              </span>
               <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{t.jeton} · {hexs[t.jeton] ?? "…"}</span>
             </button>
           ))}
