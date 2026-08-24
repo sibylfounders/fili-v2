@@ -248,7 +248,7 @@ function Palette({ cle }: { cle: string }) {
               padding: "var(--space-block-md) var(--space-inline-unit)", cursor: "pointer", font: "inherit", textAlign: "left", minWidth: 0, overflow: "hidden",
             }}>
               <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
-              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem", opacity: 0.85 }}>{t.jeton} · {hexs[t.jeton] ?? "…"}</span>
+              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{t.jeton} · {hexs[t.jeton] ?? "…"}</span>
             </button>
           ))}
         </div>
@@ -262,7 +262,7 @@ function Palette({ cle }: { cle: string }) {
               padding: "var(--space-block-md) var(--space-inline-sm)", cursor: "pointer", font: "inherit", textAlign: "left", overflow: "hidden",
             }}>
               <span style={{ fontWeight: 600, fontSize: "0.6875rem", whiteSpace: "nowrap" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
-              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem", opacity: 0.85 }}>{t.part} %</span>
+              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{t.part} %</span>
             </button>
           ))}
         </div>
