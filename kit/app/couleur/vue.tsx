@@ -85,7 +85,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Material 3 — color roles", h: "https://developer.android.com/design/ui/mobile/guides/styles/color" }, { t: "GOV.UK — Colour", h: "https://design-system.service.gov.uk/styles/colour/" }] },
   { id: "c1", nom: "C1", titre: "La valeur vit dans un seul fichier",
     enonce: "Le rôle d'une couleur et sa valeur sont deux décisions distinctes : les composants référencent le rôle, la valeur vit dans une source unique et peut changer entièrement sans qu'aucune règle bouge.",
-    pourquoi: "Un composant qui référence un rôle survit au rebranding ; un composant qui référence un bleu meurt avec lui. Et une valeur en dur ignore les thèmes — vous venez de le voir.",
+    pourquoi: "Un composant qui référence un rôle survit au rebranding ; un composant qui référence un bleu meurt avec lui. Et une valeur en dur ignore les thèmes : elle resterait claire quand la page bascule en sombre.",
     src: [{ t: "Polaris — color-no-hex (interdit outillé)", h: "https://polaris.shopify.com/tools/stylelint-polaris/rules/color-color-no-hex" }, { t: "Atlassian — color foundations", h: "https://atlassian.design/foundations/color" }] },
   { id: "c2", nom: "C2", titre: "Trois registres étanches",
     enonce: "La palette se répartit en trois registres — marque, sémantique, neutres — et chaque jeton appartient à exactement un.",
@@ -522,8 +522,6 @@ export class AlerteErreur {}`,
 };
 
 export default function Vue() {
-  const [demoTheme, setDemoTheme] = useState<"light" | "dark">("light");
-  const [dur, setDur] = useState(false);
   const [couleurSeule, setCouleurSeule] = useState(false);
   const [gris, setGris] = useState(false);
   const [marque, setMarque] = useState(false);
@@ -558,42 +556,9 @@ export default function Vue() {
           <p className="kicker">01 · La palette</p>
           <h2>Six rôles composent la page — la marque n&apos;en prend que 5 %</h2>
           <p className="sourd">La mosaïque montre les rôles ; la vue Proportions montre leur
-          juste part dans un écran. Chaque tuile lit sa valeur sur la page rendue : passez
-          l&apos;aperçu en sombre, tout suit. La casse montre l&apos;autre chemin — une
-          carte peinte par valeurs codées en dur, invisible en clair… et qui reste claire
-          quand le thème bascule.</p>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            {([["light", "clair"], ["dark", "sombre"]] as const).map(([t, nom]) => (
-              <button key={t} className={`bouton ${demoTheme === t ? "on" : ""}`} onClick={() => setDemoTheme(t)}>
-                aperçu {nom}
-              </button>
-            ))}
-            <button className={`bouton casse ${dur ? "on" : ""}`} onClick={() => setDur(!dur)}>
-              {dur ? "Réparer" : "Casser : des valeurs en dur"}
-            </button>
-          </div>
-          <div data-theme={demoTheme} style={{
-            width: "100%", background: "var(--bg)", color: "var(--text-primary)",
-            border: "1px solid var(--border)", borderRadius: "var(--radius-card)",
-            padding: "var(--space-block-card) var(--space-inline-2xl)",
-            display: "grid", gap: "var(--space-block-card)", textAlign: "left",
-          }}>
-            <Palette cle={demoTheme} />
-            <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
-              <div style={dur
-                ? { background: "#E0E7FF", color: "#3730A3", border: "1px solid #4F46E5", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }
-                : { background: "var(--primary-subtle)", color: "var(--on-primary-subtle)", border: "1px solid var(--primary)", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }}>
-                {dur ? "Cette carte est peinte par valeur : #E0E7FF, #3730A3." : "Cette carte est peinte par rôle : primary-subtle, on-primary-subtle."}
-              </div>
-              {dur && (
-                <span className={`badge ${demoTheme === "dark" ? "ko" : ""}`}>
-                  {demoTheme === "dark"
-                    ? "restée claire — la valeur en dur ignore le thème (C1, C12)"
-                    : "identique à l'œil — en clair, rien ne signale la faute : basculez l'aperçu en sombre"}
-                </span>
-              )}
-            </div>
-          </div>
+          juste part dans un écran. Chaque tuile lit sa valeur sur la page rendue — basculez
+          le thème à droite, tout suit — et un clic copie la valeur.</p>
+          <Palette cle={themeEffectif} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["p01", "c1", "c2", "c4"]} />
           </div></details>
