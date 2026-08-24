@@ -1,6 +1,7 @@
 import { Navigation } from "./nav";
 import { Densite } from "./densite";
 import { Theme } from "./theme";
+import { Primaire } from "./primaire";
 
 export default function Accueil() {
   return (
@@ -94,6 +95,7 @@ export default function Accueil() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Primaire />
         <Theme />
         <Densite />
         <p className="sourd" style={{ fontSize: "0.75rem" }}>Le thème et la densité

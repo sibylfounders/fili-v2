@@ -5,6 +5,7 @@ import { Apercu, PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme } from "../theme";
+import { Primaire } from "../primaire";
 
 /* L'échelle de travail des corps — mêmes valeurs que tokens.css.
    L'aperçu recalcule chaque échelon pour SA largeur, et le « zoom lecteur »
@@ -484,6 +485,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Primaire />
         <Theme />
         <Densite />
         <Adaptation />

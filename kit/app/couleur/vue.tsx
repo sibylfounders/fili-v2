@@ -5,7 +5,8 @@ import { PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme, useTheme, useSchemeSysteme } from "../theme";
-import { derive, verifier, gamme, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
+import { derive, verifier, gamme } from "../../derivation.mjs";
+import { Primaire, usePrimaire } from "../primaire";
 
 /* La page vivante de la famille couleur (COLOR-UX.md, C1–C16),
    dérivée d'UNE décision d'entrée — primary — par kit/derivation.mjs,
@@ -571,7 +572,7 @@ export default function Vue() {
   const [filtre, setFiltre] = useState(false);
   const [actionSombre, setActionSombre] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const [primaire, setPrimaire] = useState<string>(PRIMAIRE_DEFAUT);
+  const { primaire } = usePrimaire();
   const { styl } = useAdaptation();
   const { theme } = useTheme();
   const sysSombre = useSchemeSysteme();
@@ -580,19 +581,9 @@ export default function Vue() {
   const actionSombreStyle: React.CSSProperties = { ["--primary" as any]: "#312E81" };
   const paletteDerivee = useMemo(() => derive(primaire), [primaire]);
   const fautesDerivation = useMemo(() => verifier(paletteDerivee), [paletteDerivee]);
-  const cssDerive = useMemo(() => {
-    const bloc = (o: Record<string, string>) => Object.entries(o).map(([n, v]) => `--${n}: ${v};`).join(" ");
-    const l = paletteDerivee.light as unknown as Record<string, string>;
-    const d = paletteDerivee.dark as unknown as Record<string, string>;
-    const base = themeEffectif === "dark" ? d : l;
-    /* Toute la page — démos, panneaux forcés clair/sombre, sondes de mesure —
-       vit dans la famille dérivée du sélecteur primary. */
-    return `.famille-derivee { ${bloc(base)} } .famille-derivee [data-theme="light"] { ${bloc(l)} } .famille-derivee [data-theme="dark"] { ${bloc(d)} }`;
-  }, [paletteDerivee, themeEffectif]);
 
   return (
-    <div className="coquille famille-derivee">
-      <style dangerouslySetInnerHTML={{ __html: cssDerive }} />
+    <div className="coquille">
       <Navigation actif="couleur" />
 
       <main className="contenu">
@@ -607,13 +598,6 @@ export default function Vue() {
           <p className="kicker">01 · La palette</p>
           <h2>Une décision : primary — le reste se calcule</h2>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <input type="color" value={primaire} aria-label="Primary — la décision d'entrée"
-              onChange={(e) => setPrimaire(e.target.value.toUpperCase())}
-              style={{ width: "var(--control-height)", height: "var(--control-height)", padding: 0, border: "1px solid var(--border-strong)", borderRadius: "var(--radius)", background: "var(--bg)", cursor: "pointer" }} />
-            <span className="mono">{primaire}</span>
-            {primaire !== PRIMAIRE_DEFAUT && (
-              <button className="bouton" onClick={() => setPrimaire(PRIMAIRE_DEFAUT)}>Revenir à la charte</button>
-            )}
             <span className={`badge ${fautesDerivation.length ? "ko" : ""}`}>
               {fautesDerivation.length
                 ? `${fautesDerivation.length} paire(s) sous le seuil`
@@ -625,8 +609,9 @@ export default function Vue() {
               </span>
             )}
           </div>
-          <p className="sourd" style={{ fontSize: "0.8125rem" }}>La marque et les neutres
-          suivent primary ; les états gardent leurs ancres.</p>
+          <p className="sourd" style={{ fontSize: "0.8125rem" }}>Le sélecteur vit dans le
+          panneau de droite, en tête du theming : la marque et les neutres le suivent,
+          les états gardent leurs ancres — sur tout le site.</p>
           <Gamme primaire={primaire} />
           <Palette cle={`${themeEffectif}-${primaire}`} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -757,6 +742,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Primaire />
         <Theme />
         <Densite />
         <Adaptation />

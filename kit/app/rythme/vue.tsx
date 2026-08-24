@@ -5,6 +5,7 @@ import { Apercu, PanneauCode } from "../apercu";
 import { Densite, useDensite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme } from "../theme";
+import { Primaire } from "../primaire";
 
 /* Constantes des jetons — mêmes que tokens.css (valeurs lues sur le générateur
    de référence à 320 et 1440, interpolées). L'aperçu recalcule chaque cran
@@ -429,6 +430,7 @@ export default function Vue() {
 
       <aside className="reglages">
         <h3>Theming &amp; playground</h3>
+        <Primaire />
         <Theme />
         <Densite />
         <Adaptation />
