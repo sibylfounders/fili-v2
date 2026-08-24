@@ -2,7 +2,7 @@
 component: spacing
 layer: ux
 type: foundation
-version: 2.0.0 # 2.0.0 : REPRISE AU MOULE V2 (séance de passage du 2026-08-23, verdict d'Auteur règle par règle — cf. claude/reprise-rythme-regles.md). Les 24 lois deviennent : un principe de tête, neuf règles Y1-Y9 (énoncé + mesure + test + dépendance + verdict), cinq couvertures Gardien dites avec leurs nuances, une mesure de rendu, sept pièces de référence. Deux lois renversées en le disant : R20 → Y8 (l'échelle devient responsive, arbitrage d'Auteur du 2026-08-23, alignée sur l'Échelle Semantic Rhythm et GOV.UK) et R21 → Y9 (l'espacement passe en rem, décision #069 du 2026-08-12). R01 jetée et R02 résumée (ménage #097). Les valeurs vivent au registre ; l'Échelle Semantic Rhythm fait foi (#050). 1.3.0 : CRITERE posé sur R05 (2026-07-31). 1.2.0 : le rythme vertical entre dans la fondation (2026-07-21). 1.1.0 : le cadre de page passe à grid (2026-07-16). 1.0.0 : première rédaction.
+version: 2.1.0 # 2.0.0 : REPRISE AU MOULE V2 (séance de passage du 2026-08-23, verdict d'Auteur règle par règle — cf. claude/reprise-rythme-regles.md). Les 24 lois deviennent : un principe de tête, neuf règles Y1-Y9 (énoncé + mesure + test + dépendance + verdict), cinq couvertures Gardien dites avec leurs nuances, une mesure de rendu, sept pièces de référence. Deux lois renversées en le disant : R20 → Y8 (l'échelle devient responsive, arbitrage d'Auteur du 2026-08-23, alignée sur l'Échelle Semantic Rhythm et GOV.UK) et R21 → Y9 (l'espacement passe en rem, décision #069 du 2026-08-12). R01 jetée et R02 résumée (ménage #097). Les valeurs vivent au registre ; l'Échelle Semantic Rhythm fait foi (#050). 1.3.0 : CRITERE posé sur R05 (2026-07-31). 1.2.0 : le rythme vertical entre dans la fondation (2026-07-21). 1.1.0 : le cadre de page passe à grid (2026-07-16). 1.0.0 : première rédaction.
 last_updated: 2026-08-23
 companion: SPACING-UI.md
 confidence: mixed # la loi de proximité et la grille de base sont établies par convergence ; l'échelle responsive et le rem sont des arbitrages d'Auteur datés, tensions de source consignées
@@ -217,3 +217,44 @@ MESURE : les dimensions d'un squelette égalent celles du contenu réel ; aucun 
 - **Palier tablette** : au premier consommateur réel d'un 3e régime (Y7).
 - **Expansion de traduction** (~30 %) : traitement transversal un jour.
 - **Jetons négatifs** : aucun besoin interne à ce jour.
+
+## Complément du 24 août 2026 — six règles rapatriées de l'étalon (2.1.0)
+
+> Relecture de l'étalon Semantic Rhythm à la demande de l'Auteur : la première
+> reprise avait capturé l'échelle et neuf règles, l'étalon portait aussi une
+> doctrine. Séance rapide du 24 août : six règles gardées sur six.
+> Pièce : `claude/reprise-rythme-complement.md`.
+
+### RÈGLE [SPACING-Y10] — La profondeur choisit, pas toi
+ÉNONCÉ : La marge intérieure et le rayon d'une surface décroissent ensemble à chaque niveau d'imbrication, par le même diviseur — page, carte, sous-carte forment une chaîne, pas trois choix. Seuls les composants (bouton, pilule, champ) gardent leur rayon propre.
+MESURE : chaque niveau consomme les jetons de son niveau ; rayon(n+1) < rayon(n) et marge(n+1) < marge(n).
+PROVENANCE : étalon, leçon 2. VERDICT : gardée — séance du 24 août 2026.
+
+### RÈGLE [SPACING-Y11] — Les titres sortent du même pas
+ÉNONCÉ : Le corps reste stable ; les titres montent par pas de la même échelle — h2 = un pas au-dessus du corps, h1 = deux pas. L'échelle des titres dérive des mêmes décisions que les espaces.
+MESURE : les corps de titres résolvent les jetons dérivés du générateur (--rr-heading-1, --rr-heading-2), lus mécaniquement : h2 = corps × pas, h1 = corps × pas² (pas actuel du registre : 1,25). Bornés par TYPOGRAPHY-T4 (≤ 2,5×).
+PROVENANCE : étalon (échelle des titres) ; jetons jamais repris jusqu'ici. VERDICT : gardée — séance du 24 août 2026.
+NOTE DE RÉCONCILIATION : l'échelle de travail typographique du kit (titre-1, affiche) reste en place pour les pages éditoriales tant que le registre n'a pas arbitré la fusion — dit, pas caché.
+
+### RÈGLE [SPACING-Y12] — Des rapports, jamais des soustractions
+ÉNONCÉ : Les crans naissent d'un diviseur appliqué en chaîne, jamais d'une différence fixe — l'œil lit les rapports, pas les écarts : 24, 20, 16 font trois crans presque jumeaux.
+MESURE : le rapport entre crans consécutifs est constant, au diviseur du registre près ; aucune suite arithmétique.
+PROVENANCE : étalon, leçon 5. VERDICT : gardée — séance du 24 août 2026.
+
+### RÈGLE [SPACING-Y13] — Le bord vaut deux écarts
+ÉNONCÉ : La marge intérieure d'un groupe vaut deux fois l'écart entre ses enfants — « 12 entre, 24 autour ». Un seul curseur : le bord suit.
+MESURE : inset du groupe = 2 × gap du groupe, sur l'échelle. Précise Y1 (qui dit seulement ≤).
+PROVENANCE : étalon, leçon 4. VERDICT : gardée — séance du 24 août 2026.
+
+### RÈGLE [SPACING-Y14] — Deux questions choisissent le cran (méthode)
+ÉNONCÉ : Le bon cran ne se choisit pas à l'œil, il se déduit : est-ce un espace, une marge intérieure ou un coin ? puis : le lien est-il intime, entre frères ou entre groupes ? La réponse désigne le jeton.
+MESURE : aucune (guide de décision) — chaque valeur posée doit pouvoir citer ses deux réponses.
+PROVENANCE : étalon, leçon 7. VERDICT : gardée — séance du 24 août 2026.
+
+### RÈGLE [SPACING-Y15] — Les six invariants d'audit
+ÉNONCÉ : Six invariants tiennent le système sur toute vue : aucun enfant plus rond que son parent · aucune surface plus épaisse que son contenant · deux axes verticaux par carte, jamais trois · icônes et jauges alignées au pixel entre sœurs · zéro débord à la largeur minimale du registre · l'écart entre surfaces ≥ leur marge intérieure.
+MESURE : les six, telles quelles — assertions prêtes pour le jour où le Gardien mord sur le kit (condition dite de COMPOSITION-UX).
+PROVENANCE : étalon, leçon 8. VERDICT : gardée — séance du 24 août 2026.
+
+### Au registre (complément)
+Les trois décisions maîtresses (base · intervalle : tierce 5:4, quarte 4:3, √2, quinte 3:2, φ, octave · rayon racine) et les six préréglages métier de l'étalon (Outil expert 20·4:3·r8 · Produit SaaS 24·√2·r24 · Grand public 24·3:2·r32 · Ludique 28·φ·r44 · Éditorial-luxe 32·φ·r4 · Technique 16·5:4·r0). Renvois : le coin concentrique borné → ARRONDIS ; « le gris regroupe, le blanc porte » → SURFACES ; « un signal par intention » → COULEUR.

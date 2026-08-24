@@ -2,8 +2,8 @@
 component: composition
 layer: ux
 type: foundation # la contrainte transversale qui règle la PAGE, quand les autres familles règlent les éléments
-version: 1.0.0 # 1.0.0 : première rédaction au moule V2, actée EN BLOC par l'Auteur le 23 août 2026 (« go on ajoute ça ») — huit règles nées de l'inventaire (quinze lois du fonds, sept déjà couvertes ailleurs), des cinq planches annotées fournies par l'Auteur, et de la leçon des vingt retours sur le kit. Aucun CRITERE posé : les assertions viendront quand le Gardien mordra sur le kit.
-last_updated: 2026-08-23
+version: 1.1.0 # 1.1.0 : section « Les gabarits » — entrée des règles CG issues du relevé du 24 août 2026 (claude/releve-gabarits-2026-08-24.md), validées en bloc sur pièce (kit-rythme-nu.html, verdict PARFAIT) puis actées une par une au moule V2, verdict d'Auteur à chaque énoncé, dans le thread d'application du gabarit. CG1 actée le 24 août. 1.0.0 : première rédaction au moule V2, actée EN BLOC par l'Auteur le 23 août 2026 (« go on ajoute ça ») — huit règles nées de l'inventaire (quinze lois du fonds, sept déjà couvertes ailleurs), des cinq planches annotées fournies par l'Auteur, et de la leçon des vingt retours sur le kit. Aucun CRITERE posé : les assertions viendront quand le Gardien mordra sur le kit.
+last_updated: 2026-08-24
 confidence: mixed # la Gestalt est établie (un siècle de littérature) ; la part décidable par machine varie règle par règle, dite à chaque fois
 ---
 
@@ -95,6 +95,27 @@ SOURCE : S6
 ÉNONCÉ : On compose en partant de trop de blanc, puis on retire — jamais l'inverse. On ne remplit pas l'écran : chaque élément reçoit son air avant qu'on resserre.
 MESURE : aucune — c'est un ordre des opérations, vérifié par la relecture.
 VERDICT : actée en bloc — accord d'Auteur du 23 août 2026.
+
+## Les gabarits — les règles CG
+
+> Nées du relevé du 24 août 2026 : la page Rythme du kit était « propre mais
+> fade » — générique. Deux références mesurées (shadcn, Material), une page
+> d'Auteur mesurée dans le code (Coursue), et trois tempéraments identifiés :
+> **éditorial** (raconter), **documentaire nu** (documenter — le tempérament
+> naturel des pages du kit), **applicatif emboîté** (démos et tranches
+> d'application). Les cinq règles CG ont été validées EN BLOC sur pièce
+> (`kit-rythme-nu.html`, verdict PARFAIT) ; elles entrent ici une par une,
+> chacune sur verdict d'Auteur.
+
+### RÈGLE [COMPOSITION-CG1] — Un principe porteur unique
+
+STATUT : parti pris d'identité (relevé du 24 août : shadcn et Material structurent tout par le blanc, Coursue tout par les surfaces — les deux tiennent ; ce qui rend une page fade, c'est de ne pas choisir)
+SOURCE : relevé `claude/releve-gabarits-2026-08-24.md` ; pièce de référence `kit-rythme-nu.html` (verdict PARFAIT, 24 août 2026)
+ÉNONCÉ : Une page choisit son séparateur premier — le blanc OU la surface — et le tient partout. Portée par le blanc, elle ne fait apparaître une surface que méritée (CP2), jamais comme cloison. Portée par les surfaces, sa profondeur vient des fonds emboîtés, jamais des filets. Le mélange des deux principes sur une même page est la définition du fade.
+MESURE : le principe porteur de la page est déclaré (documentaire → blanc ; applicatif → surfaces) ; sur une page « blanc », aucun conteneur de structure — rail, colonne, section — ne porte fond ni bordure ; sur une page « surfaces », aucun filet séparateur.
+TEST : piégée — une page documentaire dont les rails et les sections sont découpés par des panneaux et des filets → rouge.
+DÉPENDANCE : la carte des tempéraments du relevé (éditorial / documentaire nu / applicatif emboîté) ; CP2.
+VERDICT : actée — accord d'Auteur du 24 août 2026, sur énoncé soumis (validation sur pièce le même jour).
 
 ## Sources
 

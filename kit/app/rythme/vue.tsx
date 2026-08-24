@@ -267,6 +267,30 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     enonce: "Les jetons d'espacement s'expriment en rem (base 16). Restent en pixels, par décision explicite : la cible du doigt, les traits d'un pixel, la largeur d'écran minimale.",
     pourquoi: "Quand l'utilisateur agrandit le texte, les espaces qui l'entourent doivent suivre — sinon la page casse au premier réglage d'accessibilité.",
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
+  { id: "y10", nom: "10", titre: "La profondeur choisit — pas toi",
+    enonce: "La marge intérieure et le rayon d'une surface décroissent ensemble à chaque niveau d'imbrication, par le même diviseur — page, carte, sous-carte forment une chaîne, pas trois choix. Seuls les composants gardent leur rayon propre.",
+    pourquoi: "Trois niveaux réglés à la main dérivent ; une chaîne tient toute seule.",
+    src: [{ t: "Le générateur du système (leçon 2)", h: "#" }] },
+  { id: "y11", nom: "11", titre: "Les titres sortent du même pas",
+    enonce: "Le corps reste stable ; h2 = un pas au-dessus, h1 = deux pas — l'échelle des titres dérive des mêmes décisions que les espaces, elle n'est pas une échelle à part.",
+    pourquoi: "Deux échelles indépendantes finissent par se contredire ; une dérivation ne le peut pas.",
+    src: [{ t: "Le générateur du système (échelle des titres)", h: "#" }] },
+  { id: "y12", nom: "12", titre: "Des rapports, jamais des soustractions",
+    enonce: "Les crans naissent d'un diviseur appliqué en chaîne, jamais d'une différence fixe.",
+    pourquoi: "L'œil lit les rapports, pas les écarts : 24, 20, 16 font trois crans presque jumeaux ; 24 divisé, deux fois, fait trois crans lisibles.",
+    src: [{ t: "Le générateur du système (leçon 5)", h: "#" }] },
+  { id: "y13", nom: "13", titre: "Le bord vaut deux écarts",
+    enonce: "La marge intérieure d'un groupe vaut deux fois l'écart entre ses enfants — 12 entre, 24 autour. Un seul curseur : le bord suit.",
+    pourquoi: "Précise la règle 1 : non seulement le dedans ne dépasse pas le dehors, mais leur rapport est fixé.",
+    src: [{ t: "Le générateur du système (leçon 4)", h: "#" }] },
+  { id: "y14", nom: "14", titre: "Deux questions choisissent le cran",
+    enonce: "Est-ce un espace, une marge intérieure ou un coin ? Le lien est-il intime, entre frères ou entre groupes ? La réponse désigne le jeton — le cran se déduit, il ne se choisit pas à l'œil.",
+    pourquoi: "Méthode : chaque valeur posée doit pouvoir citer ses deux réponses.",
+    src: [{ t: "Le générateur du système (leçon 7)", h: "#" }] },
+  { id: "y15", nom: "15", titre: "Les six invariants d'audit",
+    enonce: "Aucun enfant plus rond que son parent · aucune surface plus épaisse que son contenant · deux axes verticaux par carte, jamais trois · sœurs alignées au pixel · zéro débord à la largeur minimale · l'écart entre surfaces ≥ leur marge intérieure.",
+    pourquoi: "Six phrases vérifiables sur toute vue — les futures assertions du Gardien quand il mordra sur ce kit.",
+    src: [{ t: "Le générateur du système (leçon 8)", h: "#" }] },
 ];
 
 /* La correspondance des deux échelles — calculée en direct depuis TOKENS,
@@ -308,12 +332,114 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
+/* ── Le laboratoire des décisions maîtresses — trois entrées, toute la
+   géométrie sort. Il ne règle RIEN : l'échelle du kit reste celle du
+   registre ; on regarde la mécanique, on ne la remplace pas. ── */
+const PRESETS: [string, number, number, number][] = [
+  ["Outil expert", 20, 4 / 3, 8],
+  ["Produit SaaS", 24, Math.SQRT2, 24],
+  ["Grand public", 24, 1.5, 32],
+  ["Ludique", 28, 1.618, 44],
+  ["Éditorial · luxe", 32, 1.618, 4],
+  ["Technique", 16, 1.25, 0],
+];
+const r1 = (v: number) => Math.round(v * 10) / 10;
+function Laboratoire({ base, ratio, rayon }: { base: number; ratio: number; rayon: number }) {
+  const sousMarge = r1(base / ratio);
+  const sousRayon = r1(rayon / ratio);
+  return (
+    <div style={{ display: "grid", gap: "var(--rr-block-unit)", width: "100%" }}>
+      <div style={{ maxWidth: "26rem", background: "var(--p-papier)", border: "1px solid var(--p-trait)",
+        borderRadius: `${rayon}px`, padding: `${base}px`, display: "grid", gap: `${r1(base / 2)}px` }}>
+        <b>Une carte née des trois décisions</b>
+        <span className="sourd" style={{ fontSize: "0.8125rem" }}>marge {base} px · écart {r1(base / 2)} px (le bord vaut deux écarts) · rayon {rayon} px</span>
+        <div style={{ background: "var(--p-fond)", borderRadius: `${sousRayon}px`, padding: `${sousMarge}px` }}>
+          <span className="sourd" style={{ fontSize: "0.8125rem" }}>la sous-carte : marge {sousMarge} px · rayon {sousRayon} px — un niveau plus bas, un diviseur, aucun choix</span>
+        </div>
+      </div>
+      <div style={{ display: "grid", gap: "var(--rr-block-md)" }}>
+        <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>soustraire fait des jumeaux : {base} · {base - 4} · {base - 8}</span>
+        <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+          {[base, base - 4, base - 8].map((v, i) => <span key={i} className="barre" style={{ width: `${v * 6}px`, opacity: 0.45 }} />)}
+        </div>
+        <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>diviser fait des crans : {base} · {r1(base / ratio)} · {r1(base / ratio / ratio)}</span>
+        <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+          {[base, base / ratio, base / ratio / ratio].map((v, i) => <span key={i} className="barre" style={{ width: `${r1(v) * 6}px` }} />)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── La profondeur — la chaîne page > carte > sous-carte, avec sa casse ── */
+function Profondeur({ casse }: { casse: boolean }) {
+  return (
+    <div style={{ width: "100%", maxWidth: "30rem", background: "var(--p-fond)",
+      borderRadius: "var(--rr-radius-shell)", padding: "var(--rr-block-page) var(--rr-inline-2xl)",
+      display: "grid", gap: "var(--rr-block-unit)" }}>
+      <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>page — inset · rayon shell</span>
+      <div style={{ background: "var(--p-papier)", border: "1px solid var(--p-trait)",
+        borderRadius: "var(--rr-radius-card)", padding: "var(--rr-block-card) var(--rr-inline-2xl)",
+        display: "grid", gap: "var(--rr-block-md)" }}>
+        <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>carte — un cran plus bas</span>
+        <div style={{ background: "var(--p-fond)",
+          borderRadius: casse ? "1.75rem" : "var(--rr-radius)",
+          padding: "var(--rr-block-md) var(--rr-inline-unit)" }}>
+          <span className="mono sourd" style={{ fontSize: "0.6875rem" }}>sous-carte — {casse ? "PLUS RONDE QUE SA CARTE" : "encore un cran"}</span>
+        </div>
+        <button className="bouton on" style={{ justifySelf: "start" }}>le composant garde son rayon</button>
+      </div>
+      {casse && <div className="oeil">👁 L&apos;enfant est plus rond que son parent : la chaîne est rompue, la profondeur ne se lit plus — c&apos;est le premier invariant d&apos;audit.</div>}
+    </div>
+  );
+}
+
+/* ── Le bon cran — deux questions, une réponse ── */
+const NATURES = [["espace", "Un espace"], ["marge", "Une marge intérieure"], ["coin", "Un coin"]] as const;
+const LIENS = [["intime", "Lien intime"], ["freres", "Entre frères"], ["groupes", "Entre groupes"]] as const;
+const REPONSES: Record<string, Record<string, [string, string]>> = {
+  espace: { intime: ["--rr-block-md", "stack · md"], freres: ["--rr-block-unit", "stack · unit"], groupes: ["--rr-block-xl", "stack · xl"] },
+  marge: { intime: ["--rr-block-md · --rr-inline-unit", "inset de sous-carte"], freres: ["--rr-block-card · --rr-inline-2xl", "inset de carte"], groupes: ["--rr-block-page · --rr-inline-2xl", "inset de page"] },
+  coin: { intime: ["--rr-radius", "coin de composant"], freres: ["--rr-radius-card", "coin de carte"], groupes: ["--rr-radius-shell", "coin de coquille"] },
+};
+function BonCran() {
+  const [nature, setNature] = useState<"espace" | "marge" | "coin">("espace");
+  const [lien, setLien] = useState<"intime" | "freres" | "groupes">("freres");
+  const [jeton, role] = REPONSES[nature][lien];
+  return (
+    <div style={{ display: "grid", gap: "var(--rr-block-unit)", maxWidth: "var(--t-mesure)" }}>
+      <div style={{ display: "grid", gap: "var(--rr-block-md)" }}>
+        <span className="mono sourd">1 · C&apos;est quoi ?</span>
+        <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+          {NATURES.map(([v, nom]) => (
+            <button key={v} className={`bouton ${nature === v ? "on" : ""}`} onClick={() => setNature(v)}>{nom}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: "grid", gap: "var(--rr-block-md)" }}>
+        <span className="mono sourd">2 · Le lien est…</span>
+        <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+          {LIENS.map(([v, nom]) => (
+            <button key={v} className={`bouton ${lien === v ? "on" : ""}`} onClick={() => setLien(v)}>{nom}</button>
+          ))}
+        </div>
+      </div>
+      <div className="rang">
+        <span className="badge">{role}</span>
+        <span className="mono sourd">{jeton}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function Vue() {
   const [voir, setVoir] = useState(true);
   const { densite } = useDensite();
   const dec = densite === "compact" ? -1 : densite === "airy" ? 1 : 0;
   const [casseY1, setCasseY1] = useState(false);
   const [casseY2, setCasseY2] = useState(false);
+  const [labo, setLabo] = useState<[number, number, number]>([24, Math.SQRT2, 24]);
+  const [casseRond, setCasseRond] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
   const { styl, tw } = useAdaptation();
 
@@ -363,7 +489,44 @@ export default function Vue() {
         </section>
 
         <section className="bloc-section">
-          <p className="kicker">02 · La densité</p>
+          <p className="kicker">02 · Les décisions maîtresses</p>
+          <h2>Trois décisions, toute la géométrie</h2>
+          <p className="sourd">Régler chaque valeur à la main, c&apos;est la dérive assurée. Ici,
+          trois décisions entrent — la base, l&apos;intervalle, le rayon — et toute la géométrie
+          sort. Ce laboratoire montre la mécanique ; l&apos;échelle du kit, elle, reste celle du
+          registre.</p>
+          <div className="rang" style={{ gap: "var(--rr-inline-sm)" }}>
+            {PRESETS.map(([nom, b2, r2, ry]) => (
+              <button key={nom} className={`bouton ${labo[0] === b2 && labo[1] === r2 && labo[2] === ry ? "on" : ""}`}
+                onClick={() => setLabo([b2, r2, ry])}>{nom}</button>
+            ))}
+          </div>
+          <Laboratoire base={labo[0]} ratio={labo[1]} rayon={labo[2]} />
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["y12", "y13", "y11"]} />
+          </div></details>
+        </section>
+
+        <section className="bloc-section">
+          <p className="kicker">03 · La profondeur</p>
+          <h2>Page, carte, sous-carte — une chaîne, pas trois choix</h2>
+          <p className="sourd">Trois niveaux réglés séparément finissent par se contredire. Ici la
+          marge intérieure et le rayon descendent ensemble, d&apos;un diviseur par niveau — et
+          l&apos;enfant n&apos;est jamais plus rond que son parent. Cassez-le pour voir la
+          profondeur se brouiller.</p>
+          <Apercu outils={
+            <button className={`bouton casse ${casseRond ? "on" : ""}`} onClick={() => setCasseRond(!casseRond)}>
+              {casseRond ? "Réparer" : "Casser : l'enfant plus rond"}
+            </button>
+          } enfants={() => <Profondeur casse={casseRond} />} pied={
+            <details className="prov"><summary>Règles &amp; sources</summary><div>
+              <Regles ids={["y10", "y15"]} />
+            </div></details>
+          } />
+        </section>
+
+        <section className="bloc-section">
+          <p className="kicker">04 · La densité</p>
           <h2>Un mode compact qui reste dans le système</h2>
           <p className="sourd">Un « mode compact à 80 % » fabriquerait des valeurs hors
           système, introuvables au changement de marque. Ici, la densité (réglage à droite)
@@ -378,7 +541,7 @@ export default function Vue() {
         </section>
 
         <section className="bloc-section">
-          <p className="kicker">03 · La proximité</p>
+          <p className="kicker">05 · La proximité</p>
           <h2>Quand une distance ment, la page ment</h2>
           <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort —
           quand une distance ment, la page raconte autre chose. Un libellé équidistant flotte
@@ -406,7 +569,19 @@ export default function Vue() {
         </section>
 
         <section className="bloc-section">
-          <p className="kicker">04 · L&apos;adaptation</p>
+          <p className="kicker">06 · Le bon cran</p>
+          <h2>Le bon cran se déduit, il ne se choisit pas</h2>
+          <p className="sourd">Choisir un cran à l&apos;œil, c&apos;est rouvrir la dérive à chaque
+          écran. Deux questions suffisent — et chaque valeur posée doit pouvoir citer ses deux
+          réponses.</p>
+          <BonCran />
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["y14"]} />
+          </div></details>
+        </section>
+
+        <section className="bloc-section">
+          <p className="kicker">07 · L&apos;adaptation</p>
           <h2>Le même système, dans votre stack</h2>
           <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
           qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
