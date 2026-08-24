@@ -270,7 +270,7 @@ function Ton({ nom, texte, fond, seuil = 4.5, cle }: { nom: string; texte: strin
   );
 }
 
-function TableauPaires({ grisPale }: { grisPale: boolean }) {
+function TableauPaires({ grisPale, cle }: { grisPale: boolean; cle: string }) {
   const clairRef = useRef<HTMLDivElement>(null);
   const sombreRef = useRef<HTMLDivElement>(null);
   const [lignes, setLignes] = useState<{ clair: number; sombre: number }[]>([]);
@@ -283,7 +283,7 @@ function TableauPaires({ grisPale }: { grisPale: boolean }) {
       });
     const clair = lire(clairRef.current), sombre = lire(sombreRef.current);
     setLignes(PAIRES.map((_, i) => ({ clair: clair[i], sombre: sombre[i] })));
-  }, [grisPale]);
+  }, [grisPale, cle]);
   const paleClair: React.CSSProperties = { ["--text-secondary" as any]: "#9CA3AF" };
   const paleSombre: React.CSSProperties = { ["--text-secondary" as any]: "#6B7280" };
   const Cellule = ({ r, seuil }: { r: number; seuil: number }) => (
@@ -549,13 +549,19 @@ export default function Vue() {
   const actionSombreStyle: React.CSSProperties = { ["--primary" as any]: "#312E81" };
   const paletteDerivee = useMemo(() => derive(primaire), [primaire]);
   const fautesDerivation = useMemo(() => verifier(paletteDerivee), [paletteDerivee]);
-  const surchargesDerivation = useMemo(() => {
-    const t = paletteDerivee[themeEffectif === "dark" ? "dark" : "light"] as unknown as Record<string, string>;
-    return Object.fromEntries(Object.entries(t).map(([n, v]) => ["--" + n, v])) as React.CSSProperties;
+  const cssDerive = useMemo(() => {
+    const bloc = (o: Record<string, string>) => Object.entries(o).map(([n, v]) => `--${n}: ${v};`).join(" ");
+    const l = paletteDerivee.light as unknown as Record<string, string>;
+    const d = paletteDerivee.dark as unknown as Record<string, string>;
+    const base = themeEffectif === "dark" ? d : l;
+    /* Toute la page — démos, panneaux forcés clair/sombre, sondes de mesure —
+       vit dans la famille dérivée du sélecteur primary. */
+    return `.famille-derivee { ${bloc(base)} } .famille-derivee [data-theme="light"] { ${bloc(l)} } .famille-derivee [data-theme="dark"] { ${bloc(d)} }`;
   }, [paletteDerivee, themeEffectif]);
 
   return (
-    <div className="coquille">
+    <div className="coquille famille-derivee">
+      <style>{cssDerive}</style>
       <Navigation actif="couleur" />
 
       <main className="contenu">
@@ -585,9 +591,7 @@ export default function Vue() {
           </div>
           <p className="sourd" style={{ fontSize: "0.8125rem" }}>La marque et les neutres
           suivent primary ; les états gardent leurs ancres.</p>
-          <div style={surchargesDerivation}>
-            <Palette cle={`${themeEffectif}-${primaire}`} />
-          </div>
+          <Palette cle={`${themeEffectif}-${primaire}`} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["p01", "c1", "c2", "c4"]} />
           </div></details>
@@ -603,16 +607,16 @@ export default function Vue() {
           </div>
           <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 11rem), 1fr))", gap: "var(--space-inline-sm)", width: "100%" }}>
-              <Ton nom="Primary" texte="--on-primary-subtle" fond="--primary-subtle" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Danger" texte="--danger" fond="--danger-subtle" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Success" texte="--success" fond="--success-subtle" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Warning" texte="--warning" fond="--warning-subtle" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Info" texte="--info" fond="--info-subtle" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Encre" texte="--text-primary" fond="--bg" cle={`${themeEffectif}-${grisPale}`} />
-              <Ton nom="Texte second" texte="--text-secondary" fond="--surface" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Primary" texte="--on-primary-subtle" fond="--primary-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Danger" texte="--danger" fond="--danger-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Success" texte="--success" fond="--success-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Warning" texte="--warning" fond="--warning-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Info" texte="--info" fond="--info-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Encre" texte="--text-primary" fond="--bg" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+              <Ton nom="Texte second" texte="--text-secondary" fond="--surface" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
             </div>
             <details className="prov"><summary>La table complète, mesurée dans les deux thèmes</summary><div>
-              <TableauPaires grisPale={grisPale} />
+              <TableauPaires grisPale={grisPale} cle={primaire} />
             </div></details>
           </div>
           <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -679,11 +683,11 @@ export default function Vue() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)" }}>
               <div data-theme="light" style={{ display: "grid", gap: "var(--space-block-sm)" }}>
                 <span className="mono" style={{ color: "var(--text-secondary)" }}>thème clair</span>
-                <MiniEcran cle={`light-${actionSombre}`} />
+                <MiniEcran cle={`light-${actionSombre}-${primaire}`} />
               </div>
               <div data-theme="dark" style={{ display: "grid", gap: "var(--space-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
                 <span className="mono" style={{ color: "var(--text-secondary)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
-                <MiniEcran cle={`dark-${actionSombre}`} />
+                <MiniEcran cle={`dark-${actionSombre}-${primaire}`} />
               </div>
             </div>
             <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
