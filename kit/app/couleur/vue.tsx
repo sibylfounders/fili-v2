@@ -609,9 +609,10 @@ export default function Vue() {
               </span>
             )}
           </div>
-          <p className="sourd" style={{ fontSize: "0.8125rem" }}>Changez Primary dans le
-          panneau de droite : tout le site suit. Les couleurs d&apos;erreur et de succès,
-          elles, ne bougent pas.</p>
+          <p className="sourd">Choisissez une couleur de marque : les fonds, les textes,
+          les gris et les liens s&apos;en déduisent, et tout le site l&apos;applique
+          (panneau de droite). Les couleurs d&apos;erreur et de succès, elles, ne bougent
+          pas — un rouge doit rester un rouge.</p>
           <Gamme primaire={primaire} />
           <Palette cle={`${themeEffectif}-${primaire}`} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -622,6 +623,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">02 · Les tons et leurs contrastes</p>
           <h2>Mesuré, pas débattu</h2>
+          <p className="sourd">« C&apos;est assez contrasté ? » ne se tranche pas à
+          l&apos;œil : chaque duo texte/fond est mesuré ici même, dans les deux thèmes.
+          La casse remet le gris trop pâle qu&apos;on utilisait avant — regardez les
+          chiffres tomber.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${grisPale ? "on" : ""}`} onClick={() => setGrisPale(!grisPale)}>
               {grisPale ? "Réparer : remonter le gris" : "Casser : le gris d'avant l'arbitrage"}
@@ -649,6 +654,9 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">03 · Jamais la couleur seule — et chacun chez soi</p>
           <h2>Jamais la couleur seule</h2>
+          <p className="sourd">Une personne sur douze distingue mal le rouge du vert. Un
+          message d&apos;état parle donc avec trois voix — la couleur, l&apos;icône, le
+          mot — et la marque ne sert jamais à dire une erreur : chacun son rôle.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${couleurSeule ? "on" : ""}`} onClick={() => setCouleurSeule(!couleurSeule)}>
               {couleurSeule ? "Rendre l'icône et le mot" : "Casser : la couleur seule"}
@@ -682,6 +690,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">04 · En situation</p>
           <h2>Aucune couleur nouvelle</h2>
+          <p className="sourd">Le vrai test d&apos;une palette, c&apos;est un écran.
+          Celui-ci n&apos;a droit à aucune couleur inventée : tout vient de la famille.
+          S&apos;il manquait quelque chose, on compléterait la famille — jamais
+          l&apos;écran.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${filtre ? "on" : ""}`} onClick={() => setFiltre(!filtre)}>
               {filtre ? "Réparer : le survol par jeton" : "Casser : le survol par filtre"}
@@ -696,6 +708,10 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">05 · Les deux thèmes</p>
           <h2>Deux thèmes, une exigence</h2>
+          <p className="sourd">Le mode sombre ne se redessine pas : chaque couleur a sa
+          valeur claire et sa valeur sombre, vérifiées avec la même exigence. Et une
+          action trop sombre en thème sombre rend son texte illisible — la casse le
+          montre par le calcul.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${actionSombre ? "on" : ""}`} onClick={() => setActionSombre(!actionSombre)}>
               {actionSombre ? "Réparer : éclaircir l'action" : "Casser : une action sombre en sombre"}
@@ -725,6 +741,9 @@ export default function Vue() {
         <section className="bloc-section">
           <p className="kicker">06 · L&apos;adaptation</p>
           <h2>Dans votre stack</h2>
+          <p className="sourd">Ce qui fait foi, c&apos;est la règle et le jeton — pas le
+          code. React, Angular ou HTML n&apos;en sont que des traductions : la même
+          alerte, trois écritures, aucun thème recodé.</p>
           <PanneauCode langage={styl} outils={
             <>{(["HTML", "React", "Angular"] as const).map((f) => (
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
