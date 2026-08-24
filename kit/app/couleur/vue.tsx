@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Navigation } from "../nav";
-import { Apercu, PanneauCode } from "../apercu";
+import { PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme, useTheme, useSchemeSysteme } from "../theme";
@@ -562,44 +562,41 @@ export default function Vue() {
           l&apos;aperçu en sombre, tout suit. La casse montre l&apos;autre chemin — une
           carte peinte par valeurs codées en dur, invisible en clair… et qui reste claire
           quand le thème bascule.</p>
-          <Apercu outils={
-            <>
-              {([["light", "clair"], ["dark", "sombre"]] as const).map(([t, nom]) => (
-                <button key={t} className={`bouton ${demoTheme === t ? "on" : ""}`} onClick={() => setDemoTheme(t)}>
-                  aperçu {nom}
-                </button>
-              ))}
-              <button className={`bouton casse ${dur ? "on" : ""}`} onClick={() => setDur(!dur)}>
-                {dur ? "Réparer" : "Casser : des valeurs en dur"}
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+            {([["light", "clair"], ["dark", "sombre"]] as const).map(([t, nom]) => (
+              <button key={t} className={`bouton ${demoTheme === t ? "on" : ""}`} onClick={() => setDemoTheme(t)}>
+                aperçu {nom}
               </button>
-            </>
-          } enfants={() => (
-            <div data-theme={demoTheme} style={{
-              width: "100%", background: "var(--bg)", color: "var(--text-primary)",
-              borderRadius: "var(--radius)", padding: "var(--space-block-card) var(--space-inline-2xl)",
-              display: "grid", gap: "var(--space-block-card)", textAlign: "left",
-            }}>
-              <Palette cle={demoTheme} />
-              <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
-                <div style={dur
-                  ? { background: "#E0E7FF", color: "#3730A3", border: "1px solid #4F46E5", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }
-                  : { background: "var(--primary-subtle)", color: "var(--on-primary-subtle)", border: "1px solid var(--primary)", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }}>
-                  {dur ? "Cette carte est peinte par valeur : #E0E7FF, #3730A3." : "Cette carte est peinte par rôle : primary-subtle, on-primary-subtle."}
-                </div>
-                {dur && (
-                  <span className={`badge ${demoTheme === "dark" ? "ko" : ""}`}>
-                    {demoTheme === "dark"
-                      ? "restée claire — la valeur en dur ignore le thème (C1, C12)"
-                      : "identique à l'œil — en clair, rien ne signale la faute : basculez l'aperçu en sombre"}
-                  </span>
-                )}
+            ))}
+            <button className={`bouton casse ${dur ? "on" : ""}`} onClick={() => setDur(!dur)}>
+              {dur ? "Réparer" : "Casser : des valeurs en dur"}
+            </button>
+          </div>
+          <div data-theme={demoTheme} style={{
+            width: "100%", background: "var(--bg)", color: "var(--text-primary)",
+            border: "1px solid var(--border)", borderRadius: "var(--radius-card)",
+            padding: "var(--space-block-card) var(--space-inline-2xl)",
+            display: "grid", gap: "var(--space-block-card)", textAlign: "left",
+          }}>
+            <Palette cle={demoTheme} />
+            <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
+              <div style={dur
+                ? { background: "#E0E7FF", color: "#3730A3", border: "1px solid #4F46E5", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }
+                : { background: "var(--primary-subtle)", color: "var(--on-primary-subtle)", border: "1px solid var(--primary)", borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem" }}>
+                {dur ? "Cette carte est peinte par valeur : #E0E7FF, #3730A3." : "Cette carte est peinte par rôle : primary-subtle, on-primary-subtle."}
               </div>
+              {dur && (
+                <span className={`badge ${demoTheme === "dark" ? "ko" : ""}`}>
+                  {demoTheme === "dark"
+                    ? "restée claire — la valeur en dur ignore le thème (C1, C12)"
+                    : "identique à l'œil — en clair, rien ne signale la faute : basculez l'aperçu en sombre"}
+                </span>
+              )}
             </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["p01", "c1", "c2", "c4"]} />
-            </div></details>
-          } />
+          </div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["p01", "c1", "c2", "c4"]} />
+          </div></details>
         </section>
 
         <section className="bloc-section">
@@ -610,38 +607,36 @@ export default function Vue() {
           Basculez le thème à droite : les valeurs changent, les seuils tiennent. La casse
           remet le gris pâle d&apos;avant l&apos;arbitrage — regardez la pastille « Texte
           second » passer au rouge et ce paragraphe pâlir.</p>
-          <Apercu outils={
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${grisPale ? "on" : ""}`} onClick={() => setGrisPale(!grisPale)}>
               {grisPale ? "Réparer : remonter le gris" : "Casser : le gris d'avant l'arbitrage"}
             </button>
-          } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 11rem), 1fr))", gap: "var(--space-inline-sm)", width: "100%" }}>
-                <Ton nom="Primary" texte="--on-primary-subtle" fond="--primary-subtle" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Danger" texte="--danger" fond="--danger-subtle" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Success" texte="--success" fond="--success-subtle" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Warning" texte="--warning" fond="--warning-subtle" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Info" texte="--info" fond="--info-subtle" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Encre" texte="--text-primary" fond="--bg" cle={`${themeEffectif}-${grisPale}`} />
-                <Ton nom="Texte second" texte="--text-secondary" fond="--surface" cle={`${themeEffectif}-${grisPale}`} />
-              </div>
-              <p className="sourd" style={{ fontSize: "0.8125rem", maxWidth: "var(--measure)" }}>
-                Le gris le plus clair de la charte (#9CA3AF) ne porte jamais un texte
-                qu&apos;il faut lire — 2,54:1 sur blanc. Ici il n&apos;a même pas de jeton :
-                la hiérarchie se joue au corps et à la graisse, pas au voile. Et le cyan
-                n&apos;est pas dans cette rangée : ce n&apos;est pas un ton, c&apos;est
-                l&apos;anneau de focus — son métier est d&apos;entourer, pas
-                d&apos;accueillir.
-              </p>
-              <details className="prov"><summary>La table complète, mesurée dans les deux thèmes</summary><div>
-                <TableauPaires grisPale={grisPale} />
-              </div></details>
+          </div>
+          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 11rem), 1fr))", gap: "var(--space-inline-sm)", width: "100%" }}>
+              <Ton nom="Primary" texte="--on-primary-subtle" fond="--primary-subtle" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Danger" texte="--danger" fond="--danger-subtle" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Success" texte="--success" fond="--success-subtle" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Warning" texte="--warning" fond="--warning-subtle" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Info" texte="--info" fond="--info-subtle" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Encre" texte="--text-primary" fond="--bg" cle={`${themeEffectif}-${grisPale}`} />
+              <Ton nom="Texte second" texte="--text-secondary" fond="--surface" cle={`${themeEffectif}-${grisPale}`} />
             </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["c5", "c7", "c8", "c9"]} />
+            <p className="sourd" style={{ fontSize: "0.8125rem", maxWidth: "var(--measure)" }}>
+              Le gris le plus clair de la charte (#9CA3AF) ne porte jamais un texte
+              qu&apos;il faut lire — 2,54:1 sur blanc. Ici il n&apos;a même pas de jeton :
+              la hiérarchie se joue au corps et à la graisse, pas au voile. Et le cyan
+              n&apos;est pas dans cette rangée : ce n&apos;est pas un ton, c&apos;est
+              l&apos;anneau de focus — son métier est d&apos;entourer, pas
+              d&apos;accueillir.
+            </p>
+            <details className="prov"><summary>La table complète, mesurée dans les deux thèmes</summary><div>
+              <TableauPaires grisPale={grisPale} />
             </div></details>
-          } />
+          </div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["c5", "c7", "c8", "c9"]} />
+          </div></details>
         </section>
 
         <section className="bloc-section">
@@ -652,38 +647,34 @@ export default function Vue() {
           deviennent le même message. L&apos;autre casse donne la couleur de marque aux
           états : « c&apos;est nous » et « il se passe quelque chose » ne font plus
           qu&apos;une seule voix.</p>
-          <Apercu outils={
-            <>
-              <button className={`bouton casse ${couleurSeule ? "on" : ""}`} onClick={() => setCouleurSeule(!couleurSeule)}>
-                {couleurSeule ? "Rendre l'icône et le mot" : "Casser : la couleur seule"}
-              </button>
-              <button className={`bouton ${gris ? "on" : ""}`} onClick={() => setGris(!gris)}>
-                {gris ? "Revoir les couleurs" : "Voir sans la couleur"}
-              </button>
-              <button className={`bouton casse ${marque ? "on" : ""}`} onClick={() => setMarque(!marque)}>
-                {marque ? "Réparer : chacun son registre" : "Casser : la marque pour l'état"}
-              </button>
-            </>
-          } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", filter: gris ? "grayscale(1)" : undefined }}>
-              <Alerte ton="danger" couleurSeule={couleurSeule} marque={marque} />
-              <Alerte ton="success" couleurSeule={couleurSeule} marque={marque} />
-              {couleurSeule && gris && (
-                <span className="badge ko" style={{ filter: "none" }}>
-                  l&apos;erreur et le succès sont devenus indistinguables — c&apos;est la faute que C6 arrête
-                </span>
-              )}
-              {marque && (
-                <span className="badge ko">
-                  l&apos;erreur porte la couleur de la marque — le vocabulaire chromatique est détruit (C3)
-                </span>
-              )}
-            </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["c3", "c6"]} />
-            </div></details>
-          } />
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+            <button className={`bouton casse ${couleurSeule ? "on" : ""}`} onClick={() => setCouleurSeule(!couleurSeule)}>
+              {couleurSeule ? "Rendre l'icône et le mot" : "Casser : la couleur seule"}
+            </button>
+            <button className={`bouton ${gris ? "on" : ""}`} onClick={() => setGris(!gris)}>
+              {gris ? "Revoir les couleurs" : "Voir sans la couleur"}
+            </button>
+            <button className={`bouton casse ${marque ? "on" : ""}`} onClick={() => setMarque(!marque)}>
+              {marque ? "Réparer : chacun son registre" : "Casser : la marque pour l'état"}
+            </button>
+          </div>
+          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", filter: gris ? "grayscale(1)" : undefined }}>
+            <Alerte ton="danger" couleurSeule={couleurSeule} marque={marque} />
+            <Alerte ton="success" couleurSeule={couleurSeule} marque={marque} />
+            {couleurSeule && gris && (
+              <span className="badge ko" style={{ filter: "none" }}>
+                l&apos;erreur et le succès sont devenus indistinguables — c&apos;est la faute que C6 arrête
+              </span>
+            )}
+            {marque && (
+              <span className="badge ko">
+                l&apos;erreur porte la couleur de la marque — le vocabulaire chromatique est détruit (C3)
+              </span>
+            )}
+          </div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["c3", "c6"]} />
+          </div></details>
         </section>
 
         <section className="bloc-section">
@@ -696,15 +687,15 @@ export default function Vue() {
           un jeton ; la casse le remplace par un filtre, une couleur fantôme
           qu&apos;aucune table ne peut vérifier. Et le désactivé n&apos;a pas de jetons :
           dette écrite, pas un oubli.</p>
-          <Apercu outils={
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${filtre ? "on" : ""}`} onClick={() => setFiltre(!filtre)}>
               {filtre ? "Réparer : le survol par jeton" : "Casser : le survol par filtre"}
             </button>
-          } enfants={() => <EnSituation filtre={filtre} />} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["c10", "c11"]} />
-            </div></details>
-          } />
+          </div>
+          <EnSituation filtre={filtre} />
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["c10", "c11"]} />
+          </div></details>
         </section>
 
         <section className="bloc-section">
@@ -716,37 +707,35 @@ export default function Vue() {
           action sombre, et son texte devient illisible — ce n&apos;est pas un goût,
           c&apos;est la luminance. En bas, la méthode bénie du teintage : trois gris de
           même luminance, trois rapports identiques (C15).</p>
-          <Apercu outils={
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${actionSombre ? "on" : ""}`} onClick={() => setActionSombre(!actionSombre)}>
               {actionSombre ? "Réparer : éclaircir l'action" : "Casser : une action sombre en sombre"}
             </button>
-          } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)" }}>
-                <div data-theme="light" style={{ display: "grid", gap: "var(--space-block-sm)" }}>
-                  <span className="mono" style={{ color: "var(--text-secondary)" }}>thème clair</span>
-                  <MiniEcran cle={`light-${actionSombre}`} />
-                </div>
-                <div data-theme="dark" style={{ display: "grid", gap: "var(--space-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
-                  <span className="mono" style={{ color: "var(--text-secondary)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
-                  <MiniEcran cle={`dark-${actionSombre}`} />
-                </div>
+          </div>
+          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)" }}>
+              <div data-theme="light" style={{ display: "grid", gap: "var(--space-block-sm)" }}>
+                <span className="mono" style={{ color: "var(--text-secondary)" }}>thème clair</span>
+                <MiniEcran cle={`light-${actionSombre}`} />
               </div>
-              <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
-                <span className="mono sourd">Teinter un neutre, à luminance constante — l&apos;opération gratuite (C15)</span>
-                <TeinteConstante />
-                <span className="sourd" style={{ fontSize: "0.75rem" }}>Valeurs d&apos;étude
-                pour la démonstration, pas des jetons : la teinte bouge, la luminance non —
-                aucun rapport ne change. Enfin, quand le système force ses couleurs
-                (contraste élevé), cette palette s&apos;efface sans résistance : rien ici ne
-                la neutralise (C16).</span>
+              <div data-theme="dark" style={{ display: "grid", gap: "var(--space-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
+                <span className="mono" style={{ color: "var(--text-secondary)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
+                <MiniEcran cle={`dark-${actionSombre}`} />
               </div>
             </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["c12", "c13", "c14", "c15", "c16"]} />
-            </div></details>
-          } />
+            <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
+              <span className="mono sourd">Teinter un neutre, à luminance constante — l&apos;opération gratuite (C15)</span>
+              <TeinteConstante />
+              <span className="sourd" style={{ fontSize: "0.75rem" }}>Valeurs d&apos;étude
+              pour la démonstration, pas des jetons : la teinte bouge, la luminance non —
+              aucun rapport ne change. Enfin, quand le système force ses couleurs
+              (contraste élevé), cette palette s&apos;efface sans résistance : rien ici ne
+              la neutralise (C16).</span>
+            </div>
+          </div>
+          <details className="prov"><summary>Règles &amp; sources</summary><div>
+            <Regles ids={["c12", "c13", "c14", "c15", "c16"]} />
+          </div></details>
         </section>
 
         <section className="bloc-section">

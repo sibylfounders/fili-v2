@@ -2,7 +2,7 @@
 component: color
 layer: ux
 type: foundation
-version: 2.0.0 # 2.0.0 : REPRISE AU MOULE V2 — le 4e paquet de la reprise des lois de l'étude entre au corpus (thread « la couleur entre au kit », 2026-08-23 ; paquet rédigé le 2026-08-13, claude/reprise-couleur-regles.md). Les 25 lois du fonds deviennent : un principe de tête (« par rôle, jamais par valeur » — verdict du ménage), seize règles C1–C16 (énoncé + mesure décidable + test + dépendance + verdict), trois mesures de rendu M1–M3 pour le futur instrument, trois pièces de référence. L'arbitrage d'Auteur du texte pâle (2026-08-13) ferme la contradiction S14 par le haut : la norme ne connaît pas d'exception « métadonnées », aucun jeton de texte ne descend sous le seuil (C9) — l'ex-R12 est renversée en le disant, la dette « liste fermée » du ménage est dissoute. La famille entre au kit avec ses valeurs résolues en clair ET en sombre (kit/app/tokens.css), gris pâle remonté d'emblée. Le CRITERE de la 1.4.0 est conservé à l'identique (porté par M1). Historique antérieur : voir 1.5.0 dans l'historique git.
+version: 2.1.0 # 2.1.0 : LA CHARTE FAIT AUTORITÉ SUR LES VALEURS (2026-08-24) — la charte de conception Fili, remise par l'Auteur et versée au dépôt (docs/charte/filicharte_6.html), devient la source des valeurs claires : background blanc dominant / surface grise (les rôles du kit étaient inversés), accent cyan #0891B2 dont l'unique métier est l'anneau de focus (il entoure, n'accueille jamais de texte), tons warning (#92400E) et info (#1D4ED8) entrés AVEC leur premier consommateur (la page En situation — C4/C5 tenues), surface-hover. Le thème sombre reste au registre du dépôt, la charte ne le couvrant pas encore — dit en C13. Pas de text-muted : le gris pâle de la charte (2,54:1 sur blanc) ne porte jamais un texte — sans consommateur, pas de jeton (C9). 2.0.0 : REPRISE AU MOULE V2 — le 4e paquet de la reprise des lois de l'étude entre au corpus (thread « la couleur entre au kit », 2026-08-23 ; paquet rédigé le 2026-08-13, claude/reprise-couleur-regles.md). Les 25 lois du fonds deviennent : un principe de tête (« par rôle, jamais par valeur » — verdict du ménage), seize règles C1–C16 (énoncé + mesure décidable + test + dépendance + verdict), trois mesures de rendu M1–M3 pour le futur instrument, trois pièces de référence. L'arbitrage d'Auteur du texte pâle (2026-08-13) ferme la contradiction S14 par le haut : la norme ne connaît pas d'exception « métadonnées », aucun jeton de texte ne descend sous le seuil (C9) — l'ex-R12 est renversée en le disant, la dette « liste fermée » du ménage est dissoute. La famille entre au kit avec ses valeurs résolues en clair ET en sombre (kit/app/tokens.css), gris pâle remonté d'emblée. Le CRITERE de la 1.4.0 est conservé à l'identique (porté par M1). Historique antérieur : voir 1.5.0 dans l'historique git.
 last_updated: 2026-08-23
 companion: COLOR-UI.md
 confidence: mixed # les registres, les seuils et la mécanique des thèmes sont établis (WCAG, convergence des grands systèmes) ; le sur-test du survol (C8), l'attente du désactivé (C11) et l'interdit du panneau sombre sont des partis pris datés, dits comme tels
@@ -14,7 +14,10 @@ confidence: mixed # les registres, les seuils et la mécanique des thèmes sont 
 > theming. Les **valeurs** (hex) vivent dans le fichier de valeurs unique du
 > registre — dans le kit : `kit/app/tokens.css` (sortie jumelle
 > `tokens.tailwind.mjs`) — et n'en bougent pas : cette fondation ne déplace
-> pas la source de vérité, elle documente comment s'en servir.
+> pas la source de vérité, elle documente comment s'en servir. **L'autorité
+> amont des valeurs claires est la charte de conception Fili**
+> (`docs/charte/filicharte_6.html`, 2026-08-24) ; les valeurs sombres, que la
+> charte ne couvre pas encore, viennent du registre historique du dépôt.
 
 ## 0 · Ce que la reprise couvre
 
@@ -75,9 +78,11 @@ un rôle est sorti le jour où sa mission lui a été reprise).
 fonctionnel documenté.
 **Test** : piégée — un jeton de marque sans consommateur documenté → rouge.
 **Dépendance** : le registre.
-**Verdict** : ✅ actée. *Application au kit : un seul rôle de marque entre
-(l'accent, avec son couple) — la seconde voix du registre historique n'a pas
-de consommateur dans le kit et n'entre pas tant qu'elle n'en a pas.*
+**Verdict** : ✅ actée. *Application au kit (révisée par la charte, 2.1.0) :
+deux rôles de marque, deux besoins réels — `primary`, l'action, tenue en
+réserve (5 % de la page), et `accent`, l'anneau de focus, qui entoure et
+n'accueille jamais de texte. La « seconde voix » décorative n'entre pas tant
+qu'elle n'a pas de consommateur.*
 
 ### C5 — Le couple complet dès la naissance *(provenance : COLOR-R06)*
 
@@ -87,7 +92,9 @@ subtil d'emblée ; les neutres vivent en échelle.
 introduction.
 **Test** : piégée — un ton d'alerte sans son fond subtil → rouge.
 **Dépendance** : le registre.
-**Verdict** : ✅ actée.
+**Verdict** : ✅ actée. *Précédent inscrit (2.1.0) : `warning` et `info` sont
+entrés au kit le 24 août avec leur couple complet ET leur premier
+consommateur — jamais avant lui.*
 
 ### C6 — Le canal redondant se déclare *(provenance : COLOR-R08)*
 
