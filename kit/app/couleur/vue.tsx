@@ -413,17 +413,34 @@ function MiniEcran({ cle }: { cle: string }) {
   );
 }
 
-const GRIS_TEINTES: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#766F68"], ["gris bleuté", "#67737F"]];
+/* Trois gris à la MÊME luminance : le pur, puis le même réchauffé et le
+   même refroidi. Un seul chiffre pour les trois — c'est la démonstration :
+   aucune valeur n'est « la bonne », la teinte bouge, le rapport ne bouge
+   pas. (Valeurs d'étude calées au calcul, pas des jetons.) */
+const GRIS_TEINTES: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#78716A"], ["gris bleuté", "#67737F"]];
 function TeinteConstante() {
+  const arrondi = (hex: string) => (Math.round(contraste(hexVers(hex), hexVers("#FFFFFF")) * 10) / 10).toFixed(1).replace(".", ",");
+  const rapports = GRIS_TEINTES.map(([, hex]) => arrondi(hex));
+  const identiques = rapports.every((r) => r === rapports[0]);
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-inline-unit)", width: "100%" }}>
-      {GRIS_TEINTES.map(([nom, hex]) => (
-        <div key={hex} style={{ display: "grid", gap: "var(--space-block-xs)", justifyItems: "start" }}>
-          <span style={{ width: "calc(5 * var(--space-block-unit))", height: "calc(2.6 * var(--space-block-unit))", borderRadius: "var(--radius)", background: hex }} />
-          <span className="mono" style={{ fontSize: "0.625rem" }}>{nom} {hex}</span>
-          <span className="badge">{fmt(contraste(hexVers(hex), hexVers("#FFFFFF")))} sur blanc</span>
-        </div>
-      ))}
+    <div style={{ display: "grid", gap: "var(--space-block-md)", justifyItems: "start", width: "100%" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-inline-unit)" }}>
+        {GRIS_TEINTES.map(([nom, hex]) => (
+          <div key={hex} style={{ display: "grid", gap: "var(--space-block-xs)", justifyItems: "start" }}>
+            <span style={{
+              width: "calc(6 * var(--space-block-unit))", height: "calc(3.2 * var(--space-block-unit))",
+              borderRadius: "var(--radius)", background: hex, color: "#FFFFFF",
+              display: "grid", placeItems: "center", fontWeight: 600, fontSize: "0.875rem",
+            }}>Aa</span>
+            <span className="mono" style={{ fontSize: "0.625rem" }}>{nom} {hex}</span>
+          </div>
+        ))}
+      </div>
+      <span className="badge">
+        {identiques
+          ? `${rapports[0]}:1 sur blanc, pour les trois — aucune n'est « la bonne » : c'est le même rapport`
+          : rapports.map((r, i) => `${GRIS_TEINTES[i][0]} ${r}:1`).join(" · ")}
+      </span>
     </div>
   );
 }
@@ -691,11 +708,13 @@ export default function Vue() {
             <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
               <span className="mono sourd">Teinter un neutre, à luminance constante — l&apos;opération gratuite (C15)</span>
               <TeinteConstante />
-              <span className="sourd" style={{ fontSize: "0.75rem" }}>Valeurs d&apos;étude
-              pour la démonstration, pas des jetons : la teinte bouge, la luminance non —
-              aucun rapport ne change. Enfin, quand le système force ses couleurs
-              (contraste élevé), cette palette s&apos;efface sans résistance : rien ici ne
-              la neutralise (C16).</span>
+              <span className="sourd" style={{ fontSize: "0.75rem" }}>Il n&apos;y a pas de
+              bonne valeur à trouver : les trois gris ont exactement la même luminance, donc
+              exactement le même contraste — seule la teinte a bougé. C&apos;est ce qui rend
+              le teintage d&apos;identité gratuit côté lisibilité. (Valeurs d&apos;étude, pas
+              des jetons.) Enfin, quand le système force ses couleurs (contraste élevé),
+              cette palette s&apos;efface sans résistance : rien ici ne la neutralise
+              (C16).</span>
             </div>
           </div>
           <details className="prov"><summary>Règles &amp; sources</summary><div>
