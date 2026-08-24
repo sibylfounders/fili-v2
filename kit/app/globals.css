@@ -2,7 +2,7 @@
    Aucune valeur d'espace, de rayon ou de taille en dur : Y-règles à l'œuvre. */
 * { box-sizing: border-box; }
 body {
-  margin: 0; background: var(--bg); color: var(--text-primary);
+  margin: 0; background: var(--surface); color: var(--text-primary);
   font: 400 var(--font-size-base)/var(--leading-body) var(--font-sans);
 }
 a { color: var(--primary); }
@@ -11,7 +11,7 @@ a:hover { color: var(--primary-hover); }
   position: sticky; top: 0; z-index: 30; min-height: 3.5rem;
   display: flex; align-items: center; gap: var(--space-inline-unit);
   padding: 0 var(--space-inline-2xl);
-  background: var(--surface); border-bottom: 1px solid var(--border);
+  background: var(--bg); border-bottom: 1px solid var(--border);
 }
 .chrome b { letter-spacing: -0.02em; }
 .chrome nav { display: flex; gap: var(--space-inline-unit); margin-left: auto; }
@@ -25,7 +25,7 @@ h2 { font-weight: 600; font-size: var(--font-size-h2); letter-spacing: -0.015em;
 p { margin: 0; }
 .sourd { color: var(--text-secondary); }
 .carte {
-  background: var(--surface); border: 1px solid var(--border);
+  background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: calc(1.2 * var(--space-block-card)) calc(1.3 * var(--space-inline-2xl));
   display: grid; gap: var(--space-block-card);
@@ -40,9 +40,10 @@ p { margin: 0; }
 .bouton {
   height: var(--control-height); padding: 0 var(--space-inline-xl);
   border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--surface); font: 600 0.875rem/1 inherit; cursor: pointer;
+  background: var(--bg); font: 600 0.875rem/1 inherit; cursor: pointer;
 }
 .bouton.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.bouton:hover:not(.on):not(.casse) { background: var(--surface-hover); }
 .rang { display: flex; gap: var(--space-inline-unit); flex-wrap: wrap; align-items: center; }
 .mono { font: 600 0.75rem/1.5 var(--font-mono); }
 .mesure { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
@@ -51,9 +52,9 @@ p { margin: 0; }
 .regle b { display: block; }
 .champ { display: grid; gap: var(--space-block-md); }
 .champ input {
-  height: var(--control-height); border: 1px solid var(--border);
+  height: var(--control-height); border: 1px solid var(--border-strong);
   border-radius: var(--radius); padding: 0 var(--space-inline-unit);
-  font: inherit; background: var(--bg);
+  font: inherit; background: var(--surface);
 }
 .casse .libelle-menteur { margin-bottom: var(--space-block-card); margin-top: var(--space-block-card); }
 pre.code {
@@ -82,7 +83,7 @@ pre.code {
 .navigation a.actif { background: var(--primary-subtle); color: var(--primary); font-weight: 600; }
 .navigation .venir { color: var(--text-secondary); padding: var(--space-block-sm) var(--space-inline-sm); }
 .contenu { grid-area: main; min-width: 0;
-  background: var(--surface); border-inline: 1px solid var(--border);
+  background: var(--bg); border-inline: 1px solid var(--border);
   padding: calc(2.2 * var(--space-block-page)) calc(2 * var(--space-inline-2xl)) calc(2.5 * var(--space-block-page));
   display: grid; grid-template-columns: minmax(0, 1fr);
   gap: calc(2.4 * var(--space-block-page)); align-content: start; }
@@ -134,7 +135,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 .divergence { background: var(--primary-subtle); border-radius: var(--radius);
   padding: var(--space-block-unit) var(--space-inline-unit); color: var(--text-primary); }
 .scene { border: 1px dashed var(--border); border-radius: var(--radius-card);
-  padding: var(--space-block-card) var(--space-inline-2xl); background: var(--bg);
+  padding: var(--space-block-card) var(--space-inline-2xl); background: var(--surface);
   overflow: hidden; }
 /* Palier 2 — la colonne de réglages n'a plus sa place : elle devient une
    bande au-dessus du contenu, la navigation reste à gauche. */
@@ -142,7 +143,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   .coquille { grid-template-columns: 13rem minmax(0, 1fr); grid-template-areas: "nav regl" "nav main"; }
   .reglages { position: static; max-height: none;
     display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--space-inline-2xl);
-    background: var(--surface); border-inline: 1px solid var(--border);
+    background: var(--bg); border-inline: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     padding: var(--space-block-unit) var(--space-inline-2xl); }
   .reglages h3 { width: 100%; }
@@ -154,7 +155,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   .navigation { position: static; max-height: none;
     display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-inline-sm);
     padding: var(--space-block-unit) var(--space-inline-2xl);
-    background: var(--surface); border-bottom: 1px solid var(--border); }
+    background: var(--bg); border-bottom: 1px solid var(--border); }
   .navigation .groupe { margin-top: 0; }
   .navigation .venir { display: none; }
   .contenu, .reglages { border-inline: 0; }
@@ -172,7 +173,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 .apercu-cadre {
   position: relative; max-width: 100%; overflow: hidden;
   border: 1px solid var(--border); border-radius: var(--radius-card);
-  background-color: var(--bg);
+  background-color: var(--surface);
   background-image:
     linear-gradient(45deg, color-mix(in srgb, var(--text-primary) 6%, transparent) 25%, transparent 25%),
     linear-gradient(-45deg, color-mix(in srgb, var(--text-primary) 6%, transparent) 25%, transparent 25%),
@@ -184,7 +185,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   display: grid; justify-items: stretch; text-align: left; }
 .puce-w {
   position: absolute; bottom: 0.625rem; right: 0.625rem; pointer-events: none;
-  background: var(--surface); border: 1px solid var(--border);
+  background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 0.25rem 0.5rem; color: var(--text-secondary); font-size: 0.6875rem;
 }
 .poignee {
@@ -192,7 +193,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   display: flex; align-items: center; justify-content: center;
   cursor: ew-resize; touch-action: none; border-radius: 4px;
 }
-.poignee:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.poignee:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .poignee-trait { width: 0.4rem; height: 2.75rem; border-radius: 999px;
   background: var(--text-secondary); opacity: 0.6; transition: all 0.15s; }
 .poignee:hover .poignee-trait, .poignee:focus-visible .poignee-trait,
@@ -211,7 +212,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 .panneau-code { border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
 .panneau-code-tete {
   display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-block-sm) var(--space-inline-unit); background: var(--bg);
+  padding: var(--space-block-sm) var(--space-inline-unit); background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
 .panneau-code-tete .bouton { height: 1.75rem; padding: 0 var(--space-inline-sm); font-size: 0.6875rem; }
@@ -226,7 +227,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   font: 600 0.625rem/1 var(--font-mono); color: var(--primary);
 }
 .espace.h.vu[data-nom]::after { left: 50%; top: 100%; transform: translate(-50%, 0.125rem); }
-.carte-demo { background: var(--surface); border: 1px solid var(--border);
+.carte-demo { background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius-card); width: 100%; max-width: 24rem; overflow: hidden; }
 .oeil {
   background: var(--danger-subtle); color: var(--danger); border-radius: var(--radius);
@@ -255,12 +256,14 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 .demo-plein { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
 .demo-plein.jeton:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
 .demo-plein.filtre:hover { filter: brightness(0.72); }
+/* Une ligne de liste survolée prend surface-hover — le survol est un jeton */
+.demo-ligne:hover { background: var(--surface-hover); }
 
 /* ── L'accueil : tuiles de fondations et étapes de méthode ── */
 .tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   gap: var(--space-inline-unit); }
 .tuile { display: grid; gap: var(--space-block-md); align-content: start;
-  background: var(--surface); border: 1px solid var(--border);
+  background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--radius-shell);
   padding: var(--space-block-card) var(--space-inline-2xl);
   text-decoration: none; color: var(--text-primary);
@@ -276,7 +279,7 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 
 /* ── Le bouton de casse : il annonce la couleur — pointillé rouge au repos,
       plein quand la casse est active ── */
-.bouton.casse { color: var(--danger); border: 1px dashed var(--danger); background: var(--surface); }
+.bouton.casse { color: var(--danger); border: 1px dashed var(--danger); background: var(--bg); }
 .bouton.casse:hover { background: var(--danger-subtle); }
 .bouton.casse.on { background: var(--danger); border: 1px solid var(--danger); color: var(--on-danger); }
 
@@ -287,7 +290,10 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 .tableau th { color: var(--text-secondary); font-weight: 700; }
 
 /* ── Polish : états visibles, sélection aux couleurs du kit ── */
+/* L'anneau de focus est l'accent de la charte : il entoure, il n'accueille
+   jamais de texte — c'est son unique métier. */
 .bouton:focus-visible, .tuile:focus-visible, .navigation a:focus-visible,
-details.prov summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.champ input:focus-visible, details.prov summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; }
 details.prov summary:hover { color: var(--text-primary); }
 ::selection { background: var(--primary-subtle); color: var(--text-primary); }

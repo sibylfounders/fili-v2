@@ -127,19 +127,28 @@
    LES JETONS DE COULEUR — famille reprise le 23 août 2026
    (sources/…/foundations/COLOR-UX.md 2.0.0 : C1–C16, M1–M3).
 
-   Les VALEURS sont celles du registre du dépôt
-   (sources/packages/tokens/src/tokens.source.mjs — crans nommés en
-   commentaire) : elles vivent ici et nulle part ailleurs (C1).
+   Les VALEURS sont celles de la CHARTE DE CONCEPTION FILI
+   (docs/charte/filicharte_6.html, remise par l'Auteur le 23 août), qui
+   prolonge le registre du dépôt (tokens.source.mjs) ; les valeurs du
+   thème sombre, que la charte ne couvre pas encore, restent les crans du
+   registre. Elles vivent ici et nulle part ailleurs (C1).
 
    Les NOMS suivent les conventions du marché, alignés sur le registre
    (décision d'Auteur, 23 août) : l'API du kit parle anglais, la doctrine
    reste en français. Trois registres étanches (C2), aucun jeton à
    cheval (C3) :
-   · NEUTRES    bg · surface · text-primary · text-secondary · border ·
+   · NEUTRES    bg (le blanc dominant) · surface (le gris posé) ·
+                surface-hover · text-primary · text-secondary · border ·
                 border-strong · code-bg/code-text (paire fixe)
-   · MARQUE     primary (+ hover, on-primary, subtle, on-subtle) — un
-                seul rôle de marque : un jeton naît d'un besoin réel (C4)
-   · SÉMANTIQUE danger · success, chacun avec son couple complet (C5)
+   · MARQUE     primary (+ hover, on-primary, subtle, on-subtle), tenue
+                en réserve — et accent, l'anneau de focus : il entoure,
+                il n'accueille jamais de texte (charte). Deux rôles, deux
+                besoins réels (C4).
+   · SÉMANTIQUE danger · success · warning · info, chacun avec son couple
+                complet (C5) — warning et info sont nés avec leurs
+                consommateurs (la page En situation), jamais avant.
+   Pas de text-muted : le gris pâle de la charte (#9CA3AF) ne porte
+   jamais un texte (2,54:1) — sans consommateur au kit, pas de jeton.
 
    Chaque jeton résout UNE valeur PAR THÈME (C12) ; le sombre s'active sur
    la préférence du système et se règle en [data-theme] (C13). Les états
@@ -155,8 +164,9 @@
 :root, [data-theme="light"] {
   color-scheme: light;
   /* Neutres */
-  --bg: #F3F4F6;        /* neutral.100 — le creux de la page */
-  --surface: #FFFFFF;      /* neutral.0   — la surface posée */
+  --bg: #FFFFFF;        /* charte background — le blanc dominant (56 %) */
+  --surface: #F3F4F6;      /* charte surface — le gris posé (18 %) */
+  --surface-hover: #E5E7EB;  /* charte surface-hover — neutral.200 */
   --text-primary: #111827;       /* neutral.900 — le texte courant */
   --text-secondary: #4B5563;       /* neutral.600 — le texte second (≥ 4,5:1 partout) */
   --border: #E5E7EB;       /* neutral.200 — la séparation décorative */
@@ -165,8 +175,9 @@
   --primary: #4F46E5;          /* indigo.600 */
   --primary-hover: #4338CA;   /* indigo.700 — le survol est un jeton (C10) */
   --on-primary: #FFFFFF;      /* neutral.0 */
-  --primary-subtle: #E0E7FF;     /* indigo.100 */
+  --primary-subtle: #E0E7FF;     /* indigo.100 — la charte le nomme secondary */
   --on-primary-subtle: #3730A3; /* indigo.800 */
+  --accent: #0891B2;            /* charte accent — l'anneau de focus, rien d'autre */
   /* Sémantique — le couple complet dès la naissance (C5) */
   --danger: #B91C1C;          /* red.700 */
   --danger-subtle: #FEE2E2;     /* red.100 */
@@ -174,6 +185,12 @@
   --success: #15803D;          /* green.700 */
   --success-subtle: #DCFCE7;     /* green.100 */
   --on-success: #FFFFFF;      /* neutral.0 */
+  --warning: #92400E;          /* charte warning — amber.800 */
+  --warning-subtle: #FEF3C7;     /* amber.100 */
+  --on-warning: #FFFFFF;      /* neutral.0 */
+  --info: #1D4ED8;             /* charte info — blue.700 */
+  --info-subtle: #DBEAFE;        /* blue.100 */
+  --on-info: #FFFFFF;         /* neutral.0 */
   /* Paire fixe du panneau de code — jamais inversée : la même valeur
      dans les deux thèmes est une résolution, pas un oubli (C12). */
   --code-bg: #1C1928;
@@ -185,6 +202,7 @@
   color-scheme: dark;
   --bg: #030712;        /* neutral.950 */
   --surface: #111827;      /* neutral.900 */
+  --surface-hover: #1F2937;  /* neutral.800 */
   --text-primary: #FFFFFF;       /* neutral.0 */
   --text-secondary: #9CA3AF;       /* neutral.400 */
   --border: #1F2937;       /* neutral.800 */
@@ -194,12 +212,19 @@
   --on-primary: #030712;      /* neutral.950 */
   --primary-subtle: #1E1B4B;     /* indigo.950 */
   --on-primary-subtle: #C7D2FE; /* indigo.200 */
+  --accent: #0891B2;            /* le même anneau — ≥ 3:1 sur les deux fonds sombres */
   --danger: #F87171;          /* red.400 */
   --danger-subtle: #450A0A;     /* red.950 */
   --on-danger: #030712;      /* neutral.950 */
   --success: #4ADE80;          /* green.400 */
   --success-subtle: #052E16;     /* green.950 */
   --on-success: #030712;      /* neutral.950 */
+  --warning: #FBBF24;          /* amber.400 */
+  --warning-subtle: #451A03;     /* amber.950 */
+  --on-warning: #030712;      /* neutral.950 */
+  --info: #60A5FA;             /* blue.400 */
+  --info-subtle: #172554;        /* blue.950 */
+  --on-info: #030712;         /* neutral.950 */
 }
 
 /* …ou hérité de la préférence du système (C13). Bloc jumeau du précédent :
@@ -207,12 +232,16 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --bg: #030712; --surface: #111827; --text-primary: #FFFFFF;
+    --bg: #030712; --surface: #111827; --surface-hover: #1F2937;
+    --text-primary: #FFFFFF;
     --text-secondary: #9CA3AF; --border: #1F2937; --border-strong: #9CA3AF;
     --primary: #818CF8; --primary-hover: #A5B4FC; --on-primary: #030712;
     --primary-subtle: #1E1B4B; --on-primary-subtle: #C7D2FE;
+    --accent: #0891B2;
     --danger: #F87171; --danger-subtle: #450A0A; --on-danger: #030712;
     --success: #4ADE80; --success-subtle: #052E16; --on-success: #030712;
+    --warning: #FBBF24; --warning-subtle: #451A03; --on-warning: #030712;
+    --info: #60A5FA; --info-subtle: #172554; --on-info: #030712;
   }
 }
 
