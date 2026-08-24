@@ -1,13 +1,15 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigation } from "../nav";
 import { PanneauCode } from "../apercu";
 import { Densite } from "../densite";
 import { Adaptation, useAdaptation } from "../adaptation";
 import { Theme, useTheme, useSchemeSysteme } from "../theme";
+import { derive, verifier, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
 
-/* La page vivante de la famille couleur (COLOR-UX.md 2.0.0, C1–C16),
-   refaite le 23 août au soir à la manière de la CHARTE DE CONCEPTION
+/* La page vivante de la famille couleur (COLOR-UX.md, C1–C16),
+   dérivée d'UNE décision d'entrée — primary — par kit/derivation.mjs,
+   à la manière de la CHARTE DE CONCEPTION
    (docs/charte/filicharte_6.html) : la palette se montre en mosaïque et
    en proportions d'usage, les tons portent leur contraste sur eux-mêmes,
    les garde-fous se lisent en prose, et une section « En situation »
@@ -538,12 +540,19 @@ export default function Vue() {
   const [filtre, setFiltre] = useState(false);
   const [actionSombre, setActionSombre] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
+  const [primaire, setPrimaire] = useState<string>(PRIMAIRE_DEFAUT);
   const { styl } = useAdaptation();
   const { theme } = useTheme();
   const sysSombre = useSchemeSysteme();
   const themeEffectif = theme === "system" ? (sysSombre ? "dark" : "light") : theme;
   const paleEffectif: React.CSSProperties = { ["--text-secondary" as any]: themeEffectif === "dark" ? "#6B7280" : "#9CA3AF" };
   const actionSombreStyle: React.CSSProperties = { ["--primary" as any]: "#312E81" };
+  const paletteDerivee = useMemo(() => derive(primaire), [primaire]);
+  const fautesDerivation = useMemo(() => verifier(paletteDerivee), [paletteDerivee]);
+  const surchargesDerivation = useMemo(() => {
+    const t = paletteDerivee[themeEffectif === "dark" ? "dark" : "light"] as unknown as Record<string, string>;
+    return Object.fromEntries(Object.entries(t).map(([n, v]) => ["--" + n, v])) as React.CSSProperties;
+  }, [paletteDerivee, themeEffectif]);
 
   return (
     <div className="coquille">
@@ -559,8 +568,26 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">01 · La palette</p>
-          <h2>Un rôle, pas une couleur</h2>
-          <Palette cle={themeEffectif} />
+          <h2>Une décision : primary — le reste se calcule</h2>
+          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+            <input type="color" value={primaire} aria-label="Primary — la décision d'entrée"
+              onChange={(e) => setPrimaire(e.target.value.toUpperCase())}
+              style={{ width: "var(--control-height)", height: "var(--control-height)", padding: 0, border: "1px solid var(--border-strong)", borderRadius: "var(--radius)", background: "var(--bg)", cursor: "pointer" }} />
+            <span className="mono">{primaire}</span>
+            {primaire !== PRIMAIRE_DEFAUT && (
+              <button className="bouton" onClick={() => setPrimaire(PRIMAIRE_DEFAUT)}>Revenir à la charte</button>
+            )}
+            <span className={`badge ${fautesDerivation.length ? "ko" : ""}`}>
+              {fautesDerivation.length
+                ? `${fautesDerivation.length} paire(s) sous le seuil — cette primaire ne tient pas`
+                : "40 paires · 2 thèmes — tout au seuil"}
+            </span>
+          </div>
+          <p className="sourd" style={{ fontSize: "0.8125rem" }}>La marque et les neutres
+          suivent primary ; les états gardent leurs ancres.</p>
+          <div style={surchargesDerivation}>
+            <Palette cle={`${themeEffectif}-${primaire}`} />
+          </div>
           <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["p01", "c1", "c2", "c4"]} />
           </div></details>
@@ -694,9 +721,9 @@ export default function Vue() {
         <Adaptation />
         <div className="bloc">
           <span className="mono sourd">La famille</span>
-          <p className="sourd" style={{ fontSize: "0.75rem" }}>Les valeurs viennent de la
-          charte de conception Fili (les valeurs sombres, du registre du dépôt — dit en
-          C13). Le theming est global : jamais page par page.</p>
+          <p className="sourd" style={{ fontSize: "0.75rem" }}>Une décision d&apos;entrée :
+          primary. La famille est générée par le moteur (kit/derivation.mjs), calibré sur
+          la charte — le sombre, sur le registre. Le theming est global.</p>
         </div>
       </aside>
     </div>
