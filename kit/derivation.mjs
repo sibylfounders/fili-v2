@@ -159,16 +159,23 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   const saisie = rgbVersHex(hexVersRgb(primaire))
   const cote = (hex) => (luminance(hex) > 0.1833 ? 'sombre' : 'clair') /* le côté qui peut tenir 4,5:1 */
 
-  light['primary-subtle'] = lchVersHex([0.930, 0.033, H])
+  /* Le fond doux reste DOUX face à l'aplat : toujours nettement plus clair
+     (à la primaire de la charte, il retombe sur elle) ; et si la marque est
+     elle-même pastel, il devient un voile quasi blanc, désaturé — sinon les
+     deux se confondent. */
+  let Ls = Math.max(0.930, Math.min(0.975, Lp + 0.419))
+  let Cs = Math.min(0.033, Cp)
+  if (Lp > 0.86) { Ls = 0.978; Cs = Math.min(0.016, Cp * 0.3) }
+  light['primary-subtle'] = lchVersHex([Ls, Cs, H])
   light.primary = saisie /* l'aplat de marque : jamais touché */
   light['primary-hover'] = lchVersHex([Lp - 0.054, Cp, H])
   light['on-primary'] = surCouleur(light.primary, [0.02, H], 4.5, cote(light.primary))
   light['primary-text'] = cale(saisie, [light.bg, light.surface, light['primary-subtle']], 4.5, [Cp, H])
   const Lt = hexVersLch(light['primary-text'])[0]
   light['primary-text-hover'] = cale(lchVersHex([Lt - 0.05, Cp, H]), [light.bg, light.surface], 4.5, [Cp, H])
-  light['on-primary-subtle'] = cale(lchVersHex([0.398, 0.177, H]), [light['primary-subtle']], 4.5, [0.177, H])
+  light['on-primary-subtle'] = cale(lchVersHex([0.398, Math.min(0.177, Cp), H]), [light['primary-subtle']], 4.5, [Math.min(0.177, Cp), H])
 
-  dark['primary-subtle'] = lchVersHex([0.257, 0.086, H])
+  dark['primary-subtle'] = lchVersHex([0.257, Math.min(0.086, Cp), H])
   dark.primary = Lp >= 0.62 ? saisie : lchVersHex([0.680, Cp, H]) /* une marque claire vit telle quelle en sombre */
   const Lb = hexVersLch(dark.primary)[0]
   dark['primary-hover'] = lchVersHex([Math.min(Lb + 0.08, 0.92), Cp * 0.66, H])
@@ -176,7 +183,7 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   dark['primary-text'] = cale(dark.primary, [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { versLeBas: false })
   const Ltd = hexVersLch(dark['primary-text'])[0]
   dark['primary-text-hover'] = cale(lchVersHex([Math.min(Ltd + 0.05, 0.95), Cp * 0.66, H]), [dark.bg, dark.surface], 4.5, [Cp * 0.66, H], { versLeBas: false })
-  dark['on-primary-subtle'] = cale(lchVersHex([0.870, 0.062, H]), [dark['primary-subtle']], 4.5, [0.062, H], { versLeBas: false })
+  dark['on-primary-subtle'] = cale(lchVersHex([0.870, Math.min(0.062, Cp), H]), [dark['primary-subtle']], 4.5, [Math.min(0.062, Cp), H], { versLeBas: false })
 
   /* ── Accent — l'anneau de focus : l'écart de la charte, conservé ── */
   const Ha = (H - 55.3 + 360) % 360
