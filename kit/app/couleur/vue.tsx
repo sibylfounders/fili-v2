@@ -600,18 +600,18 @@ export default function Vue() {
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <span className={`badge ${fautesDerivation.length ? "ko" : ""}`}>
               {fautesDerivation.length
-                ? `${fautesDerivation.length} paire(s) sous le seuil`
-                : "40 paires · 2 thèmes — AA par construction"}
+                ? `${fautesDerivation.length} texte(s) deviendraient illisibles`
+                : "Tout reste lisible — en clair comme en sombre"}
             </span>
             {paletteDerivee.meta.lienAjuste && (
               <span className="badge" style={{ color: "var(--warning)", background: "var(--warning-subtle)" }}>
-                la marque reste entière — seul le lien est calé : {paletteDerivee.meta.saisie} → {paletteDerivee.meta.lien}
+                Votre couleur est gardée telle quelle ; les liens, trop clairs pour être lus, sont assombris
               </span>
             )}
           </div>
-          <p className="sourd" style={{ fontSize: "0.8125rem" }}>Le sélecteur vit dans le
-          panneau de droite, en tête du theming : la marque et les neutres le suivent,
-          les états gardent leurs ancres — sur tout le site.</p>
+          <p className="sourd" style={{ fontSize: "0.8125rem" }}>Changez Primary dans le
+          panneau de droite : tout le site suit. Les couleurs d&apos;erreur et de succès,
+          elles, ne bougent pas.</p>
           <Gamme primaire={primaire} />
           <Palette cle={`${themeEffectif}-${primaire}`} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
