@@ -560,21 +560,27 @@ export default function Vue() {
       <main className="contenu">
         <div className="tete-page">
           <p className="kicker">Fondation · La couleur</p>
-          <h1>Une seule couleur de marque, tenue en réserve</h1>
+          <h1>Vous ne choisirez plus jamais « une couleur »</h1>
           <p className="chapo">
-            Tout le reste est encre, papier et les gris entre les deux — et les états
-            sémantiques ne s&apos;y servent jamais. C&apos;est la ligne de la charte, tenue
-            par <b>seize règles</b> : chaque duo texte/fond se mesure sous vos yeux, dans
-            les deux thèmes. Le réglage <b>Thème</b>, à droite, agit sur tout le site.
+            « Quel bleu pour ce bouton ? C&apos;est assez lisible ? Et en sombre ? Et pour
+            qui ne voit pas le rouge ? » — cette page ferme ces questions une fois pour
+            toutes : <b>on nomme un besoin, un rôle y répond, et la preuve se
+            mesure</b> sous vos yeux, dans les deux thèmes. Une seule couleur de marque,
+            tenue en réserve ; tout le reste est encre, papier et les gris entre les
+            deux — réglés par seize règles.
           </p>
         </div>
 
         <section className="bloc-section">
           <p className="kicker">01 · La palette</p>
-          <h2>Six rôles composent la page — la marque n&apos;en prend que 5 %</h2>
-          <p className="sourd">La mosaïque montre les rôles ; la vue Proportions montre leur
-          juste part dans un écran. Chaque tuile lit sa valeur sur la page rendue — basculez
-          le thème à droite, tout suit — et un clic copie la valeur.</p>
+          <h2>« Il me faudrait une couleur de plus » — non : un rôle</h2>
+          <p className="sourd">Un écran tient avec moins de couleurs qu&apos;on ne croit :
+          un sol, une surface posée, deux encres, un trait — et l&apos;action, tenue en
+          réserve à 5 % de la page. Quand une maquette réclame « une couleur de plus »,
+          elle cherche presque toujours un rôle qui existe déjà ; et s&apos;il n&apos;existe
+          pas, c&apos;est un rôle qu&apos;on crée, jamais une valeur libre. Les tuiles
+          lisent leurs valeurs sur la page rendue — le thème de droite les fait basculer,
+          un clic copie.</p>
           <Palette cle={themeEffectif} />
           <details className="prov"><summary>Règles &amp; sources</summary><div>
             <Regles ids={["p01", "c1", "c2", "c4"]} />
@@ -583,12 +589,15 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">02 · Les tons et leurs contrastes</p>
-          <h2>Chaque ton porte son contraste sur lui-même</h2>
-          <p className="sourd">Chaque pastille est un vrai couple texte/fond de la famille,
-          et le chiffre qu&apos;elle affiche est mesuré sur elle, dans le thème courant.
-          Basculez le thème à droite : les valeurs changent, les seuils tiennent. La casse
-          remet le gris pâle d&apos;avant l&apos;arbitrage — regardez la pastille « Texte
-          second » passer au rouge et ce paragraphe pâlir.</p>
+          <h2>« C&apos;est lisible, non ? » — on ne vote pas, on mesure</h2>
+          <p className="sourd">Les débats d&apos;équipe sur « assez contrasté » ne
+          finissent jamais, parce qu&apos;ils opposent des impressions. Ici la question a
+          une réponse : un texte n&apos;existe que sur ses fonds déclarés, et chaque couple
+          passe son seuil — mesuré sur cette page, dans les deux thèmes, pastille par
+          pastille. Hors couple déclaré, pas de débat : interdit. La casse remet le gris
+          qu&apos;on excusait « pour des métadonnées » — la norme ne connaît pas cette
+          excuse, et l&apos;arbitrage l&apos;a fermée : regardez « Texte second » passer au
+          rouge, et ce paragraphe pâlir.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${grisPale ? "on" : ""}`} onClick={() => setGrisPale(!grisPale)}>
               {grisPale ? "Réparer : remonter le gris" : "Casser : le gris d'avant l'arbitrage"}
@@ -623,12 +632,15 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">03 · Jamais la couleur seule — et chacun chez soi</p>
-          <h2>Un état arrive équipé, et la marque reste à sa place</h2>
-          <p className="sourd">Chaque état parle avec trois voix : la couleur, l&apos;icône,
-          le mot. Cassez le canal puis regardez sans la couleur — les deux messages
-          deviennent le même message. L&apos;autre casse donne la couleur de marque aux
-          états : « c&apos;est nous » et « il se passe quelque chose » ne font plus
-          qu&apos;une seule voix.</p>
+          <h2>« C&apos;est rouge, on comprendra » — sauf qui ne voit pas le rouge</h2>
+          <p className="sourd">Deux fautes rôdent autour des états, et aucune ne produit
+          d&apos;erreur nulle part. La première : un message qui ne compte que sur sa
+          couleur exclut ceux qui ne la distinguent pas — près d&apos;un homme sur douze.
+          D&apos;où la règle : chaque état parle avec trois voix, la couleur, l&apos;icône,
+          le mot. La seconde : une marque qui sert à dire « erreur » détruit le vocabulaire
+          qu&apos;elle était censée construire — « c&apos;est nous » et « il se passe
+          quelque chose » deviennent la même phrase. Les deux casses font vivre les deux
+          fautes.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${couleurSeule ? "on" : ""}`} onClick={() => setCouleurSeule(!couleurSeule)}>
               {couleurSeule ? "Rendre l'icône et le mot" : "Casser : la couleur seule"}
@@ -661,14 +673,16 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">04 · En situation</p>
-          <h2>Les mêmes valeurs, portées par un écran plausible</h2>
-          <p className="sourd">Aucune couleur de cette maquette n&apos;est nouvelle : si une
-          carte avait besoin d&apos;autre chose, c&apos;est la famille qui aurait un trou.
-          Le delta est success, l&apos;étiquette est info, l&apos;avertissement est warning —
-          né ce soir, avec cette carte pour premier consommateur. Le survol du bouton est
-          un jeton ; la casse le remplace par un filtre, une couleur fantôme
-          qu&apos;aucune table ne peut vérifier. Et le désactivé n&apos;a pas de jetons :
-          dette écrite, pas un oubli.</p>
+          <h2>« Et sur un vrai écran, il en manquera ? » — alors c&apos;est la famille qu&apos;on répare</h2>
+          <p className="sourd">Le test d&apos;une palette n&apos;est pas le nuancier,
+          c&apos;est l&apos;écran. Celui-ci n&apos;a droit à aucune couleur nouvelle : le
+          delta prend success, l&apos;étiquette info, l&apos;avertissement warning — né
+          précisément parce que cet écran en avait besoin. Si une carte exigeait autre
+          chose, la réponse ne serait jamais « j&apos;invente une valeur » mais « la
+          famille a un trou, on l&apos;instruit ». Le survol est un jeton ; la casse le
+          remplace par un filtre — une couleur fantôme qu&apos;aucune table ne peut
+          vérifier. Et le désactivé n&apos;a pas de jetons : dette écrite, pas un
+          oubli.</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${filtre ? "on" : ""}`} onClick={() => setFiltre(!filtre)}>
               {filtre ? "Réparer : le survol par jeton" : "Casser : le survol par filtre"}
@@ -682,13 +696,15 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">05 · Les deux thèmes</p>
-          <h2>Deux tables de valeurs, les mêmes rôles, la même exigence</h2>
-          <p className="sourd">Le même écran, résolu par les deux thèmes — aucun composant
-          ne change, la table de valeurs double (C12), et le sombre se vérifie comme le
-          clair (C13). La casse démontre C14 par le calcul : donnez au thème sombre une
-          action sombre, et son texte devient illisible — ce n&apos;est pas un goût,
-          c&apos;est la luminance. En bas, la méthode bénie du teintage : trois gris de
-          même luminance, trois rapports identiques (C15).</p>
+          <h2>« Le sombre, ça double le travail ? » — la table de valeurs double, pas les écrans</h2>
+          <p className="sourd">Le mode sombre ne se redessine pas écran par écran : chaque
+          rôle résout une seconde valeur, et tout suit — aucun composant ne change (C12),
+          le sombre se vérifie au même seuil que le clair (C13). Restait une question qui
+          ressemble à un goût : pourquoi l&apos;action s&apos;éclaircit-elle en sombre ?
+          Parce qu&apos;aucun texte ne peut tenir à la fois sur une action sombre et sur un
+          fond quasi noir — la casse le démontre par le calcul (C14). Et en bas, la réponse
+          à « peut-on réchauffer nos gris sans perdre la lisibilité ? » : oui — à luminance
+          constante, c&apos;est gratuit (C15).</p>
           <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
             <button className={`bouton casse ${actionSombre ? "on" : ""}`} onClick={() => setActionSombre(!actionSombre)}>
               {actionSombre ? "Réparer : éclaircir l'action" : "Casser : une action sombre en sombre"}
@@ -724,11 +740,12 @@ export default function Vue() {
 
         <section className="bloc-section">
           <p className="kicker">06 · L&apos;adaptation</p>
-          <h2>Le même système, dans votre stack</h2>
-          <p className="sourd">Le normatif vit dans la règle et le jeton ; React, Angular
-          ou HTML n&apos;en sont que des consommateurs. Une alerte d&apos;erreur, trois
-          traductions — et dans chacune, le thème se résout au rendu, jamais dans le
-          code.</p>
+          <h2>« On n&apos;est pas sur votre stack » — le système, si</h2>
+          <p className="sourd">Un système enfermé dans un framework n&apos;est qu&apos;une
+          bibliothèque de plus, qui meurt avec lui. Ici le normatif vit dans la règle et le
+          jeton ; React, Angular ou HTML n&apos;en sont que des consommateurs. La preuve :
+          la même alerte, trois traductions — et dans aucune, le thème n&apos;est
+          recodé.</p>
           <PanneauCode langage={styl} outils={
             <>{(["HTML", "React", "Angular"] as const).map((f) => (
               <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
