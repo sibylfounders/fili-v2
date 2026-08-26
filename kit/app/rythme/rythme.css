@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE RYTHME — styles propres (préfixe ry-). Le squelette du gabarit
+   documentaire nu (gdoc, banc, gd-figure, prov…) vit dans globals.css et
+   n'est pas touché. Tout ici consomme le registre de tokens.css : marges
+   et espaces par profondeur (pad-*, gap-*), coins r-*, texte font-size-*,
+   cibles control-height. Les valeurs hors chaîne et les casses sont dites
+   sur leur ligne.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Le gabarit, tel que cette page le consomme — les mêmes sélecteurs
+      que globals.css, portés sur la chaîne, scopés à la page (.ry). À
+      retirer d'ici quand globals.css sera migré. ── */
+.ry .rang { gap: var(--gap-3-inline); }
+.ry .bouton { min-height: var(--control-height); height: auto; padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-ctl); font-size: var(--font-size-small); }
+.ry .badge { border-radius: var(--r-ctl); padding: var(--gap-4-block) var(--gap-3-inline); font-size: var(--font-size-small); }
+.ry .divergence { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
+.ry .oeil { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); font-size: var(--font-size-small); }
+.ry .tableau { font-size: var(--font-size-small); }
+.ry .tableau th, .ry .tableau td { padding: var(--gap-4-block) var(--pad-3-inline); }
+.ry details.prov { font-size: var(--font-size-small); }
+.ry details.prov > div { gap: var(--gap-1-block); padding-top: var(--gap-2-block); }
+.ry .banc { border-radius: var(--r-1); gap: var(--gap-1-block); }
+.ry .gd-figure { gap: var(--gap-2-block); }
+.ry .gdoc-sec-tete { gap: var(--gap-2-block); }
+.ry .gdoc-corps { gap: var(--gap-1-block); }
+.ry .gdoc-heros h1 { margin-top: var(--gap-1-block); }
+.ry .gd-pied { padding-top: var(--gap-1-block); gap: var(--gap-2-inline); font-size: var(--font-size-small); }
+.ry .espace { border-radius: var(--r-4); }
+.ry .espace.ko[data-nom]::after, .ry .espace.vu[data-nom]::after { font-size: var(--font-size-small); }
+
+/* ── Petits utilitaires de mise en place (aucune valeur) ── */
+.ry-etire { display: flex; align-items: stretch; }
+.ry-plein { flex: 1; min-width: 0; }
+.ry-min0 { min-width: 0; }
+.ry-flex { display: flex; }
+.ry-large { width: 100%; }
+.ry-bloc { display: block; }
+.ry-debut { justify-self: start; }
+.ry-defile { overflow-x: auto; }
+.ry-petit { font-size: var(--font-size-small); }
+.ry-h3 { margin: 0; font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.01em; line-height: var(--leading-heading); }
+.ry-faute { color: var(--danger); }
+
+/* ── 01 · La tranche Coursue (CG4) : la coque (marge 1, coin 1) → la carte
+      (marge 2, coin 2) → les lignes (marge 3, coin 3). Profondeur par les
+      fonds, ni ombre ni bordure ; l'espace entre deux frères vaut leur marge. ── */
+.tranche {
+  width: min(100%, 46rem); /* hors chaîne : mesure de la scène */
+  background: var(--surface); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  display: flex; gap: var(--gap-1-inline);
+  color: var(--text-primary); text-align: left;
+  font-size: var(--font-size-small); line-height: 1.45;
+}
+.tr-nav { width: 9.5rem; /* hors chaîne : mesure de la colonne */ flex: none; display: flex; flex-direction: column; gap: var(--gap-2-block); }
+.tr-marque { display: flex; align-items: center; gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-3-inline); font-weight: 600; }
+.tr-marque .m { width: 1.15rem; height: 1.15rem; /* hors chaîne : le monogramme, une glyphe */ color: var(--primary); flex: none; }
+.tr-item { padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); }
+.tr-item.on { background: var(--bg); color: var(--text-primary); font-weight: 600; }
+.tr-carte { flex: 1; min-width: 0; background: var(--bg); border-radius: var(--r-2); display: flex; flex-direction: column; }
+.tr-id { display: flex; align-items: center; gap: var(--gap-3-inline); }
+.tr-avatar {
+  width: 2.75rem; height: 2.75rem; /* hors chaîne : la pastille d'avatar, un objet — pas une cible */
+  border-radius: var(--r-pill); flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--primary-subtle); color: var(--on-primary-subtle);
+  font: 600 var(--font-size-small)/1 var(--font-sans);
+}
+.tr-nom { display: block; font-weight: 600; font-size: var(--font-size-body); letter-spacing: -0.01em; }
+.tr-role { color: var(--text-secondary); }
+.tr-btn {
+  border: 0; cursor: default; border-radius: var(--r-ctl);
+  min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
+  font: 600 var(--font-size-small)/1 var(--font-sans);
+  background: var(--surface); color: var(--text-primary);
+}
+.tr-btn.premier { background: var(--text-primary); color: var(--bg); }
+.tr-sub {
+  flex: 1; min-width: 0; background: var(--surface); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  display: flex; flex-direction: column; gap: var(--gap-4-block);
+}
+.tr-sub b { font-size: var(--font-size-body); font-variant-numeric: tabular-nums; }
+.tr-sub span { color: var(--text-secondary); font-size: var(--font-size-small); }
+@media (max-width: 40em) {
+  .tranche { flex-direction: column; }
+  .tr-nav { width: 100%; flex-direction: row; overflow-x: auto; }
+}
+
+/* ── 02 · Le laboratoire : la géométrie en variables --lab-*, posées par la
+      vue depuis le moteur (px calculés, jamais écrits). La coque porte la
+      base et la racine ; la carte et les lignes en descendent. ── */
+.ry-labo { display: grid; gap: var(--gap-1-block); width: 100%; }
+.ry-lab {
+  background: var(--surface); border-radius: var(--lab-r1); padding: var(--lab-p1);
+  max-width: 34rem; /* hors chaîne : mesure de la carte */ margin-inline: auto;
+}
+.ry-lab-carte { background: var(--bg); border-radius: var(--lab-r2); padding: var(--lab-p2); display: grid; gap: var(--lab-g1); }
+.ry-lab-ligne { display: flex; gap: var(--lab-g2); flex-wrap: wrap; }
+.ry-lab-id { align-items: center; flex-wrap: nowrap; }
+.ry-lab-btn { border-radius: var(--lab-rctl); }
+.ry-lab-cellule { border-radius: var(--lab-r3); padding: var(--lab-p3); gap: var(--lab-g3); flex: 1 1 7rem; /* hors chaîne : mesure minimale d'une cellule */ }
+.ry-verdicts { display: grid; gap: var(--gap-2-block); }
+/* La barre chiffrée du verdict : la valeur vit DANS sa barre — largeur
+   proportionnelle (posée par la vue), verdict en fond. */
+.ry-barre {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--control-height-compact); border-radius: var(--r-pill);
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+}
+.ry-barre.ko { background: var(--danger); color: var(--on-danger); }
+.ry-barre.bon { background: var(--success); color: var(--on-success); }
+
+/* ── 03 · La profondeur : coque → carte → ligne, et sa casse. ── */
+.ry-prof-coque {
+  width: 100%; max-width: 30rem; /* hors chaîne : mesure de la scène */
+  background: var(--surface); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline); display: grid; gap: var(--gap-1-block);
+}
+.ry-prof-carte { background: var(--bg); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: var(--gap-2-block); }
+.ry-prof-ligne { background: var(--surface); border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); display: grid; gap: var(--gap-4-block); }
+.ry-prof-ligne[data-intent="statement"] { border-radius: 16px; /* casse : la ligne deux fois plus ronde que sa carte (coin de carte 8 → 16) */ outline: 1px dashed var(--danger); }
+.ry-prof-btn { margin-top: var(--gap-2-block); }
+
+/* ── 04 · La densité : trois fois la même carte, seule la base change —
+      chaque carte porte data-density, tokens.css recalcule sa chaîne. ── */
+.ry-densites { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+.ry-dcarte {
+  background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline); display: flex; flex-direction: column; gap: var(--gap-2-block);
+}
+.ry-lignes { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.ry-sk { height: 0.625rem; /* hors chaîne : barre de squelette, un objet décoratif */ border-radius: var(--r-pill); background: var(--surface-hover); }
+.ry-sk.c { width: 72%; }
+.ry-detiq { font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; } /* tertiaire : l’étiquette d’une carte de densité */
+@media (max-width: 48em) { .ry-densites { grid-template-columns: 1fr; } }
+
+/* ── 05 · La proximité : une carte dont chaque distance est un bloc d'espace explicite. ── */
+.ry-prox { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 26rem; /* hors chaîne : mesure de la carte */ }
+.ry-prox-carte { background: var(--surface); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: 0; }
+.ry-champ {
+  min-height: var(--control-height); width: 100%; border: 1px solid var(--border); border-radius: var(--r-ctl);
+  padding: 0 var(--pad-3-inline); font: inherit; background: var(--bg);
+}
+
+/* ── 06 · Le bon cran ── */
+.ry-cran { display: grid; gap: var(--gap-1-block); max-width: var(--measure); }
+.ry-question { display: grid; gap: var(--gap-3-block); }
+.ry-reponse { display: grid; gap: var(--gap-3-block); padding-top: var(--gap-2-block); }
+.ry-affiche { font-size: var(--doc-cover); line-height: 1.04; font-weight: 600; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+
+/* ── 07 · Le vocabulaire : trois tuiles (coque, carte, ligne), chaque figure
+      consomme les jetons qu'elle nomme. ── */
+.ry-voc { display: grid; gap: var(--page-2-block); }
+.ry-voc-tuiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--page-2-block) var(--page-2-inline); }
+.ry-voc-tuile { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.ry-voc-tuile h3 { display: flex; align-items: baseline; gap: var(--gap-3-inline); }
+.ry-voc-tuile h3 .mono { color: var(--text-secondary); font-weight: 400; }
+.ry-voc-tuile p { color: var(--text-secondary); font-size: var(--font-size-small); line-height: var(--leading-body); }
+.ry-vocfig { margin-top: auto; background: var(--surface); display: flex; align-items: stretch; }
+.ry-vocfig.coque { border-radius: var(--r-1); padding: var(--pad-1-block) var(--pad-1-inline); gap: var(--gap-1-inline); }
+.ry-vocfig.carte { border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); gap: var(--gap-2-block); flex-direction: column; }
+.ry-vocfig.ligne { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); gap: var(--gap-3-inline); align-items: center; }
+.ry-vocbox { background: var(--bg); border-radius: var(--r-2); flex: 1; min-height: 2.5rem; /* hors chaîne : hauteur de la boîte de figure */ }
+.ry-vocbox.ligne { border-radius: var(--r-3); min-height: 1.5rem; /* hors chaîne : hauteur d'une ligne de figure */ }
+.ry-vocbox.item { border-radius: var(--r-3); min-height: 1.25rem; /* hors chaîne : hauteur d'un item de figure */ }
+.ry-vocbadge {
+  flex: none; background: var(--bg); border-radius: var(--r-pill);
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-tertiary); /* tertiaire : la fiche d’une figure du vocabulaire */
+}
+@media (max-width: 48em) { .ry-voc-tuiles { grid-template-columns: 1fr; } }
+
+/* ── 08 · Les dépliants de règles ── */
+.ry-regles { display: grid; gap: var(--gap-1-block); }
+.ry-regle { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
+.ry-regle > b { color: var(--text-primary); }

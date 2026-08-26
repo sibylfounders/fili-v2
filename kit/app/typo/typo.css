@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE TYPOGRAPHIE — styles propres (préfixes gd-, gz-), migrés sur la
+   chaîne le 25 août 2026. Le squelette du gabarit documentaire nu (gdoc,
+   banc, gd-figure, gd-legende, carte, badge, bouton, prov…) vit dans
+   globals.css et n'est pas touché ici. Tout ce qui suit consomme les
+   jetons du registre ; ce qui n'en descend pas est dit sur sa ligne.
+   Ces blocs REMPLACENT leurs homonymes de globals.css (mêmes sélecteurs,
+   chargés après) — à retirer là-bas.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── 01 · Les voix : deux familles face à face, à taille d'affiche.
+      Deux coques côte à côte : l'espace entre cartes, le coin de la coque. ── */
+.gd-voix { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (max-width: 48rem) { .gd-voix { grid-template-columns: 1fr; } }
+.gd-vbloc {
+  border-radius: var(--r-1); padding: var(--pad-1-block) var(--pad-1-inline);
+  min-height: clamp(13rem, 8rem + 18vw, 20rem); /* hors chaîne : la hauteur du spécimen, une scène, pas un espace */
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: var(--gap-1-block);
+}
+.gd-vbloc.primaire { background: var(--primary); color: var(--on-primary); }
+.gd-vbloc.sombre { background: var(--code-bg); color: var(--code-text); }
+.gd-vglyphe { font-size: clamp(5.5rem, 3rem + 9vw, 10rem); line-height: 1; font-weight: 500; letter-spacing: -0.04em; } /* hors chaîne : le glyphe est un spécimen, il suit le cadre, pas l'échelle de texte */
+.gd-vbloc.sombre .gd-vglyphe { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+.gd-vqui { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-3-inline); }
+.gd-vqui b { font-weight: 600; }
+.gd-vqui span { font: 600 var(--font-size-label)/1 var(--font-mono); opacity: 0.75; }
+
+/* les quatre costumes : un rôle = un costume, portés par les filets ;
+   chaque costume est une ligne — sa marge, son espace intérieur */
+.gd-costumes { display: flex; flex-direction: column; width: 100%; }
+.gd-costume {
+  display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; /* hors chaîne : la colonne du rôle, une mesure */
+  align-items: baseline; gap: var(--gap-3-inline);
+  padding: var(--pad-3-block) 0; border-top: 1px solid var(--border);
+}
+.gd-costume:last-child { border-bottom: 1px solid var(--border); }
+@media (max-width: 40rem) { .gd-costume { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
+.gd-costume .role { color: var(--text-secondary); font-size: var(--font-size-small); }
+.gd-costume .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gd-costume .spec.titre { font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; }
+.gd-costume .spec.etiquette { font-size: var(--font-size-label); font-weight: 500; text-transform: uppercase; letter-spacing: var(--tracking-label); } /* T8 : espacées, par le style */
+.gd-costume .spec.code { font-family: var(--font-mono); font-size: var(--font-size-label); }
+.gd-costume .fiche { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
+
+/* ── 02 · L'échelle (répertoire) : les huit crans du registre, montrés en
+      vrai — chaque rangée est rendue PAR son jeton ; les bornes affichées
+      sont calculées par le moteur, jamais une seconde source. ── */
+.gd-gamme { display: grid; gap: var(--gap-1-block); width: 100%; }
+.gd-gcran { display: grid; grid-template-columns: 15rem minmax(0, 1fr); align-items: baseline; gap: var(--gap-3-inline); } /* hors chaîne : la colonne des fiches, une mesure */
+@media (max-width: 48rem) { .gd-gcran { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
+.gd-gcran .fiche { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: normal; } /* tertiaire : la fiche d’un cran de la gamme — en petit, un cran de graisse au-dessus (C17) */
+.gd-gcran .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; /* la graisse des titres du site */ letter-spacing: -0.02em; line-height: var(--leading-heading); }
+.gd-gcran .spec.courant { white-space: normal; overflow: visible; font-weight: 400; letter-spacing: 0; line-height: var(--leading-body); max-width: var(--measure); }
+.gd-gcran .spec.etiquette { font-weight: 500; letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: var(--leading-body); } /* T8 : le petit cran porte l'étiquette */
+
+/* ── 03 · La mesure : même texte, seule la largeur change — trois figures,
+      séparées par le cran de page ── */
+.gd-mesures { display: grid; gap: var(--page-2-block); width: 100%; }
+.gd-mesure { display: grid; gap: var(--gap-3-block); justify-items: start; text-align: left; }
+.gd-mesure p { position: relative; line-height: var(--leading-body); font-size: var(--font-size-body); }
+.gd-mesure.sourdine p { color: var(--text-secondary); opacity: 0.55; }
+/* le « faux » s'efface (décision d'Auteur, 24 août) — par voile, pas par
+   un jeton pâle : le registre n'a pas de text-muted, à dessein */
+
+/* ── 04 · La gazette : l'imprimé, terre natale de la typographie.
+      Une feuille = une coque : son coin, sa marge. Encre sur papier —
+      aucun accent dedans ; le rouge reste à la faute. ── */
+.gazette {
+  background: var(--bg); border-radius: var(--r-1);
+  width: min(100%, 44rem); /* hors chaîne : la largeur de la feuille, une mesure */
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  color: var(--text-primary); text-align: left;
+}
+.gz-mast { text-align: center; font-weight: 600; letter-spacing: -0.03em; font-size: var(--font-size-display); line-height: 1.1; }
+.gz-date {
+  margin-top: var(--gap-3-block); text-align: center;
+  font-size: var(--font-size-small); font-weight: 500;
+  text-transform: uppercase; letter-spacing: var(--tracking-label); /* T8 : brèves, espacées, jamais tapées */
+  color: var(--text-secondary);
+  padding-bottom: var(--gap-3-block); border-bottom: 2px solid var(--text-primary);
+}
+.gz-head { margin-top: var(--gap-1-block); font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; line-height: var(--leading-heading); text-wrap: balance; }
+.gz-lede { margin-top: var(--gap-3-block); color: var(--text-secondary); line-height: var(--leading-body); }
+.gz-cols { margin-top: var(--gap-1-block); columns: 2; column-gap: var(--page-2-inline); }
+@media (max-width: 40rem) { .gz-cols { columns: 1; } }
+.gz-cols p {
+  font-size: var(--font-size-body);   /* T10 : jamais sous l'équivalent 16 px */
+  line-height: var(--leading-body);   /* T6 : le courant respire */
+  text-align: start;                  /* T9 : fer à gauche */
+  margin: 0 0 var(--gap-2-block); break-inside: avoid;
+}
+.gz-note { margin-top: var(--gap-1-block); padding-top: var(--gap-3-block); border-top: 1px solid var(--border); font-size: var(--font-size-small); color: var(--text-secondary); }
+/* les casses : lire la page mentir */
+.gazette.j-cassee .gz-cols p { text-align: justify; }  /* casse : T9 rouge — les rivières */
+.gazette.i-cassee .gz-cols p { line-height: 1.15; }    /* casse : T6 rouge — le texte étouffe, sous le plancher de 1,5 */
+
+/* ── 05 · Les garde-fous : une grille de cartes, l'espace entre cartes ── */
+.gd-gardes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); } /* hors chaîne : la largeur minimale d'une carte, une mesure */
+
+/* l'arbre des titres : une pile de lignes ; un niveau = la marge d'une
+   carte, par imbrication — jamais un multiplicateur */
+.gd-arbre { width: 100%; display: grid; gap: var(--gap-3-block); text-align: left; }
+.gd-arbre-niveau { padding-inline-start: var(--pad-2-inline); }
+.gd-arbre-rang {
+  font: 600 var(--font-size-label)/1.5 var(--font-mono);
+  padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-3);
+  background: var(--surface-hover); color: var(--text-primary);
+}
+.gd-arbre-rang.ko { background: var(--danger-subtle); color: var(--danger); }
+.gd-arbre-note { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--danger); }

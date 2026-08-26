@@ -1,0 +1,237 @@
+<div class="aurore-cadre" aria-hidden="true">
+  <!-- AURORE BORÉALE en couches — générée par gen-aurore.mjs (graine 20260825). Couleurs : aucune valeur ici. -->
+  <svg class="aurore aur-defs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1300" aria-hidden="true" focusable="false">
+  <style>
+    /* LES CRANS DE L'AURORE — posés là où vivent les jetons du thème (la
+       racine et tout élément data-theme), pour que l'illustration suive
+       le thème le plus proche, exactement comme un rôle du kit. Mêmes
+       clartés que la gamme 50–950 de kit/derivation.mjs ; le chroma est
+       rapporté à celui du cran d'accueil de la charte (600 pour primary,
+       500 pour accent). */
+    :root, [data-theme="light"], [data-theme="dark"] {
+      --aur-src-p:  var(--primary, #4F46E5);
+      --aur-src-a:  var(--accent, #0791B2);
+      --aur-src-bg: var(--bg, #FFFFFF);
+      --aur-ka: 0.204;
+      --aur-p50: oklch(from var(--aur-src-p) 0.962 calc(c * 0.018 / var(--aur-kp)) h);
+      --aur-p100: oklch(from var(--aur-src-p) 0.930 calc(c * 0.033 / var(--aur-kp)) h);
+      --aur-p200: oklch(from var(--aur-src-p) 0.870 calc(c * 0.062 / var(--aur-kp)) h);
+      --aur-p300: oklch(from var(--aur-src-p) 0.785 calc(c * 0.104 / var(--aur-kp)) h);
+      --aur-p400: oklch(from var(--aur-src-p) 0.680 calc(c * 0.158 / var(--aur-kp)) h);
+      --aur-p500: oklch(from var(--aur-src-p) 0.585 calc(c * 0.204 / var(--aur-kp)) h);
+      --aur-p600: oklch(from var(--aur-src-p) 0.511 calc(c * 0.230 / var(--aur-kp)) h);
+      --aur-p800: oklch(from var(--aur-src-p) 0.398 calc(c * 0.177 / var(--aur-kp)) h);
+      --aur-p900: oklch(from var(--aur-src-p) 0.359 calc(c * 0.135 / var(--aur-kp)) h);
+      --aur-p950: oklch(from var(--aur-src-p) 0.257 calc(c * 0.086 / var(--aur-kp)) h);
+      --aur-a100: oklch(from var(--aur-src-a) 0.930 calc(c * 0.033 / var(--aur-ka)) h);
+      --aur-a200: oklch(from var(--aur-src-a) 0.870 calc(c * 0.062 / var(--aur-ka)) h);
+      --aur-a300: oklch(from var(--aur-src-a) 0.785 calc(c * 0.104 / var(--aur-ka)) h);
+      --aur-a400: oklch(from var(--aur-src-a) 0.680 calc(c * 0.158 / var(--aur-ka)) h);
+      --aur-a500: oklch(from var(--aur-src-a) 0.585 calc(c * 0.204 / var(--aur-ka)) h);
+    }
+    /* thème clair : jour, pastel sur fond blanc */
+    :root, [data-theme="light"] {
+      --aur-kp: 0.230; /* le chroma du cran d'accueil : 600 pour primary (charte) */
+      --aur-violet:       var(--aur-p400);
+      --aur-violet-fort:  var(--aur-p500);
+      --aur-bleu:         color-mix(in oklch, var(--aur-p400), var(--aur-a400));
+      --aur-bleu-fort:    color-mix(in oklch, var(--aur-p500), var(--aur-a500));
+      --aur-teal:         var(--aur-a400);
+      --aur-teal-clair:   var(--aur-a300);
+      --aur-coeur:        var(--aur-a100);
+      --aur-mont:         color-mix(in oklch, var(--aur-p100) 60%, var(--aur-src-bg));
+      --aur-mont-ombre:   color-mix(in oklch, var(--aur-p200) 75%, var(--aur-src-bg));
+      --aur-mont-ombre-2: color-mix(in oklch, var(--aur-p300) 55%, var(--aur-src-bg));
+      --aur-mont-arete:   var(--aur-src-bg);
+      --aur-brume:        var(--aur-src-bg);
+      --aur-force: 0.92;      /* opacité d'ensemble de l'aurore */
+    }
+    /* thème sombre : nuit, l'aurore brille, les montagnes s'assombrissent */
+    [data-theme="dark"] {
+      --aur-kp: 0.158; /* en sombre, primary est posée sur le cran 400 */
+      --aur-violet:       var(--aur-p500);
+      --aur-violet-fort:  var(--aur-p600);
+      --aur-bleu:         color-mix(in oklch, var(--aur-p500), var(--aur-a500));
+      --aur-bleu-fort:    color-mix(in oklch, var(--aur-p400), var(--aur-a400));
+      --aur-teal:         var(--aur-a400);
+      --aur-teal-clair:   var(--aur-a300);
+      --aur-coeur:        var(--aur-a200);
+      --aur-mont:         var(--aur-p950);
+      --aur-mont-ombre:   color-mix(in oklch, var(--aur-p950), var(--aur-src-bg));
+      --aur-mont-ombre-2: var(--aur-p900);
+      --aur-mont-arete:   var(--aur-p800);
+      --aur-brume:        var(--aur-src-bg);
+      --aur-force: 1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+      --aur-kp: 0.158; /* en sombre, primary est posée sur le cran 400 */
+        --aur-violet:       var(--aur-p500);
+        --aur-violet-fort:  var(--aur-p600);
+        --aur-bleu:         color-mix(in oklch, var(--aur-p500), var(--aur-a500));
+        --aur-bleu-fort:    color-mix(in oklch, var(--aur-p400), var(--aur-a400));
+        --aur-teal:         var(--aur-a400);
+        --aur-teal-clair:   var(--aur-a300);
+        --aur-coeur:        var(--aur-a200);
+        --aur-mont:         var(--aur-p950);
+        --aur-mont-ombre:   color-mix(in oklch, var(--aur-p950), var(--aur-src-bg));
+        --aur-mont-ombre-2: var(--aur-p900);
+        --aur-mont-arete:   var(--aur-p800);
+        --aur-brume:        var(--aur-src-bg);
+        --aur-force: 1;
+      }
+    }
+    .aurore .s-violet      { stop-color: var(--aur-violet); }
+    .aurore .s-violet-fort { stop-color: var(--aur-violet-fort); }
+    .aurore .s-bleu        { stop-color: var(--aur-bleu); }
+    .aurore .s-bleu-fort   { stop-color: var(--aur-bleu-fort); }
+    .aurore .s-teal        { stop-color: var(--aur-teal); }
+    .aurore .s-teal-clair  { stop-color: var(--aur-teal-clair); }
+    .aurore .s-coeur       { stop-color: var(--aur-coeur); }
+    .aurore .s-brume       { stop-color: var(--aur-brume); }
+    .aurore .f-mont        { fill: var(--aur-mont); }
+    .aurore .f-mont-ombre  { fill: var(--aur-mont-ombre); }
+    .aurore .f-mont-ombre-2{ fill: var(--aur-mont-ombre-2); }
+    .aurore .f-mont-arete  { fill: var(--aur-mont-arete); }
+    .aurore .aur-corps     { opacity: var(--aur-force); }
+    /* LA VERSION EN COUCHES : l'animation ne touche qu'à l'opacité et au
+       glissement de couches entières (des éléments svg empilés) — le navigateur
+       les compose sur la carte graphique sans recalculer les filtres.
+       Coupé si l'utilisateur a demandé moins d'animations. */
+    .aurore-cadre { position: relative; aspect-ratio: 1024 / 1300; overflow: hidden; }
+    .aurore-cadre .aur-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .aurore-cadre .aur-couche { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    /* cadrage « ciel » : l'aurore seule, entière, sans les montagnes — pour
+       une tuile d'un autre format (le composant pose aussi viewBox et
+       preserveAspectRatio « meet » sur les couches) */
+    .aurore-ciel .aur-couche-montagnes { display: none; }
+    @media (prefers-reduced-motion: no-preference) {
+      .aurore-cadre .aur-couche-1 { will-change: opacity, transform; animation: aur-frem 4.2s ease-in-out infinite alternate, aur-balance 13s ease-in-out infinite alternate; }
+      .aurore-cadre .aur-couche-2 { will-change: opacity, transform; animation: aur-frem 5.6s ease-in-out -2s infinite alternate, aur-balance 13s ease-in-out -4s infinite alternate; }
+      .aurore-cadre .aur-couche-3 { will-change: opacity, transform; animation: aur-frem 7.1s ease-in-out -4s infinite alternate, aur-balance 13s ease-in-out -8s infinite alternate; }
+      .aurore-cadre .aur-couche-coeur { will-change: opacity; animation: aur-souffle 5s ease-in-out infinite alternate; }
+    }
+    @keyframes aur-frem { from { opacity: 0.3; } to { opacity: 1; } }
+    @keyframes aur-souffle { from { opacity: 0.45; } to { opacity: 1; } }
+    @keyframes aur-balance { from { transform: translateX(-1.4%); } to { transform: translateX(1.4%); } }
+  </style>
+  <defs>
+    <!-- dégradés de la bande haute (droite → gauche) et de la bande basse (gauche → droite) -->
+    <linearGradient id="aur-g-haut" gradientUnits="userSpaceOnUse" x1="800" y1="150" x2="120" y2="820">
+      <stop offset="0"    class="s-violet-fort"/>
+      <stop offset="0.30" class="s-violet"/>
+      <stop offset="0.55" class="s-bleu"/>
+      <stop offset="0.80" class="s-teal"/>
+      <stop offset="1"    class="s-teal-clair"/>
+    </linearGradient>
+    <linearGradient id="aur-g-bas" gradientUnits="userSpaceOnUse" x1="120" y1="820" x2="880" y2="1120">
+      <stop offset="0"    class="s-teal-clair"/>
+      <stop offset="0.35" class="s-teal"/>
+      <stop offset="0.65" class="s-bleu-fort"/>
+      <stop offset="1"    class="s-violet"/>
+    </linearGradient>
+    <!-- piliers verticaux : ils s'éteignent vers le haut -->
+    <linearGradient id="aur-g-pilier-teal" gradientUnits="userSpaceOnUse" x1="0" y1="80" x2="0" y2="700">
+      <stop offset="0"    class="s-teal-clair" stop-opacity="0"/>
+      <stop offset="0.25" class="s-teal-clair" stop-opacity="0.95"/>
+      <stop offset="1"    class="s-coeur" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="aur-g-pilier-violet" gradientUnits="userSpaceOnUse" x1="0" y1="80" x2="0" y2="520">
+      <stop offset="0"    class="s-violet" stop-opacity="0"/>
+      <stop offset="0.4"  class="s-violet-fort" stop-opacity="0.95"/>
+      <stop offset="1"    class="s-violet" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="aur-g-pilier-bas" gradientUnits="userSpaceOnUse" x1="0" y1="820" x2="0" y2="1180">
+      <stop offset="0"    class="s-violet" stop-opacity="0.9"/>
+      <stop offset="0.6"  class="s-violet-fort" stop-opacity="0.7"/>
+      <stop offset="1"    class="s-violet" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="aur-g-pilier-gauche" gradientUnits="userSpaceOnUse" x1="0" y1="560" x2="0" y2="960">
+      <stop offset="0"    class="s-bleu" stop-opacity="0"/>
+      <stop offset="0.5"  class="s-bleu" stop-opacity="0.9"/>
+      <stop offset="1"    class="s-violet" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="aur-g-brume" gradientUnits="userSpaceOnUse" x1="0" y1="1170" x2="0" y2="1300">
+      <stop offset="0"   class="s-brume" stop-opacity="0"/>
+      <stop offset="1"   class="s-brume" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <!-- LA MATIÈRE : flou, puis chaque lamelle glisse verticalement de sa
+         propre valeur (la carte en gris) — c'est ce qui fait les marches. -->
+    <filter id="aur-lamelles-glissees" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="flou"/>
+      <feImage href="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201024%201536'%20shape-rendering%3D'crispEdges'%3E%3Crect%20x%3D'0'%20width%3D'25'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C79%2C128)'%2F%3E%3Crect%20x%3D'25'%20width%3D'19'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C75%2C128)'%2F%3E%3Crect%20x%3D'44'%20width%3D'15'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C89%2C128)'%2F%3E%3Crect%20x%3D'59'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C72%2C128)'%2F%3E%3Crect%20x%3D'79'%20width%3D'24'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C138%2C128)'%2F%3E%3Crect%20x%3D'103'%20width%3D'16'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C148%2C128)'%2F%3E%3Crect%20x%3D'119'%20width%3D'7'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C197%2C128)'%2F%3E%3Crect%20x%3D'126'%20width%3D'11'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C104%2C128)'%2F%3E%3Crect%20x%3D'137'%20width%3D'17'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C180%2C128)'%2F%3E%3Crect%20x%3D'154'%20width%3D'8'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C185%2C128)'%2F%3E%3Crect%20x%3D'162'%20width%3D'19'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C174%2C128)'%2F%3E%3Crect%20x%3D'181'%20width%3D'27'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C131%2C128)'%2F%3E%3Crect%20x%3D'208'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C104%2C128)'%2F%3E%3Crect%20x%3D'228'%20width%3D'27'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C58%2C128)'%2F%3E%3Crect%20x%3D'255'%20width%3D'12'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C64%2C128)'%2F%3E%3Crect%20x%3D'267'%20width%3D'19'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C53%2C128)'%2F%3E%3Crect%20x%3D'286'%20width%3D'26'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C86%2C128)'%2F%3E%3Crect%20x%3D'312'%20width%3D'15'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C157%2C128)'%2F%3E%3Crect%20x%3D'327'%20width%3D'9'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C163%2C128)'%2F%3E%3Crect%20x%3D'336'%20width%3D'9'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C92%2C128)'%2F%3E%3Crect%20x%3D'345'%20width%3D'11'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C182%2C128)'%2F%3E%3Crect%20x%3D'356'%20width%3D'18'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C125%2C128)'%2F%3E%3Crect%20x%3D'374'%20width%3D'21'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C135%2C128)'%2F%3E%3Crect%20x%3D'395'%20width%3D'24'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C156%2C128)'%2F%3E%3Crect%20x%3D'419'%20width%3D'19'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C114%2C128)'%2F%3E%3Crect%20x%3D'438'%20width%3D'14'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C128%2C128)'%2F%3E%3Crect%20x%3D'452'%20width%3D'8'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C165%2C128)'%2F%3E%3Crect%20x%3D'460'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C154%2C128)'%2F%3E%3Crect%20x%3D'480'%20width%3D'24'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C191%2C128)'%2F%3E%3Crect%20x%3D'504'%20width%3D'22'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C135%2C128)'%2F%3E%3Crect%20x%3D'526'%20width%3D'24'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C181%2C128)'%2F%3E%3Crect%20x%3D'550'%20width%3D'9'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C151%2C128)'%2F%3E%3Crect%20x%3D'559'%20width%3D'23'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C148%2C128)'%2F%3E%3Crect%20x%3D'582'%20width%3D'7'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C143%2C128)'%2F%3E%3Crect%20x%3D'589'%20width%3D'11'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C211%2C128)'%2F%3E%3Crect%20x%3D'600'%20width%3D'13'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C119%2C128)'%2F%3E%3Crect%20x%3D'613'%20width%3D'8'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C176%2C128)'%2F%3E%3Crect%20x%3D'621'%20width%3D'26'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C119%2C128)'%2F%3E%3Crect%20x%3D'647'%20width%3D'7'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C128%2C128)'%2F%3E%3Crect%20x%3D'654'%20width%3D'13'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C123%2C128)'%2F%3E%3Crect%20x%3D'667'%20width%3D'14'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C90%2C128)'%2F%3E%3Crect%20x%3D'681'%20width%3D'23'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C193%2C128)'%2F%3E%3Crect%20x%3D'704'%20width%3D'6'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C96%2C128)'%2F%3E%3Crect%20x%3D'710'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C161%2C128)'%2F%3E%3Crect%20x%3D'730'%20width%3D'22'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C106%2C128)'%2F%3E%3Crect%20x%3D'752'%20width%3D'10'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C125%2C128)'%2F%3E%3Crect%20x%3D'762'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C176%2C128)'%2F%3E%3Crect%20x%3D'782'%20width%3D'11'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C184%2C128)'%2F%3E%3Crect%20x%3D'793'%20width%3D'8'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C115%2C128)'%2F%3E%3Crect%20x%3D'801'%20width%3D'19'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C150%2C128)'%2F%3E%3Crect%20x%3D'820'%20width%3D'8'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C90%2C128)'%2F%3E%3Crect%20x%3D'828'%20width%3D'21'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C166%2C128)'%2F%3E%3Crect%20x%3D'849'%20width%3D'21'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C170%2C128)'%2F%3E%3Crect%20x%3D'870'%20width%3D'10'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C219%2C128)'%2F%3E%3Crect%20x%3D'880'%20width%3D'18'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C229%2C128)'%2F%3E%3Crect%20x%3D'898'%20width%3D'7'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C166%2C128)'%2F%3E%3Crect%20x%3D'905'%20width%3D'15'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C128%2C128)'%2F%3E%3Crect%20x%3D'920'%20width%3D'27'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C147%2C128)'%2F%3E%3Crect%20x%3D'947'%20width%3D'14'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C193%2C128)'%2F%3E%3Crect%20x%3D'961'%20width%3D'9'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C150%2C128)'%2F%3E%3Crect%20x%3D'970'%20width%3D'20'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C70%2C128)'%2F%3E%3Crect%20x%3D'990'%20width%3D'10'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C106%2C128)'%2F%3E%3Crect%20x%3D'1000'%20width%3D'22'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C141%2C128)'%2F%3E%3Crect%20x%3D'1022'%20width%3D'2'%20y%3D'0'%20height%3D'1536'%20fill%3D'rgb(128%2C89%2C128)'%2F%3E%3C%2Fsvg%3E" x="0" y="0" width="1024" height="1536" preserveAspectRatio="none" result="carte"/>
+      <feDisplacementMap in="flou" in2="carte" scale="190" xChannelSelector="R" yChannelSelector="G" result="net"/>
+      <!-- la traîne : chaque lamelle file verticalement, comme dans l'image -->
+      <feGaussianBlur in="net" stdDeviation="0 60" result="traine"/>
+      <feComponentTransfer in="traine" result="traine-douce"><feFuncA type="linear" slope="0.55"/></feComponentTransfer>
+      <feMerge><feMergeNode in="traine-douce"/><feMergeNode in="net"/></feMerge>
+    </filter>
+    <filter id="aur-flou-doux" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+    <filter id="aur-flou-coeur" filterUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+
+    <!-- LES LAMELLES : une opacité par lamelle, trois familles qui respirent -->
+    <mask id="aur-masque-lamelles" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536">
+      <g class="aur-lam aur-lam-1"><rect x="0" y="0" width="25" height="1536" fill="#fff" fill-opacity="0.82"/><rect x="59" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.60"/><rect x="119" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.70"/><rect x="154" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.48"/><rect x="208" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.93"/><rect x="267" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="327" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="356" y="0" width="18" height="1536" fill="#fff" fill-opacity="0.60"/><rect x="419" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.78"/><rect x="460" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.89"/><rect x="526" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="582" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.87"/><rect x="613" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.75"/><rect x="654" y="0" width="13" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="704" y="0" width="6" height="1536" fill="#fff" fill-opacity="0.55"/><rect x="752" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.56"/><rect x="793" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.73"/><rect x="828" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.73"/><rect x="880" y="0" width="18" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="920" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.89"/><rect x="970" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.81"/><rect x="1022" y="0" width="2" height="1536" fill="#fff" fill-opacity="0.82"/></g>
+      <g class="aur-lam aur-lam-2"><rect x="25" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="79" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="126" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.56"/><rect x="162" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.71"/><rect x="228" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.62"/><rect x="286" y="0" width="26" height="1536" fill="#fff" fill-opacity="0.67"/><rect x="336" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.93"/><rect x="374" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.78"/><rect x="438" y="0" width="14" height="1536" fill="#fff" fill-opacity="0.91"/><rect x="480" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.82"/><rect x="550" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="589" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.80"/><rect x="621" y="0" width="26" height="1536" fill="#fff" fill-opacity="0.71"/><rect x="667" y="0" width="14" height="1536" fill="#fff" fill-opacity="1.00"/><rect x="710" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="762" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="801" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="849" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.94"/><rect x="898" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.76"/><rect x="947" y="0" width="14" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="990" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.91"/></g>
+      <g class="aur-lam aur-lam-3"><rect x="44" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.48"/><rect x="103" y="0" width="16" height="1536" fill="#fff" fill-opacity="0.97"/><rect x="137" y="0" width="17" height="1536" fill="#fff" fill-opacity="0.81"/><rect x="181" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="255" y="0" width="12" height="1536" fill="#fff" fill-opacity="0.45"/><rect x="312" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="345" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.52"/><rect x="395" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.59"/><rect x="452" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.70"/><rect x="504" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="559" y="0" width="23" height="1536" fill="#fff" fill-opacity="0.86"/><rect x="600" y="0" width="13" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="647" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="681" y="0" width="23" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="730" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.66"/><rect x="782" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="820" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.54"/><rect x="870" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.63"/><rect x="905" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="961" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="1000" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.55"/></g>
+    </mask>
+    <mask id="aur-masque-lam-1" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536"><rect x="0" y="0" width="25" height="1536" fill="#fff" fill-opacity="0.82"/><rect x="59" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.60"/><rect x="119" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.70"/><rect x="154" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.48"/><rect x="208" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.93"/><rect x="267" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="327" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="356" y="0" width="18" height="1536" fill="#fff" fill-opacity="0.60"/><rect x="419" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.78"/><rect x="460" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.89"/><rect x="526" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="582" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.87"/><rect x="613" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.75"/><rect x="654" y="0" width="13" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="704" y="0" width="6" height="1536" fill="#fff" fill-opacity="0.55"/><rect x="752" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.56"/><rect x="793" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.73"/><rect x="828" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.73"/><rect x="880" y="0" width="18" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="920" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.89"/><rect x="970" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.81"/><rect x="1022" y="0" width="2" height="1536" fill="#fff" fill-opacity="0.82"/></mask>
+    <mask id="aur-masque-lam-2" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536"><rect x="25" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="79" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.61"/><rect x="126" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.56"/><rect x="162" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.71"/><rect x="228" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.62"/><rect x="286" y="0" width="26" height="1536" fill="#fff" fill-opacity="0.67"/><rect x="336" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.93"/><rect x="374" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.78"/><rect x="438" y="0" width="14" height="1536" fill="#fff" fill-opacity="0.91"/><rect x="480" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.82"/><rect x="550" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="589" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.80"/><rect x="621" y="0" width="26" height="1536" fill="#fff" fill-opacity="0.71"/><rect x="667" y="0" width="14" height="1536" fill="#fff" fill-opacity="1.00"/><rect x="710" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="762" y="0" width="20" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="801" y="0" width="19" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="849" y="0" width="21" height="1536" fill="#fff" fill-opacity="0.94"/><rect x="898" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.76"/><rect x="947" y="0" width="14" height="1536" fill="#fff" fill-opacity="0.57"/><rect x="990" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.91"/></mask>
+    <mask id="aur-masque-lam-3" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1536"><rect x="44" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.48"/><rect x="103" y="0" width="16" height="1536" fill="#fff" fill-opacity="0.97"/><rect x="137" y="0" width="17" height="1536" fill="#fff" fill-opacity="0.81"/><rect x="181" y="0" width="27" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="255" y="0" width="12" height="1536" fill="#fff" fill-opacity="0.45"/><rect x="312" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="345" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.52"/><rect x="395" y="0" width="24" height="1536" fill="#fff" fill-opacity="0.59"/><rect x="452" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.70"/><rect x="504" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.96"/><rect x="559" y="0" width="23" height="1536" fill="#fff" fill-opacity="0.86"/><rect x="600" y="0" width="13" height="1536" fill="#fff" fill-opacity="0.90"/><rect x="647" y="0" width="7" height="1536" fill="#fff" fill-opacity="0.84"/><rect x="681" y="0" width="23" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="730" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.66"/><rect x="782" y="0" width="11" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="820" y="0" width="8" height="1536" fill="#fff" fill-opacity="0.54"/><rect x="870" y="0" width="10" height="1536" fill="#fff" fill-opacity="0.63"/><rect x="905" y="0" width="15" height="1536" fill="#fff" fill-opacity="0.58"/><rect x="961" y="0" width="9" height="1536" fill="#fff" fill-opacity="0.53"/><rect x="1000" y="0" width="22" height="1536" fill="#fff" fill-opacity="0.55"/></mask>
+
+    <!-- LE DESSIN LISSE — avant flou, glissement et lamelles -->
+    <g id="aur-dessin">
+      <!-- halo doux derrière tout -->
+      <g filter="url(#aur-flou-doux)" opacity="0.55">
+        <ellipse cx="640" cy="330" rx="260" ry="240" fill="url(#aur-g-pilier-violet)"/>
+        <ellipse cx="230" cy="760" rx="220" ry="200" fill="url(#aur-g-pilier-gauche)"/>
+      </g>
+      <!-- piliers -->
+      <rect x="470" y="80"  width="120" height="560" fill="url(#aur-g-pilier-teal)"/>
+      <rect x="690" y="80"  width="200" height="450" fill="url(#aur-g-pilier-violet)"/>
+      <rect x="80"  y="560" width="230" height="400" fill="url(#aur-g-pilier-gauche)"/>
+      <rect x="690" y="820" width="200" height="360" fill="url(#aur-g-pilier-bas)"/>
+      <!-- la bande haute : de la droite vers le bas-gauche -->
+      <path d="M 790 130 C 730 380, 580 540, 390 620 C 250 680, 150 760, 140 850"
+            fill="none" stroke="url(#aur-g-haut)" stroke-width="290" stroke-linecap="round"/>
+      <!-- la bande basse : de la gauche vers le bas-droite -->
+      <path d="M 135 800 C 180 910, 360 950, 540 930 C 700 912, 800 980, 850 1100"
+            fill="none" stroke="url(#aur-g-bas)" stroke-width="230" stroke-linecap="round"/>
+    </g>
+    <!-- le cœur clair, sur la courbe intérieure du S — à part : il pulse seul -->
+    <g id="aur-coeur" filter="url(#aur-flou-coeur)"><path class="aur-coeur-trait" d="M 610 330 C 550 560, 430 680, 340 770 C 400 860, 570 905, 700 980 C 770 1020, 815 1060, 840 1105"
+            fill="none" stroke="var(--aur-coeur)" stroke-width="70" stroke-linecap="round"/></g>
+
+    <!-- LES MONTAGNES — facettes plates, arête claire -->
+    <g id="aur-montagnes">
+      <!-- massif de gauche : une pente longue, deux sommets, l'arête enneigée -->
+      <polygon class="f-mont" points="0,1300 55,1235 115,1172 168,1128 215,1075 250,1112 288,1136 330,1192 372,1160 412,1204 462,1250 522,1300"/>
+      <polygon class="f-mont-ombre" points="215,1075 250,1112 288,1136 330,1192 318,1300 232,1300 236,1172"/>
+      <polygon class="f-mont-ombre-2" points="250,1112 288,1136 330,1192 322,1300 275,1300"/>
+      <polygon class="f-mont-ombre" points="372,1160 412,1204 462,1250 522,1300 430,1300"/>
+      <polygon class="f-mont-ombre-2" points="55,1235 115,1172 150,1300 80,1300"/>
+      <polygon class="f-mont-arete" points="168,1128 215,1075 236,1172 212,1300 182,1300"/>
+      <polygon class="f-mont-arete" points="330,1192 372,1160 384,1300 350,1300"/>
+      <!-- chaîne de droite : basse, plus lointaine -->
+      <polygon class="f-mont" points="540,1300 615,1255 695,1264 758,1216 820,1198 862,1180 902,1228 960,1282 1000,1300"/>
+      <polygon class="f-mont-ombre" points="820,1198 862,1180 902,1228 960,1282 1000,1300 878,1300 848,1252"/>
+      <polygon class="f-mont-ombre-2" points="862,1180 902,1228 906,1300 872,1300"/>
+      <polygon class="f-mont-ombre" points="615,1255 695,1264 688,1300 642,1300"/>
+      <polygon class="f-mont-arete" points="758,1216 820,1198 848,1252 812,1300 778,1300"/>
+      <!-- butte du milieu -->
+      <polygon class="f-mont" points="560,1300 615,1262 675,1300"/>
+      <polygon class="f-mont-ombre" points="615,1262 675,1300 640,1300"/>
+    </g>
+  </defs>
+  </svg>
+  <svg class="aurore aur-couche aur-couche-1" viewBox="0 0 1024 1300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="aur-corps" mask="url(#aur-masque-lam-1)"><use href="#aur-dessin" filter="url(#aur-lamelles-glissees)"/></g></svg>
+  <svg class="aurore aur-couche aur-couche-2" viewBox="0 0 1024 1300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="aur-corps" mask="url(#aur-masque-lam-2)"><use href="#aur-dessin" filter="url(#aur-lamelles-glissees)"/></g></svg>
+  <svg class="aurore aur-couche aur-couche-3" viewBox="0 0 1024 1300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="aur-corps" mask="url(#aur-masque-lam-3)"><use href="#aur-dessin" filter="url(#aur-lamelles-glissees)"/></g></svg>
+  <svg class="aurore aur-couche aur-couche-coeur" viewBox="0 0 1024 1300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><g class="aur-corps" mask="url(#aur-masque-lamelles)"><use href="#aur-coeur" filter="url(#aur-lamelles-glissees)"/></g></svg>
+  <svg class="aurore aur-couche aur-couche-montagnes" viewBox="0 0 1024 1300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><use href="#aur-montagnes"/><rect x="0" y="1170" width="1024" height="130" fill="url(#aur-g-brume)"/></svg>
+</div>

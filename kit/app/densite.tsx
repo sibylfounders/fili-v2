@@ -42,7 +42,7 @@ export function Densite() {
   return (
     <div className="bloc">
       <span className="mono sourd">Densité — tout le site</span>
-      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
         {CHOIX.map(([d, nom]) => (
           /* bouton actif dessiné en CSS depuis <html data-density> */
           <button key={d} data-choix-density={d} className="bouton" onClick={() => changer(d)}>{nom}</button>

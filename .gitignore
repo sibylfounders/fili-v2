@@ -27,3 +27,6 @@ dist-ssr
 temoin/temoins/.style.css
 temoin/public/temoins
 _shots/
+
+# Cache de TypeScript
+kit/tsconfig.tsbuildinfo

@@ -14,17 +14,19 @@ const PAS = 16;
 const PAS_LARGE = 64;
 const PALIERS: { label: string; w: number }[] = [
   { label: "320 px", w: 320 },
-  { label: "768 px", w: 768 },
+  { label: "768 · gel Figma", w: 768 }, /* 768 n'est pas un régime (décision 7) : la valeur de gel pour Figma */
   { label: "1024 px", w: 1024 },
 ];
 
-export function Apercu({ enfants, outils, pied }: {
+export function Apercu({ enfants, outils, pied, plafond }: {
   enfants: (largeur: number) => React.ReactNode;
   outils?: React.ReactNode;
   pied?: React.ReactNode;
+  /* largeur maximale du cadre — le damier reprend le reste (24 août) */
+  plafond?: number;
 }) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
-  const [w, setW] = React.useState(DEFAUT);
+  const [w, setW] = React.useState(plafond ? Math.min(DEFAUT, plafond) : DEFAUT);
   const [max, setMax] = React.useState(0);
   const [drag, setDrag] = React.useState(false);
 
@@ -38,15 +40,15 @@ export function Apercu({ enfants, outils, pied }: {
     return () => ro.disconnect();
   }, []);
 
-  const borne = (v: number) => Math.max(MIN, Math.min(max || v, v));
-  const courante = Math.round(max ? Math.min(w, max) : w);
+  const borne = (v: number) => Math.max(MIN, Math.min(plafond ?? Infinity, Math.min(max || v, v)));
+  const courante = Math.round(Math.min(plafond ?? Infinity, max ? Math.min(w, max) : w));
 
   const onDown = (e: React.PointerEvent) => {
     e.preventDefault();
     const rect = wrapRef.current?.getBoundingClientRect();
     if (!rect) return;
     setDrag(true);
-    const move = (ev: PointerEvent) => setW(Math.max(MIN, Math.min(rect.width, ev.clientX - rect.left)));
+    const move = (ev: PointerEvent) => setW(Math.max(MIN, Math.min(plafond ?? Infinity, Math.min(rect.width, ev.clientX - rect.left))));
     const up = () => { setDrag(false); window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
@@ -65,7 +67,7 @@ export function Apercu({ enfants, outils, pied }: {
       <div className="apercu-tete">
         <div className="apercu-outils">{outils}</div>
         <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
-          {PALIERS.filter((p) => max === 0 || p.w <= max).map((p) => {
+          {PALIERS.filter((p) => (max === 0 || p.w <= max) && p.w <= (plafond ?? Infinity)).map((p) => {
             const actif = courante === p.w;
             return (
               <button key={p.label} className={`bouton ${actif ? "on" : ""}`} aria-pressed={actif}
@@ -83,8 +85,8 @@ export function Apercu({ enfants, outils, pied }: {
         </div>
         <div role="separator" tabIndex={0} aria-orientation="vertical"
           aria-label="Largeur de l'aperçu" aria-valuemin={MIN}
-          aria-valuemax={Math.round(max) || MIN} aria-valuenow={courante || MIN}
-          onPointerDown={onDown} onKeyDown={onKeyPoignee} onDoubleClick={() => setW(borne(DEFAUT))}
+          aria-valuemax={Math.round(Math.min(plafond ?? Infinity, max)) || MIN} aria-valuenow={courante || MIN}
+          onPointerDown={onDown} onKeyDown={onKeyPoignee} onDoubleClick={() => setW(borne(plafond ? Math.min(DEFAUT, plafond) : DEFAUT))}
           title="Glisser, ou flèches gauche/droite · double-clic : 1024 px"
           className={`poignee ${drag ? "en-prise" : ""}`}
           style={{ left: `${courante}px` }}>
@@ -96,12 +98,32 @@ export function Apercu({ enfants, outils, pied }: {
   );
 }
 
+/* Un surligneur minuscule, zéro dépendance : commentaires, chaînes,
+   jetons var(--…), balises, mots-clés. Les encres viennent de la famille
+   couleur (code-com / code-str / code-kw / code-tag). Approximatif et
+   assumé : il aide à lire un spécimen, il ne compile rien. */
+const RX_SYNTAXE = /(<!--[\s\S]*?-->|\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(var\(--[a-z0-9-]+\)|--[a-z0-9-]+)|(<\/?[a-zA-Z][a-zA-Z0-9-]*|\/>)|(\b(?:import|export|from|function|return|const|let|class|extends|new|if|else|selector|template|styleUrl|standalone)\b)/g;
+function surligner(code: string): React.ReactNode[] {
+  const sortie: React.ReactNode[] = [];
+  let i = 0, k = 0;
+  let m: RegExpExecArray | null;
+  RX_SYNTAXE.lastIndex = 0;
+  while ((m = RX_SYNTAXE.exec(code))) {
+    if (m.index > i) sortie.push(code.slice(i, m.index));
+    const cls = m[1] ? "cs-com" : m[2] ? "cs-str" : m[3] ? "cs-var" : m[4] ? "cs-tag" : "cs-kw";
+    sortie.push(<span key={k++} className={cls}>{m[0]}</span>);
+    i = m.index + m[0].length;
+  }
+  if (i < code.length) sortie.push(code.slice(i));
+  return sortie;
+}
+
 export function PanneauCode({ langage, code, outils }: { langage: string; code: string; outils?: React.ReactNode }) {
   const [copie, setCopie] = React.useState(false);
   return (
     <div className="panneau-code">
       <div className="panneau-code-tete">
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--space-inline-sm)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--gap-3-inline)" }}>
           {outils}
           <span className="mono sourd">{langage}</span>
         </div>
@@ -111,7 +133,7 @@ export function PanneauCode({ langage, code, outils }: { langage: string; code: 
           });
         }}>{copie ? "Copié ✓" : "Copier"}</button>
       </div>
-      <pre className="code" style={{ borderRadius: 0 }}>{code}</pre>
+      <pre className="code" style={{ borderRadius: 0 }}>{surligner(code)}</pre>
     </div>
   );
 }

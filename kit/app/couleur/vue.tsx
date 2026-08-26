@@ -1,21 +1,41 @@
 "use client";
+import * as React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Navigation } from "../nav";
 import { PanneauCode } from "../apercu";
-import { Densite } from "../densite";
-import { Adaptation, useAdaptation } from "../adaptation";
-import { Theme, useTheme, useSchemeSysteme } from "../theme";
-import { derive, verifier, gamme } from "../../derivation.mjs";
-import { Primaire, usePrimaire } from "../primaire";
+import { useAdaptation } from "../adaptation";
+import { useTheme, useSchemeSysteme } from "../theme";
+import { derive, gamme, gammeNeutres, gammeFamille, poserSurGamme, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
+import { usePrimaire } from "../primaire";
+import { RailDoc, useDocSections, type Sommaire } from "../rail";
+import { Bento } from "./bento";
 
-/* La page vivante de la famille couleur (COLOR-UX.md, C1–C16),
-   dérivée d'UNE décision d'entrée — primary — par kit/derivation.mjs,
-   à la manière de la CHARTE DE CONCEPTION
-   (docs/charte/filicharte_6.html) : la palette se montre en mosaïque et
-   en proportions d'usage, les tons portent leur contraste sur eux-mêmes,
-   les garde-fous se lisent en prose, et une section « En situation »
-   éprouve la famille sur une vraie interface. Tous les rapports affichés
-   sont MESURÉS sur la page rendue — jamais recopiés. */
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE COULEUR — recomposée au gabarit « documentaire nu » et à la
+   formule de contenu (24 août). Plan de preuves validé par l'Auteur :
+   · SITUATION — la mosaïque de la charte (filicharte_6, section 03),
+     reprise et branchée sur les jetons vivants : chaque rôle à sa part
+     réelle de l'écran, bascule Mosaïque / Proportions, clic = copier.
+   · VARIATION — le moteur : la même famille dérivée sous trois marques,
+     une décision d'entrée, les liens recalés seuls.
+   · VOCABULAIRE — les trois registres étanches et leurs couples, chaque
+     rapport mesuré sur la page rendue.
+   Étage 2 — le répertoire : les garde-fous de la charte (grille de
+   cartes, casses comprises), la table des paires dans les deux thèmes,
+   la gamme 50–950, « dans votre stack », les règles C en dépliants.
+   Révision du 24 août (verdicts d'Auré sur pièce, thread relevé) :
+   · la mosaïque reprend EXACTEMENT le graphisme de la charte (pleine,
+     sans écarts, specs mono hex/HSL/RGB) et la table des rôles s'affiche
+     À PLAT sous elle — jamais dans un dépliant ;
+   · LE NUANCIER (vocabulaire) : six rôles en languettes aux proportions
+     identiques — remplace la grille des registres ;
+   · EN SITUATION (objet vivant, 25 août — décision d'Auteur : seul ce
+     bloc du bento test entre au kit, à la place du tableau de gare) :
+     le tableau de bord d'apprentissage en grille bento, sous la primaire
+     du panneau, texte sur photo sous voile calculé (bento.tsx) ;
+   · DEUX THÈMES (variation) : la même carte, clair et sombre, mesurée
+     sur la page rendue, avec la table des paires à sa suite.
+   Le moteur, les garde-fous et l'adaptation restent au répertoire.
+   ═══════════════════════════════════════════════════════════════════════ */
 
 /* ── Le contraste, calculé comme la norme le définit ── */
 function lineaire(c: number): number {
@@ -40,8 +60,32 @@ function parseCouleur(s: string): number[] | null {
 function hexVers(s: string): number[] {
   return [0, 2, 4].map((i) => parseInt(s.slice(1 + i, 3 + i), 16));
 }
+/* Mesurer APRÈS que le thème est posé : l'attribut data-theme se pose
+   dans un effet parent, qui court après ceux des enfants — lire les
+   styles au même instant, c'est lire le thème d'avant. On attend donc
+   deux images avant chaque relevé. */
+function useMesure(cle: string, lire: () => void) {
+  useEffect(() => {
+    const t = setTimeout(lire, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cle]);
+}
+
 function versHex(c: number[]): string {
   return "#" + c.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("").toUpperCase();
+}
+function versHsl([r, g, b]: number[]): string {
+  const R = r / 255, G = g / 255, B = b / 255;
+  const mx = Math.max(R, G, B), mn = Math.min(R, G, B);
+  const l = (mx + mn) / 2, d = mx - mn;
+  let h = 0, sa = 0;
+  if (d) {
+    sa = d / (1 - Math.abs(2 * l - 1));
+    h = mx === R ? ((G - B) / d) % 6 : mx === G ? (B - R) / d + 2 : (R - G) / d + 4;
+    h = Math.round(h * 60); if (h < 0) h += 360;
+  }
+  return `HSL ${h}, ${Math.round(sa * 100)}%, ${Math.round(l * 100)}%`;
 }
 function fmt(r: number): string {
   return r > 0 ? `${r.toFixed(2).replace(".", ",")}:1` : "—";
@@ -57,26 +101,27 @@ function resoudre(host: HTMLElement, variable: string): number[] | null {
   return v;
 }
 
-/* ── La table complète des paires déclarées (C7) — reléguée en dépliant :
-   les pastilles la montrent, elle la prouve. ── */
+/* ── La table complète des paires déclarées (C7) — au répertoire ── */
 const PAIRES: [string, string, string, number][] = [
   ["--text-primary", "--bg", "l'encre sur le blanc", 4.5],
   ["--text-primary", "--surface", "l'encre sur le gris posé", 4.5],
   ["--text-secondary", "--bg", "le texte second sur le blanc", 4.5],
   ["--text-secondary", "--surface", "le texte second sur le gris", 4.5],
+  ["--text-tertiary", "--bg", "le petit texte indicatif sur le blanc — objets secondaires, jamais du texte lu", 3],
+  ["--text-tertiary", "--surface", "le petit texte indicatif sur le gris", 3],
   ["--primary-text", "--bg", "le lien sur le blanc", 4.5],
   ["--primary-text", "--surface", "le lien sur le gris", 4.5],
   ["--primary-text-hover", "--bg", "le lien survolé — C8", 4.5],
   ["--on-primary", "--primary", "le texte sur la marque pleine", 4.5],
   ["--primary-text", "--primary-subtle", "le badge sur son fond doux", 4.5],
   ["--on-primary-subtle", "--primary-subtle", "le texte sur fond doux", 4.5],
-  ["--danger", "--danger-subtle", "danger sur son fond doux", 4.5],
+  ["--on-danger-subtle", "--danger-subtle", "l'encre danger sur son fond doux", 4.5],
   ["--on-danger", "--danger", "le texte sur danger plein", 4.5],
-  ["--success", "--success-subtle", "success sur son fond doux", 4.5],
+  ["--on-success-subtle", "--success-subtle", "l'encre success sur son fond doux", 4.5],
   ["--on-success", "--success", "le texte sur success plein", 4.5],
-  ["--warning", "--warning-subtle", "warning sur son fond doux", 4.5],
+  ["--on-warning-subtle", "--warning-subtle", "l'encre warning sur son fond doux", 4.5],
   ["--on-warning", "--warning", "le texte sur warning plein", 4.5],
-  ["--info", "--info-subtle", "info sur son fond doux", 4.5],
+  ["--on-info-subtle", "--info-subtle", "l'encre info sur son fond doux", 4.5],
   ["--on-info", "--info", "le texte sur info plein", 4.5],
   ["--border-strong", "--bg", "la bordure délimitante (3:1)", 3],
   ["--accent", "--bg", "l'anneau de focus sur le blanc (3:1)", 3],
@@ -105,7 +150,6 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Règle interne du système (précédent journalisé)", h: "#" }] },
   { id: "c5", nom: "C5", titre: "Le couple complet dès la naissance",
     enonce: "Toute nouvelle valeur sémantique fournit son couple texte/fond subtil d'emblée ; les neutres vivent en échelle.",
-    div: "Warning et info sont nés ce soir, chacun avec son couple complet et son premier consommateur — la section En situation. Pas avant : c'est C4 appliqué à la sémantique.",
     src: [{ t: "Règle interne du système (héritée du bouton)", h: "#" }] },
   { id: "c6", nom: "C6", titre: "Le canal redondant se déclare",
     enonce: "Chaque usage sémantique de la couleur déclare un canal non chromatique — icône, mot ou forme — qui ne se retire jamais pour alléger. C'est la moitié vérifiable du principe cardinal : jamais la couleur seule.",
@@ -113,7 +157,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG 1.4.1 — Use of Color", h: "https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html" }] },
   { id: "c7", nom: "C7", titre: "Le contraste se vérifie par paire",
     enonce: "Un jeton de texte n'est jamais conforme dans l'absolu — il l'est sur un fond donné. Chaque jeton de texte déclare ses fonds d'usage ; tout fond non déclaré est interdit.",
-    pourquoi: "Le cas vécu : un vert conforme sur blanc, qu'il a fallu recalibrer pour tenir sur son propre fond doux — 4,57:1 aujourd'hui, au ras du seuil, et c'est écrit.",
+    pourquoi: "Le cas vécu : un vert conforme sur blanc, qu'il a fallu recalibrer pour tenir sur son propre fond doux — au ras du seuil, et c'est écrit.",
     src: [{ t: "WCAG 1.4.3 — Contrast (Minimum)", h: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" }, { t: "WCAG — définition du rapport de contraste", h: "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio" }] },
   { id: "c8", nom: "C8", titre: "Le survol testé au même seuil",
     enonce: "La norme exempte le survol ; ce système le teste quand même — un survol illisible reste un survol raté.",
@@ -129,15 +173,12 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Règle interne du système", h: "#" }] },
   { id: "c11", nom: "C11", titre: "Le désactivé attend son besoin",
     enonce: "L'état désactivé n'a pas de jetons tant qu'aucun composant ne documente un besoin légitime ; le jour venu, le couple complet fond/texte/bordure naît en une seule fois.",
-    div: "Dette assumée, écrite, avec sa condition de sortie — la norme exempte les composants inactifs du contraste minimum, et aucun consommateur du kit n'a documenté le besoin.",
     src: [{ t: "WCAG 1.4.3 — exemption des composants inactifs", h: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" }] },
   { id: "c12", nom: "C12", titre: "Un jeton, une valeur par thème",
     enonce: "Dans un système à thèmes, chaque jeton de couleur résout une valeur par thème déclaré — c'est la condition d'existence d'un second thème.",
-    pourquoi: "« Impossible d'implémenter un mode sombre sans jetons partout » — la leçon convergente des systèmes à thèmes. Les rôles ne bougent pas ; c'est la table de valeurs qui double.",
     src: [{ t: "Carbon — Themes", h: "https://carbondesignsystem.com/elements/themes/overview/" }, { t: "Atlassian — color foundations", h: "https://atlassian.design/foundations/color" }] },
   { id: "c13", nom: "C13", titre: "Le sombre est couvert, et vérifié comme le clair",
     enonce: "Chaque rôle résout une valeur en clair et en sombre, le thème sombre s'active sur la préférence du système, et les seuils se vérifient thème par thème.",
-    div: "La charte ne couvre pas encore le sombre : ses valeurs sombres viennent du registre du dépôt, dit comme tel. Les pastilles ci-dessus mesurent les deux thèmes en permanence.",
     src: [{ t: "MDN — prefers-color-scheme", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" }] },
   { id: "c14", nom: "C14", titre: "Les deux textes garantis, du même côté",
     enonce: "Deux textes garantis sur un même fond ne peuvent tous deux atteindre le seuil que s'ils tombent du même côté de l'échelle de luminance — d'où la contrainte démontrée : un thème sombre ne peut pas avoir une couleur d'action sombre.",
@@ -145,24 +186,35 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "WCAG — définition du rapport de contraste", h: "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio" }] },
   { id: "c15", nom: "C15", titre: "Teinter un neutre ne coûte rien, à luminance constante",
     enonce: "Le rapport de contraste ne dépend que de la luminance relative ; teinter un neutre en conservant sa luminance ne change aucun rapport — l'opération est sûre par construction.",
-    div: "Note d'exécution héritée du ménage : conversion dans l'espace perceptif (oklch), clarté figée, teinte posée, puis recalage fin de la luminance d'origine.",
     src: [{ t: "WCAG — relative luminance", h: "https://www.w3.org/TR/WCAG22/#dfn-relative-luminance" }, { t: "CSS Color 4 — oklch()", h: "https://www.w3.org/TR/css-color-4/" }] },
+  { id: "m2", nom: "M2", titre: "Jamais de texte nu sur image",
+    enonce: "Sur une image imprévisible, le texte reçoit un voile calculé ou sort du média ; le contraste se juge au pire pixel derrière lui, jamais à la moyenne.",
+    pourquoi: "Une photo n'a pas de valeur : elle en a des milliers. Le seul rapport qui compte est celui du pixel le plus défavorable sous chaque lettre.",
+    src: [{ t: "WCAG 1.4.3 — Contrast (Minimum), texte sur image", h: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" }] },
+  { id: "m3", nom: "M3", titre: "Le voile est un calcul",
+    enonce: "L'opacité du voile est calculée sur le pire pixel derrière chaque zone de texte, et revérifiée à chaque format — le cadrage déplace le pire pixel.",
+    div: "Ici : la photo est redessinée telle que cadrée, les pixels derrière la bande sont lus, et l'opacité minimale qui fait tenir l'encre à 4,5:1 est cherchée par dichotomie, à chaque largeur et à chaque thème. La carte dit le résultat.",
+    src: [{ t: "Règle interne du système (mesure de rendu)", h: "#" }] },
   { id: "c16", nom: "C16", titre: "Les couleurs forcées ne se neutralisent jamais",
     enonce: "Quand le système d'exploitation force ses couleurs, la palette disparaît — on ne neutralise jamais ce mode, et l'interface s'appuie sur ce qui survit : la sémantique, les bordures, le texte.",
-    pourquoi: "C'est une raison de plus pour les canaux redondants : l'icône et le mot restent quand la couleur tombe.",
     src: [{ t: "MDN — @media (forced-colors)", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" }, { t: "MDN — forced-color-adjust", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/forced-color-adjust" }] },
+  { id: "c17", nom: "C17", titre: "Le tertiaire est une intention, jamais un défaut",
+    enonce: "L'encre tertiaire — le gris le plus clair qui tienne encore 3:1 sur le fond le plus dur — ne s'emploie que sur un objet secondaire : kicker, fiche, légende, méta, pied, index de menu. Jamais sur du texte lu, jamais sous le cran étiquette, jamais un seul rapport sous 3:1. En petit — au cran étiquette ou au petit cran —, il porte un cran de graisse de plus que le texte qu'il accompagne (600 au moins, 700 pour un kicker mono) : l'œil retrouve en épaisseur ce que l'encre a cédé en contraste. Chaque emploi est dit là où il est écrit : en CSS, la ligne qui pose le tertiaire porte « tertiaire : » et ce que c'est ; aucun style en ligne ne le pose.",
+    pourquoi: "Un gris clair est une décision de hiérarchie, pas une valeur par défaut. Sans la mention, un tertiaire posé sur une phrase par commodité passerait pour un texte second qui a pâli — et le vérificateur ne pourrait pas le distinguer. La mention rend l'intention lisible par un humain et comptable par la machine. La graisse en plus est la contrepartie de l'encre claire : elle aide à lire sans assombrir, donc sans rapprocher le tertiaire du secondaire — le même principe que la norme, qui admet un contraste moindre dès que le texte est gras.",
+    div: "Arbitrages d'Auteur des 25 et 26 août 2026 : « limite côté lisibilité, mais ce sont des objets secondaires », puis, sur pièce, « aider le lecteur avec une fonte légèrement plus grasse pour les éléments petits en tertiaire ». Le rapport de 3:1 est celui que WCAG réserve aux grands textes et aux objets d'interface ; ici il est étendu, par décision dite, aux petites étiquettes qui n'ont pas à être lues en premier.",
+    src: [{ t: "WCAG 2.2 — 1.4.3 Contrast (Minimum)", h: "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" }, { t: "WCAG 2.2 — 1.4.11 Non-text Contrast", h: "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" }] },
 ];
 
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--space-block-xl)" }}>
+    <div style={{ display: "grid", gap: "var(--gap-1-block)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--space-block-sm)", maxWidth: "var(--measure)" }}>
+        <div key={r.id} style={{ display: "grid", gap: "var(--gap-3-block)", maxWidth: "var(--measure)" }}>
           <b style={{ color: "var(--text-primary)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.pourquoi && <span className="sourd">{r.pourquoi}</span>}
-          {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
-          <span style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((sc, i) => (
+          {r.div && <div className="divergence" style={{ fontSize: "var(--font-size-small)" }}>{r.div}</div>}
+          <span style={{ fontSize: "var(--font-size-small)" }}>Sources : {r.src.map((sc, i) => (
             <span key={sc.t}>{i > 0 && " · "}{sc.h === "#" ? sc.t : <a href={sc.h}>{sc.t}</a>}</span>
           ))}</span>
         </div>
@@ -171,8 +223,8 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
-/* ── 01 · La mosaïque de la charte : la palette composée comme une affiche,
-   chaque tuile cliquable copie sa valeur — lue au rendu, elle suit le thème. ── */
+/* ── PREUVE 1 · SITUATION — la mosaïque de la charte, branchée sur les
+   jetons vivants : chaque rôle occupe sa part réelle de l'écran. ── */
 const TUILES: { nom: string; jeton: string; sur: string; col: string; row: string; registre: string; bord?: boolean }[] = [
   { nom: "primary", jeton: "--primary", sur: "--on-primary", col: "1 / 8", row: "1", registre: "marque" },
   { nom: "background", jeton: "--bg", sur: "--text-primary", col: "8 / 13", row: "1", registre: "neutre", bord: true },
@@ -189,84 +241,64 @@ const PROPORTIONS: { nom: string; jeton: string; sur: string; part: number; bord
   { nom: "primary", jeton: "--primary", sur: "--on-primary", part: 5 },
 ];
 
-/* ── La gamme primitive 50–950, dérivée de la saisie — cliquer copie ── */
-function Gamme({ primaire }: { primaire: string }) {
-  const crans = useMemo(() => gamme(primaire) as [number, string][], [primaire]);
-  const [copie, setCopie] = useState<number | null>(null);
-  const copier = (cran: number, hex: string) => {
-    navigator.clipboard?.writeText(hex).catch(() => {});
-    setCopie(cran); setTimeout(() => setCopie(null), 1200);
-  };
-  return (
-    <div style={{ display: "grid", gap: "var(--space-block-xs)", width: "100%" }}>
-      <div style={{ display: "flex", width: "100%", borderRadius: "var(--radius)", overflow: "hidden", border: "1px solid var(--border)" }}>
-        {crans.map(([cran, hex]) => (
-          <button key={cran} onClick={() => copier(cran, hex)} title={`Copier ${hex}`} aria-label={`${cran} — ${hex}`}
-            style={{ flex: 1, minWidth: 0, height: "calc(3.2 * var(--space-block-unit))", background: hex, border: 0, cursor: "pointer" }} />
-        ))}
-      </div>
-      <div style={{ display: "flex", width: "100%" }}>
-        {crans.map(([cran]) => (
-          <span key={cran} className="mono" style={{ flex: 1, minWidth: 0, fontSize: "0.5625rem", fontWeight: 400, color: "var(--text-secondary)", textAlign: "center" }}>
-            {copie === cran ? "copié" : cran}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function Palette({ cle }: { cle: string }) {
+  /* Le graphisme EXACT de la charte (verdict d'Auré, 24 août : « j'aimais
+     beaucoup ce graphisme exactement ») : tuiles pleines sans écart, nom en
+     haut à gauche, specs mono en bas à droite — mais branché sur les jetons
+     vivants : les valeurs affichées sont lues sur la page rendue. */
   const ref = useRef<HTMLDivElement>(null);
   const [vue, setVue] = useState<"mosaique" | "proportions">("mosaique");
-  const [hexs, setHexs] = useState<Record<string, string>>({});
+  const [rgbs, setRgbs] = useState<Record<string, number[]>>({});
   const [copie, setCopie] = useState<string | null>(null);
-  useEffect(() => {
+  useMesure(cle, () => {
     if (!ref.current) return;
-    const v: Record<string, string> = {};
-    TUILES.forEach((t) => { const c = resoudre(ref.current!, t.jeton); if (c) v[t.jeton] = versHex(c); });
-    setHexs(v);
-  }, [cle]);
+    const v: Record<string, number[]> = {};
+    TUILES.forEach((t) => { const c = resoudre(ref.current!, t.jeton); if (c) v[t.jeton] = c; });
+    setRgbs(v);
+  });
   const copier = (jeton: string) => {
-    if (hexs[jeton]) navigator.clipboard?.writeText(hexs[jeton]).catch(() => {});
+    const c = rgbs[jeton];
+    if (c) navigator.clipboard?.writeText(versHex(c)).catch(() => {});
     setCopie(jeton); setTimeout(() => setCopie(null), 1400);
   };
+  const specs = (jeton: string) => {
+    const c = rgbs[jeton];
+    return c
+      ? [`color.${jeton.slice(2) === "bg" ? "background" : jeton.slice(2)}`, versHex(c), versHsl(c), `RGB ${c.map(Math.round).join(", ")}`]
+      : ["…"];
+  };
   return (
-    <div ref={ref} style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)" }}>
-      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+    <div ref={ref} style={{ width: "100%", display: "grid", gap: "var(--gap-2-block)" }}>
+      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
         {([["mosaique", "Mosaïque"], ["proportions", "Proportions"]] as const).map(([v, nom]) => (
-          <button key={v} className={`bouton ${vue === v ? "on" : ""}`} style={{ height: "1.75rem", padding: "0 var(--space-inline-sm)", fontSize: "0.6875rem" }} onClick={() => setVue(v)}>{nom}</button>
+          /* commandes secondaires d'une tête d'outil : la cible compacte */
+          <button key={v} className={`bouton ${vue === v ? "on" : ""}`} style={{ height: "var(--control-height-compact)", padding: "0 var(--pad-3-inline)", fontSize: "var(--font-size-small)" }} onClick={() => setVue(v)}>{nom}</button>
         ))}
-        <span className="sourd" style={{ fontSize: "0.75rem" }}>— cliquer une couleur copie sa valeur</span>
       </div>
       {vue === "mosaique" ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gridTemplateRows: "7rem 4.25rem 4.25rem", gap: "var(--space-inline-sm)", width: "100%" }}>
+        <div className="cm-mos">
           {TUILES.map((t) => (
-            <button key={t.jeton} onClick={() => copier(t.jeton)} title={`Copier ${hexs[t.jeton] ?? ""}`} style={{
-              gridColumn: t.col, gridRow: t.row, background: `var(${t.jeton})`, color: `var(${t.sur})`,
-              border: t.bord ? "1px solid var(--border)" : "0", borderRadius: "var(--radius)",
-              display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between",
-              padding: "var(--space-block-md) var(--space-inline-unit)", cursor: "pointer", font: "inherit", textAlign: "left", minWidth: 0, overflow: "hidden",
-            }}>
-              <span style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", width: "100%", gap: "var(--space-inline-sm)" }}>
-                <span style={{ fontWeight: 600, fontSize: "0.8125rem" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
-                <span className="mono" style={{ fontWeight: 400, fontSize: "0.5625rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>{t.registre}</span>
-              </span>
-              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{t.jeton} · {hexs[t.jeton] ?? "…"}</span>
+            <button key={t.jeton} className="cm-tuile" onClick={() => copier(t.jeton)}
+              title={`Copier ${rgbs[t.jeton] ? versHex(rgbs[t.jeton]) : ""}`}
+              style={{ gridColumn: t.col, gridRow: t.row, background: `var(${t.jeton})`, color: `var(${t.sur})`,
+                boxShadow: t.bord ? "inset 0 0 0 1px var(--border)" : undefined }}>
+              <span className="cm-nom">{copie === t.jeton ? "Copié ✓" : t.nom}</span>
+              <span className="cm-specs">{specs(t.jeton).map((l) => <span key={l}>{l}</span>)}</span>
             </button>
           ))}
         </div>
       ) : (
-        <div style={{ display: "flex", width: "100%", height: "13rem", gap: "var(--space-inline-xs)" }}>
+        <div className="cm-props">
           {PROPORTIONS.map((t) => (
-            <button key={t.jeton} onClick={() => copier(t.jeton)} title={`Copier ${hexs[t.jeton] ?? ""}`} style={{
-              flexBasis: `${t.part}%`, flexGrow: 0, flexShrink: 0, minWidth: 0, background: `var(${t.jeton})`, color: `var(${t.sur})`,
-              border: t.bord ? "1px solid var(--border)" : "0", borderRadius: "var(--radius)",
-              display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-end",
-              padding: "var(--space-block-md) var(--space-inline-sm)", cursor: "pointer", font: "inherit", textAlign: "left", overflow: "hidden",
-            }}>
-              <span style={{ fontWeight: 600, fontSize: "0.6875rem", whiteSpace: "nowrap" }}>{copie === t.jeton ? "Copié ✓" : t.nom}</span>
-              <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{t.part} %</span>
+            <button key={t.jeton} className={`cp-col ${t.part < 10 ? "etroite" : ""}`} onClick={() => copier(t.jeton)}
+              title={`Copier ${rgbs[t.jeton] ? versHex(rgbs[t.jeton]) : ""}`}
+              style={{ flexBasis: `${t.part}%`, background: `var(${t.jeton})`, color: `var(${t.sur})`,
+                boxShadow: t.bord ? "inset 0 0 0 1px var(--border)" : undefined }}>
+              <span className="cp-meta">
+                <span className="cp-nom">{copie === t.jeton ? "Copié ✓" : t.nom}</span>
+                <span className="cp-hex">{rgbs[t.jeton] ? versHex(rgbs[t.jeton]) : "…"}</span>
+              </span>
+              <span className="cp-pct">{t.part} %</span>
             </button>
           ))}
         </div>
@@ -275,38 +307,84 @@ function Palette({ cle }: { cle: string }) {
   );
 }
 
-/* ── 02 · Les pastilles de tons : le contraste se lit SUR la pastille ── */
-function Ton({ nom, texte, fond, seuil = 4.5, cle }: { nom: string; texte: string; fond: string; seuil?: number; cle: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [r, setR] = useState(0);
-  const [hx, setHx] = useState<[string, string]>(["…", "…"]);
-  useEffect(() => {
-    if (!ref.current) return;
-    const a = resoudre(ref.current, texte), b = resoudre(ref.current, fond);
-    if (a && b) { setR(contraste(a, b)); setHx([versHex(a), versHex(b)]); }
-  }, [texte, fond, cle]);
-  const ko = r > 0 && r < seuil;
+/* ── La table des rôles, à plat sous la mosaïque (verdict d'Auré :
+   jamais dans un dépliant). Les deux colonnes de thème sont lues sur
+   des hôtes thématisés — la table ne recopie rien. ── */
+const ROLES_TABLE: [string, string][] = [
+  ["primary", "--primary"], ["on-primary", "--on-primary"],
+  ["primary-subtle", "--primary-subtle"], ["background", "--bg"],
+  ["surface", "--surface"], ["text-primary", "--text-primary"],
+  ["text-secondary", "--text-secondary"], ["text-tertiary", "--text-tertiary"], ["border", "--border"],
+  ["border-strong", "--border-strong"],
+  ["danger / subtil", "--danger"], ["success / subtil", "--success"],
+  ["warning / subtil", "--warning"], ["on-warning-subtle", "--on-warning-subtle"], ["info / subtil", "--info"],
+];
+const SUBTILS: Record<string, string> = {
+  "danger / subtil": "--danger-subtle", "success / subtil": "--success-subtle",
+  "warning / subtil": "--warning-subtle", "info / subtil": "--info-subtle",
+};
+function TableRoles({ cle }: { cle: string }) {
+  const clairRef = useRef<HTMLDivElement>(null);
+  const sombreRef = useRef<HTMLDivElement>(null);
+  const [vals, setVals] = useState<Record<string, { clair: (string | null)[]; sombre: (string | null)[] }>>({});
+  useMesure(cle, () => {
+    const lire = (host: HTMLElement | null, variable: string) => {
+      if (!host) return "…";
+      const c = resoudre(host, variable);
+      return c ? versHex(c) : "…";
+    };
+    const v: Record<string, { clair: (string | null)[]; sombre: (string | null)[] }> = {};
+    ROLES_TABLE.forEach(([nom, variable]) => {
+      const sub = SUBTILS[nom] ?? null;
+      v[nom] = {
+        clair: [lire(clairRef.current, variable), sub ? lire(clairRef.current, sub) : null],
+        sombre: [lire(sombreRef.current, variable), sub ? lire(sombreRef.current, sub) : null],
+      };
+    });
+    setVals(v);
+  });
+  const PASTILLE = "0.75rem"; // hors chaîne : silhouette de la pastille de couleur (un carré de texte)
+  const Pastille = ({ hex }: { hex: string }) => (
+    <span aria-hidden="true" style={{ display: "inline-block", width: PASTILLE, height: PASTILLE,
+      borderRadius: "var(--r-4)", border: "1px solid var(--border)", background: hex.split(" ")[0],
+      verticalAlign: "-1px", marginRight: "var(--gap-3-inline)" }} />
+  );
+  /* Chaque valeur porte son carre, le subtil comme le ton, et le meme
+     separateur que le nom du role : la barre oblique. */
+  const Valeurs = ({ v }: { v?: (string | null)[] }) => v ? (
+    <>
+      <Pastille hex={v[0] ?? "#fff"} />{v[0]}
+      {v[1] ? <><span className="sourd" style={{ margin: "0 var(--gap-3-inline)" }}>/</span><Pastille hex={v[1]} />{v[1]}</> : null}
+    </>
+  ) : <>{"…"}</>;
   return (
-    <div ref={ref} style={{
-      background: `var(${fond})`, color: `var(${texte})`, border: `1px solid var(${texte})`,
-      borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)",
-      display: "grid", gap: "var(--space-block-xs)", justifyItems: "start", textAlign: "left", minWidth: 0,
-    }}>
-      <span style={{ fontWeight: 600, fontSize: "0.875rem" }}>{nom}</span>
-      <span className="mono" style={{ fontWeight: 400, fontSize: "0.625rem" }}>{hx[0]} sur {hx[1]}</span>
-      <span style={{ fontWeight: 700, fontSize: "1.0625rem", letterSpacing: "-0.01em" }}>
-        {fmt(r)}{ko && " ✗"}
-      </span>
-      {ko && <span className="mono" style={{ fontSize: "0.625rem" }}>sous le seuil de {seuil === 3 ? "3:1" : "4,5:1"} — illisible</span>}
+    <div style={{ width: "100%", overflowX: "auto" }}>
+      <div ref={clairRef} data-theme="light" hidden />
+      <div ref={sombreRef} data-theme="dark" hidden />
+      <table className="tableau aere" style={{ width: "100%" }}>
+        <thead><tr><th>rôle</th><th>clair</th><th>sombre</th></tr></thead>
+        <tbody>
+          {ROLES_TABLE.map(([nom]) => (
+            <tr key={nom}>
+              <td className="mono">{nom}</td>
+              <td className="mono"><Valeurs v={vals[nom]?.clair} /></td>
+              <td className="mono"><Valeurs v={vals[nom]?.sombre} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-function TableauPaires({ grisPale, cle }: { grisPale: boolean; cle: string }) {
+/* ── PREUVE 2 · VARIATION — le moteur : trois marques, trois familles.
+   Les valeurs affichées sortent de derive() en direct — générées par le
+   moteur, jamais posées à la main : c'est lui, le sujet de la preuve. ── */
+function TableauPaires({ cle }: { cle: string }) {
   const clairRef = useRef<HTMLDivElement>(null);
   const sombreRef = useRef<HTMLDivElement>(null);
   const [lignes, setLignes] = useState<{ clair: number; sombre: number }[]>([]);
-  useEffect(() => {
+  useMesure(cle, () => {
     const lire = (host: HTMLDivElement | null) =>
       PAIRES.map(([texte, fond]) => {
         if (!host) return 0;
@@ -315,23 +393,21 @@ function TableauPaires({ grisPale, cle }: { grisPale: boolean; cle: string }) {
       });
     const clair = lire(clairRef.current), sombre = lire(sombreRef.current);
     setLignes(PAIRES.map((_, i) => ({ clair: clair[i], sombre: sombre[i] })));
-  }, [grisPale, cle]);
-  const paleClair: React.CSSProperties = { ["--text-secondary" as any]: "#9CA3AF" };
-  const paleSombre: React.CSSProperties = { ["--text-secondary" as any]: "#6B7280" };
+  });
   const Cellule = ({ r, seuil }: { r: number; seuil: number }) => (
     <td><span className={`badge ${r > 0 && r < seuil ? "ko" : ""}`}>{fmt(r)}</span></td>
   );
   return (
     <div style={{ width: "100%", overflowX: "auto" }}>
-      <div ref={clairRef} data-theme="light" style={grisPale ? paleClair : undefined} hidden />
-      <div ref={sombreRef} data-theme="dark" style={grisPale ? paleSombre : undefined} hidden />
+      <div ref={clairRef} data-theme="light" hidden />
+      <div ref={sombreRef} data-theme="dark" hidden />
       <table className="tableau" style={{ width: "100%" }}>
         <thead><tr><th>Paire déclarée</th><th>Seuil</th><th>Thème clair</th><th>Thème sombre</th></tr></thead>
         <tbody>
           {PAIRES.map(([texte, fond, libelle, seuil], i) => (
             <tr key={libelle}>
               <td style={{ whiteSpace: "normal" }}>{libelle}<br />
-                <span className="mono" style={{ color: "var(--text-secondary)", fontWeight: 400, fontSize: "0.625rem" }}>{texte} / {fond}</span></td>
+                <span className="mono" style={{ color: "var(--text-secondary)", fontWeight: 400, fontSize: "var(--font-size-label)" }}>{texte} / {fond}</span></td>
               <td className="mono" style={{ color: "var(--text-secondary)" }}>{seuil === 3 ? "3:1" : "4,5:1"}</td>
               <Cellule r={lignes[i]?.clair ?? 0} seuil={seuil} />
               <Cellule r={lignes[i]?.sombre ?? 0} seuil={seuil} />
@@ -343,7 +419,116 @@ function TableauPaires({ grisPale, cle }: { grisPale: boolean; cle: string }) {
   );
 }
 
-/* ── 03 · Les alertes : le couple, le canal — et la marque qui reste chez elle ── */
+/* ── PREUVE · VOCABULAIRE — le nuancier : six rôles en languettes aux
+   proportions identiques (verdicts d'Auré, 24 août). Chaque languette est
+   un couple complet — le ton, son encre, son fond doux — et sa fiche lit
+   les valeurs et le rapport sur la page rendue. ── */
+const LANGUETTES: { nom: string; ton: string; surTon: string; doux: string; surDoux: string; jeton: string; phraseTon: string; phraseDoux: string }[] = [
+  { nom: "La marque", ton: "--primary", surTon: "--on-primary", doux: "--primary-subtle", surDoux: "--on-primary-subtle", jeton: "primary",
+    phraseTon: "Elle signe. Un seul grand geste par écran.", phraseDoux: "Son fond doux — la marque murmurée." },
+  { nom: "Le danger", ton: "--danger", surTon: "--on-danger", doux: "--danger-subtle", surDoux: "--on-danger-subtle", jeton: "danger",
+    phraseTon: "Il arrête. Jamais dépensé pour décorer.", phraseDoux: "Son fond doux — la faute expliquée posément." },
+  { nom: "Le succès", ton: "--success", surTon: "--on-success", doux: "--success-subtle", surDoux: "--on-success-subtle", jeton: "success",
+    phraseTon: "Il confirme, puis se retire.", phraseDoux: "Son fond doux — la conformité tranquille." },
+  { nom: "Le neutre", ton: "--text-primary", surTon: "--bg", doux: "--surface", surDoux: "--text-secondary", jeton: "neutral",
+    phraseTon: "Il se tait. C'est lui qui fait la page.", phraseDoux: "Son échelle douce — fonds, filets, encres." },
+  { nom: "L'information", ton: "--info", surTon: "--on-info", doux: "--info-subtle", surDoux: "--on-info-subtle", jeton: "info",
+    phraseTon: "Elle renseigne — avec son propre bleu, jamais celui d'une marque.", phraseDoux: "Son fond doux — la note en passant." },
+  { nom: "L'avertissement", ton: "--warning", surTon: "--on-warning", doux: "--warning-subtle", surDoux: "--on-warning-subtle", jeton: "warning",
+    phraseTon: "Il prévient sans crier.", phraseDoux: "Son fond doux — le doute encore réparable." },
+];
+function Nuancier({ cle }: { cle: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [fiches, setFiches] = useState<Record<string, string>>({});
+  useMesure(cle, () => {
+    if (!ref.current) return;
+    const v: Record<string, string> = {};
+    LANGUETTES.forEach((l) => {
+      const ton = resoudre(ref.current!, l.ton), doux = resoudre(ref.current!, l.doux), sur = resoudre(ref.current!, l.surDoux);
+      if (ton && doux && sur) v[l.jeton] = `${l.jeton} · ${versHex(ton)} · doux ${versHex(doux)} · ${fmt(contraste(sur, doux))}`;
+    });
+    setFiches(v);
+  });
+  return (
+    <div ref={ref} className="gd-nuancier" role="img"
+      aria-label="Le nuancier des six rôles du kit : marque, danger, succès, avertissement, information, neutre — chacun avec son ton plein, son fond doux et son rapport mesuré">
+      {LANGUETTES.map((l) => (
+        <div key={l.jeton} className="gd-lng">
+          <div className="gd-lng-doux" style={{ background: `var(${l.doux})`, color: `var(${l.surDoux})` }}>
+            <b>{l.nom}</b><span>{l.phraseDoux}</span>
+            <div className="gd-lng-fiche">{fiches[l.jeton] ?? "…"}</div>
+          </div>
+          <div className="gd-lng-ton" style={{ background: `var(${l.ton})`, color: `var(${l.surTon})` }}>
+            {l.phraseTon}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── PREUVE · OBJET EN SITUATION — le tableau des départs (24 août).
+   Un tableau de gare annonce des trains à des gens pressés — dont un
+   voyageur sur douze ne distingue pas le rouge du vert. Le tableau vit
+   en thème sombre par nature : ses jetons sont ceux du thème sombre du
+   kit, résolus par data-theme. L'indication n'apparaît qu'à la casse. ── */
+/* ── PREUVE · VARIATION — deux thèmes, une exigence (24 août). La même
+   carte, clair et sombre : chaque panneau EST son thème (data-theme), et
+   les rapports sont mesurés dedans, sur la page rendue. La casse pâlit
+   l'encre douce avec le gris que le registre refuse — et le verdict tombe. ── */
+const PAIRES_DUO: [string, string, string][] = [
+  ["l'encre sur la carte", "--text-primary", "--surface"],
+  ["l'encre douce", "--text-secondary", "--surface"],
+  ["le texte sur la marque", "--on-primary", "--primary"],
+];
+function DuoThemes({ cle, palie }: { cle: string; palie: boolean }) {
+  const clairRef = useRef<HTMLDivElement>(null);
+  const sombreRef = useRef<HTMLDivElement>(null);
+  const [mes, setMes] = useState<{ clair: number[]; sombre: number[] }>({ clair: [], sombre: [] });
+  useMesure(`${cle}-${palie}`, () => {
+    const lire = (host: HTMLElement | null) => PAIRES_DUO.map(([, t, f]) => {
+      if (!host) return 0;
+      const a = resoudre(host, t), b = resoudre(host, f);
+      return a && b ? contraste(a, b) : 0;
+    });
+    setMes({ clair: lire(clairRef.current), sombre: lire(sombreRef.current) });
+  });
+  const Panneau = ({ mode, hote, valeurs, style, casse }: { mode: string; hote: React.Ref<HTMLDivElement>; valeurs: number[]; style?: React.CSSProperties; casse?: boolean }) => (
+    <div ref={hote} data-theme={mode} className="gd-pan" style={style} data-intent={casse ? "statement" : undefined}>
+      <div className="gd-pan-carte">
+        <span style={{ fontWeight: 600, letterSpacing: "-0.01em" }}>Léa Fontan</span>
+        <span style={{ fontSize: "var(--font-size-small)", color: "var(--text-secondary)" }}>UX Designer — la même carte, deux thèmes, une seule exigence.</span>
+        {/* un bouton : le coin du composant, la marge de la ligne, la cible au doigt */}
+        <span style={{ background: "var(--primary)", color: "var(--on-primary)", borderRadius: "var(--r-ctl)",
+          padding: "var(--pad-3-block) var(--pad-3-inline)", minHeight: "var(--control-height)", display: "inline-flex", alignItems: "center",
+          fontWeight: 600, fontSize: "var(--font-size-small)", justifySelf: "start" }}>Suivre</span>
+      </div>
+      <div style={{ display: "grid", gap: "var(--gap-3-block)" }}>
+        {PAIRES_DUO.map(([nom], i) => {
+          const r = valeurs[i] ?? 0;
+          const ko = r > 0 && r < 4.5;
+          return (
+            <div key={nom} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+              gap: "var(--gap-3-inline)", fontSize: "var(--font-size-small)", color: "var(--text-secondary)" }}>
+              <span>{nom}</span>
+              <span className={`badge ${ko ? "ko" : "bon"}`}>{fmt(r)}{ko ? " — sous 4,5, recalé d'office" : ""}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+  /* casse : le gris pâle que le registre refuse, posé de force (l'élément le déclare) */
+  const paliStyle: React.CSSProperties = { ["--text-secondary" as string]: "#9CA3AF" };
+  return (
+    <div className="gd-duo">
+      <Panneau mode="light" hote={clairRef} valeurs={mes.clair} style={palie ? paliStyle : undefined} casse={palie} />
+      <Panneau mode="dark" hote={sombreRef} valeurs={mes.sombre} />
+    </div>
+  );
+}
+
+/* ── RÉPERTOIRE — les garde-fous, avec leurs casses quand elles existent ── */
 function Alerte({ ton, couleurSeule, marque }: { ton: "danger" | "success"; couleurSeule: boolean; marque: boolean }) {
   const teinte = marque ? "--primary" : ton === "danger" ? "--danger" : "--success";
   const doux = marque ? "--primary-subtle" : ton === "danger" ? "--danger-subtle" : "--success-subtle";
@@ -351,12 +536,14 @@ function Alerte({ ton, couleurSeule, marque }: { ton: "danger" | "success"; coul
   const icone = ton === "danger" ? "⚠" : "✓";
   const mot = ton === "danger" ? "Erreur" : "Succès";
   const msg = ton === "danger" ? "le dossier n'a pas pu être enregistré." : "le dossier est enregistré.";
+  const FILET = "4px"; // hors chaîne : le filet d'accent de l'alerte, un trait épaissi
+  /* une alerte est une carte : le coin et la marge de la carte */
   return (
-    <div style={{
+    <div data-intent={marque ? "statement" : undefined} style={{ /* casse : la marque prêtée à un état */
       background: `var(${doux})`, color: couleurSeule ? "var(--text-primary)" : `var(${texte})`,
-      border: `1px solid var(${teinte})`, borderInlineStart: `4px solid var(${teinte})`,
-      borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)",
-      fontSize: "0.875rem", maxWidth: "28rem", width: "100%", textAlign: "left",
+      border: `1px solid var(${teinte})`, borderInlineStart: `${FILET} solid var(${teinte})`,
+      borderRadius: "var(--r-2)", padding: "var(--pad-2-block) var(--pad-2-inline)",
+      fontSize: "var(--font-size-small)", width: "100%", textAlign: "left",
     }}>
       {couleurSeule
         ? <>Le dossier {ton === "danger" ? "n&apos;a pas pu être enregistré" : "est enregistré"}.</>
@@ -365,110 +552,155 @@ function Alerte({ ton, couleurSeule, marque }: { ton: "danger" | "success"; coul
   );
 }
 
-/* ── 04 · En situation : les mêmes jetons, portés par un écran plausible ── */
-function EnSituation({ filtre }: { filtre: boolean }) {
-  return (
-    <div style={{ width: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)", textAlign: "left" }}>
-      {/* La mesure : un chiffre, son delta sémantique, sa courbe */}
-      <div className="carte" style={{ gap: "var(--space-block-md)" }}>
-        <span className="mono sourd">Revenus · 30 derniers jours</span>
-        <span style={{ fontSize: "var(--font-size-h1)", fontWeight: 600, letterSpacing: "-0.02em" }}>15 989 €</span>
-        <span className="badge" style={{ color: "var(--success)", background: "var(--success-subtle)" }}>▲ 15,3 %</span>
-        <svg viewBox="0 0 88 32" preserveAspectRatio="none" aria-hidden style={{ width: "100%", height: "2.5rem" }}>
-          <polyline fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points="2,26 17,22 32,24 47,16 62,18 77,9 86,5" />
-        </svg>
-      </div>
-      {/* Le journal : chaque étiquette est un couple ton/fond doux */}
-      <div className="carte" style={{ gap: "var(--space-block-md)" }}>
-        <span className="mono sourd">Journal</span>
-        <div style={{ display: "grid" }}>
-          {([["Ce que le contraste ne dit pas", "--info", "--info-subtle", "Couleur"],
-             ["Le gris pâle n'est plus un texte", "--on-primary-subtle", "--primary-subtle", "Décision"],
-             ["Écrire une erreur sans accuser", "--success", "--success-subtle", "Voix"]] as const).map(([titre, t, f, tag]) => (
-            <div key={titre} className="demo-ligne" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-inline-sm)", padding: "var(--space-block-md) var(--space-inline-sm)", borderRadius: "var(--radius)", fontSize: "0.8125rem" }}>
-              <span style={{ minWidth: 0 }}>{titre}</span>
-              <span className="badge" style={{ color: `var(${t})`, background: `var(${f})`, flex: "none" }}>{tag}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Le formulaire : le champ, son anneau accent, l'action primary */}
-      <div className="carte" style={{ gap: "var(--space-block-md)" }}>
-        <span className="mono sourd">Nouveau budget</span>
-        <div className="champ">
-          <input placeholder="Nom du budget" aria-label="Nom du budget" />
-        </div>
-        <div><button className={`bouton demo-plein ${filtre ? "filtre" : "jeton"}`}>Créer le budget</button></div>
-      </div>
-      {/* L'avertissement : le premier consommateur du ton warning */}
-      <div style={{
-        gridColumn: "1 / -1", background: "var(--warning-subtle)", color: "var(--warning)",
-        border: "1px solid var(--warning)", borderInlineStart: "4px solid var(--warning)",
-        borderRadius: "var(--radius)", padding: "var(--space-block-unit) var(--space-inline-unit)", fontSize: "0.875rem",
-      }}>
-        <b>⚠ Attention</b> — le budget « Maison » approche de sa limite : 5 145 € sur 5 500 €.
-      </div>
-    </div>
-  );
-}
-
-/* ── 05 · Le même écran dans les deux thèmes, et la contrainte C14 mesurée ── */
 function MiniEcran({ cle }: { cle: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [r, setR] = useState(0);
-  useEffect(() => {
+  useMesure(cle, () => {
     if (!ref.current) return;
     const a = resoudre(ref.current, "--on-primary"), b = resoudre(ref.current, "--primary");
     if (a && b) setR(contraste(a, b));
-  }, [cle]);
+  });
   return (
+    /* le mini-écran est une carte ; le bouton dedans prend le coin du composant et la cible au doigt */
     <div ref={ref} style={{
       background: "var(--bg)", color: "var(--text-primary)", border: "1px solid var(--border)",
-      borderRadius: "var(--radius-card)", padding: "var(--space-block-card) var(--space-inline-2xl)",
-      display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", textAlign: "left", minWidth: 0,
+      borderRadius: "var(--r-2)", padding: "var(--pad-2-block) var(--pad-2-inline)",
+      display: "grid", gap: "var(--gap-3-block)", justifyItems: "start", textAlign: "left", minWidth: 0,
     }}>
-      <b>Le même écran</b>
       <span style={{
-        background: "var(--primary)", color: "var(--on-primary)", borderRadius: "var(--radius)",
-        padding: "var(--space-block-md) var(--space-inline-xl)", fontWeight: 600, fontSize: "0.875rem",
+        background: "var(--primary)", color: "var(--on-primary)", borderRadius: "var(--r-ctl)",
+        padding: "var(--pad-3-block) var(--pad-3-inline)", minHeight: "var(--control-height)", display: "inline-flex", alignItems: "center",
+        fontWeight: 600, fontSize: "var(--font-size-small)",
       }}>Enregistrer</span>
       <span className={`badge ${r > 0 && r < 4.5 ? "ko" : ""}`}>
-        texte de l&apos;action : {fmt(r)}{r > 0 && r < 4.5 ? " — illisible, C14 mord" : ""}
+        {fmt(r)}{r > 0 && r < 4.5 ? " — illisible, C14 mord" : ""}
       </span>
     </div>
   );
 }
 
-/* Trois gris à la MÊME luminance : le pur, puis le même réchauffé et le
-   même refroidi. Un seul chiffre pour les trois — c'est la démonstration :
-   aucune valeur n'est « la bonne », la teinte bouge, le rapport ne bouge
+/* Trois gris à la MÊME luminance — la teinte bouge, le rapport ne bouge
    pas. (Valeurs d'étude calées au calcul, pas des jetons.) */
 const GRIS_TEINTES: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#78716A"], ["gris bleuté", "#67737F"]];
 function TeinteConstante() {
   const arrondi = (hex: string) => (Math.round(contraste(hexVers(hex), hexVers("#FFFFFF")) * 10) / 10).toFixed(1).replace(".", ",");
   const rapports = GRIS_TEINTES.map(([, hex]) => arrondi(hex));
   const identiques = rapports.every((r) => r === rapports[0]);
+  const TUILE = { width: "3.75rem", height: "2rem" }; // hors chaîne : silhouette de démo des trois gris
   return (
-    <div style={{ display: "grid", gap: "var(--space-block-md)", justifyItems: "start", width: "100%" }}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-inline-unit)" }}>
+    <div style={{ display: "grid", gap: "var(--gap-3-block)", justifyItems: "start", width: "100%" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--gap-3-inline)" }}>
         {GRIS_TEINTES.map(([nom, hex]) => (
-          <div key={hex} style={{ display: "grid", gap: "var(--space-block-xs)", justifyItems: "start" }}>
+          <div key={hex} style={{ display: "grid", gap: "var(--gap-4-block)", justifyItems: "start" }}>
             <span style={{
-              width: "calc(6 * var(--space-block-unit))", height: "calc(3.2 * var(--space-block-unit))",
-              borderRadius: "var(--radius)", background: hex, color: "#FFFFFF",
-              display: "grid", placeItems: "center", fontWeight: 600, fontSize: "0.875rem",
+              ...TUILE,
+              borderRadius: "var(--r-3)", background: hex, color: "#FFFFFF",
+              display: "grid", placeItems: "center", fontWeight: 600, fontSize: "var(--font-size-small)",
             }}>Aa</span>
-            <span className="mono" style={{ fontSize: "0.625rem" }}>{nom} {hex}</span>
+            <span className="mono" style={{ fontSize: "var(--font-size-label)" }}>{nom}</span>
           </div>
         ))}
       </div>
       <span className="badge">
         {identiques
-          ? `${rapports[0]}:1 sur blanc, pour les trois — aucune n'est « la bonne » : c'est le même rapport`
+          ? `${rapports[0]}:1 pour les trois — la teinte bouge, le rapport ne bouge pas`
           : rapports.map((r, i) => `${GRIS_TEINTES[i][0]} ${r}:1`).join(" · ")}
       </span>
     </div>
   );
+}
+
+/* ── Les gammes 50–950 (décision d'Auteur, 25 août) : la couleur saisie
+   se pose sur son cran — 50 très claire, 950 très sombre, 500 au milieu —
+   et les autres crans se déduisent d'elle (kit/derivation.mjs). Le même
+   graphisme pour les quatre gammes : la barre, les numéros dessous ; et,
+   sous chaque numéro, le rôle qui se pose sur ce cran — en plein quand sa
+   valeur EST le cran (au code près), précédé de ≈ quand il n'en est que
+   le voisin de clarté. Un rôle ne consomme jamais un cran : la ligne dit
+   où il vit, pas d'où il vient. Cliquer copie. ── */
+type Poses = Record<string, { role: string; exact: boolean }[]>;
+/* La famille du thème clair, lue comme un dictionnaire de rôles. */
+const clair = (hex: string) => (derive(hex) as unknown as { light: Record<string, string> }).light;
+function BarreGamme({ crans, poses }: { crans: [number, string][]; poses?: Poses }) {
+  const [copie, setCopie] = useState<number | null>(null);
+  const copier = (cran: number, hex: string) => {
+    navigator.clipboard?.writeText(hex).catch(() => {});
+    setCopie(cran); setTimeout(() => setCopie(null), 1200);
+  };
+  return (
+    <div className="gm">
+      <div className="gm-barre">
+        {crans.map(([cran, hex]) => (
+          <button key={cran} onClick={() => copier(cran, hex)} title={`Copier ${hex}`} aria-label={`${cran} — ${hex}`}
+            style={{ background: hex }} />
+        ))}
+      </div>
+      <div className="gm-crans">
+        {crans.map(([cran]) => {
+          const ici = poses?.[cran] ?? [];
+          const exact = ici.some((r) => r.exact);
+          return (
+            <span key={cran} className={`mono gm-cran${exact ? " ici" : ""}`}>
+              <span>{copie === cran ? "copié" : cran}</span>
+              {ici.map((r) => (
+                <span key={r.role} className={`gm-role${r.exact ? " exact" : ""}`}>{r.exact ? r.role : `≈ ${r.role}`}</span>
+              ))}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* La marque : la saisie sur son cran, et les rôles de marque posés autour
+   (thème clair). */
+function Gamme({ primaire }: { primaire: string }) {
+  const { crans, poses } = useMemo(() => {
+    const crans = gamme(primaire) as [number, string][];
+    const p = clair(primaire);
+    const poses = poserSurGamme(crans, {
+      primary: p.primary, hover: p["primary-hover"], subtle: p["primary-subtle"], text: p["primary-text"], "code-bg": p["code-bg"],
+    }) as Poses;
+    return { crans, poses };
+  }, [primaire]);
+  return <BarreGamme crans={crans} poses={poses} />;
+}
+
+/* Les neutres : les marches elles-mêmes, à peine teintées à la marque —
+   elles ne bougent pas avec la saisie (C15). Les rôles neutres du thème
+   clair se posent dessus. */
+function GammeNeutres({ primaire }: { primaire: string }) {
+  const { crans, poses } = useMemo(() => {
+    const crans = gammeNeutres(primaire) as [number, string][];
+    const p = clair(primaire);
+    const poses = poserSurGamme(crans, {
+      bg: p.bg, surface: p.surface, hover: p["surface-hover"], border: p["border-strong"], secondary: p["text-secondary"], text: p["text-primary"],
+    }) as Poses;
+    return { crans, poses };
+  }, [primaire]);
+  return <BarreGamme crans={crans} poses={poses} />;
+}
+
+/* Les quatre familles sémantiques : leurs souches ne suivent la marque
+   que d'un quart de son déplacement (un rouge doit rester un rouge) — la
+   famille est lue dans la palette dérivée, jamais dans une constante.
+   Chaque famille a DEUX ancres : son ton et son fond doux ; le doux tient
+   le cran 50, le ton se pose sur son cran (l'avertissement, jaune, monte
+   au 200 — son encre brune, elle, vit vers le 700). */
+const FAMILLES_SEMANTIQUES: [string, string][] = [
+  ["Le danger", "danger"], ["Le succès", "success"], ["L'avertissement", "warning"], ["L'information", "info"],
+];
+function GammeFamille({ primaire, nom }: { primaire: string; nom: string }) {
+  const { crans, poses } = useMemo(() => {
+    const p = clair(primaire);
+    const ton = p[nom], doux = p[`${nom}-subtle`], encre = p[`on-${nom}-subtle`];
+    const crans = gammeFamille(ton, doux) as [number, string][];
+    const roles: Record<string, string> = { [nom]: ton, subtle: doux };
+    if (encre.toUpperCase() !== ton.toUpperCase()) roles["on-subtle"] = encre;
+    return { crans, poses: poserSurGamme(crans, roles) as Poses };
+  }, [primaire, nom]);
+  return <BarreGamme crans={crans} poses={poses} />;
 }
 
 const SNIPPETS: Record<string, Record<string, string>> = {
@@ -478,7 +710,7 @@ const SNIPPETS: Record<string, Record<string, string>> = {
 // jamais dans une classe (C12)
 export function AlerteErreur({ enfants }) {
   return (
-    <div role="alert" className="bg-danger-subtle text-danger rounded">
+    <div role="alert" className="bg-danger-subtle text-danger rounded-2">
       <b>⚠ Erreur</b> — {enfants}
       {/* l'icône et le mot restent : jamais la couleur seule (C6) */}
     </div>
@@ -521,7 +753,7 @@ export function AlerteErreur({ enfants }) {
     Tailwind: `@Component({
   selector: "kit-alerte-erreur",
   template: \`
-    <div role="alert" class="bg-danger-subtle text-danger rounded">
+    <div role="alert" class="bg-danger-subtle text-danger rounded-2">
       <b>⚠ Erreur</b> — <ng-content />
     </div>\`,
 })
@@ -547,13 +779,13 @@ export class AlerteErreur {}`,
 export class AlerteErreur {}`,
   },
   HTML: {
-    Tailwind: `<div role="alert" class="bg-danger-subtle text-danger rounded">
+    Tailwind: `<div role="alert" class="bg-danger-subtle text-danger rounded-2">
   <b>⚠ Erreur</b> — les classes résolvent les jetons ; le thème
   se résout au rendu.
 </div>`,
     shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste
      que l'essentiel — ses classes, câblées sur nos jetons -->
-<div role="alert" class="bg-danger-subtle text-danger border rounded">
+<div role="alert" class="bg-danger-subtle text-danger border rounded-2">
   <b>⚠ Erreur</b> — le canal redondant reste (C6).
 </div>`,
     "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" /><!-- les deux thèmes vivent ici -->
@@ -564,214 +796,383 @@ export class AlerteErreur {}`,
   },
 };
 
+
+/* ── Les marques du playground : tracés Simple Icons (CC0) — les logos
+   restent la propriété de leurs marques, montrés ici comme préréglages
+   de démonstration du moteur (demande d'Auré, 24 août). ── */
+const D_FILI = "M356.879 197C377.293 197 391.501 204.877 394.412 217.448C395.121 220.046 395.493 223.172 395.493 226.924C395.493 239.317 385.756 248.688 372.672 248.688C364.199 248.688 357.063 244.568 353.216 238.18C353.14 238.054 353.066 237.927 352.993 237.799C351.177 234.635 350.156 230.938 350.156 226.924C350.156 216.714 356.765 208.556 366.239 205.999C363.899 203.331 360.302 201.836 355.368 201.836C339.045 201.836 329.977 216.043 321.514 257.453L317.584 277.101H338.67L391.566 277.101V391.962C391.566 411.912 393.682 417.655 407.889 424.305V424.909H340.181V424.305C354.387 417.655 356.503 411.912 356.503 391.962V310.35C356.503 298.163 355.002 290.617 349.615 284.96H316.073L281.917 424.909C270.128 472.97 248.668 493.222 213 494.733V494.128C232.345 485.363 242.018 452.113 253.202 404.355L280.406 284.96H260.456L261.06 282.542L282.521 275.892L286.451 261.987C299.146 218.461 321.514 197 356.879 197ZM430.349 381C417.664 381 408 390.472 408 403C408 415.528 417.664 425 430.349 425C443.336 425 453 415.528 453 403C453 390.472 443.336 381 430.349 381Z";
+const VB_FILI = "211 195 244 301.7";
+const LOGOS: { id: string; nom: string; hex: string; d: string; vb?: string; fr?: "evenodd" }[] = [
+  { id: "fili", nom: "Fili", hex: "#4F46E5", d: D_FILI, vb: VB_FILI, fr: "evenodd" },
+  { id: "spotify", nom: "Spotify", hex: "#1DB954", d: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" },
+  { id: "netflix", nom: "Netflix", hex: "#E50914", d: "m5.398 0 8.348 23.602c2.346.059 4.856.398 4.856.398L10.113 0H5.398zm8.489 0v9.172l4.715 13.33V0h-4.715zM5.398 1.5V24c1.873-.225 2.81-.312 4.715-.398V14.83L5.398 1.5z" },
+  { id: "stripe", nom: "Stripe", hex: "#635BFF", d: "M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z" },
+  { id: "orange", nom: "Orange", hex: "#FF7900", d: "M0 0h24v24H0V0Zm3.43 20.572h17.143v-3.429H3.43v3.429Z" },
+  { id: "slack", nom: "Slack", hex: "#4A154B", d: "M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z" },
+  { id: "apple", nom: "Apple", hex: "#000000", d: "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" },
+];
+/* taille : hors chaîne — la silhouette du logo, en px, jamais un jeton d'espace */
+function Logo({ d, taille, vb, fr }: { d: string; taille: number; vb?: string; fr?: "evenodd" }) {
+  return <svg viewBox={vb ?? "0 0 24 24"} width={taille} height={taille} fill="currentColor" aria-hidden="true"><path d={d} fillRule={fr} /></svg>;
+}
+
+const LOGO_CHIP = 22, LOGO_SCENE = 72; // hors chaîne : silhouettes des logos du playground
+
+const SOMMAIRE: Sommaire = [
+  ["palette", "01", "La palette"],
+  ["nuancier", "02", "Le nuancier"],
+  ["situation", "03", "En situation"],
+  ["themes", "04", "Deux thèmes"],
+  ["moteur", "05", "Une seule décision"],
+  ["gardefous", "06", "Les garde-fous"],
+  ["table", "07", "La table des rôles"],
+  ["adaptation", "08", "L'adaptation"],
+];
+
+
 export default function Vue() {
-  const [couleurSeule, setCouleurSeule] = useState(false);
-  const [gris, setGris] = useState(false);
+  const [palie, setPalie] = useState(false);
+  const [essai, setEssai] = useState("#4F46E5");
   const [marque, setMarque] = useState(false);
-  const [grisPale, setGrisPale] = useState(false);
   const [filtre, setFiltre] = useState(false);
   const [actionSombre, setActionSombre] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const { primaire } = usePrimaire();
+  const { primaire, changer } = usePrimaire();
   const { styl } = useAdaptation();
   const { theme } = useTheme();
   const sysSombre = useSchemeSysteme();
   const themeEffectif = theme === "system" ? (sysSombre ? "dark" : "light") : theme;
-  const paleEffectif: React.CSSProperties = { ["--text-secondary" as any]: themeEffectif === "dark" ? "#6B7280" : "#9CA3AF" };
-  const actionSombreStyle: React.CSSProperties = { ["--primary" as any]: "#312E81" };
-  const paletteDerivee = useMemo(() => derive(primaire), [primaire]);
-  const fautesDerivation = useMemo(() => verifier(paletteDerivee), [paletteDerivee]);
+  /* casse : une action sombre forcée en thème sombre — C14 mord */
+  const actionSombreStyle: React.CSSProperties = { ["--primary" as string]: "#312E81" };
+  const actifId = useDocSections("palette");
+  const cle = `${themeEffectif}-${primaire}`;
+  const palEssai = useMemo(() => ({ light: clair(essai) }), [essai]);
+  const marqueEssai = LOGOS.find((m) => m.hex.toUpperCase() === essai.toUpperCase());
+  const dEssai = marqueEssai?.d ?? D_FILI;
+  const vbEssai = marqueEssai ? marqueEssai.vb : VB_FILI;
+  const frEssai = marqueEssai ? marqueEssai.fr : ("evenodd" as const);
+  const nomEssai = marqueEssai?.nom ?? "Votre marque";
+  const gammeEssai = useMemo(() => (gamme(essai) as [number, string][]).filter(([c]) => c === 100 || c === 300 || c === 500 || c === 700), [essai]);
 
   return (
-    <div className="coquille">
-      <Navigation actif="couleur" />
+    <div className="gdoc-fond">
+      <div className="gdoc">
+        <RailDoc page="couleur" titre="Fondation · Couleur" sommaire={SOMMAIRE} actifId={actifId} pied="COLOR-UX · dix-sept règles · deux thèmes" />
 
-      <main className="contenu">
-        <div className="tete-page">
-          <p className="kicker">Fondation · La couleur</p>
-          <h1>Une couleur ne se choisit pas — elle se nomme</h1>
-          <p className="chapo"><b>Un besoin, un rôle, une preuve.</b> Seize règles, deux
-          thèmes, chaque paire mesurée sur la page.</p>
-        </div>
+        <main className="gdoc-contenu" id="contenu">
 
-        <section className="bloc-section">
-          <p className="kicker">01 · La palette</p>
-          <h2>Une décision : primary — le reste se calcule</h2>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <span className={`badge ${fautesDerivation.length ? "ko" : ""}`}>
-              {fautesDerivation.length
-                ? `${fautesDerivation.length} texte(s) deviendraient illisibles`
-                : "Tout reste lisible — en clair comme en sombre"}
-            </span>
-            {paletteDerivee.meta.lienAjuste && (
-              <span className="badge" style={{ color: "var(--warning)", background: "var(--warning-subtle)" }}>
-                Votre couleur est gardée telle quelle ; les liens, trop clairs pour être lus, sont assombris
-              </span>
-            )}
-          </div>
-          <p className="sourd">Choisissez une couleur de marque : les fonds, les textes,
-          les gris et les liens s&apos;en déduisent, et tout le site l&apos;applique
-          (panneau de droite). Les couleurs d&apos;erreur et de succès, elles, ne bougent
-          pas — un rouge doit rester un rouge.</p>
-          <Gamme primaire={primaire} />
-          <Palette cle={`${themeEffectif}-${primaire}`} />
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["p01", "c1", "c2", "c4"]} />
-          </div></details>
-        </section>
+          <section className="gdoc-heros">
+            <p className="kicker">Fondation · La couleur</p>
+            <h1>Une couleur ne se choisit pas — elle se nomme<span className="point" aria-hidden="true" /></h1>
+            <p className="chapo"><b>Un besoin, un rôle, une preuve.</b> Dix-sept règles, deux
+            thèmes, et chaque rapport de contraste mesuré sur la page que vous lisez.</p>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">02 · Les tons et leurs contrastes</p>
-          <h2>Mesuré, pas débattu</h2>
-          <p className="sourd">« C&apos;est assez contrasté ? » ne se tranche pas à
-          l&apos;œil : chaque duo texte/fond est mesuré ici même, dans les deux thèmes.
-          La casse remet le gris trop pâle qu&apos;on utilisait avant — regardez les
-          chiffres tomber.</p>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <button className={`bouton casse ${grisPale ? "on" : ""}`} onClick={() => setGrisPale(!grisPale)}>
-              {grisPale ? "Réparer : remonter le gris" : "Casser : le gris d'avant l'arbitrage"}
-            </button>
-          </div>
-          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", ...(grisPale ? paleEffectif : {}) }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 11rem), 1fr))", gap: "var(--space-inline-sm)", width: "100%" }}>
-              <Ton nom="Primary" texte="--on-primary-subtle" fond="--primary-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Danger" texte="--danger" fond="--danger-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Success" texte="--success" fond="--success-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Warning" texte="--warning" fond="--warning-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Info" texte="--info" fond="--info-subtle" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Encre" texte="--text-primary" fond="--bg" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
-              <Ton nom="Texte second" texte="--text-secondary" fond="--surface" cle={`${themeEffectif}-${grisPale}-${primaire}`} />
+          <section className="gdoc-sec pose" id="palette">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">01 · La palette</p>
+              <h2>Une seule couleur de marque, tenue en réserve</h2>
+              <p className="sourd">Dépensée partout, la marque ne signe plus rien. Ici le blanc,
+              l&apos;encre et les gris font la page — la marque garde ses 5 %, et les états
+              sémantiques ne s&apos;y servent jamais.</p>
             </div>
-            <details className="prov"><summary>La table complète, mesurée dans les deux thèmes</summary><div>
-              <TableauPaires grisPale={grisPale} cle={primaire} />
-            </div></details>
-          </div>
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["c5", "c7", "c8", "c9"]} />
-          </div></details>
-        </section>
+            <div className="gdoc-corps">
+              <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
+                <Palette cle={cle} />
+              </figure>
+              <details className="prov"><summary>Les gammes 50–950 — la marque, les neutres, et les quatre familles sémantiques</summary>
+                <div className="gm-suite">
+                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
+                  <Gamme primaire={primaire} />
+                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>Les neutres — les mêmes clartés, teintées à la marque</span>
+                  <GammeNeutres primaire={primaire} />
+                  {FAMILLES_SEMANTIQUES.map(([titre, nom]) => (
+                    <React.Fragment key={nom}>
+                      <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>{titre}</span>
+                      <GammeFamille primaire={primaire} nom={nom} />
+                    </React.Fragment>
+                  ))}
+                </div>
+              </details>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["p01", "c1", "c4"]} />
+              </div></details>
+            </div>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">03 · Jamais la couleur seule — et chacun chez soi</p>
-          <h2>Jamais la couleur seule</h2>
-          <p className="sourd">Une personne sur douze distingue mal le rouge du vert. Un
-          message d&apos;état parle donc avec trois voix — la couleur, l&apos;icône, le
-          mot — et la marque ne sert jamais à dire une erreur : chacun son rôle.</p>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <button className={`bouton casse ${couleurSeule ? "on" : ""}`} onClick={() => setCouleurSeule(!couleurSeule)}>
-              {couleurSeule ? "Rendre l'icône et le mot" : "Casser : la couleur seule"}
-            </button>
-            <button className={`bouton ${gris ? "on" : ""}`} onClick={() => setGris(!gris)}>
-              {gris ? "Revoir les couleurs" : "Voir sans la couleur"}
-            </button>
-            <button className={`bouton casse ${marque ? "on" : ""}`} onClick={() => setMarque(!marque)}>
-              {marque ? "Réparer : chacun son registre" : "Casser : la marque pour l'état"}
-            </button>
-          </div>
-          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", filter: gris ? "grayscale(1)" : undefined }}>
-            <Alerte ton="danger" couleurSeule={couleurSeule} marque={marque} />
-            <Alerte ton="success" couleurSeule={couleurSeule} marque={marque} />
-            {couleurSeule && gris && (
-              <span className="badge ko" style={{ filter: "none" }}>
-                l&apos;erreur et le succès sont devenus indistinguables — c&apos;est la faute que C6 arrête
-              </span>
-            )}
-            {marque && (
-              <span className="badge ko">
-                l&apos;erreur porte la couleur de la marque — le vocabulaire chromatique est détruit (C3)
-              </span>
-            )}
-          </div>
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["c3", "c6"]} />
-          </div></details>
-        </section>
+          <section className="gdoc-sec pose" id="nuancier">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">02 · Le nuancier</p>
+              <h2>Six rôles, pas six couleurs</h2>
+              <p className="sourd">Un nuancier de peintre montre des teintes ; celui du kit
+              montre des métiers. Chaque languette naît en couple complet — le ton, son
+              encre, son fond doux — ou ne naît pas ; et sa fiche lit les valeurs et le
+              rapport sur la page rendue, dans le thème courant.</p>
+            </div>
+            <div className="gdoc-corps">
+              <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
+                <Nuancier cle={cle} />
+              </figure>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["c2", "c5"]} />
+              </div></details>
+            </div>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">04 · En situation</p>
-          <h2>Aucune couleur nouvelle</h2>
-          <p className="sourd">Le vrai test d&apos;une palette, c&apos;est un écran.
-          Celui-ci n&apos;a droit à aucune couleur inventée : tout vient de la famille.
-          S&apos;il manquait quelque chose, on compléterait la famille — jamais
-          l&apos;écran.</p>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <button className={`bouton casse ${filtre ? "on" : ""}`} onClick={() => setFiltre(!filtre)}>
-              {filtre ? "Réparer : le survol par jeton" : "Casser : le survol par filtre"}
-            </button>
-          </div>
-          <EnSituation filtre={filtre} />
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["c10", "c11"]} />
-          </div></details>
-        </section>
+          <section className="gdoc-sec pose" id="situation">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">03 · En situation</p>
+              <h2>Ce que la marque pèse vraiment sur un écran chargé</h2>
+              <p className="sourd">Un tableau de bord tient parce que la marque y est rare : une
+              carte, un bouton, une barre. Le reste est neutre, et les états gardent leur teinte à eux.
+              Le texte posé sur la photo n&apos;est jamais nu — un voile aux couleurs du fond,
+              dont l&apos;opacité est calculée sur le pixel le plus défavorable, refaite à chaque
+              largeur. Survolez une tuile : elle dit ses rôles.</p>
+            </div>
+            <div className="gdoc-corps">
+              <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
+                <div className="banc voile">
+                  <Bento cle={cle} />
+                </div>
+                <figcaption className="gd-legende">
+                  la grille suit Primary et le thème du panneau, en direct · texte sur image
+                  sous voile calculé · un geste de marque, le mot du mentor · les états à leur teinte
+                </figcaption>
+              </figure>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["m2", "m3", "c6", "c3"]} />
+              </div></details>
+            </div>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">05 · Les deux thèmes</p>
-          <h2>Deux thèmes, une exigence</h2>
-          <p className="sourd">Le mode sombre ne se redessine pas : chaque couleur a sa
-          valeur claire et sa valeur sombre, vérifiées avec la même exigence. Et une
-          action trop sombre en thème sombre rend son texte illisible — la casse le
-          montre par le calcul.</p>
-          <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
-            <button className={`bouton casse ${actionSombre ? "on" : ""}`} onClick={() => setActionSombre(!actionSombre)}>
-              {actionSombre ? "Réparer : éclaircir l'action" : "Casser : une action sombre en sombre"}
-            </button>
-          </div>
-          <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 16rem), 1fr))", gap: "var(--space-inline-unit)" }}>
-              <div data-theme="light" style={{ display: "grid", gap: "var(--space-block-sm)" }}>
-                <span className="mono" style={{ color: "var(--text-secondary)" }}>thème clair</span>
-                <MiniEcran cle={`light-${actionSombre}-${primaire}`} />
+          <section className="gdoc-sec pose" id="themes">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">04 · Deux thèmes</p>
+              <h2>Mesuré, pas débattu</h2>
+              <p className="sourd">La même carte, en clair et en sombre — chaque panneau EST
+              son thème. Les rapports ci-dessous ne sont pas recopiés d&apos;une table : ils
+              sont calculés sur ce que votre écran affiche. Pâlissez l&apos;encre — et
+              regardez le verdict tomber.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="rang">
+                <button className={`bouton casse ${palie ? "on" : ""}`} onClick={() => setPalie(!palie)}>
+                  {palie ? "Rendre l'encre du registre" : "Casser : pâlir l'encre douce"}
+                </button>
               </div>
-              <div data-theme="dark" style={{ display: "grid", gap: "var(--space-block-sm)", ...(actionSombre ? actionSombreStyle : {}) }}>
-                <span className="mono" style={{ color: "var(--text-secondary)" }}>thème sombre{actionSombre ? " — action forcée sombre" : ""}</span>
-                <MiniEcran cle={`dark-${actionSombre}-${primaire}`} />
+              <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
+                <DuoThemes cle={cle} palie={palie} />
+                <figcaption className="gd-legende">
+                  seuil : 4,5:1 pour le texte courant — chaque paire vérifiée sur ses fonds
+                  déclarés, thème par thème
+                </figcaption>
+              </figure>
+              <details className="prov"><summary>La table complète — chaque paire, mesurée dans les deux thèmes</summary><div>
+                <TableauPaires cle={cle} />
+              </div></details>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["c7", "c9", "c13"]} />
+              </div></details>
+            </div>
+          </section>
+
+          <section className="gdoc-sec pose" id="moteur">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">05 · Le moteur</p>
+              <h2>Une décision : primary — le reste se calcule</h2>
+              <p className="sourd">Changer de marque ne doit pas être un chantier. Une couleur
+              entre, toute la famille sort — fonds, gris, liens, thème sombre — et ce qui
+              deviendrait illisible est recalé de lui-même. Les couleurs d&apos;erreur et de
+              succès, elles, ne bougent pas : un rouge doit rester un rouge.</p>
+            </div>
+            <div className="gdoc-corps">
+              {/* Le playground (maquette d'Auré, 24 août) : le rail des
+                  marques à gauche — vrais logos —, la scène logo + nom en
+                  plein et en doux, et dessous les barres : la gamme dérivée
+                  de la marque (elle suit la teinte, visiblement), les
+                  sémantiques intouchés. */}
+              <div className="mk">
+                <div className="mk-rail" role="group" aria-label="Choisir une marque">
+                  {LOGOS.map((m) => (
+                    <button key={m.id} className="mk-chip" title={m.nom} aria-pressed={essai.toUpperCase() === m.hex.toUpperCase()}
+                      style={essai.toUpperCase() === m.hex.toUpperCase() ? { background: m.hex, color: palEssai.light["on-primary"] } : undefined}
+                      onClick={() => { setEssai(m.hex); changer(m.id === "fili" ? PRIMAIRE_DEFAUT : m.hex); }}>
+                      <Logo d={m.d} vb={m.vb} fr={m.fr} taille={LOGO_CHIP} />
+                    </button>
+                  ))}
+                  <label className="mk-chip" title="Votre couleur">
+                    <input type="color" value={essai} onChange={(e) => { setEssai(e.target.value); changer(e.target.value); }} aria-label="Choisir une couleur de marque" />
+                  </label>
+                </div>
+                <div className="mk-scene">
+                  <div className="mk-duo">
+                    <div className="mk-grande" style={{ background: palEssai.light.primary, color: palEssai.light["on-primary"] }}>
+                      <Logo d={dEssai} vb={vbEssai} fr={frEssai} taille={LOGO_SCENE} /><span className="mk-base">{nomEssai}</span>
+                    </div>
+                    <div className="mk-grande" style={{ background: palEssai.light["primary-subtle"], color: palEssai.light["primary-text"] }}>
+                      <Logo d={dEssai} vb={vbEssai} fr={frEssai} taille={LOGO_SCENE} /><span className="mk-base">{nomEssai}</span>
+                    </div>
+                  </div>
+                  <div className="mk-rang">
+                    {gammeEssai.map(([cran, hex]) => (
+                      <span key={cran} className="mk-barre" style={{ background: hex }} title={`${cran} · ${hex}`} />
+                    ))}
+                  </div>
+                  <div className="mk-rang">
+                    {/* Les couples semantiques de la palette DERIVEE : chaque
+                        famille garde sa teinte de charte, mais elle est tiree
+                        par le deplacement de la marque et recalee sur ses
+                        fonds — lus dans palEssai, jamais dans la page. */}
+                    {["danger", "success", "warning", "info"].map((v) => (
+                      <span key={v} className="mk-paire">
+                        <span className="mk-barre" style={{ background: palEssai.light[v] }} />
+                        <span className="mk-barre" style={{ background: palEssai.light[`${v}-subtle`] }} />
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Le moteur (kit/derivation.mjs) est calibré sur la charte : à sa primaire, il
+                la reproduit. La conformité n&apos;est pas vérifiée après coup, elle est obtenue —
+                toute paire sous son seuil est recalée à luminosité seule, la règle de la charte
+                (« assombries d&apos;un cran ou deux ; aucune n&apos;a changé de famille »)
+                rendue mécanique.</p>
+                <Regles ids={["c7", "c9", "c15"]} />
+              </div></details>
             </div>
-            <div style={{ display: "grid", gap: "var(--space-block-sm)", justifyItems: "start" }}>
-              <span className="mono sourd">Teinter un neutre à luminance constante (C15)</span>
-              <TeinteConstante />
+          </section>
+
+          <section className="gdoc-sec pose" id="gardefous">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">06 · Les garde-fous</p>
+              <h2>Ce que la couleur n&apos;a pas le droit de faire</h2>
+              <p className="sourd">Les garde-fous de la charte, avec leur casse quand elle
+              existe — et, en dépliant, la gamme dérivée.</p>
             </div>
-          </div>
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["c12", "c13", "c14", "c15", "c16"]} />
-          </div></details>
-        </section>
+            <div className="gdoc-corps">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--gap-1-inline)" }}>
 
-        <section className="bloc-section">
-          <p className="kicker">06 · L&apos;adaptation</p>
-          <h2>Dans votre stack</h2>
-          <p className="sourd">Ce qui fait foi, c&apos;est la règle et le jeton — pas le
-          code. React, Angular ou HTML n&apos;en sont que des traductions : la même
-          alerte, trois écritures, aucun thème recodé.</p>
-          <PanneauCode langage={styl} outils={
-            <>{(["HTML", "React", "Angular"] as const).map((f) => (
-              <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-            ))}</>
-          } code={SNIPPETS[fw][styl]} />
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
-            jeu de jetons produit des variables CSS natives et une sortie Tailwind jumelle
-            (<span className="mono">color</span> dans
-            <span className="mono"> tokens.tailwind.mjs</span>) ; les deux thèmes vivent
-            dans le jeton, chaque consommateur en hérite sans rien coder.</p>
-          </div></details>
-        </section>
-      </main>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Chacun son registre</span>
+                    <button className={`bouton casse ${marque ? "on" : ""}`} onClick={() => setMarque(!marque)}>{marque ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <div style={{ display: "grid", gap: "var(--gap-3-block)", justifyItems: "start" }}>
+                    <Alerte ton="danger" couleurSeule={false} marque={marque} />
+                  </div>
+                  {marque && (
+                    <span className="badge ko" style={{ justifySelf: "start" }}>
+                      l&apos;erreur porte la couleur de la marque — le vocabulaire chromatique est détruit
+                    </span>
+                  )}
+                </div>
 
-      <aside className="reglages">
-        <h3>Theming &amp; playground</h3>
-        <Primaire />
-        <Theme />
-        <Densite />
-        <Adaptation />
-        <div className="bloc">
-          <span className="mono sourd">La famille</span>
-          <p className="sourd" style={{ fontSize: "0.75rem" }}>Une décision d&apos;entrée :
-          primary. La famille est générée par le moteur (kit/derivation.mjs), calibré sur
-          la charte — le sombre, sur le registre. Le theming est global.</p>
-        </div>
-      </aside>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Le survol est un jeton</span>
+                    <button className={`bouton casse ${filtre ? "on" : ""}`} onClick={() => setFiltre(!filtre)}>{filtre ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <p style={{ fontSize: "var(--font-size-small)" }}>Un survol produit par un filtre n&apos;existe
+                  dans aucun registre : aucune table ne peut le vérifier. Survolez :</p>
+                  <div><button className={`bouton demo-plein ${filtre ? "filtre" : "jeton"}`}>Créer le budget</button></div>
+                </div>
+
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">En sombre, l&apos;action s&apos;éclaircit</span>
+                    <button className={`bouton casse ${actionSombre ? "on" : ""}`} onClick={() => setActionSombre(!actionSombre)}>{actionSombre ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 9rem), 1fr))", gap: "var(--gap-1-inline)" }}>
+                    <div data-theme="light" style={{ display: "grid", gap: "var(--gap-3-block)" }}>
+                      <span className="mono" style={{ color: "var(--text-secondary)", fontSize: "var(--font-size-label)" }}>clair</span>
+                      <MiniEcran cle={`light-${actionSombre}-${primaire}`} />
+                    </div>
+                    <div data-theme="dark" data-intent={actionSombre ? "statement" : undefined} style={{ display: "grid", gap: "var(--gap-3-block)", ...(actionSombre ? actionSombreStyle : {}) }}>
+                      <span className="mono" style={{ color: "var(--text-secondary)", fontSize: "var(--font-size-label)" }}>sombre{actionSombre ? " — forcée" : ""}</span>
+                      <MiniEcran cle={`dark-${actionSombre}-${primaire}`} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="carte">
+                  <span className="mono sourd">Deux gris, deux métiers</span>
+                  <p style={{ fontSize: "var(--font-size-small)" }}>Le fort tient 3:1 et sert quand le trait est
+                  la <em>seule</em> chose qui dit « on peut cliquer ici ». Le clair sépare, range.
+                  Le test tient en une question : si cette bordure disparaît, sait-on encore où
+                  interagir ?</p>
+                </div>
+
+                <div className="carte">
+                  <span className="mono sourd">Ni gris pâle, ni voile</span>
+                  <p style={{ fontSize: "var(--font-size-small)" }}>Le gris le plus clair de la charte ne porte
+                  jamais un texte (2,54:1 sur blanc) — ici il n&apos;a même pas de jeton. Même
+                  histoire avec l&apos;opacité : un texte adouci au voile tombe sous le seuil. La
+                  hiérarchie se joue au corps et à la graisse, pas à la pâleur.</p>
+                </div>
+
+                <div className="carte">
+                  <span className="mono sourd">Teinter ne coûte rien</span>
+                  <p style={{ fontSize: "var(--font-size-small)" }}>À luminance constante, la teinte bouge et le
+                  rapport ne bouge pas — c&apos;est ce qui permet des neutres teintés à la marque,
+                  sûrs par construction :</p>
+                  <TeinteConstante />
+                </div>
+
+              </div>
+
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["c3", "c8", "c10", "c11", "c14", "c17"]} />
+              </div></details>
+            </div>
+          </section>
+
+          <section className="gdoc-sec pose" id="table">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">07 · La table des rôles</p>
+              <h2>Chaque valeur, lue sur le rendu</h2>
+              <p className="sourd">Le fonds complet — chaque rôle, sa valeur claire, sa
+              valeur sombre. Rien n&apos;est recopié : les deux colonnes sont résolues sur
+              la page, et suivent la marque du moment.</p>
+            </div>
+            <div className="gdoc-corps">
+              <TableRoles cle={cle} />
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["c12"]} />
+              </div></details>
+            </div>
+          </section>
+
+          <section className="gdoc-sec pose" id="adaptation">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">08 · L&apos;adaptation</p>
+              <h2>Le même système, dans votre stack</h2>
+              <p className="sourd">Ce qui fait foi, c&apos;est la règle et le jeton — pas le
+              code. React, Angular ou HTML n&apos;en sont que des traductions : la même alerte,
+              trois écritures, aucun thème recodé.</p>
+            </div>
+            <div className="gdoc-corps">
+              <PanneauCode langage={styl} outils={
+                <>{(["HTML", "React", "Angular"] as const).map((f) => (
+                  <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
+                ))}</>
+              } code={SNIPPETS[fw][styl]} />
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Un seul jeu de jetons produit des variables CSS natives et une sortie Tailwind
+                jumelle (<span className="mono">color</span> dans
+                <span className="mono"> tokens.tailwind.mjs</span>) ; les deux thèmes vivent dans
+                le jeton, chaque consommateur en hérite sans rien coder.</p>
+              </div></details>
+            </div>
+          </section>
+
+          <footer className="gd-pied">
+            <span>Cette page est composée par les règles qu&apos;elle documente</span>
+            <span>Chaque rapport de contraste est mesuré ici même</span>
+          </footer>
+
+        </main>
+      </div>
     </div>
   );
 }

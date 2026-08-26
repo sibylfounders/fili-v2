@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#086`
+> **Dernière décision au journal** : `#124` — 75 entrées scellées
 
 **Légende des statuts**
 
@@ -57,14 +57,17 @@
 Mutations : 46 sabotages sur 46 produisent l'écart attendu, **remesurés le
 11 août** après la migration de la géométrie. Contrôle d'intégrité : 30/30.
 
-**La géométrie est celle de l'Échelle Semantic Rhythm depuis `#059`.** L'espace
-ne porte plus de nombre : l'échelle déclarée est une liste de **profondeurs
-d'emboîtement** — `large`, `page`, `coque`, `carte`, `detail` —, les deux axes
-horizontal et vertical sont séparés et ne bougent pas ensemble, et vingt-trois
-jetons fluides descendent de trois décisions d'entrée : base 24, ratio √2,
-rayon racine 24. Le facteur de proximité de R3.7 suit désormais le ratio. Aucun
-contrat n'a été rouvert : R3.1 et R3.7 ont changé de valeurs et de mécanique de
-lecture, pas de règle.
+**La géométrie est celle de l'Échelle Semantic Rhythm depuis `#059`, et, dans
+le kit, celle des huit décisions du 25 août 2026** (`claude/decisions-serie-2026-08-25.md`).
+L'espace ne porte plus de nombre : trois profondeurs d'emboîtement — coque,
+carte, ligne —, deux axes horizontal et vertical qui ne bougent pas ensemble,
+et tout le registre descend de trois décisions d'entrée : base 24, intervalle
+√2, racine des coins 16 (planche du 25 août, verdict d'Auteur), plus l'intervalle
+des titres 1,25. L'espace entre deux frères vaut leur marge ; les coins divisent
+par deux par niveau et ne glissent pas avec l'écran ; un composant prend le coin
+de la ligne ; la densité change la base ; le corps est borné à 16 ; le site du
+kit tourne sur le même registre que ses démos. Le facteur de proximité de R3.7
+suit le ratio. Aucun contrat n'a été rouvert.
 
 ---
 
@@ -88,6 +91,50 @@ non remplie ; la condition est levée depuis `#056`, la séance est réouvrable.
 **Le système** porte **quinze composants** — Button, TextField, Selection,
 EtatAsync, Section, Titre, Texte, Pile, Grille, Jeton, Alerte, Vide, Squelette,
 Rendu, Prose — plus Icone, interne et non exporté.
+
+---
+
+## 3.7 — Le kit (`kit/`) — 🟡 en construction
+
+> Le kit est la reconstruction par les **notions mères** décidée en `#102` :
+> les fondations d'abord, les composants gelés jusqu'à leur verrou. Le dossier
+> `kit/` naît en `#104` ; l'existant devient `sources/`. Chaque page se
+> reconstruit sur le gabarit « documentaire nu » (`#107`, règles CG1–CG5),
+> une page à la fois, verdict d'Auteur entre chaque.
+
+| Page | Statut | Ce qu'elle porte | Ce qui la bloque |
+|---|---|---|---|
+| `/` · La porte | 🟢 | Couverture de charte, le moteur en objet vivant, trois spécimens de fondation, la carte du système | — (`#111`) |
+| `/typo` · Typographie | 🟡 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | Jugée sur pièce le 26 août (« je commence à réellement adorer notre travail ») ; verrou au prochain crash-test de page |
+| `/rythme` · Rythme | 🟡 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
+| `/couleur` · Couleur | 🟡 | Dix-sept règles, deux thèmes, la mosaïque, les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
+| `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse, le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
+| `/arrondis` · Arrondis | 🟡 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
+| Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
+
+**Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
+rythme (écrit et éprouvé le 25 août, jugé sur pièce et commité le 26, 23 épreuves vertes). Quatre
+décisions d'entrée : primary, base, intervalle, racine des coins (+ l'intervalle
+des titres). Il écrit `kit/app/tokens.css` en entier, `kit/tokens.tailwind.mjs`
+et `kit/tokens.figma.json` (`npm run tokens`) ; `kit/derivation.test.mjs`
+rejoue les huit pages de décision et vérifie le site lui-même : aucun ancien
+nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
+(`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
+de page, titres du site à un cran et demi au-dessus de l'affiche.
+
+**Le moteur de couleur** — 🟢 verrouillé. Une décision
+d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses
+seuils sont arrêtés le 2026-08-24 et ne se retouchent plus sans nouvel
+arbitrage (`#110`). `kit/app/tokens.css` est **généré** — une valeur retouchée
+à la main serait une valeur sans provenance. Sa **gamme 50–950** pose la
+couleur saisie sur le cran de sa clarté, telle quelle, et déduit les autres
+crans d'elle ; les neutres restent les marches fixes ; la page dit sur quel
+cran chaque rôle se pose, sans qu'un rôle consomme jamais un cran (`#113`).
+Une encre de plus depuis le 25 août, `text-tertiary` (3:1 au seuil sur le
+fond le plus dur), tenue par **C17** : une intention dite sur sa ligne, jamais
+du texte lu, jamais sous le cran étiquette, et — depuis le 26 août, sur pièce —
+un cran de graisse de plus en petit (600 au moins). Le vérificateur éprouve les
+trois (`#124`).
 
 ---
 
@@ -130,6 +177,11 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Rien ne traduit du code existant vers le cadre | 🔴 | `#084` | 240 refus sur un écran étranger pour 2 décisions réelles (palette, échelle). Sans outil de traduction, le cadre a raison et n'est pas adoptable. |
 | L'amorçage lit hors de la couche de données | 🔴 | `#083` | Le démarrage lit l'état par la fenêtre et non par la porte. Il n'affiche rien, il ne peut donc oublier aucun état — mais il est exempté par son nom, et une exemption nommée est une dette. |
 | Le décompte des sabotages est invalidé | 🔴 | `#083` | La carte annonçait 46 sur 46 alors que le test de mutation ne pouvait plus rien injecter depuis un temps inconnu. À remesurer avant toute lecture de ce chiffre. |
+| Les démos du kit n'emploient pas le registre | 🔴 | `#112` | Boutons et champs des démonstrations sont dessinés dans la page, pas tirés du registre du kit. Se ferme quand les composants entrent (phase 4). |
+| Le wording des pages du kit | 🔴 | `#112` | Une passe d'affinage est due sur les quatre pages : dite au verrou, non planifiée. |
+| Les seuils de mise en page du site | 🔴 | 25 août 2026 | Le site en porte neuf (80 · 69 · 62 · 56 · 48 · 44 · 40 rem, 900 · 560 px) là où la décision 7 en veut un seul par régime. Déclaré dans le moteur (`seuilRail`), à arbitrer dans un thread à part. |
+| Les pages Accueil et Composition hors chaîne | 🔴 | 25 août 2026 | Leurs anciens jetons sont rabattus sur la chaîne pour que les pages tiennent ; leurs valeurs propres (`--acc-*`, `.co-*`) restent posées en dur, blocs marqués « dette déclarée » dans globals.css. À dériver quand chaque page sera reprise. |
+| Le journal en retard de onze entrées | 🟢 | 25 → 26 août 2026 | Fermée : les huit décisions et les trois entrées du thread « Le kit passe sur la chaîne » sont versées (`#114` → `#124`) et scellées (75 entrées). |
 | Les sept témoins non jugés après migration | 🔴 | `#059` | Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non. |
 
 ---

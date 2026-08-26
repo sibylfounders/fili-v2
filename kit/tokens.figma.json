@@ -1,0 +1,545 @@
+{
+  "$description": "Jetons du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base 24 · √2 · racine 16 · titres × 1.25 · primary #4F46E5. Les jetons fluides sont gelés à 768 px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.",
+  "spacing": {
+    "pad-1-inline": {
+      "$type": "dimension",
+      "$value": "22.58px",
+      "$description": "Fluide de 19.2 à 28.8 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "pad-2-inline": {
+      "$type": "dimension",
+      "$value": "15.97px",
+      "$description": "Fluide de 13.58 à 20.36 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "pad-3-inline": {
+      "$type": "dimension",
+      "$value": "11.29px",
+      "$description": "Fluide de 9.6 à 14.4 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "gap-1-inline": {
+      "$type": "dimension",
+      "$value": "15.97px",
+      "$description": "Fluide de 13.58 à 20.36 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "gap-2-inline": {
+      "$type": "dimension",
+      "$value": "11.29px",
+      "$description": "Fluide de 9.6 à 14.4 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "gap-3-inline": {
+      "$type": "dimension",
+      "$value": "7.98px",
+      "$description": "Fluide de 6.79 à 10.18 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "gap-4-inline": {
+      "$type": "dimension",
+      "$value": "5.64px",
+      "$description": "Fluide de 4.8 à 7.2 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "edge-inline": {
+      "$type": "dimension",
+      "$value": "22.58px",
+      "$description": "Fluide de 19.2 à 28.8 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "pad-1-block": {
+      "$type": "dimension",
+      "$value": "23.8px",
+      "$description": "Fluide de 21.6 à 27.84 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "pad-2-block": {
+      "$type": "dimension",
+      "$value": "16.83px",
+      "$description": "Fluide de 15.27 à 19.69 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "pad-3-block": {
+      "$type": "dimension",
+      "$value": "11.9px",
+      "$description": "Fluide de 10.8 à 13.92 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "gap-1-block": {
+      "$type": "dimension",
+      "$value": "16.83px",
+      "$description": "Fluide de 15.27 à 19.69 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "gap-2-block": {
+      "$type": "dimension",
+      "$value": "11.9px",
+      "$description": "Fluide de 10.8 à 13.92 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "gap-3-block": {
+      "$type": "dimension",
+      "$value": "8.41px",
+      "$description": "Fluide de 7.64 à 9.84 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "gap-4-block": {
+      "$type": "dimension",
+      "$value": "5.95px",
+      "$description": "Fluide de 5.4 à 6.96 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "edge-block": {
+      "$type": "dimension",
+      "$value": "23.8px",
+      "$description": "Fluide de 21.6 à 27.84 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "density": {
+      "compact": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "La densité change la base ; la chaîne se recalcule."
+      },
+      "comfortable": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "La densité change la base ; la chaîne se recalcule."
+      },
+      "airy": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "La densité change la base ; la chaîne se recalcule."
+      }
+    }
+  },
+  "page": {
+    "page-2-inline": {
+      "$type": "dimension",
+      "$value": "45.16px",
+      "$description": "Fluide de 38.4 à 57.6 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "page-3-inline": {
+      "$type": "dimension",
+      "$value": "63.86px",
+      "$description": "Fluide de 54.31 à 81.46 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "page-4-inline": {
+      "$type": "dimension",
+      "$value": "90.32px",
+      "$description": "Fluide de 76.8 à 115.2 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "page-6-inline": {
+      "$type": "dimension",
+      "$value": "180.63px",
+      "$description": "Fluide de 153.6 à 230.4 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "page-2-block": {
+      "$type": "dimension",
+      "$value": "47.59px",
+      "$description": "Fluide de 43.2 à 55.68 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "page-3-block": {
+      "$type": "dimension",
+      "$value": "67.31px",
+      "$description": "Fluide de 61.09 à 78.74 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "page-4-block": {
+      "$type": "dimension",
+      "$value": "95.19px",
+      "$description": "Fluide de 86.4 à 111.36 px (320 → 1440), gelé à 768 px. Axe block."
+    },
+    "page-6-block": {
+      "$type": "dimension",
+      "$value": "190.37px",
+      "$description": "Fluide de 172.8 à 222.72 px (320 → 1440), gelé à 768 px. Axe block."
+    }
+  },
+  "radius": {
+    "r-1": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Fixe — ne suit pas l'écran."
+    },
+    "r-2": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Fixe — ne suit pas l'écran."
+    },
+    "r-3": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Fixe — ne suit pas l'écran."
+    },
+    "r-4": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$description": "Fixe — ne suit pas l'écran."
+    },
+    "r-ctl": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Le composant prend le coin de la ligne (r-3)."
+    },
+    "r-pill": {
+      "$type": "dimension",
+      "$value": "9999px",
+      "$description": "Fixe — ne suit pas l'écran."
+    }
+  },
+  "fontSize": {
+    "font-size-label": {
+      "$type": "dimension",
+      "$value": "11.45px",
+      "$description": "Fluide de 11.45 à 12.25 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-small": {
+      "$type": "dimension",
+      "$value": "12.8px",
+      "$description": "Fluide de 12.8 à 13.7 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-body": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Fluide de 16 à 17.12 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-h3": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$description": "Fluide de 20 à 21.4 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-h2": {
+      "$type": "dimension",
+      "$value": "25px",
+      "$description": "Fluide de 25 à 26.75 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-h1": {
+      "$type": "dimension",
+      "$value": "31.25px",
+      "$description": "Fluide de 31.25 à 33.44 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-display": {
+      "$type": "dimension",
+      "$value": "39.06px",
+      "$description": "Fluide de 39.06 à 41.8 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-cover-max": {
+      "$type": "dimension",
+      "$value": "76.29px",
+      "$description": "Fluide de 76.29 à 81.63 px (320 → 1440), gelé à 768 px. Axe type."
+    },
+    "font-size-section": {
+      "$type": "dimension",
+      "$value": "43.67px",
+      "$description": "Fluide de 43.67 à 46.73 px (320 → 1440), gelé à 768 px. Axe type."
+    }
+  },
+  "control": {
+    "control-height": {
+      "$type": "dimension",
+      "$value": "44.93px",
+      "$description": "Fluide de 44 à 46.64 px (320 → 1440), gelé à 768 px. Axe control."
+    },
+    "target-min": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Fixe — ne suit pas l'écran."
+    }
+  },
+  "color": {
+    "light": {
+      "bg": {
+        "$type": "color",
+        "$value": "#FFFFFF"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "#F3F4F6"
+      },
+      "surface-hover": {
+        "$type": "color",
+        "$value": "#E6E7EB"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "#E6E7EB"
+      },
+      "text-primary": {
+        "$type": "color",
+        "$value": "#151725"
+      },
+      "text-secondary": {
+        "$type": "color",
+        "$value": "#505362"
+      },
+      "border-strong": {
+        "$type": "color",
+        "$value": "#6E717F"
+      },
+      "text-tertiary": {
+        "$type": "color",
+        "$value": "#8A8C9B"
+      },
+      "primary-subtle": {
+        "$type": "color",
+        "$value": "#E2E6FF"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "#4F46E5"
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "#4332D2"
+      },
+      "on-primary": {
+        "$type": "color",
+        "$value": "#F9FAFF"
+      },
+      "primary-text": {
+        "$type": "color",
+        "$value": "#4F46E5"
+      },
+      "primary-text-hover": {
+        "$type": "color",
+        "$value": "#4433D3"
+      },
+      "on-primary-subtle": {
+        "$type": "color",
+        "$value": "#3630A3"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#0791B2"
+      },
+      "danger-subtle": {
+        "$type": "color",
+        "$value": "#FEE2E2"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "#B91C1C"
+      },
+      "on-danger": {
+        "$type": "color",
+        "$value": "#FFF8F7"
+      },
+      "on-danger-subtle": {
+        "$type": "color",
+        "$value": "#B91C1C"
+      },
+      "success-subtle": {
+        "$type": "color",
+        "$value": "#DCFCE7"
+      },
+      "success": {
+        "$type": "color",
+        "$value": "#15803D"
+      },
+      "on-success": {
+        "$type": "color",
+        "$value": "#FFFFFF"
+      },
+      "on-success-subtle": {
+        "$type": "color",
+        "$value": "#15803D"
+      },
+      "warning-subtle": {
+        "$type": "color",
+        "$value": "#FEF3C7"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#FBBF25"
+      },
+      "on-warning": {
+        "$type": "color",
+        "$value": "#100900"
+      },
+      "on-warning-subtle": {
+        "$type": "color",
+        "$value": "#92400D"
+      },
+      "info-subtle": {
+        "$type": "color",
+        "$value": "#DBEAFE"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#1D4ED8"
+      },
+      "on-info": {
+        "$type": "color",
+        "$value": "#F8FAFF"
+      },
+      "on-info-subtle": {
+        "$type": "color",
+        "$value": "#1D4ED8"
+      },
+      "code-bg": {
+        "$type": "color",
+        "$value": "#1A1C4C"
+      },
+      "code-text": {
+        "$type": "color",
+        "$value": "#C9D1FE"
+      },
+      "code-com": {
+        "$type": "color",
+        "$value": "#9FA2AF"
+      },
+      "code-kw": {
+        "$type": "color",
+        "$value": "#A8B3FB"
+      },
+      "code-str": {
+        "$type": "color",
+        "$value": "#4ADE80"
+      },
+      "code-tag": {
+        "$type": "color",
+        "$value": "#FBBF25"
+      }
+    },
+    "dark": {
+      "bg": {
+        "$type": "color",
+        "$value": "#050611"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "#151726"
+      },
+      "surface-hover": {
+        "$type": "color",
+        "$value": "#252736"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "#252736"
+      },
+      "text-primary": {
+        "$type": "color",
+        "$value": "#FFFFFF"
+      },
+      "text-secondary": {
+        "$type": "color",
+        "$value": "#9FA2AF"
+      },
+      "border-strong": {
+        "$type": "color",
+        "$value": "#9FA2AF"
+      },
+      "text-tertiary": {
+        "$type": "color",
+        "$value": "#61646F"
+      },
+      "primary-subtle": {
+        "$type": "color",
+        "$value": "#1A1C4C"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "#808BFC"
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "#9DA9FF"
+      },
+      "on-primary": {
+        "$type": "color",
+        "$value": "#070916"
+      },
+      "primary-text": {
+        "$type": "color",
+        "$value": "#808BFC"
+      },
+      "primary-text-hover": {
+        "$type": "color",
+        "$value": "#929EFE"
+      },
+      "on-primary-subtle": {
+        "$type": "color",
+        "$value": "#C9D1FE"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#0791B2"
+      },
+      "danger-subtle": {
+        "$type": "color",
+        "$value": "#450A0A"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "#F87171"
+      },
+      "on-danger": {
+        "$type": "color",
+        "$value": "#150505"
+      },
+      "on-danger-subtle": {
+        "$type": "color",
+        "$value": "#F87171"
+      },
+      "success-subtle": {
+        "$type": "color",
+        "$value": "#052E16"
+      },
+      "success": {
+        "$type": "color",
+        "$value": "#4ADE80"
+      },
+      "on-success": {
+        "$type": "color",
+        "$value": "#020E05"
+      },
+      "on-success-subtle": {
+        "$type": "color",
+        "$value": "#4ADE80"
+      },
+      "warning-subtle": {
+        "$type": "color",
+        "$value": "#451A03"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "#FBBF25"
+      },
+      "on-warning": {
+        "$type": "color",
+        "$value": "#100900"
+      },
+      "on-warning-subtle": {
+        "$type": "color",
+        "$value": "#FBBF25"
+      },
+      "info-subtle": {
+        "$type": "color",
+        "$value": "#172554"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "#60A5FA"
+      },
+      "on-info": {
+        "$type": "color",
+        "$value": "#030A16"
+      },
+      "on-info-subtle": {
+        "$type": "color",
+        "$value": "#60A5FA"
+      },
+      "code-bg": {
+        "$type": "color",
+        "$value": "#1A1C4C"
+      },
+      "code-text": {
+        "$type": "color",
+        "$value": "#C9D1FE"
+      },
+      "code-com": {
+        "$type": "color",
+        "$value": "#9FA2AF"
+      },
+      "code-kw": {
+        "$type": "color",
+        "$value": "#A8B3FB"
+      },
+      "code-str": {
+        "$type": "color",
+        "$value": "#4ADE80"
+      },
+      "code-tag": {
+        "$type": "color",
+        "$value": "#FBBF25"
+      }
+    }
+  }
+}

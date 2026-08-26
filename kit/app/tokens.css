@@ -1,167 +1,192 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   LES JETONS DU RYTHME — Échelle Semantic Rhythm (l'étalon fait foi, #050)
-
-   Valeurs LUES sur le générateur de l'Auteur aux largeurs 320 et 1440
-   (méthode du crash-test : jamais recopiées à la main), puis interpolées
-   en clamp() linéaire. Le générateur adoucit sa courbe en JavaScript, le
-   CSS interpole droit : écart déjà mesuré < 1 px sur toute la plage, dit.
-
-   Règles de la famille (séance du 2026-08-23, sources/…/SPACING-UX.md 2.0.0) :
-   Y8 — les crans sont responsives, la variation vit ICI, jamais dans un
-   écran. Y9 — tout en rem. Deux axes : inline (horizontal), block (vertical).
-
-   Sortie jumelle : tokens.tailwind.mjs — même calcul, autre cible.
+   LES JETONS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer
+   Décisions d'entrée : base 24 · intervalle √2 · racine 16 (bornée à 38)
+   · intervalle des titres 1.25. Les huit décisions du 25 août 2026 sont les lois.
+   À la charte : marges 24 · 17 · 12 — espaces 17 · 12 · 8,5 · 6 — coins 16 · 8 · 4 · 2
+   — bouton 4 — crans de page 33,9 · 48 · 67,9 · 96 · 135,8 · 192
+   — texte 11,4 · 12,8 · 16 · 20 · 25 · 31,3.
+   Tout en rem ; le rythme glisse de 320 à 1440 px sans palier (inline 0.8–1.2,
+   block 0.9–1.16, type 0.96–1.07, control 1–1.06) ; les coins ne glissent pas.
+   Les deux axes ne se mélangent jamais (G7). Régénérer : node kit/derivation.mjs --css
    ═══════════════════════════════════════════════════════════════════════ */
-
 :root {
-  /* L'échelle commune — les crans, par axe (inline puis block) */
-  --step-i1: clamp(0.3001rem, 0.2572rem + 0.2144vw, 0.4501rem);
-  --step-i2: clamp(0.3900rem, 0.3343rem + 0.2786vw, 0.5850rem);
-  --step-i3: clamp(0.6000rem, 0.5143rem + 0.4286vw, 0.9000rem);
-  --step-i4: clamp(0.6600rem, 0.5657rem + 0.4714vw, 0.9900rem);
-  --step-i5: clamp(0.8487rem, 0.7274rem + 0.6062vw, 1.2730rem);
-  --step-i6: clamp(1.2000rem, 1.0286rem + 0.8571vw, 1.8000rem);
-  --step-b1: clamp(0.1350rem, 0.1239rem + 0.0557vw, 0.1741rem);
-  --step-b2: clamp(0.1688rem, 0.1549rem + 0.0697vw, 0.2176rem);
-  --step-b3: clamp(0.2363rem, 0.2168rem + 0.0975vw, 0.3046rem);
-  --step-b4: clamp(0.4725rem, 0.4335rem + 0.1950vw, 0.6090rem);
-  --step-b5: clamp(0.6752rem, 0.6195rem + 0.2787vw, 0.8703rem);
-  --step-b6: clamp(0.8438rem, 0.7741rem + 0.3482vw, 1.0875rem);
-  --step-b7: clamp(0.9547rem, 0.8759rem + 0.3940vw, 1.2306rem);
-  --step-b8: clamp(1.3500rem, 1.2386rem + 0.5571vw, 1.7400rem);
-
-  /* Les noms d'usage → leur cran (densité confortable) */
-  --space-inline-xs: var(--step-i1); --space-inline-sm: var(--step-i2);
-  --space-inline-unit: var(--step-i3); --space-inline-xl: var(--step-i4);
-  --space-inline-lg: var(--step-i5); --space-inline-2xl: var(--step-i6);
-  --space-block-xs: var(--step-b1); --space-block-sm: var(--step-b2);
-  --space-block-md: var(--step-b3); --space-block-control: var(--step-b4);
-  --space-block-unit: var(--step-b5); --space-block-xl: var(--step-b6);
-  --space-block-card: var(--step-b7); --space-block-lg: var(--step-b7);
-  --space-block-page: var(--step-b8);
-
-  /* Type, rayons, hauteur de contrôle — la densité n'y touche pas */
-  --font-size-base: clamp(0.9600rem, 0.9286rem + 0.1571vw, 1.0700rem);
-  --radius: clamp(0.6450rem, 0.5893rem + 0.2786vw, 0.8400rem);
-  --radius-card: clamp(0.7418rem, 0.6777rem + 0.3204vw, 0.9660rem);
-  --radius-shell: clamp(0.8708rem, 0.7955rem + 0.3761vw, 1.1340rem);
-  --control-height: clamp(2.7500rem, 2.7029rem + 0.2357vw, 2.9150rem);
+  /* profondeurs — la marge d'un niveau, sur chaque axe (1 coque · 2 carte · 3 ligne) */
+  --pad-1-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --pad-2-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --pad-3-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --pad-1-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --pad-2-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --pad-3-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  /* l'espace entre deux frères : celui de leurs enfants (1 entre cartes · 2 entre lignes · 3 dans la ligne · 4 au plus serré, dans un badge ou une cellule) */
+  --gap-1-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --gap-2-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --gap-3-inline: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
+  --gap-4-inline: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
+  --gap-1-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --gap-2-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --gap-3-block: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
+  --gap-4-block: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
+  /* le bord de page = la marge de la coque */
+  --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  /* les crans de page — la chaîne continuée au-dessus de la coque (× √2 à chaque cran) ; seuls les crans consommés sont émis */
+  --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
+  --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
+  --page-6-inline: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
+  --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
+  --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
+  --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
+  --page-6-block: clamp(10.8rem, 9.9086rem + 4.4571vw, 13.92rem);
+  /* les coins — la racine sur la coque, ÷ 2 par niveau ; le composant prend le coin de la ligne */
+  --r-1: 1rem;
+  --r-2: 0.5rem;
+  --r-3: 0.25rem;
+  --r-4: 0.125rem;
+  --r-ctl: var(--r-3);
+  --r-pill: 9999px;
+  /* le texte — corps borné à 1rem, crans × 1.25 ; label = l'étiquette mono (un cran et demi sous le corps), small = le petit texte lu ; section et cover-max sont les crans des titres du site */
+  --font-size-label: clamp(0.7155rem, 0.6644rem + 0.1124vw, 0.7656rem);
+  --font-size-small: clamp(0.8rem, 0.7429rem + 0.1257vw, 0.856rem);
+  --font-size-body: clamp(1rem, 0.9286rem + 0.1571vw, 1.07rem);
+  --font-size-h3: clamp(1.25rem, 1.1607rem + 0.1964vw, 1.3375rem);
+  --font-size-h2: clamp(1.5625rem, 1.4509rem + 0.2455vw, 1.6719rem);
+  --font-size-h1: clamp(1.9531rem, 1.8136rem + 0.3069vw, 2.0898rem);
+  --font-size-display: clamp(2.4414rem, 2.267rem + 0.3836vw, 2.6123rem);
+  --font-size-cover-max: clamp(4.7684rem, 4.4278rem + 0.7493vw, 5.1022rem);
+  --font-size-section: clamp(2.7296rem, 2.5346rem + 0.4289vw, 2.9206rem);
+  /* la cible au doigt — 2,75 rem × axe control ; la cible des commandes secondaires = cible ÷ √2 ; le plancher WCAG en px, seule valeur fixe */
+  --control-height: clamp(2.75rem, 2.7029rem + 0.2357vw, 2.915rem);
+  --control-height-compact: clamp(1.9445rem, 1.9112rem + 0.1667vw, 2.0612rem);
+  --target-min: 24px;
 }
 
-/* Densité compacte (règle Y5) : chaque nom descend d'exactement un cran
-   sur l'échelle commune — jamais une valeur propre, jamais un
-   multiplicateur. S'applique à TOUT le site (attribut posé sur <html>,
-   mémorisé d'une visite à l'autre). Le plus petit cran reste lui-même. */
-/* Densité aérée : chaque nom monte d'exactement un cran — le plus grand
-   cran reste lui-même. Même mécanique, autre direction. */
-[data-density="airy"] {
-  --space-inline-xs: var(--step-i2); --space-inline-sm: var(--step-i3);
-  --space-inline-unit: var(--step-i4); --space-inline-xl: var(--step-i5);
-  --space-inline-lg: var(--step-i6);
-  --space-block-xs: var(--step-b2); --space-block-sm: var(--step-b3);
-  --space-block-md: var(--step-b4); --space-block-control: var(--step-b5);
-  --space-block-unit: var(--step-b6); --space-block-xl: var(--step-b7);
-  --space-block-card: var(--step-b8); --space-block-lg: var(--step-b8);
-}
-
+/* La densité change la base (décision 4) : la chaîne se recalcule, coins et composants ne bougent pas. */
 [data-density="compact"] {
-  --space-inline-sm: var(--step-i1); --space-inline-unit: var(--step-i2);
-  --space-inline-xl: var(--step-i3); --space-inline-lg: var(--step-i4);
-  --space-inline-2xl: var(--step-i5);
-  --space-block-sm: var(--step-b1); --space-block-md: var(--step-b2);
-  --space-block-control: var(--step-b3); --space-block-unit: var(--step-b4);
-  --space-block-xl: var(--step-b5); --space-block-card: var(--step-b6);
-  --space-block-lg: var(--step-b6); --space-block-page: var(--step-b7);
+  --pad-1-inline: clamp(0.8rem, 0.6857rem + 0.5714vw, 1.2rem);
+  --pad-2-inline: clamp(0.5657rem, 0.4849rem + 0.4041vw, 0.8485rem);
+  --pad-3-inline: clamp(0.4rem, 0.3429rem + 0.2857vw, 0.6rem);
+  --gap-1-inline: clamp(0.5657rem, 0.4849rem + 0.4041vw, 0.8485rem);
+  --gap-2-inline: clamp(0.4rem, 0.3429rem + 0.2857vw, 0.6rem);
+  --gap-3-inline: clamp(0.2828rem, 0.2424rem + 0.202vw, 0.4243rem);
+  --gap-4-inline: clamp(0.2rem, 0.1714rem + 0.1429vw, 0.3rem);
+  --edge-inline: clamp(0.8rem, 0.6857rem + 0.5714vw, 1.2rem);
+  --page-2-inline: clamp(1.6rem, 1.3714rem + 1.1429vw, 2.4rem);
+  --page-3-inline: clamp(2.2627rem, 1.9395rem + 1.6162vw, 3.3941rem);
+  --page-4-inline: clamp(3.2rem, 2.7429rem + 2.2857vw, 4.8rem);
+  --page-6-inline: clamp(6.4rem, 5.4857rem + 4.5714vw, 9.6rem);
+  --pad-1-block: clamp(0.9rem, 0.8257rem + 0.3714vw, 1.16rem);
+  --pad-2-block: clamp(0.6364rem, 0.5839rem + 0.2626vw, 0.8202rem);
+  --pad-3-block: clamp(0.45rem, 0.4129rem + 0.1857vw, 0.58rem);
+  --gap-1-block: clamp(0.6364rem, 0.5839rem + 0.2626vw, 0.8202rem);
+  --gap-2-block: clamp(0.45rem, 0.4129rem + 0.1857vw, 0.58rem);
+  --gap-3-block: clamp(0.3182rem, 0.2919rem + 0.1313vw, 0.4101rem);
+  --gap-4-block: clamp(0.225rem, 0.2064rem + 0.0929vw, 0.29rem);
+  --edge-block: clamp(0.9rem, 0.8257rem + 0.3714vw, 1.16rem);
+  --page-2-block: clamp(1.8rem, 1.6514rem + 0.7429vw, 2.32rem);
+  --page-3-block: clamp(2.5456rem, 2.3355rem + 1.0506vw, 3.281rem);
+  --page-4-block: clamp(3.6rem, 3.3029rem + 1.4857vw, 4.64rem);
+  --page-6-block: clamp(7.2rem, 6.6057rem + 2.9714vw, 9.28rem);
+}
+[data-density="airy"] {
+  --pad-1-inline: clamp(1.6rem, 1.3714rem + 1.1429vw, 2.4rem);
+  --pad-2-inline: clamp(1.1314rem, 0.9697rem + 0.8081vw, 1.6971rem);
+  --pad-3-inline: clamp(0.8rem, 0.6857rem + 0.5714vw, 1.2rem);
+  --gap-1-inline: clamp(1.1314rem, 0.9697rem + 0.8081vw, 1.6971rem);
+  --gap-2-inline: clamp(0.8rem, 0.6857rem + 0.5714vw, 1.2rem);
+  --gap-3-inline: clamp(0.5657rem, 0.4849rem + 0.4041vw, 0.8485rem);
+  --gap-4-inline: clamp(0.4rem, 0.3429rem + 0.2857vw, 0.6rem);
+  --edge-inline: clamp(1.6rem, 1.3714rem + 1.1429vw, 2.4rem);
+  --page-2-inline: clamp(3.2rem, 2.7429rem + 2.2857vw, 4.8rem);
+  --page-3-inline: clamp(4.5255rem, 3.879rem + 3.2325vw, 6.7882rem);
+  --page-4-inline: clamp(6.4rem, 5.4857rem + 4.5714vw, 9.6rem);
+  --page-6-inline: clamp(12.8rem, 10.9714rem + 9.1429vw, 19.2rem);
+  --pad-1-block: clamp(1.8rem, 1.6514rem + 0.7429vw, 2.32rem);
+  --pad-2-block: clamp(1.2728rem, 1.1677rem + 0.5253vw, 1.6405rem);
+  --pad-3-block: clamp(0.9rem, 0.8257rem + 0.3714vw, 1.16rem);
+  --gap-1-block: clamp(1.2728rem, 1.1677rem + 0.5253vw, 1.6405rem);
+  --gap-2-block: clamp(0.9rem, 0.8257rem + 0.3714vw, 1.16rem);
+  --gap-3-block: clamp(0.6364rem, 0.5839rem + 0.2626vw, 0.8202rem);
+  --gap-4-block: clamp(0.45rem, 0.4129rem + 0.1857vw, 0.58rem);
+  --edge-block: clamp(1.8rem, 1.6514rem + 0.7429vw, 2.32rem);
+  --page-2-block: clamp(3.6rem, 3.3029rem + 1.4857vw, 4.64rem);
+  --page-3-block: clamp(5.0912rem, 4.6709rem + 2.1011vw, 6.562rem);
+  --page-4-block: clamp(7.2rem, 6.6057rem + 2.9714vw, 9.28rem);
+  --page-6-block: clamp(14.4rem, 13.2114rem + 5.9429vw, 18.56rem);
 }
 
-/* La palette provisoire de travail est morte ici le 23 août 2026 :
-   la famille couleur (fin de fichier) l'a remplacée sur tout le site,
-   sur décision d'Auteur — le theming est global, jamais page par page. */
-
-/* ═══════════════════════════════════════════════════════════════════════
-   LES JETONS DE TYPOGRAPHIE — famille reprise en séance le 23 août 2026
-   (TYPOGRAPHY-UX.md 2.0.0 : T1–T11, M1–M2).
-
-   Les FAMILLES sont arbitrées au registre (Auteur, 23 août) : Geist pour
-   l'interface, JetBrains Mono pour le code — fichiers livrés au dépôt,
-   piles de secours déclarées (T11).
-
-   L'ÉCHELLE ci-dessous est une échelle de travail conforme aux règles
-   actées — T2 : elle glisse, la variation vit ici ; T3 : du rem dans les
-   trois parties de chaque clamp() ; T4 : aucun échelon au-delà de 2,5× ;
-   T10 : le corps courant ne descend jamais sous 1rem. Ses VALEURS exactes
-   restent un arbitrage de registre à venir — déclaré, pas subi. */
+/* Hors chaîne — déclaré au registre, jamais dérivé : familles, interligne, mesure, capitales. */
 :root {
-  /* Les secours « Fallback » portent les métriques mesurées de la fonte
-     livrée (fontes.css) : la bascule de police ne déplace plus rien. */
   --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Menlo, monospace;
-
-  --font-size-body:   clamp(1.0000rem, 0.9571rem + 0.2143vw, 1.1500rem);
-  --font-size-h3: clamp(1.1500rem, 1.1214rem + 0.1429vw, 1.2500rem);
-  --font-size-h2: clamp(1.3000rem, 1.2429rem + 0.2857vw, 1.5000rem);
-  --font-size-h1: clamp(1.6000rem, 1.4571rem + 0.7143vw, 2.1000rem);
-  --font-size-display: clamp(2.2000rem, 1.8571rem + 1.7143vw, 3.4000rem);
-
-  --leading-body: 1.6;  /* T6 : jamais sous 1,5 pour le texte courant */
-  --leading-heading: 1.2;    /* les grands corps ont le droit de serrer */
-  --measure: 65ch;             /* T5 : la borne existe et vit en ch — la valeur, au registre */
-  --tracking-label: 0.08em; /* T8 : capitales toujours espacées (5–12 %) */
+  --font-serif: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Times New Roman", ui-serif, serif;
+  --leading-body: 1.6;
+  --leading-heading: 1.2;
+  --measure: 65ch;
+  --tracking-label: 0.08em;
 }
 
-/* Le châssis du site — navigation à gauche, réglages à droite — garde la
-   densité confortable quel que soit le réglage : la densité règle le
-   contenu, jamais les colonnes qui l'encadrent. */
+/* Le châssis du site — navigation à gauche, réglages à droite — garde la densité
+   confortable quel que soit le réglage : la densité règle le contenu, jamais les colonnes. */
 .navigation, .reglages {
-  --space-inline-xs: var(--step-i1); --space-inline-sm: var(--step-i2);
-  --space-inline-unit: var(--step-i3); --space-inline-xl: var(--step-i4);
-  --space-inline-lg: var(--step-i5); --space-inline-2xl: var(--step-i6);
-  --space-block-xs: var(--step-b1); --space-block-sm: var(--step-b2);
-  --space-block-md: var(--step-b3); --space-block-control: var(--step-b4);
-  --space-block-unit: var(--step-b5); --space-block-xl: var(--step-b6);
-  --space-block-card: var(--step-b7); --space-block-lg: var(--step-b7);
-  --space-block-page: var(--step-b8);
+  --pad-1-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --pad-2-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --pad-3-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --gap-1-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --gap-2-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --gap-3-inline: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
+  --gap-4-inline: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
+  --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
+  --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
+  --page-6-inline: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
+  --pad-1-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --pad-2-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --pad-3-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --gap-1-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --gap-2-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --gap-3-block: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
+  --gap-4-block: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
+  --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
+  --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
+  --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
+  --page-6-block: clamp(10.8rem, 9.9086rem + 4.4571vw, 13.92rem);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   LES JETONS DE COULEUR — famille reprise le 23 août 2026
-   (sources/…/foundations/COLOR-UX.md 2.0.0 : C1–C16, M1–M3).
+/* Adaptation shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */
+[data-adaptation="shadcn"] {
+  --r-1: 0.75rem;
+  --r-2: 0.5rem;
+  --r-3: 0.375rem;
+  --r-4: 0.375rem;
+  --control-height: 2.25rem;
+}
 
-   Les VALEURS sont GÉNÉRÉES par kit/derivation.mjs depuis UNE SEULE
-   décision d'entrée : primary (#4F46E5). Le moteur — porté du témoin,
-   OKLCH — est calibré sur la charte de conception Fili
-   (docs/charte/filicharte_6.html) : à la primaire de la charte, il la
-   reproduit ; le thème sombre est calé sur le registre du dépôt. Les
-   valeurs vivent ici et nulle part ailleurs (C1) — pour les changer, on
-   change primary et on régénère, jamais une valeur à la main.
+/* Le gabarit documentaire — chaque cran est un alias d'un jeton de la chaîne (décision 8 ; verdict du 25 août :
+   silence = 4ᵉ cran). La marge de page suit le régime : le bord sur mobile, le 3ᵉ cran de page dès que
+   le rail est là. Les titres du site sont une INTENTION D'AUTEUR déclarée (amendement du 25 août) :
+   bornes dérivées (affiche : section → sept crans ; section : h1 → section), pentes du gabarit nu
+   (6 vw, 3,4 vw) — la seule règle rompue, dite. */
+:root {
+  --doc-cover: clamp(var(--font-size-section), 6vw, var(--font-size-cover-max));
+  --doc-section: clamp(var(--font-size-h1), 3.4vw, var(--font-size-section));
+  --doc-silence: var(--page-4-block);
+  --doc-tete: var(--page-2-block);
+  --doc-scene-inline: var(--pad-1-inline);
+  --doc-scene-block: var(--pad-1-block);
+  /* les colonnes : la chaîne à la base de la charte, sans suivre la densité */
+  --doc-gouttiere: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --doc-rail: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
+  --doc-marge: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+}
+@media (min-width: 69rem) {
+  :root {
+    --doc-marge: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
+  }
+}
 
-   Les NOMS suivent les conventions du marché, alignés sur le registre
-   (décision d'Auteur, 23 août) : l'API du kit parle anglais, la doctrine
-   reste en français. Trois registres étanches (C2), aucun jeton à
-   cheval (C3) :
-   · NEUTRES    bg (le blanc dominant) · surface (le gris posé) ·
-                surface-hover · text-primary · text-secondary · border ·
-                border-strong · code-bg/code-text (paire fixe)
-   · MARQUE     primary (+ hover, on-primary, subtle, on-subtle), tenue
-                en réserve — et accent, l'anneau de focus : il entoure,
-                il n'accueille jamais de texte (charte). Deux rôles, deux
-                besoins réels (C4).
-   · SÉMANTIQUE danger · success · warning · info, chacun avec son couple
-                complet (C5) — warning et info sont nés avec leurs
-                consommateurs (la page En situation), jamais avant.
-   Pas de text-muted : le gris pâle de la charte (#9CA3AF) ne porte
-   jamais un texte (2,54:1) — sans consommateur au kit, pas de jeton.
-
-   Chaque jeton résout UNE valeur PAR THÈME (C12) ; le sombre s'active sur
-   la préférence du système et se règle en [data-theme] (C13). Les états
-   sont des jetons, jamais des calculs (C10). Aucun jeton de désactivé :
-   dette écrite, condition de sortie au corpus (C11). AUCUN jeton de texte
-   sous 4,5:1 sur ses fonds déclarés, dans les deux thèmes (C9 — arbitrage
-   du gris pâle appliqué : pas de jeton pâle dans cette famille).
-   En thème sombre, l'accent s'éclaircit — jamais l'inverse (C14).
-   Les paires déclarées se mesurent sur la page vivante /couleur, dans les
-   deux thèmes (C7, C8). Sortie jumelle : tokens.tailwind.mjs (color).
-   ═══════════════════════════════════════════════════════════════════════ */
 
 /* GÉNÉRÉ par kit/derivation.mjs depuis primary #4F46E5 — ne pas éditer
    à la main : une valeur retouchée serait une valeur sans provenance.
@@ -173,6 +198,7 @@
   --surface-hover: #E6E7EB;
   --text-primary: #151725;
   --text-secondary: #505362;
+  --text-tertiary: #8A8C9B;
   --border: #E6E7EB;
   --border-strong: #6E717F;
   --primary: #4F46E5;
@@ -186,17 +212,25 @@
   --danger: #B91C1C;
   --danger-subtle: #FEE2E2;
   --on-danger: #FFF8F7;
+  --on-danger-subtle: #B91C1C;
   --success: #15803D;
   --success-subtle: #DCFCE7;
-  --on-success: #F1FEF3;
-  --warning: #92400D;
+  --on-success: #FFFFFF;
+  --on-success-subtle: #15803D;
+  --warning: #FBBF25;
   --warning-subtle: #FEF3C7;
-  --on-warning: #FFF9F6;
+  --on-warning: #100900;
+  --on-warning-subtle: #92400D;
   --info: #1D4ED8;
   --info-subtle: #DBEAFE;
   --on-info: #F8FAFF;
-  --code-bg: #1C1928;
-  --code-text: #C9C4F8;
+  --on-info-subtle: #1D4ED8;
+  --code-bg: #1A1C4C;
+  --code-text: #C9D1FE;
+  --code-com: #9FA2AF;
+  --code-str: #4ADE80;
+  --code-kw: #A8B3FB;
+  --code-tag: #FBBF25;
 }
 
 [data-theme="dark"] {
@@ -206,6 +240,7 @@
   --surface-hover: #252736;
   --text-primary: #FFFFFF;
   --text-secondary: #9FA2AF;
+  --text-tertiary: #61646F;
   --border: #252736;
   --border-strong: #9FA2AF;
   --primary: #808BFC;
@@ -219,17 +254,25 @@
   --danger: #F87171;
   --danger-subtle: #450A0A;
   --on-danger: #150505;
+  --on-danger-subtle: #F87171;
   --success: #4ADE80;
   --success-subtle: #052E16;
   --on-success: #020E05;
+  --on-success-subtle: #4ADE80;
   --warning: #FBBF25;
   --warning-subtle: #451A03;
   --on-warning: #100900;
+  --on-warning-subtle: #FBBF25;
   --info: #60A5FA;
   --info-subtle: #172554;
   --on-info: #030A16;
-  --code-bg: #1C1928;
-  --code-text: #C9C4F8;
+  --on-info-subtle: #60A5FA;
+  --code-bg: #1A1C4C;
+  --code-text: #C9D1FE;
+  --code-com: #9FA2AF;
+  --code-str: #4ADE80;
+  --code-kw: #A8B3FB;
+  --code-tag: #FBBF25;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -240,6 +283,7 @@
     --surface-hover: #252736;
     --text-primary: #FFFFFF;
     --text-secondary: #9FA2AF;
+    --text-tertiary: #61646F;
     --border: #252736;
     --border-strong: #9FA2AF;
     --primary: #808BFC;
@@ -253,28 +297,24 @@
     --danger: #F87171;
     --danger-subtle: #450A0A;
     --on-danger: #150505;
+    --on-danger-subtle: #F87171;
     --success: #4ADE80;
     --success-subtle: #052E16;
     --on-success: #020E05;
+    --on-success-subtle: #4ADE80;
     --warning: #FBBF25;
     --warning-subtle: #451A03;
     --on-warning: #100900;
+    --on-warning-subtle: #FBBF25;
     --info: #60A5FA;
     --info-subtle: #172554;
     --on-info: #030A16;
-    --code-bg: #1C1928;
-    --code-text: #C9C4F8;
+    --on-info-subtle: #60A5FA;
+    --code-bg: #1A1C4C;
+    --code-text: #C9D1FE;
+    --code-com: #9FA2AF;
+    --code-str: #4ADE80;
+    --code-kw: #A8B3FB;
+    --code-tag: #FBBF25;
   }
-}
-
-
-
-/* ── ADAPTATION SHADCN — géométrie seule : rayons md fixes, contrôles
-   h-9. Sa palette provisoire (zinc) est morte avec l'entrée de la
-   famille couleur : une adaptation traduit le système, elle ne porte
-   jamais une seconde palette (C1, C3) — la couleur vient de la famille,
-   dans les deux thèmes. Mémorisé via <html data-adaptation="shadcn">. */
-[data-adaptation="shadcn"] {
-  --radius: 0.375rem; --radius-card: 0.5rem; --radius-shell: 0.75rem;
-  --control-height: 2.25rem;
 }

@@ -43,7 +43,7 @@ export function Adaptation() {
   return (
     <div className="bloc">
       <span className="mono sourd">Adaptation — tout le site</span>
-      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
         {CHOIX.map(([a, nom]) => (
           /* bouton actif dessiné en CSS depuis <html data-adaptation> */
           <button key={a} data-choix-adaptation={a} className="bouton" onClick={() => changer(a)}>{nom}</button>

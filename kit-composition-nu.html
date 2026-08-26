@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kit — Composition</title>
+<style>
+  :root{
+    --bg:#FFFFFF;--surface:#F3F4F6;--surface-2:#E6E7EB;--border:#E6E7EB;--border-strong:#6E717F;
+    --text:#151725;--text-2:#505362;
+    --primary:#4F46E5;--on-primary:#F9FAFF;--primary-subtle:#E2E6FF;--on-primary-subtle:#3630A3;
+    --danger:#B91C1C;--danger-subtle:#FEE2E2;--success:#15803D;--success-subtle:#DCFCE7;
+    --warning:#FBBF25;--on-warning-subtle:#92400D;
+    --silence:clamp(6rem,4.8rem + 5vw,10rem);--tete:clamp(2.2rem,1.9rem + 1.8vw,3.4rem);
+    --mesure:42rem;--radius:10px;--radius-card:14px;
+    --sans:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
+    --mono:"Geist Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .gdoc{display:grid;grid-template-columns:16rem minmax(0,1fr);gap:clamp(2rem,5vw,5rem);
+    max-width:80rem;margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3rem)}
+  .rail{padding-top:var(--silence)}
+  .rail-fixe{position:sticky;top:2rem;display:grid;gap:2rem}
+  .rail-titre{font:500 .625rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:.8rem}
+  .rail a{display:flex;gap:.7rem;align-items:baseline;text-decoration:none;color:var(--text);font-size:.875rem;padding:.32rem 0;opacity:.62}
+  .rail a.actif{opacity:1;font-weight:600}
+  .rail-index{font:500 .625rem/1 var(--mono);color:var(--text-2)}
+  .rail-pied{font:400 .6875rem/1.6 var(--mono);color:var(--text-2)}
+  .kicker{font:500 .6875rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-2)}
+  .sourd{color:var(--text-2)}
+  .mono{font-family:var(--mono)}
+
+  .heros{padding-top:var(--silence)}
+  h1{font-size:clamp(2.4rem,1.3rem + 5vw,4.4rem);line-height:1.04;letter-spacing:-.028em;font-weight:700;max-width:17ch;margin-top:1rem}
+  .point{display:block;width:.38em;height:.38em;border-radius:9999px;background:var(--primary);
+    margin-top:.24em;font-size:clamp(2.4rem,1.3rem + 5vw,4.4rem)}
+  .chapo{margin-top:var(--tete);max-width:var(--mesure);font-size:clamp(1.05rem,.95rem + .5vw,1.25rem);color:var(--text-2)}
+  .chapo b{color:var(--text);font-weight:600}
+
+  .sec{padding-top:var(--silence)}
+  .sec:last-of-type{padding-bottom:var(--silence)}
+  .sec-tete{max-width:var(--mesure);display:grid;gap:.6rem}
+  .sec h2{font-size:clamp(1.6rem,1.3rem + 1.5vw,2.4rem);line-height:1.15;letter-spacing:-.02em;font-weight:700}
+  .corps{margin-top:var(--tete);display:grid;gap:1.2rem}
+  .rang{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+  .bouton{font:500 .8125rem/1 var(--sans);border:1px solid var(--border-strong);background:var(--bg);
+    color:var(--text);border-radius:9999px;padding:.6rem 1.1rem;cursor:pointer}
+  .bouton.casse{border-style:dashed;border-color:var(--danger);color:var(--danger)}
+  .bouton.casse.on{background:var(--danger);border-style:solid;color:#fff}
+  .badge{display:inline-flex;align-items:center;border-radius:9999px;padding:.32em .85em;
+    font:500 .6875rem/1.5 var(--mono);color:var(--text-2);border:1px solid var(--border)}
+  .badge.ko{color:var(--danger);background:var(--danger-subtle);border-color:transparent}
+  .legende{font:400 .6875rem/1.6 var(--mono);color:var(--text-2);max-width:40rem}
+  .scene{background:var(--surface);border-radius:var(--radius-card);padding:clamp(1.6rem,3.5vw,2.6rem)}
+  .duo-t{display:grid;grid-template-columns:3fr 2fr;gap:clamp(1.4rem,4vw,3rem);align-items:center}
+  .dit{font-size:clamp(.95rem,.9rem + .35vw,1.12rem);line-height:1.6;max-width:32ch}
+  .porte{position:relative;width:100%}
+  .calque{position:absolute;inset:0;pointer-events:none;z-index:5;transition:opacity .16s linear}
+  .porte:hover .calque{opacity:0}
+  .r-cadre{position:absolute;border:1.5px solid var(--danger);border-radius:6px}
+  .r-fil{position:absolute;border-left:1px dashed var(--danger)}
+  .r-cote{position:absolute;border-left:1px solid var(--danger);width:0}
+  .r-cote::before,.r-cote::after{content:"";position:absolute;left:-3px;width:7px;border-top:1px solid var(--danger)}
+  .r-cote::before{top:0}.r-cote::after{bottom:0}
+  .r-puce{position:absolute;width:.5rem;height:.5rem;border-radius:9999px;background:var(--danger);transform:translateY(-50%)}
+  .r-etq{position:absolute;font:600 .5625rem/1.35 var(--mono);color:#fff;background:var(--danger);
+    border-radius:5px;padding:.15rem .4rem;white-space:nowrap;transform:translateY(-50%)}
+  .pied-scene{position:relative;min-height:1.5rem;margin-top:.9rem}
+  .invite,.solution{position:absolute;left:0;top:0;font:500 .6875rem/1.5 var(--mono);transition:opacity .16s linear}
+  .invite{color:var(--text-2)}
+  .solution{color:var(--success);background:var(--success-subtle);border-radius:9999px;padding:.15em .8em;opacity:0}
+  .gauche:has(.porte:hover) .invite{opacity:0}
+  .gauche:has(.porte:hover) .solution{opacity:1}
+
+  /* ══ OBJET 1 — l'écran de travail ══ */
+  .app{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--bg);overflow:hidden}
+  .app-tete{display:flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-bottom:1px solid var(--border)}
+  .app-tete i{width:.5rem;height:.5rem;border-radius:9999px;background:var(--primary)}
+  .app-tete b{font-size:.8125rem}
+  .app-corps{padding:1.1rem .9rem;display:grid;gap:var(--g,1.5rem)}
+  .b{display:grid;gap:var(--gi,.35rem);margin-left:var(--dx,0)}
+  .etq{font:500 .5625rem/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+  .kpi b{font-size:2.6rem;line-height:1;letter-spacing:-.03em;font-weight:700;display:block}
+  .kpi .sous{font-size:.75rem;color:var(--text-2)}
+  .li{display:flex;align-items:center;gap:.5rem;font-size:.8125rem;padding-block:.28rem}
+  .li i{width:.35rem;height:.35rem;border-radius:9999px;background:var(--border-strong)}
+  .pct{margin-left:auto;color:var(--text-2);font-family:var(--mono);font-size:.625rem}
+  .cta{display:flex;gap:.45rem}
+  .b1{font-size:.75rem;font-weight:600;border-radius:var(--radius);padding:.45rem .8rem;background:var(--primary);color:var(--on-primary)}
+  .b2{font-size:.75rem;font-weight:500;border-radius:var(--radius);padding:.45rem .8rem;border:1px solid var(--border-strong)}
+  .champ{font-size:.75rem;color:var(--text-2);border:1px solid var(--border);border-radius:8px;padding:.3rem .55rem}
+  .porte:not(:hover) .f-dominant .liste .etq{font-size:2.6rem;font-weight:700;letter-spacing:-.03em;text-transform:none;font-family:var(--sans);color:var(--text);line-height:1}
+  .porte:not(:hover) .f-cloison .b{border:1px solid var(--border);border-radius:var(--radius);padding:.7rem}
+  .porte:not(:hover) .f-equi{--g:.6rem;--gi:.6rem}
+  .porte:not(:hover) .f-axes .b:nth-child(2){--dx:1.4rem}
+  .porte:not(:hover) .f-axes .b:nth-child(3){--dx:.6rem}
+  .porte:not(:hover) .f-axes .b:nth-child(4){--dx:2.2rem}
+  .porte:not(:hover) .f-rupture .etq{color:var(--primary)}
+  .porte:not(:hover) .f-rupture .b2{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+  .porte:not(:hover) .f-rupture .pct{color:var(--primary);font-weight:700}
+  .porte:not(:hover) .f-rupture .app-tete b{color:var(--primary)}
+
+  /* ══ OBJET 2 — la page de presse (dense) et l'affiche (aérée) ══ */
+  .paire{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem);align-items:stretch}
+  .paire > div{display:grid;grid-template-rows:auto 1fr;gap:.7rem}
+  .nom-objet{font:500 .6875rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+  .presse{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:1.4rem 1.5rem;
+    font-family:var(--serif);height:100%}
+  .presse .surtitre{font:500 .5625rem/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+    color:var(--danger);font-family:var(--mono)}
+  .presse h3{font-size:1.5rem;line-height:1.15;letter-spacing:-.01em;margin:.5rem 0 .1rem;font-weight:700}
+  .presse .signature{font:400 .625rem/1.4 var(--mono);color:var(--text-2);margin-bottom:.9rem}
+  .presse .cols{column-count:2;column-gap:1.1rem;font-size:.6875rem;line-height:1.5;text-align:justify;hyphens:auto}
+  .presse .cols p{margin-bottom:.5rem}
+  .presse .filet{height:1px;background:var(--surface-2);margin:.9rem 0}
+  .presse .breve{font-size:.625rem;line-height:1.5;color:var(--text-2);display:grid;gap:.35rem}
+  .affiche{background:var(--bg);border:1px solid var(--border);border-radius:6px;height:100%;
+    padding:clamp(1.6rem,4vw,2.4rem);display:grid;align-content:space-between;gap:1.4rem}
+  .affiche .marque{font:600 .625rem/1 var(--mono);letter-spacing:.24em;text-transform:uppercase}
+  .affiche .titre{font-size:clamp(1.7rem,3.4vw,2.6rem);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+  .affiche .sous{font-size:.8125rem;color:var(--text-2);max-width:26ch}
+  .affiche .action{justify-self:start;font-size:.8125rem;font-weight:600;border-radius:9999px;
+    padding:.6rem 1.2rem;background:var(--primary);color:var(--on-primary)}
+  .trace{position:absolute;inset:0;pointer-events:none;z-index:4}
+  .trace path{fill:none;stroke:var(--warning);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+  .chemin{stroke-dasharray:1 9;opacity:.9}
+  .regard{opacity:0}
+  @media (prefers-reduced-motion:no-preference){
+    .regard{opacity:1;stroke-width:5;stroke-dasharray:54 var(--len);
+      animation:lire 4.6s cubic-bezier(.5,0,.5,1) infinite;animation-delay:var(--retard,0s)}
+  }
+  @keyframes lire{
+    0%{stroke-dashoffset:54;opacity:0}
+    6%{opacity:1}
+    72%{stroke-dashoffset:calc(-1 * var(--len));opacity:1}
+    80%,100%{stroke-dashoffset:calc(-1 * var(--len));opacity:0}
+  }
+
+  /* ══ OBJET 3 — la page de magazine, pour l'espace blanc ══ */
+  .mag{background:var(--bg);border:1px solid var(--border);border-radius:6px;
+    padding:var(--mp,clamp(2rem,5vw,3.4rem));display:grid;gap:var(--mg,1.6rem);font-family:var(--serif)}
+  .mag .rubrique{font:500 .5625rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);font-family:var(--mono)}
+  .mag h3{font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+  .mag .chapo-mag{font-size:.9375rem;line-height:1.55;color:var(--text-2);max-width:34ch}
+  .mag .corps-mag{column-count:2;column-gap:var(--mg,1.6rem);font-size:.75rem;line-height:1.65;text-align:justify;hyphens:auto}
+  .mag .corps-mag p{margin-bottom:.6rem}
+  .mag .exergue{font-size:1.05rem;line-height:1.35;font-style:italic;border-left:2px solid var(--text);
+    padding-left:1rem;max-width:30ch}
+  .serre .mag{--mp:3px;--mg:2px}
+  .serre .mag h3{line-height:.98}
+  .serre .mag .corps-mag{line-height:1.15}
+  .serre .mag .chapo-mag{line-height:1.15}
+  .tache{position:absolute;background:var(--text);border-radius:2px;opacity:.9}
+
+  table{width:100%;border-collapse:collapse;font-size:.875rem}
+  th{text-align:left;font:500 .625rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-2);padding:.8rem 1rem;border-bottom:1px solid var(--border)}
+  td{padding:.8rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  .cadre{border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden}
+  .voc{display:grid;gap:.9rem;max-width:var(--mesure);margin-top:1.4rem}
+  .voc dl{display:grid}
+  .voc dl>div{display:grid;grid-template-columns:9rem 1fr;gap:1rem;align-items:baseline;
+    padding-block:.5rem;border-top:1px solid var(--border)}
+  .voc dt{font-weight:600;font-size:.875rem}
+  .voc dd{font-size:.875rem;color:var(--text-2)}
+  details{border-left:2px solid var(--border);padding-left:1.4rem;max-width:var(--mesure)}
+  summary{cursor:pointer;font-weight:600;font-size:.8125rem;color:var(--text-2);list-style:none}
+  summary::before{content:"▸ "}details[open] summary::before{content:"▾ "}
+  details div{padding-top:.8rem;font-size:.8125rem;color:var(--text-2);display:grid;gap:.6rem}
+  @media (max-width:64rem){.gdoc{grid-template-columns:1fr}.rail{display:none}
+    .duo-t{grid-template-columns:1fr}.paire{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="gdoc">
+
+<nav class="rail">
+  <div class="rail-fixe">
+    <div><span class="rail-titre">Kit</span>
+      <a href="/">Accueil</a><a href="/rythme">Rythme</a><a href="/typo">Typographie</a>
+      <a href="/couleur">Couleur</a><a class="actif" href="/composition">Composition</a></div>
+    <div><span class="rail-titre">Fondation · Composition</span>
+      <a href="#casse"><span class="rail-index">01</span><span>L'écran qu'on casse</span></a>
+      <a href="#parcours"><span class="rail-index">02</span><span>Le chemin de l'œil</span></a>
+      <a href="#blanc"><span class="rail-index">03</span><span>L'espace blanc</span></a>
+      <a href="#fonds"><span class="rail-index">04</span><span>Le fonds complet</span></a></div>
+    <div class="rail-pied">COMPOSITION-UX · huit règles · deux jugées à l'œil</div>
+  </div>
+</nav>
+
+<main>
+  <header class="heros">
+    <p class="kicker">Fondation · La composition</p>
+    <h1>Rien n'est faux dans le détail — et l'écran ne se lit pas</h1>
+    <span class="point" aria-hidden="true"></span>
+    <p class="chapo"><b>Les autres fondations règlent une matière : des lettres, des distances,
+    des couleurs.</b> Celle-ci règle ce qui arrive quand toutes sont justes et que ça ne marche
+    pas quand même — l'ordre du regard, ce qu'il groupe, ce qu'il ne voit jamais.</p>
+  </header>
+
+  <!-- ══ 01 · L'ÉCRAN QU'ON CASSE ══ -->
+  <section class="sec" id="casse">
+    <div class="sec-tete">
+      <p class="kicker">01 · L'écran qu'on casse</p>
+      <h2>Un écran juste. Cassez-le, une faute à la fois.</h2>
+      <p class="sourd">Au repos, l'écran nomme ses organes — le dominant, un groupe, l'axe de
+      départ, l'espace blanc qui groupe : <b>quatre mots suffisent</b> à parler de composition
+      avec quelqu'un d'autre. Cassez-en un, et les repères deviennent rouges à l'endroit exact
+      où ça casse. <b>Survolez l'écran</b> — il se répare sous vos yeux.</p>
+    </div>
+    <div class="corps">
+      <div class="rang" id="cmd"></div>
+      <div class="scene duo-t">
+        <div class="gauche">
+          <span class="badge" id="verdict"></span>
+          <div class="porte" id="porte-app" style="margin-top:.9rem"></div>
+          <div class="pied-scene">
+            <span class="invite" id="invite"></span>
+            <span class="solution" id="solution"></span>
+          </div>
+        </div>
+        <p class="dit" id="dit"></p>
+      </div>
+      <div class="voc">
+        <span class="mono sourd" style="font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase">Vocabulaire</span>
+        <dl>
+          <div><dt>le dominant</dt><dd>ce qui se lit en premier. Il y en a un — jamais deux, jamais zéro.</dd></div>
+          <div><dt>le groupe</dt><dd>ce que l'œil réunit sans qu'on le lui dise, par la proximité ou par une surface partagée.</dd></div>
+          <div><dt>l'axe de départ</dt><dd>la verticale d'où les contenus commencent. Deux ou trois par vue ; au-delà, ça flotte.</dd></div>
+          <div><dt>l'espace blanc</dt><dd>ce qui fait le travail. Il sépare avant le trait, et il groupe avant la carte.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 02 · LE CHEMIN DE L'ŒIL — deux objets, deux régimes ══ -->
+  <section class="sec" id="parcours">
+    <div class="sec-tete">
+      <p class="kicker">02 · Le chemin de l'œil</p>
+      <h2>La densité décide du parcours</h2>
+      <p class="sourd">L'œil entre en haut à gauche — toujours. Ce qu'il fait ensuite dépend de
+      ce qu'on lui donne. Deux objets que tout oppose : une page de journal, et une affiche.
+      Le premier se balaie en <b>F</b>, la seconde se parcourt en <b>Z</b>. Ce n'est pas une
+      théorie à retenir, c'est une contrainte de placement.</p>
+    </div>
+    <div class="corps">
+      <div class="paire">
+        <div>
+          <span class="nom-objet">une page de journal — le F</span>
+          <div class="porte" id="porte-presse">
+            <article class="presse">
+              <span class="surtitre">Économie</span>
+              <h3>Les ateliers de la vallée rouvrent après huit mois d'arrêt</h3>
+              <p class="signature">Camille Ferrand · 14 mars</p>
+              <div class="cols">
+                <p>La décision est tombée mardi soir, à l'issue d'une réunion qui aura duré plus
+                de six heures. Les trois sites reprendront leur activité dès la semaine
+                prochaine, avec des effectifs réduits d'un quart par rapport à l'an dernier.</p>
+                <p>« Nous avons obtenu ce que nous demandions depuis le début », explique une
+                déléguée, qui rappelle que le calendrier reste soumis à la livraison des pièces
+                attendues d'Allemagne.</p>
+                <p>Les commandes, elles, n'ont pas attendu : le carnet est plein jusqu'en
+                septembre, et deux clients historiques ont déjà confirmé leurs volumes.</p>
+                <p>Reste la question du transport, que personne n'a voulu trancher publiquement.
+                Elle reviendra sur la table au printemps.</p>
+              </div>
+              <div class="filet"></div>
+              <div class="breve">
+                <span>· Le tribunal reporte l'audience au 2 avril.</span>
+                <span>· Trois communes s'associent pour la ligne 4.</span>
+                <span>· Le marché du bois recule pour le deuxième trimestre.</span>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div>
+          <span class="nom-objet">une affiche — le Z</span>
+          <div class="porte" id="porte-affiche">
+            <div class="affiche">
+              <span class="marque">Ateliers Vidal</span>
+              <div>
+                <p class="titre">Portes ouvertes,<br>samedi 12 avril.</p>
+                <p class="sous" style="margin-top:.8rem">Trois ateliers, une visite guidée toutes
+                les heures, et le café est offert.</p>
+              </div>
+              <span class="action">Réserver une place</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="legende">à gauche, l'œil descend la première colonne et balaie de moins en moins
+      loin — les fins de lignes sont les moins lues ; à droite, il fait deux allers-retours et
+      s'arrête sur le dernier coin : c'est là que se met l'action, jamais au milieu.</p>
+      <details><summary>Règles &amp; sources</summary><div>
+        <p><b>L'essentiel sur le chemin de l'œil</b> — l'essentiel vit sur le parcours ; les
+        réglages et les métadonnées vivent en dehors. Cette règle se juge à la relecture :
+        aucune mesure ne dit où est l'essentiel.</p>
+        <p class="sourd">Sources : patterns de lecture F/Z · Müller-Brockmann, <i>Grid Systems in Graphic Design</i>.</p>
+      </div></details>
+    </div>
+  </section>
+
+  <!-- ══ 03 · L'ESPACE BLANC — un troisième objet : la page de magazine ══ -->
+  <section class="sec" id="blanc">
+    <div class="sec-tete">
+      <p class="kicker">03 · L'espace blanc</p>
+      <h2>La seule matière qu'on rogne en croyant ne rien perdre</h2>
+      <p class="sourd">Une page est faite de deux choses : de l'encre, et de l'espace blanc. La
+      première se compte en signes, la seconde passe pour du vide — c'est donc toujours elle
+      qu'on sacrifie quand il faut faire entrer une ligne de plus. Voici ce qu'elle occupe
+      vraiment, et ce que coûte sa disparition.</p>
+    </div>
+    <div class="corps">
+      <div class="rang">
+        <button class="bouton" id="go-encre">Ne montrer que l'encre</button>
+        <button class="bouton casse" id="go-serre">Retirer l'espace blanc</button>
+        <span class="badge" id="badge-blanc"></span>
+      </div>
+      <div class="scene duo-t">
+        <div class="gauche">
+          <div class="porte" id="porte-mag">
+            <article class="mag">
+              <span class="rubrique">Métier · Composition</span>
+              <h3>Ce que l'on croit vide fait la moitié du travail</h3>
+              <p class="chapo-mag">Le blanc n'est pas ce qui reste quand on a fini de placer.
+              C'est ce qui sépare, ce qui groupe, et ce qui désigne.</p>
+              <p class="exergue">« On ne dessine pas des formes : on dessine ce qu'il y a
+              entre elles. »</p>
+              <div class="corps-mag">
+                <p>Un typographe expérimenté ne commence pas par écrire. Il pose d'abord les
+                marges, décide ce qui respire, et n'ajoute qu'ensuite — parce qu'un texte trop
+                serré ne devient pas plus dense, il devient illisible.</p>
+                <p>La tentation inverse est constante : il faut faire entrer un bloc de plus,
+                et le seul espace disponible est celui qui ne contient rien. On le rogne donc,
+                puis on rogne encore, et personne ne sait dire à quel moment la page a cessé de
+                se lire.</p>
+                <p>C'est un arbitrage silencieux : il ne supprime aucune information, il
+                supprime la possibilité de les distinguer. Le lecteur, lui, ne dira jamais
+                « les marges sont trop courtes » — il dira que c'est confus, ou il partira.</p>
+              </div>
+            </article>
+          </div>
+          <div class="pied-scene"><span class="invite" style="opacity:1" id="invite-blanc"></span></div>
+        </div>
+        <p class="dit" id="dit-blanc"></p>
+      </div>
+      <details><summary>Règles &amp; sources</summary><div>
+        <p><b>Le blanc d'abord</b> — on compose en partant de trop d'espace blanc, puis on
+        retire ; jamais l'inverse. Cette règle se juge à la relecture : la mesure dit combien
+        d'espace blanc il reste, jamais s'il a été donné avant d'être repris.</p>
+        <p class="sourd">Sources : NN/g — Form Design White Space · Wathan &amp; Schoger,
+        <i>Refactoring UI</i> · Müller-Brockmann, <i>Grid Systems in Graphic Design</i>.</p>
+      </div></details>
+    </div>
+  </section>
+
+  <!-- ══ 04 · LE FONDS ══ -->
+  <section class="sec" id="fonds">
+    <div class="sec-tete">
+      <p class="kicker">04 · Le fonds complet</p>
+      <h2>Quinze lois, et il n'y en a pas d'autres</h2>
+      <p class="sourd">En croisant la psychologie de la perception, les référentiels du métier
+      et la tradition éditoriale, le fonds de la composition tient en quinze lois. Sept vivent
+      déjà dans nos autres familles — les y répéter serait fabriquer deux sources pour une même
+      chose ; huit vivent ici.</p>
+    </div>
+    <div class="corps">
+      <div class="cadre"><table id="table-fonds"></table></div>
+      <p class="sourd" style="max-width:var(--mesure)"><b>Deux des huit se jugent à l'œil, et on
+      ne fait pas semblant de les mesurer.</b> Aucune mesure ne dit où est l'essentiel d'une
+      page, ni si l'air a été donné avant d'être repris. Le contrôle dira « aucune des fautes
+      nommées n'est présente » — jamais « c'est bien composé ». Cette phrase-là reste à un
+      lecteur.</p>
+      <details><summary>Les lois comportementales, et pourquoi elles ne sont pas ici</summary><div>
+        <p>Hick, Fitts, Miller — le temps de décision, la difficulté d'atteindre une cible, la
+        charge de mémoire — gouvernent l'<b>interaction</b>, pas la composition. Elles
+        concerneront les composants, quand les fondations seront verrouillées.</p>
+      </div></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+const px = n => Math.round(n) + "px";
+
+/* ══ 01 · l'écran de travail, ses fautes, ses repères ══════════════════ */
+const APP = `<div class="app FAUTE">
+  <div class="app-tete"><i></i><b>Conformité</b></div>
+  <div class="app-corps">
+    <div class="b kpi"><span class="etq">Dossiers à valider</span><b>34</b><span class="sous">dont 6 en retard</span></div>
+    <div class="b cta"><span class="b1">Valider</span><span class="b2">Exporter</span></div>
+    <div class="b liste"><span class="etq">Derniers dossiers</span>
+      <span class="li"><i></i>Meunier SAS<span class="pct">62 %</span></span>
+      <span class="li"><i></i>Atelier Vidal<span class="pct">100 %</span></span>
+      <span class="li"><i></i>Groupe Ferrand<span class="pct">38 %</span></span></div>
+    <div class="b"><span class="etq">Affichage</span>
+      <span class="champ">Trier par : date</span><span class="champ">Densité : confortable</span></div>
+  </div></div>`;
+
+const FAUTES = {
+  "": { verdict:"rien de cassé — un dominant, trois groupes, un seul axe",
+    invite:"↑ l'écran nomme ses organes — cassez-en un", solution:"",
+    dit:"L'écran de départ : le chiffre entre en premier, les groupes sont faits par l'écart seul, et tout part de la même verticale." },
+  "f-dominant": { nom:"deux dominants", verdict:"Faux · deux dominants, c'est aucun",
+    solution:"rendu : un seul corps maximal",
+    dit:"Le titre de la liste a pris le corps du chiffre — rien d'autre n'a changé. L'œil hésite désormais entre deux entrées, et une hésitation de plus est une décision de moins." },
+  "f-cloison": { nom:"tout cloisonné", verdict:"Faux · quatre surfaces pour des groupes que le blanc faisait déjà",
+    solution:"rendu : les quatre cadres retirés",
+    dit:"Une surface se mérite : elle n'apparaît que là où l'écart ne suffit pas à faire le groupe. Ici les quatre cadres n'ajoutent aucune information — ils ajoutent quatre traits." },
+  "f-equi": { nom:"écarts tous égaux", verdict:"Faux · dedans et dehors mesurent pareil",
+    solution:"rendu : l'écart entre groupes triplé",
+    dit:"Les cotes relevées sur le rendu le disent : l'écart entre deux groupes vaut celui qui sépare deux lignes d'un même groupe. C'est l'erreur canonique des formulaires." },
+  "f-axes": { nom:"quatre axes", verdict:"Faux · quatre départs différents",
+    solution:"rendu : les blocs ramenés sur la même verticale",
+    dit:"Les fils sont posés aux bords gauches réels des blocs. Deux départs à moins de trois pixels comptent pour un seul axe : l'œil ne les distingue pas, la mesure non plus." },
+  "f-rupture": { nom:"la rupture partout", verdict:"Faux · si tout rompt, rien ne rompt",
+    solution:"rendu : l'accent rendu à un seul élément",
+    dit:"La couleur d'accent est une monnaie : elle se dépense une fois par écran. Posée partout, elle ne désigne plus rien — et le bouton qui devait décider devient un décor parmi d'autres." },
+};
+
+let actif = "";
+const porteApp = document.getElementById("porte-app");
+document.getElementById("cmd").innerHTML = Object.entries(FAUTES).filter(([c]) => c)
+  .map(([c, f]) => `<button class="bouton casse" data-f="${c}">Casser : ${f.nom}</button>`).join("");
+
+function reperes(ec) {
+  const base = ec.getBoundingClientRect();
+  const rect = el => { const r = el.getBoundingClientRect();
+    return { x:r.left-base.left, y:r.top-base.top, w:r.width, h:r.height, b:r.bottom-base.top }; };
+  const out = [];
+  const cadre = (el, texte) => { if (!el) return; const r = rect(el);
+    out.push(`<span class="r-cadre" style="left:${px(r.x-4)};top:${px(r.y-4)};width:${px(r.w+8)};height:${px(r.h+8)}"></span>`);
+    if (texte) out.push(`<span class="r-etq" style="left:${px(Math.max(r.x-4,2))};top:${px(r.y<18 ? r.b+12 : r.y-11)}">${texte}</span>`); };
+  const blocs = [...ec.querySelectorAll(".app-corps > .b")];
+
+  if (!actif) {
+    cadre(ec.querySelector(".kpi b"), "");
+    out.push(`<span class="r-etq" style="background:var(--surface-2);color:var(--text);left:${px(rect(ec.querySelector(".kpi b")).x-4)};top:${px(rect(ec.querySelector(".kpi b")).y-11)}">le dominant</span>`);
+    const g = rect(ec.querySelector(".liste"));
+    out.push(`<span class="r-cadre" style="border-style:dashed;border-color:var(--border-strong);left:${px(g.x-4)};top:${px(g.y-4)};width:${px(g.w+8)};height:${px(g.h+8)}"></span>`);
+    out.push(`<span class="r-etq" style="background:var(--surface-2);color:var(--text);left:${px(g.x-4)};top:${px(g.y-11)}">un groupe</span>`);
+    const x = Math.round(rect(blocs[0]).x);
+    out.push(`<span class="r-fil" style="border-color:var(--border-strong);left:${px(x)};top:0;height:100%"></span>`);
+    out.push(`<span class="r-etq" style="background:var(--surface-2);color:var(--text);left:${px(x+6)};top:14px">l'axe de départ</span>`);
+    const a = rect(blocs[1]), b = rect(blocs[2]);
+    out.push(`<span class="r-cote" style="border-color:var(--border-strong);left:5px;top:${px(a.b)};height:${px(b.y-a.b)}"></span>`);
+    out.push(`<span class="r-etq" style="background:var(--surface-2);color:var(--text);left:13px;top:${px(a.b+(b.y-a.b)/2)}">l'espace blanc qui groupe</span>`);
+  }
+  if (actif === "f-dominant") { cadre(ec.querySelector(".kpi b"), "dominant"); cadre(ec.querySelector(".liste .etq"), "dominant"); }
+  if (actif === "f-cloison") { blocs.forEach(b => cadre(b, "")); cadre(blocs[1], "le blanc suffisait"); }
+  if (actif === "f-equi") {
+    for (let i = 0; i < blocs.length - 1; i++) {
+      const a = rect(blocs[i]), b = rect(blocs[i+1]), h = Math.max(b.y - a.b, 1);
+      out.push(`<span class="r-cote" style="left:5px;top:${px(a.b)};height:${px(h)}"></span>`);
+      out.push(`<span class="r-etq" style="left:13px;top:${px(a.b + h/2)}">${Math.round(h)}</span>`);
+    }
+    const l = [...ec.querySelectorAll(".liste .li")];
+    const a = rect(l[0]), b = rect(l[1]), h = Math.max(b.y - a.b, 1);
+    out.push(`<span class="r-cote" style="left:${px(a.x+a.w+12)};top:${px(a.b)};height:${px(h)}"></span>`);
+    out.push(`<span class="r-etq" style="left:${px(a.x+a.w+18)};top:${px(a.b+h/2)}">${Math.round(h)} — dans le groupe</span>`);
+  }
+  if (actif === "f-axes") {
+    const axes = [];
+    blocs.forEach(b => { const x = Math.round(rect(b).x); if (!axes.some(u => Math.abs(u-x) < 3)) axes.push(x); });
+    axes.sort((a,b) => a-b).forEach((x, i) => {
+      out.push(`<span class="r-fil" style="left:${px(x)};top:0;height:100%"></span>`);
+      out.push(`<span class="r-etq" style="left:${px(x+4)};top:${px(14 + (i%2)*15)}">axe ${i+1}</span>`);
+    });
+  }
+  if (actif === "f-rupture") {
+    const cibles = ec.querySelectorAll(".etq, .b1, .b2, .pct, .app-tete b");
+    cibles.forEach(el => { const r = rect(el);
+      out.push(`<span class="r-puce" style="left:${px(Math.max(r.x-12,3))};top:${px(r.y+r.h/2)}"></span>`); });
+    const r = rect(ec.querySelector(".b2"));
+    out.push(`<span class="r-etq" style="left:${px(r.x+r.w+10)};top:${px(r.y+r.h/2)}">l'accent, dépensé ${cibles.length} fois</span>`);
+  }
+  return out.join("");
+}
+
+function rendreApp() {
+  const f = FAUTES[actif];
+  porteApp.innerHTML = APP.replace("FAUTE", actif) + `<div class="calque" id="calque-app"></div>`;
+  const v = document.getElementById("verdict");
+  v.className = "badge" + (actif ? " ko" : "");
+  v.textContent = f.verdict;
+  document.getElementById("dit").textContent = f.dit;
+  document.getElementById("invite").textContent = actif ? "↓ survolez l'écran : il se répare sous vos yeux" : f.invite;
+  document.getElementById("solution").textContent = f.solution;
+  document.querySelectorAll("#cmd .bouton").forEach(b => b.classList.toggle("on", b.dataset.f === actif));
+  requestAnimationFrame(() => {
+    document.getElementById("calque-app").innerHTML = reperes(porteApp.querySelector(".app"));
+  });
+}
+document.querySelectorAll("#cmd .bouton").forEach(b =>
+  b.addEventListener("click", () => { actif = actif === b.dataset.f ? "" : b.dataset.f; rendreApp(); }));
+rendreApp();
+window.addEventListener("resize", rendreApp);
+
+/* ══ 02 · les deux parcours, tracés en pixels réels ════════════════════ */
+function tracer(porteId, type, retard) {
+  const porte = document.getElementById(porteId);
+  const dessiner = () => {
+    porte.querySelector(".trace")?.remove();
+    const r = porte.getBoundingClientRect();
+    const w = Math.round(r.width), h = Math.round(r.height);
+    const X = f => Math.round(w * f), Y = f => Math.round(h * f);
+    const d = type === "F"
+      ? `M${X(.08)} ${Y(.13)} L${X(.92)} ${Y(.13)} L${X(.08)} ${Y(.36)} L${X(.74)} ${Y(.36)} L${X(.08)} ${Y(.58)} L${X(.46)} ${Y(.58)} L${X(.08)} ${Y(.80)} L${X(.30)} ${Y(.80)}`
+      : `M${X(.10)} ${Y(.12)} L${X(.90)} ${Y(.12)} L${X(.10)} ${Y(.84)} L${X(.90)} ${Y(.84)}`;
+    const pts = d.split(/[ML]/).slice(1).map(c => c.trim().split(/\s+/).map(Number));
+    let len = 0;
+    for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]);
+    porte.insertAdjacentHTML("beforeend",
+      `<svg class="trace" width="${w}" height="${h}" style="--len:${Math.round(len)}px;--retard:${retard}">
+         <path class="chemin" d="${d}"></path><path class="regard" d="${d}"></path></svg>`);
+  };
+  dessiner();
+  new ResizeObserver(dessiner).observe(porte);
+}
+tracer("porte-presse", "F", "0s");
+tracer("porte-affiche", "Z", ".55s");
+
+/* ══ 03 · l'espace blanc, sur la page de magazine ══════════════════════ */
+const porteMag = document.getElementById("porte-mag");
+const badgeBlanc = document.getElementById("badge-blanc");
+const ditBlanc = document.getElementById("dit-blanc");
+const inviteBlanc = document.getElementById("invite-blanc");
+let encre = false, serre = false, hauteurRepos = null;
+
+function mesurerEncre() {
+  const art = porteMag.querySelector(".mag");
+  const base = art.getBoundingClientRect();
+  const boites = [];
+  const range = document.createRange();
+  const parcourir = el => {
+    el.childNodes.forEach(n => {
+      if (n.nodeType === 3 && n.textContent.trim()) {
+        range.selectNodeContents(n);
+        boites.push(...range.getClientRects());
+      } else if (n.nodeType === 1) parcourir(n);
+    });
+  };
+  parcourir(art);
+  const aire = boites.reduce((a, r) => a + r.width * r.height, 0);
+  const part = Math.round((aire / (base.width * base.height)) * 100);
+  return { boites, base, part };
+}
+function rendreMag() {
+  porteMag.classList.toggle("serre", serre);
+  porteMag.querySelector(".calque")?.remove();
+  if (hauteurRepos === null) hauteurRepos = Math.round(porteMag.getBoundingClientRect().height);
+  porteMag.style.minHeight = serre ? hauteurRepos + "px" : "";
+  const { boites, base, part } = mesurerEncre();
+  if (encre) {
+    porteMag.insertAdjacentHTML("beforeend", `<div class="calque">` + boites
+      .filter(r => r.width > 0 && r.height > 0)
+      .map(r => `<span class="tache" style="left:${px(r.left-base.left)};top:${px(r.top-base.top)};width:${px(r.width)};height:${px(r.height)}"></span>`)
+      .join("") + `</div>`);
+  }
+  badgeBlanc.className = "badge" + (serre ? " ko" : "");
+  badgeBlanc.textContent = serre
+    ? "même encre, même surface — l'air a disparu"
+    : `l'encre occupe ${part} % de cette page`;
+  ditBlanc.textContent = serre
+    ? "Pas un signe n'a été retiré : mêmes mots, même corps, même famille. Ce qui a disparu, c'est ce qu'on prenait pour du vide — et avec lui, les groupes, la hiérarchie, et l'endroit où poser l'œil."
+    : (encre
+      ? "Chaque tache couvre un signe. Tout le reste — l'immense majorité de la page — est de l'espace blanc : il n'occupe pas la place, il la donne."
+      : "Une page de magazine ordinaire. Regardez d'abord sa forme, avant de lire un mot : ce sont les marges, les colonnes et les respirations qui vous disent par où entrer.");
+  inviteBlanc.textContent = encre ? "les taches sont mesurées sur le rendu, pas dessinées" : "";
+  document.getElementById("go-encre").classList.toggle("on", encre);
+  document.getElementById("go-serre").classList.toggle("on", serre);
+  document.getElementById("go-encre").textContent = encre ? "Rendre le texte" : "Ne montrer que l'encre";
+  document.getElementById("go-serre").textContent = serre ? "Rendre l'espace blanc" : "Retirer l'espace blanc";
+}
+document.getElementById("go-encre").addEventListener("click", () => { encre = !encre; rendreMag(); });
+document.getElementById("go-serre").addEventListener("click", () => { serre = !serre; rendreMag(); });
+rendreMag();
+window.addEventListener("resize", () => { if (encre) rendreMag(); });
+
+/* ══ 04 · le fonds ════════════════════════════════════════════════════ */
+const FONDS = [
+  ["Proximité","ce qui est proche est perçu comme lié","Rythme",""],
+  ["Similarité","un costume visuel = un rôle : deux rôles sous le même costume mentent au lecteur","ici","machine"],
+  ["Région commune","une surface se mérite : elle n'apparaît que là où le blanc ne suffit pas","ici","machine"],
+  ["Connexion uniforme","un trait qui relie unit plus fort que tout","en référence",""],
+  ["Prägnanz","l'œil cherche la forme la plus simple : le simple gagne","principe de tête",""],
+  ["Un dominant par vue","une seule chose se lit en premier ; deux dominants, c'est aucun","ici","machine"],
+  ["Hiérarchie par combinaison","corps, graisse, couleur, position — jamais la taille seule","Typographie",""],
+  ["Sens de lecture","l'œil balaie en F ou en Z ; l'essentiel vit sur ce chemin","ici","œil"],
+  ["La rupture se dépense","une seule famille de rupture par vue","ici","machine"],
+  ["Le blanc d'abord","on part de trop d'espace blanc, puis on retire — jamais l'inverse","ici","œil"],
+  ["Peu d'axes, tenus","tout élément partage un axe de départ ; un axe par élément, c'est du bruit","ici","machine"],
+  ["Grille","colonnes et gouttières sortent de la même base que l'échelle","à venir",""],
+  ["Mesure de lecture","sept à dix mots par ligne","Typographie",""],
+  ["Dedans plus serré que dehors","l'interne ne dépasse jamais l'externe, sur l'échelle","Rythme",""],
+  ["Rôles d'espace nommés","retrait, empilement, alignement, gouttière","ici","machine"],
+];
+document.getElementById("table-fonds").innerHTML =
+  `<thead><tr><th>loi</th><th>en une phrase</th><th>où elle vit</th><th>qui la juge</th></tr></thead><tbody>` +
+  FONDS.map(([n, p, ou, j]) => `<tr><td style="white-space:nowrap">${n}</td><td class="sourd">${p}</td>
+    <td><span class="badge" style="${ou === "ici" ? "color:var(--success);background:var(--success-subtle);border-color:transparent" : ""}">${ou}</span></td>
+    <td>${j ? `<span class="badge" style="${j === "œil" ? "color:var(--danger);background:var(--danger-subtle);border-color:transparent" : "color:var(--success);background:var(--success-subtle);border-color:transparent"}">${j === "œil" ? "l'œil" : "la machine"}</span>` : '<span class="sourd">—</span>'}</td></tr>`).join("") +
+  `</tbody>`;
+</script>
+</body>
+</html>

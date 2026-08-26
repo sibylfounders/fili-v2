@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./tokens.css";
 import "./fontes.css";
 import "./globals.css";
+import { Tiroir } from "./tiroir";
 
 export const metadata: Metadata = {
   title: "Kit",
@@ -26,6 +27,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <span className="sourd" style={{ fontSize: "0.8125rem" }}>
             un design system qui montre ses raisons
           </span>
+          {/* Le tiroir de réglages du gabarit documentaire nu — ne rend
+              rien sur les pages qui gardent leur panneau permanent. */}
+          <Tiroir />
         </header>
         {children}
       </body>

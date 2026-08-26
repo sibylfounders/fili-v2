@@ -49,6 +49,731 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #124 — Les quatre pages passent sur la chaîne, et le site se vérifie lui-même
+*2026-08-25 · Statut : 🟢 fait, construit, éprouvé, jugé sur pièce le 26 (« je commence à réellement adorer notre travail ») · Thread « Le kit passe sur la chaîne », étape 5*
+
+**Contexte** — Un inventaire ligne à ligne a montré ce que le pont provisoire
+cachait : environ 460 emplois d'anciens jetons, dont une centaine rabattus sur
+le mauvais rôle (des coques en coin de carte, des marges de coque employées en
+gouttière, des espaces fabriqués par multiplicateur, des jetons d'espace posés
+en hauteur, des tailles de texte et des rayons en dur par dizaines), et des
+pages qui contredisaient les décisions sous les yeux du lecteur : « 12 entre,
+24 autour », la densité « décalée d'un cran », les six rôles d'espace, « bouton
+6, fixe », « cinq échelons » avec les anciennes tailles.
+
+**Décision** — L'Auteur délègue (« je te laisse gérer »). Trois arbitrages
+d'architecte, dits avant d'agir : la chaîne est continuée d'un cran vers le bas
+(6) pour ce qui vit dans une ligne ; toutes les étiquettes remontent au cran du
+petit texte (12,8) ; les commandes secondaires prennent une cible dérivée, la
+cible ÷ √2 (31). Puis : globals.css et les quatre pages passent sur les jetons
+dérivés avec le bon nom, les tables et préréglages sont lus dans le moteur (une
+seule table d'intentions, « Ludique » ramenée à la borne 38), les contenus sont
+réécrits sur les huit décisions sans changer le plan de preuves validé, le pont
+est retiré. Le crash-test vérifie désormais le site lui-même : aucun ancien
+nom, aucun jeton orphelin, aucun nombre posé pour un espace, une taille ou un
+rayon hors des lignes qui le déclarent (« hors chaîne », « casse ») et des deux
+blocs de dette.
+
+**Sens produit / UX** — « Pas de nombre » s'applique au site comme aux démos,
+et c'est une épreuve, plus une consigne. La page Rythme dit enfin ce que le
+moteur fait : le bon cran est calculé, la densité change la base sous les
+yeux, le vocabulaire est marge et espace par profondeur et par axe.
+
+**Alternatives écartées** — garder le pont (deux registres sous un seul nom) ;
+migrer sans toucher aux contenus (des pages qui montrent des lois qu'elles ne
+suivent pas).
+
+**Retours d'Auteur du même soir, sur le site construit** — les étiquettes mono
+remontées à 12,8 ne tenaient plus leur interlettre : elles prennent leur propre
+cran, un cran et demi sous le corps (`--font-size-label`, 11,5 → 12,3) ; les
+colonnes du gabarit (rail, gouttière, marge de page) suivaient la densité et
+resserraient la page en aéré : elles descendent de la chaîne à la base de la
+charte et n'en bougent plus — la densité règle le contenu, jamais les
+colonnes. Et une encre de plus : `text-tertiary`, le gris le plus clair qui
+tienne encore 3:1 sur le fond le plus dur, pour les petits textes indicatifs
+(kickers, fiches, légendes, pieds, index de menu), avec sa règle, **C17 — le
+tertiaire est une intention, jamais un défaut** : jamais sur du texte lu,
+jamais sous le cran étiquette, et chaque emploi dit ce qu'il est sur sa ligne
+(« tertiaire : … ») ; aucun style en ligne ne le pose. Le vérificateur
+l'éprouve. Pièce : `claude/livrables/test-encres.html` (les trois encres sur
+six crans, deux thèmes, deux fonds, quatre graisses, six objets réels).
+
+**Complément du 26 août, sur pièce** — idée d'Auteur : « aider le lecteur avec
+une fonte légèrement plus grasse pour les éléments petits en tertiaire ». La
+pièce a gagné une section (six petits objets du kit aux quatre graisses, un
+témoin secondaire, deux cartes côte à côte, une case qui applique l'idée aux
+pièces et au tableau). Verdict : « c'est bien mieux ». C17 gagne sa
+contrepartie : **en petit, le tertiaire porte un cran de graisse de plus que le
+texte qu'il accompagne** (600 au moins, 700 pour un kicker mono) — l'œil
+retrouve en épaisseur ce que l'encre a cédé en contraste, sans rapprocher le
+tertiaire du secondaire ; c'est le principe même de la norme, qui admet un
+contraste moindre dès que le texte est gras. Appliqué : les fiches de la page
+Typo (500 → 600), le kicker dit sa graisse (700), et l'index du menu, qui était
+un secondaire à demi effacé par une opacité — un tertiaire par défaut, la
+négligence que C17 interdit —, devient un vrai tertiaire à 600. Le vérificateur
+éprouve aussi la graisse : tout bloc CSS qui pose le tertiaire doit porter 600
+ou 700, sinon le test échoue (éprouvé en le cassant exprès). L'exception du
+tableau reste à éprouver.
+
+**Conséquences** — `kit/app/globals.css` (1236 → 1062 lignes), `kit/app/rythme/`
+(vue, rythme.css), `kit/app/typo/` (vue, typo.css), `kit/app/couleur/vue.tsx`,
+`kit/app/arrondis/` (vue, arrondis.css), `densite.tsx`, `apercu.tsx`,
+`adaptation.tsx`, `primaire.tsx`, `theme.tsx`, `composition/vue.tsx` (rabattement
+mécanique seul). Dettes dites : Accueil et Composition hors chaîne, neuf seuils
+de mise en page. Note : `claude/chaine-etape-5-pages-2026-08-25.md`.
+
+---
+
+## #123 — Le gabarit documentaire descend de la chaîne
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Rouvre et referme le gabarit du 24 août (`#107`, `#108`) · Thread « Le kit passe sur la chaîne », étape 4*
+
+**Contexte** — La décision 8 disait que les jetons du gabarit documentaire ne
+resteraient pas des valeurs à part, et que deux crans manquaient à la chaîne :
+le silence entre sections et les grandes marges de page. Une planche a rendu la
+vraie page Rythme, construite, avec ses huit crans dérivés : six par la loi
+(scène = marge de coque, tête et gouttière = 2ᵉ cran de page, marge de page =
+le bord sur mobile et le 3ᵉ cran au bureau, rail = 6ᵉ cran), deux à l'œil — le
+silence (4ᵉ ou 5ᵉ cran, chacun en compact · standard · aéré, parce que la
+densité change la base et que les crans de page la suivent) et les titres du
+site (un, un et demi, ou deux crans au-dessus de l'affiche).
+
+**Décision** — Le silence entre sections est le quatrième cran de page (96 ;
+compact 64, aéré 128). Les titres du site sont à un cran et demi au-dessus de
+l'affiche (55 → 58 et 44 → 47) : le demi-cran est √1,25, la même idée que √2
+pour les marges — dérivé, jamais posé. Chaque `--doc-*` est un alias d'un jeton
+de la chaîne ; la marge de page change de cran avec le régime ; la scène prend
+sa marge sur ses deux axes.
+
+**Sens produit / UX** — Le site du kit devient sa propre preuve : ses silences
+et ses affiches sont la même musique que les cartes qu'il montre, et la densité
+règle la page comme elle règle les démos. Le prix est dit : la chaîne glisse
+moins que le gabarit d'hier (0,90–1,16 au lieu du simple au double), l'affiche
+ne dépasse plus 58, la marge de page sur mobile est le bord de la coque.
+
+**Réserve consignée** — l'Auteur a demandé le cran et demi lui-même
+(« c'est possible d'essayer 1,5 ? ») : un demi-cran est admis dans l'échelle
+des titres dès lors qu'il est la racine de l'intervalle.
+
+**Amendement, le soir même, sur le site construit** — « j'ai mal compris une
+décision, il faut que ça glisse comme sur le fichier nu ». Sur la chaîne, un
+titre ne glisse que de ×1,07 avec l'écran ; les titres du gabarit nu du
+24 août glissaient du simple au double. Décision : les titres du site gardent
+des bornes dérivées de la chaîne — l'affiche du cran des sections (4,5) à
+sept crans au-dessus du corps (44 → 82), la section du cran h1 au cran des
+sections (31 → 47) — et prennent une pente à eux, celle du gabarit nu
+(6 % et 3,4 % de la largeur de l'écran), déclarée comme intention d'auteur
+dans le moteur. Une règle rompue, dite, la même pour les deux titres.
+L'affiche garde sa graisse (500) ; sections et intertitres descendent d'un
+cran de graisse (400, 500) — retour d'Auteur du même soir.
+
+**Alternatives écartées** — 5ᵉ cran (136 : plus proche d'hier, mais l'œil a
+tranché) ; un ou deux crans pour les titres.
+
+**Conséquences** — `HORS_CHAINE.titresSite`, `REGISTRE.doc` et `docBureau`
+dans le moteur ; `--font-size-cover` et `--font-size-section` ; seuls les crans
+de page consommés sont émis. Dette dite : le site porte plusieurs seuils de mise
+en page là où la décision 7 en veut un seul. Note :
+`claude/chaine-etape-4-gabarit-2026-08-25.md`.
+
+---
+
+## #122 — La racine est 16, et le moteur du kit porte la chaîne
+*2026-08-25 · Statut : 🟢 décidé sur pièce (racine), 🟢 moteur écrit, éprouvé et commité le 26 · Thread « Le kit passe sur la chaîne », étapes 1 à 3*
+
+**Contexte** — La décision 8 avait consigné une réserve : sur la tranche
+Coursue, l'Auteur préférait « avant » (coins 12 · 8 · 4) à la chaîne à racine 24,
+et l'architecte lisait dans cet écart deux réglages d'entrée, pas les lois.
+Une planche a rendu la tranche et le tableau de bord entier de Navette quatre
+fois — avant, puis la chaîne à racine 16, 20 et 24, base 24 et √2 inchangés —
+avec un mode à l'aveugle (écrans mélangés sans nom, on clique, la page révèle).
+
+**Décision** — Racine 16 à la charte (« 20 et 24 sont très bien aussi »).
+Coins 16 · 8 · 4 · 2, bouton 4 ; marges 24 · 17 · 12, espaces 17 · 12. Le
+moteur `kit/derivation.mjs` gagne la chaîne du rythme à côté de la couleur :
+quatre décisions d'entrée, huit lois, tout le registre en sort — marges et
+espaces par profondeur sur deux axes, coins, bouton, texte borné, cible,
+densités par changement de base, et la chaîne continuée vers le haut pour les
+crans de page et vers le bas d'un cran (6, la base ÷ 4) pour ce qui vit dans
+une ligne. `tokens.css` devient un fichier écrit de bout en bout par le moteur
+(`npm run tokens`) ; Tailwind est régénéré ; Figma naît en JSON, gelé à 768
+avec ses bornes en description.
+
+**Sens produit / UX** — Le verdict a été pris à l'œil, à l'aveugle, sur un vrai
+écran : la méthode des décisions 1 et 4 poussée d'un cran. Et le kit cesse
+d'avoir deux systèmes dans un fichier : un seul moteur, un seul registre.
+
+**Méthode** — Le crash-test `kit/derivation.test.mjs` rejoue chaque page de
+décision avec ses propres réglages et compare au dixième de pixel ; il vérifie
+aussi que la couleur n'a pas bougé d'un bit et que les jetons de la coque
+valent ceux d'avant au dix-millième.
+
+**Alternatives écartées** — racine 24 (la charte de la veille : trop ronde à
+l'œil sur l'échantillon) ; garder deux registres.
+
+**Conséquences** — `kit/derivation.mjs`, `kit/derivation.test.mjs`,
+`kit/tokens.ecrire.mjs`, `kit/app/tokens.css`, `kit/tokens.tailwind.mjs`,
+`kit/tokens.figma.json`. Pièce : `claude/livrables/planche-racines.html`.
+Notes : `claude/chaine-etape-2-moteur-2026-08-25.md`,
+`claude/chaine-etape-3-sorties-2026-08-25.md`.
+
+---
+
+---
+
+## #121 — Décision 8 : le kit entier, site compris, tourne sur le moteur
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Clôt la série des huit décisions · Rouvre le gabarit du 24 août*
+
+**Contexte** — Les pages du kit (Rythme, Typo, Couleur) tournaient sur
+l'échelle fixe DESIGN.md 1.31.0 tandis que le moteur, prouvé conforme à la
+pièce d'Auteur, vivait dans le même fichier sans être lu ; le gabarit
+documentaire avait ses jetons à part. Une page a rendu la tranche Coursue sur
+les deux registres et la table des jetons ligne par ligne, décision par
+décision.
+
+**Décision** — Un seul registre, dérivé des trois décisions d'entrée et des
+sept lois, pour tout le kit — démos et site compris. Les jetons du gabarit
+documentaire descendent de la chaîne ; les crans de page (silence entre
+sections, grandes marges) sont la chaîne continuée au-dessus de la coque, à
+produire puis à juger.
+
+**Sens produit / UX** — « Un design system qui n'adopte pas ses propres outils
+n'a pas d'intérêt » (Auteur). Le site du kit devient sa propre preuve. Le prix
+est dit : le gabarit verrouillé la veille est à refaire, et deux crans manquent
+à la chaîne.
+
+**Réserve consignée** — sur l'échantillon, l'Auteur préfère « avant » de visu.
+Lecture : la racine et la base, pas les lois. Une planche « avant contre trois
+racines » précède toute régénération ; si aucune ne convainc, la chaîne sera
+rediscutée, par écrit.
+
+**Alternatives écartées** — deux régimes (site à part, démos sur le moteur) ;
+ne rien brancher.
+
+**Conséquences** — moteur : registre complet ; tokens.css, Tailwind, Figma
+régénérés ; DESIGN.md réduit aux entrées et aux valeurs hors chaîne ; gabarit
+documentaire reconstruit sur pièce ; vérificateur : `--doc-*` non dérivé =
+faute. Pièce : `claude/livrables/decision-8-registre.html`.
+
+---
+
+---
+
+## #120 — Décision 7 : un régime est une mise en page, le rythme n'en a pas — provisoire
+*2026-08-25 · Statut : 🟢 décidé sur pièce, provisoire déclaré · Confirme Y7 · Suite des décisions 1 à 6*
+
+**Contexte** — Y7 (deux régimes, un seuil) semblait contredire la pièce
+d'Auteur (rythme continu, quatre largeurs nommées, gel à 768 repris par
+l'export Figma). Une page a rendu l'écran de 1440 à 320 avec deux jauges (la
+mise en page fait un pas, le rythme une pente), puis l'écran vivant contre
+l'écran figé à 768 à trois largeurs.
+
+**Décision** — Un régime est une mise en page : deux régimes, un seuil en em
+(Y7). Le rythme n'a pas de régime : il glisse sans palier (la pièce, Y8
+renversée). Les quatre largeurs nommées sont des repères ; 768 est une valeur
+de gel pour Figma, pas un régime. Décision provisoire : un troisième régime
+naîtra d'un besoin réel journalisé, comme Y7 le prévoit.
+
+**Sens produit / UX** — Les deux règles ne parlaient pas de la même chose ; les
+faire cohabiter ne renverse rien et n'enferme rien. Le gel à 768 est un prix
+connu de Figma, dit avec ses bornes, pas une vérité du produit.
+
+**Alternatives écartées** — trois régimes dont une tablette (Y7 renversée pour
+une mise en page jamais dessinée) ; aucun régime (plus de seuil comptable, plus
+de « mobile » de séance).
+
+**Conséquences** — phrase de tête sur Y7 ; « figer le rythme » rangé en outil
+d'export ; l'axe radius de la pièce à retirer (conséquence de la décision 2, à
+confirmer) ; le seuil de mise en page à poser au registre. Pièce :
+`claude/livrables/decision-7-regimes.html`.
+
+---
+
+## #119 — Décision 6 : la cible au doigt vit en rem et suit l'axe « control » — Y9 amendée
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Amende Y9 (#103) et le tactile (#099) · Suite des décisions 1 à 5*
+
+**Contexte** — Y9 gardait la cible au doigt en pixels (« un doigt ne grandit
+pas avec le texte ») ; le paquet tactile n'admettait que trois chiffres de
+cible ; la pièce d'Auteur émettait la hauteur des contrôles en rem, fluide de 44
+à 46,6 px selon la largeur. Une page a rendu l'écran sous un zoom de texte de
+100 à 200 % (cible en px contre cible en rem) et deux rangées de boutons de 320
+à 1440 (44 fixe contre 44 × axe).
+
+**Décision** — La cible est en rem et suit l'axe « control » (2,75 rem × 1,00 →
+1,06). Elle grandit avec le texte du lecteur et, un peu, avec la largeur.
+
+**Sens produit / UX** — Le texte d'un bouton grandit quand le lecteur grossit
+son texte ; une cible fixe le coupe. La cible suit son texte. L'axe garde la
+même logique que les marges et le corps. Le prix est dit : Y9 perd une
+exception, le tactile compte des crans à bornes et non plus des chiffres, et le
+plancher WCAG de 24 px reste la seule valeur en pixels.
+
+**Alternatives écartées** — 44 px fixes (Y9 telle quelle ; le texte se coupe
+à 200 %) ; rem sans axe (proposé par l'architecte ; la cohérence d'axe l'a
+emporté).
+
+**Conséquences** — Y9 : deux exceptions au lieu de trois ; tactile T1/T4/T5 à
+réécrire en crans à bornes, plancher 24 px en borne absolue ; kit et pièce :
+rien à changer. Pièce : `claude/livrables/decision-6-cible.html`.
+
+---
+
+## #118 — Décision 5 : le corps est borné à 16, les titres descendent de l'intervalle
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Suite des décisions 1 à 4 · confirme T10, remplace l'échelle du 23 août*
+
+**Contexte** — L'axe « type » de la pièce d'Auteur faisait descendre le corps à
+15,4 px à 320 px, sous le plancher de T10 (votée 11/11 le 23 août) ; le kit
+portait ce jeton à côté de son propre corps à 16. La pièce ne connaissait que
+deux titres, sa démo « Page » en fabriquait cinq autres par multiplicateurs ;
+le kit avait cinq crans arbitrés à la main, sans rapport avec l'intervalle.
+Une page a rendu l'écran de 320 à 1440 avec l'axe libre et l'axe borné, puis
+un article composé trois fois.
+
+**Décision** — Le corps = max(16, 16 × axe). Cinq crans de titres et un cran de
+légende, chacun = le précédent × l'intervalle des titres (1,25) : 12,8 · 16 ·
+20 · 25 · 31 · 39 à 320 px, montant avec l'axe. Le régime documentaire du site
+garde ses affiches à part.
+
+**Sens produit / UX** — Le plancher est une contrainte de plateforme, pas un
+goût. Un seul chiffre règle tous les titres comme un seul règle toutes les
+marges : la pièce et le kit parlent la même musique. Le prix : l'affiche
+produit est plus petite que celle d'hier, et les jetons du 23 août sont à
+régénérer.
+
+**Alternatives écartées** — renverser T10 ; garder les deux titres de la pièce
+(insuffisant, prouvé par sa propre démo) ; garder l'échelle du kit telle quelle
+(une seconde musique).
+
+**Conséquences** — pièce : axe borné, six crans en sortie, démo « Page » à
+refaire ; kit : tokens.css, Tailwind, Figma, page /typo ; T10 : faute
+détectable sur la borne basse d'un jeton de corps ; registre : périmètre du
+cran « légende ». Pièce : `claude/livrables/decision-5-texte.html`.
+
+---
+
+## #117 — Décision 4 : la densité change la base, coins fixes — Y5 renversée à l'œil
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Renverse Y5 (#103) · Suite des décisions 1 à 3*
+
+**Contexte** — Trois réponses à « qu'est-ce que serrer un écran » : la théorie
+(multiplier tout, coins compris), Y5 votée le 23 août (décaler d'un cran, jamais
+un multiplicateur), la page /rythme (− 8 sur l'échelle fixe), la pièce d'Auteur
+(changer la base). Une page a rendu le tableau de bord en trois densités avec
+les deux façons de serrer et les coins fixes ou suiveurs.
+
+**Décision** — La densité change la base (16 · 24 · 32) et la chaîne des marges
+et des espaces se recalcule ; coins et composants restent fixes.
+
+**Sens produit / UX** — À l'œil, le pas de la base fait des densités qui se
+voient ; le cran se voyait moins. Le prix est dit : Y5 est renversée (un
+multiplicateur, des chiffres neufs par densité — neuf pour neuf marges au lieu
+de six), et l'échelle a deux rythmes, profondeur ÷ √2 et densité × 0,67. Les
+coins ne suivent pas : l'aéré aurait crevé la borne 38 et les boutons auraient
+changé de coin.
+
+**Méthode** — Deuxième règle renversée à l'œil en une journée (Y8 le 23, Y5 le
+25). Une règle sur papier ne vaut pas un écran rendu trois fois : à écrire dans
+la méthode des séances.
+
+**Alternatives écartées** — décaler d'un cran, coins fixes (Y5 telle quelle) ;
+décaler d'un cran et coins suiveurs (la théorie).
+
+**Conséquences** — Y5 réécrite ; #076 à refaire sur la base ; jeton de densité =
+base au kit ; /rythme à refaire (décision 8) ; question ouverte : 20 (« Outil
+expert ») est-il un cran de densité ou une intention. Pièce :
+`claude/livrables/decision-4-densite.html`.
+
+---
+
+## #116 — Décision 3 : un composant prend le cran de la ligne (racine ÷ 4)
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Suite des décisions 1 et 2 · amende
+l'arbitrage « contrôle 6 » du matin sans en changer la valeur à la charte*
+
+**Contexte** — Tout le monde disait « un bouton garde son coin à lui », personne
+ne disait le même chiffre : 12 dans la pièce d'Auteur, 6 acté le matin sur
+/arrondis, 3 dans la migration du 11 août, « suit sa taille » dans la reprise
+du 13. Et la couche contexte de la pièce faisait suivre au bouton la racine et
+la largeur d'écran, contre sa propre règle. Une page a rendu le même écran à 6
+et à 12, puis le bouton aux trois profondeurs pour trois options, racine
+réglable de 0 à 38.
+
+**Décision** — Le composant prend le cran de la ligne : racine ÷ 4, fixe à
+l'écran, réglé par la racine du produit. 6 à la charte. La case à cocher garde
+son exception (anguleuse).
+
+**Sens produit / UX** — Un bouton ne peut jamais être plus rond que ce qui le
+contient : la règle « aucun enfant plus rond que son parent » vaut pour tout,
+sans exception à écrire. Et le bouton appartient au produit : anguleux dans un
+outil brut, rond dans un produit grand public. Le prix : « hors réglage » de la
+théorie devient « hors écran, hors densité, mais réglé par la racine ».
+
+**Alternatives écartées** — 6 fixe (fautif sous racine 12, deux intentions sur
+six) ; 12 fixe (fautif à la charte même, dans une ligne de 6).
+
+**Conséquences** — pièce d'Auteur : règle 7 et couche contexte à corriger ;
+kit : `--r-ctl` = `--r-3`, A10 réécrite, légende de /arrondis ajustée ;
+registre : exception des cases à cocher ; vérificateur : plus de clause
+d'exception pour les composants. Pièce :
+`claude/livrables/decision-3-controles.html`.
+
+---
+
+## #115 — Décision 2 : la coque est le niveau 1 et porte la racine, bornée à 38
+*2026-08-25 · Statut : 🟢 décidé sur pièce · Suite de la décision 1*
+
+**Contexte** — La pièce d'Auteur disait deux choses : ses démos et /arrondis
+posent la racine (24) sur la coque et divisent ensuite (12, 6, 3) ; le CSS
+qu'elle écrit donne au niveau 1 la moitié de la racine (12) avec la marge 24,
+et la racine n'y a pas de jeton. Une page a rendu le même tableau de bord avec
+les deux numérotages, racine réglable de 0 à 48.
+
+**Décision** — La coque est le niveau 1 et porte la racine ; carte ÷ 2, ligne
+÷ 4, marque ÷ 8 ; jetons `--r-1` à `--r-4`. La racine est bornée à 38 px.
+
+**Sens produit / UX** — Le nombre qu'on règle est le coin qu'on voit ; un objet,
+un niveau, un jeton. L'autre numérotage était la même chaîne décalée d'un cran,
+un curseur qui ment de moitié. La borne à 38 vient de l'œil : au-delà, la marge
+qui suit le rayon épaissit la coque au point de changer l'écran.
+
+**Alternatives écartées** — la racine cachée (coque = racine ÷ 2), sortie CSS
+actuelle de la pièce.
+
+**Conséquences** — CSS du générateur renuméroté et curseur borné ; préréglage
+« Ludique » (44) à ramener sous la borne ; jetons du kit et de Figma en r-1 à
+r-4 ; question ouverte : 38 contre la grille de 4 (36 ou 40). Pièce :
+`claude/livrables/decision-2-profondeurs.html`.
+
+---
+
+## #114 — Décision 1 : l'espace entre deux frères vaut leur marge
+*2026-08-25 · Statut : 🟢 décidé sur pièce, à l'œil · Ouvre la série des huit
+décisions (claude/divergences-semanticrhythm-kit-2026-08-25.md)*
+
+**Contexte** — La pièce d'Auteur « Semantic Rhythm » (25 août) calcule la marge
+d'une carte en divisant la base par un intervalle (√2 : 17) tandis que l'espace
+entre cartes vaut la moitié de la base (12). La règle Y1, votée 9/9 le 23 août,
+dit l'inverse : dedans ne dépasse jamais dehors. Une première page a montré le
+panneau à manipuler, les six intentions (toutes rouges) et trois issues avec
+leur coût ; l'Auteur a pressenti l'octave sur les mots, puis demandé à voir le
+même vrai écran en B et en C.
+
+**Décision** — C, « sans contestation » : l'intervalle reste √2 et l'espace
+entre deux frères vaut leur marge (24 · 17 · 12 ; espaces 17 · 12 ; bord 24).
+Un objet a autour de lui autant d'air qu'il en a dedans. Y1 tient à l'égalité.
+
+**Sens produit / UX** — La nuance des marges est gardée, les cartes ne se collent
+plus, et la loi tient en une phrase qu'on n'explique pas deux fois. Le prix est
+dit : l'espace n'est plus un seul chiffre par écran, « 12 entre, 24 autour »
+tombe, et l'écran gagne un quart de hauteur.
+
+**Méthode** — Le verdict sur les mots (B) a été renversé par le verdict à l'œil
+(C). Consigné : une décision de géométrie se prend sur un vrai écran rendu deux
+fois, jamais sur un tableau de chiffres.
+
+**Alternatives écartées** — garder √2 et rogner Y1 ; l'octave (trop serré à
+l'œil, marges de ligne à 6).
+
+**Conséquences** — moteur et jetons du kit à régénérer (espace = marge de la
+profondeur) ; migration du 11 août à refaire sur la colonne écart ; le
+générateur d'Auteur à mettre en accord (règle 4, jetons gap/edge) ; densité :
+un cran = ÷ √2 (page 4) ; /rythme reste faux jusqu'à la décision 8. Pièces :
+`claude/livrables/decision-1-intervalle.html`,
+`claude/livrables/decision-1-B-contre-C.html`.
+
+---
+
+## #113 — La couleur saisie se pose sur son cran, et la gamme 50–950 cesse de jeter la couleur
+*2026-08-25 · Statut : 🟢 Verrouillé (verdict d'Auteur : « c'est parfait ! ») · Révise la gamme d'illustration de `#109` ; ne rouvre aucun des seuils de `#110`*
+
+Un jaune vif (`#FFF76B`) entrait au panneau Theming, et sa gamme allait du
+blanc cassé à l'olive : **la couleur n'y apparaissait nulle part**. Le
+constat de l'Auteur était exact et plus large que le jaune — la gamme
+copiait l'échelle de l'indigo de la charte et n'y posait jamais la couleur
+saisie ; seul l'indigo se retrouvait dans sa propre gamme. La gamme gardait
+la teinte et jetait la couleur.
+
+**La règle.** Les onze crans sont des **marches de clarté fixes**, les mêmes
+pour toutes les familles — 50 très clair, 950 très sombre, 500 au milieu.
+La couleur saisie prend la marche la plus proche de sa clarté et s'y pose
+**telle quelle, au code près** : le jaune sur 50, un marine sur 950, un
+rouge sur 500, l'indigo de la charte sur 600 — où sa gamme ne bouge pas
+d'un cheveu. Les autres crans se déduisent d'elle : ils gardent leur clarté
+de marche, prennent sa teinte, et leur saturation suit la sienne — une
+couleur vive fait une famille vive, une pastel une famille douce. À un bout
+de l'échelle, il n'y a rien au-delà : le jaune posé sur 50 est le plus
+clair de sa famille, le marine sur 950 le plus sombre. Noir et blanc y
+trouvent aussi leur place, avec une famille grise.
+
+**Ce qui ne bouge pas, et pourquoi.** Les neutres teintés sont les marches
+elles-mêmes, à peine colorées à la marque : ils ne suivent pas la saisie —
+c'est l'échelle stable qui rend un « 300 de marque » et un « 300 neutre »
+frères. `primary` et `primary-subtle` ne changent pas de valeur : primary
+était déjà la couleur saisie, elle est désormais *visible* sur son cran ;
+le fond doux reste toujours nettement plus clair que l'aplat, et quand la
+couleur est déjà tout en haut, il reste le voile presque blanc de `#110`.
+La doctrine tient : **un rôle ne consomme jamais un cran**.
+
+**Les rôles se lisent sur les crans.** Sous chaque gamme, au niveau du cran,
+le nom du rôle qui s'y pose — en plein quand sa valeur *est* le cran (à la
+charte : le fond doux sur 100, primary et le lien sur 600, le fond de code
+sur 950), précédé de ≈ quand il n'en est que le voisin de clarté. La ligne
+dit où un rôle vit, pas d'où il vient. Le graphisme des gammes est conservé
+tel quel ; les quatre gammes de la page (marque, neutres, familles
+sémantiques) et les barres d'essai du moteur suivent la même règle, et les
+familles sémantiques se lisent désormais dans la palette dérivée, jamais
+dans une constante.
+
+**Preuves.** Douze couleurs d'essai (jaune vif, indigo, marine, rose pastel,
+rouge, vert Spotify, ocre, violet clair, gris, noir, blanc, blanc cassé) :
+la couleur saisie apparaît dans sa gamme à chaque fois, 50 reste très
+clair, 950 très sombre, l'ordre des clartés est régulier ; la gamme de la
+charte est identique au code près ; `tokens.css` n'a pas bougé d'un bit ;
+52 paires au seuil dans les deux thèmes sur chaque couleur ; la page rendue
+sur le serveur de l'Auteur, vérifiée avec le jaune posé sur 50.
+
+**Impact carte** — Le moteur de couleur reste 🟢 ; sa gamme 50–950 porte
+désormais une règle de placement, dite au §3. Pièces :
+`claude/gamme-cran-accueil-2026-08-25.md` ·
+`claude/livrables/planche-gamme-cran-2026-08-25.html` · `kit/derivation.mjs`
+· `kit/app/couleur/vue.tsx` · `kit/app/globals.css`.
+
+---
+
+## #112 — La page Composition entre au kit, et la séance nomme une faute de méthode : un objet par preuve
+*2026-08-24 · Statut : 🟢 Verrouillé (verdict d'Auteur : « oui c'est bon ») · Suit `#108` à `#111`, ferme la série des pages du kit*
+
+Quatrième page passée au gabarit documentaire nu, et la seule dont le sujet
+n'est pas une matière : ni des lettres, ni des distances, ni des couleurs —
+**le regard**. Trois preuves, trois natures, et surtout **trois objets
+différents** : une interface de travail, une page de journal et une affiche,
+une page de magazine.
+
+**L'écran qu'on casse.** Au repos, l'interface nomme ses organes — le
+dominant, un groupe, l'axe de départ, l'espace blanc qui groupe : quatre
+mots suffisent à parler de composition avec quelqu'un d'autre. Cinq casses
+disponibles, une à la fois ; les repères se posent **sur le composant**, aux
+coordonnées relevées sur le rendu — cadres, cotes chiffrées, fils d'axes,
+pastilles — et **le survol répare l'écran sous les yeux**, la faute n'étant
+appliquée que tant que le pointeur reste dehors. C'est la mécanique que
+l'Auteur a tranchée : « B et de loin, mais avec des indications de ce qui
+est faux par dessus le composant ».
+
+**Le chemin de l'œil.** Une page de journal se balaie en F, une affiche se
+parcourt en Z : deux objets que tout oppose, choisis pour ça. Le parcours
+est tracé en pointillé permanent, et **un segment plein le parcourt en
+boucle** — pointillé et dessin progressif se disputant la même propriété
+CSS, les deux rôles ont été séparés. Le tracé est calculé en pixels réels :
+un SVG étiré fausse la longueur du chemin, et le trait apparaissait par
+morceaux au lieu de courir.
+
+**L'espace blanc.** Une page de magazine, dont chaque signe encré se couvre
+d'une tache mesurée : **l'encre n'occupe que 29 % de la page**, relevé sur
+le rendu. Puis on retire l'espace blanc à surface constante — pas un signe
+en moins, et la page cesse de se lire. Le vocabulaire dit « l'espace blanc »,
+jamais « le blanc » (verdict d'Auteur).
+
+**La faute de méthode, nommée parce qu'elle se répétera.** Trois versions
+de cette page ont été rejetées avant celle-ci. La dernière l'a été sur un
+motif qui vaut plus que la page : *« on se tape à nouveau le même composant.
+Depuis que je t'ai branché au produit tu as perdu en spontanéité »*.
+Travailler **dans** le produit pousse à patcher un fichier plutôt qu'à
+composer une page — et le même écran finit par servir toutes les preuves,
+ce que la formule de contenu interdit précisément. Le remède appliqué :
+revenir à la **pièce HTML libre** pour concevoir, ne transférer au kit
+qu'après verdict. Ce détour n'est pas un luxe, c'est la condition pour que
+chaque preuve naisse de sa propre nécessité.
+
+**Alternatives écartées** — *la planche des six* (le même écran six fois,
+une seule version juste : se juge d'un regard, mais montre les fautes sans
+jamais les faire vivre) ; *le test des trois secondes et le squint test*
+(spectaculaires, mais il faut comprendre un protocole avant de voir quoi que
+ce soit — « c'est bien trop compliqué de comprendre ce qu'on doit juger ») ;
+*huit vignettes faux / juste pour les huit règles* (construites, puis
+retirées : elles répétaient en petit ce que la casse montre en grand) ;
+*un aplat de marque sous le composant* (essayé, retiré — il criait plus fort
+que ce qu'il montrait).
+
+**Deux dettes ouvertes, dites par l'Auteur au moment du verrou** — les
+composants des démonstrations (boutons, champs) ne viennent pas du registre
+du kit ; et le wording des pages demandera une passe d'affinage. Les deux
+sont pour plus tard, et elles sont écrites pour ne pas se perdre.
+
+Pièces : `kit/app/composition/vue.tsx` · `kit/app/composition/page.tsx` ·
+`kit/app/globals.css` · `kit/app/rail.tsx` · `kit/app/tiroir.tsx` ·
+pièce de référence `kit-composition-nu.html`.
+
+## #111 — La porte du kit : l'accueil devient une preuve, et le moteur y est l'objet vivant
+*2026-08-24 · Statut : 🟢 Verrouillé (verdict d'Auteur : « on applique au kit ») · Thread « application du gabarit documentaire nu »*
+
+L'ancienne page d'accueil décrivait le kit en trois colonnes de
+documentation générique — le défaut nommé en `#108`, à la porte. Elle est
+remplacée par une page qui le **prouve**, proposée d'abord en pièce HTML
+nue puis appliquée telle quelle. Titre porteur : *« Ce kit ne se décrit
+pas. Il se prouve. »*
+
+Deux terres d'emprunt, déclarées dans la page même. **La charte** lui
+donne son entrée en scène : couverture pleine hauteur, monogramme Fili,
+titre-affiche dévoilé ligne à ligne (les masques de la planche couverture),
+point de marque sous le titre — l'apparat est réservé à la porte, les pages
+de fondation gardent leur sobriété. **Le générateur Semantic Rhythm** lui
+donne son objet vivant : on manipule une entrée, tout recalcule. Ici ce
+n'est pas une maquette — c'est le vrai moteur (`kit/derivation.mjs`) : une
+puce ou le sélecteur habillent **tout le site**, les rapports de contraste
+s'affichent mesurés à l'instant, et l'ajustement d'aplat de `#110` se dit
+en clair quand il a lieu.
+
+Puis trois cartes de fondation où **chacune parle sa langue** — l'échelle
+typographique en spécimen, les crans du rythme en barres, les couples de
+couleur en languettes : aucune ne reprend une preuve d'une page existante,
+la faute consignée sur /typo. Et un répertoire compact : la carte du
+système en table sobre — sujet, état, ce qu'on y trouve — qui est l'organe
+de croissance de la page. Écartés : garder le panneau de réglages permanent
+(il est passé au tiroir comme ailleurs), et remplir la porte de vignettes
+décoratives (des spécimens, pas des images).
+
+Pièces : `kit/app/accueil.tsx` (nouveau) · `kit/app/page.tsx` ·
+`kit/app/globals.css` · `kit/app/tiroir.tsx` (la porte reçoit les réglages)
+· pièce de référence `kit-accueil-nu.html`. **Les quatre pages du kit sont
+désormais sur le gabarit documentaire nu.**
+
+## #110 — Quatre arbitrages sur le moteur de couleur, et la doctrine « l'aplat n'est jamais touché » est amendée
+*2026-08-24 · Statut : 🟢 Verrouillé (décision d'Auteur : « garde ces réglages et on n'y touche plus ») · Amende la scission primary / primary-text sur un seul point : l'intangibilité de l'aplat*
+
+Séance menée sur la page Couleur reconstruite, à coups de cas limites
+lancés au sélecteur. Quatre décisions, toutes dans `kit/derivation.mjs`,
+jetons régénérés, zéro faute sur les paires déclarées des deux thèmes.
+
+**L'avertissement est jaune — exception déclarée.** Le calage brunissait
+son ton clair, parce qu'un jaune ne peut pas être une encre sur son fond
+doux jaune. Les deux métiers sont séparés : l'aplat prend le jaune fort que
+le thème sombre portait déjà, son encre devient presque noire, et chaque
+famille sémantique reçoit son encre sur fond doux — `on-…-subtle`, la
+convention qui existait déjà pour la marque. Brune pour l'avertissement,
+confondue avec le ton pour les trois autres. Écarté : forcer le jaune sans
+séparer les métiers (le texte de la famille serait devenu illisible).
+
+**Garde-fou achromatique.** Une marque sans teinte — noir, blanc, gris —
+n'a pas d'angle de couleur, mais le calcul lui en rend un par accident, du
+côté rose : les neutres « teintés à la marque » rosissaient. Le moteur
+mesure désormais la **présence** de teinte et y proportionne tout ce qui
+lui est emprunté, y compris le déplacement des états et l'anneau de focus.
+Une marque noire dérive des gris purs.
+
+**Encres pures quand la marge manque.** Une encre teintée n'est retenue que
+si elle tient son seuil avec de la marge ; sinon elle devient franche. Une
+encre de la même famille se noie dans l'aplat qu'elle doit dominer — le
+brun sur l'ocre.
+
+**Zone médiane : le blanc, toujours — et l'aplat glisse.** C'est
+l'arbitrage qui amende la doctrine. Sur les couleurs de clarté moyenne,
+aucune encre ne dépasse le seuil de beaucoup : la formule de contraste
+préfère alors le noir là où l'œil réclame du blanc — constaté par l'Auteur
+sur un violet, et confirmé par le nuancier à deux zones de Figma. Décision :
+le blanc d'abord, le noir seulement quand il est **confortable** (7,4:1,
+seuil relevé d'un cran sur un violet clair encore noirci) ; et quand
+l'encre blanche ne tient pas, **l'aplat glisse à luminosité seule** — un
+cran ou deux plus sombre, jamais changé de famille, la règle de la charte
+rendue mécanique. L'ajustement est **dit** (`meta.aplatAjuste`), comme le
+lien l'était déjà. La marque reste donc entière **tant qu'elle porte son
+encre** — c'est la nuance qui change. Écartés : abaisser le contrat de
+l'aplat à 3:1 avec une règle typographique (le texte courant sur aplat
+serait devenu interdit), et déclarer la zone médiane inapte au texte (on
+aurait consigné un renoncement là où une correction existe).
+
+Sens produit : un designer pose sa couleur de marque et n'a rien à
+vérifier. Ce qui ne peut pas tenir est corrigé au plus près de son
+intention, et l'écart lui est annoncé au lieu d'être subi.
+
+Pièces : `kit/derivation.mjs` · `kit/app/tokens.css` (régénéré) ·
+`claude/moteur-couleur-2026-08-24.md` §6 (les seuils, verrouillés).
+
+## #109 — La page Couleur passe au gabarit, et sa mesure se faisait une image trop tôt
+*2026-08-24 · Statut : 🟢 Verrouillé · Suit `#108`, une page à la fois*
+
+Troisième page recomposée sur le gabarit documentaire nu. Le plan de
+preuves tient en trois natures : la **mosaïque de la charte** branchée sur
+les jetons vivants (situation), le **tableau des départs** en thème sombre
+qu'on casse pour voir la couleur porter seule (objet vivant), le **nuancier
+des six rôles** (vocabulaire) — puis un répertoire compact : les
+garde-fous en grille, la table complète des rôles, les gammes.
+
+Le nuancier a cherché sa forme en trois passes, sous verdict : cartes
+trouées, puis rangées pleine largeur, puis la mosaïque de la charte —
+tuiles pleines sans écart, trois par rangée — et enfin **inversée** : le
+fond doux fait la grande tuile avec le nom et la fiche mesurée, le ton
+plein devient la bande dessous. Le neutre remonte sous la marque,
+l'avertissement ferme la grille. Les gammes 50–950 sont réunies dans un
+dépliant — la marque, les neutres, et les quatre familles sémantiques,
+dont celle de l'avertissement part de **deux ancres** (jaune aux crans
+clairs, brun aux foncés) : la famille est bi-tonale, et sa gamme le dit.
+
+**Le défaut le plus instructif était invisible à l'œil nu** : les valeurs
+mesurées ne suivaient pas le changement de thème. La page relève les
+couleurs sur le rendu, mais elle les lisait **une image avant** que
+l'attribut de thème soit posé — donc elle mesurait le thème précédent, et
+affichait des chiffres justes pour un écran qui n'existait plus. Le relevé
+attend désormais que le thème soit en place. Une page qui prétend mesurer
+ce qu'elle affiche doit mesurer **après** l'avoir affiché.
+
+Deux corrections de série, appliquées aux trois pages : le point de marque
+vit **sous** le titre, sur sa propre ligne — il était soudé au dernier mot,
+et la règle avait été comprise à l'envers ; et le playground de marques
+porte le monogramme Fili et le nom de la marque essayée, plus une baseline
+générique.
+
+Pièces : `kit/app/couleur/vue.tsx` · `kit/app/globals.css` ·
+`kit/app/typo/vue.tsx` · `kit/app/rythme/vue.tsx` · pièce de référence
+`kit-couleur-nu.html`.
+
+## #108 — La page Rythme passe au gabarit « documentaire nu », et le verdict est PARFAIT
+*2026-08-24 · Statut : 🟢 Verrouillé (verdict d'Auteur : « PARFAIT ») · Thread « application du gabarit documentaire nu »*
+
+La page Rythme du kit est recomposée sur la pièce de référence
+`kit-rythme-nu.html` : rails nus portés par l'alignement et le blanc (CG2),
+titre-affiche déclaré dans les jetons du gabarit (CG5, crans `--doc-*`),
+grands silences entre sections (CG1), un geste de couleur par écran — les
+commandes actives passent à l'encre (CG3) —, la tranche Coursue en scène
+avec sa cascade de fonds (CG4), et le panneau de réglages replié en tiroir
+dans la barre. Rien n'est perdu : les sept démonstrations restent avec
+leurs casses, plus les six rôles d'espace en tuiles. Décision d'Auteur en
+cours de passe : pas de redimensionnement sur cette page — l'échelle glisse
+avec la largeur réelle.
+
+Sept retours d'Auteur incorporés avant le verdict, tous dans le même sens —
+l'effet avant la mécanique : la légende sort du bloc de couleur et parle à
+un lecteur ordinaire ; les espaces surlignés deviennent neutres, une seule
+étiquette par jeton, posée dans l'espace qu'elle nomme ; la faute d'un
+écart menteur se mesure d'un trait façon Figma au lieu de se remplir ; la
+casse de la profondeur devient visible (la sous-carte grandit, son rayon
+cassé vaut deux fois celui de sa mère, le coin se souligne) ; le
+bouton-exemple rentre dans le rang ; les figures d'une rangée s'alignent ;
+la réponse du « bon cran » s'affiche en grand — et c'est le jeton qui est
+grand, pas le rôle. Au passage, des jetons morts (`--rr-*`, `--p-*`)
+référencés par la page sont réécrits sur l'échelle vivante.
+
+Pièces : `kit/app/rythme/vue.tsx` · `kit/app/tokens.css` (crans `--doc-*`
+du gabarit) · `kit/app/globals.css` · `kit/app/tiroir.tsx`. Typographie et
+Couleur suivent, une page à la fois, verdict entre chaque (`#107`).
+
+## #107 — Les gabarits entrent au corpus : cinq règles CG, actées une à une
+*2026-08-24 · Statut : 🟢 Verrouillé (verdict d'Auteur sur chaque énoncé) · Thread « application du gabarit documentaire nu »*
+
+Le relevé du 24 août a mesuré ce que les références « tenues » font
+vraiment : shadcn et Material structurent tout par le blanc, Coursue tout
+par les surfaces — les deux marchent, et ce qui rend une page fade, c'est
+de ne pas choisir. Trois tempéraments nommés (éditorial, documentaire nu,
+applicatif emboîté), cinq règles candidates validées EN BLOC sur pièce
+(`kit-rythme-nu.html`, verdict PARFAIT), puis actées une à une au moule V2,
+un verdict d'Auteur par énoncé : un principe porteur unique (CG1), rails
+nus (CG2), un geste de couleur par écran (CG3), emboîtement en cascade
+(CG4), le titre porte le tempérament (CG5). COMPOSITION-UX passe en 1.1.0.
+
+Alternative écartée : une famille « gabarits » à part — refusée, ces règles
+règlent la page comme les CP, elles vivent avec elles. Sans CRITERE, comme
+les CP : la condition des assertions reste que le Gardien morde sur le kit.
+
+Pièces : `sources/apps/site/content/md/foundations/COMPOSITION-UX.md` 1.1.0 ·
+`claude/releve-gabarits-2026-08-24.md` ·
+`claude/brief-application-gabarit-2026-08-24.md`.
+
 ## #106 — La composition entre au corpus : huit règles, actées en bloc
 *2026-08-23 · Statut : 🟢 Verrouillé (accord d'Auteur explicite) · Thread « le kit avance sous mes yeux »*
 

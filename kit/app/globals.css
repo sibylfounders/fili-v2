@@ -1,24 +1,25 @@
-/* Styles du kit — ne consomment QUE les jetons (tokens.css).
-   Aucune valeur d'espace, de rayon ou de taille en dur : Y-règles à l'œuvre. */
+/* Styles du kit — ne consomment QUE les jetons (tokens.css), migrés sur la chaîne du 25 août 2026.
+   Aucune valeur d'espace, de rayon ou de taille en dur hors des lignes qui le disent (« hors chaîne », « casse »)
+   et des deux blocs de dette déclarée (.accueil, .co-*). */
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--surface); color: var(--text-primary);
-  font: 400 var(--font-size-base)/var(--leading-body) var(--font-sans);
+  font: 400 var(--font-size-body)/var(--leading-body) var(--font-sans);
 }
 a { color: var(--primary-text); }
 a:hover { color: var(--primary-text-hover); }
 .chrome {
   position: sticky; top: 0; z-index: 30; min-height: 3.5rem;
-  display: flex; align-items: center; gap: var(--space-inline-unit);
-  padding: 0 var(--space-inline-2xl);
+  display: flex; align-items: center; gap: var(--gap-2-inline);
+  padding: 0 var(--edge-inline);
   background: var(--bg); border-bottom: 1px solid var(--border);
 }
 .chrome b { letter-spacing: -0.02em; }
-.chrome nav { display: flex; gap: var(--space-inline-unit); margin-left: auto; }
+.chrome nav { display: flex; gap: var(--gap-2-inline); margin-left: auto; }
 .page {
   max-width: 46rem; margin: 0 auto;
-  padding: var(--space-block-page) var(--space-inline-2xl) calc(2 * var(--space-block-page));
-  display: grid; gap: var(--space-block-page);
+  padding: var(--page-2-block) var(--edge-inline) var(--page-3-block);
+  display: grid; gap: var(--page-2-block);
 }
 h1 { font-weight: 600; font-size: var(--font-size-display); letter-spacing: -0.025em; margin: 0; line-height: 1.08; text-wrap: balance; }
 h2 { font-weight: 600; font-size: var(--font-size-h2); letter-spacing: -0.015em; margin: 0; line-height: var(--leading-heading); text-wrap: balance; }
@@ -26,41 +27,41 @@ p { margin: 0; }
 .sourd { color: var(--text-secondary); }
 .carte {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: calc(1.2 * var(--space-block-card)) calc(1.3 * var(--space-inline-2xl));
-  display: grid; gap: var(--space-block-card);
+  border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-2-block);
 }
 .badge {
-  display: inline-block; font: 700 0.6875rem/1 var(--font-mono);
+  display: inline-block; font: 700 var(--font-size-label)/1 var(--font-mono);
   color: var(--primary-text); background: var(--primary-subtle);
-  border-radius: var(--radius); padding: var(--space-block-sm) var(--space-inline-sm);
+  border-radius: var(--r-3); padding: var(--gap-4-block) var(--gap-3-inline);
   text-decoration: none;
 }
 .badge.ko { color: var(--danger); background: var(--danger-subtle); }
 .bouton {
-  height: var(--control-height); padding: 0 var(--space-inline-xl);
-  border: 1px solid var(--border); border-radius: var(--radius);
-  background: var(--bg); font: 600 0.875rem/1 inherit; cursor: pointer;
+  min-height: var(--control-height); padding: 0 var(--pad-3-inline);
+  border: 1px solid var(--border); border-radius: var(--r-ctl);
+  background: var(--bg); font: 600 var(--font-size-small)/1 inherit; cursor: pointer;
 }
 .bouton.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
 .bouton:hover:not(.on):not(.casse) { background: var(--surface-hover); }
-.rang { display: flex; gap: var(--space-inline-unit); flex-wrap: wrap; align-items: center; }
-.mono { font: 600 0.75rem/1.5 var(--font-mono); }
+.rang { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; align-items: center; }
+.mono { font: 600 var(--font-size-small)/1.5 var(--font-mono); }
 .mesure { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
-.barre { background: var(--primary); border-radius: 2px; height: var(--space-block-unit); }
-.regle { border-left: 3px solid var(--border); padding-left: var(--space-inline-xl); }
+.barre { background: var(--primary); border-radius: var(--r-4); height: 0.75rem; /* hors chaîne : la barre-témoin, un objet décoratif — pas un espace */ }
+.regle { border-left: 3px solid var(--border); padding-left: var(--pad-3-inline); }
 .regle b { display: block; }
-.champ { display: grid; gap: var(--space-block-md); }
+.champ { display: grid; gap: var(--gap-3-block); }
 .champ input {
   height: var(--control-height); border: 1px solid var(--border-strong);
-  border-radius: var(--radius); padding: 0 var(--space-inline-unit);
+  border-radius: var(--r-ctl); padding: 0 var(--pad-3-inline);
   font: inherit; background: var(--surface);
 }
-.casse .libelle-menteur { margin-bottom: var(--space-block-card); margin-top: var(--space-block-card); }
+.casse .libelle-menteur { margin-bottom: var(--gap-1-block); margin-top: var(--gap-1-block); }
 pre.code {
-  margin: 0; padding: var(--space-block-unit) var(--space-inline-unit);
-  background: var(--code-bg); color: var(--code-text); border-radius: var(--radius);
-  font: 500 0.75rem/1.7 var(--font-mono); overflow-x: auto;
+  margin: 0; padding: var(--pad-3-block) var(--pad-3-inline);
+  background: var(--code-bg); color: var(--code-text); border-radius: var(--r-2);
+  font: 500 var(--font-size-small)/1.7 var(--font-mono); overflow-x: auto;
 }
 
 /* ── Le gabarit trois colonnes : navigation · contenu (doc|sources) · réglages ── */
@@ -72,37 +73,37 @@ pre.code {
 .navigation {
   grid-area: nav; position: sticky; top: 3.5rem;
   max-height: calc(100vh - 3.5rem); overflow-y: auto;
-  padding: var(--space-block-page) var(--space-inline-2xl);
-  display: grid; gap: var(--space-block-md); align-content: start;
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-3-block); align-content: start;
 }
-.navigation .groupe { font: 700 0.6875rem/1 var(--font-mono);
+.navigation .groupe { font: 700 var(--font-size-label)/1 var(--font-mono);
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
-  margin-top: var(--space-block-unit); }
+  margin-top: var(--gap-2-block); }
 .navigation a { text-decoration: none; color: var(--text-primary);
-  padding: var(--space-block-sm) var(--space-inline-sm); border-radius: var(--radius); }
+  padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-3); min-height: var(--target-min); }
 .navigation a.actif { background: var(--primary-subtle); color: var(--primary-text); font-weight: 600; }
-.navigation .venir { color: var(--text-secondary); padding: var(--space-block-sm) var(--space-inline-sm); }
+.navigation .venir { color: var(--text-secondary); padding: var(--gap-4-block) var(--gap-3-inline); min-height: var(--target-min); }
 .contenu { grid-area: main; min-width: 0;
   background: var(--bg); border-inline: 1px solid var(--border);
-  padding: calc(2.2 * var(--space-block-page)) calc(2 * var(--space-inline-2xl)) calc(2.5 * var(--space-block-page));
+  padding: var(--page-3-block) var(--page-2-inline) var(--page-3-block);
   display: grid; grid-template-columns: minmax(0, 1fr);
-  gap: calc(2.4 * var(--space-block-page)); align-content: start; }
+  gap: var(--doc-silence); align-content: start; }
 .contenu > * { width: 100%; max-width: 64rem; margin-inline: auto; min-width: 0; }
-.tete-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-block-card); padding-bottom: var(--space-block-page); }
-.tete-page h1 { margin-block: var(--space-block-md); }
+.tete-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); padding-bottom: var(--page-2-block); }
+.tete-page h1 { margin-block: var(--gap-3-block); }
 .chapo { font-size: var(--font-size-h3); line-height: 1.55; color: var(--text-secondary); max-width: var(--measure); }
 .chapo b { color: var(--text-primary); }
-.kicker { font: 700 0.6875rem/1 var(--font-mono); letter-spacing: 0.1em;
+.kicker { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
   text-transform: uppercase; color: var(--primary-text); }
-.bloc-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-block-card); }
+.bloc-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
 .bloc-section > p.sourd { max-width: var(--measure); }
 .reglages {
   grid-area: regl; position: sticky; top: 3.5rem;
   max-height: calc(100vh - 3.5rem); overflow-y: auto;
-  padding: var(--space-block-page) var(--space-inline-2xl);
-  display: grid; gap: var(--space-block-card); align-content: start;
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-1-block); align-content: start;
 }
-.reglages h3 { margin: 0; font-size: 0.8125rem; font-weight: 600; }
+.reglages h3 { margin: 0; font-size: var(--font-size-small); font-weight: 600; }
 /* Le bouton actif d'un réglage se dessine depuis l'attribut de <html>,
    jamais depuis l'état React : l'attribut est posé avant la première
    peinture (script de layout.tsx), le bon bouton est donc juste dès la
@@ -118,34 +119,34 @@ html[data-adaptation="shadcn"] [data-choix-adaptation="shadcn"],
 html[data-adaptation="html"] [data-choix-adaptation="html"] {
   background: var(--primary); border-color: var(--primary); color: var(--on-primary);
 }
-.reglages .bloc { display: grid; gap: var(--space-block-md); }
-.reglages .bouton { height: 1.75rem; padding: 0 var(--space-inline-sm); font-size: 0.6875rem; }
+.reglages .bloc { display: grid; gap: var(--gap-3-block); }
+.reglages .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
 .reglages input[type="range"] { width: 100%; accent-color: var(--primary); }
 
 /* Une section = la doc à gauche, les sources à droite */
 .section { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: var(--space-inline-2xl); align-items: start; }
-.doc { display: grid; gap: var(--space-block-unit); min-width: 0; }
-.sources-col { display: grid; gap: var(--space-block-unit); min-width: 0;
-  border-left: 2px solid var(--border); padding-left: var(--space-inline-xl);
-  font-size: 0.875rem; color: var(--text-secondary); }
-.sources-col h4 { margin: 0; font: 700 0.6875rem/1 var(--font-mono);
+  gap: var(--page-2-inline); align-items: start; }
+.doc { display: grid; gap: var(--gap-2-block); min-width: 0; }
+.sources-col { display: grid; gap: var(--gap-2-block); min-width: 0;
+  border-left: 2px solid var(--border); padding-left: var(--pad-3-inline);
+  font-size: var(--font-size-small); color: var(--text-secondary); }
+.sources-col h4 { margin: 0; font: 700 var(--font-size-label)/1 var(--font-mono);
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
 .sources-col b { color: var(--text-primary); }
-.divergence { background: var(--primary-subtle); border-radius: var(--radius);
-  padding: var(--space-block-unit) var(--space-inline-unit); color: var(--text-primary); }
-.scene { border: 1px dashed var(--border); border-radius: var(--radius-card);
-  padding: var(--space-block-card) var(--space-inline-2xl); background: var(--surface);
+.divergence { background: var(--primary-subtle); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline); color: var(--text-primary); }
+.scene { border: 1px dashed var(--border); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline); background: var(--surface);
   overflow: hidden; }
 /* Palier 2 — la colonne de réglages n'a plus sa place : elle devient une
    bande au-dessus du contenu, la navigation reste à gauche. */
 @media (max-width: 80rem) {
   .coquille { grid-template-columns: 13rem minmax(0, 1fr); grid-template-areas: "nav regl" "nav main"; }
   .reglages { position: static; max-height: none;
-    display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--space-inline-2xl);
+    display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--gap-1-inline);
     background: var(--bg); border-inline: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: var(--space-block-unit) var(--space-inline-2xl); }
+    padding: var(--pad-3-block) var(--edge-inline); }
   .reglages h3 { width: 100%; }
 }
 
@@ -153,8 +154,8 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 @media (max-width: 56rem) {
   .coquille { grid-template-columns: minmax(0, 1fr); grid-template-areas: "nav" "regl" "main"; }
   .navigation { position: static; max-height: none;
-    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-inline-sm);
-    padding: var(--space-block-unit) var(--space-inline-2xl);
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-inline);
+    padding: var(--pad-3-block) var(--edge-inline);
     background: var(--bg); border-bottom: 1px solid var(--border); }
   .navigation .groupe { margin-top: 0; }
   .navigation .venir { display: none; }
@@ -163,16 +164,16 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 
 /* ── L'aperçu : tout le bloc est la surface redimensionnable ;
       la barre d'options vit au-dessus, « d'où ça vient » en dessous ── */
-.apercu { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-block-unit); min-width: 0; }
+.apercu { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); min-width: 0; }
 .apercu-tete { display: flex; align-items: center; justify-content: space-between;
-  gap: var(--space-inline-unit); flex-wrap: wrap; }
-.apercu-outils { display: flex; gap: var(--space-inline-sm); flex-wrap: wrap; }
-.apercu-tete .bouton { height: 1.75rem; padding: 0 var(--space-inline-sm); font-size: 0.6875rem; }
-.apercu-cmds { display: flex; gap: var(--space-inline-sm); justify-content: flex-end; flex-wrap: wrap; }
-.apercu-piste { position: relative; min-width: 0; overflow: hidden; border-radius: var(--radius-card); }
+  gap: var(--gap-2-inline); flex-wrap: wrap; }
+.apercu-outils { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.apercu-tete .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+.apercu-cmds { display: flex; gap: var(--gap-3-inline); justify-content: flex-end; flex-wrap: wrap; }
+.apercu-piste { position: relative; min-width: 0; overflow: hidden; border-radius: var(--r-1); }
 .apercu-cadre {
   position: relative; max-width: 100%; overflow: hidden;
-  border: 1px solid var(--border); border-radius: var(--radius-card);
+  border: 1px solid var(--border); border-radius: var(--r-1);
   background-color: var(--surface);
   background-image:
     linear-gradient(45deg, color-mix(in srgb, var(--text-primary) 6%, transparent) 25%, transparent 25%),
@@ -181,70 +182,104 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
     linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 6%, transparent) 75%);
   background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
-.apercu-scene { padding: calc(1.3 * var(--space-block-page)) calc(1.5 * var(--space-inline-2xl));
+.apercu-scene { padding: var(--pad-1-block) var(--pad-1-inline);
   display: grid; justify-items: stretch; text-align: left; }
 .puce-w {
   position: absolute; bottom: 0.625rem; right: 0.625rem; pointer-events: none;
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 0.25rem 0.5rem; color: var(--text-secondary); font-size: 0.6875rem;
+  border-radius: var(--r-3); padding: var(--gap-4-block) var(--gap-3-inline); color: var(--text-secondary); font-size: var(--font-size-label);
 }
 .poignee {
   position: absolute; top: 0; height: 100%; width: 1.75rem; transform: translateX(-50%);
   display: flex; align-items: center; justify-content: center;
-  cursor: ew-resize; touch-action: none; border-radius: 4px;
+  cursor: ew-resize; touch-action: none; border-radius: var(--r-ctl);
 }
 .poignee:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.poignee-trait { width: 0.4rem; height: 2.75rem; border-radius: 999px;
+.poignee-trait { width: 0.4rem; height: 2.75rem; border-radius: var(--r-pill);
   background: var(--text-secondary); opacity: 0.6; transition: all 0.15s; }
 .poignee:hover .poignee-trait, .poignee:focus-visible .poignee-trait,
 .poignee.en-prise .poignee-trait { height: 3.5rem; background: var(--primary); opacity: 1; }
 .poignee::after {
   content: "Glisser ou redimensionner"; position: absolute;
   top: calc(50% + 2.4rem); left: 50%; transform: translateX(-85%);
-  background: var(--code-bg); color: var(--code-text); font-size: 0.6875rem; line-height: 1;
-  padding: 0.4375rem 0.625rem; border-radius: 0.5rem; white-space: nowrap;
+  background: var(--code-bg); color: var(--code-text); font-size: var(--font-size-label); line-height: 1;
+  padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-2); white-space: nowrap;
   opacity: 0; pointer-events: none; transition: opacity 0.15s;
 }
 .poignee:hover::after, .poignee:focus-visible::after { opacity: 1; }
 .poignee.en-prise::after { opacity: 0; }
 
 /* ── Le panneau de code (Copier) ── */
-.panneau-code { border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
+.panneau-code { border: 1px solid var(--border); border-radius: var(--r-1); overflow: hidden; }
 .panneau-code-tete {
   display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-block-sm) var(--space-inline-unit); background: var(--surface);
+  padding: var(--gap-3-block) var(--pad-3-inline); background: var(--surface);
   border-bottom: 1px solid var(--border);
 }
-.panneau-code-tete .bouton { height: 1.75rem; padding: 0 var(--space-inline-sm); font-size: 0.6875rem; }
+/* Les encres de syntaxe — générées avec la famille (derivation.mjs), calées
+   sur le fond 950 du panneau. Un spécimen lisible, pas un compilateur. */
+pre.code .cs-com { color: var(--code-com); }
+pre.code .cs-str { color: var(--code-str); }
+pre.code .cs-kw { color: var(--code-kw); }
+pre.code .cs-tag { color: var(--code-tag); }
+pre.code .cs-var { color: var(--code-kw); }
+.panneau-code-tete .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
 
 /* ── Les espaces rendus visibles ── */
-.espace { display: block; flex: none; border-radius: 3px; position: relative; }
+.espace { display: block; flex: none; border-radius: var(--r-4); position: relative; }
 .espace.h { display: inline-block; }
-.espace.vu { background: var(--primary-subtle); outline: 1px dashed var(--primary); }
+.espace.vu { background: var(--surface-hover); outline: 1px dashed var(--border-strong); }
+/* La faute mesurée, façon Figma (retour d'Auteur, 24 août) : dans l'écart
+   menteur, un trait vertical avec ses repères aux deux bouts — on mesure
+   l'espace, on ne le remplit plus. L'étiquette se pose à côté du trait. */
+.espace.ko::before {
+  content: ""; position: absolute; left: 50%; top: 0; height: 100%;
+  width: 0.5rem; transform: translateX(-50%);
+  border-top: 1px solid var(--danger); border-bottom: 1px solid var(--danger);
+  background: linear-gradient(var(--danger), var(--danger)) 50% 0 / 1px 100% no-repeat;
+}
+.espace.ko[data-nom]::after {
+  content: attr(data-nom); position: absolute; left: calc(50% + 0.625rem); top: 50%;
+  transform: translateY(-50%); white-space: nowrap;
+  font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--danger);
+}
+/* Une étiquette par jeton, posée DANS l'espace qu'elle nomme (24 août :
+   « on ne voit pas et ne comprend pas les espaces » — une seule couleur
+   neutre, une seule étiquette par rôle·cran, jamais l'accent). */
 .espace.vu[data-nom]::after {
-  content: attr(data-nom); position: absolute; left: 100%; top: 50%;
-  transform: translate(0.375rem, -50%); white-space: nowrap;
-  font: 600 0.625rem/1 var(--font-mono); color: var(--primary);
+  content: attr(data-nom); position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%); white-space: nowrap;
+  font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
 }
 .espace.h.vu[data-nom]::after { left: 50%; top: 100%; transform: translate(-50%, 0.125rem); }
+/* Les espaces se révèlent au survol de la tranche — plus de bouton : la
+   scène s'annote d'elle-même sous le pointeur (ou au clavier, focus-within)
+   et s'efface en le quittant. Les blocs d'espace restent de vrais espaces :
+   seule leur encre apparaît. */
+.survole-espaces .espace.vu { background: transparent; outline-color: transparent;
+  transition: background 0.15s, outline-color 0.15s; }
+.survole-espaces .espace.vu[data-nom]::after { opacity: 0; transition: opacity 0.15s; }
+.survole-espaces:hover .espace.vu, .survole-espaces:focus-within .espace.vu {
+  background: var(--surface-hover); outline-color: var(--border-strong); }
+.survole-espaces:hover .espace.vu[data-nom]::after,
+.survole-espaces:focus-within .espace.vu[data-nom]::after { opacity: 1; }
 .carte-demo { background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-card); width: 100%; max-width: 24rem; overflow: hidden; }
+  border-radius: var(--r-2); width: 100%; max-width: 24rem; overflow: hidden; }
 .oeil {
-  background: var(--danger-subtle); color: var(--danger); border-radius: var(--radius);
-  padding: var(--space-block-unit) var(--space-inline-unit); font-size: 0.8125rem;
+  background: var(--danger-subtle); color: var(--danger); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline); font-size: var(--font-size-small);
 }
 
 /* ── Les sources en dépliant discret ── */
 /* le dépliant n'est pas une carte : un simple filet de rive, du texte */
-details.prov { border-left: 2px solid var(--border); padding-left: var(--space-inline-xl);
-  color: var(--text-secondary); font-size: 0.875rem; min-width: 0; }
-details.prov summary { cursor: pointer; font: 600 0.8125rem/1.6 var(--font-sans);
+details.prov { border-left: 2px solid var(--border); padding-left: var(--pad-3-inline);
+  color: var(--text-secondary); font-size: var(--font-size-small); min-width: 0; }
+details.prov summary { cursor: pointer; font: 600 var(--font-size-small)/1.6 var(--font-sans);
   color: var(--text-secondary); list-style: none; }
 details.prov summary::before { content: "▸ "; }
 details.prov[open] summary::before { content: "▾ "; }
-details.prov > div { display: grid; gap: var(--space-block-xl); padding-top: var(--space-block-unit); }
+details.prov > div { display: grid; gap: var(--gap-1-block); padding-top: var(--gap-2-block); }
 details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — chez nous aussi */
-
 
 
 /* ── Theming global — la famille couleur porte tout le site ──────────
@@ -261,21 +296,21 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 
 /* ── L'accueil : tuiles de fondations et étapes de méthode ── */
 .tuiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: var(--space-inline-unit); }
-.tuile { display: grid; gap: var(--space-block-md); align-content: start;
+  gap: var(--gap-1-block) var(--gap-1-inline); }
+.tuile { display: grid; gap: var(--gap-3-block); align-content: start;
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--radius-shell);
-  padding: var(--space-block-card) var(--space-inline-2xl);
+  border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
   text-decoration: none; color: var(--text-primary);
   transition: border-color 0.15s, box-shadow 0.15s; }
 .tuile:hover, .tuile:focus-visible { border-color: var(--primary);
   box-shadow: 0 12px 32px -24px color-mix(in srgb, var(--primary) 50%, transparent); }
 .tuile-titre { font-size: var(--font-size-h2); font-weight: 600; letter-spacing: -0.015em; }
-.tuile-specimen { display: flex; flex-direction: column; gap: var(--space-block-sm);
-  padding: var(--space-block-unit) 0; color: var(--text-primary); }
-.tuile-appel { color: var(--primary-text); font-weight: 600; font-size: 0.875rem; }
-.etapes { display: grid; gap: var(--space-block-unit); max-width: var(--measure); }
-.etapes .regle { display: grid; gap: var(--space-block-xs); }
+.tuile-specimen { display: flex; flex-direction: column; gap: var(--gap-4-block);
+  padding: var(--pad-3-block) 0; color: var(--text-primary); }
+.tuile-appel { color: var(--primary-text); font-weight: 600; font-size: var(--font-size-small); }
+.etapes { display: grid; gap: var(--gap-2-block); max-width: var(--measure); }
+.etapes .regle { display: grid; gap: var(--gap-4-block); }
 
 /* ── Le bouton de casse : il annonce la couleur — pointillé rouge au repos,
       plein quand la casse est active ── */
@@ -284,8 +319,8 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 .bouton.casse.on { background: var(--danger); border: 1px solid var(--danger); color: var(--on-danger); }
 
 /* ── La table de correspondance des échelles ── */
-.tableau { border-collapse: collapse; font-size: 0.6875rem; }
-.tableau th, .tableau td { text-align: left; padding: var(--space-block-sm) var(--space-inline-unit);
+.tableau { border-collapse: collapse; font-size: var(--font-size-label); }
+.tableau th, .tableau td { text-align: left; padding: var(--gap-4-block) var(--pad-3-inline);
   border-bottom: 1px solid var(--border); white-space: nowrap; }
 .tableau th { color: var(--text-secondary); font-weight: 700; }
 
@@ -297,3 +332,732 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
   outline: 2px solid var(--accent); outline-offset: 2px; }
 details.prov summary:hover { color: var(--text-primary); }
 ::selection { background: var(--primary-subtle); color: var(--text-primary); }
+
+/* ═══════════ Le gabarit « documentaire nu » — CG1-CG5, 24 août 2026 ═══════════
+   Relevé : claude/releve-gabarits-2026-08-24.md · pièce de référence :
+   kit-rythme-nu.html (verdict PARFAIT). Porté d'abord par la page Rythme ;
+   Typographie et Couleur suivront, une page à la fois.
+   · CG1 — le BLANC est le seul séparateur : aucune cloison, aucun filet de
+     structure ; une surface n'apparaît que méritée (CP2).
+   · CG2 — rails nus : navigation et sommaire sans fond ni bordure.
+   · CG3 — un geste de couleur par écran : ici, l'état actif d'une commande
+     est ENCRE, jamais accent — l'accent se dépense en un seul moment.
+   · CG4 — les tranches d'application emboîtent leurs fonds en cascade.
+   · CG5 — l'échelle de titres du gabarit est déclarée (tokens.css). */
+.gdoc-fond { background: var(--bg); }
+.gdoc {
+  display: grid; grid-template-columns: var(--doc-rail) minmax(0, 1fr);
+  gap: var(--doc-gouttiere); padding: 0 var(--doc-marge);
+  max-width: 90rem; margin: 0 auto;
+}
+/* Sur ce gabarit : l'œil-de-section est sourd (le kicker primaire serait un
+   confetti — CG3), l'état actif des commandes est encre, les barres du labo
+   aussi, et les dépliants perdent leur filet de rive (CG1). */
+.gdoc .kicker { color: var(--text-tertiary); font-weight: 700; } /* tertiaire : le kicker de section — en petit, un cran de graisse au-dessus (C17) */
+.gdoc .bouton.on { background: var(--text-primary); border-color: var(--text-primary); color: var(--bg); }
+.gdoc .barre { background: var(--text-primary); }
+.gdoc .badge:not(.ko):not(.bon) { color: var(--text-primary); background: var(--surface-hover); }
+.gdoc details.prov { border-left: 0; padding-left: 0; }
+
+/* ── Le rail nu (CG2) : navigation du site + sommaire de la page.
+      Aucun fond, aucune bordure — l'alignement et le blanc le portent. ── */
+.gdoc-rail { min-width: 0; }
+.rail-fixe {
+  position: sticky; top: 5.5rem; max-height: calc(100vh - 5.5rem);
+  overflow-y: auto; padding: var(--page-2-block) 0;
+  display: flex; flex-direction: column; gap: var(--page-2-block);
+}
+.rail-bloc { display: grid; gap: var(--gap-3-block); align-content: start; }
+.rail-titre {
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : le titre du rail */
+}
+.rail-liste { display: flex; flex-direction: column; }
+.rail-lien {
+  display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: baseline; gap: var(--gap-3-inline);
+  padding: var(--gap-3-block) 0; min-height: var(--target-min); text-decoration: none;
+  color: var(--text-secondary); font-size: var(--font-size-body); line-height: 1.35;
+  transition: color 0.3s;
+}
+.rail-lien.simple { grid-template-columns: minmax(0, 1fr) auto; }
+.rail-index {
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary); transition: color 0.3s; /* tertiaire : l'index du menu — l'encre, plus une opacité (C17) */
+}
+.rail-marque { align-self: center; width: 0; height: 1px; background: var(--text-primary); transition: width 0.3s; }
+.rail-lien:hover, .rail-lien.actif { color: var(--text-primary); }
+.rail-lien.actif { font-weight: 600; }
+.rail-lien.actif .rail-index { color: var(--text-primary); }
+.rail-lien.actif .rail-marque { width: 1.25rem; }
+.rail-lien:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-3); }
+.rail-pied { margin-top: auto; font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : le pied du rail */
+
+/* ── Le contenu : héros à titre-affiche (CG5), sections séparées par le
+      grand silence (CG1) — jamais par un trait. ── */
+.gdoc-contenu { min-width: 0; padding-bottom: var(--doc-silence); }
+.gdoc-heros { padding-top: var(--doc-silence); }
+.gdoc-heros h1 {
+  margin-top: var(--gap-1-block); font-size: var(--doc-cover);
+  line-height: 1.04; font-weight: 500; letter-spacing: -0.035em; /* comme le h1 de la pièce d'Auteur (kittyponu.html) — sections et intertitres, eux, un cran de graisse en dessous */
+  max-width: 18ch; text-wrap: balance;
+}
+/* Le point final — l'unique geste de couleur de cet écran (CG3) */
+/* Le point vit SOUS le titre, sur sa propre ligne — c'est sa place
+   (verdict d'Auré, 24 août), pas un accident de retour à la ligne. */
+.gdoc-heros .point {
+  display: block; width: 0.38em; height: 0.38em;
+  border-radius: var(--r-pill); background: var(--primary); margin-top: 0.22em;
+}
+.gdoc-heros .chapo { margin-top: var(--doc-tete); }
+.gdoc-sec { padding-top: var(--doc-silence); }
+.gdoc-sec-tete { max-width: var(--measure); display: grid; gap: var(--gap-2-block); }
+.gdoc-sec-tete h2 {
+  font-size: var(--doc-section); line-height: 1.1; font-weight: 400; /* graisse d'un cran en dessous */
+  letter-spacing: -0.03em; text-wrap: balance;
+}
+.gdoc-sec-tete .sourd { line-height: 1.65; }
+.gdoc h3 { font-weight: 500; } /* les intertitres du site, un cran de graisse en dessous ; les démos produit gardent la leur */
+.gdoc-corps { margin-top: var(--doc-tete); display: grid; gap: var(--gap-1-block); }
+.gd-pied {
+  margin-top: var(--doc-silence); padding-top: var(--pad-2-block);
+  border-top: 1px solid var(--border);
+  font: 600 var(--font-size-label)/1.6 var(--font-mono); color: var(--text-tertiary); /* tertiaire : le pied de page */
+  display: flex; justify-content: space-between; gap: var(--gap-2-inline); flex-wrap: wrap;
+}
+
+/* ── La scène : la seule grande surface de son écran — méritée (CP2).
+      Pour l'écran de l'échelle, elle est AUSSI son geste de couleur (CG3). ── */
+.banc {
+  margin: 0; border-radius: var(--r-1); padding: var(--doc-scene-block) var(--doc-scene-inline);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--gap-1-block); width: 100%;
+}
+.banc.primaire { background: var(--primary); color: var(--on-primary); }
+.banc.sombre { background: var(--code-bg); color: var(--code-text); }
+/* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
+   (décision d'Auteur, 24 août). */
+.gd-figure { margin: 0; display: grid; gap: var(--gap-2-block); justify-items: center; }
+.gd-figure > .gd-legende { justify-self: start; }
+/* La légende est du texte : elle se justifie à gauche comme tout le reste
+   de la page (charte, 24 août). Centrée, elle se lisait comme une
+   vignette de catalogue. */
+.gd-legende {
+  font: 600 var(--font-size-label)/1.6 var(--font-mono); font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary); text-align: left; max-width: var(--measure); /* tertiaire : la légende mono sous une démo */
+  justify-self: start !important;
+}
+
+/* ── Le bouton de la tranche : redéfini par rythme.css, mais consommé aussi par
+      la page Arrondis (ar-btn le complète) — gardé ici, sur la chaîne. ── */
+.tr-btn {
+  border: 0; cursor: default; border-radius: var(--r-ctl);
+  min-height: var(--control-height); padding: 0 var(--pad-3-inline);
+  font: 600 var(--font-size-small)/1 var(--font-sans);
+  background: var(--surface); color: var(--text-primary);
+}
+.tr-btn.premier { background: var(--text-primary); color: var(--bg); }
+
+
+/* ── L'entrée en scène : la section se pose au moment où on la découvre.
+      Jamais si le système demande moins de mouvement. ── */
+@media (prefers-reduced-motion: no-preference) {
+  .gdoc .pose { opacity: 0; transform: translateY(0.875rem); transition: opacity 0.7s cubic-bezier(0, 0, 0.2, 1), transform 0.7s cubic-bezier(0, 0, 0.2, 1); }
+  .gdoc .pose.posee { opacity: 1; transform: none; }
+}
+
+/* ── Le tiroir de réglages : l'ancien panneau permanent, replié derrière
+      une poignée — un outil qui ne sert qu'une fois n'occupe pas l'écran. ── */
+.tiroir-poignee {
+  margin-left: auto; background: none; border: 0; cursor: pointer;
+  color: var(--text-secondary); font: 500 var(--font-size-small)/1 var(--font-sans);
+  display: inline-flex; align-items: center; gap: var(--gap-3-inline);
+  transition: color 0.15s; padding: var(--gap-3-block) 0;
+}
+.tiroir-poignee:hover { color: var(--text-primary); }
+.tiroir-poignee:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-3); }
+.tiroir {
+  position: fixed; top: 3.5rem; right: 0; z-index: 40;
+  width: min(21rem, 100vw); max-height: calc(100vh - 3.5rem); overflow-y: auto;
+  background: var(--bg); border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); border-radius: 0 0 0 var(--r-1);
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-1-block); align-content: start;
+}
+.tiroir-tete { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-2-inline); }
+.tiroir-tete h3 { margin: 0; font-size: var(--font-size-small); font-weight: 600; }
+.tiroir .bloc { display: grid; gap: var(--gap-3-block); }
+.tiroir .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+
+/* ── Palier unique du gabarit : sous 69rem, le rail cède la colonne — la
+      navigation devient une rangée nue, le sommaire s'efface. ── */
+@media (max-width: 69rem) {
+  .gdoc { grid-template-columns: minmax(0, 1fr); }
+  .rail-fixe { position: static; max-height: none; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: var(--gap-1-inline); padding: var(--pad-3-block) 0 0; }
+  .rail-somm, .rail-pied { display: none; }
+  .rail-sites .rail-liste { flex-direction: row; gap: var(--gap-1-inline); }
+  .rail-lien { padding: var(--gap-4-block) 0; }
+  .rail-marque { display: none; }
+}
+
+/* le banc neutre : une scène qui n'est pas un geste de couleur */
+.banc.voile { background: var(--surface); color: var(--text-primary); }
+
+/* Le verdict en vert : un badge qui atteste une conformité (décision
+   d'Auteur, 24 août — « rouge pour l'erreur, vert plutôt que gris si
+   c'est ok »). Couple sémantique success de tokens.css ; le gris reste
+   aux badges purement descriptifs (identifiants de règles, fiches). */
+.badge.bon { color: var(--success); background: var(--success-subtle); }
+
+/* Le code couleur des espaces (décision d'Auteur, 24 août) : danger pour
+   les retraits (padding), success pour les écarts (gap / margin) — la
+   convention des inspecteurs, portée par nos jetons sémantiques. */
+.espace.vu.pad[data-nom]::after { color: var(--danger); }
+.espace.vu.gap[data-nom]::after { color: var(--success); }
+/* Au repos, rien : les espaces espacent. La couleur n'apparaît qu'au
+   survol de la tranche (ou au clavier) — décision d'Auteur, 24 août. */
+.survole-espaces:hover .espace.vu.pad, .survole-espaces:focus-within .espace.vu.pad {
+  background: var(--danger-subtle); outline-color: var(--danger); }
+.survole-espaces:hover .espace.vu.gap, .survole-espaces:focus-within .espace.vu.gap {
+  background: var(--success-subtle); outline-color: var(--success); }
+
+/* ═══ PAGE COULEUR — preuves natives et mosaïque de la charte (24 août) ═══ */
+
+/* La mosaïque, au graphisme exact de la charte : tuiles pleines, sans
+   écart ; nom en haut à gauche, specs mono en bas à droite. */
+.cm-mos { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(9rem, 20vh, 12rem); gap: 0; width: 100%;
+  border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
+.cm-tuile { display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; padding: var(--pad-2-block) var(--pad-3-inline);
+  border: 0; text-align: left; cursor: pointer; font: inherit; min-width: 0; overflow: hidden; }
+.cm-tuile:focus-visible { outline-offset: -4px; }
+.cm-nom { font-size: var(--font-size-small); font-weight: 500; letter-spacing: 0.01em; }
+.cm-specs { display: flex; flex-direction: column; align-self: flex-end; align-items: flex-end;
+  gap: 2px; font: 400 var(--font-size-label)/1.4 var(--font-mono); }
+.cm-props { display: flex; width: 100%; height: calc(clamp(9rem, 20vh, 12rem) * 2.2);
+  border: 1px solid var(--border); border-radius: var(--r-1); overflow: hidden; }
+.cp-col { display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; flex-grow: 1; min-width: 0; overflow: hidden;
+  padding: var(--pad-2-block) var(--pad-3-inline);
+  border: 0; text-align: left; cursor: pointer; font: inherit;
+  transition: min-width 0.48s cubic-bezier(0, 0, 0.2, 1); }
+.cp-col:focus-visible { outline-offset: -4px; }
+.cp-meta { display: flex; flex-direction: column; gap: var(--gap-4-block); white-space: nowrap; }
+.cp-nom { font-size: var(--font-size-small); font-weight: 500; }
+.cp-hex { font: 400 var(--font-size-small)/1.4 var(--font-mono); }
+.cp-pct { align-self: flex-end; font: 400 var(--font-size-small)/1 var(--font-mono); white-space: nowrap; }
+.cp-col.etroite .cp-meta, .cp-col.etroite .cp-pct { opacity: 0; transition: opacity 0.3s; }
+.cp-col.etroite:hover, .cp-col.etroite:focus-visible { min-width: 13rem; }
+.cp-col.etroite:hover .cp-meta, .cp-col.etroite:focus-visible .cp-meta,
+.cp-col.etroite:hover .cp-pct, .cp-col.etroite:focus-visible .cp-pct { opacity: 1; }
+@media (max-width: 48rem) {
+  .cm-mos { grid-template-columns: 1fr; grid-auto-rows: clamp(8rem, 18vh, 10rem); }
+  .cm-tuile { grid-area: auto !important; }
+  .cm-props { flex-direction: column; height: auto; }
+  .cp-col { min-height: 3.5rem; flex-basis: auto !important; }
+}
+
+/* Le nuancier en mosaïque de charte (verdict d'Auré, 24 août — « j'aimais
+   beaucoup ce graphisme exactement ») : tuiles pleines SANS écart, le nom
+   en haut à gauche, la fiche mesurée en bas à droite, et le fond doux
+   collé sous son ton. Trois par rangée : six tuiles, aucun trou. */
+.gd-nuancier { display: grid; width: 100%; gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
+.gd-lng { display: grid; grid-template-rows: minmax(10rem, auto) minmax(3.6rem, auto); }
+.gd-lng-doux { padding: var(--pad-3-block) var(--pad-3-inline);
+  display: flex; flex-direction: column; gap: var(--gap-4-block); }
+.gd-lng-doux b { font-size: var(--font-size-body); letter-spacing: -0.01em; }
+.gd-lng-doux > span { font-size: var(--font-size-small); }
+.gd-lng-fiche { margin-top: auto; padding-top: var(--gap-3-block);
+  font: 600 var(--font-size-label)/1.4 var(--font-mono); text-align: right; opacity: 0.85; }
+.gd-lng-ton { padding: var(--pad-3-block) var(--pad-3-inline);
+  font-size: var(--font-size-small); line-height: 1.5; }
+
+/* ═══════════ Le bento — l'objet en situation de la page Couleur (25 août 2026) ═══════════
+   Tranche applicative en cascade (CG4) : scène = surface, tuile = bg + border,
+   rayon carte ; contrôles au rayon simple ; un gap unique. Aucune couleur hors
+   rôle. La fiche des rôles se pose sur la tuile au survol ou au focus. */
+.bn { display: grid; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas: "photo photo stat tags" "photo photo liste liste" "form form vide session";
+  color: var(--text-primary); }
+@media (width < 900px) { .bn { grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "photo photo" "stat tags" "liste liste" "form form" "vide session"; } }
+@media (width < 560px) { .bn { grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "photo" "stat" "tags" "liste" "form" "vide" "session"; } }
+.bn-tuile { position: relative; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-2-block); align-content: start; min-width: 0;
+  transition: border-color 0.1s cubic-bezier(0, 0, 0.2, 1); }
+.bn-tuile:hover, .bn-tuile:focus-within { border-color: var(--border-strong); }
+.bn-tuile[tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bn-photo { grid-area: photo; } .bn-stat { grid-area: stat; } .bn-tags { grid-area: tags; }
+.bn-liste { grid-area: liste; } .bn-mot { grid-area: form; } .bn-vide { grid-area: vide; } .bn-session { grid-area: session; }
+.bn-titre { font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.015em; line-height: var(--leading-heading); }
+.bn-sous { color: var(--text-secondary); font-size: var(--font-size-small); }
+.bn-tete { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-2-inline); }
+.bn-tete a { font-size: var(--font-size-small); font-weight: 500; text-decoration: none; color: var(--primary-text); }
+.bn-tete a:hover { text-decoration: underline; color: var(--primary-text-hover); }
+.bn .bouton.on:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+/* le gabarit documentaire grise les badges (.gdoc .badge…) ; dans le bento
+   ils sont des étiquettes d'interface et gardent leurs couples déclarés —
+   d'où le poids du sélecteur. */
+.gdoc .bn .badge, .bn .badge { white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35em;
+  color: var(--on-primary-subtle); background: var(--primary-subtle); }
+.gdoc .bn .badge.info, .bn .badge.info { color: var(--on-info-subtle); background: var(--info-subtle); }
+.gdoc .bn .badge.warning, .bn .badge.warning { color: var(--on-warning-subtle); background: var(--warning-subtle); }
+.bn .badge svg { width: 0.8em; height: 0.8em; }
+.bn-etiquettes { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+/* la fiche des rôles : posée sur le bas de la tuile (sur le haut des tuiles
+   à contrôles, pour ne jamais couvrir un champ ou un bouton) */
+.bn-roles { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; margin: 0;
+  display: flex; flex-wrap: wrap; gap: var(--gap-4-block) var(--gap-3-inline);
+  font: 400 var(--font-size-label)/1.5 var(--font-mono);
+  /* en inverse (retour d'Auteur) : l'encre du thème devient le fond, le fond
+     devient l'encre — le couple text-primary / bg, retourné, même rapport */
+  color: var(--bg); background: var(--text-primary);
+  border-radius: 0 0 var(--r-2) var(--r-2);
+  padding: var(--gap-3-block) var(--pad-2-inline);
+  opacity: 0; transform: translateY(4px); pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1), transform 0.2s cubic-bezier(0, 0, 0.2, 1); }
+.bn-roles b { font-weight: 600; color: var(--bg); }
+.bn-tuile:hover .bn-roles, .bn-tuile:focus-within .bn-roles { opacity: 1; transform: none; }
+.bn-photo .bn-roles, .bn-liste .bn-roles, .bn-mot .bn-roles, .bn-session .bn-roles {
+  bottom: auto; top: 0; border-radius: var(--r-2) var(--r-2) 0 0; }
+/* la carte-photo : texte jamais nu (M2) ; --bn-voile est un CALCUL (M3) */
+.bn-photo { padding: 0; overflow: hidden; display: grid; grid-template-rows: 1fr auto; min-height: 20rem; isolation: isolate; }
+.bn-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; display: block; }
+/* l'aurore en code à la place de la photo (25 août) : elle couvre la tuile
+   comme une image en cover — ses couches sont en « slice » */
+.bn-aurore { position: absolute; inset: 0; z-index: 0; }
+.bn-aurore .aurore-cadre { aspect-ratio: auto; height: 100%; }
+.bn-bande { position: relative; z-index: 1; align-self: end; grid-row: 2;
+  padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: var(--gap-3-block);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--bg) calc(var(--bn-voile, 1) * 100%), transparent);
+  /* flou sous la bande (demande d'Auteur, 25 août) : il adoucit l'image,
+     il ne garantit rien — le voile calculé reste par-dessus. Le calcul du
+     pire pixel se fait sur l'image nette : un flou est une moyenne, il ne
+     produit jamais un pixel plus défavorable que le pire pixel net. */
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.bn-bande .kicker { color: inherit; }
+.bn-bande h3 { margin: 0; font-size: var(--font-size-h2); font-weight: 600; letter-spacing: -0.02em;
+  line-height: var(--leading-heading); text-wrap: balance; max-width: 26ch; }
+.bn-bande .rang { margin-top: var(--gap-4-block); }
+.bn-voile-dit { font: 400 var(--font-size-label)/1.5 var(--font-mono); }
+/* le chiffre */
+.bn-valeur { font-size: var(--font-size-display); font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.bn-valeur small { font-size: 0.45em; font-weight: 500; color: var(--text-secondary); letter-spacing: 0; margin-left: 0.15em; }
+.bn-delta { display: inline-flex; align-items: center; gap: 0.35em; font: 600 var(--font-size-small)/1 var(--font-mono);
+  color: var(--on-success-subtle); background: var(--success-subtle); border-radius: var(--r-3);
+  padding: var(--gap-4-block) var(--gap-3-inline); }
+.bn-delta svg { width: 0.8em; height: 0.8em; }
+.bn-courbe { display: block; width: 100%; height: 2.6rem; }
+.bn-courbe rect { fill: var(--primary-subtle); }
+.bn-courbe rect.auj { fill: var(--primary); }
+/* la liste */
+.bn-lignes { display: grid; }
+.bn-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline);
+  padding: var(--gap-3-block) var(--gap-3-inline); margin: 0 calc(-1 * var(--gap-3-inline)); /* la ligne déborde de sa marge : son fond de survol touche le bord de la tuile */
+  border-radius: var(--r-3); text-decoration: none; color: var(--text-primary);
+  transition: background 0.1s cubic-bezier(0, 0, 0.2, 1); }
+.bn-ligne:hover { background: var(--surface-hover); color: var(--text-primary); }
+.bn-qui { display: grid; gap: var(--gap-4-block); min-width: 0; } /* nom et poste : le plus petit cran, serrés (retour d'Auteur) */
+.bn-nom { font-weight: 500; line-height: 1.25; }
+.bn-ter { color: var(--text-secondary); font-size: var(--font-size-small); line-height: 1.3; }
+.bn-statut { display: inline-flex; align-items: center; gap: 0.4em; font-size: var(--font-size-small); color: var(--text-secondary); white-space: nowrap; }
+.bn-statut::before { content: ""; width: 0.5em; height: 0.5em; border-radius: var(--r-pill); background: var(--border-strong); }
+.bn-statut.en-ligne::before { background: var(--success); }
+.bn-statut.hors-ligne::before { background: var(--danger); }
+.bn-statut.occupe::before { background: var(--warning); }
+.bn-avatar { width: 2.5rem; height: 2.5rem; border-radius: var(--r-pill); object-fit: cover; display: block; }
+/* le mot du mentor — SUR FOND MARQUE (décision d'Auteur, 25 août, après
+   deux essais avec un formulaire) : le geste de couleur de l'écran est une
+   tuile éditoriale — une citation en corps d'affiche, une seule encre
+   déclarée, on-primary. Aucun contrôle : rien à inverser, rien à tracer. */
+.bn-mot { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.bn-mot:hover, .bn-mot:focus-within { border-color: var(--primary); }
+.bn-mot .kicker { color: var(--on-primary); }
+.bn-citation { margin: 0; display: grid; gap: var(--gap-2-block); align-self: end; }
+/* la citation parle serif (Auteur, 25 août) : la serif du système
+   (--font-serif), en graisse forte comme une affiche, corps display ;
+   le guillemet ouvrant “ est SUSPENDU dans la marge — la première lettre
+   reste alignée sur le bloc — et il n'a pas de fermant (convention
+   d'affiche). Décoratif : posé en CSS, hors lecture. */
+.bn-citation p { position: relative; font-family: var(--font-serif); font-weight: 700; letter-spacing: -0.015em;
+  font-size: var(--font-size-display); line-height: 1.06; text-wrap: balance; max-width: 15ch;
+  margin-left: 0.6em; /* décalée à droite (Auteur, 25 août) : le “ suspendu retombe sur le bord du bloc, aligné avec le kicker et la signature */ }
+.bn-citation p::before { content: "\201C"; position: absolute; right: 100%; margin-right: 0.04em; top: 0; }
+.bn-citation footer { font-size: var(--font-size-small); font-weight: 500; }
+/* le vide, la session */
+.bn-vide-corps { display: grid; justify-items: start; gap: var(--gap-3-block); color: var(--text-secondary); font-size: var(--font-size-small); }
+.bn-vide-corps svg { width: 2.25rem; height: 2.25rem; color: var(--border-strong); }
+.bn-vide-titre { font-weight: 500; color: var(--text-primary); font-size: var(--font-size-body); }
+.bn-date { font: 400 var(--font-size-small)/1.5 var(--font-mono); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.bn-lien { font-size: var(--font-size-small); font-weight: 500; color: var(--primary-text); }
+.bn-lien:hover { color: var(--primary-text-hover); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Deux thèmes, une exigence : chaque panneau EST son thème. */
+.gd-duo { display: grid; width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: var(--gap-1-inline); }
+.gd-pan { background: var(--bg); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  display: grid; gap: var(--gap-2-block); align-content: start; }
+.gd-pan-carte { background: var(--surface); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-3-block); justify-items: start; }
+
+/* La table des rôles respire — un cran au-dessus du tableau standard
+   (retour d'Auré, 24 août : « un peu trop serré ces lignes »). */
+.tableau.aere th, .tableau.aere td { padding: var(--pad-3-block) var(--pad-3-inline); }
+.tableau.aere { font-size: var(--font-size-small); }
+
+/* ── Le playground du moteur (maquette d'Auré, 24 août) : rail de logos,
+      scène LOGO/Baseline, barres dérivées. ── */
+.mk { display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--gap-1-inline); width: 100%; align-items: start; }
+.mk-rail { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.mk-chip { width: 3rem; height: 3rem; border-radius: var(--r-ctl);
+  border: 0; cursor: pointer; background: var(--surface); color: var(--text-secondary);
+  display: grid; place-items: center; padding: 0; overflow: hidden;
+  transition: background 0.15s, color 0.15s; }
+.mk-chip:hover { background: var(--surface-hover); color: var(--text-primary); }
+.mk-chip input[type="color"] { width: 100%; height: 100%; border: 0; padding: 0;
+  background: none; cursor: pointer; }
+.mk-scene { display: grid; gap: var(--gap-2-block); min-width: 0; }
+.mk-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--gap-1-inline); }
+.mk-grande { border-radius: var(--r-1); min-height: clamp(14rem, 26vw, 21rem);
+  display: grid; place-content: center; justify-items: center; gap: var(--gap-3-block); }
+.mk-base { font-size: var(--font-size-small); font-weight: 500; }
+.mk-rang { display: flex; gap: var(--gap-3-inline); }
+.mk-barre { flex: 1; min-width: 0; height: 1rem; /* hors chaîne : la barre dérivée, un objet — pas un espace */ border-radius: var(--r-pill); }
+.mk-paire { flex: 1; min-width: 0; display: flex; gap: var(--gap-3-inline); }
+@media (max-width: 48rem) {
+  .mk { grid-template-columns: 1fr; }
+  .mk-rail { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* ── Les gammes 50–950 (25 août) : la barre, les numéros dessous — et, sous
+      chaque numéro, le rôle qui se pose sur ce cran. En plein quand sa
+      valeur EST le cran ; en ≈ quand il n'en est que le voisin. ── */
+.gm { display: grid; gap: var(--gap-4-block); width: 100%; }
+/* Les gammes se suivent : de l'air entre elles, plus qu'entre une barre et ses numéros. */
+.gm-suite { display: grid; gap: var(--gap-1-block); width: 100%; }
+.gm-suite > .gm-titre { margin: 0; }
+.gm-suite > .gm-titre:not(:first-child) { margin-top: var(--gap-3-block); }
+.gm-barre { display: flex; width: 100%; border-radius: var(--r-3); overflow: hidden; border: 1px solid var(--border); }
+.gm-barre > button { flex: 1; min-width: 0; height: var(--control-height-compact); border: 0; padding: 0; cursor: pointer; }
+.gm-crans { display: flex; width: 100%; align-items: start; }
+.gm-cran { flex: 1; min-width: 0; display: grid; justify-items: center; font-size: var(--font-size-label); font-weight: 400; line-height: 1.6; color: var(--text-secondary); text-align: center; }
+.gm-cran.ici > span:first-child { color: var(--text-primary); font-weight: 600; }
+.gm-role { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gm-role.exact { color: var(--text-primary); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE ACCUEIL — la porte (proposition HTML validée le 24 août).
+   Emprunts dits : la couverture de la charte (dévoilement rise-mask,
+   monogramme) ; le générateur Semantic Rhythm (une entrée, tout
+   recalcule). Un principe porteur : le kit se prouve. ═══ */
+/* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
+   Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
+.accueil { --acc-silence: clamp(6rem, 4.8rem + 5vw, 10rem);
+  --acc-tete: clamp(2.2rem, 1.9rem + 1.8vw, 3.4rem); }
+.acc-colonne { max-width: 66rem; margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem); }
+
+/* La couverture — l'entrée en scène de la charte, réservée à la porte */
+.acc-couv { min-height: calc(88svh); display: flex; flex-direction: column; }
+.acc-couv-tete { display: flex; align-items: center; gap: 0.7rem;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.acc-couv-tete b { font-weight: 700; letter-spacing: 0.26em; font-size: 0.9rem; }
+.acc-couv-corps { flex: 1; display: flex; flex-direction: column;
+  justify-content: center; padding-block: var(--acc-tete); }
+.acc-couv h1 { font-size: clamp(2.6rem, 1.2rem + 6.4vw, 5.6rem); line-height: 1.04;
+  letter-spacing: -0.028em; font-weight: 700; max-width: 15ch; margin-top: var(--pad-3-block); }
+.acc-point { display: block; width: 0.38em; height: 0.38em; border-radius: var(--r-pill);
+  background: var(--primary); margin-top: 0.24em;
+  font-size: clamp(2.6rem, 1.2rem + 6.4vw, 5.6rem); }
+.acc-chapo { margin-top: var(--acc-tete); max-width: var(--measure);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem); color: var(--text-secondary); }
+.acc-chapo b { color: var(--text-primary); font-weight: 600; }
+.acc-couv-pied { padding-bottom: 1.4rem; }
+
+/* Le dévoilement (rise-mask de la charte) */
+.acc-rise { overflow: hidden; display: block; }
+.acc-rise > span { display: block; transform: translateY(118%);
+  animation: acc-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
+@keyframes acc-rise { to { transform: translateY(0); } }
+.acc-fade { opacity: 0; animation: acc-fade 0.8s ease forwards;
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
+@keyframes acc-fade { to { opacity: 1; } }
+.acc-pop { transform: scale(0); animation: acc-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
+@keyframes acc-pop { to { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .acc-rise > span, .acc-fade, .acc-pop { animation: none; transform: none; opacity: 1; }
+}
+
+/* Sections documentaires de la porte */
+.acc-sec { padding-top: var(--acc-silence); }
+.acc-sec:last-of-type { padding-bottom: var(--acc-silence); }
+.acc-sec-tete { max-width: var(--measure); display: grid; gap: var(--gap-3-block); }
+.acc-sec h2 { font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.4rem); line-height: 1.15;
+  letter-spacing: -0.02em; font-weight: 700; }
+.acc-sec-corps { margin-top: var(--acc-tete); display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
+
+/* 01 · Le moteur — l'objet vivant */
+.acc-mo { display: grid; grid-template-columns: auto 1fr;
+  gap: clamp(1rem, 2.5vw, 2rem); align-items: start; }
+.acc-mo-rail { display: flex; flex-direction: column; gap: 0.6rem; }
+.acc-mo-chip { width: 3rem; height: 3rem; border-radius: var(--r-1);
+  border: 1px solid var(--border); background: var(--surface); display: grid;
+  place-items: center; cursor: pointer; font: inherit; padding: 0; position: relative; }
+.acc-mo-chip[aria-pressed="true"] { border-color: var(--border-strong); }
+.acc-pastille { width: 1.35rem; height: 1.35rem; border-radius: var(--r-pill); display: block; }
+.acc-mo-chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.acc-mo-scene { display: grid; gap: 0.9rem; }
+.acc-mo-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.acc-mo-carte { border-radius: var(--r-2);
+  min-height: clamp(11rem, 22vw, 16rem); display: grid; place-content: center;
+  justify-items: center; gap: 0.7rem; text-align: center; padding: 1.2rem; }
+.acc-mo-carte b { font-size: 0.95rem; letter-spacing: 0.02em; }
+.acc-mo-mesures { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.acc-puce { width: 0.6em; height: 0.6em; border-radius: var(--r-pill); display: inline-block;
+  margin-right: 0.45em; box-shadow: inset 0 0 0 1px var(--border); vertical-align: 0; }
+.accueil .badge.acc-dit { color: var(--on-primary-subtle);
+  background: var(--primary-subtle); }
+
+/* 02 · Trois fondations — les spécimens */
+.acc-fonds { display: grid; gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.acc-fond { border: 1px solid var(--border); border-radius: var(--r-2);
+  padding: clamp(1.2rem, 2.4vw, 1.8rem); display: grid; gap: 1.1rem;
+  align-content: start; text-decoration: none; color: inherit;
+  transition: border-color 0.2s ease; }
+.acc-fond:hover { border-color: var(--border-strong); }
+.acc-fond .kicker { color: var(--primary-text); }
+.acc-fond h3 { font-size: 1.25rem; letter-spacing: -0.015em; }
+.acc-fond > p { font-size: 0.875rem; color: var(--text-secondary); }
+.acc-fond-specimen { min-height: 5.6rem; display: grid; align-items: end; }
+.acc-fond-lien { font: 500 0.8125rem/1 var(--font-sans); color: var(--primary-text); }
+.acc-sp-typo { display: flex; align-items: baseline; gap: 0.55em; }
+.acc-sp-typo span { font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.acc-sp-rythme { display: grid; gap: 0.45rem; align-content: end; }
+.acc-sp-rythme i { display: block; height: 0.62rem; border-radius: var(--r-pill);
+  background: var(--primary-subtle);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); }
+.acc-sp-couleur { display: grid; gap: 0.45rem; align-content: end; }
+.acc-sp-couleur i { display: grid; grid-template-columns: 2.2rem 1fr; height: 1.5rem;
+  border-radius: var(--r-2); overflow: hidden; border: 1px solid var(--border); }
+.acc-sp-couleur i b { display: block; }
+
+/* 03 · La carte du système */
+.acc-carte { border: 1px solid var(--border); border-radius: var(--r-1);
+  overflow: hidden; }
+.acc-carte table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.acc-carte th { text-align: left; font: 500 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  border-bottom: 1px solid var(--border); background: var(--surface); }
+.acc-carte td { padding: var(--pad-3-block) var(--pad-3-inline);
+  border-bottom: 1px solid var(--border); }
+.acc-carte tr:last-child td { border-bottom: 0; }
+.acc-carte td:first-child { font-weight: 600; white-space: nowrap; }
+.acc-carte td:first-child a { color: var(--primary-text); text-decoration: none; }
+.acc-carte td:last-child { color: var(--text-secondary); }
+.acc-etat { white-space: nowrap; font-size: 0.8125rem; }
+.accueil details.prov { max-width: var(--measure); }
+
+@media (max-width: 44rem) {
+  .acc-mo { grid-template-columns: 1fr; }
+  .acc-mo-rail { flex-direction: row; flex-wrap: wrap; }
+  .acc-mo-duo { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE COMPOSITION — pièce de référence : kit-composition-nu.html.
+   Le sujet de la page est le REGARD, et chaque preuve a SON objet : une
+   interface, une page de journal, une affiche, une page de magazine. La
+   faute écartée en séance : faire servir le même écran à toutes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
+   Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
+.co-scene { background: var(--surface); border-radius: var(--r-1);
+  padding: clamp(1.6rem, 3.5vw, 2.6rem); width: 100%; }
+.co-duo-t { display: grid; grid-template-columns: 3fr 2fr;
+  gap: clamp(1.4rem, 4vw, 3rem); align-items: center; }
+.co-gauche { display: grid; gap: var(--pad-3-block); justify-items: start; min-width: 0; }
+.co-porte { position: relative; width: 100%; }
+.co-pied { position: relative; min-height: 1.5rem; width: 100%; }
+.co-dit { font-size: clamp(0.95rem, 0.9rem + 0.35vw, 1.12rem); line-height: 1.6;
+  color: var(--text-primary); max-width: 32ch; }
+
+/* Au repos l'invite ; au survol, la solution prend exactement sa place. */
+.co-invite, .co-solution { position: absolute; left: 0; top: 0;
+  font: 500 0.6875rem/1.5 var(--font-mono); transition: opacity 0.16s linear;
+  pointer-events: none; max-width: 100%; }
+.co-invite { color: var(--text-secondary); }
+.co-solution { color: var(--success); background: var(--success-subtle);
+  border-radius: var(--r-pill); padding: 0.15em 0.8em; opacity: 0; }
+.co-gauche:has(.co-porte:hover) .co-invite { opacity: 0; }
+.co-gauche:has(.co-porte:hover) .co-solution { opacity: 1; }
+
+/* ── OBJET 1 · l'interface de travail ── */
+.co-app { border: 1px solid var(--border); border-radius: var(--r-1);
+  background: var(--bg); overflow: hidden; }
+.co-app-tete { display: flex; align-items: center; gap: var(--gap-3-inline);
+  padding: var(--pad-3-block) var(--pad-3-inline); border-bottom: 1px solid var(--border); }
+.co-app-tete i { width: 0.5rem; height: 0.5rem; border-radius: var(--r-pill); background: var(--primary); flex: none; }
+.co-app-tete b { font-size: 0.8125rem; letter-spacing: -0.01em; }
+.co-app-corps { padding: var(--pad-2-block) var(--pad-3-inline);
+  display: grid; gap: var(--co-g, 1.5rem); }
+.co-b { display: grid; gap: var(--co-gi, 0.35rem); margin-left: var(--co-dx, 0); }
+.co-etq { font: 500 0.5625rem/1.4 var(--font-mono); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-kpi b { font-size: 2.6rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700; display: block; }
+.co-sous { font-size: 0.75rem; color: var(--text-secondary); }
+.co-li { display: flex; align-items: center; gap: var(--gap-3-inline);
+  font-size: 0.8125rem; padding-block: 0.28rem; }
+.co-li i { width: 0.35rem; height: 0.35rem; border-radius: var(--r-pill);
+  background: var(--border-strong); flex: none; }
+.co-pct { margin-left: auto; color: var(--text-secondary);
+  font-family: var(--font-mono); font-size: 0.625rem; }
+.co-cta { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.co-b1 { font-size: 0.75rem; font-weight: 600; border-radius: var(--r-ctl);
+  padding: 0.45rem 0.8rem; background: var(--primary); color: var(--on-primary); }
+.co-b2 { font-size: 0.75rem; font-weight: 500; border-radius: var(--r-ctl);
+  padding: 0.45rem 0.8rem; border: 1px solid var(--border-strong); }
+.co-champ { font-size: 0.75rem; color: var(--text-secondary);
+  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; }
+/* Les cinq fautes — appliquées TANT QU'ON NE SURVOLE PAS : le survol est
+   la solution, l'écran reprend sa forme juste. */
+.co-porte:not(:hover) .f-dominant .co-liste .co-etq {
+  font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; text-transform: none;
+  font-family: var(--font-sans); color: var(--text-primary); line-height: 1; }
+.co-porte:not(:hover) .f-cloison .co-b {
+  border: 1px solid var(--border); border-radius: var(--r-3); padding: var(--pad-3-block); }
+.co-porte:not(:hover) .f-equi { --co-g: 0.6rem; --co-gi: 0.6rem; }
+.co-porte:not(:hover) .f-axes .co-b:nth-child(2) { --co-dx: 1.4rem; }
+.co-porte:not(:hover) .f-axes .co-b:nth-child(3) { --co-dx: 0.6rem; }
+.co-porte:not(:hover) .f-axes .co-b:nth-child(4) { --co-dx: 2.2rem; }
+.co-porte:not(:hover) .f-rupture .co-etq { color: var(--primary); }
+.co-porte:not(:hover) .f-rupture .co-b2 {
+  background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.co-porte:not(:hover) .f-rupture .co-pct { color: var(--primary); font-weight: 700; }
+.co-porte:not(:hover) .f-rupture .co-app-tete b { color: var(--primary); }
+
+/* ── Le calque de repères — il montre la faute là où elle est ── */
+.co-calque { position: absolute; inset: 0; pointer-events: none; z-index: 5;
+  transition: opacity 0.16s linear; }
+.co-porte:hover .co-calque { opacity: 0; }
+.co-r-cadre { position: absolute; border: 1.5px solid var(--danger); border-radius: var(--r-ctl); }
+.co-r-cadre.douce { border: 1.5px dashed var(--border-strong); }
+.co-r-fil { position: absolute; border-left: 1px dashed var(--danger); }
+.co-r-fil.douce { border-left-color: var(--border-strong); }
+.co-r-cote { position: absolute; border-left: 1px solid var(--danger); width: 0; }
+.co-r-cote.douce { border-left-color: var(--border-strong); }
+.co-r-cote::before, .co-r-cote::after { content: ""; position: absolute; left: -3px;
+  width: 7px; border-top: 1px solid var(--danger); }
+.co-r-cote.douce::before, .co-r-cote.douce::after { border-top-color: var(--border-strong); }
+.co-r-cote::before { top: 0; } .co-r-cote::after { bottom: 0; }
+.co-r-puce { position: absolute; width: 0.55rem; height: 0.55rem; border-radius: var(--r-pill);
+  background: var(--danger); transform: translateY(-50%); }
+.co-r-etq { position: absolute; font: 600 0.5625rem/1.35 var(--font-mono);
+  color: var(--on-danger); background: var(--danger); border-radius: var(--r-ctl);
+  padding: 0.15rem 0.4rem; white-space: nowrap; transform: translateY(-50%); }
+.co-r-etq.douce { background: var(--surface-hover); color: var(--text-primary); }
+
+/* ── Le vocabulaire : une liste de définitions, pas des cartes ── */
+.co-voc { display: grid; gap: var(--pad-3-block); max-width: var(--measure); }
+.co-voc > .mono { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.co-voc dl { display: grid; }
+.co-voc dl > div { display: grid; grid-template-columns: 9rem 1fr;
+  gap: var(--pad-3-inline); align-items: baseline;
+  padding-block: var(--gap-4-block); border-top: 1px solid var(--border); }
+.co-voc dt { font-weight: 600; font-size: 0.875rem; }
+.co-voc dd { font-size: 0.875rem; color: var(--text-secondary); }
+
+/* ── OBJET 2 · la page de journal et l'affiche ── */
+.co-paire { display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(1.4rem, 4vw, 2.6rem); align-items: stretch; width: 100%; }
+.co-paire > div { display: grid; grid-template-rows: auto 1fr; gap: var(--pad-3-block); }
+.co-nom-objet { font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-presse { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline); font-family: var(--font-serif, Georgia, serif); height: 100%; }
+.co-surtitre { font: 500 0.5625rem/1 var(--font-mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--danger); }
+.co-presse h3 { font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em;
+  margin: 0.5rem 0 0.1rem; font-weight: 700; }
+.co-signature { font: 400 0.625rem/1.4 var(--font-mono); color: var(--text-secondary);
+  margin-bottom: var(--pad-3-block); }
+.co-cols { column-count: 2; column-gap: 1.1rem; font-size: 0.6875rem; line-height: 1.5;
+  text-align: justify; hyphens: auto; }
+.co-cols p { margin-bottom: 0.5rem; }
+.co-filet { height: 1px; background: var(--surface-hover); margin: var(--pad-3-block) 0; }
+.co-breve { font-size: 0.625rem; line-height: 1.5; color: var(--text-secondary);
+  display: grid; gap: 0.35rem; }
+.co-affiche { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem);
+  display: grid; align-content: space-between; gap: 1.4rem; }
+.co-marque { font: 600 0.625rem/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; }
+.co-titre-aff { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.05;
+  letter-spacing: -0.03em; font-weight: 700; }
+.co-sous-aff { font-size: 0.8125rem; color: var(--text-secondary); max-width: 26ch;
+  margin-top: var(--pad-3-block); }
+.co-action { justify-self: start; font-size: 0.8125rem; font-weight: 600;
+  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; background: var(--primary); color: var(--on-primary); }
+
+/* Le chemin, en pointillé permanent — et le regard, un segment plein qui
+   le parcourt. Sans mouvement demandé, le pointillé dit le chemin. */
+.co-trace { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.co-trace path { fill: none; stroke: var(--warning); stroke-width: 4;
+  stroke-linecap: round; stroke-linejoin: round; }
+.co-chemin { stroke-dasharray: 1 9; opacity: 0.9; }
+.co-regard { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .co-regard { opacity: 1; stroke-width: 5; stroke-dasharray: 54 var(--len);
+    animation: co-lire 4.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation-delay: var(--retard, 0s); }
+}
+@keyframes co-lire {
+  0% { stroke-dashoffset: 54; opacity: 0; }
+  6% { opacity: 1; }
+  72% { stroke-dashoffset: calc(-1 * var(--len)); opacity: 1; }
+  80%, 100% { stroke-dashoffset: calc(-1 * var(--len)); opacity: 0; }
+}
+
+/* ── OBJET 3 · la page de magazine, pour l'espace blanc ── */
+.co-mag { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  padding: var(--co-mp, clamp(2rem, 5vw, 3.4rem));
+  display: grid; gap: var(--co-mg, 1.6rem); font-family: var(--font-serif, Georgia, serif); }
+.co-rubrique { font: 500 0.5625rem/1 var(--font-mono); letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-mag h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.1;
+  letter-spacing: -0.02em; font-weight: 700; }
+.co-chapo-mag { font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); max-width: 34ch; }
+.co-exergue { font-size: 1.05rem; line-height: 1.35; font-style: italic;
+  border-left: 2px solid var(--text-primary); padding-left: 1rem; max-width: 30ch; }
+.co-corps-mag { column-count: 2; column-gap: var(--co-mg, 1.6rem);
+  font-size: 0.75rem; line-height: 1.65; text-align: justify; hyphens: auto; }
+.co-corps-mag p { margin-bottom: 0.6rem; }
+.co-porte.serre .co-mag { --co-mp: 3px; --co-mg: 2px; }
+.co-porte.serre .co-mag h3 { line-height: 0.98; }
+.co-porte.serre .co-corps-mag, .co-porte.serre .co-chapo-mag { line-height: 1.15; }
+.co-tache { position: absolute; background: var(--text-primary); border-radius: var(--r-4); opacity: 0.9; }
+
+@media (max-width: 62rem) {
+  .co-duo-t { grid-template-columns: 1fr; align-items: start; }
+  .co-dit { max-width: var(--measure); }
+  .co-paire { grid-template-columns: 1fr; }
+}
+@media (max-width: 40rem) { .co-voc dl > div { grid-template-columns: 1fr; gap: 0.1rem; } }

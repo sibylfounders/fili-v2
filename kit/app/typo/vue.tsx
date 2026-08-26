@@ -1,32 +1,86 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { Navigation } from "../nav";
-import { Apercu, PanneauCode } from "../apercu";
-import { Densite } from "../densite";
-import { Adaptation, useAdaptation } from "../adaptation";
-import { Theme } from "../theme";
-import { Primaire } from "../primaire";
+import { useEffect, useState, type ReactNode } from "react";
+import { PanneauCode } from "../apercu";
+import { useAdaptation } from "../adaptation";
+import { RailDoc, useDocSections, type Sommaire } from "../rail";
+import { chaine, jetons, aLargeur, AXES, CHARTE, LARGEUR_MIN, LARGEUR_MAX } from "../../derivation.mjs";
 
-/* L'échelle de travail des corps — mêmes valeurs que tokens.css.
-   L'aperçu recalcule chaque échelon pour SA largeur, et le « zoom lecteur »
-   multiplie la part rem : c'est exactement ce que fait le zoom du navigateur,
-   et c'est pour ça que le vw seul échoue (T3). */
-const ECHELONS: [string, string, number, number, number, number][] = [
-  ["--font-size-h1", "titre 1", 1.6, 1.4571, 0.7143, 2.1],
-  ["--font-size-h2", "titre 2", 1.3, 1.2429, 0.2857, 1.5],
-  ["--font-size-h3", "titre 3", 1.15, 1.1214, 0.1429, 1.25],
-  ["--font-size-body", "corps", 1.0, 0.9571, 0.2143, 1.15],
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE TYPOGRAPHIE — contenu natif (24 août, reprise après verdict
+   d'Auteur : « t'as adapté le contenu existant au lieu de proposer un
+   contenu original »). La formule s'applique en deux étages :
+
+   · ÉTAGE 1 — trois preuves, trois natures, sur la terre natale de la
+     typographie : LES VOIX (vocabulaire — deux familles, quatre
+     costumes, la casse T11 du nom orphelin), LA MESURE (variation —
+     même texte, seule la largeur change, comptée sur la page rendue),
+     LA GAZETTE (objet en situation — un imprimé composé par les règles,
+     cassable d'un geste).
+   · ÉTAGE 2 — le répertoire : l'échelle (huit crans, lus dans le
+     moteur), les garde-fous en grille compacte (zoom, saut de niveau,
+     graisse, capitales, 16 px) et l'adaptation.
+
+   Migrée sur la chaîne le 25 août 2026 (huit décisions, séance sur
+   pièce) : plus une table recopiée — tout chiffre affiché est calculé
+   par kit/derivation.mjs ; plus un ancien jeton — marges, espaces,
+   coins et crans de texte portent les noms du registre. Les styles
+   propres à la page vivent dans typo.css.
+
+   Le contenu ne perd rien : les onze règles et toutes les casses
+   restent — elles changent de maison, jamais de fond.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Le registre, lu dans le moteur — jamais recopié. Le moteur est en
+   JavaScript : on nomme ici la forme d'un jeton pour le TypeScript strict. */
+type Jeton = { axe: string | null; base: number; bas?: number; haut?: number; css: string };
+const REGISTRE = jetons(chaine()) as unknown as Record<string, Jeton>;
+const RAPPORT: number = CHARTE.intervalleTitres;
+const GLISSEMENT: number = AXES.type.max;
+const ECRAN_MIN: number = LARGEUR_MIN;
+const ECRAN_MAX: number = LARGEUR_MAX;
+
+/* Un nombre en français, sans « ,0 » : une décimale pour les pixels, deux pour un rapport. */
+const fr = (v: number) => String(Math.round(v * 10) / 10).replace(".", ",");
+const fr2 = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
+const bornes = (nom: string) => `${fr(REGISTRE[`font-size-${nom}`].bas!)}→${fr(REGISTRE[`font-size-${nom}`].haut!)} px`;
+
+/* Les huit crans, du haut de l'échelle au bas : deux titres du site, six
+   crans de texte. Chaque rangée de l'échelle est rendue PAR son jeton. */
+/* Les deux titres du site glissent avec l'écran entre deux crans de la chaîne
+   (intention d'auteur déclarée, 25 août) : ils se rendent par leur alias --doc-*,
+   et leur fiche dit les deux crans-bornes. */
+const CRANS: { nom: string; fiche: string; jeton: string; bornes: string }[] = [
+  { nom: "cover", fiche: "couverture · titre du site", jeton: "var(--doc-cover)", bornes: `${fr(REGISTRE["font-size-section"].bas!)}→${fr(REGISTRE["font-size-cover-max"].haut!)} px · glisse avec l'écran` },
+  { nom: "section", fiche: "section · titre du site", jeton: "var(--doc-section)", bornes: `${fr(REGISTRE["font-size-h1"].bas!)}→${fr(REGISTRE["font-size-section"].haut!)} px · glisse avec l'écran` },
+  { nom: "display", fiche: "affiche", jeton: "var(--font-size-display)", bornes: bornes("display") },
+  { nom: "h1", fiche: "h1", jeton: "var(--font-size-h1)", bornes: bornes("h1") },
+  { nom: "h2", fiche: "h2", jeton: "var(--font-size-h2)", bornes: bornes("h2") },
+  { nom: "h3", fiche: "h3", jeton: "var(--font-size-h3)", bornes: bornes("h3") },
 ];
 
-function corpsPx(nom: string, largeur: number, zoom: number, vwSeul: boolean): number {
-  const t = ECHELONS.find(([n]) => n === nom)!;
-  if (vwSeul) {
-    /* la casse : tout en vw, plus aucune part rem — le zoom ne mord plus */
-    return ((t[2] + t[5]) / 2) * 16 * (largeur / 1024);
-  }
-  const pref = t[3] * 16 * zoom + (t[4] * largeur) / 100;
-  return Math.min(t[5] * 16 * zoom, Math.max(t[2] * 16 * zoom, pref));
+/* Le corps, tel que le moteur le pose : 16 × l'axe de largeur, jamais
+   sous 16. Le zoom du lecteur rétrécit la fenêtre en pixels CSS puis
+   agrandit tout — c'est ce que fait le navigateur, et c'est pour ça que
+   le vw seul échoue (T3) : sa part d'écran ne bouge pas, le texte non plus. */
+const CORPS: number = REGISTRE["font-size-body"].base;
+function corpsPx(largeurEcran: number, zoom: number, vwSeul: boolean): number {
+  if (vwSeul) return aLargeur(CORPS, "type", largeurEcran, CORPS); /* casse : tout en vw, le zoom ne mord plus */
+  return aLargeur(CORPS, "type", largeurEcran / zoom, CORPS) * zoom;
 }
+
+/* La largeur réelle de l'écran, observée — les démos vivent dessus. */
+function useLargeurEcran(): number {
+  const [l, setL] = useState(0);
+  useEffect(() => {
+    const lire = () => setL(document.documentElement.clientWidth);
+    lire();
+    window.addEventListener("resize", lire);
+    return () => window.removeEventListener("resize", lire);
+  }, []);
+  return l;
+}
+
+const DECISIONS = { t: "Décisions du 25 août 2026, séance sur pièce", h: "#" };
 
 const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi?: string; div?: string; src: { t: string; h: string }[] }[] = [
   { id: "p01", nom: "principe", titre: "Le sens et la lisibilité sont deux décisions séparées",
@@ -42,20 +96,20 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "MDN — Heading elements", h: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements" }] },
   { id: "t2", nom: "T2", titre: "La taille glisse",
     enonce: "Les tailles varient continûment entre deux bornes selon la largeur — pas de paliers de media queries. La variation vit dans le jeton, jamais dans un écran.",
-    pourquoi: "C'est le jumeau typographique de la règle 8 du rythme : si chaque écran redéfinissait ses corps, le système n'existerait plus.",
-    src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }] },
+    pourquoi: "C'est le jumeau typographique du rythme : si chaque écran redéfinissait ses corps, le système n'existerait plus. Un régime est une mise en page, jamais une échelle.",
+    src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }, DECISIONS] },
   { id: "t3", nom: "T3", titre: "Le zoom garde ses droits",
     enonce: "Jamais de taille en unités d'écran seules (vw). Toute taille fluide porte une part rem dans ses trois parties : minimum, préférée, maximum.",
     pourquoi: "L'utilisateur zoome, la fenêtre ne bouge pas : un texte en vw seul ne grandit pas. Échec d'accessibilité silencieux — invisible en test standard, bloquant pour qui dépend du zoom.",
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }, { t: "Roselli — Responsive Type and Zoom", h: "https://adrianroselli.com/2019/12/responsive-type-and-zoom.html" }] },
-  { id: "t4", nom: "T4", titre: "Un échelon ne s'étire jamais au-delà de 2,5×",
-    enonce: "Le rapport entre la taille maximale et la taille minimale d'un même échelon reste sous 2,5.",
-    pourquoi: "Sous ce ratio, le texte atteint ses 200 % de zoom sur les largeurs usuelles. Et même conforme, on teste au zoom réel, pas à la formule (mesure M1).",
-    src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }] },
+  { id: "t4", nom: "T4", titre: "Un seul rapport, un seul curseur",
+    enonce: `Chaque cran vaut le précédent × ${fr2(RAPPORT)}, du petit à l'affiche et jusqu'aux titres du site. Toute l'échelle glisse d'un même facteur avec la largeur — × ${fr2(GLISSEMENT)} entre ${ECRAN_MIN} et ${ECRAN_MAX} px — et aucun cran ne s'étire seul.`,
+    pourquoi: "Un cran étiré à part casse la hiérarchie qu'il devait servir ; un glissement doux garde ses 200 % de zoom sur toutes les largeurs. Et même conforme, on teste au zoom réel, pas à la formule.",
+    src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }, DECISIONS] },
   { id: "t5", nom: "T5", titre: "Qui glisse se borne",
     enonce: "Tout bloc de texte courant porte une largeur maximale exprimée en ch — jamais en pixels. La règle exige la borne ; la valeur exacte reste un choix du système, documenté.",
     pourquoi: "Sans borne, la taille monte en butée pendant que la ligne s'allonge : la fluidité dégrade la lecture qu'elle devait servir. Les plages publiées divergent (45–75 Bringhurst, 40–60 Material) — on cite les sources comme motif, jamais comme exigence.",
-    div: "Une max-width de 65ch laisse passer plus de 65 caractères : ch mesure la chasse du « 0 », pas la moyenne. D'où la mesure au rendu (M2) plutôt que la confiance en la déclaration.",
+    div: "Une max-width de 65ch laisse passer plus de 65 caractères : ch mesure la chasse du « 0 », pas la moyenne. D'où la mesure au rendu plutôt que la confiance en la déclaration.",
     src: [{ t: "Butterick — Practical Typography", h: "https://practicaltypography.com/summary-of-key-rules.html" }, { t: "MDN — CSS length units", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/length" }] },
   { id: "t6", nom: "T6", titre: "Le texte courant respire à 1,5 minimum",
     enonce: "Interlignage d'au moins 1,5 fois le corps pour le texte de lecture ; les grands corps ont le droit de serrer.",
@@ -74,9 +128,9 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     div: "Les études empiriques sur la justification sont non concluantes. La règle tient sur WCAG 1.4.8 et sur les rivières d'espace sans césure fiable. Dit, pas caché.",
     src: [{ t: "WCAG 1.4.8 — Visual Presentation", h: "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html" }] },
   { id: "t10", nom: "T10", titre: "Jamais sous l'équivalent 16 px",
-    enonce: "Le texte courant ne descend jamais sous 16 px d'équivalent, en rem — les champs de saisie non plus.",
-    pourquoi: "Sous 16 px, Safari iOS zoome la page entière au focus d'un champ. Comportement de plateforme, pas décision esthétique.",
-    src: [{ t: "CSS-Tricks — 16px form zoom", h: "https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/" }, { t: "MDN — font-size", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size" }] },
+    enonce: `Le texte courant ne descend jamais sous 16 px d'équivalent, en rem — les champs de saisie non plus. Le corps vaut 16 × l'axe de largeur, borné par le bas : sur l'écran le plus étroit il fait 16, jamais ${fr(CORPS * AXES.type.min)}. Le petit cran (${fr(REGISTRE["font-size-small"].base)}) est une étiquette, jamais du texte courant.`,
+    pourquoi: "Sous 16 px, Safari iOS zoome la page entière au focus d'un champ. Comportement de plateforme, pas décision esthétique — et un corps qui glisse sous son plancher le franchit sans que personne ne le voie.",
+    src: [{ t: "CSS-Tricks — 16px form zoom", h: "https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/" }, { t: "MDN — font-size", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size" }, DECISIONS] },
   { id: "t11", nom: "T11", titre: "La fonte déclarée est la fonte livrée",
     enonce: "Toute famille déclarée est appariée à un fichier versé au dépôt, au nom strictement identique, avec sa pile de secours. Aucun nom orphelin.",
     pourquoi: "Un nom qui ne correspond pas ne produit aucune erreur : il produit un produit entier en police système — et rien, nulle part, ne le signale.",
@@ -86,14 +140,14 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
 
 function Regles({ ids }: { ids: string[] }) {
   return (
-    <div style={{ display: "grid", gap: "var(--space-block-xl)" }}>
+    <div style={{ display: "grid", gap: "var(--gap-1-block)" }}>
       {ids.map((id) => REGLES.find((r) => r.id === id)!).map((r) => (
-        <div key={r.id} style={{ display: "grid", gap: "var(--space-block-sm)", maxWidth: "var(--measure)" }}>
+        <div key={r.id} style={{ display: "grid", gap: "var(--gap-3-block)", maxWidth: "var(--measure)" }}>
           <b style={{ color: "var(--text-primary)" }}><span className="badge">{r.nom}</span> {r.titre}</b>
           <span>{r.enonce}</span>
           {r.pourquoi && <span className="sourd">{r.pourquoi}</span>}
-          {r.div && <div className="divergence" style={{ fontSize: "0.8125rem" }}>{r.div}</div>}
-          <span style={{ fontSize: "0.8125rem" }}>Sources : {r.src.map((sc, i) => (
+          {r.div && <div className="divergence" style={{ fontSize: "var(--font-size-small)" }}>{r.div}</div>}
+          <span style={{ fontSize: "var(--font-size-small)" }}>Sources : {r.src.map((sc, i) => (
             <span key={sc.t}>{i > 0 && " · "}{sc.h === "#" ? sc.t : <a href={sc.h}>{sc.t}</a>}</span>
           ))}</span>
         </div>
@@ -102,79 +156,65 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
-/* ── Le spécimen vivant : l'échelle recalculée pour la largeur de l'aperçu,
-   et un « zoom lecteur » qui multiplie la part rem — comme le vrai zoom. ── */
-function Specimen({ largeur, zoom, vwSeul }: { largeur: number; zoom: number; vwSeul: boolean }) {
-  const px = (nom: string) => corpsPx(nom, largeur, zoom, vwSeul);
-  return (
-    <div style={{ width: "100%", display: "grid", gap: "var(--space-block-md)", textAlign: "left" }}>
-      <div style={{ fontSize: `${px("--font-size-h1")}px`, lineHeight: "var(--leading-heading)", fontWeight: 600, letterSpacing: "-0.02em" }}>
-        Portez ce vieux whisky
-      </div>
-      <div style={{ fontSize: `${px("--font-size-h2")}px`, lineHeight: "var(--leading-heading)", fontWeight: 600 }}>
-        au juge blond qui fume
-      </div>
-      <div style={{ fontSize: `${px("--font-size-body")}px`, lineHeight: "var(--leading-body)", maxWidth: "var(--measure)" }}>
-        Le corps courant ne descend jamais sous l&apos;équivalent 16 px, et chaque
-        échelon glisse entre ses deux bornes — celles-ci, vous les voyez bouger.
-      </div>
-    </div>
-  );
-}
+/* ── PREUVE 02 — la mesure, comptée sur la page rendue.
+   Même texte partout : seule la largeur change. ── */
+const TEXTE_MESURE =
+  "L'œil ne lit pas des lettres : il saute de groupe en groupe, et chaque " +
+  "saut se paie au retour à la ligne. Trop longue, la ligne le perd — il " +
+  "relit la même phrase ; trop courte, elle l'essouffle. La bonne mesure " +
+  "rend ce prix invisible, et personne ne la remarque : c'est toute sa gloire.";
 
-/* ── La mesure, comptée sur la page rendue (l'esprit de M2) ── */
-function Mesure({ largeur, sansBorne, serre }: { largeur: number; sansBorne: boolean; serre: boolean }) {
-  const pRef = useRef<HTMLParagraphElement>(null);
-  const zRef = useRef<HTMLSpanElement>(null);
-  const [parLigne, setParLigne] = useState(0);
+function LigneMesuree({ maxW, sourdine, verdict, libelle, etat }: { maxW?: string; sourdine?: boolean; verdict: string; libelle: string; etat: "bon" | "ko" }) {
+  const [n, setN] = useState(0);
+  const [p, setP] = useState<HTMLParagraphElement | null>(null);
+  const [z, setZ] = useState<HTMLSpanElement | null>(null);
   useEffect(() => {
-    const p = pRef.current, z = zRef.current;
     if (!p || !z) return;
-    const raf = requestAnimationFrame(() => {
+    const lire = () => {
       const w = p.getBoundingClientRect().width;
       const ch = z.getBoundingClientRect().width / 20;
-      if (ch > 0) setParLigne(Math.round(w / ch));
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [largeur, sansBorne, serre]);
-  const horsPlage = parLigne > 80;
+      if (ch > 0) setN(Math.round(w / ch));
+    };
+    lire();
+    const ro = new ResizeObserver(lire);
+    ro.observe(p);
+    return () => ro.disconnect();
+  }, [p, z]);
   return (
-    <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", justifyItems: "start", textAlign: "left" }}>
-      <p ref={pRef} style={{ position: "relative", maxWidth: sansBorne ? "none" : "var(--measure)", width: sansBorne ? "100%" : undefined, lineHeight: serre ? 1.25 : "var(--leading-body)", fontSize: "var(--font-size-body)" }}>
-        <span ref={zRef} aria-hidden style={{ position: "absolute", visibility: "hidden", whiteSpace: "pre" }}>00000000000000000000</span>
-        La lisibilité d&apos;un paragraphe dépend plus de sa mesure que de sa taille :
-        au-delà d&apos;une certaine longueur de ligne, l&apos;œil perd le retour à la ligne
-        et relit la même phrase. Et sans son air entre les lignes, le même texte se
-        compacte au point de gêner le suivi. Cassez la borne, cassez l&apos;interligne —
-        et lisez ce paragraphe encore une fois.
+    <div className={`gd-mesure ${sourdine ? "sourdine" : ""}`}>
+      <span className={`badge ${etat}`}>{verdict} · ≈ {n} caractères par ligne — {libelle}</span>
+      <p ref={setP} style={{ maxWidth: maxW, width: maxW ? undefined : "100%" }}>
+        <span ref={setZ} aria-hidden style={{ position: "absolute", visibility: "hidden", whiteSpace: "pre" }}>00000000000000000000</span>
+        {TEXTE_MESURE}
       </p>
-      <span className={`badge ${horsPlage || serre ? "ko" : ""}`}>
-        ≈ {parLigne} caractères par ligne{horsPlage ? " — hors plage, l'œil décroche" : ""}{serre ? " · interligne 1,25 — sous le plancher de 1,5" : ""}
-      </span>
     </div>
   );
 }
 
-/* ── L'arbre des titres : les niveaux comme barreaux d'échelle ── */
+/* ── RÉPERTOIRE — l'arbre des titres, compact. En encre ; le rouge à la
+   faute. Un niveau = une marge de carte, par imbrication : jamais un
+   multiplicateur. ── */
+function Retrait({ niveaux, children }: { niveaux: number; children: ReactNode }) {
+  let n: ReactNode = children;
+  for (let i = 0; i < niveaux; i++) n = <div className="gd-arbre-niveau">{n}</div>;
+  return <>{n}</>;
+}
+
 function Arbre({ saut }: { saut: boolean }) {
   const rangs: [string, number, boolean][] = saut
     ? [["h1 · Le dossier", 0, false], ["h2 · Première partie", 1, false], ["h4 · Un détail", 3, true], ["h2 · Deuxième partie", 1, false]]
     : [["h1 · Le dossier", 0, false], ["h2 · Première partie", 1, false], ["h3 · Sous-partie", 2, false], ["h2 · Deuxième partie", 1, false]];
   return (
-    <div style={{ width: "100%", maxWidth: "28rem", display: "grid", gap: "var(--space-block-sm)", textAlign: "left" }}>
+    <div className="gd-arbre">
       {saut && (
-        <div className="mono" style={{ color: "var(--danger)", marginLeft: "calc(2 * var(--space-inline-2xl))" }}>
-          h3 manquant — le lecteur d&apos;écran conclut à du contenu disparu
-        </div>
+        <Retrait niveaux={2}>
+          <div className="gd-arbre-note">h3 manquant — le lecteur d&apos;écran conclut à du contenu disparu</div>
+        </Retrait>
       )}
       {rangs.map(([txt, prof, ko]) => (
-        <div key={txt} className="mono" style={{
-          marginLeft: `calc(${prof} * var(--space-inline-2xl))`,
-          padding: "var(--space-block-md) var(--space-inline-unit)",
-          background: ko ? "var(--danger-subtle)" : "var(--primary-subtle)",
-          color: ko ? "var(--danger)" : "var(--primary)",
-          borderRadius: "var(--radius)", fontSize: "0.75rem",
-        }}>{txt}</div>
+        <Retrait key={txt} niveaux={prof}>
+          <div className={`gd-arbre-rang ${ko ? "ko" : ""}`}>{txt}</div>
+        </Retrait>
       ))}
     </div>
   );
@@ -184,9 +224,10 @@ const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
     Tailwind: `// tailwind.config : theme.extend <- typography (tokens.tailwind.mjs)
 // chaque classe résout var(--font-size-…) — un thème littéral sortirait ARRONDI
-export function Article({ titre, enfants }) {
+export function Article({ surtitre, titre, enfants }) {
   return (
     <article className="font-sans text-body leading-body max-w-measure">
+      <p className="text-small tracking-label uppercase">{surtitre}</p>
       <h2 className="text-h2 leading-heading font-semibold">{titre}</h2>
       {enfants}
     </article>
@@ -195,10 +236,11 @@ export function Article({ titre, enfants }) {
     shadcn: `// shadcn/ui vit sur Tailwind — la typo du système passe par les mêmes classes
 import { Card, CardContent } from "@/components/ui/card";
 
-export function Article({ titre, enfants }) {
+export function Article({ surtitre, titre, enfants }) {
   return (
     <Card>
       <CardContent className="font-sans text-body leading-body max-w-measure">
+        <p className="text-small tracking-label uppercase">{surtitre}</p>
         <h2 className="text-h2 leading-heading font-semibold">{titre}</h2>
         {enfants}
       </CardContent>
@@ -206,9 +248,10 @@ export function Article({ titre, enfants }) {
   );
 }`,
     "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
-export function Article({ titre, enfants }) {
+export function Article({ surtitre, titre, enfants }) {
   return (
     <article className="texte-courant">
+      <p className="etiquette">{surtitre}</p>
       <h2 className="titre-2">{titre}</h2>
       {enfants}
     </article>
@@ -221,9 +264,14 @@ export function Article({ titre, enfants }) {
   max-width: var(--measure);           /* T5 : qui glisse se borne */
 }
 .titre-2 {
-  font-size: var(--font-size-h2);          /* T2/T3 : clamp() avec du rem partout */
+  font-size: var(--font-size-h2);      /* T2/T3 : clamp() avec du rem partout */
   line-height: var(--leading-heading);
-  font-weight: 600;                     /* T7 : le demi-gras porte les titres */
+  font-weight: 600;                    /* T7 : le demi-gras porte les titres */
+}
+.etiquette {
+  font-size: var(--font-size-small);   /* T10 : le petit cran, étiquette seulement */
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;           /* T8 : par le style, jamais tapées */
 }`,
   },
   Angular: {
@@ -231,273 +279,411 @@ export function Article({ titre, enfants }) {
   selector: "kit-article",
   template: \`
     <article class="font-sans text-body leading-body max-w-measure">
+      <p class="text-small tracking-label uppercase">{{ surtitre }}</p>
       <h2 class="text-h2 leading-heading font-semibold">{{ titre }}</h2>
       <ng-content />
     </article>\`,
 })
-export class Article { @Input() titre = ""; }`,
+export class Article { @Input() surtitre = ""; @Input() titre = ""; }`,
     shadcn: `// côté Angular, l'esprit shadcn vit dans spartan/ui — mêmes classes Tailwind
 @Component({
   selector: "kit-article",
   template: \`
     <hlm-card>
       <div hlmCardContent class="font-sans text-body leading-body max-w-measure">
+        <p class="text-small tracking-label uppercase">{{ surtitre }}</p>
         <h2 class="text-h2 leading-heading font-semibold">{{ titre }}</h2>
         <ng-content />
       </div>
     </hlm-card>\`,
 })
-export class Article { @Input() titre = ""; }`,
+export class Article { @Input() surtitre = ""; @Input() titre = ""; }`,
     "HTML natif": `@Component({
   selector: "kit-article",
   template: \`
     <article class="texte-courant">
+      <p class="etiquette">{{ surtitre }}</p>
       <h2 class="titre-2">{{ titre }}</h2>
       <ng-content />
     </article>\`,
-  styleUrl: "./article.css", // mêmes classes : var(--font-size-body), var(--measure)…
+  styleUrl: "./article.css", // mêmes classes : var(--font-size-body), var(--font-size-small), var(--measure)…
 })
-export class Article { @Input() titre = ""; }`,
+export class Article { @Input() surtitre = ""; @Input() titre = ""; }`,
   },
   HTML: {
     Tailwind: `<article class="font-sans text-body leading-body max-w-measure">
+  <p class="text-small tracking-label uppercase">Le surtitre</p>
   <h2 class="text-h2 leading-heading font-semibold">Le titre</h2>
   <p>Les classes résolvent les jetons — le système reste le même.</p>
 </article>`,
     shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
      l'essentiel — ses classes Tailwind, qui résolvent nos jetons -->
 <article class="font-sans text-body leading-body max-w-measure border bg-card">
+  <p class="text-small tracking-label uppercase">Le surtitre</p>
   <h2 class="text-h2 leading-heading font-semibold">Le titre</h2>
 </article>`,
     "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
 <link rel="stylesheet" href="kit/fontes.css" /><!-- T11 : fontes livrées -->
 
 <article class="texte-courant">
+  <p class="etiquette">Le surtitre</p>
   <h2 class="titre-2">Le titre</h2>
   <p>Le corps courant — jamais sous 16 px, borné en ch, interligne 1,6.</p>
 </article>`,
   },
 };
 
+const SOMMAIRE: Sommaire = [
+  ["voix", "01", "Les voix"],
+  ["gamme", "02", "L'échelle"],
+  ["mesure", "03", "La mesure"],
+  ["gazette", "04", "La gazette"],
+  ["garde", "05", "Les garde-fous"],
+  ["adaptation", "06", "L'adaptation"],
+];
+
 export default function Vue() {
+  /* preuves */
+  const [mauvaisNom, setMauvaisNom] = useState(false);
+  const [justif, setJustif] = useState(false);
+  const [serre, setSerre] = useState(false);
+  /* répertoire */
   const [zoom, setZoom] = useState(1);
   const [vwSeul, setVwSeul] = useState(false);
-  const [sansBorne, setSansBorne] = useState(false);
-  const [serre, setSerre] = useState(false);
   const [saut, setSaut] = useState(false);
   const [gras, setGras] = useState(false);
   const [tape, setTape] = useState(false);
-  const [justif, setJustif] = useState(false);
   const [petit, setPetit] = useState(false);
-  const [mauvaisNom, setMauvaisNom] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
   const { styl } = useAdaptation();
+  const actifId = useDocSections("voix");
+  const largeurEcran = useLargeurEcran();
+  const corps = largeurEcran > 0 ? corpsPx(largeurEcran, zoom, vwSeul) : CORPS;
 
   return (
-    <div className="coquille">
-      <Navigation actif="typo" />
+    <div className="gdoc-fond">
+      <div className="gdoc">
+        <RailDoc page="typo" titre="Fondation · Typographie" sommaire={SOMMAIRE} actifId={actifId} pied="Geist · JetBrains Mono — livrées avec le kit" />
 
-      <main className="contenu">
-        <div className="tete-page">
-          <p className="kicker">Fondation · La typographie</p>
-          <h1>Chaque lettre de cette page sait pourquoi</h1>
-          <p className="chapo">
-            La typographie de ce système tient en <b>onze règles</b> — chacune née
-            d&apos;un problème réel, avec son pourquoi, sa source, et ses limites dites. Chaque banc d&apos;essai les montre à
-            l&apos;œuvre, réglables et cassables. Vous les lisez déjà dans les fontes
-            qu&apos;elles imposent : Geist, et JetBrains Mono pour le code — livrées avec le
-            kit, c&apos;est la règle T11.
-          </p>
-        </div>
+        <main className="gdoc-contenu" id="contenu">
 
-        <section className="bloc-section">
-          <p className="kicker">01 · L&apos;échelle et le zoom</p>
-          <h2>Le texte grandit avec l&apos;écran — et avec le lecteur</h2>
-          <p className="sourd">Une taille figée casse au premier écran étroit ; une taille en
-          unités d&apos;écran ignore le zoom du lecteur — échec invisible en test, bloquant pour
-          qui en dépend. Ici chaque échelon glisse entre deux bornes, et sa part rem laisse le
-          zoom agir. La casse « vw seul » montre le piège : le zoom monte, rien ne bouge.</p>
-          <Apercu outils={
-            <>
-              {[1, 1.5, 2].map((z) => (
-                <button key={z} className={`bouton ${zoom === z ? "on" : ""}`} onClick={() => setZoom(z)}>
-                  zoom ×{z === 1.5 ? "1,5" : z}
+          <section className="gdoc-heros">
+            <p className="kicker">Fondation · La typographie</p>
+            <h1>Chaque lettre de cette page sait pourquoi<span className="point" aria-hidden="true" /></h1>
+            <p className="chapo">
+              Onze règles composent ce que vous êtes en train de lire — le corps, la
+              ligne, l&apos;air, les capitales. <b>Aucune ne se montre : elles se
+              lisent.</b> Plus bas, une gazette les met à l&apos;épreuve et se casse
+              d&apos;un geste ; sous chaque banc d&apos;essai, «&nbsp;Règles &amp;
+              sources&nbsp;» se déplie.
+            </p>
+          </section>
+
+          {/* ═══ PREUVE 1 · VOCABULAIRE — les voix ═══ */}
+          <section className="gdoc-sec pose" id="voix">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">01 · Les voix</p>
+              <h2>Deux voix suffisent</h2>
+              <p className="sourd">Chaque famille de plus est une décision de plus à tenir
+              pendant des années. Le kit parle avec une voix qui lit et une voix qui
+              chiffre — et chaque rôle porte un costume, un seul. La casse du nom
+              orphelin montre le risque : déclarez une fonte qui n&apos;existe pas,
+              et vous lisez la police système sans qu&apos;aucune erreur ne s&apos;affiche.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="rang">
+                <button className={`bouton casse ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
+                  {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
                 </button>
-              ))}
-              <button className={`bouton casse ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>
-                {vwSeul ? "Réparer" : "Casser : vw seul"}
-              </button>
-            </>
-          } enfants={(l) => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)" }}>
-              <Specimen largeur={l} zoom={zoom} vwSeul={vwSeul} />
-              <span className={`mono ${vwSeul && zoom > 1 ? "" : "sourd"}`} style={{ fontSize: "0.6875rem", color: vwSeul && zoom > 1 ? "var(--danger)" : undefined }}>
-                à {Math.round(l)} px, zoom ×{zoom === 1.5 ? "1,5" : zoom} : titre 1 = {corpsPx("--font-size-h1", l, zoom, vwSeul).toFixed(0)} px ·
-                corps = {corpsPx("--font-size-body", l, zoom, vwSeul).toFixed(0)} px
-                {vwSeul && zoom > 1 && " — le zoom ne mord plus : échec WCAG 1.4.4"}
-              </span>
-            </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <p>L&apos;échelle affichée respecte les règles ci-dessous ; ses valeurs exactes
-              peuvent changer sans les enfreindre. Le rapport max/min du plus grand échelon
-              reste loin du plafond de 2,5.</p>
-              <Regles ids={["t2", "t3", "t4"]} />
-            </div></details>
-          } />
-        </section>
-
-        <section className="bloc-section">
-          <p className="kicker">02 · La mesure et l&apos;air</p>
-          <h2>Ni lignes interminables, ni texte étouffé</h2>
-          <p className="sourd">Une ligne trop longue égare l&apos;œil au retour ; un interligne
-          serré étouffe la lecture. La borne en ch et le plancher de 1,5 tiennent le
-          paragraphe — et le compteur lit la ligne réelle sur la page rendue, jamais la
-          déclaration.</p>
-          <Apercu outils={
-            <>
-              <button className={`bouton casse ${sansBorne ? "on" : ""}`} onClick={() => setSansBorne(!sansBorne)}>
-                {sansBorne ? "Réparer la borne" : "Casser la borne"}
-              </button>
-              <button className={`bouton casse ${serre ? "on" : ""}`} onClick={() => setSerre(!serre)}>
-                {serre ? "Rendre l'air" : "Casser l'interligne"}
-              </button>
-            </>
-          } enfants={(l) => <Mesure largeur={l} sansBorne={sansBorne} serre={serre} />} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["t5", "t6"]} />
-            </div></details>
-          } />
-        </section>
-
-        <section className="bloc-section">
-          <p className="kicker">03 · La hiérarchie</p>
-          <h2>Un titre sauté, un lecteur perdu</h2>
-          <p className="sourd">Un niveau de titre sauté, et le lecteur d&apos;écran conclut à du
-          contenu manquant : l&apos;arbre des titres est une échelle, chaque barreau compte. Le
-          sens suit la structure, la taille suit le design. (Les titres ci-dessous sont
-          dessinés, pas réels : cette page garde son unique h1 — règle G1.)</p>
-          <Apercu outils={
-            <button className={`bouton casse ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>
-              {saut ? "Réparer" : "Casser : sauter un niveau"}
-            </button>
-          } enfants={() => <Arbre saut={saut} />} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["p01", "t1", "g1"]} />
-            </div></details>
-          } />
-        </section>
-
-        <section className="bloc-section">
-          <p className="kicker">04 · Les pièges</p>
-          <h2>Les quatre fautes que rien ne signale</h2>
-          <p className="sourd">Quatre dérives ordinaires, et aucune ne produit d&apos;erreur
-          nulle part — c&apos;est bien le problème. Chaque carte porte la règle qui
-          l&apos;arrête, et le moyen de la voir échouer.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 21rem), 1fr))", gap: "var(--space-inline-unit)" }}>
-            <div className="carte">
-              <div className="rang" style={{ justifyContent: "space-between" }}>
-                <span className="mono sourd">La graisse</span>
-                <button className={`bouton casse ${gras ? "on" : ""}`} onClick={() => setGras(!gras)}>{gras ? "Réparer" : "Casser"}</button>
+                {mauvaisNom && (
+                  <span className="badge ko">nom orphelin — police système, en silence</span>
+                )}
               </div>
-              <p style={{ fontWeight: gras ? 600 : 400 }}>Un texte long en demi-gras n&apos;appuie
-              plus rien : quand tout est important, rien ne l&apos;est. Le demi-gras appartient
-              aux titres — ce paragraphe vient de vous le prouver.</p>
-            </div>
-            <div className="carte">
-              <div className="rang" style={{ justifyContent: "space-between" }}>
-                <span className="mono sourd">Les capitales</span>
-                <button className={`bouton casse ${tape ? "on" : ""}`} onClick={() => setTape(!tape)}>{tape ? "Réparer" : "Casser"}</button>
+              <figure className="gd-figure" style={{ width: "100%" }}>
+                {/* casse : « Geist Text » n'existe pas — la pile de secours prend la main, en silence */}
+                <div className="gd-voix" data-intent={mauvaisNom ? "statement" : undefined} style={mauvaisNom ? { fontFamily: '"Geist Text", ui-sans-serif, system-ui, sans-serif' } : undefined}>
+                  <div className="gd-vbloc primaire">
+                    <span className="gd-vglyphe" aria-hidden="true">Aa</span>
+                    <div className="gd-vqui"><b>Geist</b><span>400 · 500 · 600</span></div>
+                  </div>
+                  <div className="gd-vbloc sombre">
+                    <span className="gd-vglyphe" aria-hidden="true">01</span>
+                    <div className="gd-vqui"><b>JetBrains Mono</b><span>400 · 600</span></div>
+                  </div>
+                </div>
+                <figcaption className="gd-legende">
+                  une voix qui lit, une voix qui chiffre — livrées avec le kit, au nom près
+                </figcaption>
+              </figure>
+              <div className="gd-costumes" data-intent={mauvaisNom ? "statement" : undefined} style={mauvaisNom ? { fontFamily: '"Geist Text", ui-sans-serif, system-ui, sans-serif' } : undefined}>
+                <div className="gd-costume">
+                  <span className="role">Le titre</span>
+                  <span className="spec titre">Il porte la page, brièvement</span>
+                  <span className="fiche">Geist 600 · -0,02em</span>
+                </div>
+                <div className="gd-costume">
+                  <span className="role">Le courant</span>
+                  <span className="spec">Il se lit longtemps sans se faire remarquer</span>
+                  <span className="fiche">Geist 400 · 1,6</span>
+                </div>
+                <div className="gd-costume">
+                  <span className="role">L&apos;étiquette</span>
+                  <span className="spec etiquette">Brève, espacée, jamais tapée</span>
+                  <span className="fiche">Geist 500 · +0,08em</span>
+                </div>
+                <div className="gd-costume">
+                  <span className="role">Le code</span>
+                  <span className="spec code">chaque_chiffre = même_largeur;</span>
+                  <span className="fiche">Mono 400 · tabular</span>
+                </div>
               </div>
-              <p style={tape ? { textTransform: "uppercase" } : undefined}>Les capitales sur du
-              texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu de lire.
-              Ici elles restent aux étiquettes brèves, espacées, posées par le style.</p>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["t11", "t7"]} />
+              </div></details>
             </div>
-            <div className="carte">
-              <div className="rang" style={{ justifyContent: "space-between" }}>
-                <span className="mono sourd">La justification</span>
-                <button className={`bouton casse ${justif ? "on" : ""}`} onClick={() => setJustif(!justif)}>{justif ? "Réparer" : "Casser"}</button>
-              </div>
-              <p style={{ textAlign: justif ? "justify" : "start", maxWidth: "14rem" }}>Sur une
-              colonne étroite et sans césure fiable, la justification creuse des rivières
-              d&apos;espace entre les mots — regardez celles-ci se former dans ce paragraphe.</p>
-            </div>
-            <div className="carte">
-              <div className="rang" style={{ justifyContent: "space-between" }}>
-                <span className="mono sourd">Les 16 px du champ</span>
-                <button className={`bouton casse ${petit ? "on" : ""}`} onClick={() => setPetit(!petit)}>{petit ? "Réparer" : "Casser"}</button>
-              </div>
-              <div className="champ">
-                <input readOnly value="prenom@exemple.fr" style={{ fontSize: petit ? "0.875rem" : "1rem" }} />
-                <span className={`badge ${petit ? "ko" : ""}`}>{petit ? "14 px — Safari iOS zoomera la page au focus" : "16 px — le focus reste calme"}</span>
-              </div>
-            </div>
-          </div>
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <Regles ids={["t7", "t8", "t9", "t10"]} />
-          </div></details>
-        </section>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">05 · La fonte livrée</p>
-          <h2>La police système qui remplace la vôtre, en silence</h2>
-          <p className="sourd">Un nom de famille qui ne correspond à aucun fichier livré ne
-          déclenche rien : le produit entier passe en police système, en silence. La règle ferme
-          cette porte : déclarée = livrée, au nom exact, avec sa pile de secours.</p>
-          <Apercu outils={
-            <button className={`bouton casse ${mauvaisNom ? "on" : ""}`} onClick={() => setMauvaisNom(!mauvaisNom)}>
-              {mauvaisNom ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
-            </button>
-          } enfants={() => (
-            <div style={{ width: "100%", display: "grid", gap: "var(--space-block-unit)", textAlign: "left", fontFamily: mauvaisNom ? '"Geist Text", ui-sans-serif, system-ui, sans-serif' : "var(--font-sans)" }}>
-              <div style={{ fontSize: "var(--font-size-h2)", fontWeight: 600, lineHeight: "var(--leading-heading)" }}>
-                Portez ce vieux whisky au juge blond qui fume
-              </div>
-              <p style={{ maxWidth: "var(--measure)" }}>Ce paragraphe est rendu dans la fonte que
-              ses styles déclarent{mauvaisNom ? "… sauf que « Geist Text » n'existe dans aucun fichier livré : vous lisez la police système de secours, et rien ne vous l'a dit." : " — « Geist », livrée dans le dépôt, au nom exact, avec sa pile de secours."}</p>
-              <span className={`badge ${mauvaisNom ? "ko" : ""}`}>{mauvaisNom ? "nom orphelin — produit entier en police système, en silence" : "Geist — déclarée, livrée, vérifiable"}</span>
+          {/* ═══ RÉPERTOIRE — l'échelle : les huit crans du registre, en vrai ═══
+              Chaque rangée est rendue PAR son jeton ; les bornes en légende
+              sont calculées par le moteur, jamais recopiées. Huit crans : six
+              pour le texte, deux pour les titres du site — des h5/h6 récurrents
+              signalent une structure à réorganiser, pas un cran à ajouter. */}
+          <section className="gdoc-sec pose" id="gamme">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">02 · L&apos;échelle</p>
+              <h2>Huit crans, un seul rapport</h2>
+              <p className="sourd">Toute la page que vous lisez sort de huit crans et
+              d&apos;un seul rapport : chaque cran vaut le précédent, un peu plus grand,
+              toujours du même pas. Six servent le texte, du petit à l&apos;affiche ; les
+              deux derniers sont les titres du site. Un seul curseur les fait glisser
+              ensemble avec la largeur de l&apos;écran — et le corps ne descend jamais
+              sous son plancher. L&apos;échelle s&apos;arrête là où une structure devrait
+              être réorganisée plutôt qu&apos;habillée.</p>
             </div>
-          )} pied={
-            <details className="prov"><summary>Règles &amp; sources</summary><div>
-              <Regles ids={["t11"]} />
-            </div></details>
-          } />
-        </section>
+            <div className="gdoc-corps">
+              <figure className="gd-figure" style={{ width: "100%", justifyItems: "start" }}>
+                <div className="gd-gamme">
+                  {CRANS.map(({ nom, fiche, jeton, bornes: b }) => (
+                    <div key={nom} className="gd-gcran">
+                      <span className="fiche">{fiche} · {b}</span>
+                      <span className="spec" style={{ fontSize: jeton }}>Rien qui ne soit un token.</span>
+                    </div>
+                  ))}
+                  <div className="gd-gcran">
+                    <span className="fiche">corps · {bornes("body")} · 1,6</span>
+                    <span className="spec courant" style={{ fontSize: "var(--font-size-body)" }}>Le corps porte
+                    le poids quotidien du système : notes, lecture longue, champs de
+                    saisie. Posé à seize pixels au plus bas avec un interlignage détendu,
+                    il reste discret, lisible et reconnaissable.</span>
+                  </div>
+                  <div className="gd-gcran">
+                    <span className="fiche">petit · {bornes("small")} · étiquette seulement</span>
+                    <span className="spec etiquette" style={{ fontSize: "var(--font-size-small)" }}>Jamais du texte courant — une étiquette, brève et espacée.</span>
+                  </div>
+                </div>
+                <figcaption className="gd-legende" style={{ textAlign: "left" }}>
+                  bornes calculées, bas à {ECRAN_MIN} px, haut à {ECRAN_MAX} px · chaque cran vaut
+                  le précédent × {fr2(RAPPORT)} · l&apos;échelle glisse de × {fr2(GLISSEMENT)} entre {ECRAN_MIN} et {ECRAN_MAX} ·
+                  les deux titres du site glissent avec l&apos;écran entre deux crans de la chaîne — une intention d&apos;auteur, déclarée ·
+                  du rem dans chaque borne, le zoom garde la main · titres serrés à 1,2 — corps à 1,6
+                </figcaption>
+              </figure>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["t2", "t4"]} />
+              </div></details>
+            </div>
+          </section>
 
-        <section className="bloc-section">
-          <p className="kicker">06 · L&apos;adaptation</p>
-          <h2>Le même système, dans votre stack</h2>
-          <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
-          qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
-          Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
-          <PanneauCode langage={styl} outils={
-            <>{(["HTML", "React", "Angular"] as const).map((f) => (
-              <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-            ))}</>
-          } code={SNIPPETS[fw][styl]} />
-          <details className="prov"><summary>Règles &amp; sources</summary><div>
-            <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul jeu de
-            jetons produit des variables CSS natives et une sortie Tailwind jumelle ; React,
-            Angular ou HTML n&apos;en sont que des consommateurs.</p>
-          </div></details>
-        </section>
-      </main>
+          {/* ═══ PREUVE 2 · VARIATION — la mesure ═══ */}
+          <section className="gdoc-sec pose" id="mesure">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">03 · La mesure</p>
+              <h2>La lisibilité est une largeur avant d&apos;être une taille</h2>
+              <p className="sourd">Lisez : même texte, même corps, même interligne —
+              seule la largeur change. Le compteur lit la ligne réelle sur la page
+              rendue, jamais la déclaration.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="gd-mesures">
+                <LigneMesuree maxW="28ch" sourdine etat="ko" verdict="Trop court" libelle="l'œil s'essouffle" />
+                <LigneMesuree maxW="var(--measure)" etat="bon" verdict="Juste" libelle="la borne du registre" />
+                <LigneMesuree sourdine etat="ko" verdict="Sans borne" libelle="la ligne suit l'écran, sans jamais s'arrêter" />
+              </div>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["t5", "t6"]} />
+              </div></details>
+            </div>
+          </section>
 
-      <aside className="reglages">
-        <h3>Theming &amp; playground</h3>
-        <Primaire />
-        <Theme />
-        <Densite />
-        <Adaptation />
-        <div className="bloc">
-          <span className="mono sourd">Familles livrées</span>
-          <p className="sourd" style={{ fontSize: "0.75rem" }}>Geist (interface) ·
-          JetBrains Mono (code) — livrées avec le kit (règle T11).</p>
-        </div>
-        <p className="sourd" style={{ fontSize: "0.75rem" }}>La largeur se règle sur chaque banc
-        (poignée, paliers, double-clic). Le thème est global — la fondation couleur
-        porte le site entier, cette page comprise.</p>
-      </aside>
+          {/* ═══ PREUVE 3 · OBJET EN SITUATION — la gazette ═══ */}
+          <section className="gdoc-sec pose" id="gazette">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">04 · La gazette</p>
+              <h2>Un imprimé composé sans une seule décision locale</h2>
+              <p className="sourd">Le vrai test d&apos;une typographie n&apos;est pas un
+              spécimen : c&apos;est un objet réel qui tient sans réglage au cas par cas.
+              Celui-ci est composé par les règles — cassez-en une, et lisez la page
+              mentir.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="rang">
+                <button className={`bouton casse ${justif ? "on" : ""}`} onClick={() => { setJustif(!justif); if (!justif) setSerre(false); }}>
+                  {justif ? "Réparer le fer" : "Casser : justifier"}
+                </button>
+                <button className={`bouton casse ${serre ? "on" : ""}`} onClick={() => { setSerre(!serre); if (!serre) setJustif(false); }}>
+                  {serre ? "Rendre l'air" : "Casser : étouffer l'interligne"}
+                </button>
+                {(justif || serre) && (
+                  <span className="badge ko">
+                    {justif ? "Justifié — rivières d'espace, retour de ligne irrégulier" : "Étouffé — interligne 1,15, sous le plancher de 1,5"}
+                  </span>
+                )}
+              </div>
+              <figure className="gd-figure">
+                <div className="banc voile">
+                  <div className={`gazette ${justif ? "j-cassee" : ""} ${serre ? "i-cassee" : ""}`} data-intent={justif || serre ? "statement" : undefined}>
+                    <p className="gz-mast" aria-hidden="true">La Gazette du Kit</p>
+                    <p className="gz-date">Nº 11 — vingt-cinq août — deux pages</p>
+                    <p className="gz-head">Le rédacteur en chef supprime neuf familles de
+                    caractères, la salle respire</p>
+                    <p className="gz-lede">Il n&apos;en garde que deux — une qui lit, une qui
+                    chiffre — et personne, à ce jour, n&apos;a remarqué qu&apos;il en manquait.</p>
+                    <div className="gz-cols">
+                      <p>La décision est tombée un lundi : chaque titre porterait le
+                      demi-gras, jamais les paragraphes, et le courant ne descendrait
+                      plus jamais sous son corps de lecture. Les protestations attendues
+                      n&apos;eurent pas lieu.</p>
+                      <p>Au marbre, on note que les lignes tiennent leur largeur — assez
+                      pour ne pas essouffler l&apos;œil, jamais assez pour l&apos;égarer — et que
+                      l&apos;air entre elles reste incompressible, quoi qu&apos;en dise le chef de
+                      fabrication.</p>
+                      <p>Les capitales, elles, n&apos;apparaissent plus qu&apos;en étiquettes
+                      brèves et espacées, posées par la feuille de style ; le texte
+                      source garde sa casse, et les lecteurs d&apos;écran lui en savent gré.</p>
+                      <p>«&nbsp;On ne remarque plus la typographie&nbsp;», déplorait un
+                      abonné. C&apos;est, répond la rédaction, très exactement le but.</p>
+                    </div>
+                    <p className="gz-note">Les titres de cette gazette sont dessinés, pas
+                    réels : la page garde son unique h1.</p>
+                  </div>
+                </div>
+                <figcaption className="gd-legende">
+                  fer à gauche · corps ≥ 16 px · interligne 1,6 ·
+                  mesure bornée en ch · capitales espacées, jamais tapées
+                </figcaption>
+              </figure>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["t9", "t8", "t10"]} />
+              </div></details>
+            </div>
+          </section>
+
+          {/* ═══ RÉPERTOIRE — les garde-fous, en grille compacte ═══ */}
+          <section className="gdoc-sec pose" id="garde">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">05 · Les garde-fous</p>
+              <h2>Le reste du corpus, faute par faute</h2>
+              <p className="sourd">Cinq dérives ordinaires, et aucune ne produit
+              d&apos;erreur nulle part — c&apos;est bien le problème. Chaque carte porte la
+              règle qui l&apos;arrête, et le moyen de la voir échouer.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="gd-gardes">
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Le zoom du lecteur</span>
+                    <span className="rang">
+                      {[1, 2].map((z) => (
+                        <button key={z} className={`bouton ${zoom === z ? "on" : ""}`} onClick={() => setZoom(z)}>×{z}</button>
+                      ))}
+                      <button className={`bouton casse ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>{vwSeul ? "Réparer" : "Casser : vw seul"}</button>
+                    </span>
+                  </div>
+                  <div style={{ display: "grid", gap: "var(--gap-3-block)" }}>
+                    {/* le corps calculé par le moteur à la largeur réelle de l'écran — le nombre est vrai, pas posé */}
+                    <span data-intent={vwSeul ? "statement" : undefined} style={{ fontSize: `${corps}px`, lineHeight: "var(--leading-body)" }}>
+                      Portez ce vieux whisky au juge blond qui fume
+                    </span>
+                    {vwSeul && zoom > 1 ? (
+                      <span className="badge ko">zoom ×{zoom} — et pas un pixel gagné</span>
+                    ) : (
+                      <span className="mono sourd">corps = {fr(corps)} px</span>
+                    )}
+                  </div>
+                </div>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Le saut de niveau</span>
+                    <button className={`bouton casse ${saut ? "on" : ""}`} onClick={() => setSaut(!saut)}>{saut ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <Arbre saut={saut} />
+                </div>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">La graisse</span>
+                    <button className={`bouton casse ${gras ? "on" : ""}`} onClick={() => setGras(!gras)}>{gras ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <p data-intent={gras ? "statement" : undefined} style={{ fontWeight: gras ? 600 : 400 }}>Un texte long en demi-gras n&apos;appuie
+                  plus rien : quand tout est important, rien ne l&apos;est. Le demi-gras appartient
+                  aux titres — ce paragraphe vient de vous le prouver.</p>
+                </div>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Les capitales</span>
+                    <button className={`bouton casse ${tape ? "on" : ""}`} onClick={() => setTape(!tape)}>{tape ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <p data-intent={tape ? "statement" : undefined} style={tape ? { textTransform: "uppercase" } : undefined}>Les capitales sur du
+                  texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu de lire.
+                  Ici elles restent aux étiquettes brèves, espacées, posées par le style.</p>
+                </div>
+                <div className="carte">
+                  <div className="rang" style={{ justifyContent: "space-between" }}>
+                    <span className="mono sourd">Les 16 px du champ</span>
+                    <button className={`bouton casse ${petit ? "on" : ""}`} onClick={() => setPetit(!petit)}>{petit ? "Réparer" : "Casser"}</button>
+                  </div>
+                  <div className="champ">
+                    {/* casse : un champ sous 16 px — 14 px en dur, à dessein ; Safari iOS zoome la page au focus */}
+                    <input readOnly value="prenom@exemple.fr" data-intent={petit ? "statement" : undefined} style={{ fontSize: petit ? "0.875rem" : "var(--font-size-body)" }} />
+                    {petit && <span className="badge ko">14 px — Safari iOS zoomera la page au focus</span>}
+                  </div>
+                </div>
+              </div>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["p01", "t1", "g1", "t3"]} />
+              </div></details>
+            </div>
+          </section>
+
+          {/* ═══ RÉPERTOIRE — l'adaptation ═══ */}
+          <section className="gdoc-sec pose" id="adaptation">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">06 · L&apos;adaptation</p>
+              <h2>Le même système, dans votre stack</h2>
+              <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
+              qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
+              Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
+            </div>
+            <div className="gdoc-corps">
+              <PanneauCode langage={styl} outils={
+                <>{(["HTML", "React", "Angular"] as const).map((f) => (
+                  <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
+                ))}</>
+              } code={SNIPPETS[fw][styl]} />
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Le normatif, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul jeu de
+                jetons produit des variables CSS natives et une sortie Tailwind jumelle ; React,
+                Angular ou HTML n&apos;en sont que des consommateurs.</p>
+              </div></details>
+            </div>
+          </section>
+
+          <footer className="gd-pied">
+            <span>Cette page est composée par les règles qu&apos;elle documente</span>
+            <span>Onze règles — toutes dépliables ci-dessus</span>
+          </footer>
+
+        </main>
+      </div>
     </div>
   );
 }

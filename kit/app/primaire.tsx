@@ -48,10 +48,10 @@ export function Primaire() {
   return (
     <div className="bloc">
       <span className="mono sourd">Primary — tout le site</span>
-      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
         <input type="color" value={primaire} aria-label="Primary — la décision d'entrée"
           onChange={(e) => changer(e.target.value)}
-          style={{ width: "var(--control-height)", height: "var(--control-height)", padding: 0, border: "1px solid var(--border-strong)", borderRadius: "var(--radius)", background: "var(--bg)", cursor: "pointer" }} />
+          style={{ width: "var(--control-height)", height: "var(--control-height)", padding: 0, border: "1px solid var(--border-strong)", borderRadius: "var(--r-ctl)", background: "var(--bg)", cursor: "pointer" }} />
         <span className="mono">{primaire}</span>
         {primaire !== PRIMAIRE_DEFAUT && (
           <button className="bouton" onClick={() => changer(PRIMAIRE_DEFAUT)}>Charte</button>

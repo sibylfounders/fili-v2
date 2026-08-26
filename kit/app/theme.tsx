@@ -57,7 +57,7 @@ export function Theme() {
   return (
     <div className="bloc">
       <span className="mono sourd">Thème — tout le site</span>
-      <div className="rang" style={{ gap: "var(--space-inline-sm)" }}>
+      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
         {CHOIX.map(([t, nom]) => (
           /* le bouton actif est dessiné en CSS depuis <html data-theme> —
              juste dès la première peinture, sans attendre l'hydratation */

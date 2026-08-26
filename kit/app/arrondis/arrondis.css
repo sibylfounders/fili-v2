@@ -1,0 +1,208 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE ARRONDIS — styles propres (préfixe ar-). Le squelette du gabarit
+   documentaire nu (gdoc, banc, gd-figure, prov…) vit dans globals.css et
+   n'est pas touché. Le chrome de la page consomme le registre (tokens.css,
+   généré par derivation.mjs) ; les objets de démo portent leur géométrie
+   en variables --ar-* posées par la vue depuis la chaîne du moteur
+   (chaine({ racine })) — mêmes lois, une racine qui tourne.
+   Ce qui reste en pixels est dit : « hors chaîne » (décor, dessin, cible)
+   ou « casse » (une faute montrée pour être reconnue, data-intent="statement").
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ar-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* La scène pâle — troisième scène de la page : la surface du kit. */
+.banc.pale { background: var(--surface); color: var(--text-primary); }
+
+/* ── Un réglage de scène : un curseur, une valeur — piste et bouton
+      dessinés, lisibles sur les deux scènes (retour d'Auteur, 25 août).
+      La tête d'outil prend la cible des commandes secondaires. ── */
+.ar-dials { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+.ar-dial { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; justify-content: center; }
+.ar-dial label { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.ar-dial output { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; min-width: 2.5ch; }
+.ar-dial input[type=range] {
+  flex: 0 1 16rem; min-width: 8rem; /* hors chaîne : la longueur de la piste, une mesure */
+  appearance: none; -webkit-appearance: none;
+  background: transparent; height: var(--control-height-compact); margin: 0; cursor: pointer;
+  --ar-piste: rgba(17, 24, 39, 0.35); --ar-curseur: var(--on-primary);
+}
+.banc.sombre .ar-dial input[type=range] { --ar-piste: #6B7280; --ar-curseur: #FFFFFF; }
+.ar-dial input[type=range]::-webkit-slider-runnable-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--ar-piste); }
+.ar-dial input[type=range]::-moz-range-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--ar-piste); }
+.ar-dial input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 1.25rem; height: 1.25rem; margin-top: -0.5rem; /* hors chaîne : le bouton du curseur, centré sur la piste */
+  border-radius: var(--r-pill); background: var(--ar-curseur); border: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.ar-dial input[type=range]::-moz-range-thumb {
+  width: 1.25rem; height: 1.25rem; /* hors chaîne : le bouton du curseur */
+  border-radius: var(--r-pill); background: var(--ar-curseur); border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+.ar-dial input[type=range]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-pill); }
+
+/* ── 01 · La fiche d'arrêt de Navette — la chaîne en situation.
+      --ar-r1..r4 (coins), --ar-rctl (composant = coin de la ligne),
+      --ar-p1..p3 (marges) et --ar-g1..g4 (espaces) sont posés par la vue
+      depuis chaine({ racine }). Le téléphone et l'écran d'arrière-plan sont
+      un décor de scène, hors chaîne. ── */
+.ar-tel {
+  width: min(100%, 20rem); /* hors chaîne : la largeur du téléphone */
+  background: #1C1C1E; border-radius: 36px; padding: 8px; /* hors chaîne : le boîtier du téléphone, décor */
+  color: #111827; text-align: left;
+}
+.ar-ecran {
+  background: #E5E7EB; border-radius: 30px; height: 36rem; /* hors chaîne : l'écran du téléphone, décor */
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.ar-fond { position: absolute; inset: 0; padding: 40px 16px 0; gap: 8px; /* hors chaîne : le squelette de l'écran derrière le voile */ display: flex; flex-direction: column; }
+.ar-fond .barre { height: 8px; /* hors chaîne : barre de squelette */ border-radius: var(--ar-r4); background: #9CA3AF; width: 60%; opacity: 0.5; }
+.ar-fond .barre.c { width: 38%; }
+.ar-fond .plan { margin-top: 12px; height: 88px; /* hors chaîne : le plan, squelette */ background: #FFFFFF; border-radius: var(--ar-r2); opacity: 0.5; }
+.ar-voile { position: absolute; inset: 0; background: rgba(17, 24, 39, 0.32); }
+/* Le panneau est la coque : la racine, la marge de la coque, l'espace entre ses cartes. */
+.ar-panneau {
+  position: relative; background: #FFFFFF;
+  border-radius: var(--ar-r1) var(--ar-r1) 0 0; padding: var(--ar-p1);
+  display: flex; flex-direction: column; gap: var(--ar-g1);
+  transition: border-radius 0.2s, padding 0.2s, gap 0.2s;
+}
+.ar-panneau .poignee { width: 36px; height: 4px; margin-top: -12px; /* hors chaîne : la poignée du panneau, décor */ border-radius: var(--ar-r4); background: #E5E7EB; align-self: center; }
+.ar-panneau h4 { margin: 0; font-size: var(--font-size-body); font-weight: 600; letter-spacing: -0.01em; line-height: var(--leading-heading); }
+.ar-panneau .sous { font-size: var(--font-size-small); color: #4B5563; margin-top: var(--ar-g4); }
+/* La carte : un cran plus bas, la marge de la carte, l'espace entre ses lignes. */
+.ar-carte {
+  background: #F3F4F6; border-radius: var(--ar-r2); padding: var(--ar-p2);
+  display: flex; flex-direction: column; gap: var(--ar-g2); transition: border-radius 0.2s, padding 0.2s, gap 0.2s;
+}
+.ar-carte .titre { font: 600 var(--font-size-label)/1.4 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: #4B5563; }
+/* La ligne : encore un cran, la marge de la ligne, l'espace dans la ligne. */
+.ar-ligne {
+  background: #FFFFFF; border-radius: var(--ar-r3); padding: var(--ar-p3);
+  display: flex; align-items: center; gap: var(--ar-g3); font-size: var(--font-size-small); transition: border-radius 0.2s, padding 0.2s, gap 0.2s;
+}
+.ar-marque { width: 18px; height: 18px; /* hors chaîne : la taille de la marque */ border-radius: var(--ar-r4); background: #111827; flex: none; display: grid; place-items: center; transition: border-radius 0.2s; }
+.ar-marque svg { width: 12px; height: 12px; /* hors chaîne : le pictogramme */ fill: none; stroke: #fff; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ar-ligne .dest { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ar-ligne .t { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; flex: none; }
+/* Deux boutons côte à côte : leur marge est celle de la ligne, leur espace aussi. */
+.ar-actions { display: flex; gap: var(--ar-g2); }
+/* Les boutons sont des composants : le coin de la ligne (racine ÷ 4), la marge de la ligne, la cible au doigt. */
+.ar-btn { border-radius: var(--ar-rctl); flex: 1; height: auto; min-height: var(--control-height); padding: var(--ar-p3); background: #F3F4F6; color: #111827; transition: border-radius 0.2s; }
+.ar-btn.premier { background: #111827; color: #FFFFFF; }
+@media (prefers-reduced-motion: reduce) { .ar-panneau, .ar-carte, .ar-ligne, .ar-marque, .ar-btn { transition: none; } }
+
+/* ── 02 · Le labo du coin — deux coins côte à côte sur la scène sombre ── */
+.ar-labo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--page-2-inline); width: min(100%, 52rem); /* hors chaîne : la mesure du labo */ }
+@media (max-width: 40em) { .ar-labo { grid-template-columns: 1fr; } }
+.ar-coin { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.ar-coin .titre { font: 600 var(--font-size-label)/1.4 var(--font-mono); display: flex; gap: var(--gap-3-inline); align-items: baseline; }
+.ar-coin .verdict.ko { color: #F87171; }
+/* Verdicts fixes sur la scène sombre : les jetons de la charte y sont trop sombres. */
+.ar-coin .verdict.bon { color: #4ADE80; }
+.ar-coin svg { width: 100%; height: auto; display: block; border-radius: var(--r-1); }
+
+/* ── 03 · La liste fermée de la pilule — planche de cartes sur la scène pâle.
+      Une colonne sous le seuil de mise en page, deux au-dessus, trois quand le rail est là. ── */
+.ar-planche { display: grid; grid-template-columns: 1fr; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (min-width: 40em) { .ar-planche { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 69em) { .ar-planche { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ar-membre {
+  background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline); min-height: 8.5rem; /* hors chaîne : la hauteur commune des cartes de la planche */
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--gap-2-block); text-align: left;
+}
+.ar-membre .objet { display: flex; align-items: center; gap: var(--gap-3-inline); min-height: var(--control-height); }
+.ar-membre .nom { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : le nom d’une intention */
+.ar-membre.refuse .nom { color: var(--danger); }
+.ar-membre.refuse .nom::before { content: "✗ "; }
+/* La pastille : un badge — la pilule, l'espace le plus serré autour du texte, jamais sous le plancher de cible. */
+.ar-pastille {
+  display: inline-grid; place-items: center; min-width: var(--target-min); min-height: var(--target-min); padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-pill); background: var(--primary); color: var(--on-primary);
+  font: 600 var(--font-size-label)/1 var(--font-mono);
+}
+/* Un peu de couleur sur la planche (demande d'Auteur, 25 août) : la
+   marque et ses rôles, jamais des teintes nouvelles. */
+.ar-pastille.sept { background: var(--warning); color: var(--on-warning); }
+/* L'avatar : un rond de la taille d'une cible au doigt. */
+.ar-avatar {
+  width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill); flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--primary-subtle); color: var(--on-primary-subtle); font: 600 var(--font-size-small)/1 var(--font-sans);
+}
+/* La piste de l'interrupteur : une pilule sur le plancher de cible ; le bouton qui glisse est hors chaîne. */
+.ar-inter {
+  appearance: none; border: 0; padding: 0; width: 40px; /* hors chaîne : la longueur de la piste */ height: var(--target-min); border-radius: var(--r-pill);
+  background: var(--surface-hover); position: relative; cursor: pointer; transition: background 0.1s; flex: none;
+}
+.ar-inter::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; /* hors chaîne : le bouton de l'interrupteur dans sa piste */ border-radius: var(--r-pill);
+  background: var(--bg); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.25); transition: translate 0.1s;
+}
+.ar-inter[aria-checked="true"] { background: var(--success); }
+.ar-inter[aria-checked="true"]::after { translate: 16px 0; /* hors chaîne : la course du bouton */ }
+.ar-inter:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ar-interlab { font-size: var(--font-size-small); }
+/* La piste des onglets : une pilule, l'espace le plus serré autour d'onglets-pilules à la cible compacte. */
+.ar-onglets { display: inline-flex; padding: var(--gap-4-block); gap: var(--gap-4-inline); border-radius: var(--r-pill); background: var(--surface); }
+.ar-onglets button {
+  appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);
+  min-height: var(--control-height-compact); padding: var(--gap-4-block) var(--pad-3-inline); border-radius: var(--r-pill);
+  background: transparent; color: var(--text-secondary); cursor: pointer;
+}
+.ar-onglets button[aria-selected="true"] { background: var(--bg); color: var(--primary-text); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.12); }
+.ar-onglets button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Les deux recalés — fautes déclarées (data-intent="statement"), montrées pour être reconnues. */
+.ar-btn-pilule {
+  appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);
+  min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
+  border-radius: var(--r-pill); /* casse : la pilule sur un bouton — il ne fait pas partie de la liste */
+  background: var(--primary); color: var(--on-primary); white-space: nowrap;
+}
+.ar-gelule {
+  display: inline-block; max-width: 10rem; /* casse : la mesure est serrée pour forcer le passage à la ligne */
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-pill); /* casse : la pilule sur un contenu qui passe à la ligne — une gélule */
+  background: var(--info-subtle); color: var(--on-info-subtle); font-size: var(--font-size-small); line-height: 1.35;
+}
+
+/* ── 04 · Le répertoire ── */
+.ar-bloc { display: grid; gap: var(--gap-1-block); }
+.ar-bloc h3 { margin: 0; font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.01em; }
+.ar-table { width: 100%; font-size: var(--font-size-small); }
+/* Une cellule est une ligne : sa marge, et l'espace entre lignes vers la colonne suivante. */
+.ar-table th, .ar-table td { padding: var(--pad-3-block) var(--gap-2-inline) var(--pad-3-block) 0; white-space: normal; vertical-align: middle; }
+.ar-table th { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.ar-table td.mono { font-size: var(--font-size-label); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ar-ex { display: inline-block; width: 28px; height: 28px; /* hors chaîne : la vignette qui montre le coin */ background: var(--text-primary); vertical-align: middle; margin-right: var(--gap-3-inline); transition: border-top-left-radius 0.2s; }
+/* Les pièges : une grille de groupes — un cran de page entre eux, sur les deux axes. */
+.ar-pieges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--page-2-block) var(--page-2-inline); }
+@media (max-width: 40em) { .ar-pieges { grid-template-columns: 1fr; } }
+.ar-piege { display: flex; flex-direction: column; }
+.ar-piege h4 { margin: 0; font-size: var(--font-size-body); font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: var(--gap-3-inline); }
+.ar-piege h4 .mono { color: var(--text-secondary); font-weight: 400; }
+.ar-piege p { margin: var(--gap-3-block) 0 var(--gap-2-block); color: var(--text-secondary); font-size: var(--font-size-small); line-height: var(--leading-body); }
+/* La figure d'un piège est une carte : son coin, sa marge sur les deux axes. */
+.ar-piegefig {
+  margin-top: auto; background: var(--surface); border-radius: var(--r-2); height: 7.5rem; /* hors chaîne : la hauteur commune des figures */
+  padding: var(--pad-2-block) var(--pad-2-inline); display: flex; align-items: center; justify-content: center; gap: var(--gap-3-inline);
+}
+/* Fautes déclarées (data-intent="statement") : ces valeurs sont le sujet de la démonstration,
+   et restent vraies sur la chaîne de la charte (coins 16 · 8 · 4 · 2, composant 4). */
+.ar-piegefig .v-dur { width: 56px; height: 36px; background: var(--bg); border-radius: 10px; /* casse : 10 n'est aucun cran de la chaîne */ }
+.ar-piegefig .v-pct { width: 36px; height: 36px; background: var(--bg); border-radius: 50%; /* casse : un coin en pourcentage de la hauteur */ }
+.ar-piegefig .v-vois { display: flex; gap: var(--gap-3-inline); align-items: center; }
+.ar-piegefig .v-vois i { display: block; width: 44px; height: 30px; background: var(--bg); border-radius: 4px; /* casse : le champ au coin du composant… */ }
+.ar-piegefig .v-vois b { display: block; width: 44px; height: 30px; background: var(--text-primary); border-radius: 8px; /* casse : …et son voisin au coin de la carte */ }
+.ar-piegefig .v-etat { display: flex; gap: var(--gap-3-inline); align-items: center; }
+.ar-piegefig .v-etat i { display: block; width: 44px; height: 30px; background: var(--text-primary); border-radius: 4px; /* casse : au repos, le coin du composant… */ }
+.ar-piegefig .v-etat b { display: block; width: 44px; height: 30px; background: var(--text-primary); border-radius: 9999px; /* casse : …et au survol, la pilule */ }
+.ar-piegefig .v-etat .fleche { font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-secondary); }
+.ar-piegefig .v-sat { width: 72px; height: 28px; background: var(--bg); border-radius: 24px; /* casse : 24 de coin sur 28 de haut, le rayon s'écrase */ }
+.ar-piegefig .v-arc {
+  width: 76px; height: 44px; background: var(--bg); border-radius: 12px; padding: 1px; /* casse : une marge de 1 pour un coin de 12, le contenu entre dans l'arc */
+  color: var(--text-primary); font: 600 var(--font-size-label)/1 var(--font-mono); display: flex; align-items: flex-start;
+}
