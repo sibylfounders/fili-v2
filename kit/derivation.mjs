@@ -34,9 +34,10 @@
      donne face à primary (−55°) : il tourne avec la marque, sans jamais se
      confondre avec elle.
    · SÉMANTIQUE — chaque état garde sa teinte de charte ; quand primary
-     bouge, le déplacement le tire d'un quart, borné à ±12° : un rouge reste
-     un rouge — il devient le rouge de cette famille-là (C3 : jamais la
-     marque pour un état).
+     bouge, le déplacement le tire de moitié, borné à ±30° (décision
+     d'Auteur du 27 août 2026, sur pièce — un quart et ±12° jusque-là) :
+     un rouge reste un rouge — il devient le rouge de cette famille-là
+     (C3 : jamais la marque pour un état). Sa vivacité ne suit pas.
    · CALAGE — toute paire déclarée sous son seuil est recalée par recherche
      de clarté, jamais laissée en dessous (C7, C9) — la règle de la charte
      (« assombries d'un cran ou deux ; aucune n'a changé de famille »),
@@ -144,8 +145,16 @@ function cale(hex, fonds, cible, [C, H], { versLeBas = true } = {}) {
 }
 
 export const PRIMAIRE_DEFAUT = '#4F46E5'
+/* Les états et le déplacement de la marque — les deux constantes de la décision du 27 août 2026. */
+export const PART_ETATS = 0.5
+export const PLAFOND_ETATS = 30
 const H0 = hexVersLch(PRIMAIRE_DEFAUT)[2] /* la teinte de la charte : l'origine du calibrage */
-const ecartCourt = (de, vers) => (((vers - de + 180) % 360) - 180)
+/* L'arc le plus court, replié sur [−180, +180[. Corrigé le 27 août 2026 :
+   en JavaScript le reste d'un nombre négatif reste négatif, et l'écriture
+   d'avant (`((vers - de + 180) % 360) - 180`) rendait −229° au lieu de +131°
+   pour toute marque de teinte inférieure à 97° — rouges, oranges, jaunes :
+   le déplacement des états partait du mauvais côté. */
+const ecartCourt = (de, vers) => ((((vers - de + 180) % 360) + 360) % 360) - 180
 
 export function derive(primaire = PRIMAIRE_DEFAUT) {
   const [Lp, Cp, H] = hexVersLch(primaire)
@@ -158,10 +167,12 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
      chromas d'emprunt et le déplacement s'y proportionnent. */
   const presence = Math.min(1, Cp / 0.02)
   const teinte = (c) => c * presence /* un chroma emprunté à la marque */
-  /* Les états suivent le DÉPLACEMENT de la primaire : un quart, borné ±12°.
+  /* Les états suivent le DÉPLACEMENT de la primaire : la moitié, bornée ±30°
+     (décision d'Auteur du 27 août 2026, sur pièce : six marques × quatre
+     réglages ; un quart et ±12° jusque-là — « ça ne change quasiment pas »).
      À la primaire de la charte, l'écart est nul — reproduction exacte. */
   const suit = (hCharte) => {
-    const tire = Math.max(-12, Math.min(12, ecartCourt(H0, H) * 0.25)) * presence
+    const tire = Math.max(-PLAFOND_ETATS, Math.min(PLAFOND_ETATS, ecartCourt(H0, H) * PART_ETATS)) * presence
     return (hCharte + tire + 360) % 360
   }
 

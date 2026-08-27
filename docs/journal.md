@@ -49,6 +49,63 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #130 — Les états suivent la marque de moitié, plafonné à 30° — et l'arc du moteur tournait du mauvais côté
+*2026-08-27 · Statut : 🟢 décidé sur pièce · Révise : `#110` (un seul de ses seuils) · Thread « les états et la marque »*
+
+**Contexte** — Sur la page Couleur, l'Auteur observe que les couleurs
+d'état (danger, succès, avertissement, info) ne changent quasiment pas
+quand la primaire change. C'est exact et c'était voulu : chaque état garde
+sa teinte de charte, tirée d'un quart du déplacement de la marque,
+plafonné à 12° — un des seuils verrouillés le 24 août (`#110`). Rouvert
+sur pièce : une page statique (lisible sur mobile, aucun script) a rendu
+le même petit écran d'états sous six marques (indigo de la charte, orange
+vif, vert Spotify, rose pastel, marine, noir) et quatre réglages, dans les
+deux thèmes — A tel quel ; B la teinte suit la moitié du déplacement,
+plafond 30° ; C la vivacité des états suit celle de la marque ; D les
+deux. Vingt-quatre familles, 1 248 paires, toutes au seuil.
+
+**Décision** — **B.** Les états suivent la moitié du déplacement de la
+marque, plafonnée à 30°. Leur vivacité ne suit pas : « C et D trop
+terne » (Auteur). La règle « la marque n'est jamais un état » ne bouge
+pas ; seule sa note d'exécution change (quart / 12° → moitié / 30°).
+
+**Sens produit / UX** — Un rouge reste un rouge, mais il appartient
+désormais nettement à la famille de la marque : un système qui se
+rebrande ne garde pas quatre couleurs d'état étrangères à tout le reste.
+Le prix est dit : sur une marque chaude ou pastel, à 30° le danger tire
+vers le brun-orange, l'avertissement vers le citron, l'info vers le
+violet — ce sont les icônes et les phrases (le canal redondant, C6) qui
+portent le sens là où la couleur seule hésite. À la charte, rien ne
+change : le déplacement y est nul, `tokens.css` régénéré est identique au
+bit près.
+
+**Trouvé au passage, corrigé** — l'arc le plus court entre la teinte de
+la charte et celle de la marque était mal replié : en JavaScript le reste
+d'un nombre négatif reste négatif, et pour toute marque de teinte
+inférieure à 97° (rouges, oranges, jaunes) le moteur rendait −229° au
+lieu de +131°. Le déplacement des états partait du mauvais côté — sur un
+orange, le rouge du danger tirait vers le rose au lieu de l'orange. Ce
+n'était pas un réglage, c'était une faute ; elle est corrigée avec la
+décision, et le crash-test du moteur la rejoue (orange +30, Spotify −30,
+rose +30, marine −5,7, charte et noir 0).
+
+**Alternatives écartées** — tel quel (A : « ça ne change quasiment
+pas ») ; la vivacité suivant la marque (C, D : ternes — sur une marque
+pastel ou noire, le rouge se lit moins vite comme une erreur) ; un
+plafond intermédiaire (20°), non rendu — l'Auteur a tranché sur B.
+
+**Conséquences** — `kit/derivation.mjs` : deux constantes exportées
+(`PART_ETATS` 0,5, `PLAFOND_ETATS` 30), l'arc corrigé, l'en-tête mis à
+jour ; `kit/derivation.test.mjs` : une épreuve de plus (24) ;
+`kit/epreuves/couleur.test.mjs` : la borne « un rouge reste un rouge »
+lit le plafond du moteur (plus un degré d'arrondi) ; `couleur/vue.tsx` :
+un commentaire. Jetons régénérés, identiques. Pièce :
+`claude/livrables/test-etats-marque.html` ; note :
+`claude/test-etats-marque-2026-08-27.md`. Carte : le moteur de couleur
+reste 🟢, un seuil de `#110` amendé.
+
+---
+
 ## #129 — La page Arrondis est verrouillée : neuf épreuves, un coin ne se choisit pas
 *2026-08-26 · Statut : 🟢 verrouillé par crash-test de page · Thread « Les quatre pages passent au vert » · Suite de #128*
 

@@ -683,7 +683,8 @@ function GammeNeutres({ primaire }: { primaire: string }) {
 }
 
 /* Les quatre familles sémantiques : leurs souches ne suivent la marque
-   que d'un quart de son déplacement (un rouge doit rester un rouge) — la
+   que de la moitié de son déplacement, plafonnée à 30° (un rouge doit
+   rester un rouge ; décision du 27 août 2026) — la
    famille est lue dans la palette dérivée, jamais dans une constante.
    Chaque famille a DEUX ancres : son ton et son fond doux ; le doux tient
    le cran 50, le ton se pose sur son cran (l'avertissement, jaune, monte

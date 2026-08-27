@@ -11,7 +11,7 @@ import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
-import { derive, contraste, gamme, gammeNeutres, gammeFamille, poserSurGamme, hexVersLch, PAIRES_DECLAREES, PRIMAIRE_DEFAUT, DENSITES } from '../derivation.mjs'
+import { derive, contraste, gamme, gammeNeutres, gammeFamille, poserSurGamme, hexVersLch, PAIRES_DECLAREES, PRIMAIRE_DEFAUT, DENSITES, PLAFOND_ETATS } from '../derivation.mjs'
 import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, debord, rgb, encres } from './banc.mjs'
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
@@ -172,8 +172,8 @@ test('3 · une marque entre par le rail : la page change de primaire, toute la f
     const barres = await p.evaluate(() => [...document.querySelectorAll('#moteur .mk-rang')].map((r) => [...r.querySelectorAll('.mk-barre')].map((b) => getComputedStyle(b).backgroundColor)))
     assert.deepEqual(barres[0], gamme(hex).filter(([c]) => [100, 300, 500, 700].includes(c)).map(([, h]) => rgb(h)), `${nom} — la gamme`)
     assert.deepEqual(barres[1], ['danger', 'success', 'warning', 'info'].flatMap((v) => [rgb(pal.light[v]), rgb(pal.light[`${v}-subtle`])]), `${nom} — les sémantiques`)
-    /* un rouge reste un rouge : la teinte de chaque famille ne s'éloigne pas de la charte de plus de 30° */
-    for (const v of ['danger', 'success', 'warning', 'info']) { const d = Math.abs(((hexVersLch(pal.light[v])[2] - hexVersLch(PAL.light[v])[2] + 540) % 360) - 180); assert.ok(d <= 30, `${nom} — ${v} a tourné de ${d.toFixed(0)}°`) }
+    /* un rouge reste un rouge : la teinte de chaque famille ne s'éloigne pas de la charte de plus que le plafond du moteur (30° depuis le 27 août), au degré d'arrondi 8 bits près */
+    for (const v of ['danger', 'success', 'warning', 'info']) { const d = Math.abs(((hexVersLch(pal.light[v])[2] - hexVersLch(PAL.light[v])[2] + 540) % 360) - 180); assert.ok(d <= PLAFOND_ETATS + 1, `${nom} — ${v} a tourné de ${d.toFixed(0)}°`) }
     /* les paires déclarées tiennent sur la page rendue, dans les deux thèmes */
     for (const t of ['light', 'dark']) {
       const noms = [...new Set(PAIRES_DECLAREES.flatMap(([a, b]) => [a, b]))]

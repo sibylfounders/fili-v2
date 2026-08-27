@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chaine, jetons, fluide, aLargeur, facteur, AXES, CHARTE, BORNES, DENSITES, HORS_CHAINE,
-  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, PRIMAIRE_DEFAUT, LARGEUR_GEL,
+  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, PRIMAIRE_DEFAUT, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
 } from './derivation.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
@@ -189,6 +189,26 @@ test('couleur — la famille dérivée est celle du tokens.css d’avant, au bit
   assert.ok(contraste(pal.light['text-tertiary'], pal.light.bg) < contraste(pal.light['text-secondary'], pal.light.bg), 'plus clair que le texte second')
   assert.deepEqual(verifier(pal), [])
   assert.ok(versCss(pal).includes('--primary: #4F46E5;'))
+})
+
+/* ── Décision du 27 août 2026 : les états suivent la marque de moitié, plafonné à 30° ── */
+test('couleur — les états suivent la moitié du déplacement de la marque, plafonné à 30°, du bon côté ; rien ne bouge à la charte ni sous une marque sans teinte ; les paires tiennent', () => {
+  assert.equal(PART_ETATS, 0.5); assert.equal(PLAFOND_ETATS, 30)
+  const PAL = derive(PRIMAIRE_DEFAUT)
+  /* le fond doux n'est jamais calé : sa teinte dit exactement le déplacement appliqué */
+  const tour = (hex, v = 'danger-subtle') => ((hexVersLch(derive(hex).light[v])[2] - hexVersLch(PAL.light[v])[2] + 540) % 360) - 180
+  /* l'orange (#F97316, teinte ≈ 48°) est à +131° par l'arc court : la moitié dépasse le plafond → +30, vers l'orange — la faute d'arc d'avant rendait −12 */
+  proche(tour('#F97316'), 30, 1.2, 'orange : +30°')
+  /* le vert Spotify (≈ 149°) est à −128° : → −30 */
+  proche(tour('#1DB954'), -30, 1.2, 'spotify : −30°')
+  /* le rose pastel (≈ 357°) est à +80° : → +30 */
+  proche(tour('#F4A6C1'), 30, 1.2, 'rose : +30°')
+  /* la marine (≈ 266°) est à −11° : la moitié, −5,7 */
+  proche(tour('#1E3A8A'), -5.7, 1.2, 'marine : −5,7°')
+  /* à la charte et sous une marque sans teinte : aucun déplacement */
+  proche(tour(PRIMAIRE_DEFAUT), 0, 0.01, 'charte'); proche(tour('#111111'), 0, 0.01, 'noir')
+  /* et toutes les paires tiennent, dans les deux thèmes, pour chacune */
+  for (const hex of ['#F97316', '#1DB954', '#F4A6C1', '#1E3A8A', '#111111', '#E50914', '#4A154B']) assert.deepEqual(verifier(derive(hex)), [], hex)
 })
 
 /* ── C17 : le tertiaire est une intention, jamais un défaut ── */
