@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#124` — 75 entrées scellées
+> **Dernière décision au journal** : `#129` — 80 entrées scellées
 
 **Légende des statuts**
 
@@ -105,11 +105,11 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Page | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
 | `/` · La porte | 🟢 | Couverture de charte, le moteur en objet vivant, trois spécimens de fondation, la carte du système | — (`#111`) |
-| `/typo` · Typographie | 🟡 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | Jugée sur pièce le 26 août (« je commence à réellement adorer notre travail ») ; verrou au prochain crash-test de page |
-| `/rythme` · Rythme | 🟡 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
-| `/couleur` · Couleur | 🟡 | Dix-sept règles, deux thèmes, la mosaïque, les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
+| `/typo` · Typographie | 🟢 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, douze épreuves (`#127`) |
+| `/rythme` · Rythme | 🟢 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | — verrouillée le 26 août par son crash-test de page, quinze épreuves (`#126`) |
+| `/couleur` · Couleur | 🟢 | Dix-sept règles, deux thèmes, la mosaïque, les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, huit épreuves (`#128`) |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse, le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
-| `/arrondis` · Arrondis | 🟡 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | Jugée sur pièce le 26 août ; verrou au prochain crash-test de page |
+| `/arrondis` · Arrondis | 🟢 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | — verrouillée le 26 août par son crash-test de page, neuf épreuves (`#129`) |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 
 **Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
@@ -121,6 +121,15 @@ rejoue les huit pages de décision et vérifie le site lui-même : aucun ancien
 nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
 (`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
 de page, titres du site à un cran et demi au-dessus de l'affiche.
+
+**Le banc des crash-tests de page** (`kit/epreuves/`, `npm run test:pages`,
+`#125`) — 🟢. Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
+dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
+prédit, au dixième de pixel. Six épreuves communes — les chiffres affichés, les
+preuves par leur jeton, la densité, les titres, C17, rien en dur — et, par page,
+ce que sa terre exige : 44 épreuves vertes sur les quatre pages (`#126` → `#129`).
+Une page ne passe 🟢 que par lui. Le gabarit commun ne s'élargit plus au-delà de
+la page (zéro débord à 320, règle 15).
 
 **Le moteur de couleur** — 🟢 verrouillé. Une décision
 d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses

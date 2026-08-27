@@ -85,6 +85,10 @@
 @media (max-width: 40em) {
   .tranche { flex-direction: column; }
   .tr-nav { width: 100%; flex-direction: row; overflow-x: auto; }
+  /* sur un téléphone, les trois cellules se replient plutôt que d'élargir la page */
+  .ry-large { flex-wrap: wrap; row-gap: var(--gap-2-block); }
+  .ry-large > .espace.h { display: none; } /* empilées, les cellules sont des lignes : l'espace entre lignes remplace l'espace dans la ligne */
+  .tr-sub { flex-basis: 7rem; /* hors chaîne : mesure minimale d'une cellule (comme le laboratoire) */ }
 }
 
 /* ── 02 · Le laboratoire : la géométrie en variables --lab-*, posées par la

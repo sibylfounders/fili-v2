@@ -49,6 +49,188 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #129 — La page Arrondis est verrouillée : neuf épreuves, un coin ne se choisit pas
+*2026-08-26 · Statut : 🟢 verrouillé par crash-test de page · Thread « Les quatre pages passent au vert » · Suite de #128*
+
+**Contexte** — La page Arrondis était jugée sur pièce depuis le 26 août ;
+il lui manquait son crash-test. Sa terre, c'est le coin et la racine dont
+tout descend : la fiche d'arrêt de Navette (situation), le labo du coin
+(variation), la liste fermée de la pilule (vocabulaire).
+
+**Décision** — Neuf épreuves, mesurées par le navigateur. La légende de
+la fiche suit la racine du curseur chiffre par chiffre, aux quatre racines
+(charte 16, 0, 24, borne 38) ; panneau, carte, ligne, marque et boutons
+rendent coin ÷ 2 par profondeur, la marge et l'espace de profondeur, la
+cible au doigt ; les deux invariants sont mesurés sur le rendu — aucun
+enfant plus rond que son parent, aucune marge sous son coin, la marge du
+panneau relevée à 38. Le labo dessine ce qu'il dit (rayons lus dans le
+dessin) et sa légende dit √2 ; la pilule compte quatre membres au rayon
+plein, ses deux recalés déclarés, la gélule passe à la ligne ; la table
+du répertoire dit chaque intention et ses vignettes portent son coin. À
+racine 0 tout est carré, bouton compris. Les coins ne bougent ni avec
+l'écran ni avec la densité — la fiche vit sur la charte, la scène suit la
+base. C17 dans les deux thèmes, rien en dur, zéro débord.
+
+**Ce que l'épreuve a attrapé** — l'interrupteur de la pilule ne prenait
+pas la voix du kit : un bouton nu, à la taille du navigateur (13,3 px).
+Il hérite désormais (`font: inherit`). Six couleurs et ombres du décor
+de scène (piste et bouton des curseurs, relief de l'interrupteur et de
+l'onglet) n'étaient pas dites sur leur ligne : elles le sont — dites,
+pas changées. La fiche Navette reste peinte de ses propres gris : le
+bloc les déclare « décor de scène, hors chaîne ».
+
+**Alternatives écartées** — peindre Navette avec les jetons du kit (elle
+passerait en sombre avec le site : ce n'est pas un écran du kit, c'est
+un objet posé sur une scène) ; ignorer les couleurs du décor (la règle
+dit « hors des lignes qui le disent », pas « hors des couleurs »).
+
+**Conséquences** — `kit/epreuves/arrondis.test.mjs` ; `arrondis.css`
+(sept lignes). Carte : `/arrondis` 🟢.
+
+---
+
+## #128 — La page Couleur est verrouillée : huit épreuves, chaque rapport mesuré sur le rendu
+*2026-08-26 · Statut : 🟢 verrouillé par crash-test de page · Thread « Les quatre pages passent au vert » · Suite de #127*
+
+**Contexte** — La page Couleur promettait « chaque rapport de contraste
+mesuré sur la page que vous lisez ». Le crash-test devait le tenir pour
+vrai contre le moteur, dans les deux thèmes, et sous une autre marque.
+
+**Décision** — Huit épreuves. Les codes de la mosaïque et ses
+proportions, les trente valeurs de la table des rôles, les fiches du
+nuancier, les trois rapports de chaque panneau, les vingt-trois paires de
+la table complète, le mini-écran et les gris à luminance constante : tous
+recalculés par le moteur, comparés au caractère près, et chaque paire
+tient son seuil sur le rendu, en clair et en sombre. Chaque tuile,
+languette, barre de gamme (et les rôles posés sur leur cran), l'alerte et
+les deux panneaux sont peints par la valeur dérivée ; le voile du bento
+dit un pourcentage calculé et tient 4,5. Une marque entre par le rail
+(Spotify, Netflix, Slack) : la variable, la mosaïque, la scène, la gamme
+et les sémantiques suivent ; un rouge reste un rouge (moins de 30° de
+teinte) ; les vingt-huit paires déclarées tiennent sur le rendu ; puis
+retour à la charte. Les quatre casses se déclarent, mentent comme prévu
+et se réparent. C17, tailles, marges, coins, zéro débord.
+
+**Ce que l'épreuve a attrapé** — deux fautes. La démo « le survol est un
+jeton » mentait : le survol gris des boutons d'outil pesait plus lourd
+que la règle de la démo, et le bouton plein grisait au survol au lieu de
+prendre `primary-hover` ; les deux règles de la démo pèsent désormais
+autant et disent leur fond. Et la marque d'essai du moteur était écrite
+à la main (`#4F46E5`) au lieu d'être lue dans le moteur (`PRIMAIRE_DEFAUT`)
+— la seule valeur recopiée de la page.
+
+**Alternatives écartées** — mesurer les rapports depuis la table du
+moteur seule (c'est le rendu qu'on juge, pas la table).
+
+**Conséquences** — `kit/epreuves/couleur.test.mjs` ; `globals.css`
+(démo du survol) ; `couleur/vue.tsx` (deux lignes). Carte : `/couleur` 🟢.
+
+---
+
+## #127 — La page Typo est verrouillée : douze épreuves, aucune correction
+*2026-08-26 · Statut : 🟢 verrouillé par crash-test de page · Thread « Les quatre pages passent au vert » · Suite de #126*
+
+**Contexte** — La page Typo, jugée sur pièce, devait prouver ses huit
+crans, ses deux voix et sa mesure sans l'œil.
+
+**Décision** — Douze épreuves. Les huit fiches de l'échelle et sa légende
+disent les bornes, le rapport et le glissement du moteur ; les huit rangs
+rendus valent leur cran aux trois largeurs, les six crans de texte
+descendent toujours, l'échelle entière à l'écran large — à 320 la section
+du site vaut h1, sous l'affiche : conséquence de la pente déclarée en
+#123, acceptée et dite. Geist et JetBrains Mono sont réellement chargées,
+et chaque fonte déclarée a son fichier au dépôt sous son nom (T11). La
+mesure : 28 ch, la mesure du registre, sans borne — et le compteur
+recompté sur la ligne rendue. La gazette : fer à gauche, corps 16,
+interligne 1,6, capitales espacées par le style ; l'arbre décale d'une
+marge de carte ; le champ est au corps. Les huit casses se déclarent et
+se réparent ; « vw seul » ne gagne pas un pixel au zoom ×2. La densité
+ne touche jamais un corps ; les titres glissent ; C17 ; rien en dur,
+tailles de texte comprises.
+
+**Ce que l'épreuve a attrapé** — rien sur la page. Le banc a gagné une
+règle : une taille en em (l'unité sous un chiffre) est une proportion
+typographique, pas un cran — ce que le vérificateur du site admettait
+déjà.
+
+**Conséquences** — `kit/epreuves/typo.test.mjs`. Carte : `/typo` 🟢.
+
+---
+
+## #126 — La page Rythme est verrouillée : quinze épreuves, deux fautes attrapées
+*2026-08-26 · Statut : 🟢 verrouillé par crash-test de page · Thread « Les quatre pages passent au vert » · Suite de #125*
+
+**Contexte** — La page Rythme était jugée sur pièce le 26 août. Le
+crash-test devait rendre ce jugement mécanique : chaque chiffre affiché
+calculé, chaque preuve rendue par son jeton, la densité qui recalcule,
+les titres qui glissent, C17, rien en dur.
+
+**Décision** — Quinze épreuves. Les chiffres du laboratoire (six
+intentions, onze nombres et les barres), du vocabulaire, des axes, des
+douze réponses du bon cran et de la table de correspondance sont ceux du
+moteur. Trente-trois mesures sélecteur → propriété → jeton sur la
+tranche Coursue, la profondeur, la proximité, la densité et le
+vocabulaire, aux trois largeurs ; les casses rendent le jeton menteur,
+déclarées, et la ligne cassée fait deux fois le coin de sa carte. Par le
+vrai tiroir, la densité change la tranche, le silence (64 · 96 · 128) et
+la carte du milieu, jamais les coins ni les colonnes. L'affiche et les
+sections valent la règle déclarée et grandissent strictement.
+
+**Ce que l'épreuve a attrapé** — deux fautes. La table des axes écrivait
+« × 1,2 » pour une borne de 1,16 : le formateur des pixels (une
+décimale) mangeait la seconde ; les facteurs ont le leur. Et à 320 px la
+page débordait de 55 pixels : la tranche Coursue élargissait la colonne
+du gabarit. L'épreuve « zéro débord » (règle 15) est ajoutée au banc ;
+la colonne et la figure du gabarit commun ne s'élargissent plus au-delà
+de la page, et les trois cellules de la tranche s'empilent sur téléphone.
+
+**Alternatives écartées** — laisser la scène défiler dans sa colonne (un
+écran de 320 qui défile de côté est un écran cassé).
+
+**Conséquences** — `kit/epreuves/rythme.test.mjs` ; `rythme/vue.tsx`,
+`rythme.css`, `globals.css` (deux lignes du gabarit, pour les quatre
+pages). Carte : `/rythme` 🟢.
+
+---
+
+## #125 — Le banc des crash-tests de page : le navigateur mesure, le moteur prédit
+*2026-08-26 · Statut : 🟢 écrit, éprouvé sur les quatre pages · Thread « Les quatre pages passent au vert » · Ouvre les verrous #126 à #129*
+
+**Contexte** — Les pages Rythme, Typo, Couleur et Arrondis tournaient sur
+la chaîne (#124) et restaient 🟡 : le vérificateur du moteur lit les
+feuilles, il ne voit pas la page rendue. « Chaque chiffre calculé »,
+« la densité qui recalcule sous les yeux », « les titres qui glissent »
+ne se prouvent qu'avec un moteur de mise en page.
+
+**Décision** — Un banc, `kit/epreuves/banc.mjs`, sur Playwright et
+Chromium : le site construit dans un dossier à part (`KIT_DIST`, pour ne
+pas corrompre le `.next` du serveur de travail), servi sur un port libre,
+ouvert à 320, 768 et 1440, dans les trois densités et les deux thèmes ;
+on lit ce que le navigateur a calculé et on compare au dixième de pixel
+à ce que le moteur prédit — la droite du `clamp()`, pas la courbe
+adoucie de la pièce. Six épreuves communes à toute page : les chiffres
+affichés, les preuves par leur jeton, la densité, les titres, C17, rien
+en dur (marges, espaces, coins, tailles ; exceptions : les lignes qui
+disent « hors chaîne » ou « casse », les casses `data-intent`, les
+proportions en em). Lancer : `npm run test:pages`. `npm test` reste le
+crash-test du moteur, sans navigateur.
+
+**Sens produit / UX** — Le verrou d'une page n'est plus un verdict d'œil
+consigné, c'est une mesure qu'on rejoue. Et le banc attrape ce que l'œil
+laisse passer : un débord de 55 pixels, un survol qui ment, une décimale
+mangée.
+
+**Alternatives écartées** — rendre les pages côté serveur et lire le
+HTML (aucune mise en page : ni densité, ni glissement) ; un navigateur
+sans tête sans Playwright (plus de plomberie, pas plus de preuve).
+
+**Conséquences** — `playwright` en dépendance de développement,
+`next.config.mjs` (`distDir`), `kit/.gitignore`, `test:pages` dans
+`package.json`, `kit/epreuves/capturer.mjs` (les témoins). Note :
+`claude/crash-tests-pages-2026-08-26.md`.
+
+---
+
 ## #124 — Les quatre pages passent sur la chaîne, et le site se vérifie lui-même
 *2026-08-25 · Statut : 🟢 fait, construit, éprouvé, jugé sur pièce le 26 (« je commence à réellement adorer notre travail ») · Thread « Le kit passe sur la chaîne », étape 5*
 

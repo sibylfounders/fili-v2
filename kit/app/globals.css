@@ -289,8 +289,11 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
 /* Le banc des états de la page Couleur — le survol par jeton (C10),
    et la casse qui le remplace par un filtre pour le voir échouer */
 .demo-plein { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
-.demo-plein.jeton:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
-.demo-plein.filtre:hover { filter: brightness(0.72); }
+/* Le survol gris du bouton d'outil (.bouton:hover) l'emportait sur ces deux règles et la démo
+   mentait — le bouton plein grisait au survol. Attrapé par le crash-test de page, 26 août :
+   les deux règles pèsent désormais autant que le survol d'outil, et disent leur fond. */
+.bouton.demo-plein.jeton:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.bouton.demo-plein.filtre:hover { background: var(--primary); border-color: var(--primary); filter: brightness(0.72); } /* casse : le survol par un filtre, une couleur qu'aucun registre ne connaît */
 /* Une ligne de liste survolée prend surface-hover — le survol est un jeton */
 .demo-ligne:hover { background: var(--surface-hover); }
 
@@ -418,7 +421,11 @@ details.prov summary:hover { color: var(--text-primary); }
 }
 .gdoc-sec-tete .sourd { line-height: 1.65; }
 .gdoc h3 { font-weight: 500; } /* les intertitres du site, un cran de graisse en dessous ; les démos produit gardent la leur */
-.gdoc-corps { margin-top: var(--doc-tete); display: grid; gap: var(--gap-1-block); }
+/* Une seule colonne, qui ne s'élargit jamais au-delà de la page : une démo trop
+   large pour l'écran se replie ou défile dans sa scène, elle ne pousse pas la
+   page (zéro débord à la largeur minimale — invariant d'audit, attrapé par le
+   crash-test de page le 26 août). */
+.gdoc-corps { margin-top: var(--doc-tete); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
 .gd-pied {
   margin-top: var(--doc-silence); padding-top: var(--pad-2-block);
   border-top: 1px solid var(--border);
@@ -437,7 +444,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .banc.sombre { background: var(--code-bg); color: var(--code-text); }
 /* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
    (décision d'Auteur, 24 août). */
-.gd-figure { margin: 0; display: grid; gap: var(--gap-2-block); justify-items: center; }
+.gd-figure { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); justify-items: center; } /* même règle : la figure ne s'élargit jamais au-delà de sa colonne */
 .gd-figure > .gd-legende { justify-self: start; }
 /* La légende est du texte : elle se justifie à gauche comme tout le reste
    de la page (charte, 24 août). Centrée, elle se lisait comme une

@@ -33,6 +33,8 @@ const SOCLE: Socle = chaine();
 const J = jetons(SOCLE) as unknown as Record<string, Jeton>;
 /* Les nombres s'écrivent à la française dans les légendes, un chiffre après la virgule. */
 const px = (v: number) => String(Math.round(v * 10) / 10).replace(".", ",");
+/* Un facteur d'axe garde ses deux décimales (1,16 n'est pas 1,2) — attrapé par le crash-test de page, 26 août. */
+const fac = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
 /* L'accrochage Tailwind : la grille de 4, comme tokens.tailwind.mjs. */
 const grille4 = (v: number) => Math.round(v / 4) * 4;
 
@@ -586,10 +588,10 @@ function Vocabulaire() {
         <table className="tableau mono">
           <thead><tr><th>par axe</th><th>ce qui glisse</th><th>de l&apos;écran étroit au large</th></tr></thead>
           <tbody>
-            <tr><td>horizontal (inline)</td><td>marges, espaces, bord, crans de page</td><td>× {px(AXES.inline.min)} → × {px(AXES.inline.max)}</td></tr>
-            <tr><td>vertical (block)</td><td>marges, espaces, bord, crans de page</td><td>× {px(AXES.block.min)} → × {px(AXES.block.max)}</td></tr>
-            <tr><td>texte (type)</td><td>les crans de texte, corps borné</td><td>× {px(AXES.type.min)} → × {px(AXES.type.max)}</td></tr>
-            <tr><td>cible (control)</td><td>la hauteur des commandes</td><td>× {px(AXES.control.min)} → × {px(AXES.control.max)}</td></tr>
+            <tr><td>horizontal (inline)</td><td>marges, espaces, bord, crans de page</td><td>× {fac(AXES.inline.min)} → × {fac(AXES.inline.max)}</td></tr>
+            <tr><td>vertical (block)</td><td>marges, espaces, bord, crans de page</td><td>× {fac(AXES.block.min)} → × {fac(AXES.block.max)}</td></tr>
+            <tr><td>texte (type)</td><td>les crans de texte, corps borné</td><td>× {fac(AXES.type.min)} → × {fac(AXES.type.max)}</td></tr>
+            <tr><td>cible (control)</td><td>la hauteur des commandes</td><td>× {fac(AXES.control.min)} → × {fac(AXES.control.max)}</td></tr>
             <tr><td>les coins</td><td>rien — réglés par la racine, pas par l&apos;écran</td><td>fixes</td></tr>
           </tbody>
         </table>

@@ -594,7 +594,7 @@ function TeinteConstante() {
           <div key={hex} style={{ display: "grid", gap: "var(--gap-4-block)", justifyItems: "start" }}>
             <span style={{
               ...TUILE,
-              borderRadius: "var(--r-3)", background: hex, color: "#FFFFFF",
+              borderRadius: "var(--r-3)", background: hex, color: "#FFFFFF", /* étude : le blanc pur, référence du rapport mesuré — pas un jeton */
               display: "grid", placeItems: "center", fontWeight: 600, fontSize: "var(--font-size-small)",
             }}>Aa</span>
             <span className="mono" style={{ fontSize: "var(--font-size-label)" }}>{nom}</span>
@@ -832,7 +832,7 @@ const SOMMAIRE: Sommaire = [
 
 export default function Vue() {
   const [palie, setPalie] = useState(false);
-  const [essai, setEssai] = useState("#4F46E5");
+  const [essai, setEssai] = useState(PRIMAIRE_DEFAUT); /* la charte, lue dans le moteur — jamais recopiée (crash-test de page, 26 août) */
   const [marque, setMarque] = useState(false);
   const [filtre, setFiltre] = useState(false);
   const [actionSombre, setActionSombre] = useState(false);
