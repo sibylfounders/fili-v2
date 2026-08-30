@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#131` — 82 entrées scellées
+> **Dernière décision au journal** : `#132` — 83 entrées scellées
 
 **Légende des statuts**
 
@@ -134,10 +134,10 @@ la page (zéro débord à 320, règle 15).
 **Le moteur de couleur** — 🟢 verrouillé. Une décision
 d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses
 seuils sont arrêtés le 2026-08-24 et ne se retouchent plus sans nouvel
-arbitrage (`#110`) — un seul l'a été depuis, sur pièce : les états suivent la
-moitié du déplacement de la marque, plafonnée à 30° (`#130`, 2026-08-27), qui
-a aussi corrigé l'arc du moteur (les marques chaudes tournaient du mauvais
-côté). Depuis le 2026-08-30 (`#131`), **l'accent est un choix d'auteur** —
+arbitrage (`#110`) — un seul l'a été depuis, sur pièce : le déplacement des
+états (`#130`, 2026-08-27 : moitié / 30°, et l'arc du moteur corrigé — les
+marques chaudes tournaient du mauvais côté), révisé sur pièce le 30 août en
+**adaptation légère** : un quart / 12° (`#132`, COLOR-UX 2.8.0). Depuis le 2026-08-30 (`#131`), **l'accent est un choix d'auteur** —
 #75E242 à la charte, valeur souveraine, hors paires déclarées, repli calculé
 (−55°, calé) quand aucun choix n'accompagne la primaire — et **l'anneau de
 focus est `focus-ring`** (primary calé 3:1, C18 exécutée). `kit/app/tokens.css` est **généré** — une valeur retouchée

@@ -49,6 +49,34 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #132 — L'adaptation légère des états est portée au moteur
+*2026-08-30 · Statut : 🟢 exécution d'une décision déjà prise · Révise l'exécution de `#130` (la décision elle-même a été révisée sur pièce le 30 août, COLOR-UX 2.8.0)*
+
+**Contexte** — Le 27 août, `#130` faisait suivre aux états la moitié du
+déplacement de la marque, plafonnée à 30°. Le 30 août, l'atelier interactif
+a montré qu'à ce régime les couleurs système ne jouent plus leur rôle (sur
+un rouge pur, l'avertissement passait la frontière jaune-vert, le succès
+virait turquoise) : l'Auteur a révisé — l'adaptation est **légère, pas
+plus** : un quart du déplacement, plafonné à 12°, dans l'esprit des gris
+teintés. La révision était inscrite au corpus (2.8.0) mais pas encore
+portée au moteur.
+
+**Décision** — Les deux constantes du moteur reviennent à un quart / 12°.
+La correction d'arc de `#130` (les marques chaudes tournaient du mauvais
+côté) reste acquise. Le crash-test rejoue les mêmes marques aux nouvelles
+attentes ; les jetons de la charte régénérés sont inchangés au bit près (le
+déplacement y est nul).
+
+**Sens produit / UX** — L'adaptation rend la famille cohérente, elle ne
+déplace jamais le vocabulaire : un avertissement vert n'avertit plus.
+
+**Conséquences** — deux constantes et trois commentaires dans
+`kit/derivation.mjs` ; les attentes d'une épreuve dans
+`kit/derivation.test.mjs` (25/25) ; jetons identiques ; C3 porte déjà la
+note d'exécution au corpus.
+
+---
+
 ## #131 — L'accent est un choix d'auteur, et l'anneau de focus passe à primary
 *2026-08-30 · Statut : 🟢 décidé sur pièce · Révise : le métier de l'accent (#110 n'est pas rouvert) · Exécute C18 (2026-08-26) · Thread « la recette de l'accent »*
 

@@ -215,20 +215,20 @@ test('couleur — l\'accent d\'auteur est souverain (telle quelle, deux thèmes)
   assert.equal(derive('#1DB954', '#75E242').light.accent, '#75E242')
 })
 
-/* ── Décision du 27 août 2026 : les états suivent la marque de moitié, plafonné à 30° ── */
-test('couleur — les états suivent la moitié du déplacement de la marque, plafonné à 30°, du bon côté ; rien ne bouge à la charte ni sous une marque sans teinte ; les paires tiennent', () => {
-  assert.equal(PART_ETATS, 0.5); assert.equal(PLAFOND_ETATS, 30)
+/* ── Décision du 27 août 2026, révisée le 30 août (COLOR-UX 2.8.0) : l'adaptation des états est légère — un quart, plafonné à 12° ── */
+test('couleur — les états suivent un quart du déplacement de la marque, plafonné à 12°, du bon côté ; rien ne bouge à la charte ni sous une marque sans teinte ; les paires tiennent', () => {
+  assert.equal(PART_ETATS, 0.25); assert.equal(PLAFOND_ETATS, 12)
   const PAL = derive(PRIMAIRE_DEFAUT)
   /* le fond doux n'est jamais calé : sa teinte dit exactement le déplacement appliqué */
   const tour = (hex, v = 'danger-subtle') => ((hexVersLch(derive(hex).light[v])[2] - hexVersLch(PAL.light[v])[2] + 540) % 360) - 180
-  /* l'orange (#F97316, teinte ≈ 48°) est à +131° par l'arc court : la moitié dépasse le plafond → +30, vers l'orange — la faute d'arc d'avant rendait −12 */
-  proche(tour('#F97316'), 30, 1.2, 'orange : +30°')
-  /* le vert Spotify (≈ 149°) est à −128° : → −30 */
-  proche(tour('#1DB954'), -30, 1.2, 'spotify : −30°')
-  /* le rose pastel (≈ 357°) est à +80° : → +30 */
-  proche(tour('#F4A6C1'), 30, 1.2, 'rose : +30°')
-  /* la marine (≈ 266°) est à −11° : la moitié, −5,7 */
-  proche(tour('#1E3A8A'), -5.7, 1.2, 'marine : −5,7°')
+  /* l'orange (#F97316, teinte ≈ 48°) est à +131° par l'arc court : le quart dépasse le plafond → +12, vers l'orange — la faute d'arc d'avant rendait −12 */
+  proche(tour('#F97316'), 12, 1.2, 'orange : +12°')
+  /* le vert Spotify (≈ 149°) est à −128° : → −12 */
+  proche(tour('#1DB954'), -12, 1.2, 'spotify : −12°')
+  /* le rose pastel (≈ 357°) est à +80° : → +12 */
+  proche(tour('#F4A6C1'), 12, 1.2, 'rose : +12°')
+  /* la marine (≈ 266°) est à −11° : le quart, −2,9 */
+  proche(tour('#1E3A8A'), -2.9, 1.2, 'marine : −2,9°')
   /* à la charte et sous une marque sans teinte : aucun déplacement */
   proche(tour(PRIMAIRE_DEFAUT), 0, 0.01, 'charte'); proche(tour('#111111'), 0, 0.01, 'noir')
   /* et toutes les paires tiennent, dans les deux thèmes, pour chacune */
