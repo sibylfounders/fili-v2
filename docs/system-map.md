@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#130` — 81 entrées scellées
+> **Dernière décision au journal** : `#131` — 82 entrées scellées
 
 **Légende des statuts**
 
@@ -137,7 +137,10 @@ seuils sont arrêtés le 2026-08-24 et ne se retouchent plus sans nouvel
 arbitrage (`#110`) — un seul l'a été depuis, sur pièce : les états suivent la
 moitié du déplacement de la marque, plafonnée à 30° (`#130`, 2026-08-27), qui
 a aussi corrigé l'arc du moteur (les marques chaudes tournaient du mauvais
-côté). `kit/app/tokens.css` est **généré** — une valeur retouchée
+côté). Depuis le 2026-08-30 (`#131`), **l'accent est un choix d'auteur** —
+#75E242 à la charte, valeur souveraine, hors paires déclarées, repli calculé
+(−55°, calé) quand aucun choix n'accompagne la primaire — et **l'anneau de
+focus est `focus-ring`** (primary calé 3:1, C18 exécutée). `kit/app/tokens.css` est **généré** — une valeur retouchée
 à la main serait une valeur sans provenance. Sa **gamme 50–950** pose la
 couleur saisie sur le cran de sa clarté, telle quelle, et déduit les autres
 crans d'elle ; les neutres restent les marches fixes ; la page dit sur quel

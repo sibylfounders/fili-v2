@@ -49,6 +49,59 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #131 — L'accent est un choix d'auteur, et l'anneau de focus passe à primary
+*2026-08-30 · Statut : 🟢 décidé sur pièce · Révise : le métier de l'accent (#110 n'est pas rouvert) · Exécute C18 (2026-08-26) · Thread « la recette de l'accent »*
+
+**Contexte** — Trois recettes calculées ont été essayées pour l'accent :
+l'écart de charte (−55°), la complémentaire repoussée (retirée le jour
+même, COLOR-UX 2.7.0 → 2.8.0), puis quatre familles rendues sur planche
+(écarts fixes, voisin adaptatif, port d'attache, ton sur ton). Devant la
+planche, l'Auteur tranche la question de fond : une grande agence ne
+calcule pas une palette, elle la choisit — un générateur comme Coolors
+propose et vérifie, il ne décide jamais.
+
+**Décision** — L'accent est un CHOIX D'AUTEUR, pas une dérivation. La
+valeur choisie entre souveraine : jamais calée, jamais recalée, la même
+dans les deux thèmes. L'accent de la charte est **#75E242**, choisi à la
+main. Doctrine dite par l'Auteur : « marketing contre fonctionnel » — la
+voix graphique (illustrations, animations complexes, blocs marketing,
+graphiques, liste fermée de COLOR-UX 2.6.0) et les couleurs système ne
+vivent jamais au même endroit, donc **pas de garde de distance** entre
+l'accent et un ton sémantique (le vert choisi est à 12° du succès, vu sur
+pièce, assumé). Sans choix d'auteur — theming par primary seule — le
+moteur replie sur l'écart de charte (−55°), calé 3:1, garde achromatique.
+
+**Conséquence obligée, exécutée dans le même geste** — l'anneau de focus
+utilisait encore `--accent` dans le code : avec le vert d'auteur (1,7:1
+sur blanc), tous les anneaux devenaient illisibles. C18 (décidée le
+26 août, jamais exécutée) entre donc au code : nouveau jeton
+**`focus-ring`** — primary, calé 3:1 sur bg et surface, par thème — et
+les huit règles de focus du site basculent dessus. Le focus est
+fonctionnel : il reste sous contrat ; l'accent n'y touche plus.
+
+**Sens produit / UX** — Le moteur calcule ce qui est fonctionnel et
+garde ce qui est d'auteur : il vérifie, il ne choisit pas. L'accent sort
+des paires déclarées (il n'est plus un contrat, c'est une signature) ;
+le focus-ring y entre à sa place. Ce que ça coûte est dit : un graphique
+en accent sur fond clair peut descendre sous 3:1 — territoire marketing,
+la faute ne sera plus corrigée en silence ni comptée comme fonctionnelle.
+
+**Alternatives écartées** — les quatre familles de recettes (planche du
+30 août) ; caler le vert d'auteur (le calage le fonçait nettement : la
+valeur cessait d'être le choix) ; garder la garde des 30° (contredite
+par la doctrine des territoires).
+
+**Conséquences** — moteur : `ACCENT_AUTEUR`, `derive(primaire, accent)`,
+repli conservé, jeton `focus-ring`, paires accent → focus-ring ; jetons
+régénérés (seules lignes changées : accent, focus-ring) ; huit règles de
+focus dans deux feuilles ; page Couleur : deux paires renommées, le texte
+de C4 et un mot de C14 ; crash-test moteur : 25/25 avec l'épreuve neuve.
+Corpus : COLOR-UX passe en 2.9.0 (C4 soldée, exception dite au test des
+30° de C17). Pièces : `claude/livrables/planche-familles-accent.html`,
+`claude/livrables/verdict-accent-75E242.html`.
+
+---
+
 ## #130 — Les états suivent la marque de moitié, plafonné à 30° — et l'arc du moteur tournait du mauvais côté
 *2026-08-27 · Statut : 🟢 décidé sur pièce · Révise : `#110` (un seul de ses seuils) · Thread « les états et la marque »*
 

@@ -296,7 +296,11 @@
       },
       "accent": {
         "$type": "color",
-        "$value": "#0791B2"
+        "$value": "#75E242"
+      },
+      "focus-ring": {
+        "$type": "color",
+        "$value": "#4F46E5"
       },
       "danger-subtle": {
         "$type": "color",
@@ -450,7 +454,11 @@
       },
       "accent": {
         "$type": "color",
-        "$value": "#0791B2"
+        "$value": "#75E242"
+      },
+      "focus-ring": {
+        "$type": "color",
+        "$value": "#808BFC"
       },
       "danger-subtle": {
         "$type": "color",

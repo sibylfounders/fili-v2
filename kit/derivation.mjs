@@ -30,9 +30,18 @@
      AA quand la marque ne tient pas 4,5:1 : on assombrit le lien, jamais
      la marque. hover, subtle et leurs textes sont des ancres de clarté et
      de chroma posées par la charte, à la teinte de primary (C7).
-   · ACCENT — l'anneau de focus garde l'écart de teinte que la charte lui
-     donne face à primary (−55°) : il tourne avec la marque, sans jamais se
-     confondre avec elle.
+   · ACCENT — un CHOIX D'AUTEUR, pas une dérivation (décision d'Auteur,
+     2026-08-30) : la voix graphique de la marque — illustrations, animations
+     complexes, blocs marketing, graphiques — se choisit à l'œil (Coolors ou
+     autre) et entre SOUVERAINE : jamais calée, jamais recalée, la valeur
+     saisie fait foi dans les deux thèmes. Territoire marketing, disjoint du
+     fonctionnel : l'accent peut approcher un ton sémantique, ils ne vivent
+     jamais au même endroit. À la charte, l'accent d'auteur est ACCENT_AUTEUR
+     (#75E242). Sans choix d'auteur (theming par primary seule), repli :
+     l'écart de charte (−55°), calé 3:1, garde achromatique — l'ancien calcul.
+   · FOCUS-RING — l'anneau de focus n'est PLUS l'accent (C18, 2026-08-26,
+     exécuté ici) : il est primary, calé 3:1 sur bg et surface dans chaque
+     thème — le focus est fonctionnel, il reste sous contrat.
    · SÉMANTIQUE — chaque état garde sa teinte de charte ; quand primary
      bouge, le déplacement le tire de moitié, borné à ±30° (décision
      d'Auteur du 27 août 2026, sur pièce — un quart et ±12° jusque-là) :
@@ -145,6 +154,10 @@ function cale(hex, fonds, cible, [C, H], { versLeBas = true } = {}) {
 }
 
 export const PRIMAIRE_DEFAUT = '#4F46E5'
+/* L'accent d'auteur de la charte — choisi à la main (décision d'Auteur,
+   2026-08-30, journal #131). Une valeur souveraine : le moteur ne la
+   retouche jamais. */
+export const ACCENT_AUTEUR = '#75E242'
 /* Les états et le déplacement de la marque — les deux constantes de la décision du 27 août 2026. */
 export const PART_ETATS = 0.5
 export const PLAFOND_ETATS = 30
@@ -156,7 +169,12 @@ const H0 = hexVersLch(PRIMAIRE_DEFAUT)[2] /* la teinte de la charte : l'origine 
    le déplacement des états partait du mauvais côté. */
 const ecartCourt = (de, vers) => ((((vers - de + 180) % 360) + 360) % 360) - 180
 
-export function derive(primaire = PRIMAIRE_DEFAUT) {
+/* Deux décisions d'entrée : primary, et (optionnel) l'accent d'auteur.
+   À la primaire de la charte, l'accent d'auteur s'applique par défaut ;
+   passer null force le repli calculé. */
+export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
+  const saisiePrimaire = rgbVersHex(hexVersRgb(primaire))
+  if (accent === undefined && saisiePrimaire === PRIMAIRE_DEFAUT) accent = ACCENT_AUTEUR
   const [Lp, Cp, H] = hexVersLch(primaire)
   /* CAS LIMITE (question d'Auré, 24 août) : une primaire achromatique —
      noir, blanc, gris — n'a PAS de teinte. Son angle OKLCH retombe sur
@@ -267,9 +285,20 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
   /* ── Accent — l'anneau de focus : l'écart de la charte, conservé ── */
   /* L'anneau de focus emprunte l'écart de teinte de la charte — mais une
      marque sans teinte n'a rien à prêter : l'anneau devient gris franc. */
-  const Ha = (H - 55.3 + 360) % 360
-  light.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [light.bg, light.surface], 3, [teinte(0.111), Ha])
-  dark.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [dark.bg, dark.surface], 3, [teinte(0.111), Ha], { versLeBas: false })
+  if (accent) {
+    /* le choix d'auteur, tel quel — marketing, hors contrat fonctionnel */
+    const va = rgbVersHex(hexVersRgb(accent))
+    light.accent = va
+    dark.accent = va
+  } else {
+    const Ha = (H - 55.3 + 360) % 360
+    light.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [light.bg, light.surface], 3, [teinte(0.111), Ha])
+    dark.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [dark.bg, dark.surface], 3, [teinte(0.111), Ha], { versLeBas: false })
+  }
+
+  /* ── Focus-ring — C18 exécutée : l'anneau est primary, sous contrat 3:1 ── */
+  light['focus-ring'] = cale(light.primary, [light.bg, light.surface], 3, [Cp, H])
+  dark['focus-ring'] = cale(dark.primary, [dark.bg, dark.surface], 3, [Cp, H], { versLeBas: false })
 
   /* ── Sémantique — ancres de la charte, tirées par le déplacement ── */
   /* Chaque facette garde SA teinte de charte (le doux du warning est jaune,
@@ -330,7 +359,7 @@ export function derive(primaire = PRIMAIRE_DEFAUT) {
 
   /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu.
      L'aplat glisse en zone médiane (aplatAjuste), le lien se cale (lienAjuste). */
-  const meta = { saisie, aplat: light.primary, aplatAjuste: saisie !== light.primary, lien: light['primary-text'], lienAjuste: saisie !== light['primary-text'] }
+  const meta = { saisie, aplat: light.primary, aplatAjuste: saisie !== light.primary, lien: light['primary-text'], lienAjuste: saisie !== light['primary-text'], accentAuteur: Boolean(accent) }
   return { light, dark, meta }
 }
 
@@ -441,7 +470,7 @@ export const PAIRES_DECLAREES = [
   ['on-success-subtle', 'success-subtle', 4.5], ['on-success', 'success', 4.5],
   ['on-warning-subtle', 'warning-subtle', 4.5], ['on-warning', 'warning', 4.5],
   ['on-info-subtle', 'info-subtle', 4.5], ['on-info', 'info', 4.5],
-  ['border-strong', 'bg', 3], ['accent', 'bg', 3], ['accent', 'surface', 3],
+  ['border-strong', 'bg', 3], ['focus-ring', 'bg', 3], ['focus-ring', 'surface', 3],
   ['code-text', 'code-bg', 4.5], ['code-com', 'code-bg', 4.5],
   ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5],
 ]
@@ -460,7 +489,7 @@ export function verifier(pal) {
 export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
   const ligne = (o, n) => `  --${n}: ${o[n]};`
   const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'text-tertiary', 'border', 'border-strong',
-    'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent',
+    'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent', 'focus-ring',
     'danger', 'danger-subtle', 'on-danger', 'on-danger-subtle',
     'success', 'success-subtle', 'on-success', 'on-success-subtle',
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',

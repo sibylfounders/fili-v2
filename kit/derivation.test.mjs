@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chaine, jetons, fluide, aLargeur, facteur, AXES, CHARTE, BORNES, DENSITES, HORS_CHAINE,
-  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, PRIMAIRE_DEFAUT, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
+  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
 } from './derivation.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
@@ -189,6 +189,30 @@ test('couleur — la famille dérivée est celle du tokens.css d’avant, au bit
   assert.ok(contraste(pal.light['text-tertiary'], pal.light.bg) < contraste(pal.light['text-secondary'], pal.light.bg), 'plus clair que le texte second')
   assert.deepEqual(verifier(pal), [])
   assert.ok(versCss(pal).includes('--primary: #4F46E5;'))
+})
+
+/* ── Décision du 30 août 2026 (#131) : l'accent est un choix d'auteur, le focus passe à primary ── */
+test('couleur — l\'accent d\'auteur est souverain (telle quelle, deux thèmes) ; le focus-ring tient 3:1 partout ; sans choix, le repli calcule l\'écart de charte', () => {
+  assert.equal(ACCENT_AUTEUR, '#75E242')
+  const pal = derive(PRIMAIRE_DEFAUT) /* l'accent d'auteur s'applique par défaut à la charte */
+  assert.equal(pal.light.accent, ACCENT_AUTEUR); assert.equal(pal.dark.accent, ACCENT_AUTEUR)
+  assert.equal(pal.meta.accentAuteur, true)
+  /* souverain : plus aucune paire déclarée ne porte l'accent — et le contraste n'est PAS réécrit */
+  assert.ok(!PAIRES_DECLAREES.some(([t, f]) => t === 'accent' || f === 'accent'))
+  assert.ok(contraste(pal.light.accent, pal.light.bg) < 3, 'la valeur d\'auteur n\'est pas recalée')
+  /* le focus-ring, lui, reste sous contrat, pour la charte et pour des marques pâles ou sombres */
+  for (const hex of [PRIMAIRE_DEFAUT, '#F4A6C1', '#111111', '#FACC15']) {
+    const q = derive(hex)
+    for (const th of ['light', 'dark']) for (const f of ['bg', 'surface'])
+      assert.ok(contraste(q[th]['focus-ring'], q[th][f]) >= 3, `${hex} ${th} focus-ring sur ${f}`)
+    assert.deepEqual(verifier(q), [], hex)
+  }
+  /* le repli : une autre primaire sans choix d'auteur retrouve l'écart de charte, calé */
+  const q = derive('#1DB954')
+  assert.equal(q.meta.accentAuteur, false)
+  assert.ok(contraste(q.light.accent, q.light.bg) >= 3 && contraste(q.dark.accent, q.dark.bg) >= 3)
+  /* et un choix d'auteur explicite passe tel quel sur n'importe quelle marque */
+  assert.equal(derive('#1DB954', '#75E242').light.accent, '#75E242')
 })
 
 /* ── Décision du 27 août 2026 : les états suivent la marque de moitié, plafonné à 30° ── */

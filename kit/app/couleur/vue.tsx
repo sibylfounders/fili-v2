@@ -124,8 +124,8 @@ const PAIRES: [string, string, string, number][] = [
   ["--on-info-subtle", "--info-subtle", "l'encre info sur son fond doux", 4.5],
   ["--on-info", "--info", "le texte sur info plein", 4.5],
   ["--border-strong", "--bg", "la bordure délimitante (3:1)", 3],
-  ["--accent", "--bg", "l'anneau de focus sur le blanc (3:1)", 3],
-  ["--accent", "--surface", "l'anneau de focus sur le gris (3:1)", 3],
+  ["--focus-ring", "--bg", "l'anneau de focus sur le blanc (3:1)", 3],
+  ["--focus-ring", "--surface", "l'anneau de focus sur le gris (3:1)", 3],
 ];
 
 const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi?: string; div?: string; src: { t: string; h: string }[] }[] = [
@@ -146,7 +146,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Atlassian — « don't use an accent when the color has semantic meaning »", h: "https://atlassian.design/foundations/color" }] },
   { id: "c4", nom: "C4", titre: "Un jeton naît d'un besoin réel",
     enonce: "Le registre marque se limite aux rôles fonctionnels existants ; une teinte purement décorative ne reçoit pas de jeton — et un rôle sans consommateur ne reste pas.",
-    div: "Deux rôles de marque, deux métiers : primary, l'action — tenue en réserve, 5 % de la page — et accent, l'anneau de focus, qui entoure et n'accueille jamais de texte. Pas de « seconde voix » décorative : le jour où une teinte portera un vrai rôle, elle entrera avec son couple.",
+    div: "Deux rôles de marque, deux métiers : primary, l'action — tenue en réserve, 5 % de la page — et accent, la voix graphique, un choix d'auteur (illustrations, animations, marketing, graphiques), souverain et hors contrat fonctionnel : il peut approcher un ton sémantique, ils ne vivent jamais au même endroit. L'anneau de focus, lui, est primary, sous contrat (focus-ring).",
     src: [{ t: "Règle interne du système (précédent journalisé)", h: "#" }] },
   { id: "c5", nom: "C5", titre: "Le couple complet dès la naissance",
     enonce: "Toute nouvelle valeur sémantique fournit son couple texte/fond subtil d'emblée ; les neutres vivent en échelle.",
@@ -182,7 +182,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "MDN — prefers-color-scheme", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" }] },
   { id: "c14", nom: "C14", titre: "Les deux textes garantis, du même côté",
     enonce: "Deux textes garantis sur un même fond ne peuvent tous deux atteindre le seuil que s'ils tombent du même côté de l'échelle de luminance — d'où la contrainte démontrée : un thème sombre ne peut pas avoir une couleur d'action sombre.",
-    pourquoi: "Ce n'est pas un goût, c'est un calcul : avec une action sombre, aucun texte représentable ne tient 4,5:1 à la fois sur elle et sur le fond quasi noir. L'accent s'éclaircit en sombre, par construction.",
+    pourquoi: "Ce n'est pas un goût, c'est un calcul : avec une action sombre, aucun texte représentable ne tient 4,5:1 à la fois sur elle et sur le fond quasi noir. L'action s'éclaircit en sombre, par construction.",
     src: [{ t: "WCAG — définition du rapport de contraste", h: "https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio" }] },
   { id: "c15", nom: "C15", titre: "Teinter un neutre ne coûte rien, à luminance constante",
     enonce: "Le rapport de contraste ne dépend que de la luminance relative ; teinter un neutre en conservant sa luminance ne change aucun rapport — l'opération est sûre par construction.",
