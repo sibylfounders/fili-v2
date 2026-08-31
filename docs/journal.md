@@ -4578,3 +4578,34 @@ vide mesuré, jamais à une coordonnée choisie d'avance.
 **Crash-test** — Les cinq fautes, à 1340 et 900 px : aucune étiquette hors
 carte, aucune sur du texte, aucune sur une autre.
 
+## 31 août 2026 (3) — `/rythme` : le faux menu ne fait plus la hauteur
+
+**Constat** — Dans la démo de la tranche, le faux menu de gauche courait sur
+toute la hauteur de la scène : sa colonne s'étirait à la hauteur de la carte
+(250 px pour 224 px de contenu), et surtout ses quatre entrées étaient
+séparées par l'espace « entre deux lignes », ce qui posait « Profil » au
+niveau du bas de la carte. Le décor faisait la même taille que le sujet.
+
+**Décision** — Le menu ne s'étire plus (la colonne s'arrête à son contenu),
+et ses entrées se resserrent au plus serré : elles forment UN groupe, pas
+quatre lignes indépendantes. La marque garde sa respiration, elle n'est pas
+une entrée. Le menu passe de 250 à 213 px pour une carte de 250 : il finit
+franchement avant elle. Empilé sur petit écran, le menu redevient une barre
+pleine largeur et la carte cesse de se rétrécir à son contenu.
+
+**Sens produit** — La preuve porte sur la cascade de marges DANS la carte.
+Un décor qui occupe autant de place que le sujet lui dispute le regard.
+
+**Correctif — le menu était encore trop haut** — Resserrer les espaces ne
+suffisait pas : ils étaient déjà au plus serré, et la hauteur venait des
+entrées elles-mêmes (une marge de ligne haute ET basse autour d'un mot,
+55 px pièce en densité aérée, 220 px pour les quatre). Décision d'Auteur :
+**une entrée de menu est un contrôle, pas une ligne de texte**. Elle prend
+la cible des commandes secondaires (`--control-height-compact`, déjà en
+usage sur cette page pour la barre de verdict) sans marge de ligne en plus.
+Le menu est un décor non cliquable : la cible pleine ne s'y impose pas.
+
+Résultat, menu / carte : 150 / 185 en compact, 160 / 244 en confortable,
+169 / 285 en aéré. Le menu tient maintenant dans le haut de la scène dans
+les trois densités, et ne peut plus être plus grand que la carte.
+

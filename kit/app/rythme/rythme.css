@@ -48,14 +48,27 @@
   width: min(100%, 46rem); /* hors chaîne : mesure de la scène */
   background: var(--surface); border-radius: var(--r-1);
   padding: var(--pad-1-block) var(--pad-1-inline);
-  display: flex; gap: var(--gap-1-inline);
+  /* Le faux menu est un décor : il ne s'étire pas à la hauteur de la
+     carte, qui est le vrai sujet de la démo. */
+  display: flex; align-items: flex-start; gap: var(--gap-1-inline);
   color: var(--text-primary); text-align: left;
   font-size: var(--font-size-small); line-height: 1.45;
 }
-.tr-nav { width: 9.5rem; /* hors chaîne : mesure de la colonne */ flex: none; display: flex; flex-direction: column; gap: var(--gap-2-block); }
-.tr-marque { display: flex; align-items: center; gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-3-inline); font-weight: 600; }
+/* Les entrées d'un menu forment UN groupe : elles se touchent au plus
+   serré. L'espace « entre deux lignes » les faisait courir sur toute la
+   hauteur de la scène. La marque, elle, n'est pas une entrée : elle garde
+   sa respiration. */
+.tr-nav { width: 9.5rem; /* hors chaîne : mesure de la colonne */ flex: none; display: flex; flex-direction: column; gap: var(--gap-4-block); }
+.tr-marque { display: flex; align-items: center; min-height: var(--control-height-compact);
+  gap: var(--gap-3-inline); padding: 0 var(--pad-3-inline);
+  margin-bottom: var(--gap-3-block); font-weight: 600; }
 .tr-marque .m { width: 1.15rem; height: 1.15rem; /* hors chaîne : le monogramme, une glyphe */ color: var(--primary); flex: none; }
-.tr-item { padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); }
+/* Une entrée de menu est un CONTRÔLE, pas une ligne de texte : sa hauteur
+   est la cible des commandes secondaires, sans marge de ligne en plus.
+   C'est ce qui empêchait le menu de tenir dans le haut de la scène.
+   Le menu est un décor non cliquable — la cible pleine ne s'y impose pas. */
+.tr-item { display: flex; align-items: center; min-height: var(--control-height-compact);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); }
 .tr-item.on { background: var(--bg); color: var(--text-primary); font-weight: 600; }
 .tr-carte { flex: 1; min-width: 0; background: var(--bg); border-radius: var(--r-2); display: flex; flex-direction: column; }
 .tr-id { display: flex; align-items: center; gap: var(--gap-3-inline); }
@@ -83,8 +96,11 @@
 .tr-sub b { font-size: var(--font-size-body); font-variant-numeric: tabular-nums; }
 .tr-sub span { color: var(--text-secondary); font-size: var(--font-size-small); }
 @media (max-width: 40em) {
-  .tranche { flex-direction: column; }
+  /* Empilé, le menu redevient une barre : il reprend toute la largeur, et
+     la carte ne doit surtout pas se rétrécir à son contenu. */
+  .tranche { flex-direction: column; align-items: stretch; }
   .tr-nav { width: 100%; flex-direction: row; overflow-x: auto; }
+  .tr-marque { margin-bottom: 0; }
   /* sur un téléphone, les trois cellules se replient plutôt que d'élargir la page */
   .ry-large { flex-wrap: wrap; row-gap: var(--gap-2-block); }
   .ry-large > .espace.h { display: none; } /* empilées, les cellules sont des lignes : l'espace entre lignes remplace l'espace dans la ligne */
