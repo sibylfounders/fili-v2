@@ -386,18 +386,6 @@
         "$type": "color",
         "$value": "#6E717F"
       },
-      "focus-ring-soft": {
-        "$type": "color",
-        "$value": "#C9D1FE"
-      },
-      "focus-ring-danger-soft": {
-        "$type": "color",
-        "$value": "#FFC2C0"
-      },
-      "focus-ring-neutral-soft": {
-        "$type": "color",
-        "$value": "#D2D4DC"
-      },
       "code-bg": {
         "$type": "color",
         "$value": "#1A1C4C"
@@ -563,18 +551,6 @@
       "focus-ring-neutral": {
         "$type": "color",
         "$value": "#9FA2AF"
-      },
-      "focus-ring-soft": {
-        "$type": "color",
-        "$value": "#362EA7"
-      },
-      "focus-ring-danger-soft": {
-        "$type": "color",
-        "$value": "#89001A"
-      },
-      "focus-ring-neutral-soft": {
-        "$type": "color",
-        "$value": "#45474E"
       },
       "code-bg": {
         "$type": "color",

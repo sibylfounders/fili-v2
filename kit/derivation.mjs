@@ -43,13 +43,13 @@
      révise la forme de C18) : une bande pâle de la famille de l'objet,
      collée à lui, fermée par un trait fin. La bande est le fond doux de la
      famille (primary-subtle, danger-subtle, surface) — aucun jeton neuf.
-     Le TRAIT a deux régimes : au clavier (focus-visible), focus-ring —
-     le cran le MOINS SOUTENU de la famille qui tient encore 3:1 sur bg et
-     surface (le plus clair en clair, le plus sombre en sombre) : c'est
-     l'indicateur au sens de la norme, il est sous contrat ; au clic et au
-     doigt, focus-ring-soft — le trait pâle tel que dessiné (cran 200 en
-     clair, 800 en sombre), un retour de geste, HORS contrat, dit. Trois
-     familles de halo : marque (focus-ring), rouge (focus-ring-danger),
+     Le TRAIT est le cran le MOINS SOUTENU de la famille qui tient encore
+     3:1 sur bg et surface (le plus clair en clair, le plus sombre en
+     sombre) : c'est l'indicateur au sens de la norme, il est sous contrat.
+     Le halo ne se montre qu'au clavier — le clic ne montre rien (verdict
+     d'Auteur du 31 août, sur le site : essayés puis retirés, les traits
+     pâles du clic n'ont plus de consommateur, donc plus de jeton, C4).
+     Trois familles de halo : marque (focus-ring), rouge (focus-ring-danger),
      neutre (focus-ring-neutral = border-strong, déjà sous contrat).
      L'accent n'y touche pas.
    · SÉMANTIQUE — chaque état garde sa teinte de charte ; quand primary
@@ -375,17 +375,6 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   dark['focus-ring-danger'] = traitClavier(dark.danger, [dark.bg, dark.surface], false)
   light['focus-ring-neutral'] = light['border-strong']
   dark['focus-ring-neutral'] = dark['border-strong']
-  /* Le trait au clic — tel que dessiné : le cran 200 de la gamme de la
-     famille en clair, le cran 800 en sombre. Un retour de geste, pas
-     l'indicateur : HORS contrat de contraste, et dit (C18). */
-  const cran = (g, n) => Object.fromEntries(g)[n]
-  light['focus-ring-soft'] = cran(gamme(light.primary), 200)
-  dark['focus-ring-soft'] = cran(gamme(dark.primary), 800)
-  light['focus-ring-danger-soft'] = cran(gammeFamille(light.danger, light['danger-subtle']), 200)
-  dark['focus-ring-danger-soft'] = cran(gammeFamille(dark.danger, dark['danger-subtle']), 800)
-  light['focus-ring-neutral-soft'] = cran(gammeNeutres(light.primary), 200)
-  dark['focus-ring-neutral-soft'] = cran(gammeNeutres(dark.primary), 800)
-
   /* ── Le panneau de code — jamais inversé (C12). Le fond n'est plus un
      noir posé à la main : c'est le cran 950 de la gamme de la primaire
      (demande d'Auteur, 24 août), le texte son cran 200, et quatre encres
@@ -535,7 +524,7 @@ export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
   const ligne = (o, n) => `  --${n}: ${o[n]};`
   const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'text-tertiary', 'border', 'border-strong',
     'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent',
-    'focus-ring', 'focus-ring-danger', 'focus-ring-neutral', 'focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft',
+    'focus-ring', 'focus-ring-danger', 'focus-ring-neutral',
     'danger', 'danger-subtle', 'on-danger', 'on-danger-subtle',
     'success', 'success-subtle', 'on-success', 'on-success-subtle',
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',

@@ -216,7 +216,7 @@ test('couleur — l\'accent d\'auteur est souverain (telle quelle, deux thèmes)
 })
 
 /* ── Décision du 31 août 2026 (#133) : le halo de focus — trois familles, deux régimes ── */
-test('couleur — le trait clavier du halo est le cran le moins soutenu qui tient 3:1 (marque, rouge ; neutre = border-strong) ; le trait clic est le cran 200 / 800, hors contrat ; les paires tiennent pour toute marque', () => {
+test('couleur — le trait clavier du halo est le cran le moins soutenu qui tient 3:1 (marque, rouge ; neutre = border-strong) ; le clic ne montre rien (aucun jeton pâle) ; les paires tiennent pour toute marque', () => {
   for (const hex of [PRIMAIRE_DEFAUT, '#F4A6C1', '#111111', '#FACC15', '#1DB954', '#F97316']) {
     const q = derive(hex)
     for (const th of ['light', 'dark']) {
@@ -230,23 +230,17 @@ test('couleur — le trait clavier du halo est le cran le moins soutenu qui tien
         assert.ok(fonds.some((f) => contraste(plusLoin, f) < 3), `${hex} ${th} ${t} est bien au bord du seuil (${src})`)
       }
       assert.equal(p['focus-ring-neutral'], p['border-strong'])
-      /* le trait pâle : cran 200 en clair, 800 en sombre — sur la gamme de sa famille */
-      const cran = (g, n) => Object.fromEntries(g)[n]
-      assert.equal(p['focus-ring-soft'], cran(gamme(p.primary), clair ? 200 : 800))
-      assert.equal(p['focus-ring-danger-soft'], cran(gammeFamille(p.danger, p['danger-subtle']), clair ? 200 : 800))
-      assert.equal(p['focus-ring-neutral-soft'], cran(gammeNeutres(p.primary), clair ? 200 : 800))
+      /* le clic ne montre rien : aucun jeton de trait pâle ne survit (C4 — un rôle sans consommateur ne reste pas) */
+      for (const mort of ['focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft']) assert.equal(p[mort], undefined, mort)
     }
     assert.deepEqual(verifier(q), [], hex)
   }
-  /* hors contrat, et dit : aucune paire déclarée ne porte un trait pâle */
-  assert.ok(!PAIRES_DECLAREES.some(([t, f]) => t.endsWith('-soft') || f.endsWith('-soft')))
-  /* à la charte, en clair, le trait pâle est SOUS 3:1 — c'est le choix d'Auteur, pas une faute silencieuse */
-  const c = derive(PRIMAIRE_DEFAUT).light
-  assert.ok(contraste(c['focus-ring-soft'], c.bg) < 3)
-  /* les six jetons sortent dans le CSS et dans Figma */
+  /* les trois traits sortent dans le CSS et dans Figma, et aucun jeton pâle n'y traîne */
   const css = versCss(derive(PRIMAIRE_DEFAUT))
-  for (const t of ['focus-ring', 'focus-ring-danger', 'focus-ring-neutral', 'focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft']) assert.ok(css.includes(`--${t}: #`), t)
-  assert.ok(versFigma().color.light['focus-ring-danger-soft'].$value.startsWith('#'))
+  for (const t of ['focus-ring', 'focus-ring-danger', 'focus-ring-neutral']) assert.ok(css.includes(`--${t}: #`), t)
+  assert.ok(!css.includes('-soft'))
+  assert.ok(versFigma().color.light['focus-ring-danger'].$value.startsWith('#'))
+  assert.equal(versFigma().color.light['focus-ring-soft'], undefined)
 })
 
 /* ── Décision du 27 août 2026, révisée le 30 août (COLOR-UX 2.8.0) : l'adaptation des états est légère — un quart, plafonné à 12° ── */

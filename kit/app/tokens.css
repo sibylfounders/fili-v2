@@ -220,9 +220,6 @@
   --focus-ring: #7881FD;
   --focus-ring-danger: #F3594E;
   --focus-ring-neutral: #6E717F;
-  --focus-ring-soft: #C9D1FE;
-  --focus-ring-danger-soft: #FFC2C0;
-  --focus-ring-neutral-soft: #D2D4DC;
   --danger: #B91C1C;
   --danger-subtle: #FEE2E2;
   --on-danger: #FFF8F7;
@@ -268,9 +265,6 @@
   --focus-ring: #5358C3;
   --focus-ring-danger: #B7343B;
   --focus-ring-neutral: #9FA2AF;
-  --focus-ring-soft: #362EA7;
-  --focus-ring-danger-soft: #89001A;
-  --focus-ring-neutral-soft: #45474E;
   --danger: #F87171;
   --danger-subtle: #450A0A;
   --on-danger: #150505;
@@ -317,9 +311,6 @@
     --focus-ring: #5358C3;
     --focus-ring-danger: #B7343B;
     --focus-ring-neutral: #9FA2AF;
-    --focus-ring-soft: #362EA7;
-    --focus-ring-danger-soft: #89001A;
-    --focus-ring-neutral-soft: #45474E;
     --danger: #F87171;
     --danger-subtle: #450A0A;
     --on-danger: #150505;

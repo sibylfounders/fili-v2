@@ -88,7 +88,7 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
     /* la table complète : chaque ligne, les deux thèmes, au seuil */
     await p.locator('#themes details.prov').first().locator('summary').click()
     const lignes = await p.evaluate(() => [...document.querySelectorAll('#themes table tbody tr')].map((tr) => [tr.querySelector('.mono').textContent, tr.children[1].textContent, tr.children[2].textContent, tr.children[3].textContent]))
-    assert.equal(lignes.length, 23)
+    assert.equal(lignes.length, 27) /* 23 + les quatre traits clavier du halo de focus, rouge et neutre (#133) */
     for (const [paire, seuil, clair, sombre] of lignes) {
       const [t, f] = paire.split(' / ')
       const s = seuil === '3:1' ? 3 : 4.5
@@ -153,7 +153,7 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
 })
 
 /* ── 3 · Le moteur sous les yeux ── */
-test('3 · une marque entre par le rail : la page change de primaire, toute la famille affichée est dérivée, les sémantiques gardent leur teinte, les vingt-huit paires tiennent — puis retour à la charte', async () => {
+test('3 · une marque entre par le rail : la page change de primaire, toute la famille affichée est dérivée, les sémantiques gardent leur teinte, les trente-deux paires tiennent — puis retour à la charte', async () => {
   const { p, fermer } = await nav.page(URL()); await releve(p)
   const chips = p.locator('#moteur .mk-chip[title]')
   const noms = await chips.evaluateAll((els) => els.map((e) => e.title))
