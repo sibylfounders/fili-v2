@@ -4866,3 +4866,23 @@ maintenant une valeur dérivée, plus une coïncidence.
 **Vérifié** — arcs et cotes à 820, 1030, 1180 et 1440 px : jamais de
 recouvrement entre la cote et le libellé de la carte ; coin 16 px et cote
 rouge sans survol, coin 4 px et cote verte au survol.
+
+**Suite — au survol, l'espace dit d'où il vient** — Les étiquettes de la
+tranche nommaient l'espace et sa profondeur ; elles disent maintenant la
+CHAÎNE, ce qui est le sujet de la preuve :
+· « marge · carte — la marge de la coque ÷ √2 » (24 → 16,97) ;
+· « espace · entre deux lignes — la marge d'une ligne » (12 = 12, mot pour
+  mot la règle déjà écrite en légende : entre deux frères, l'espace vaut
+  leur marge) ;
+· « espace · dans la ligne — l'espace entre deux lignes ÷ √2 » (12 → 8,49).
+Les trois rapports sont relevés dans le moteur, pas rédigés à l'estime.
+
+La valeur en pixels n'est pas écrite (verdict d'Auteur) : elle glisse avec
+la largeur de l'écran, l'afficher inviterait à la retenir.
+
+**Vérifié** — le crash-test de la page mesure les JETONS de ces blocs, pas
+leurs libellés : il n'est pas touché. Les trois étiquettes tiennent dans la
+tranche à 700, 900 et 1240 px, mesure faite avec une fonte plus grande que
+la vraie — la marge est donc plus large encore. Réserve dite : le rendu de
+ces étiquettes n'a pas pu être vu sur banc isolé (leur règle ne s'y déclenche
+pas), seule leur largeur a été mesurée.

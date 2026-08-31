@@ -84,7 +84,12 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
         <div className="tr-item on">Profil</div>
       </div>
       <div className="tr-carte">
-        <E j={margeBloc} voir={voir} nom="marge · carte" genre="pad" />
+        {/* Le libellé ne nomme plus seulement l'espace : il dit D'OÙ il
+            vient. Les trois rapports sont ceux du moteur, vérifiés —
+            24 → 16,97 ; 12 = 12 ; 12 → 8,49. La valeur en pixels, elle,
+            n'est pas écrite : elle glisse avec l'écran, l'afficher
+            inviterait à la retenir. */}
+        <E j={margeBloc} voir={voir} nom="marge · carte — la marge de la coque ÷ √2" genre="pad" />
         <Ligne>
           <span className="tr-id">
             <span className="tr-avatar" aria-hidden="true">LF</span>
@@ -94,11 +99,11 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
             </span>
           </span>
         </Ligne>
-        <E j={entreLignes} voir={voir} nom="espace · entre deux lignes" genre="gap" />
+        <E j={entreLignes} voir={voir} nom="espace · entre deux lignes — la marge d'une ligne" genre="gap" />
         <Ligne>
           <span className="ry-flex">
             <button className="tr-btn premier" type="button" tabIndex={-1}>Suivre</button>
-            <E j={dansLaLigne} h voir={voir} nom="espace · dans la ligne" genre="gap" />
+            <E j={dansLaLigne} h voir={voir} nom="espace · dans la ligne — l'espace entre deux lignes ÷ √2" genre="gap" />
             <button className="tr-btn" type="button" tabIndex={-1}>Message</button>
           </span>
         </Ligne>
