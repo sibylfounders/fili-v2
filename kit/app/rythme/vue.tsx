@@ -141,7 +141,7 @@ function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean })
         <Esp j="--gap-1-block" faute={casseY1} nom="aussi loin de ce qui précède…" />
         <label className="mono ry-bloc">Adresse e-mail</label>
         <Esp j={casseY1 ? "--gap-1-block" : "--gap-3-block"} faute={casseY1} nom="…que de son champ : le libellé flotte" />
-        <input readOnly value="prenom@exemple.fr" className="ry-champ" />
+        <span className="champ-boite"><input readOnly value="prenom@exemple.fr" className="ry-champ" /></span>
       </div>
       {(casseY1 || casseY2) && (
         <div className="oeil">

@@ -187,6 +187,14 @@
   }
 }
 
+/* Le halo de focus — sa forme, posée une fois (décision d'Auteur, 31 août 2026) : une bande collée à
+   l'objet, un trait qui la ferme, en px comme les traits ; 4 px en tout = le coin du composant, donc le
+   coin extérieur du halo tombe sur le cran au-dessus. Chaque calque prend le coin de l'objet + son retrait. */
+:root {
+  --focus-band: 3px;
+  --focus-line: 1px;
+}
+
 
 /* GÉNÉRÉ par kit/derivation.mjs depuis primary #4F46E5 — ne pas éditer
    à la main : une valeur retouchée serait une valeur sans provenance.
@@ -209,7 +217,12 @@
   --primary-subtle: #E2E6FF;
   --on-primary-subtle: #3630A3;
   --accent: #75E242;
-  --focus-ring: #4F46E5;
+  --focus-ring: #7881FD;
+  --focus-ring-danger: #F3594E;
+  --focus-ring-neutral: #6E717F;
+  --focus-ring-soft: #C9D1FE;
+  --focus-ring-danger-soft: #FFC2C0;
+  --focus-ring-neutral-soft: #D2D4DC;
   --danger: #B91C1C;
   --danger-subtle: #FEE2E2;
   --on-danger: #FFF8F7;
@@ -252,7 +265,12 @@
   --primary-subtle: #1A1C4C;
   --on-primary-subtle: #C9D1FE;
   --accent: #75E242;
-  --focus-ring: #808BFC;
+  --focus-ring: #5358C3;
+  --focus-ring-danger: #B7343B;
+  --focus-ring-neutral: #9FA2AF;
+  --focus-ring-soft: #362EA7;
+  --focus-ring-danger-soft: #89001A;
+  --focus-ring-neutral-soft: #45474E;
   --danger: #F87171;
   --danger-subtle: #450A0A;
   --on-danger: #150505;
@@ -296,7 +314,12 @@
     --primary-subtle: #1A1C4C;
     --on-primary-subtle: #C9D1FE;
     --accent: #75E242;
-    --focus-ring: #808BFC;
+    --focus-ring: #5358C3;
+    --focus-ring-danger: #B7343B;
+    --focus-ring-neutral: #9FA2AF;
+    --focus-ring-soft: #362EA7;
+    --focus-ring-danger-soft: #89001A;
+    --focus-ring-neutral-soft: #45474E;
     --danger: #F87171;
     --danger-subtle: #450A0A;
     --on-danger: #150505;

@@ -643,7 +643,9 @@ export default function Vue() {
                   </div>
                   <div className="champ">
                     {/* casse : un champ sous 16 px — 14 px en dur, à dessein ; Safari iOS zoome la page au focus */}
-                    <input readOnly value="prenom@exemple.fr" data-intent={petit ? "statement" : undefined} style={{ fontSize: petit ? "0.875rem" : "var(--font-size-body)" }} />
+                    <span className="champ-boite">{/* l'enveloppe porte le halo de focus : un champ natif n'a pas de pseudo-éléments */}
+                      <input readOnly value="prenom@exemple.fr" data-intent={petit ? "statement" : undefined} style={{ fontSize: petit ? "0.875rem" : "var(--font-size-body)" }} />
+                    </span>
                     {petit && <span className="badge ko">14 px — Safari iOS zoomera la page au focus</span>}
                   </div>
                 </div>

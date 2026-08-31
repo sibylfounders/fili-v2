@@ -232,6 +232,18 @@
       "$description": "Fixe — ne suit pas l'écran."
     }
   },
+  "focus": {
+    "band": {
+      "$type": "dimension",
+      "$value": "3px",
+      "$description": "Le halo de focus : la bande collée à l’objet, en px."
+    },
+    "line": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$description": "Le halo de focus : le trait qui ferme la bande, en px."
+    }
+  },
   "color": {
     "light": {
       "bg": {
@@ -298,10 +310,6 @@
         "$type": "color",
         "$value": "#75E242"
       },
-      "focus-ring": {
-        "$type": "color",
-        "$value": "#4F46E5"
-      },
       "danger-subtle": {
         "$type": "color",
         "$value": "#FEE2E2"
@@ -365,6 +373,30 @@
       "on-info-subtle": {
         "$type": "color",
         "$value": "#1D4ED8"
+      },
+      "focus-ring": {
+        "$type": "color",
+        "$value": "#7881FD"
+      },
+      "focus-ring-danger": {
+        "$type": "color",
+        "$value": "#F3594E"
+      },
+      "focus-ring-neutral": {
+        "$type": "color",
+        "$value": "#6E717F"
+      },
+      "focus-ring-soft": {
+        "$type": "color",
+        "$value": "#C9D1FE"
+      },
+      "focus-ring-danger-soft": {
+        "$type": "color",
+        "$value": "#FFC2C0"
+      },
+      "focus-ring-neutral-soft": {
+        "$type": "color",
+        "$value": "#D2D4DC"
       },
       "code-bg": {
         "$type": "color",
@@ -456,10 +488,6 @@
         "$type": "color",
         "$value": "#75E242"
       },
-      "focus-ring": {
-        "$type": "color",
-        "$value": "#808BFC"
-      },
       "danger-subtle": {
         "$type": "color",
         "$value": "#450A0A"
@@ -523,6 +551,30 @@
       "on-info-subtle": {
         "$type": "color",
         "$value": "#60A5FA"
+      },
+      "focus-ring": {
+        "$type": "color",
+        "$value": "#5358C3"
+      },
+      "focus-ring-danger": {
+        "$type": "color",
+        "$value": "#B7343B"
+      },
+      "focus-ring-neutral": {
+        "$type": "color",
+        "$value": "#9FA2AF"
+      },
+      "focus-ring-soft": {
+        "$type": "color",
+        "$value": "#362EA7"
+      },
+      "focus-ring-danger-soft": {
+        "$type": "color",
+        "$value": "#89001A"
+      },
+      "focus-ring-neutral-soft": {
+        "$type": "color",
+        "$value": "#45474E"
       },
       "code-bg": {
         "$type": "color",

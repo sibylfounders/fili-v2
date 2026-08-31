@@ -39,9 +39,19 @@
      jamais au même endroit. À la charte, l'accent d'auteur est ACCENT_AUTEUR
      (#75E242). Sans choix d'auteur (theming par primary seule), repli :
      l'écart de charte (−55°), calé 3:1, garde achromatique — l'ancien calcul.
-   · FOCUS-RING — l'anneau de focus n'est PLUS l'accent (C18, 2026-08-26,
-     exécuté ici) : il est primary, calé 3:1 sur bg et surface dans chaque
-     thème — le focus est fonctionnel, il reste sous contrat.
+   · FOCUS — le HALO (décision d'Auteur sur pièce Figma, 2026-08-31, qui
+     révise la forme de C18) : une bande pâle de la famille de l'objet,
+     collée à lui, fermée par un trait fin. La bande est le fond doux de la
+     famille (primary-subtle, danger-subtle, surface) — aucun jeton neuf.
+     Le TRAIT a deux régimes : au clavier (focus-visible), focus-ring —
+     le cran le MOINS SOUTENU de la famille qui tient encore 3:1 sur bg et
+     surface (le plus clair en clair, le plus sombre en sombre) : c'est
+     l'indicateur au sens de la norme, il est sous contrat ; au clic et au
+     doigt, focus-ring-soft — le trait pâle tel que dessiné (cran 200 en
+     clair, 800 en sombre), un retour de geste, HORS contrat, dit. Trois
+     familles de halo : marque (focus-ring), rouge (focus-ring-danger),
+     neutre (focus-ring-neutral = border-strong, déjà sous contrat).
+     L'accent n'y touche pas.
    · SÉMANTIQUE — chaque état garde sa teinte de charte ; quand primary
      bouge, le déplacement le tire d'UN QUART, borné à ±12° — l'adaptation
      est légère, pas plus (décision d'Auteur du 27 août portée à moitié /
@@ -299,9 +309,7 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
     dark.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [dark.bg, dark.surface], 3, [teinte(0.111), Ha], { versLeBas: false })
   }
 
-  /* ── Focus-ring — C18 exécutée : l'anneau est primary, sous contrat 3:1 ── */
-  light['focus-ring'] = cale(light.primary, [light.bg, light.surface], 3, [Cp, H])
-  dark['focus-ring'] = cale(dark.primary, [dark.bg, dark.surface], 3, [Cp, H], { versLeBas: false })
+  /* (le focus se calcule après la sémantique : le halo rouge a besoin de danger) */
 
   /* ── Sémantique — ancres de la charte, tirées par le déplacement ── */
   /* Chaque facette garde SA teinte de charte (le doux du warning est jaune,
@@ -344,6 +352,39 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
     light['on-warning'] = surCouleur(light.warning, [0.03, jaune[2]], 4.5, 'sombre')
     dark['on-warning-subtle'] = dark.warning /* en sombre, le jaune tient déjà comme encre */
   }
+
+  /* ── Le halo de focus — trois familles, deux régimes (décision d'Auteur,
+     2026-08-31, sur pièce : anneau-halo.html) ── */
+  /* Le trait au clavier : le cran le moins soutenu de la famille qui tient
+     3:1 sur bg ET surface — cherché en clarté, teinte et chroma de la
+     couleur de départ. C'est l'indicateur de focus au sens de la norme. */
+  const traitClavier = (depart, fonds, versLeClair) => {
+    const [, C, Hd] = hexVersLch(depart)
+    let lo = 0, hi = 1, meilleur = depart
+    for (let i = 0; i < 40; i++) {
+      const L = (lo + hi) / 2
+      const hex = lchVersHex([L, C, Hd])
+      if (fonds.every((fd) => contraste(hex, fd) >= 3)) { meilleur = hex; if (versLeClair) lo = L; else hi = L }
+      else if (versLeClair) hi = L; else lo = L
+    }
+    return meilleur
+  }
+  light['focus-ring'] = traitClavier(light.primary, [light.bg, light.surface], true)
+  dark['focus-ring'] = traitClavier(dark.primary, [dark.bg, dark.surface], false)
+  light['focus-ring-danger'] = traitClavier(light.danger, [light.bg, light.surface], true)
+  dark['focus-ring-danger'] = traitClavier(dark.danger, [dark.bg, dark.surface], false)
+  light['focus-ring-neutral'] = light['border-strong']
+  dark['focus-ring-neutral'] = dark['border-strong']
+  /* Le trait au clic — tel que dessiné : le cran 200 de la gamme de la
+     famille en clair, le cran 800 en sombre. Un retour de geste, pas
+     l'indicateur : HORS contrat de contraste, et dit (C18). */
+  const cran = (g, n) => Object.fromEntries(g)[n]
+  light['focus-ring-soft'] = cran(gamme(light.primary), 200)
+  dark['focus-ring-soft'] = cran(gamme(dark.primary), 800)
+  light['focus-ring-danger-soft'] = cran(gammeFamille(light.danger, light['danger-subtle']), 200)
+  dark['focus-ring-danger-soft'] = cran(gammeFamille(dark.danger, dark['danger-subtle']), 800)
+  light['focus-ring-neutral-soft'] = cran(gammeNeutres(light.primary), 200)
+  dark['focus-ring-neutral-soft'] = cran(gammeNeutres(dark.primary), 800)
 
   /* ── Le panneau de code — jamais inversé (C12). Le fond n'est plus un
      noir posé à la main : c'est le cran 950 de la gamme de la primaire
@@ -474,6 +515,7 @@ export const PAIRES_DECLAREES = [
   ['on-warning-subtle', 'warning-subtle', 4.5], ['on-warning', 'warning', 4.5],
   ['on-info-subtle', 'info-subtle', 4.5], ['on-info', 'info', 4.5],
   ['border-strong', 'bg', 3], ['focus-ring', 'bg', 3], ['focus-ring', 'surface', 3],
+  ['focus-ring-danger', 'bg', 3], ['focus-ring-danger', 'surface', 3], ['focus-ring-neutral', 'bg', 3], ['focus-ring-neutral', 'surface', 3],
   ['code-text', 'code-bg', 4.5], ['code-com', 'code-bg', 4.5],
   ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5],
 ]
@@ -492,7 +534,8 @@ export function verifier(pal) {
 export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
   const ligne = (o, n) => `  --${n}: ${o[n]};`
   const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'text-tertiary', 'border', 'border-strong',
-    'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent', 'focus-ring',
+    'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent',
+    'focus-ring', 'focus-ring-danger', 'focus-ring-neutral', 'focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft',
     'danger', 'danger-subtle', 'on-danger', 'on-danger-subtle',
     'success', 'success-subtle', 'on-success', 'on-success-subtle',
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',
@@ -609,6 +652,11 @@ export const HORS_CHAINE = {
      sections (4,5) — seule la PENTE entre les bornes est la sienne (6 % et 3,4 % de la largeur de
      l'écran, les pentes du gabarit nu). Une règle rompue, dite, la même pour les deux titres. */
   titresSite: { coverHaut: 7, section: 4.5, coverPente: '6vw', sectionPente: '3.4vw' },
+  /* LE HALO DE FOCUS (décision d'Auteur du 31 août 2026, sur pièce Figma puis anneau-halo.html) :
+     une bande de 3 px collée à l'objet, fermée par un trait de 1 px — 4 px en tout, l'épaisseur du
+     coin du composant (r-ctl à la charte) : le coin extérieur du halo tombe donc sur le cran
+     au-dessus (r-2). En px, comme les traits (B3). Deux calques creux, jamais une ombre. */
+  focus: { bande: 3, trait: 1 },
 }
 
 const r4 = (v) => Math.round(v * 10000) / 10000
@@ -835,6 +883,14 @@ export function versCssRythme(entrees = {}) {
     `  }`,
     `}`,
     ``,
+    `/* Le halo de focus — sa forme, posée une fois (décision d'Auteur, 31 août 2026) : une bande collée à`,
+    `   l'objet, un trait qui la ferme, en px comme les traits ; 4 px en tout = le coin du composant, donc le`,
+    `   coin extérieur du halo tombe sur le cran au-dessus. Chaque calque prend le coin de l'objet + son retrait. */`,
+    `:root {`,
+    `  --focus-band: ${HORS_CHAINE.focus.bande}px;`,
+    `  --focus-line: ${HORS_CHAINE.focus.trait}px;`,
+    `}`,
+    ``,
   ].join('\n')
 }
 
@@ -862,6 +918,7 @@ export function versFigma(entrees = {}, primaire = PRIMAIRE_DEFAUT) {
     radius: { ...groupe(/^r-/), 'r-ctl': { $type: 'dimension', $value: `${px(socle.rCtl)}px`, $description: 'Le composant prend le coin de la ligne (r-3).' } },
     fontSize: groupe(/^font-size-/),
     control: groupe(/^(control-height|target-min)$/),
+    focus: { band: { $type: 'dimension', $value: `${HORS_CHAINE.focus.bande}px`, $description: 'Le halo de focus : la bande collée à l’objet, en px.' }, line: { $type: 'dimension', $value: `${HORS_CHAINE.focus.trait}px`, $description: 'Le halo de focus : le trait qui ferme la bande, en px.' } },
     color: { light: couleurs(pal.light), dark: couleurs(pal.dark) },
   }
 }

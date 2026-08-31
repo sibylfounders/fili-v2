@@ -124,8 +124,12 @@ const PAIRES: [string, string, string, number][] = [
   ["--on-info-subtle", "--info-subtle", "l'encre info sur son fond doux", 4.5],
   ["--on-info", "--info", "le texte sur info plein", 4.5],
   ["--border-strong", "--bg", "la bordure délimitante (3:1)", 3],
-  ["--focus-ring", "--bg", "l'anneau de focus sur le blanc (3:1)", 3],
-  ["--focus-ring", "--surface", "l'anneau de focus sur le gris (3:1)", 3],
+  ["--focus-ring", "--bg", "le trait clavier du halo de focus, marque, sur le blanc (3:1)", 3],
+  ["--focus-ring", "--surface", "le trait clavier du halo de focus, marque, sur le gris (3:1)", 3],
+  ["--focus-ring-danger", "--bg", "le trait clavier du halo, rouge, sur le blanc (3:1)", 3],
+  ["--focus-ring-danger", "--surface", "le trait clavier du halo, rouge, sur le gris (3:1)", 3],
+  ["--focus-ring-neutral", "--bg", "le trait clavier du halo, neutre, sur le blanc (3:1)", 3],
+  ["--focus-ring-neutral", "--surface", "le trait clavier du halo, neutre, sur le gris (3:1)", 3],
 ];
 
 const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi?: string; div?: string; src: { t: string; h: string }[] }[] = [
@@ -146,7 +150,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     src: [{ t: "Atlassian — « don't use an accent when the color has semantic meaning »", h: "https://atlassian.design/foundations/color" }] },
   { id: "c4", nom: "C4", titre: "Un jeton naît d'un besoin réel",
     enonce: "Le registre marque se limite aux rôles fonctionnels existants ; une teinte purement décorative ne reçoit pas de jeton — et un rôle sans consommateur ne reste pas.",
-    div: "Deux rôles de marque, deux métiers : primary, l'action — tenue en réserve, 5 % de la page — et accent, la voix graphique, un choix d'auteur (illustrations, animations, marketing, graphiques), souverain et hors contrat fonctionnel : il peut approcher un ton sémantique, ils ne vivent jamais au même endroit. L'anneau de focus, lui, est primary, sous contrat (focus-ring).",
+    div: "Deux rôles de marque, deux métiers : primary, l'action — tenue en réserve, 5 % de la page — et accent, la voix graphique, un choix d'auteur (illustrations, animations, marketing, graphiques), souverain et hors contrat fonctionnel : il peut approcher un ton sémantique, ils ne vivent jamais au même endroit. Le focus, lui, est un halo de la famille de l'objet — neutre, marque ou rouge — dont le trait clavier est sous contrat (focus-ring, focus-ring-danger, focus-ring-neutral) ; le trait du clic, pâle, est hors contrat, dit.",
     src: [{ t: "Règle interne du système (précédent journalisé)", h: "#" }] },
   { id: "c5", nom: "C5", titre: "Le couple complet dès la naissance",
     enonce: "Toute nouvelle valeur sémantique fournit son couple texte/fond subtil d'emblée ; les neutres vivent en échelle.",

@@ -40,7 +40,7 @@
   border-radius: var(--r-pill); background: var(--ar-curseur); border: 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */
 }
-.ar-dial input[type=range]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-pill); }
+/* le focus du curseur : le halo commun (globals.css), bande en ombre et trait en outline sur une pilule */
 
 /* ── 01 · La fiche d'arrêt de Navette — la chaîne en situation.
       --ar-r1..r4 (coins), --ar-rctl (composant = coin de la ligne),
@@ -145,7 +145,7 @@
 }
 .ar-inter[aria-checked="true"] { background: var(--success); }
 .ar-inter[aria-checked="true"]::after { translate: 16px 0; /* hors chaîne : la course du bouton */ }
-.ar-inter:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* le focus de l'interrupteur : le halo commun (globals.css), un calque — ::after est le bouton */
 .ar-interlab { font-size: var(--font-size-small); }
 /* La piste des onglets : une pilule, l'espace le plus serré autour d'onglets-pilules à la cible compacte. */
 .ar-onglets { display: inline-flex; padding: var(--gap-4-block); gap: var(--gap-4-inline); border-radius: var(--r-pill); background: var(--surface); }
@@ -155,7 +155,7 @@
   background: transparent; color: var(--text-secondary); cursor: pointer;
 }
 .ar-onglets button[aria-selected="true"] { background: var(--bg); color: var(--primary-text); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.12); /* hors chaîne : le relief de l'onglet choisi */ }
-.ar-onglets button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* le focus des onglets : le halo commun (globals.css) */
 /* Les deux recalés — fautes déclarées (data-intent="statement"), montrées pour être reconnues. */
 .ar-btn-pilule {
   appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);

@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#132` — 83 entrées scellées
+> **Dernière décision au journal** : `#133` — 84 entrées scellées
 
 **Légende des statuts**
 
@@ -139,8 +139,16 @@ arbitrage (`#110`) — un seul l'a été depuis, sur pièce : le déplacement de
 marques chaudes tournaient du mauvais côté), révisé sur pièce le 30 août en
 **adaptation légère** : un quart / 12° (`#132`, COLOR-UX 2.8.0). Depuis le 2026-08-30 (`#131`), **l'accent est un choix d'auteur** —
 #75E242 à la charte, valeur souveraine, hors paires déclarées, repli calculé
-(−55°, calé) quand aucun choix n'accompagne la primaire — et **l'anneau de
-focus est `focus-ring`** (primary calé 3:1, C18 exécutée). `kit/app/tokens.css` est **généré** — une valeur retouchée
+(−55°, calé) quand aucun choix n'accompagne la primaire. Depuis le 2026-08-31
+(`#133`, C18 révisée sur pièce), **le focus est un halo** collé à l'objet —
+bande = le fond doux de la famille, trait fin ; **trois familles** (neutre,
+marque, rouge) et **deux régimes** : au clavier le trait calé (`focus-ring`,
+`focus-ring-danger`, `focus-ring-neutral` — le cran le moins soutenu qui
+tient 3:1, sous contrat), au clic le trait pâle (`…-soft`, cran 200 / 800,
+hors contrat, dit) ; forme posée une fois (`--focus-band` 3 px, `--focus-line`
+1 px = le coin du composant, le coin du halo suit la chaîne), deux calques
+creux, jamais une ombre ; les champs le portent par leur enveloppe
+`.champ-boite`. `kit/app/tokens.css` est **généré** — une valeur retouchée
 à la main serait une valeur sans provenance. Sa **gamme 50–950** pose la
 couleur saisie sur le cran de sa clarté, telle quelle, et déduit les autres
 crans d'elle ; les neutres restent les marches fixes ; la page dit sur quel

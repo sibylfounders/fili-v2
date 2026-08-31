@@ -49,6 +49,81 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #133 — Le focus est un halo : la famille de l'objet, deux régimes, et la forme posée une fois
+*2026-08-31 · Statut : 🟢 décidé sur pièce · Révise : la forme de C18 (`#131` n'est pas rouvert : le focus reste hors de l'accent) · Thread « l'anneau de focus — la forme et les familles »*
+
+**Contexte** — C18 (26 août) fixait un anneau détaché de 2 px, écart de
+1 px sur un plein et de 2 px sur un bordé, et la famille de l'objet ; seule
+la couleur avait été exécutée (`#131`). Le thread devait exécuter la forme
+et les familles, avec une question d'Auteur en suspens : 1 px sur les
+bordés. Trois pièces, trois verdicts successifs. Première pièce
+(`anneau-focus.html`) : A « 2 px partout » contre B « 1 px sur les
+bordés », taille réelle et loupe, clair et sombre — verdict B, avec la
+demande d'essayer une couleur plus discrète. Deuxième pièce
+(`anneau-discret.html`, puis le banc interactif `anneau-banc.html`) : les
+crans 300, 200, 100 de la gamme font 2,0 / 1,5 / 1,2:1 sur le fond clair —
+sous le minimum légal pour un indicateur de focus, pas seulement sous
+l'exigence propre du kit ; en sombre tout tient. L'Auteur a alors dessiné
+dans Figma et tranché : « on va faire plutôt ça » — un **halo**.
+
+**Décision** — Le focus est un **halo collé à l'objet** : une bande pâle,
+3 px, dans le **fond doux de la famille** de l'objet (`primary-subtle`,
+`danger-subtle`, `surface`), fermée par un **trait fin** de 1 px ; pas de
+fente ; le halo part du bord extérieur de la bordure et ne la touche
+jamais ; il dessine la boîte des objets texte seul. **Trois familles** :
+neutre par défaut, marque pour ce que la marque colore, rouge pour le
+danger et l'erreur. **Deux régimes**, verdict d'Auteur sur la dernière
+pièce (`anneau-halo.html`) : au clavier, le trait est **calé** — le cran le
+moins soutenu de la famille qui tient encore 3:1 sur bg et surface ; au
+clic et au doigt, le trait est **pâle, tel que dessiné** (cran 200 en
+clair, 800 en sombre). La forme est **posée une fois** (`--focus-band`,
+`--focus-line` : 4 px en tout = le coin du composant) et les coins du halo
+suivent la chaîne des arrondis (coin de l'objet + bande, + bande + trait).
+
+**Sens produit / UX** — La norme ne regarde que le focus clavier : c'est
+lui l'indicateur, c'est lui qui porte le contrat (3:1, dans les paires
+déclarées). Le retour de clic est un geste, pas un signal d'orientation ;
+il peut être discret, et il l'est — hors contrat, et dit. Le halo prend la
+famille de l'objet parce qu'il n'introduit jamais une couleur nouvelle dans
+l'écran ; sa bande réutilise le fond doux qui existe déjà : la décision ne
+crée que les six traits. Deux leçons de pièce entrent au code comme
+règles : le halo est dessiné comme deux calques creux, jamais comme une
+ombre (Safari ne gonfle pas le coin d'une ombre étalée — vu sur l'iPhone
+de l'Auteur), et il commence au bord extérieur de la bordure (le premier
+rendu la recouvrait d'un pixel — vu aussi).
+
+**Alternatives écartées** — A, 2 px partout (le dessin unique, mais lourd
+sur les bordés) ; B, 1 px sur les bordés (retenue un temps, dissoute par le
+halo) ; les crans 100–300 comme trait unique (sous le minimum légal en
+clair) ; « le plus discret qui tient » comme trait unique (retenu pour le
+clavier seulement) ; le halo tel que dessiné pour les deux régimes (aurait
+mis l'indicateur clavier sous 3:1 en clair) ; les ombres étalées pour le
+dessiner (Safari) ; une classe ajoutée sur chaque objet (le halo se pose
+par les sélecteurs des consommateurs existants — seuls les champs reçoivent
+une enveloppe, un champ natif n'ayant pas de pseudo-éléments).
+
+**Conséquences** — moteur : `focus-ring` change de recette (le moins
+soutenu qui tient, au lieu de primary calé), naissance de
+`focus-ring-danger`, `focus-ring-neutral` (= border-strong) et des trois
+`…-soft` ; six paires déclarées ; `HORS_CHAINE.focus` (bande 3, trait 1)
+émis dans tokens.css et Figma ; épreuve neuve, crash-test 26/26 ; jetons
+régénérés (seules lignes changées : les six traits, `--focus-band`,
+`--focus-line`). Feuilles : les huit règles de focus de `globals.css` et
+`arrondis.css` remplacées par une section « halo » unique — familles par
+sélecteur, deux régimes (`:focus-visible` / `:focus`, `:active`), porteurs
+à deux calques, à un calque (dépliant, poignée, interrupteur : l'autre
+pseudo-élément est pris) et sans pseudo-élément (le curseur natif : ombre +
+contour, sur une pilule) ; les mosaïques fermées dessinent le halo dedans ;
+deux champs enveloppés (`.champ-boite`). Page Couleur : six paires, le texte
+de C4. Preuve de rendu : les quatorze porteurs capturés au clavier et au
+clic, clair et sombre (`claude/livrables/preuve/`). Corpus : COLOR-UX passe
+en 2.10.0 (C18 réécrite, S19, grille des risques, limites). Limite dite :
+le banc de crash-tests de page (`test:pages`) n'a pas pu tourner dans la
+session de rédaction (registre npm inaccessible) — à lancer sur la machine
+de l'Auteur après application du patch.
+
+---
+
 ## #132 — L'adaptation légère des états est portée au moteur
 *2026-08-30 · Statut : 🟢 exécution d'une décision déjà prise · Révise l'exécution de `#130` (la décision elle-même a été révisée sur pièce le 30 août, COLOR-UX 2.8.0)*
 

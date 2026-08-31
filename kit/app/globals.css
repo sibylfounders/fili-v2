@@ -194,7 +194,6 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   display: flex; align-items: center; justify-content: center;
   cursor: ew-resize; touch-action: none; border-radius: var(--r-ctl);
 }
-.poignee:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .poignee-trait { width: 0.4rem; height: 2.75rem; border-radius: var(--r-pill);
   background: var(--text-secondary); opacity: 0.6; transition: all 0.15s; }
 .poignee:hover .poignee-trait, .poignee:focus-visible .poignee-trait,
@@ -327,13 +326,67 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
   border-bottom: 1px solid var(--border); white-space: nowrap; }
 .tableau th { color: var(--text-secondary); font-weight: 700; }
 
-/* ── Polish : états visibles, sélection aux couleurs du kit ── */
-/* L'anneau de focus est primary, sous contrat 3:1 (focus-ring, C18) : le
-   focus est fonctionnel. L'accent, lui, est la voix graphique — marketing,
-   jamais un anneau. */
-.bouton:focus-visible, .tuile:focus-visible, .navigation a:focus-visible,
-.champ input:focus-visible, details.prov summary:focus-visible {
-  outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+/* ── Le halo de focus (décision d'Auteur, 31 août 2026, sur pièce Figma puis anneau-halo.html — révise la forme de C18) ──
+   Plus d'anneau détaché : un HALO collé à l'objet — une bande (le fond doux de la famille) fermée par un trait
+   fin — qui part du bord EXTÉRIEUR de la bordure et ne la touche jamais. Deux régimes : au CLAVIER, le trait
+   calé (focus-ring, focus-ring-danger, focus-ring-neutral) — l'indicateur de focus au sens de la norme, sous
+   contrat 3:1 ; au CLIC et au doigt, le trait pâle (…-soft) — un retour de geste, hors contrat, dit. Trois
+   familles, celle de l'objet : neutre par défaut, marque pour ce que la marque colore (l'action pleine, le lien
+   actif, l'onglet choisi, la tuile d'accueil qui vire à la marque au survol), rouge pour le danger et l'erreur.
+   La forme est posée une fois (tokens.css : --focus-band 3 px, --focus-line 1 px = le coin du composant) ;
+   le coin de chaque calque suit la chaîne : le coin de l'objet + la bande, + la bande + le trait.
+   Deux calques creux, JAMAIS une ombre : Safari ne gonfle pas le coin d'une ombre étalée. */
+:root { --halo-r: var(--r-ctl); --halo-bande: var(--surface); --halo-trait: var(--focus-ring-neutral); --halo-doux: var(--focus-ring-neutral-soft); }
+/* la famille de l'objet */
+.bouton.on, .bouton.demo-plein, .tuile, .navigation a.actif, .ar-onglets button[aria-selected="true"] {
+  --halo-bande: var(--primary-subtle); --halo-trait: var(--focus-ring); --halo-doux: var(--focus-ring-soft); }
+.bouton.casse, .champ-boite:has([aria-invalid="true"]) {
+  --halo-bande: var(--danger-subtle); --halo-trait: var(--focus-ring-danger); --halo-doux: var(--focus-ring-danger-soft); }
+/* le coin de l'objet, quand ce n'est pas celui du composant */
+.tuile { --halo-r: var(--r-1); } .bn-tuile { --halo-r: var(--r-2); }
+.navigation a, .rail-lien, .tiroir-poignee { --halo-r: var(--r-3); }
+.ar-onglets button, .ar-inter, .ar-dial input[type=range] { --halo-r: var(--r-pill); }
+/* Les porteurs à deux calques (leurs pseudo-éléments sont libres) — un champ de saisie le reçoit par son enveloppe. */
+.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite { position: relative; }
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):is(:focus-visible, :focus, :active)::before,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):is(:focus-visible, :focus, :active)::after,
+.champ-boite:has(:focus)::before, .champ-boite:has(:focus)::after {
+  content: ""; position: absolute; pointer-events: none; }
+/* le trait : au bord extérieur de la bordure (1 px, B3) + la bande */
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):is(:focus-visible, :focus, :active)::before,
+.champ-boite:has(:focus)::before {
+  inset: calc(-1px - var(--focus-band) - var(--focus-line)); border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
+  border: var(--focus-line) solid var(--halo-doux); }
+/* la bande : au bord extérieur de la bordure, creuse — son coin intérieur retombe sur celui de l'objet */
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):is(:focus-visible, :focus, :active)::after,
+.champ-boite:has(:focus)::after {
+  inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-bande); }
+/* au clavier, le trait est calé : l'indicateur */
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
+.champ-boite:has(:focus-visible)::before { border-color: var(--halo-trait); }
+.champ-boite { display: block; border-radius: var(--r-ctl); }
+.champ-boite > input { width: 100%; }
+/* Les porteurs à un calque (l'autre pseudo-élément est pris : la flèche du dépliant, l'étiquette de la poignée,
+   le bouton de l'interrupteur) : un seul calque, bande en bordure et trait en outline — même géométrie. */
+details.prov summary { position: relative; }
+details.prov summary:is(:focus-visible, :focus, :active)::after, .poignee:is(:focus-visible, :focus, :active)::before, .ar-inter:is(:focus-visible, :focus, :active)::before {
+  content: ""; position: absolute; pointer-events: none;
+  inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-bande); outline: var(--focus-line) solid var(--halo-doux); }
+details.prov summary:focus-visible::after, .poignee:focus-visible::before, .ar-inter:focus-visible::before { outline-color: var(--halo-trait); }
+details.prov summary { --halo-r: var(--r-3); }
+/* Le porteur sans pseudo-élément (un curseur natif) : bande en ombre, trait en outline — une pilule, son coin ne se voit pas. */
+.ar-dial input[type=range]:is(:focus-visible, :focus, :active) {
+  box-shadow: 0 0 0 var(--focus-band) var(--halo-bande); outline: var(--focus-line) solid var(--halo-doux); outline-offset: var(--focus-band); }
+.ar-dial input[type=range]:focus-visible { outline-color: var(--halo-trait); }
+/* Les cellules d'une mosaïque fermée (débord caché) : le halo se dessine DEDANS, coin nul. */
+.cm-tuile, .cp-col { position: relative; --halo-r: 0px; }
+:is(.cm-tuile, .cp-col):is(:focus-visible, :focus, :active)::before { content: ""; position: absolute; pointer-events: none; inset: 0; border: var(--focus-line) solid var(--halo-doux); }
+:is(.cm-tuile, .cp-col):is(:focus-visible, :focus, :active)::after { content: ""; position: absolute; pointer-events: none; inset: var(--focus-line); border: var(--focus-band) solid var(--halo-bande); }
+:is(.cm-tuile, .cp-col):focus-visible::before { border-color: var(--halo-trait); }
+/* Le contour natif du navigateur se tait : le halo le remplace. */
+:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite input, details.prov summary, .poignee, .ar-inter, .cm-tuile, .cp-col):focus { outline: none; }
 details.prov summary:hover { color: var(--text-primary); }
 ::selection { background: var(--primary-subtle); color: var(--text-primary); }
 
@@ -394,7 +447,6 @@ details.prov summary:hover { color: var(--text-primary); }
 .rail-lien.actif { font-weight: 600; }
 .rail-lien.actif .rail-index { color: var(--text-primary); }
 .rail-lien.actif .rail-marque { width: 1.25rem; }
-.rail-lien:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-3); }
 .rail-pied { margin-top: auto; font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : le pied du rail */
 
 /* ── Le contenu : héros à titre-affiche (CG5), sections séparées par le
@@ -483,7 +535,6 @@ details.prov summary:hover { color: var(--text-primary); }
   transition: color 0.15s; padding: var(--gap-3-block) 0;
 }
 .tiroir-poignee:hover { color: var(--text-primary); }
-.tiroir-poignee:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: var(--r-3); }
 .tiroir {
   position: fixed; top: 3.5rem; right: 0; z-index: 40;
   width: min(21rem, 100vw); max-height: calc(100vh - 3.5rem); overflow-y: auto;
@@ -539,7 +590,6 @@ details.prov summary:hover { color: var(--text-primary); }
 .cm-tuile { display: flex; flex-direction: column; align-items: flex-start;
   justify-content: space-between; padding: var(--pad-2-block) var(--pad-3-inline);
   border: 0; text-align: left; cursor: pointer; font: inherit; min-width: 0; overflow: hidden; }
-.cm-tuile:focus-visible { outline-offset: -4px; }
 .cm-nom { font-size: var(--font-size-small); font-weight: 500; letter-spacing: 0.01em; }
 .cm-specs { display: flex; flex-direction: column; align-self: flex-end; align-items: flex-end;
   gap: 2px; font: 400 var(--font-size-label)/1.4 var(--font-mono); }
@@ -550,7 +600,6 @@ details.prov summary:hover { color: var(--text-primary); }
   padding: var(--pad-2-block) var(--pad-3-inline);
   border: 0; text-align: left; cursor: pointer; font: inherit;
   transition: min-width 0.48s cubic-bezier(0, 0, 0.2, 1); }
-.cp-col:focus-visible { outline-offset: -4px; }
 .cp-meta { display: flex; flex-direction: column; gap: var(--gap-4-block); white-space: nowrap; }
 .cp-nom { font-size: var(--font-size-small); font-weight: 500; }
 .cp-hex { font: 400 var(--font-size-small)/1.4 var(--font-mono); }
@@ -600,7 +649,6 @@ details.prov summary:hover { color: var(--text-primary); }
   display: grid; gap: var(--gap-2-block); align-content: start; min-width: 0;
   transition: border-color 0.1s cubic-bezier(0, 0, 0.2, 1); }
 .bn-tuile:hover, .bn-tuile:focus-within { border-color: var(--border-strong); }
-.bn-tuile[tabindex]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .bn-photo { grid-area: photo; } .bn-stat { grid-area: stat; } .bn-tags { grid-area: tags; }
 .bn-liste { grid-area: liste; } .bn-mot { grid-area: form; } .bn-vide { grid-area: vide; } .bn-session { grid-area: session; }
 .bn-titre { font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.015em; line-height: var(--leading-heading); }

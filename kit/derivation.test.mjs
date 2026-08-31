@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chaine, jetons, fluide, aLargeur, facteur, AXES, CHARTE, BORNES, DENSITES, HORS_CHAINE,
-  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
+  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, lchVersHex, gamme, gammeFamille, gammeNeutres, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
 } from './derivation.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
@@ -213,6 +213,40 @@ test('couleur — l\'accent d\'auteur est souverain (telle quelle, deux thèmes)
   assert.ok(contraste(q.light.accent, q.light.bg) >= 3 && contraste(q.dark.accent, q.dark.bg) >= 3)
   /* et un choix d'auteur explicite passe tel quel sur n'importe quelle marque */
   assert.equal(derive('#1DB954', '#75E242').light.accent, '#75E242')
+})
+
+/* ── Décision du 31 août 2026 (#133) : le halo de focus — trois familles, deux régimes ── */
+test('couleur — le trait clavier du halo est le cran le moins soutenu qui tient 3:1 (marque, rouge ; neutre = border-strong) ; le trait clic est le cran 200 / 800, hors contrat ; les paires tiennent pour toute marque', () => {
+  for (const hex of [PRIMAIRE_DEFAUT, '#F4A6C1', '#111111', '#FACC15', '#1DB954', '#F97316']) {
+    const q = derive(hex)
+    for (const th of ['light', 'dark']) {
+      const p = q[th], fonds = [p.bg, p.surface], clair = th === 'light'
+      for (const t of ['focus-ring', 'focus-ring-danger', 'focus-ring-neutral'])
+        for (const f of fonds) assert.ok(contraste(p[t], f) >= 3, `${hex} ${th} ${t}`)
+      /* le moins soutenu : un cran de clarté plus loin vers le fond, et ça ne tient plus */
+      for (const [t, src] of [['focus-ring', 'primary'], ['focus-ring-danger', 'danger']]) {
+        const [L, C, H] = hexVersLch(p[t])
+        const plusLoin = lchVersHex([clair ? L + 0.02 : L - 0.02, C, H])
+        assert.ok(fonds.some((f) => contraste(plusLoin, f) < 3), `${hex} ${th} ${t} est bien au bord du seuil (${src})`)
+      }
+      assert.equal(p['focus-ring-neutral'], p['border-strong'])
+      /* le trait pâle : cran 200 en clair, 800 en sombre — sur la gamme de sa famille */
+      const cran = (g, n) => Object.fromEntries(g)[n]
+      assert.equal(p['focus-ring-soft'], cran(gamme(p.primary), clair ? 200 : 800))
+      assert.equal(p['focus-ring-danger-soft'], cran(gammeFamille(p.danger, p['danger-subtle']), clair ? 200 : 800))
+      assert.equal(p['focus-ring-neutral-soft'], cran(gammeNeutres(p.primary), clair ? 200 : 800))
+    }
+    assert.deepEqual(verifier(q), [], hex)
+  }
+  /* hors contrat, et dit : aucune paire déclarée ne porte un trait pâle */
+  assert.ok(!PAIRES_DECLAREES.some(([t, f]) => t.endsWith('-soft') || f.endsWith('-soft')))
+  /* à la charte, en clair, le trait pâle est SOUS 3:1 — c'est le choix d'Auteur, pas une faute silencieuse */
+  const c = derive(PRIMAIRE_DEFAUT).light
+  assert.ok(contraste(c['focus-ring-soft'], c.bg) < 3)
+  /* les six jetons sortent dans le CSS et dans Figma */
+  const css = versCss(derive(PRIMAIRE_DEFAUT))
+  for (const t of ['focus-ring', 'focus-ring-danger', 'focus-ring-neutral', 'focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft']) assert.ok(css.includes(`--${t}: #`), t)
+  assert.ok(versFigma().color.light['focus-ring-danger-soft'].$value.startsWith('#'))
 })
 
 /* ── Décision du 27 août 2026, révisée le 30 août (COLOR-UX 2.8.0) : l'adaptation des états est légère — un quart, plafonné à 12° ── */
