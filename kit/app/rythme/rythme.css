@@ -139,7 +139,49 @@
 }
 .ry-prof-carte { background: var(--bg); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: var(--gap-2-block); }
 .ry-prof-ligne { background: var(--surface); border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); display: grid; gap: var(--gap-4-block); }
-.ry-prof-ligne[data-intent="statement"] { border-radius: 16px; /* casse : la ligne deux fois plus ronde que sa carte (coin de carte 8 → 16) */ outline: 1px dashed var(--danger); }
+/* casse : la ligne deux fois plus ronde que sa carte. La valeur vient de
+   la vue, qui double le coin de la carte — plus de nombre écrit ici. */
+.ry-prof-ligne[data-intent="statement"] { border-radius: var(--ry-casse, 16px); }
+/* Marquer l'ARRONDI, pas la boîte. Un quart d'arc posé sur le coin, qui
+   reprend EXACTEMENT le rayon de son élément (border-radius: inherit sur un
+   pseudo-élément hérite de l'élément qui le porte) : on compare deux arcs
+   voisins, plus deux rectangles. Le coin haut-droit est le seul des quatre
+   qui soit vide dans les deux boîtes. */
+.ry-prof-carte, .ry-prof-ligne { position: relative; }
+.ry-prof-carte:has(.ry-prof-ligne[data-intent="statement"])::after,
+.ry-prof-ligne[data-intent="statement"]::after {
+  content: ""; position: absolute; top: -2px; right: -2px;
+  width: 2.75rem; height: 2.75rem; /* hors chaîne : la longueur de l'amorce d'arc */
+  border-top: 2px solid var(--danger); border-right: 2px solid var(--danger);
+  border-top-right-radius: inherit; pointer-events: none;
+}
+/* Le contenant est la RÉFÉRENCE, pas la faute : encre calme. */
+.ry-prof-carte:has(.ry-prof-ligne[data-intent="statement"])::after { border-color: var(--text-secondary); }
+/* Réparé sous le curseur : l'arc de la ligne passe au vert, et il rentre
+   de lui-même dans celui de la carte. */
+.co-porte:hover .ry-prof-ligne[data-intent="statement"]::after { border-color: var(--success); }
+/* Les cotes : posées à côté de leur arc, dans la même case pour que le
+   survol change le nombre sans rien déplacer. */
+.ry-coin-cote { position: absolute; top: 0.5rem; right: 3.1rem; display: grid;
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+  color: var(--danger); }
+.ry-coin-cote > * { grid-area: 1 / 1; text-align: right; }
+.ry-coin-cote.contenant { color: var(--text-secondary); }
+.co-porte:hover .ry-prof-ligne .ry-coin-cote { color: var(--success); }
+/* Le survol répare — comme sur la première preuve de Composition : la
+   faute ne tient que tant qu'on ne regarde pas la scène de près. Le
+   crash-test, lui, clique le bouton et mesure sans survoler la scène :
+   la casse y reste entière. */
+.co-porte:hover .ry-prof-ligne[data-intent="statement"] { border-radius: var(--r-3); outline: 0; }
+/* Les deux phrases de la ligne, dans la même case : la hauteur ne bouge
+   ni à la casse ni au survol. */
+.ry-prof-dire { display: grid; }
+.ry-prof-dire > * { grid-area: 1 / 1; }
+.ry-prof-dire > .cassee { visibility: hidden; }
+.ry-prof-ligne[data-intent="statement"] .juste { visibility: hidden; }
+.ry-prof-ligne[data-intent="statement"] .cassee { visibility: visible; }
+.co-porte:hover .ry-prof-ligne[data-intent="statement"] .juste { visibility: visible; }
+.co-porte:hover .ry-prof-ligne[data-intent="statement"] .cassee { visibility: hidden; }
 .ry-prof-btn { margin-top: var(--gap-2-block); }
 
 /* ── 04 · La densité : trois fois la même carte, seule la base change —

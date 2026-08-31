@@ -4807,3 +4807,62 @@ donc tenu pour DÉCORATIF : il annonce la phrase qui le suit, il ne la porte
 pas seul, et il est caché aux lecteurs d'écran. Si le signe devait un jour
 porter le sens à lui seul, ce jaune ne suffirait pas.
 
+## 31 août 2026 (8) — `/rythme` : la profondeur prend le banc de Composition
+
+**Décision (demande d'Auteur)** — Le bloc de la profondeur adopte la mise en
+scène de la première preuve de Composition, à l'identique : l'état en badge
+au-dessus, la scène à gauche, ce qu'elle dit à droite, le geste en pied, et
+le survol qui répare. Deux pages, une seule façon de lire — on apprend le
+fonctionnement une fois.
+
+**Ce qui change** — Le verdict monte en badge et bascule : « rien de cassé —
+le coin divisé par deux à chaque profondeur », « Faux · l'enfant est plus
+rond que son parent » en rouge, « Réparé · le coin redescend par deux » en
+vert pendant le survol. La bulle 👁 quitte le dessous de la scène — où elle
+poussait tout le reste — pour la colonne de droite, qui dit au repos ce que
+la chaîne fait et, à la casse, ce qu'elle a perdu. Le pied dit le geste.
+
+**Ce qui ne change pas** — La scène coque → carte → ligne, ses classes et ses
+jetons, et le bouton « Casser » : le crash-test de la page mord dessus.
+
+**Deux pièges évités et consignés** — Les deux phrases de la ligne (la juste
+et la cassée) occupent la MÊME case : la scène ne change pas de hauteur, ni à
+la casse ni au survol (mesuré : 492 px de scène et 94 px de ligne dans les
+deux états). Et la réparation au survol est posée en CSS sur
+`.co-porte:hover`, pas en état React : le crash-test clique le bouton, qui
+est HORS de la scène — la casse y reste donc entière au moment de la mesure
+(vérifié : coin 16 px et trait pointillé sans survol, coin r-3 et pas de
+trait au survol).
+
+**Réemploi assumé** — Le banc reprend les classes `co-*` de Composition
+plutôt que d'en cloner un jeu. Ce n'est pas un style de composition, c'est le
+mécanisme du banc de preuve ; le renommer proprement en famille neutre est un
+chantier à part, pas ouvert ici.
+
+**À faire tourner** — `/rythme` est verrouillée (quinze épreuves). Le
+navigateur de test n'est pas installable depuis la session : `npm run
+test:pages` reste à lancer sur le poste avant de considérer le verrou tenu.
+
+**Suite — on marque l'arrondi, pas la boîte** — Le trait pointillé faisait le
+tour de la ligne cassée : il désignait un rectangle, alors que la faute est
+dans un arc. À la casse, chaque boîte porte désormais **un quart d'arc posé
+sur son coin haut-droit** — le seul des quatre coins qui soit vide dans les
+deux boîtes — avec sa cote à côté : `r8` pour la carte qui contient, `r16`
+pour la ligne. Les deux arcs sont voisins et de même longueur d'amorce :
+l'œil compare deux courbures, plus deux cadres.
+
+L'arc reprend EXACTEMENT le rayon de son élément (`border-top-right-radius:
+inherit` sur un pseudo-élément hérite de l'élément qui le porte) : il n'y a
+pas une valeur pour le rendu et une autre pour la marque, il n'y en a qu'une.
+Le contenant est marqué dans l'encre calme — c'est la référence, pas la
+faute. Sous le curseur, l'arc de la ligne passe au vert et rentre de lui-même
+dans celui de la carte, la cote passant de `r16` à `r4`.
+
+**Un nombre en dur de moins** — la valeur cassée n'est plus écrite dans le
+CSS : la vue passe le coin de la carte doublé. La faute reste attachée à la
+chaîne, et le crash-test (« coin cassé = 2 × coin de la carte ») mesure
+maintenant une valeur dérivée, plus une coïncidence.
+
+**Vérifié** — arcs et cotes à 820, 1030, 1180 et 1440 px : jamais de
+recouvrement entre la cote et le libellé de la carte ; coin 16 px et cote
+rouge sans survol, coin 4 px et cote verte au survol.

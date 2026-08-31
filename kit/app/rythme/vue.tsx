@@ -446,17 +446,30 @@ function Profondeur({ casse }: { casse: boolean }) {
       <span className="mono sourd ry-petit">coque — marge 1 · coin 1</span>
       <div className="ry-prof-carte">
         <span className="mono sourd ry-petit">carte — marge ÷ √2 · coin ÷ 2</span>
-        <div className="ry-prof-ligne" data-intent={casse ? "statement" : undefined}>
+        {/* Les cotes ne s'affichent qu'à la casse : au repos il n'y a rien à
+            comparer. La valeur cassée n'est pas écrite en dur — c'est le
+            coin de la carte, doublé : la faute reste liée à la chaîne. */}
+        {casse && <span className="ry-coin-cote contenant">r{SOCLE.r[1]}</span>}
+        <div className="ry-prof-ligne" data-intent={casse ? "statement" : undefined}
+          style={casse ? { ["--ry-casse" as string]: `${SOCLE.r[1] * 2}px` } : undefined}>
           <b className="ry-petit">ligne</b>
-          <span className={`mono ry-petit ${casse ? "ry-faute" : "sourd"}`}>
-            {casse ? "coin ×2 — PLUS RONDE que la carte qui la contient" : "encore une profondeur — le coin suit la chaîne, sans glisser avec l'écran"}
+          {/* Les deux phrases occupent la MÊME case : le survol passe de
+              l'une à l'autre sans que la scène change de hauteur. */}
+          <span className="ry-prof-dire">
+            <span className="mono ry-petit sourd juste">encore une profondeur — le coin suit la chaîne, sans glisser avec l&apos;écran</span>
+            <span className="mono ry-petit ry-faute cassee">coin ×2 — PLUS RONDE que la carte qui la contient</span>
           </span>
+          {casse && (
+            <span className="ry-coin-cote">
+              <span className="juste">r{SOCLE.r[2]}</span>
+              <span className="cassee">r{SOCLE.r[1] * 2}</span>
+            </span>
+          )}
         </div>
         {/* Discret et à distance : la vedette de la démo, c'est la chaîne
             des surfaces — pas le composant (retour d'Auteur, 24 août). */}
         <button className="bouton ry-debut ry-prof-btn">le bouton prend le coin de la ligne</button>
       </div>
-      {casse && <div className="oeil">👁 Comparez les coins voisins : l&apos;enfant est plus rond que son parent. La chaîne est rompue, la profondeur ne se lit plus — c&apos;est le premier invariant d&apos;audit.</div>}
     </div>
   );
 }
@@ -718,7 +731,39 @@ export default function Vue() {
                   {casseRond ? "Réparer" : "Casser : l'enfant plus rond"}
                 </button>
               </div>
-              <Profondeur casse={casseRond} />
+              {/* Le banc de preuve — le même que la première preuve de
+                  Composition, aux mêmes classes : l'état en haut, la scène à
+                  gauche, ce qu'elle dit à droite, le geste en pied, et le
+                  survol qui répare. Deux pages, une seule façon de lire. */}
+              <div className="co-scene co-preuve1">
+                <span className="co-verdict">
+                  <span className={`badge ${casseRond ? "ko" : ""}`}>
+                    {casseRond ? "Faux · l'enfant est plus rond que son parent"
+                               : "rien de cassé — le coin divisé par deux à chaque profondeur"}
+                  </span>
+                  {casseRond && <span className="badge bon">Réparé · le coin redescend par deux</span>}
+                </span>
+                <div className="co-banc">
+                  <div className="co-gauche">
+                    <div className="co-porte"><Profondeur casse={casseRond} /></div>
+                    <div className="co-pied">
+                      <span className="co-invite">
+                        {casseRond ? "↑ survolez la scène : elle se répare sous vos yeux"
+                                   : "↑ cassez la chaîne — la profondeur cesse de se lire"}
+                      </span>
+                      {casseRond && <span className="co-solution">↑ relâchez : la faute revient</span>}
+                    </div>
+                  </div>
+                  <div className="co-droite">
+                    <p className={`co-dit ${casseRond ? "off" : ""}`}>La marge se divise par racine de
+                    deux, le coin par deux. Trois profondeurs, une seule décision — et rien à régler
+                    niveau par niveau.</p>
+                    <p className={`co-dit ${casseRond ? "" : "off"}`}>👁 Comparez les coins voisins :
+                    l&apos;enfant est plus rond que son parent. La chaîne est rompue, la profondeur ne
+                    se lit plus — c&apos;est le premier invariant d&apos;audit.</p>
+                  </div>
+                </div>
+              </div>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <Regles ids={["y10", "y16", "y15"]} />
               </div></details>
