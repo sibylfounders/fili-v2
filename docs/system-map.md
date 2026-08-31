@@ -108,7 +108,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | `/typo` · Typographie | 🟢 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, douze épreuves (`#127`) |
 | `/rythme` · Rythme | 🟢 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | — verrouillée le 26 août par son crash-test de page, quinze épreuves (`#126`) |
 | `/couleur` · Couleur | 🟢 | Dix-sept règles, deux thèmes, la mosaïque, les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, huit épreuves (`#128`) |
-| `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse, le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
+| `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
 | `/arrondis` · Arrondis | 🟢 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | — verrouillée le 26 août par son crash-test de page, neuf épreuves (`#129`) |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 

@@ -68,22 +68,22 @@ function Application({ faute }: { faute: string }) {
 type Faute = { cle: string; nom?: string; verdict: string; invite?: string; solution: string; dit: string };
 const FAUTES: Faute[] = [
   { cle: "", verdict: "rien de cassé — un dominant, trois groupes, un seul axe",
-    invite: "↑ l'écran nomme ses organes — cassez-en un", solution: "",
+    invite: "↑ chaque mot est relié à ce qu'il nomme — cassez-en un", solution: "",
     dit: "L'écran de départ : le chiffre entre en premier, les groupes sont faits par l'écart seul, et tout part de la même verticale." },
   { cle: "f-dominant", nom: "deux dominants", verdict: "Faux · deux dominants, c'est aucun",
-    solution: "rendu : un seul corps maximal",
+    solution: "Réparé · un seul corps maximal",
     dit: "Le titre de la liste a pris le corps du chiffre — rien d'autre n'a changé. L'œil hésite désormais entre deux entrées, et une hésitation de plus est une décision de moins." },
   { cle: "f-cloison", nom: "tout cloisonné", verdict: "Faux · quatre surfaces pour des groupes que le blanc faisait déjà",
-    solution: "rendu : les quatre cadres retirés",
+    solution: "Réparé · les quatre cadres retirés",
     dit: "Une surface se mérite : elle n'apparaît que là où l'écart ne suffit pas à faire le groupe. Ici les quatre cadres n'ajoutent aucune information — ils ajoutent quatre traits." },
   { cle: "f-equi", nom: "écarts tous égaux", verdict: "Faux · dedans et dehors mesurent pareil",
-    solution: "rendu : l'écart entre groupes triplé",
+    solution: "Réparé · l'écart entre groupes triplé",
     dit: "Les cotes relevées sur le rendu le disent : l'écart entre deux groupes vaut celui qui sépare deux lignes d'un même groupe. C'est l'erreur canonique des formulaires." },
   { cle: "f-axes", nom: "quatre axes", verdict: "Faux · quatre départs différents",
-    solution: "rendu : les blocs ramenés sur la même verticale",
+    solution: "Réparé · les blocs ramenés sur la même verticale",
     dit: "Les fils sont posés aux bords gauches réels des blocs. Deux départs à moins de trois pixels comptent pour un seul axe : l'œil ne les distingue pas, la mesure non plus." },
   { cle: "f-rupture", nom: "la rupture partout", verdict: "Faux · si tout rompt, rien ne rompt",
-    solution: "rendu : l'accent rendu à un seul élément",
+    solution: "Réparé · l'accent rendu à un seul élément",
     dit: "La couleur d'accent est une monnaie : elle se dépense une fois par écran. Posée partout, elle ne désigne plus rien — et le bouton qui devait décider devient un décor parmi d'autres." },
 ];
 
@@ -106,40 +106,56 @@ function Calque({ faute, hote }: { faute: string; hote: React.RefObject<HTMLDivE
       if (texte) out.push(`<span class="co-r-etq" style="left:${px(Math.max(r.x - 4, 2))};top:${px(r.y < 18 ? r.b + 12 : r.y - 11)}">${texte}</span>`);
     };
     const blocs = Array.from(ec.querySelectorAll(".co-app-corps > .co-b"));
+    /* Un bloc occupe toute la largeur ; son TEXTE, non. Pour poser une
+       étiquette dans le vide, c'est le texte qu'il faut mesurer. */
+    const finTexte = (el: Element) => {
+      const g = document.createRange(); g.selectNodeContents(el);
+      return g.getBoundingClientRect().right - base.left;
+    };
+    /* Les blancs de la carte : trois entre les blocs, un en bas. Ce sont
+       les seuls endroits où une étiquette ne recouvre jamais rien. */
+    const blancs = () => {
+      const t: number[] = [];
+      for (let i = 0; i < blocs.length - 1; i++) t.push((rect(blocs[i]).b + rect(blocs[i + 1]).y) / 2);
+      t.push((rect(blocs[blocs.length - 1]).b + base.height) / 2);
+      return t;
+    };
 
-    if (!faute) {
-      /* Au repos, les organes se nomment — la version paisible du calque. */
-      const k = rect(ec.querySelector(".co-kpi b")!);
-      out.push(`<span class="co-r-cadre douce" style="left:${px(k.x - 4)};top:${px(k.y - 4)};width:${px(k.w + 8)};height:${px(k.h + 8)}"></span>`);
-      out.push(`<span class="co-r-etq douce" style="left:${px(k.x - 4)};top:${px(k.y - 11)}">le dominant</span>`);
-      const g = rect(ec.querySelector(".co-liste")!);
-      out.push(`<span class="co-r-cadre douce" style="left:${px(g.x - 4)};top:${px(g.y - 4)};width:${px(g.w + 8)};height:${px(g.h + 8)}"></span>`);
-      out.push(`<span class="co-r-etq douce" style="left:${px(g.x - 4)};top:${px(g.y - 11)}">un groupe</span>`);
-      const x = Math.round(rect(blocs[0]).x);
-      out.push(`<span class="co-r-fil douce" style="left:${px(x)};top:0;height:100%"></span>`);
-      out.push(`<span class="co-r-etq douce" style="left:${px(x + 6)};top:14px">l'axe de départ</span>`);
-      const a = rect(blocs[1]), b = rect(blocs[2]), h = Math.max(b.y - a.b, 1);
-      out.push(`<span class="co-r-cote douce" style="left:5px;top:${px(a.b)};height:${px(h)}"></span>`);
-      out.push(`<span class="co-r-etq douce" style="left:13px;top:${px(a.b + h / 2)}">l'espace blanc qui groupe</span>`);
-    }
     if (faute === "f-dominant") {
-      cadre(ec.querySelector(".co-kpi b"), "dominant");
-      cadre(ec.querySelector(".co-liste .co-etq"), "dominant");
+      /* L'étiquette se pose APRÈS le texte qu'elle désigne ; si le corps a
+         tellement grossi qu'il ne reste plus de place, elle passe dessous. */
+      const nommer = (el: Element | null) => {
+        if (!el) return;
+        cadre(el, "");
+        const r = rect(el), f = finTexte(el);
+        const large = f + 12 > base.width - 84;
+        out.push(`<span class="co-r-etq" style="left:${px(large ? r.x : f + 12)};top:${px(large ? r.b + 14 : r.y + r.h / 2)}">dominant</span>`);
+      };
+      nommer(ec.querySelector(".co-kpi b"));
+      nommer(ec.querySelector(".co-liste .co-etq"));
     }
     if (faute === "f-cloison") {
       blocs.forEach((b) => cadre(b, ""));
       cadre(blocs[1], "le blanc suffisait");
     }
     if (faute === "f-equi") {
+      /* Les quatre cotes sur UNE seule verticale, dans le vide à droite de
+         la carte : c'est l'alignement qui rend les quatre nombres
+         comparables d'un coup d'œil. Le nombre s'écrit à gauche de sa cote,
+         là où aucun contenu ne va. */
+      const col = base.width - 96;
+      const coter = (haut: number, bas: number, texte: string) => {
+        const h = Math.max(bas - haut, 1);
+        out.push(`<span class="co-r-cote" style="left:${px(col)};top:${px(haut)};height:${px(h)}"></span>`);
+        out.push(`<span class="co-r-etq fin" style="left:${px(col - 8)};top:${px(haut + h / 2)}">${texte}</span>`);
+      };
       for (let i = 0; i < blocs.length - 1; i++) {
-        const a = rect(blocs[i]), b = rect(blocs[i + 1]), h = Math.max(b.y - a.b, 1);
-        out.push(`<span class="co-r-cote" style="left:5px;top:${px(a.b)};height:${px(h)}"></span>`);
-        out.push(`<span class="co-r-etq" style="left:13px;top:${px(a.b + h / 2)}">${Math.round(h)}</span>`);
+        const a = rect(blocs[i]), b = rect(blocs[i + 1]);
+        coter(a.b, b.y, `${Math.round(Math.max(b.y - a.b, 1))}`);
       }
       const l = Array.from(ec.querySelectorAll(".co-liste .co-li"));
-      const a = rect(l[0]), b = rect(l[1]), h = Math.max(b.y - a.b, 1);
-      out.push(`<span class="co-r-cote" style="left:${px(a.x + a.w + 12)};top:${px(a.b)};height:${px(h)}"></span>`);
-      out.push(`<span class="co-r-etq" style="left:${px(a.x + a.w + 18)};top:${px(a.b + h / 2)}">${Math.round(h)} — dans le groupe</span>`);
+      const a = rect(l[0]), b = rect(l[1]);
+      coter(a.b, b.y, `${Math.round(Math.max(b.y - a.b, 1))} · dans le groupe`);
     }
     if (faute === "f-axes") {
       const axes: number[] = [];
@@ -147,9 +163,13 @@ function Calque({ faute, hote }: { faute: string; hote: React.RefObject<HTMLDivE
         const x = Math.round(rect(b).x);
         if (!axes.some((u) => Math.abs(u - x) < 3)) axes.push(x);
       });
+      /* Quatre étiquettes au même endroit ne se lisent pas. Chacune
+         descend dans un blanc différent de la carte, collée à SON fil. */
+      const trous = blancs();
       axes.sort((a, b) => a - b).forEach((x, i) => {
         out.push(`<span class="co-r-fil" style="left:${px(x)};top:0;height:100%"></span>`);
-        out.push(`<span class="co-r-etq" style="left:${px(x + 4)};top:${px(14 + (i % 2) * 15)}">axe ${i + 1}</span>`);
+        const y = trous[i] ?? 14 + i * 20;
+        out.push(`<span class="co-r-etq" style="left:${px(x + 5)};top:${px(y)}">axe ${i + 1}</span>`);
       });
     }
     if (faute === "f-rupture") {
@@ -171,6 +191,122 @@ function Calque({ faute, hote }: { faute: string; hote: React.RefObject<HTMLDivE
   }, [poser]);
 
   return <div className="co-calque" dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+/* ══ LA LÉGENDE · le vocabulaire relié à ce qu'il nomme ══════════════
+   Le mot n'est plus posé SUR l'écran — il est posé à côté, et un filet le
+   relie à son organe. Trois mots à droite ; le quatrième sous la carte,
+   parce que l'axe est une verticale et qu'elle descend jusqu'à lui.
+   Aucun numéro à retenir : le trait fait le lien. Tout est calculé en
+   pixels réels sur le banc, et refait à chaque changement de largeur. */
+const LEXIQUE: [string, string][] = [
+  ["le dominant", "ce qui se lit en premier. Il y en a un — jamais deux, jamais zéro."],
+  ["l'espace blanc", "ce qui fait le travail. Il sépare avant le trait, et il groupe avant la carte."],
+  ["le groupe", "ce que l'œil réunit sans qu'on le lui dise, par la proximité ou par une surface partagée."],
+];
+const AXE: [string, string] = ["l'axe de départ",
+  "la verticale d'où les contenus commencent. Deux ou trois par vue ; au-delà, ça flotte."];
+
+type Dessin = { w: number; h: number; axe: string; brides: string[]; filets: string[]; points: { x: number; y: number }[] };
+
+function Legende({ banc, actif }: { banc: React.RefObject<HTMLDivElement | null>; actif: boolean }) {
+  const [d, setD] = useState<Dessin | null>(null);
+  const poser = useCallback(() => {
+    const b = banc.current;
+    const ec = b?.querySelector<HTMLElement>(".co-app");
+    const pied = b?.querySelector<HTMLElement>(".co-lex-pied");
+    const dl = b?.querySelector<HTMLElement>(".co-lex");
+    const mots = b ? Array.from(b.querySelectorAll<HTMLElement>(".co-lex > div")) : [];
+    if (!b || !ec || !pied || !dl || mots.length < 3) return setD(null);
+    if (!actif) { delete dl.dataset.pose; mots.forEach((m) => { m.style.top = ""; }); return setD(null); }
+    const base = b.getBoundingClientRect();
+    /* Un demi-pixel : un trait de 1 px posé sur un entier se rend flou. */
+    const demi = (n: number) => Math.round(n) + 0.5;
+    const r = (el: Element) => {
+      const q = el.getBoundingClientRect();
+      return { x: q.left - base.left, y: q.top - base.top, w: q.width, h: q.height,
+               d: q.right - base.left, b: q.bottom - base.top };
+    };
+    /* Le chiffre occupe un bloc pleine largeur : on mesure son TEXTE. */
+    const texte = (el: Element) => {
+      const g = document.createRange(); g.selectNodeContents(el);
+      const q = g.getBoundingClientRect();
+      return { d: q.right - base.left, m: q.top + q.height / 2 - base.top };
+    };
+    const a = r(ec);
+    const blocs = Array.from(ec.querySelectorAll(".co-app-corps > .co-b"));
+    const champs = Array.from(ec.querySelectorAll(".co-champ"));
+    if (blocs.length < 3 || !champs.length) return setD(null);
+
+    /* ── Les trois organes, et d'où part leur filet ── */
+    const brides: string[] = [];
+    const k = texte(ec.querySelector(".co-kpi b")!);
+    /* L'espace blanc : une cote posée DANS l'écart, à droite du bouton. */
+    const y1 = demi(r(blocs[1]).b), y2 = demi(r(blocs[2]).y);
+    const gx = demi(r(ec.querySelector(".co-b2")!).d + 10);
+    brides.push(`M${gx - 5} ${y1}h10M${gx} ${y1}V${y2}M${gx - 5} ${y2}h10`);
+    /* Le groupe : une accolade au flanc du bloc que l'œil réunit. */
+    const z1 = demi(r(champs[0]).y), z2 = demi(r(champs[champs.length - 1]).b);
+    const gz = demi(a.d + 8);
+    brides.push(`M${gz - 5} ${z1}h10M${gz} ${z1}V${z2}M${gz - 5} ${z2}h10`);
+    const organes = [
+      { x: demi(k.d + 12), y: demi(k.m) },
+      { x: gx, y: demi((y1 + y2) / 2) },
+      { x: gz, y: demi((z1 + z2) / 2) },
+    ];
+
+    /* L'axe : la verticale descend jusqu'au mot qui la nomme. */
+    const axe = `M${demi(r(blocs[0]).x)} ${demi(a.y - 10)}V${demi(r(pied).b)}`;
+
+    /* ── Colonnes empilées (petit écran) : les mots reprennent le fil du
+       document, et aucun filet n'est tracé — un filet faux vaut moins que
+       pas de filet. ── */
+    const filets: string[] = [], points: { x: number; y: number }[] = [];
+    if (r(mots[0]).x < a.d) {
+      delete dl.dataset.pose;
+      mots.forEach((m) => { m.style.top = ""; });
+    } else {
+      /* Chaque mot est posé À LA HAUTEUR de son organe : le filet devient
+         une droite. Un coude n'apparaît que si deux mots se gênaient. */
+      dl.dataset.pose = "1";
+      let plancher = 0;
+      organes.forEach((o, i) => {
+        const dt = mots[i].querySelector("dt");
+        const decal = (dt ? dt.getBoundingClientRect().height : 20) + 9;
+        const t = Math.max(Math.round(o.y - decal), plancher);
+        mots[i].style.top = `${t}px`;
+        plancher = t + mots[i].getBoundingClientRect().height + 16;
+      });
+      organes.forEach((o, i) => {
+        const dd = mots[i].querySelector("dd");
+        const py = demi(r(dd ?? mots[i]).y + 9), pxx = demi(r(mots[i]).x - 18);
+        const droit = Math.abs(py - o.y) <= 4;
+        filets.push(droit ? `M${o.x} ${o.y}H${pxx}`
+                          : `M${o.x} ${o.y}H${pxx - 22 - i * 10}V${py}H${pxx}`);
+        points.push({ x: pxx, y: droit ? o.y : py });
+      });
+    }
+    setD({ w: Math.round(base.width), h: Math.round(base.height), axe, brides, filets, points });
+  }, [banc, actif]);
+
+  useEffect(() => {
+    const t = setTimeout(poser, 0);
+    const b = banc.current;
+    const ro = b ? new ResizeObserver(poser) : null;
+    if (b && ro) ro.observe(b);
+    window.addEventListener("resize", poser);
+    return () => { clearTimeout(t); ro?.disconnect(); window.removeEventListener("resize", poser); };
+  }, [poser, banc]);
+
+  if (!d) return null;
+  return (
+    <svg className="co-filets" width={d.w} height={d.h} viewBox={`0 0 ${d.w} ${d.h}`} aria-hidden="true">
+      <path className="co-f-trait" d={d.axe} />
+      {d.brides.map((t, i) => <path className="co-f-trait" key={`b${i}`} d={t} />)}
+      {d.filets.map((t, i) => <path className="co-f-trait" key={`f${i}`} d={t} />)}
+      {d.points.map((t, i) => <circle className="co-f-point" key={`p${i}`} cx={t.x} cy={t.y} r="4" />)}
+    </svg>
+  );
 }
 
 /* ══ OBJET 2 · une page de journal, une affiche ═══════════════════════
@@ -308,7 +444,11 @@ function Magazine() {
 
 /* ══ Le fonds : quinze lois, où vit chacune, qui la juge ══════════════ */
 const FONDS: [string, string, string, string][] = [
-  ["Proximité", "ce qui est proche est perçu comme lié", "Rythme", ""],
+  /* Alinéa entré le 31 août 2026 : la proximité ne fait pas que lier, elle
+     efface — un élément posé contre ses sosies cesse d'être reconnu.
+     Material 3 le dit du bouton placé « à côté d'éléments visuellement
+     similaires ». Ce n'est pas une loi de plus : c'est la même, poussée. */
+  ["Proximité", "ce qui est proche est perçu comme lié — et posé contre des éléments qui lui ressemblent, un élément cesse d'être reconnu pour ce qu'il est", "Rythme", ""],
   ["Similarité", "un costume visuel = un rôle : deux rôles sous le même costume mentent au lecteur", "ici", "machine"],
   ["Région commune", "une surface se mérite : elle n'apparaît que là où le blanc ne suffit pas", "ici", "machine"],
   ["Connexion uniforme", "un trait qui relie unit plus fort que tout", "en référence", ""],
@@ -551,6 +691,7 @@ export default function Vue() {
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
   const { styl } = useAdaptation();
   const porte = useRef<HTMLDivElement>(null);
+  const banc = useRef<HTMLDivElement>(null);
   const courante = FAUTES.find((f) => f.cle === faute)!;
 
   return (
@@ -574,9 +715,10 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">01 · L&apos;écran qu&apos;on casse</p>
               <h2>Un écran juste. Cassez-le, une faute à la fois.</h2>
-              <p className="sourd">Au repos, l&apos;écran nomme ses organes — le dominant, un
-              groupe, l&apos;axe de départ, l&apos;espace blanc qui groupe : <b>quatre mots
-              suffisent</b> à parler de composition avec quelqu&apos;un d&apos;autre. Cassez-en
+              <p className="sourd">Au repos, l&apos;écran nomme ses organes — le dominant,
+              l&apos;espace blanc, le groupe, l&apos;axe de départ : <b>quatre mots suffisent</b>
+              à parler de composition avec quelqu&apos;un d&apos;autre. Chaque mot est écrit à
+              côté de l&apos;écran et relié par un filet à ce qu&apos;il désigne. Cassez-en
               un, et les repères deviennent rouges à l&apos;endroit exact où ça casse.
               <b> Survolez l&apos;écran</b> — il se répare sous vos yeux.</p>
             </div>
@@ -590,32 +732,42 @@ export default function Vue() {
                   </button>
                 ))}
               </div>
-              <div className="co-scene co-duo-t">
-                <div className="co-gauche">
+              <div className="co-scene co-preuve1">
+                {/* Le haut dit l'ÉTAT (faux / réparé), le bas dit le GESTE
+                    (survolez / relâchez) : jamais deux messages qui se
+                    contredisent. Les deux badges occupent la même case. */}
+                <span className="co-verdict">
                   <span className={`badge ${faute ? "ko" : ""}`}>{courante.verdict}</span>
-                  <div className="co-porte" ref={porte}>
-                    <Application faute={faute} />
-                    <Calque faute={faute} hote={porte} />
+                  {faute && <span className="badge bon">{courante.solution}</span>}
+                </span>
+                {/* Au repos, la colonne de droite EST le vocabulaire, relié à
+                    l'écran par des filets ; dès qu'on casse, elle laisse la
+                    place au commentaire de la faute. Les deux restent posés
+                    l'un sur l'autre pour que rien ne saute au changement. */}
+                <div className="co-banc" ref={banc}>
+                  <div className="co-gauche">
+                    <div className="co-porte" ref={porte}>
+                      <Application faute={faute} />
+                      <Calque faute={faute} hote={porte} />
+                    </div>
+                    <div className={`co-lex-pied ${faute ? "off" : ""}`}>
+                      <dl><div><dt>{AXE[0]}</dt><dd>{AXE[1]}</dd></div></dl>
+                    </div>
+                    <div className="co-pied">
+                      <span className="co-invite">
+                        {faute ? "↑ survolez l'écran : il se répare sous vos yeux" : courante.invite}
+                      </span>
+                      {faute && <span className="co-solution">↑ relâchez : la faute revient</span>}
+                    </div>
                   </div>
-                  <div className="co-pied">
-                    <span className="co-invite">
-                      {faute ? "↓ survolez l'écran : il se répare sous vos yeux" : courante.invite}
-                    </span>
-                    <span className="co-solution">{courante.solution}</span>
+                  <div className="co-droite">
+                    <dl className={`co-lex ${faute ? "off" : ""}`}>
+                      {LEXIQUE.map(([m, t]) => (<div key={m}><dt>{m}</dt><dd>{t}</dd></div>))}
+                    </dl>
+                    <p className={`co-dit ${faute ? "" : "off"}`}>{courante.dit}</p>
                   </div>
+                  <Legende banc={banc} actif={!faute} />
                 </div>
-                <p className="co-dit">{courante.dit}</p>
-              </div>
-              <div className="co-voc">
-                <span className="mono sourd">Vocabulaire</span>
-                <dl>
-                  {[
-                    ["le dominant", "ce qui se lit en premier. Il y en a un — jamais deux, jamais zéro."],
-                    ["le groupe", "ce que l'œil réunit sans qu'on le lui dise, par la proximité ou par une surface partagée."],
-                    ["l'axe de départ", "la verticale d'où les contenus commencent. Deux ou trois par vue ; au-delà, ça flotte."],
-                    ["l'espace blanc", "ce qui fait le travail. Il sépare avant le trait, et il groupe avant la carte."],
-                  ].map(([m, d]) => (<div key={m}><dt>{m}</dt><dd>{d}</dd></div>))}
-                </dl>
               </div>
             </div>
           </section>

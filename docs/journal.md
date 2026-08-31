@@ -4469,3 +4469,112 @@ ouverte sur S3 (rognage de l'interligne), consignée. Échelle typographique :
 corrigée par régime, correction tracée à la planche.
 
 ---
+
+## 31 août 2026 — `/composition` : les repères de la preuve 01 se lisent enfin
+
+**Constat** — Sur l'écran au repos de « L'écran qu'on casse », les quatre
+repères ne se lisaient pas. Quatre défauts cumulés : trois natures
+différentes (une zone, une verticale, une distance) dessinées avec le même
+pointillé gris ; l'étiquette « un groupe » posée exactement sous « l'espace
+blanc qui groupe » et donc invisible — trois mots visibles sur quatre ;
+l'étiquette de l'axe posée en haut, contre le titre, qu'elle semblait
+nommer ; la cote de l'espace blanc réduite à un trait minuscule hors de la
+carte, sous une étiquette trois fois plus longue que lui. Aucune étiquette
+n'était raccrochée à sa marque : elles flottaient au-dessus du contenu.
+
+**Décision** — Une forme par nature, et le mot posé DANS ce qu'il nomme.
+Le cadre pointillé dit une zone (le dominant, le groupe) ; la bande
+hachurée, tracée sur toute la largeur, dit une distance (l'espace blanc,
+qui devient enfin visible pour ce qu'il est) ; le trait plein qui déborde
+la carte en haut et en bas dit une verticale (l'axe), nommé à son pied,
+dans la marge basse — le seul endroit vide, calculé et non posé en dur.
+Quatre numéros ①→④ sur l'écran, les mêmes dans le vocabulaire, dans
+l'ordre de lecture de haut en bas : le dominant, l'espace blanc, le
+groupe, l'axe de départ. La phrase d'introduction suit le même ordre.
+
+**Sens produit** — Le vocabulaire de la page est son livrable : quatre mots
+pour parler de composition à quelqu'un d'autre. Un mot qu'on ne peut pas
+relier à ce qu'il désigne ne s'apprend pas. Le numéro est le fil : il tient
+l'écran et la définition ensemble, et il impose que la liste des mots suive
+l'œil, pas la commodité de la rédaction.
+
+**Crash-test** — Banc isolé (même CSS, mêmes jetons, géométrie calculée par
+le navigateur) : aucune étiquette n'en recouvre une autre, aucune ne masque
+de texte de l'écran, thème clair et thème sombre. `tsc --noEmit` propre.
+
+**Impact carte** — `/composition` reste 🟡 (sa dette de dérivation est
+inchangée : les valeurs `.co-*` restent hors chaîne). Seule la preuve 01
+est reprise.
+
+## 31 août 2026 (2) — `/composition` : la légende remplace le tableau
+
+**Constat** — Les numéros ①→④ marchaient, mais ils faisaient porter le lien
+par la mémoire : il fallait aller chercher le mot dans un tableau, plus bas.
+Et la colonne de droite disait un commentaire pendant que le vocabulaire
+attendait ailleurs — deux discours pour un seul écran.
+
+**Décision** — Le vocabulaire DEVIENT la légende de l'écran. Chaque mot est
+écrit à côté, à la hauteur exacte de son organe, et un filet droit va de
+l'organe au mot : plus de numéro à retenir, le trait fait le lien. Trois
+mots à droite ; le quatrième — l'axe — sous la carte, parce que sa verticale
+y descend. Le tableau « Vocabulaire » est supprimé. Quand on casse une
+faute, la colonne de droite laisse la place au commentaire de la faute, et
+les mots s'effacent : un seul discours à la fois. Les filets sont neutres,
+le rouge reste réservé à ce qui casse.
+
+**Sens produit** — Un mot qu'on ne peut pas relier du regard à ce qu'il
+désigne ne s'apprend pas. Le filet supprime l'aller-retour : l'écran et le
+vocabulaire sont enfin le même objet.
+
+**Comment ça tient** — Les mots sont posés à la hauteur de leur organe par
+le calcul, ce qui rend chaque filet DROIT ; un coude n'apparaît que si deux
+mots se gênaient. Sous 1024 px les colonnes s'empilent, les filets se
+taisent et les mots reprennent le fil du document — un filet faux vaut moins
+que pas de filet. Le mot et le commentaire occupent la même case : passer de
+l'un à l'autre ne déplace pas un pixel (mesuré : écart 0).
+
+**Crash-test** — Banc isolé, cinq largeurs (1440 · 1180 · 1024 · 760 · 320),
+thème clair et sombre : aucun mot n'en recouvre un autre, aucun ne déborde
+la scène, hauteur identique au repos et cassé. `tsc --noEmit` propre.
+
+**Impact carte** — `/composition` reste 🟡. Le bloc CSS `.co-voc` et les
+variantes « douces » du calque sont supprimés : ils n'ont plus d'objet.
+
+**Correctif du même jour** — Quand on cassait une faute, la place du mot de
+l'axe restait réservée sous la carte : un trou. Comme rien au-dessus de la
+carte ne bouge quand le bas se resserre, la réservation ne servait à rien —
+le mot part vraiment (14 px sous la carte au lieu de 100). Et l'invite de
+réparation pointait vers le bas alors que l'écran est au-dessus d'elle :
+flèche retournée.
+
+**Correctif (2) du même jour — deux messages qui se contredisaient** — Au
+survol, le haut disait encore « Faux · deux dominants » en rouge pendant que
+le bas annonçait en vert « rendu : un seul corps maximal ». Deux voix, deux
+verdicts, au même instant. Les rôles sont désormais séparés : le HAUT porte
+l'état (« Faux · … » rouge ↔ « Réparé · … » vert, les deux badges dans la
+même case, largeur figée), le BAS porte le geste (« survolez l'écran : il se
+répare » ↔ « relâchez : la faute revient »), dans la voix discrète de
+l'invite. Au repos, sans faute, le survol ne bascule rien : les deux
+seconds messages n'existent pas.
+
+**Correctif (3) du même jour — les repères des fautes** — Le repos était
+lisible, les fautes ne l'étaient pas. Trois sur cinq fautaient de la même
+manière : un repère posé là où il reste de la place dans le code, pas là où
+il reste de la place à l'écran.
+· `f-equi` — les cotes étaient collées au bord gauche, deux nombres tombaient
+sur « Derniers dossiers » et « Affichage », et la cote du groupe sortait de
+la carte sur le commentaire. Les quatre cotes sont désormais sur UNE seule
+verticale, dans le vide à droite de la carte, le nombre écrit à gauche de sa
+cote : c'est l'alignement qui rend les quatre nombres comparables d'un coup
+d'œil — et c'est exactement ce que la faute doit faire voir.
+· `f-axes` — les quatre étiquettes se superposaient sur le titre. Chacune
+descend maintenant dans un blanc différent de la carte, collée à son fil.
+· `f-dominant` — l'étiquette couvrait « Dossiers à valider ». Elle se pose
+après le TEXTE qu'elle désigne (mesuré, pas le bloc pleine largeur) ; si le
+corps a trop grossi pour laisser la place, elle passe dessous.
+Règle dégagée et désormais tenue partout : une étiquette se pose dans un
+vide mesuré, jamais à une coordonnée choisie d'avance.
+
+**Crash-test** — Les cinq fautes, à 1340 et 900 px : aucune étiquette hors
+carte, aucune sur du texte, aucune sur une autre.
+

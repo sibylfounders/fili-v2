@@ -945,8 +945,41 @@ details.prov summary:hover { color: var(--text-primary); }
    Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
 .co-scene { background: var(--surface); border-radius: var(--r-1);
   padding: clamp(1.6rem, 3.5vw, 2.6rem); width: 100%; }
+/* La preuve 01 empile le verdict et le banc : elle seule, les autres
+   scènes de la page gardent leur mise en page. */
+.co-preuve1 { display: grid; justify-items: start; gap: var(--pad-3-block); }
 .co-duo-t { display: grid; grid-template-columns: 3fr 2fr;
   gap: clamp(1.4rem, 4vw, 3rem); align-items: center; }
+/* Le banc de la preuve 01 : l'écran à gauche, les mots à droite, et les
+   filets tracés PAR-DESSUS les deux — d'où le calque en position absolue
+   sur le banc entier, et non sur la seule carte. */
+.co-banc { position: relative; display: grid; grid-template-columns: 3fr 2fr;
+  gap: clamp(1.6rem, 4vw, 3.4rem); align-items: stretch; width: 100%; }
+@media (max-width: 64rem) {
+  .co-banc { grid-template-columns: 1fr; }
+  .co-lex-pied { padding-left: 0; }
+}
+.co-filets { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 4; }
+.co-f-trait { fill: none; stroke: var(--border-strong); stroke-width: 1; }
+.co-f-point { fill: var(--text-primary); }
+/* Le mot et le commentaire occupent la MÊME case : on passe de l'un à
+   l'autre sans que la page bouge d'un pixel. */
+.co-droite { position: relative; display: grid; align-content: center; }
+.co-droite > * { grid-area: 1 / 1; align-self: center; }
+.co-lex, .co-lex-pied dl { display: grid; gap: var(--pad-2-block); margin: 0; }
+/* Posé : chaque mot descend à la hauteur de son organe, le filet est droit. */
+.co-lex[data-pose] { position: absolute; inset: 0; display: block;
+  grid-area: auto; align-self: stretch; justify-self: stretch; }
+.co-lex[data-pose] > div { position: absolute; left: 0; right: 0; }
+.co-lex > div > dt, .co-lex-pied dt { font-weight: 600; font-size: 0.875rem; }
+.co-lex > div > dd, .co-lex-pied dd { margin: 0; font-size: 0.875rem;
+  line-height: 1.55; color: var(--text-secondary); }
+/* L'axe est une verticale : son mot descend avec elle, sous la carte. */
+.co-lex-pied { padding-left: 2.8rem; padding-top: var(--pad-2-block); max-width: 46ch; }
+.co-lex.off, .co-dit.off { visibility: hidden; }
+/* Le mot de l'axe part vraiment quand on casse : réserver sa place
+   creusait un trou sous la carte, et rien au-dessus ne bouge. */
+.co-lex-pied.off { display: none; }
 .co-gauche { display: grid; gap: var(--pad-3-block); justify-items: start; min-width: 0; }
 .co-porte { position: relative; width: 100%; }
 .co-pied { position: relative; min-height: 1.5rem; width: 100%; }
@@ -958,10 +991,17 @@ details.prov summary:hover { color: var(--text-primary); }
   font: 500 0.6875rem/1.5 var(--font-mono); transition: opacity 0.16s linear;
   pointer-events: none; max-width: 100%; }
 .co-invite { color: var(--text-secondary); }
-.co-solution { color: var(--success); background: var(--success-subtle);
-  border-radius: var(--r-pill); padding: 0.15em 0.8em; opacity: 0; }
-.co-gauche:has(.co-porte:hover) .co-invite { opacity: 0; }
+/* Le pied ne dit plus un état — il dit le geste. Même voix que l'invite. */
+.co-solution { color: var(--text-secondary); opacity: 0; }
+.co-gauche:has(.co-porte:hover) .co-pied:has(.co-solution) .co-invite { opacity: 0; }
 .co-gauche:has(.co-porte:hover) .co-solution { opacity: 1; }
+/* L'état, lui, est en haut : faux au repos de la faute, réparé au survol.
+   Les deux badges se superposent — la largeur ne bouge pas. */
+.co-verdict { display: inline-grid; }
+.co-verdict > .badge { grid-area: 1 / 1; transition: opacity 0.16s linear; }
+.co-verdict > .badge.bon { opacity: 0; }
+.co-preuve1:has(.co-porte:hover) .co-verdict > .badge.ko { opacity: 0; }
+.co-preuve1:has(.co-porte:hover) .co-verdict > .badge.bon { opacity: 1; }
 
 /* ── OBJET 1 · l'interface de travail ── */
 .co-app { border: 1px solid var(--border); border-radius: var(--r-1);
@@ -1012,31 +1052,19 @@ details.prov summary:hover { color: var(--text-primary); }
   transition: opacity 0.16s linear; }
 .co-porte:hover .co-calque { opacity: 0; }
 .co-r-cadre { position: absolute; border: 1.5px solid var(--danger); border-radius: var(--r-ctl); }
-.co-r-cadre.douce { border: 1.5px dashed var(--border-strong); }
 .co-r-fil { position: absolute; border-left: 1px dashed var(--danger); }
-.co-r-fil.douce { border-left-color: var(--border-strong); }
 .co-r-cote { position: absolute; border-left: 1px solid var(--danger); width: 0; }
-.co-r-cote.douce { border-left-color: var(--border-strong); }
 .co-r-cote::before, .co-r-cote::after { content: ""; position: absolute; left: -3px;
   width: 7px; border-top: 1px solid var(--danger); }
-.co-r-cote.douce::before, .co-r-cote.douce::after { border-top-color: var(--border-strong); }
 .co-r-cote::before { top: 0; } .co-r-cote::after { bottom: 0; }
 .co-r-puce { position: absolute; width: 0.55rem; height: 0.55rem; border-radius: var(--r-pill);
   background: var(--danger); transform: translateY(-50%); }
+/* « fin » : l'étiquette se termine au point posé, elle pousse vers la
+   gauche — pour écrire dans le vide à gauche d'une cote. */
+.co-r-etq.fin { transform: translate(-100%, -50%); }
 .co-r-etq { position: absolute; font: 600 0.5625rem/1.35 var(--font-mono);
   color: var(--on-danger); background: var(--danger); border-radius: var(--r-ctl);
   padding: 0.15rem 0.4rem; white-space: nowrap; transform: translateY(-50%); }
-.co-r-etq.douce { background: var(--surface-hover); color: var(--text-primary); }
-
-/* ── Le vocabulaire : une liste de définitions, pas des cartes ── */
-.co-voc { display: grid; gap: var(--pad-3-block); max-width: var(--measure); }
-.co-voc > .mono { font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; }
-.co-voc dl { display: grid; }
-.co-voc dl > div { display: grid; grid-template-columns: 9rem 1fr;
-  gap: var(--pad-3-inline); align-items: baseline;
-  padding-block: var(--gap-4-block); border-top: 1px solid var(--border); }
-.co-voc dt { font-weight: 600; font-size: 0.875rem; }
-.co-voc dd { font-size: 0.875rem; color: var(--text-secondary); }
 
 /* ── OBJET 2 · la page de journal et l'affiche ── */
 .co-paire { display: grid; grid-template-columns: 1fr 1fr;
@@ -1112,4 +1140,3 @@ details.prov summary:hover { color: var(--text-primary); }
   .co-dit { max-width: var(--measure); }
   .co-paire { grid-template-columns: 1fr; }
 }
-@media (max-width: 40rem) { .co-voc dl > div { grid-template-columns: 1fr; gap: 0.1rem; } }
