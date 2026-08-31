@@ -17,12 +17,21 @@
 /* ── Un réglage de scène : un curseur, une valeur — piste et bouton
       dessinés, lisibles sur les deux scènes (retour d'Auteur, 25 août).
       La tête d'outil prend la cible des commandes secondaires. ── */
-.ar-dials { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
-.ar-dial { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; justify-content: center; }
-.ar-dial label { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
-.ar-dial output { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; min-width: 2.5ch; }
+.ar-dials { display: flex; flex-wrap: wrap; justify-content: center; align-items: start;
+  gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+/* La tête d'outil a une géométrie FIXE : le mot au-dessus de sa piste, le
+   nombre dans sa colonne à droite. En rangée souple, c'est la longueur du
+   mot qui décidait du repli — « Coin intérieur » gardait son nombre sur la
+   ligne, « Écart » le renvoyait dessous, et deux outils côte à côte ne
+   s'alignaient plus. Une grille : le mot ne décide plus de rien. */
+.ar-dial { display: grid; grid-template-columns: minmax(8rem, 16rem) 2.5ch;
+  gap: var(--gap-3-block) var(--gap-3-inline); align-items: center; }
+.ar-dial label { grid-area: 1 / 1; justify-self: center;
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.ar-dial output { grid-area: 2 / 2;
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
 .ar-dial input[type=range] {
-  flex: 0 1 16rem; min-width: 8rem; /* hors chaîne : la longueur de la piste, une mesure */
+  grid-area: 2 / 1; width: 100%; min-width: 0; /* la longueur de la piste est celle de sa colonne */
   appearance: none; -webkit-appearance: none;
   background: transparent; height: var(--control-height-compact); margin: 0; cursor: pointer;
   --ar-piste: rgba(17, 24, 39, 0.35); --ar-curseur: var(--on-primary); /* hors chaîne : la piste du curseur, un voile d'encre sur la scène de marque */
@@ -157,12 +166,25 @@
 .ar-onglets button[aria-selected="true"] { background: var(--bg); color: var(--primary-text); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.12); /* hors chaîne : le relief de l'onglet choisi */ }
 /* le focus des onglets : le halo commun (globals.css) */
 /* Les deux recalés — fautes déclarées (data-intent="statement"), montrées pour être reconnues. */
+/* La paire du bouton : deux fois le même mot, seul le fond change. */
+.ar-membre .ar-essai { display: inline-flex; align-items: center; gap: var(--gap-3-inline); }
+.ar-membre .verdict.ko { color: var(--danger); }
+.ar-membre .verdict.bon { color: var(--success); }
+/* La mise en garde n'est pas un refus : le jaune de l'avertissement, sa
+   couleur de famille. Le signe double la phrase qui suit — il l'annonce,
+   il ne la porte pas seul. */
+.ar-membre .verdict.attention { color: var(--warning); }
+.ar-membre.paire .objet { flex-wrap: wrap; gap: var(--gap-2-inline); }
 .ar-btn-pilule {
   appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);
   min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
-  border-radius: var(--r-pill); /* casse : la pilule sur un bouton — il ne fait pas partie de la liste */
+  border-radius: var(--r-pill);
   background: var(--primary); color: var(--on-primary); white-space: nowrap;
 }
+/* La faute nommée par Material 3 : sans fond plein, le bouton passe pour
+   une puce — surtout court, et surtout à côté d'éléments qui lui
+   ressemblent. */
+.ar-btn-pilule.doux { background: var(--primary-subtle); color: var(--primary-text); }
 .ar-gelule {
   display: inline-block; max-width: 10rem; /* casse : la mesure est serrée pour forcer le passage à la ligne */
   padding: var(--gap-4-block) var(--gap-3-inline);

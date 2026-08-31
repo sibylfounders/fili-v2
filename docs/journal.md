@@ -4715,3 +4715,95 @@ des graphiques non textuels est à 3:1, on est au-dessus quoi qu'on choisisse.
 
 **Impact carte** — Aucun changement d'état : `/couleur` reste 🟢.
 
+## 31 août 2026 (6) — `/arrondis` : deux petites choses
+
+**Les têtes d'outil ne s'alignaient pas.** « Coin intérieur » et « Écart »
+étaient des rangées souples : le mot, la piste et le nombre à la file, avec
+repli automatique. C'est donc la LONGUEUR DU MOT qui décidait du repli — le
+long gardait son nombre sur la ligne, le court le renvoyait dessous, et les
+deux outils côte à côte se décalaient verticalement. Ils ont désormais une
+géométrie fixe : le mot centré au-dessus de sa piste, le nombre dans sa
+colonne à droite. Le mot ne décide plus de rien. Mesuré à 900 px : mots,
+pistes et nombres sur les mêmes lignes, deux outils de 290 px.
+
+**Les deux recalés de la pilule disaient mal leur faute.** « un bouton —
+pas dans la liste » constatait une appartenance sans rien apprendre à qui
+n'a pas la liste en tête ; la légende dit maintenant ce qu'on voit : « en
+pilule, le bouton ressemble à une étiquette » — ce que la phrase d'entrée
+de la section annonçait déjà. Et « deux lignes — une gélule » comptait les
+lignes alors que le texte en prend deux ou trois selon la largeur : c'est
+« plusieurs lignes — une gélule », vrai partout.
+
+## 31 août 2026 (7) — La pilule sur un bouton : nous avions tort
+
+**Ce qui a déclenché** — La planche de `/arrondis` recalait un bouton en
+pilule au motif qu'il « ne fait pas partie de la liste ». Verdict d'Auteur :
+« rien n'empêche un bouton d'être arrondi comme ça. Il y a un risque de
+confusion, notamment quand il n'y a pas beaucoup de texte et que le bouton
+est en version douce. Qu'en disent les autres ? »
+
+**Ce que disent les autres** (dix systèmes lus sur leurs pages officielles) —
+· **Personne n'interdit la pilule sur un bouton.** Material 3 en fait la
+forme par défaut de ses boutons ; les chips, eux, sont à 8 dp, donc MOINS
+arrondis. Apple recommande explicitement la capsule, avec un argument
+oculomoteur : « plus la forme est arrondie, plus il est facile de la
+regarder fixement », l'œil étant attiré par les angles.
+· **Un seul système dit ce que nous disions : Fluent 2.** Le rectangle y est
+la forme des boutons, la pilule celle des « tags, mots-clés, ou une
+sélection dans une liste ». Aucun risque de confusion n'y est évoqué : c'est
+une attribution de vocabulaire.
+· **Carbon, GOV.UK, Primer et Polaris ne documentent pas la forme de leurs
+boutons.** Rien à opposer.
+· **Le risque, lui, est documenté — et ce n'est pas le rayon.** Material 3 :
+« Le style de bouton outlined ressemble beaucoup aux chips. Envisagez plutôt
+un bouton filled ou tonal. » Et : « Prudence quand vous placez ces boutons à
+côté d'éléments visuellement similaires, comme des chips. » Le coupable est
+l'absence de conteneur plein, et le voisinage.
+· **Remèdes documentés, aucun ne touche au rayon** : fond plein (M3),
+bordure de conteneur pour signaler l'interactivité (Carbon), fond contrasté
++ espace autour + état d'appui + cible 44×44 (Apple).
+· **La gélule tient.** Carbon : « Évitez que les titres longs passent à la
+ligne dans le conteneur du tag. Cela dénature la forme du tag. »
+
+**Décisions** —
+1. Le bouton n'est plus un recalé. La planche montre désormais **le même mot
+   deux fois, et une seule chose change** : en fond doux il passe pour une
+   puce, en fond plein c'est un bouton. La leçon : « en pilule, un bouton a
+   besoin de son fond plein ».
+2. **La règle 7 est amendée** : la liste fermée reste, mais elle dit
+   maintenant qu'un bouton n'est pas interdit de pilule, qu'il la porte avec
+   son fond plein, et que la liste d'ici est un parti pris d'identité — pas
+   une vérité du métier. Les tensions sont citées : Atlassian, et Fluent 2
+   contre Material 3, qui s'opposent frontalement sur la même forme.
+3. **La mise en garde de Material 3 entre au fonds de la composition**
+   (demande d'Auteur), non comme une seizième loi mais comme un **alinéa de
+   la proximité** — deuxième verdict d'Auteur, et il a raison : la proximité
+   ne fait pas que lier, elle efface. La loi se lit désormais « ce qui est
+   proche est perçu comme lié — et posé contre des éléments qui lui
+   ressemblent, un élément cesse d'être reconnu pour ce qu'il est ». Le fonds
+   reste à quinze lois.
+
+**Reste ouvert** — `sources/.../COMPOSITION-UX.md` annonce toujours quinze
+lois. Ce document est versionné et chaque énoncé y entre sur verdict
+d'Auteur : il n'a pas été touché.
+
+**Sources** — Material 3 Buttons et Chips ; Apple HIG Buttons ; Fluent 2
+Shapes ; Carbon Tag usage ; Atlassian Radius et Lozenge ; Polaris Badge et
+Tag ; GOV.UK Button ; Primer Button et Label ; Ant Design Button.
+
+**Correctif — la croix devient une mise en garde** — Le bouton doux n'est
+pas refusé, il est risqué : la croix rouge disait un interdit là où il n'y
+en a pas. C'est désormais le signe d'avertissement, dans l'encre de sa
+famille. Et la légende suit le signe : elle disait une obligation (« a
+besoin de son fond plein »), elle dit maintenant le risque — « en pilule et
+sans fond plein, un bouton court se confond avec une puce ».
+
+**Correctif — le jaune de l'avertissement** — Le signe de mise en garde
+portait l'encre sombre de la famille (brun, 7,09:1 sur la carte) : lisible,
+mais lu comme un rouge. Il porte maintenant le jaune de sa famille,
+`--warning`. Contraste mesuré sur la carte blanche : 1,67:1. C'est en
+dessous du plancher de 3:1 des graphiques porteurs de sens — le signe est
+donc tenu pour DÉCORATIF : il annonce la phrase qui le suit, il ne la porte
+pas seul, et il est caché aux lecteurs d'écran. Si le signe devait un jour
+porter le sens à lui seul, ce jaune ne suffirait pas.
+

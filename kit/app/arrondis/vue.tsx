@@ -164,14 +164,34 @@ function Planche() {
         </div>
         <div className="nom">la piste des onglets</div>
       </div>
-      {/* Les deux recalés portent une faute déclarée : intent="statement" */}
-      <div className="ar-membre refuse" data-intent="statement">
-        <div className="objet"><button className="ar-btn-pilule" type="button" tabIndex={-1} aria-disabled="true">Acheter un ticket</button></div>
-        <div className="nom">un bouton — pas dans la liste</div>
+      {/* Les deux recalés portent une faute déclarée : intent="statement".
+          Leur légende DIT la faute au lieu de la constater : « pas dans la
+          liste » n'apprenait rien à qui n'a pas la liste en tête. Et elle
+          ne compte pas les lignes — le texte en prend deux ou trois selon
+          la largeur, « plusieurs » reste vrai partout. */}
+      {/* Le bouton n'est plus un recalé : personne ne l'interdit — Material 3
+          en fait la forme par défaut de ses boutons, Apple recommande la
+          capsule. La faute documentée est ailleurs, et M3 la nomme : c'est
+          le bouton SANS fond plein qui se confond avec une puce. Le même
+          mot, deux fois, et une seule chose change. */}
+      <div className="ar-membre paire">
+        <div className="objet">
+          <span className="ar-essai">
+            {/* Une mise en garde, pas une faute : le bouton doux est permis,
+                il est seulement risqué court et mal entouré. */}
+            <span className="verdict attention" aria-hidden="true">⚠</span>
+            <button className="ar-btn-pilule doux" type="button" tabIndex={-1} aria-disabled="true">Payer</button>
+          </span>
+          <span className="ar-essai">
+            <span className="verdict bon" aria-hidden="true">✓</span>
+            <button className="ar-btn-pilule" type="button" tabIndex={-1} aria-disabled="true">Payer</button>
+          </span>
+        </div>
+        <div className="nom">en pilule et sans fond plein, un bouton court se confond avec une puce</div>
       </div>
       <div className="ar-membre refuse" data-intent="statement">
         <div className="objet"><span className="ar-gelule">Correspondance ligne B vers Hôpital Nord</span></div>
-        <div className="nom">deux lignes — une gélule</div>
+        <div className="nom">plusieurs lignes — une gélule</div>
       </div>
     </div>
   );
@@ -352,8 +372,11 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; src: Src
     enonce: "Posé à l'extérieur d'un composant, l'anneau prend le coin du composant augmenté de son écart — ce que fait outline-offset tout seul.",
     src: [{ t: "RADIUS-UX 1.3.0 — R07", h: "#" }, { t: "WCAG 2.4.11 — Focus Appearance", h: "https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html" }] },
   { id: "a7", nom: "7", titre: "La pilule est une liste fermée",
-    enonce: "Le rayon plein est réservé à une liste énumérée — badge/pastille, avatar, piste de l'interrupteur, piste des onglets-pilule — et à rien d'autre ; jamais sur un contenu qui peut passer à la ligne. Toute entrée nouvelle est un arbitrage d'Auteur. Tension de source : chez Atlassian les badges prennent le petit coin — la liste d'ici est un parti pris d'identité.",
-    src: [{ t: "RADIUS-UX 1.3.0 — R08", h: "#" }, { t: "Atlassian — Badge", h: "https://atlassian.design/components/badge/" }] },
+    enonce: "Le rayon plein est réservé à une liste énumérée — badge/pastille, avatar, piste de l'interrupteur, piste des onglets-pilule — et jamais sur un contenu qui peut passer à la ligne. Toute entrée nouvelle est un arbitrage d'Auteur. Un bouton, lui, n'est pas interdit de pilule : personne ne l'interdit, Material 3 en fait même la forme par défaut de ses boutons et Apple recommande la capsule. Il la porte alors AVEC son fond plein — c'est l'absence de conteneur, pas le rayon, qui le fait passer pour une puce, et d'autant plus s'il est court et voisin d'éléments qui lui ressemblent. Tensions de source : chez Atlassian les badges prennent le petit coin ; chez Fluent 2 la pilule désigne les tags et le rectangle les boutons — exactement l'inverse de Material 3. La liste d'ici est un parti pris d'identité, pas une vérité du métier.",
+    src: [{ t: "RADIUS-UX 1.3.0 — R08", h: "#" }, { t: "Atlassian — Badge", h: "https://atlassian.design/components/badge/" },
+      { t: "Material 3 — Buttons (« Consider using a filled or tonal button instead »)", h: "https://m3.material.io/components/buttons/guidelines" },
+      { t: "Apple HIG — Buttons (« prefer circular or capsule-shape buttons »)", h: "https://developer.apple.com/design/human-interface-guidelines/buttons" },
+      { t: "Fluent 2 — Shapes (la pilule pour les tags, le rectangle pour les boutons)", h: "https://fluent2.microsoft.design/shapes" }] },
   { id: "a8", nom: "8", titre: "Un jeton déclare ses consommateurs",
     enonce: "Chaque jeton de coin porte au moins un consommateur nommé : la coque, la carte, la ligne, la marque, le composant, la pilule.",
     src: [{ t: "RADIUS-UX 1.3.0 — R09", h: "#" }] },
@@ -521,9 +544,11 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">03 · La pilule</p>
               <h2>La pilule est un passeport, pas un cran</h2>
-              <p className="sourd">Le rayon plein n&apos;a pas de valeur : il sature. Donné à n&apos;importe
-              quoi, il fabrique des gélules et des boutons qui ressemblent à des étiquettes. Quatre
-              objets de Navette y ont droit ; deux autres frappent à la porte.</p>
+              <p className="sourd">Le rayon plein n&apos;a pas de valeur : il sature. Quatre objets de
+              Navette y ont droit. Un cinquième frappe à la porte et n&apos;entrera pas — un texte qui
+              passe à la ligne devient une gélule. Et un sixième cas n&apos;est pas une faute de forme
+              du tout : <b>un bouton peut être en pilule</b> — c&apos;est ce que font Material 3 et
+              Apple — mais sans son fond plein, court, il se confond avec une puce.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -531,7 +556,8 @@ export default function Vue() {
                   <Planche />
                 </div>
                 <figcaption className="gd-legende">
-                  quatre membres, pas un de plus · rayon plein · jamais sur un contenu qui peut passer à la ligne
+                  quatre membres, pas un de plus · rayon plein · jamais sur un contenu qui peut passer à la ligne ·
+                  un bouton en pilule garde son fond plein
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
