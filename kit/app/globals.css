@@ -611,22 +611,88 @@ details.prov summary:hover { color: var(--text-primary); }
   .cp-col { min-height: 3.5rem; flex-basis: auto !important; }
 }
 
-/* Le nuancier en mosaïque de charte (verdict d'Auré, 24 août — « j'aimais
-   beaucoup ce graphisme exactement ») : tuiles pleines SANS écart, le nom
-   en haut à gauche, la fiche mesurée en bas à droite, et le fond doux
-   collé sous son ton. Trois par rangée : six tuiles, aucun trou. */
-.gd-nuancier { display: grid; width: 100%; gap: 0;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+/* Le nuancier en SIX LIGNES (31 août 2026) : le fond doux et le ton
+   côte à côte, plus l'un sous l'autre. C'est la même couleur à deux
+   régimes — celui qui parle bas et celui qui signe — et les voir sur la
+   même ligne est ce qui le rend évident. Le bloc de ton porte le signe de
+   sa famille ; au survol il prend la majorité de la ligne et dit sa
+   phrase, sans que le fond doux disparaisse : les deux régimes restent
+   comparables au même instant. */
+/* Deux groupes côte à côte dès qu'il y a la place pour deux colonnes
+   lisibles, empilés sinon — aucun palier écrit à la main : c'est la
+   largeur d'une colonne lisible qui décide. Alignés en haut : le groupe
+   de deux n'a pas à s'étirer pour ressembler au groupe de quatre. */
+.gd-nuancier { display: grid; width: 100%; align-items: start;
+  gap: var(--gap-1-block) var(--gap-1-inline);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
+.gd-nfam { display: grid; gap: var(--gap-3-block); min-width: 0; }
+.gd-nfam-titre { letter-spacing: 0.05em; text-transform: uppercase; }
+.gd-nfam-lignes { display: grid; grid-template-columns: 1fr;
   border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
-.gd-lng { display: grid; grid-template-rows: minmax(10rem, auto) minmax(3.6rem, auto); }
-.gd-lng-doux { padding: var(--pad-3-block) var(--pad-3-inline);
+.gd-lng { position: relative; display: flex; min-height: 6.5rem; }
+/* EXCEPTION DÉCLARÉE au halo de focus : le halo se dessine à l'EXTÉRIEUR
+   de l'objet, or les lignes sont bord à bord dans un cadre qui rogne —
+   il serait coupé. Le focus est donc un trait calé à l'intérieur, même
+   jeton de couleur, même épaisseur : l'indicateur reste sous contrat. */
+.gd-lng:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
+.gd-lng-doux { flex: 1 1 auto; min-width: 0;
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  padding-inline-end: calc(5.5rem + var(--pad-3-inline));
   display: flex; flex-direction: column; gap: var(--gap-4-block); }
-.gd-lng-doux b { font-size: var(--font-size-body); letter-spacing: -0.01em; }
-.gd-lng-doux > span { font-size: var(--font-size-small); }
+.gd-lng-titre { display: flex; flex-direction: column; }
+.gd-lng-titre > span { font-size: var(--font-size-small); opacity: 0.75; }
+.gd-lng-titre b { font-size: var(--font-size-body); letter-spacing: -0.01em;
+  text-transform: capitalize; }
+.gd-lng-dit { font-size: var(--font-size-small); }
 .gd-lng-fiche { margin-top: auto; padding-top: var(--gap-3-block);
-  font: 600 var(--font-size-label)/1.4 var(--font-mono); text-align: right; opacity: 0.85; }
-.gd-lng-ton { padding: var(--pad-3-block) var(--pad-3-inline);
+  font: 600 var(--font-size-label)/1.4 var(--font-mono); opacity: 0.85; }
+/* Le bloc de ton : une lane au signe seul, muette au repos ; majoritaire
+   et bavarde au survol. La phrase est POSÉE HORS DU FLUX tant qu'elle se
+   tait — dans une lane étroite, un texte au fil du flux se casse mot par
+   mot et fait grandir la ligne de moitié. Seule la largeur s'anime. */
+/* Le bloc de ton est POSÉ SUR la ligne, pas dedans : en grandissant il
+   recouvre le fond doux au lieu de le comprimer. Sans cela, le texte de
+   gauche se replie et toute la liste bouge sous le curseur. */
+.gd-lng-ton { position: absolute; inset-block: 0; inset-inline-end: 0;
+  width: 5.5rem; overflow: hidden;
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  display: flex; align-items: center; justify-content: center;
   font-size: var(--font-size-small); line-height: 1.5; }
+.gd-lng-signe { width: 1.75rem; height: 1.75rem; flex: none; }
+.gd-lng-tondit { position: absolute; top: 50%; transform: translateY(-50%);
+  inset-inline: calc(var(--pad-3-inline) + 2.75rem) var(--pad-3-inline);
+  opacity: 0; }
+@media (hover: hover) {
+  .gd-lng-ton { transition: width 0.34s cubic-bezier(0, 0, 0.2, 1); }
+  .gd-lng-tondit { transition: opacity 0.22s linear; }
+  .gd-lng:hover .gd-lng-ton, .gd-lng:focus-within .gd-lng-ton {
+    width: 62%; justify-content: flex-start; }
+  .gd-lng:hover .gd-lng-tondit, .gd-lng:focus-within .gd-lng-tondit {
+    opacity: 1; transition-delay: 0.12s; }
+}
+/* Sans survol possible (doigt), la phrase du ton est là d'emblée : rien
+   d'essentiel ne se cache derrière un geste qui n'existe pas. */
+@media (hover: none) {
+  .gd-lng { flex-direction: column; }
+  .gd-lng-doux { padding-inline-end: var(--pad-3-inline); }
+  .gd-lng-ton { position: static; width: auto; justify-content: flex-start;
+    gap: var(--gap-2-inline); }
+  .gd-lng-tondit { position: static; transform: none; opacity: 1; }
+}
+/* L'ouverture : le fond doux se pose, puis le ton arrive par la droite —
+   le geste dit la règle, le fond s'installe et le ton se dépense en
+   dernier. Accroché au dévoilement de section déjà en place. */
+@keyframes gd-lng-pose { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
+@keyframes gd-lng-ton-pose { from { transform: translateX(100%); } to { transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .gdoc .pose .gd-lng { opacity: 0; }
+  .gdoc .pose.posee .gd-lng {
+    animation: gd-lng-pose 0.44s cubic-bezier(0, 0, 0.2, 1) both;
+    animation-delay: calc(var(--rang, 0) * 70ms); }
+  .gdoc .pose.posee .gd-lng-ton {
+    animation: gd-lng-ton-pose 0.5s cubic-bezier(0, 0, 0.2, 1) both;
+    animation-delay: calc(var(--rang, 0) * 70ms + 130ms); }
+}
 
 /* ═══════════ Le bento — l'objet en situation de la page Couleur (25 août 2026) ═══════════
    Tranche applicative en cascade (CG4) : scène = surface, tuile = bg + border,

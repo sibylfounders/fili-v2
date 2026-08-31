@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { PanneauCode } from "../apercu";
 import { useAdaptation } from "../adaptation";
 import { useTheme, useSchemeSysteme } from "../theme";
@@ -427,20 +427,44 @@ function TableauPaires({ cle }: { cle: string }) {
    proportions identiques (verdicts d'Auré, 24 août). Chaque languette est
    un couple complet — le ton, son encre, son fond doux — et sa fiche lit
    les valeurs et le rapport sur la page rendue. ── */
-const LANGUETTES: { nom: string; ton: string; surTon: string; doux: string; surDoux: string; jeton: string; phraseTon: string; phraseDoux: string }[] = [
-  { nom: "La marque", ton: "--primary", surTon: "--on-primary", doux: "--primary-subtle", surDoux: "--on-primary-subtle", jeton: "primary",
-    phraseTon: "Elle signe. Un seul grand geste par écran.", phraseDoux: "Son fond doux — la marque murmurée." },
-  { nom: "Le danger", ton: "--danger", surTon: "--on-danger", doux: "--danger-subtle", surDoux: "--on-danger-subtle", jeton: "danger",
-    phraseTon: "Il arrête. Jamais dépensé pour décorer.", phraseDoux: "Son fond doux — la faute expliquée posément." },
-  { nom: "Le succès", ton: "--success", surTon: "--on-success", doux: "--success-subtle", surDoux: "--on-success-subtle", jeton: "success",
-    phraseTon: "Il confirme, puis se retire.", phraseDoux: "Son fond doux — la conformité tranquille." },
-  { nom: "Le neutre", ton: "--text-primary", surTon: "--bg", doux: "--surface", surDoux: "--text-secondary", jeton: "neutral",
-    phraseTon: "Il se tait. C'est lui qui fait la page.", phraseDoux: "Son échelle douce — fonds, filets, encres." },
-  { nom: "L'information", ton: "--info", surTon: "--on-info", doux: "--info-subtle", surDoux: "--on-info-subtle", jeton: "info",
-    phraseTon: "Elle renseigne — avec son propre bleu, jamais celui d'une marque.", phraseDoux: "Son fond doux — la note en passant." },
-  { nom: "L'avertissement", ton: "--warning", surTon: "--on-warning", doux: "--warning-subtle", surDoux: "--on-warning-subtle", jeton: "warning",
-    phraseTon: "Il prévient sans crier.", phraseDoux: "Son fond doux — le doute encore réparable." },
+type Languette = { art: string; mot: string; nom: string; ton: string; surTon: string; doux: string; surDoux: string; jeton: string; phraseTon: string; phraseDoux: string };
+const LANGUETTES: Languette[] = [
+  { art: "La", mot: "marque", nom: "La marque", ton: "--primary", surTon: "--on-primary", doux: "--primary-subtle", surDoux: "--on-primary-subtle", jeton: "primary",
+    phraseTon: "Elle signe. Un seul grand geste par écran.", phraseDoux: "La marque murmurée." },
+  { art: "Le", mot: "danger", nom: "Le danger", ton: "--danger", surTon: "--on-danger", doux: "--danger-subtle", surDoux: "--on-danger-subtle", jeton: "danger",
+    phraseTon: "Il arrête. Jamais dépensé pour décorer.", phraseDoux: "La faute expliquée posément." },
+  { art: "Le", mot: "succès", nom: "Le succès", ton: "--success", surTon: "--on-success", doux: "--success-subtle", surDoux: "--on-success-subtle", jeton: "success",
+    phraseTon: "Il confirme, puis se retire.", phraseDoux: "La conformité tranquille." },
+  { art: "Le", mot: "neutre", nom: "Le neutre", ton: "--text-primary", surTon: "--bg", doux: "--surface", surDoux: "--text-secondary", jeton: "neutral",
+    phraseTon: "Il se tait. C'est lui qui fait la page.", phraseDoux: "Fonds, filets, encres." },
+  { art: "L’", mot: "information", nom: "L’information", ton: "--info", surTon: "--on-info", doux: "--info-subtle", surDoux: "--on-info-subtle", jeton: "info",
+    phraseTon: "Elle renseigne — avec son propre bleu, jamais celui d’une marque.", phraseDoux: "La note en passant." },
+  { art: "L’", mot: "avertissement", nom: "L’avertissement", ton: "--warning", surTon: "--on-warning", doux: "--warning-subtle", surDoux: "--on-warning-subtle", jeton: "warning",
+    phraseTon: "Il prévient sans crier.", phraseDoux: "Le doute encore réparable." },
 ];
+
+/* Deux groupes, et la coupure est celle du JUGEMENT : trois familles ne
+   jugent rien — la marque signe, le neutre fait la page, l’information
+   passe une note — et trois rendent un verdict sur ce que la personne
+   vient de faire. Les voir séparés évite la faute la plus commune :
+   dépenser un verdict là où il n’y a rien à juger. */
+const GROUPES: { titre: string; jetons: string[] }[] = [
+  { titre: "Ce qui ne juge pas", jetons: ["primary", "neutral", "info"] },
+  { titre: "Les trois verdicts", jetons: ["danger", "success", "warning"] },
+];
+
+/* Les six signes — tracés d’une seule main : même grille de 24, même
+   trait, mêmes bouts ronds. Chacun dit ce que sa famille FAIT, pas ce
+   qu’elle est : la plume signe, la barre arrête, la coche confirme, la
+   trame se tait, le i renseigne, le triangle prévient. */
+const SIGNES: Record<string, ReactNode> = {
+  primary: <><path d="M4.6 19.4l1.6-4.6L15 6a2.1 2.1 0 013 3l-8.8 8.8z" /><path d="M13.4 7.6l3 3" /></>,
+  danger: <><circle cx="12" cy="12" r="8.4" /><path d="M8 12h8" /></>,
+  success: <><circle cx="12" cy="12" r="8.4" /><path d="M8.2 12.4l2.6 2.6 5-5.4" /></>,
+  neutral: <><path d="M4.6 7h14.8" /><path d="M4.6 12h14.8" /><path d="M4.6 17h9.4" /></>,
+  info: <><circle cx="12" cy="12" r="8.4" /><path d="M12 11.2v5.2" /><path d="M12 7.8v.01" /></>,
+  warning: <><path d="M12 4.4l8.2 14.9H3.8z" /><path d="M12 10.2v4" /><path d="M12 16.9v.01" /></>,
+};
 function Nuancier({ cle }: { cle: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [fiches, setFiches] = useState<Record<string, string>>({});
@@ -453,19 +477,43 @@ function Nuancier({ cle }: { cle: string }) {
     });
     setFiches(v);
   });
+  /* Six lignes en deux groupes : le fond doux parle, le ton signe. Au
+     survol — ou au clavier, la phrase du ton doit être atteignable
+     autrement qu'à la souris — le ton prend la majorité de la ligne et dit
+     sa phrase. Le rang court sur les six : l'ouverture est un seul geste,
+     pas deux cascades qui partent en même temps. */
+  const parJeton = new Map(LANGUETTES.map((l) => [l.jeton, l]));
+  let rang = 0;
   return (
-    <div ref={ref} className="gd-nuancier" role="img"
-      aria-label="Le nuancier des six rôles du kit : marque, danger, succès, avertissement, information, neutre — chacun avec son ton plein, son fond doux et son rapport mesuré">
-      {LANGUETTES.map((l) => (
-        <div key={l.jeton} className="gd-lng">
-          <div className="gd-lng-doux" style={{ background: `var(${l.doux})`, color: `var(${l.surDoux})` }}>
-            <b>{l.nom}</b><span>{l.phraseDoux}</span>
-            <div className="gd-lng-fiche">{fiches[l.jeton] ?? "…"}</div>
+    <div ref={ref} className="gd-nuancier">
+      {GROUPES.map((g) => (
+        <section key={g.titre} className="gd-nfam">
+          <p className="mono sourd gd-nfam-titre">{g.titre}</p>
+          <div className="gd-nfam-lignes" role="list" aria-label={g.titre}>
+            {g.jetons.map((j) => {
+              const l = parJeton.get(j)!;
+              const i = rang++;
+              return (
+                <div key={l.jeton} className="gd-lng" role="listitem" tabIndex={0}
+                  style={{ ["--rang" as string]: i }}
+                  aria-label={`${l.nom}. ${l.phraseDoux} ${l.phraseTon} ${fiches[l.jeton] ?? ""}`}>
+                  <div className="gd-lng-doux" style={{ background: `var(${l.doux})`, color: `var(${l.surDoux})` }}>
+                    <p className="gd-lng-titre" aria-hidden="true"><span>{l.art}</span><b>{l.mot}</b></p>
+                    <span className="gd-lng-dit" aria-hidden="true">{l.phraseDoux}</span>
+                    <div className="gd-lng-fiche" aria-hidden="true">{fiches[l.jeton] ?? "…"}</div>
+                  </div>
+                  <div className="gd-lng-ton" style={{ background: `var(${l.ton})`, color: `var(${l.surTon})` }}>
+                    <svg className="gd-lng-signe" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      {SIGNES[l.jeton]}
+                    </svg>
+                    <span className="gd-lng-tondit" aria-hidden="true">{l.phraseTon}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="gd-lng-ton" style={{ background: `var(${l.ton})`, color: `var(${l.surTon})` }}>
-            {l.phraseTon}
-          </div>
-        </div>
+        </section>
       ))}
     </div>
   );

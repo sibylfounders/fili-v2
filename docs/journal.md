@@ -4609,3 +4609,81 @@ Résultat, menu / carte : 150 / 185 en compact, 160 / 244 en confortable,
 169 / 285 en aéré. Le menu tient maintenant dans le haut de la scène dans
 les trois densités, et ne peut plus être plus grand que la carte.
 
+## 31 août 2026 (4) — `/couleur` : le nuancier passe en six lignes
+
+**Constat** — Dans la mosaïque, le fond doux et le ton plein étaient l'un
+SOUS l'autre : deux étages qu'on lit séparément. On ne voyait pas que c'est
+la même couleur à deux régimes.
+
+**Décision (demande d'Auteur)** — Six lignes empilées. À gauche le nom, sa
+phrase et ses valeurs mesurées sur le fond doux ; à droite une lane étroite
+dans le ton plein, qui porte le SIGNE de la famille. Six signes tracés d'une
+seule main, même grille de 24, même trait : la plume signe, la barre arrête,
+la coche confirme, la trame se tait, le i renseigne, le triangle prévient —
+chacun dit ce que sa famille FAIT, pas ce qu'elle est.
+
+**Au survol** — le bloc de ton passe de 5,5 rem à 62 % de la ligne et dit sa
+phrase, tandis que le fond doux reste lisible à gauche : les deux régimes
+sont comparables au même instant. Deux pièges évités et consignés :
+· la phrase du ton est posée HORS DU FLUX tant qu'elle se tait — au fil du
+  flux, dans une lane étroite, elle se casse mot par mot et faisait grandir
+  les lignes de moitié (132 px devenaient 242) ;
+· le bloc de ton est posé SUR la ligne, pas dedans — en grandissant il
+  recouvre le fond doux au lieu de le comprimer, sinon le texte de gauche se
+  replie et toute la liste bouge sous le curseur. Mesuré : hauteurs
+  identiques au repos et au survol, 132 px sur les six lignes.
+
+**À l'ouverture** — les six lignes se posent l'une après l'autre (70 ms
+d'écart), puis chaque bloc de ton arrive par la droite avec 130 ms de
+retard. Le geste dit la règle : le fond s'installe, le ton se dépense en
+dernier. Accroché au dévoilement de section déjà en place ; coupé net en
+mouvement réduit (vérifié : aucune animation, tout est là).
+
+**Au doigt** — pas de survol possible, donc rien d'essentiel derrière un
+geste qui n'existe pas : la ligne s'empile et la barre de ton porte son
+signe ET sa phrase d'emblée (vérifié à 420 px).
+
+**Accessibilité** — chaque ligne est atteignable au clavier et porte un
+libellé qui contient les deux phrases et les valeurs. Le halo de focus de la
+maison se dessine à l'extérieur de l'objet : les lignes étant bord à bord
+dans un cadre qui rogne, il serait coupé. EXCEPTION DÉCLARÉE : trait calé à
+l'intérieur, même jeton, même épaisseur — l'indicateur reste sous contrat.
+
+**Suite — le nuancier en deux groupes** — Les six familles ne sont pas de
+même nature : deux ne disent AUCUN état (la marque signe, le neutre
+structure), quatre ne servent qu'à en dire un. Les mettre à la file laissait
+croire à six choses comparables. Elles sont désormais en deux blocs titrés
+— « L'identité et la structure » puis « Les quatre états », dans l'ordre
+danger, succès, avertissement, information. Les voir séparés évite la faute
+la plus commune : prendre la marque pour un état, ou un état pour une
+marque.
+
+Sur grand écran les deux blocs sont côte à côte, alignés en haut — le groupe
+de deux n'a pas à s'étirer pour ressembler au groupe de quatre. Aucun palier
+écrit à la main : c'est la largeur d'une colonne lisible (26 rem) qui
+décide, sinon les blocs s'empilent. La cascade d'ouverture court sur les six
+lignes, pas sur deux groupes en parallèle : c'est un seul geste.
+
+**Crash-test** — 1240 px : deux colonnes, six lignes de 136 px, identiques
+au repos et au survol. 760 px : une colonne, six lignes de 127 px. La phrase
+du ton tient dans la lane élargie sans être coupée.
+
+**Correctif — la coupure change de critère** — Deux et quatre laissait un
+trou sous la colonne de gauche, et la seule ligne qui pouvait le combler
+était l'information. La déplacer sans rien dire aurait rendu le titre faux :
+on a donc changé le CRITÈRE, pas la place. La coupure n'est plus « qui dit
+un état » mais **qui rend un verdict** : trois familles ne jugent rien — la
+marque signe, le neutre fait la page, l'information passe une note — et
+trois rendent un verdict sur ce que la personne vient de faire. « Ce qui ne
+juge pas » / « Les trois verdicts ». Trois et trois : les colonnes
+s'équilibrent d'elles-mêmes, et la coupure dit quelque chose de plus juste
+qu'avant — la faute qu'elle prévient est de dépenser un verdict là où il n'y
+a rien à juger.
+
+Les phrases du fond doux perdent leur préambule (« Son fond doux — », « Son
+échelle douce — ») : la colonne EST le fond doux, le redire à six reprises
+était du bruit.
+
+**Crash-test** — 1240 px : deux colonnes de même hauteur, six lignes de
+136 px. 760 px : une colonne, six lignes de 127 px.
+
