@@ -4687,3 +4687,31 @@ Les phrases du fond doux perdent leur préambule (« Son fond doux — », « So
 **Crash-test** — 1240 px : deux colonnes de même hauteur, six lignes de
 136 px. 760 px : une colonne, six lignes de 127 px.
 
+## 31 août 2026 (5) — `/couleur` : la démo du moteur regarde, elle ne pilote plus
+
+**Constat** — Le rail des marques écrivait dans le MÊME réglage que la barre
+d'outils du site. Cliquer Spotify repeignait le site entier ; l'onglet Fili,
+s'il devait porter « la couleur du site », serait alors devenu vert lui
+aussi. Et un choix de couleur libre existait à deux endroits : la barre
+d'outils et cette démo.
+
+**Décision (verdict d'Auteur)** — Un seul endroit décide. La marque de Fili
+se choisit dans la barre d'outils ; **l'onglet Fili de la démo porte cette
+couleur-là**, même éteint — c'est à ça qu'il sert. Les autres marques
+(Spotify, Netflix, Stripe, Orange, Slack, Apple) ne changent plus que la
+scène de la démo : elles passent dans le moteur, ici, sans toucher au site.
+Le sélecteur de couleur libre a disparu de la démo : il n'existe plus qu'à
+un seul endroit.
+
+**Ce que ça change dans le code** — la démo retient la marque REGARDÉE (un
+identifiant), plus une couleur recopiée : sans ça, dès que l'onglet Fili
+prend la couleur du site, il éclipse toute marque qui aurait le même hex.
+
+**Le contrat tient** — l'encre de l'onglet Fili n'est pas la couleur brute
+de la barre d'outils mais celle que le moteur recale pour rester lisible.
+Mesuré sur la surface de l'onglet : 5,71:1 pour la charte, 4,53:1 pour un
+jaune pâle, 4,50:1 pour du blanc, 4,55:1 pour le vert Spotify — le plancher
+des graphiques non textuels est à 3:1, on est au-dessus quoi qu'on choisisse.
+
+**Impact carte** — Aucun changement d'état : `/couleur` reste 🟢.
+

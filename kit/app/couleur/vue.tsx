@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { PanneauCode } from "../apercu";
 import { useAdaptation } from "../adaptation";
 import { useTheme, useSchemeSysteme } from "../theme";
-import { derive, gamme, gammeNeutres, gammeFamille, poserSurGamme, PRIMAIRE_DEFAUT } from "../../derivation.mjs";
+import { derive, gamme, gammeNeutres, gammeFamille, poserSurGamme } from "../../derivation.mjs";
 import { usePrimaire } from "../primaire";
 import { RailDoc, useDocSections, type Sommaire } from "../rail";
 import { Bento } from "./bento";
@@ -856,7 +856,9 @@ export class AlerteErreur {}`,
 const D_FILI = "M356.879 197C377.293 197 391.501 204.877 394.412 217.448C395.121 220.046 395.493 223.172 395.493 226.924C395.493 239.317 385.756 248.688 372.672 248.688C364.199 248.688 357.063 244.568 353.216 238.18C353.14 238.054 353.066 237.927 352.993 237.799C351.177 234.635 350.156 230.938 350.156 226.924C350.156 216.714 356.765 208.556 366.239 205.999C363.899 203.331 360.302 201.836 355.368 201.836C339.045 201.836 329.977 216.043 321.514 257.453L317.584 277.101H338.67L391.566 277.101V391.962C391.566 411.912 393.682 417.655 407.889 424.305V424.909H340.181V424.305C354.387 417.655 356.503 411.912 356.503 391.962V310.35C356.503 298.163 355.002 290.617 349.615 284.96H316.073L281.917 424.909C270.128 472.97 248.668 493.222 213 494.733V494.128C232.345 485.363 242.018 452.113 253.202 404.355L280.406 284.96H260.456L261.06 282.542L282.521 275.892L286.451 261.987C299.146 218.461 321.514 197 356.879 197ZM430.349 381C417.664 381 408 390.472 408 403C408 415.528 417.664 425 430.349 425C443.336 425 453 415.528 453 403C453 390.472 443.336 381 430.349 381Z";
 const VB_FILI = "211 195 244 301.7";
 const LOGOS: { id: string; nom: string; hex: string; d: string; vb?: string; fr?: "evenodd" }[] = [
-  { id: "fili", nom: "Fili", hex: "#4F46E5", d: D_FILI, vb: VB_FILI, fr: "evenodd" },
+  /* Fili n'a pas de couleur écrite ici : la sienne est celle du site,
+     choisie dans la barre d'outils. Elle est posée au rendu. */
+  { id: "fili", nom: "Fili", hex: "", d: D_FILI, vb: VB_FILI, fr: "evenodd" },
   { id: "spotify", nom: "Spotify", hex: "#1DB954", d: "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" },
   { id: "netflix", nom: "Netflix", hex: "#E50914", d: "m5.398 0 8.348 23.602c2.346.059 4.856.398 4.856.398L10.113 0H5.398zm8.489 0v9.172l4.715 13.33V0h-4.715zM5.398 1.5V24c1.873-.225 2.81-.312 4.715-.398V14.83L5.398 1.5z" },
   { id: "stripe", nom: "Stripe", hex: "#635BFF", d: "M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z" },
@@ -885,12 +887,15 @@ const SOMMAIRE: Sommaire = [
 
 export default function Vue() {
   const [palie, setPalie] = useState(false);
-  const [essai, setEssai] = useState(PRIMAIRE_DEFAUT); /* la charte, lue dans le moteur — jamais recopiée (crash-test de page, 26 août) */
+  /* La démo montre une marque, elle ne pilote plus le site : la barre
+     d'outils reste le seul endroit où l'on choisit celle de Fili. On
+     retient donc la marque regardée, pas une couleur recopiée. */
+  const [marqueVue, setMarqueVue] = useState("fili");
   const [marque, setMarque] = useState(false);
   const [filtre, setFiltre] = useState(false);
   const [actionSombre, setActionSombre] = useState(false);
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const { primaire, changer } = usePrimaire();
+  const { primaire } = usePrimaire();
   const { styl } = useAdaptation();
   const { theme } = useTheme();
   const sysSombre = useSchemeSysteme();
@@ -899,12 +904,19 @@ export default function Vue() {
   const actionSombreStyle: React.CSSProperties = { ["--primary" as string]: "#312E81" };
   const actifId = useDocSections("palette");
   const cle = `${themeEffectif}-${primaire}`;
+  /* Le rail : Fili prend la couleur du site, les autres la leur. Même
+     éteint, l'onglet Fili la porte — c'est à quoi il sert. Son encre est
+     celle que le moteur recale pour rester lisible sur un fond clair :
+     la barre d'outils accepte n'importe quelle couleur, le contrat non. */
+  const marques = useMemo(() => LOGOS.map((m) => (m.id === "fili" ? { ...m, hex: primaire } : m)), [primaire]);
+  const encreSite = useMemo(() => clair(primaire)["primary-text"], [primaire]);
+  const marqueEssai = marques.find((m) => m.id === marqueVue) ?? marques[0];
+  const essai = marqueEssai.hex;
   const palEssai = useMemo(() => ({ light: clair(essai) }), [essai]);
-  const marqueEssai = LOGOS.find((m) => m.hex.toUpperCase() === essai.toUpperCase());
-  const dEssai = marqueEssai?.d ?? D_FILI;
-  const vbEssai = marqueEssai ? marqueEssai.vb : VB_FILI;
-  const frEssai = marqueEssai ? marqueEssai.fr : ("evenodd" as const);
-  const nomEssai = marqueEssai?.nom ?? "Votre marque";
+  const dEssai = marqueEssai.d;
+  const vbEssai = marqueEssai.vb;
+  const frEssai = marqueEssai.fr;
+  const nomEssai = marqueEssai.nom;
   const gammeEssai = useMemo(() => (gamme(essai) as [number, string][]).filter(([c]) => c === 100 || c === 300 || c === 500 || c === 700), [essai]);
 
   return (
@@ -1036,26 +1048,32 @@ export default function Vue() {
               <p className="sourd">Changer de marque ne doit pas être un chantier. Une couleur
               entre, toute la famille sort — fonds, gris, liens, thème sombre — et ce qui
               deviendrait illisible est recalé de lui-même. Les couleurs d&apos;erreur et de
-              succès, elles, ne bougent pas : un rouge doit rester un rouge.</p>
+              succès, elles, ne bougent pas : un rouge doit rester un rouge. <b>Prenez une
+              marque</b> dans le rail : elle passe dans le moteur, ici, sans toucher au site.
+              La marque de Fili, elle, se choisit là-haut dans la barre d&apos;outils —
+              c&apos;est cette couleur-là que porte son onglet.</p>
             </div>
             <div className="gdoc-corps">
               {/* Le playground (maquette d'Auré, 24 août) : le rail des
                   marques à gauche — vrais logos —, la scène logo + nom en
                   plein et en doux, et dessous les barres : la gamme dérivée
                   de la marque (elle suit la teinte, visiblement), les
-                  sémantiques intouchés. */}
+                  sémantiques intouchés.
+                  31 août : la démo REGARDE, elle ne pilote plus. La marque du
+                  site se choisit dans la barre d'outils, et l'onglet Fili
+                  porte cette couleur-là ; les autres marques ne changent que
+                  cette scène. Le choix d'une couleur libre a donc disparu
+                  d'ici : il n'existe qu'à un seul endroit. */}
               <div className="mk">
-                <div className="mk-rail" role="group" aria-label="Choisir une marque">
-                  {LOGOS.map((m) => (
-                    <button key={m.id} className="mk-chip" title={m.nom} aria-pressed={essai.toUpperCase() === m.hex.toUpperCase()}
-                      style={essai.toUpperCase() === m.hex.toUpperCase() ? { background: m.hex, color: palEssai.light["on-primary"] } : undefined}
-                      onClick={() => { setEssai(m.hex); changer(m.id === "fili" ? PRIMAIRE_DEFAUT : m.hex); }}>
+                <div className="mk-rail" role="group" aria-label="Regarder une marque">
+                  {marques.map((m) => (
+                    <button key={m.id} className="mk-chip" title={m.nom} aria-pressed={m.id === marqueVue}
+                      style={m.id === marqueVue ? { background: m.hex, color: palEssai.light["on-primary"] }
+                        : m.id === "fili" ? { color: encreSite } : undefined}
+                      onClick={() => setMarqueVue(m.id)}>
                       <Logo d={m.d} vb={m.vb} fr={m.fr} taille={LOGO_CHIP} />
                     </button>
                   ))}
-                  <label className="mk-chip" title="Votre couleur">
-                    <input type="color" value={essai} onChange={(e) => { setEssai(e.target.value); changer(e.target.value); }} aria-label="Choisir une couleur de marque" />
-                  </label>
                 </div>
                 <div className="mk-scene">
                   <div className="mk-duo">
