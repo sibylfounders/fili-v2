@@ -169,7 +169,6 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   gap: var(--gap-2-inline); flex-wrap: wrap; }
 .apercu-outils { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
 .apercu-tete .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
-.apercu-cmds { display: flex; gap: var(--gap-3-inline); justify-content: flex-end; flex-wrap: wrap; }
 .apercu-piste { position: relative; min-width: 0; overflow: hidden; border-radius: var(--r-1); }
 .apercu-cadre {
   position: relative; max-width: 100%; overflow: hidden;
@@ -629,7 +628,12 @@ details.prov summary:hover { color: var(--text-primary); }
 .gd-nfam-titre { letter-spacing: 0.05em; text-transform: uppercase; }
 .gd-nfam-lignes { display: grid; grid-template-columns: 1fr;
   border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
-.gd-lng { position: relative; display: flex; min-height: 6.5rem; }
+/* La lane du ton a une largeur à elle : ce n'est pas une distance du kit,
+   c'est la mesure d'un objet de scène — le signe et sa phrase repliée.
+   Nommée une fois ici, elle sert des deux côtés : la lane la prend, le
+   fond doux lui réserve la place. */
+.gd-lng { --gd-lane: 5.5rem; /* hors chaîne : la largeur de la lane du ton, une mesure d'objet */
+  position: relative; display: flex; min-height: 6.5rem; }
 /* EXCEPTION DÉCLARÉE au halo de focus : le halo se dessine à l'EXTÉRIEUR
    de l'objet, or les lignes sont bord à bord dans un cadre qui rogne —
    il serait coupé. Le focus est donc un trait calé à l'intérieur, même
@@ -637,7 +641,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .gd-lng:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
 .gd-lng-doux { flex: 1 1 auto; min-width: 0;
   padding: var(--pad-3-block) var(--pad-3-inline);
-  padding-inline-end: calc(5.5rem + var(--pad-3-inline));
+  padding-inline-end: calc(var(--gd-lane) + var(--pad-3-inline)); /* hors chaîne : la place que le fond doux réserve à la lane du ton */
   display: flex; flex-direction: column; gap: var(--gap-4-block); }
 .gd-lng-titre { display: flex; flex-direction: column; }
 .gd-lng-titre > span { font-size: var(--font-size-small); opacity: 0.75; }
@@ -654,13 +658,13 @@ details.prov summary:hover { color: var(--text-primary); }
    recouvre le fond doux au lieu de le comprimer. Sans cela, le texte de
    gauche se replie et toute la liste bouge sous le curseur. */
 .gd-lng-ton { position: absolute; inset-block: 0; inset-inline-end: 0;
-  width: 5.5rem; overflow: hidden;
+  width: var(--gd-lane); overflow: hidden;
   padding: var(--pad-3-block) var(--pad-3-inline);
   display: flex; align-items: center; justify-content: center;
   font-size: var(--font-size-small); line-height: 1.5; }
 .gd-lng-signe { width: 1.75rem; height: 1.75rem; flex: none; }
 .gd-lng-tondit { position: absolute; top: 50%; transform: translateY(-50%);
-  inset-inline: calc(var(--pad-3-inline) + 2.75rem) var(--pad-3-inline);
+  inset-inline: calc(var(--pad-3-inline) + var(--gd-lane) / 2) var(--pad-3-inline);
   opacity: 0; }
 @media (hover: hover) {
   .gd-lng-ton { transition: width 0.34s cubic-bezier(0, 0, 0.2, 1); }
@@ -1008,17 +1012,18 @@ details.prov summary:hover { color: var(--text-primary); }
 /* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
    Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
 .co-scene { background: var(--surface); border-radius: var(--r-1);
-  padding: clamp(1.6rem, 3.5vw, 2.6rem); width: 100%; }
+  padding: clamp(1.6rem, 3.5vw, 2.6rem); /* hors chaîne : la dette déclarée de /composition (25 août) — le registre parallèle de ses scènes de preuve */
+  width: 100%; }
 /* La preuve 01 empile le verdict et le banc : elle seule, les autres
    scènes de la page gardent leur mise en page. */
 .co-preuve1 { display: grid; justify-items: start; gap: var(--pad-3-block); }
 .co-duo-t { display: grid; grid-template-columns: 3fr 2fr;
-  gap: clamp(1.4rem, 4vw, 3rem); align-items: center; }
+  gap: clamp(1.4rem, 4vw, 3rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: center; }
 /* Le banc de la preuve 01 : l'écran à gauche, les mots à droite, et les
    filets tracés PAR-DESSUS les deux — d'où le calque en position absolue
    sur le banc entier, et non sur la seule carte. */
 .co-banc { position: relative; display: grid; grid-template-columns: 3fr 2fr;
-  gap: clamp(1.6rem, 4vw, 3.4rem); align-items: stretch; width: 100%; }
+  gap: clamp(1.6rem, 4vw, 3.4rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: stretch; width: 100%; }
 @media (max-width: 64rem) {
   .co-banc { grid-template-columns: 1fr; }
   .co-lex-pied { padding-left: 0; }
@@ -1082,18 +1087,18 @@ details.prov summary:hover { color: var(--text-primary); }
 .co-kpi b { font-size: 2.6rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700; display: block; }
 .co-sous { font-size: 0.75rem; color: var(--text-secondary); }
 .co-li { display: flex; align-items: center; gap: var(--gap-3-inline);
-  font-size: 0.8125rem; padding-block: 0.28rem; }
+  font-size: 0.8125rem; padding-block: 0.28rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
 .co-li i { width: 0.35rem; height: 0.35rem; border-radius: var(--r-pill);
   background: var(--border-strong); flex: none; }
 .co-pct { margin-left: auto; color: var(--text-secondary);
   font-family: var(--font-mono); font-size: 0.625rem; }
 .co-cta { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
 .co-b1 { font-size: 0.75rem; font-weight: 600; border-radius: var(--r-ctl);
-  padding: 0.45rem 0.8rem; background: var(--primary); color: var(--on-primary); }
+  padding: 0.45rem 0.8rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ background: var(--primary); color: var(--on-primary); }
 .co-b2 { font-size: 0.75rem; font-weight: 500; border-radius: var(--r-ctl);
-  padding: 0.45rem 0.8rem; border: 1px solid var(--border-strong); }
+  padding: 0.45rem 0.8rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ border: 1px solid var(--border-strong); }
 .co-champ { font-size: 0.75rem; color: var(--text-secondary);
-  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; }
+  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
 /* Les cinq fautes — appliquées TANT QU'ON NE SURVOLE PAS : le survol est
    la solution, l'écran reprend sa forme juste. */
 .co-porte:not(:hover) .f-dominant .co-liste .co-etq {
@@ -1128,11 +1133,11 @@ details.prov summary:hover { color: var(--text-primary); }
 .co-r-etq.fin { transform: translate(-100%, -50%); }
 .co-r-etq { position: absolute; font: 600 0.5625rem/1.35 var(--font-mono);
   color: var(--on-danger); background: var(--danger); border-radius: var(--r-ctl);
-  padding: 0.15rem 0.4rem; white-space: nowrap; transform: translateY(-50%); }
+  padding: 0.15rem 0.4rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ white-space: nowrap; transform: translateY(-50%); }
 
 /* ── OBJET 2 · la page de journal et l'affiche ── */
 .co-paire { display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(1.4rem, 4vw, 2.6rem); align-items: stretch; width: 100%; }
+  gap: clamp(1.4rem, 4vw, 2.6rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: stretch; width: 100%; }
 .co-paire > div { display: grid; grid-template-rows: auto 1fr; gap: var(--pad-3-block); }
 .co-nom-objet { font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--text-secondary); }
@@ -1144,22 +1149,22 @@ details.prov summary:hover { color: var(--text-primary); }
   margin: 0.5rem 0 0.1rem; font-weight: 700; }
 .co-signature { font: 400 0.625rem/1.4 var(--font-mono); color: var(--text-secondary);
   margin-bottom: var(--pad-3-block); }
-.co-cols { column-count: 2; column-gap: 1.1rem; font-size: 0.6875rem; line-height: 1.5;
+.co-cols { column-count: 2; column-gap: 1.1rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ font-size: 0.6875rem; line-height: 1.5;
   text-align: justify; hyphens: auto; }
 .co-cols p { margin-bottom: 0.5rem; }
 .co-filet { height: 1px; background: var(--surface-hover); margin: var(--pad-3-block) 0; }
 .co-breve { font-size: 0.625rem; line-height: 1.5; color: var(--text-secondary);
-  display: grid; gap: 0.35rem; }
+  display: grid; gap: 0.35rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
 .co-affiche { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
-  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem);
-  display: grid; align-content: space-between; gap: 1.4rem; }
+  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */
+  display: grid; align-content: space-between; gap: 1.4rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
 .co-marque { font: 600 0.625rem/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; }
 .co-titre-aff { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.05;
   letter-spacing: -0.03em; font-weight: 700; }
 .co-sous-aff { font-size: 0.8125rem; color: var(--text-secondary); max-width: 26ch;
   margin-top: var(--pad-3-block); }
 .co-action { justify-self: start; font-size: 0.8125rem; font-weight: 600;
-  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; background: var(--primary); color: var(--on-primary); }
+  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ background: var(--primary); color: var(--on-primary); }
 
 /* Le chemin, en pointillé permanent — et le regard, un segment plein qui
    le parcourt. Sans mouvement demandé, le pointillé dit le chemin. */

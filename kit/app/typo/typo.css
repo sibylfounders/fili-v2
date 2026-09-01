@@ -109,3 +109,11 @@
 }
 .gd-arbre-rang.ko { background: var(--danger-subtle); color: var(--danger); }
 .gd-arbre-note { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--danger); }
+
+/* Une bascule de libellé qui ne change pas la largeur de son bouton : les
+   deux mots occupent la même case, le plus long fixe la mesure. Sans ça, la
+   rangée se replie dans un état et pas dans l'autre, et les commandes
+   sautent sur la ligne du titre au moment du clic. */
+.tp-bascule { display: grid; place-items: center; }
+.tp-bascule > * { grid-area: 1 / 1; white-space: nowrap; }
+.tp-bascule > .tp-tu { visibility: hidden; }

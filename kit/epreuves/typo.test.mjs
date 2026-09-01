@@ -6,7 +6,11 @@
    3 · chaque casse rend le mensonge qu'elle déclare, et se répare ;
    4 · la densité ne touche pas au texte ; les titres glissent ;
    5 · le tertiaire suit C17 ;
-   6 · rien en dur — marges, espaces, coins, et tailles de texte.           */
+   6 · rien en dur — marges, espaces, coins, et tailles de texte.
+
+   Remise à niveau du 1er septembre 2026 : la carte du zoom s'ouvre allumée au
+   ×2 depuis le 31 août. L'épreuve ne redescend pas au repos pour passer — elle
+   dit l'état par défaut de la preuve, et éprouve les trois états.            */
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -48,19 +52,33 @@ test('1 · les huit fiches de l’échelle et sa légende disent les bornes, le 
   assert.ok(regles.includes(`jamais ${String(arrondi(16 * AXES.type.min)).replace('.', ',')}`) && regles.includes(`(${String(J['font-size-small'].base).replace('.', ',')})`), 'T10')
   await fermer()
 })
-test('1 · la carte du zoom : « corps = N px » est le corps du moteur à la largeur réelle, rendu tel quel ; ×2 double ; « vw seul » ne gagne pas un pixel', async () => {
+/* La carte du zoom s'ouvre ALLUMÉE au ×2 depuis le 31 août : « la démo montre
+   ce qui doit tenir sous zoom, pas l'état de repos » (verdict d'Auteur). Ce
+   n'est pas un détail d'affichage — c'est l'état par défaut de la preuve, et
+   l'épreuve le dit comme tel. Elle éprouve donc les trois états, dans l'ordre
+   où la page les propose : le zoom, le repos, la casse. */
+test('1 · la carte du zoom s’ouvre au ×2 : le corps affiché et le corps rendu sont ceux du moteur à la largeur réelle ; l’éteindre redescend au repos ; « vw seul » ne gagne pas un pixel', async () => {
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
     const carte = '#garde .gd-gardes .carte:nth-child(1)'
+    const zoom = () => p.locator(`${carte} .bouton`, { hasText: '×2' })
     const lu = () => texte(p, `${carte} .mono.sourd:not(:first-child)`, 0).then((t) => nombres(t.replace(/.*=/, ''))[0])
     const rendu = () => calcPx(p, `${carte} [style*="font-size"]`, 'fontSize')
-    ok(await lu(), arrondi(corps(W)), `${W} — affiché`); ok(await rendu(), corps(W), `${W} — rendu`)
-    await p.locator(`${carte} .bouton`, { hasText: '×2' }).click()
+    assert.equal(await zoom().getAttribute('aria-pressed'), 'true', `${W} — le zoom est allumé d’entrée`)
     ok(await lu(), arrondi(corps(W, 2)), `${W} — ×2 affiché`); ok(await rendu(), corps(W, 2), `${W} — ×2 rendu`)
+    /* l'état de repos existe toujours, il n'est simplement plus le premier montré */
+    await zoom().click()
+    assert.equal(await zoom().getAttribute('aria-pressed'), 'false', `${W} — le zoom s’éteint`)
+    ok(await lu(), arrondi(corps(W)), `${W} — repos affiché`); ok(await rendu(), corps(W), `${W} — repos rendu`)
+    await zoom().click()
+    ok(await rendu(), corps(W, 2), `${W} — rallumé : exactement le même corps`)
+    /* la casse, au zoom : tout en vw, la part d'écran ne bouge pas, le texte non plus */
     await p.locator(`${carte} .bouton.casse`).click()
     assert.equal(await p.getAttribute(`${carte} [style*="font-size"]`, 'data-intent'), 'statement')
     ok(await rendu(), corps(W), `${W} — vw seul au zoom ×2 : le corps de ×1`)
     assert.match(await texte(p, `${carte} .badge.ko`), /pas un pixel/)
+    await p.locator(`${carte} .bouton.casse`).click()
+    ok(await rendu(), corps(W, 2), `${W} — réparé : le corps du zoom revient`)
     await fermer()
   }
 })
@@ -239,7 +257,9 @@ test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée 
     for (const s of ['#voix', '#gamme', '#mesure', '#gazette', '#garde', '#adaptation']) await p.locator(`${s} details.prov summary`).click()
     const f = await fautesEnDur(p, W, DENSITES.comfortable)
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
-    const t = await fautesTailles(p, W, { exclusions, admis: [corps(W)] })
+    /* la seule taille hors gamme admise sur cette page est le corps calculé de la carte
+       du zoom — et la page s'ouvre au ×2 (31 août) : c'est CETTE valeur-là qui est rendue */
+    const t = await fautesTailles(p, W, { exclusions, admis: [corps(W, 2)] })
     assert.deepEqual(t, [], `${W} px : ${t.length} taille(s) hors moteur`)
     assert.deepEqual(erreurs, [], 'la page ne jette aucune erreur')
     assert.equal(await debord(p), 0, `${W} px : la page déborde de l'écran`)

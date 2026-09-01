@@ -29,8 +29,6 @@
 .ry .espace.ko[data-nom]::after, .ry .espace.vu[data-nom]::after { font-size: var(--font-size-small); }
 
 /* ── Petits utilitaires de mise en place (aucune valeur) ── */
-.ry-etire { display: flex; align-items: stretch; }
-.ry-plein { flex: 1; min-width: 0; }
 .ry-min0 { min-width: 0; }
 .ry-flex { display: flex; }
 .ry-large { width: 100%; }
@@ -70,7 +68,13 @@
 .tr-item { display: flex; align-items: center; min-height: var(--control-height-compact);
   padding: 0 var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); }
 .tr-item.on { background: var(--bg); color: var(--text-primary); font-weight: 600; }
-.tr-carte { flex: 1; min-width: 0; background: var(--bg); border-radius: var(--r-2); display: flex; flex-direction: column; }
+/* La carte est une rangée : sa marge gauche, son dedans, sa marge droite.
+   Les deux colonnes s'étirent sur toute la hauteur — c'est ce qui rend
+   l'anneau de marge continu (1er septembre). */
+.tr-carte { flex: 1; min-width: 0; background: var(--bg); border-radius: var(--r-2);
+  display: flex; align-items: stretch; }
+.tr-carte > .espace.h { align-self: stretch; height: auto; }
+.tr-carte-corps { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .tr-id { display: flex; align-items: center; gap: var(--gap-3-inline); }
 .tr-avatar {
   width: 2.75rem; height: 2.75rem; /* hors chaîne : la pastille d'avatar, un objet — pas une cible */
@@ -237,3 +241,179 @@
 .ry-regles { display: grid; gap: var(--gap-1-block); }
 .ry-regle { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
 .ry-regle > b { color: var(--text-primary); }
+
+/* ── La réglette de la chaîne (31 août 2026) ──
+   Le rapport entre deux distances ne s'écrit pas, il se regarde : quatre
+   barres à leur VRAIE longueur, l'escalier du ÷ √2. Elle se lit SOUS la
+   scène, à l'horizontale, calée sur son bord gauche et large comme elle :
+   c'est une légende, pas un panneau posé dans le banc. Quatre boîtes
+   séparées par leur opération — la ligne se lit comme une phrase.
+   La réglette est un instrument de mesure, pas une mise en page : elle pose
+   côte à côte des jetons des deux axes parce qu'elle les MESURE. */
+.ry-reglette { --ry-pas: 2.75rem; /* hors chaîne : la place que prend « ÷ √2 » entre deux boîtes */
+  display: flex; flex-wrap: wrap; align-items: stretch;
+  gap: var(--gap-1-block) var(--ry-pas); /* hors chaîne : l'écart entre deux boîtes EST la place du « ÷ √2 », pas une distance du kit */
+  width: 100%;
+  justify-self: start; align-self: start; margin: 0; padding: 0; list-style: none; }
+/* Tout ce qui suit est tenu SOUS la réglette : « le cran » est aussi le nom
+   de la section 06, et sa boîte de réponse porte la même classe. Sans ce
+   cadrage, la fiche d'une boîte de réglette (b au cran étiquette) rattrapait
+   l'affiche du bon cran et l'écrasait — un titre qui n'était plus l'affiche
+   (relevé au banc, 1er septembre). */
+.ry-reglette .ry-cran { position: relative; flex: 1 1 9rem; /* hors chaîne : la mesure d'une boîte de réglette */
+  display: grid; gap: var(--gap-4-block); align-content: start; justify-items: start;
+  background: var(--surface); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline); transition: background 0.15s; }
+.ry-cran-barre { height: 0.375rem; /* hors chaîne : l'épaisseur du trait de mesure */
+  border-radius: var(--r-pill); background: var(--ry-couleur, var(--text-primary)); }
+.ry-reglette .ry-cran b { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.ry-cran-role { font-size: var(--font-size-label); color: var(--text-secondary); }
+/* L'opération se lit DANS l'écart, entre les deux boîtes qu'elle relie. */
+.ry-cran-pas { position: absolute; inset-inline-end: calc(var(--ry-pas) / -2);
+  top: 50%; transform: translate(50%, -50%); z-index: 1; white-space: nowrap;
+  font-size: var(--font-size-label); color: var(--text-secondary); }
+/* Sur un écran étroit, les boîtes s'empilent : le pas ne peut plus se lire
+   à DROITE de sa boîte — il sortait de la page de dix-sept pixels (attrapé
+   le 1er septembre). Il descend donc dans l'écart vertical, entre les deux
+   boîtes qu'il relie, exactement comme il vivait dans l'écart horizontal. */
+@media (max-width: 56rem) {
+  .ry-reglette { flex-direction: column; gap: var(--ry-pas); }
+  .ry-reglette > .ry-cran { flex: none; width: 100%; }
+  .ry-reglette > .ry-cran > .ry-cran-pas {
+    inset-inline-end: auto; left: 50%; top: auto;
+    bottom: calc(var(--ry-pas) / -2); transform: translate(-50%, 50%); }
+}
+
+/* Les deux sens du lien : l'espace allume son cran, le cran allume ses
+   espaces. La boîte de réglette est une bien plus grande cible qu'une
+   bande de douze pixels : c'est par là qu'on entre. */
+.ry-preuve-tranche:has(.espace[data-cran="1"]:hover) .ry-cran[data-cran="1"],
+.ry-preuve-tranche:has(.espace[data-cran="2"]:hover) .ry-cran[data-cran="2"],
+.ry-preuve-tranche:has(.espace[data-cran="3"]:hover) .ry-cran[data-cran="3"],
+.ry-preuve-tranche:has(.espace[data-cran="4"]:hover) .ry-cran[data-cran="4"],
+.ry-reglette .ry-cran:hover { background: var(--surface-hover); }
+.ry-preuve-tranche:has(.ry-cran[data-cran="1"]:hover) .espace[data-cran="1"],
+.ry-preuve-tranche:has(.ry-cran[data-cran="2"]:hover) .espace[data-cran="2"],
+.ry-preuve-tranche:has(.ry-cran[data-cran="3"]:hover) .espace[data-cran="3"],
+.ry-preuve-tranche:has(.ry-cran[data-cran="4"]:hover) .espace[data-cran="4"] {
+  background: color-mix(in srgb, var(--ry-couleur) 18%, transparent);
+  outline-color: var(--ry-couleur); }
+
+/* ── La marge du panneau, tracée à même son bord (31 août) ──
+   Les trois autres distances ont un bloc d'espace ; celle-là est le
+   rembourrage de la tranche elle-même. Quatre bandes posées sur ses bords
+   la rendent visible ET survolable : sans cible, ce cran était le seul à
+   ne pas pouvoir répondre au pointeur ni porter son nom. */
+.tranche { position: relative; }
+.ry-marge1 { position: absolute; inset: 0; border-radius: inherit;
+  overflow: hidden; pointer-events: none; }
+.ry-marge1 .espace { position: absolute; border-radius: 0; pointer-events: auto; }
+.ry-marge1 .haut { inset-block-start: 0; inset-inline: 0; height: var(--pad-1-block); }
+.ry-marge1 .bas { inset-block-end: 0; inset-inline: 0; height: var(--pad-1-block); }
+.ry-marge1 .gauche { inset-block: var(--pad-1-block); inset-inline-start: 0; width: var(--pad-1-inline); }
+.ry-marge1 .droite { inset-block: var(--pad-1-block); inset-inline-end: 0; width: var(--pad-1-inline); }
+/* L'étiquette se pose dans la bande du haut, comme les autres se posent
+   dans l'espace qu'elles nomment. */
+.ry-marge1 .haut[data-nom]::after { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+/* ── Les quatre couleurs des quatre crans (verdict d'Auteur, 31 août) ──
+   Vert, bleu, jaune, rouge — du cran le plus large au plus serré. Quatre
+   teintes que tout le monde nomme sans hésiter : c'est ce qui fait le lien
+   entre le lieu et la mesure avant même le survol. Chaque espace de la
+   scène porte celle de son cran, la barre de sa boîte de réglette porte la
+   même.
+   Les quatre familles du kit donnent le départ, deux teintes sont ensuite
+   accordées à l'œil (verdict d'Auteur) : le bleu tire vers le violet plutôt
+   que vers le gris (#4338CA), et le jaune reste franchement jaune plutôt
+   qu'orange (teinte 50°, pas 35°). En thème clair, le jaune vif tombe à
+   1,6:1 sur le fond de la légende — invisible : on prend sa version encre
+   (#9A8000, 3,5:1). En sombre, le jaune vif tient tout seul.
+   Le bleu-violet du cran 2 côtoie le violet de la marque : il ne s'y
+   confond pas, parce qu'il ne se pose jamais sur le fond primaire — la
+   scène le porte à l'intérieur de la carte, sur blanc.
+   RUPTURE DÉCLARÉE — dans CETTE preuve seulement, la couleur ne dit plus la
+   nature (rouge les retraits, vert les écarts — convention du 24 août) ni
+   l'état : elle dit la PROFONDEUR. Auteur a tranché en connaissance de
+   cause. Le mot de l'étiquette continue de dire la nature ; la convention
+   reste entière partout ailleurs. Deux garde-fous tenus quand même : les
+   étiquettes restent à l'encre du texte (une teinte décorative ne porte
+   jamais un mot à lire), et les quatre teintes tiennent au moins 3:1 sur
+   leur fond dans les deux thèmes. */
+.ry-preuve-tranche [data-cran="1"] { --ry-couleur: #15803D; }
+.ry-preuve-tranche [data-cran="2"] { --ry-couleur: #4338CA; }
+.ry-preuve-tranche [data-cran="3"] { --ry-couleur: #9A8000; }
+.ry-preuve-tranche [data-cran="4"] { --ry-couleur: #B91C1C; }
+[data-theme="dark"] .ry-preuve-tranche [data-cran="1"] { --ry-couleur: #4ADE80; }
+[data-theme="dark"] .ry-preuve-tranche [data-cran="2"] { --ry-couleur: #A5B4FC; }
+[data-theme="dark"] .ry-preuve-tranche [data-cran="3"] { --ry-couleur: #FDE047; }
+[data-theme="dark"] .ry-preuve-tranche [data-cran="4"] { --ry-couleur: #F87171; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ry-preuve-tranche [data-cran="1"] { --ry-couleur: #4ADE80; }
+  :root:not([data-theme="light"]) .ry-preuve-tranche [data-cran="2"] { --ry-couleur: #A5B4FC; }
+  :root:not([data-theme="light"]) .ry-preuve-tranche [data-cran="3"] { --ry-couleur: #FDE047; }
+  :root:not([data-theme="light"]) .ry-preuve-tranche [data-cran="4"] { --ry-couleur: #F87171; }
+}
+.ry-preuve-tranche .survole-espaces:hover .espace.vu[data-cran],
+.ry-preuve-tranche .survole-espaces:focus-within .espace.vu[data-cran] {
+  background: color-mix(in srgb, var(--ry-couleur) 18%, transparent);
+  outline-color: var(--ry-couleur); }
+.ry-preuve-tranche .espace.vu[data-cran][data-nom]::after { color: var(--text-primary); }
+
+
+/* ── L'amorce — « deux fois le même geste » (1er septembre) ──
+   Portée de la pièce libre du 31 août. Des blocs encrés séparés par de
+   VRAIS espaces : ce qu'on voit entre eux est la distance elle-même, à sa
+   taille réelle. Les deux rangs de pastilles qui tenaient cette place
+   affirmaient le raisonnement ; celle-ci le fait faire au lecteur. */
+.ry-amorce { display: grid; gap: var(--gap-1-block); width: 100%; justify-items: start; }
+/* Une seule grille pour la paire entière : les deux titres ET la question
+   sur la première ligne, les deux cartes ET la commande sur la seconde.
+   Chacun dans son bloc, la question flottait au milieu de la hauteur des
+   cartes et ne répondait visuellement à rien (verdict d'Auteur, 1er sept.). */
+.ry-paire { display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+  column-gap: var(--gap-1-inline); row-gap: var(--gap-4-block);
+  align-items: start; width: 100%; }
+.ry-paire > .ry-col-1 { grid-column: 1; }
+.ry-paire > .ry-col-2 { grid-column: 2; }
+.ry-paire > .ry-ech-titre { grid-row: 1; }
+.ry-paire > .ry-ech-carte { grid-row: 2; }
+.ry-paire > .ry-demande { grid-column: 3; grid-row: 1; }
+.ry-paire > .ry-juge { grid-column: 3; grid-row: 2; }
+.ry-ech-titre { font-size: var(--font-size-label); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.ry-ech-carte { display: grid; background: var(--bg); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline); }
+.ry-ech-bloc { background: var(--surface-hover); border-radius: var(--r-4);
+  height: 1.9rem; /* hors chaîne : décor de scène — un bloc de contenu, pas une distance du kit */ }
+/* L'espace est un vrai espace : il ne se teinte que quand on demande à voir. */
+.ry-ech-espace { position: relative; background: none; transition: background 0.2s linear; }
+/* La distance mesurée est rouge — la couleur des inspecteurs, et celle de
+   la pièce libre d'où vient cette démo (verdict d'Auteur, 1er septembre).
+   Ici le rouge ne dit pas la faute : il dit « voici la distance, à sa
+   taille réelle ». Le jugement, lui, reste dans le badge du verdict. */
+.ry-ech-cote { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 2; font-style: normal; opacity: 0; transition: opacity 0.2s linear;
+  background: var(--danger); color: var(--on-danger); border-radius: var(--r-4);
+  padding: 0.14rem 0.38rem; /* hors chaîne : la pastille de cote, une étiquette d'inspecteur */
+  font: 600 var(--font-size-label)/1 var(--font-mono); white-space: nowrap; }
+.ry-paire.revele .ry-ech-espace { background: color-mix(in srgb, var(--danger) 16%, transparent); }
+.ry-paire.revele .ry-ech-cote { opacity: 1; }
+/* La question, le bouton, puis la réponse : l'ordre de lecture est aussi
+   l'ordre du geste. La réponse garde sa place quand elle est cachée — la
+   scène ne saute pas d'un pixel au clic, et les deux paires restent
+   alignées l'une sous l'autre quelle que soit celle qu'on a ouverte. */
+.ry-juge { display: grid; align-content: start; justify-items: start; gap: var(--gap-2-block); }
+.ry-juge .ry-tu { visibility: hidden; }
+.ry-demande { color: var(--text-secondary); max-width: 34ch; }
+.ry-verdict { display: grid; gap: var(--gap-3-block); justify-items: start; max-width: 40ch; align-content: center; }
+@media (max-width: 56rem) {
+  /* Trop étroit pour trois colonnes : les deux échantillons gardent la
+     leur, la question et sa commande passent dessous, pleine largeur. */
+  .ry-paire { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: var(--gap-2-block); }
+  .ry-paire > .ry-demande { grid-column: 1 / -1; grid-row: 3; }
+  .ry-paire > .ry-juge { grid-column: 1 / -1; grid-row: 4; }
+}
+/* Le badge du verdict de l'amorce : neutre tant qu'il n'y a rien à
+   reprocher — la couleur de marque ne dit pas un jugement. */
+.ry-verdict .badge.neutre { color: var(--text-secondary); background: var(--surface-hover); }

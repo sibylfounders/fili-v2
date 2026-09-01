@@ -6,7 +6,13 @@
    3 · le moteur sous les yeux : une marque entre, toute la famille suit, les seuils tiennent ;
    4 · les casses rendent le mensonge qu'elles déclarent, et se réparent ;
    5 · le thème sombre, et C17 dans les deux thèmes ;
-   6 · rien en dur — marges, espaces, coins, tailles, couleurs écrites.       */
+   6 · rien en dur — marges, espaces, coins, tailles, couleurs écrites.
+
+   Remise à niveau du 1er septembre 2026 : le nuancier est passé en six lignes
+   signées rangées en deux groupes (31 août), et la démo du moteur REGARDE au
+   lieu de piloter la page. Les épreuves 1, 2 et 3 disent ces deux décisions au
+   lieu de décrire la page d'avant ; l'épreuve 3, en particulier, exige
+   désormais AUSSI que la page ne bouge pas.                                  */
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -19,11 +25,24 @@ const PAL = derive(PRIMAIRE_DEFAUT)
 /* l'écriture des rapports sur la page : deux décimales, virgule, « :1 » */
 const fmt = (r) => `${r.toFixed(2).replace('.', ',')}:1`
 const rapport = (pal, t, f) => contraste(pal[t.replace(/^--/, '')], pal[f.replace(/^--/, '')])
-const LANGUETTES = [
-  ['primary', '--primary', '--on-primary', '--primary-subtle', '--on-primary-subtle'], ['danger', '--danger', '--on-danger', '--danger-subtle', '--on-danger-subtle'],
-  ['success', '--success', '--on-success', '--success-subtle', '--on-success-subtle'], ['neutral', '--text-primary', '--bg', '--surface', '--text-secondary'],
-  ['info', '--info', '--on-info', '--info-subtle', '--on-info-subtle'], ['warning', '--warning', '--on-warning', '--warning-subtle', '--on-warning-subtle'],
+/* Le nuancier est passé en SIX LIGNES SIGNÉES, rangées en deux groupes, le
+   31 août : la coupure est celle du jugement — ce qui ne juge rien d'un côté,
+   les trois verdicts de l'autre. L'ordre ci-dessous est celui de la page ; il
+   n'est pas décoratif, c'est la démonstration elle-même (« ne pas dépenser un
+   verdict là où il n'y a rien à juger »), et l'épreuve le mesure comme tel. */
+const GROUPES_NUANCIER = [
+  ['Ce qui ne juge pas', ['primary', 'neutral', 'info']],
+  ['Les trois verdicts', ['danger', 'success', 'warning']],
 ]
+const COUPLES = {
+  primary: ['--primary', '--on-primary', '--primary-subtle', '--on-primary-subtle'],
+  neutral: ['--text-primary', '--bg', '--surface', '--text-secondary'],
+  info: ['--info', '--on-info', '--info-subtle', '--on-info-subtle'],
+  danger: ['--danger', '--on-danger', '--danger-subtle', '--on-danger-subtle'],
+  success: ['--success', '--on-success', '--success-subtle', '--on-success-subtle'],
+  warning: ['--warning', '--on-warning', '--warning-subtle', '--on-warning-subtle'],
+}
+const LANGUETTES = GROUPES_NUANCIER.flatMap(([, jetons]) => jetons).map((j) => [j, ...COUPLES[j]])
 const TUILES = [['primary', '--on-primary'], ['bg', '--text-primary'], ['primary-subtle', '--on-primary-subtle'], ['text-primary', '--bg'], ['surface', '--text-primary'], ['border-strong', '--bg']]
 /* résoudre un jeton dans un hôte thématisé, comme la page le fait — par le moteur de rendu */
 const resoudre = (p, theme, noms) => p.evaluate(([theme, noms]) => {
@@ -76,8 +95,14 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
   for (const theme of ['light', 'dark']) {
     const { p, fermer } = await nav.page(URL(), { theme }); await releve(p)
     const pal = PAL[theme]
-    /* le nuancier lit le thème courant */
+    /* le nuancier lit le thème courant — et il est rangé par le jugement (31 août) */
+    const groupes = await p.evaluate(() => [...document.querySelectorAll('#nuancier .gd-nfam')].map((s) => ({
+      titre: s.querySelector('.gd-nfam-titre').textContent,
+      lignes: [...s.querySelectorAll('.gd-lng-fiche')].map((f) => f.textContent.split(' · ')[0]),
+    })))
+    assert.deepEqual(groupes.map((g) => [g.titre, g.lignes]), GROUPES_NUANCIER, `${theme} — les deux groupes du nuancier`)
     const fiches = await textes(p, '#nuancier .gd-lng-fiche')
+    assert.equal(fiches.length, 6, `${theme} — six lignes signées`)
     LANGUETTES.forEach(([jeton, ton, , doux, surDoux], i) => assert.equal(fiches[i], `${jeton} · ${pal[ton.slice(2)]} · doux ${pal[doux.slice(2)]} · ${fmt(rapport(pal, surDoux, doux))}`, `${theme} — languette ${jeton}`))
     /* les deux panneaux : chacun son thème, trois rapports */
     for (const [i, t] of [[0, 'light'], [1, 'dark']]) {
@@ -153,37 +178,56 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
 })
 
 /* ── 3 · Le moteur sous les yeux ── */
-test('3 · une marque entre par le rail : la page change de primaire, toute la famille affichée est dérivée, les sémantiques gardent leur teinte, les trente-deux paires tiennent — puis retour à la charte', async () => {
+/* Depuis le 31 août, la démo REGARDE, elle ne pilote plus : la marque du site se
+   choisit dans la barre d'outils, et nulle part ailleurs. Prendre une marque dans
+   le rail ne change que cette scène-là. L'épreuve dit donc DEUX choses au lieu
+   d'une, et c'est plus dur que l'ancienne : que toute la scène soit dérivée de la
+   marque regardée — et que la page, elle, ne bouge pas d'un pixel de couleur. */
+test('3 · une marque entre par le rail : la scène entière est dérivée d’elle, les sémantiques gardent leur teinte, les paires déclarées tiennent — et la page ne change PAS de primaire', async () => {
   const { p, fermer } = await nav.page(URL()); await releve(p)
   const chips = p.locator('#moteur .mk-chip[title]')
   const noms = await chips.evaluateAll((els) => els.map((e) => e.title))
+  /* l'état de la page avant qu'on touche au rail : c'est lui qui ne doit pas bouger */
+  const varPage = () => p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim().toUpperCase())
+  const tuilePage = () => calc(p, '#palette .cm-tuile', 'backgroundColor')
+  assert.equal(await varPage(), PAL.light.primary, 'au départ, la page est sur la charte')
   const marques = { Spotify: '#1DB954', Netflix: '#E50914', Slack: '#4A154B' }
   for (const [nom, hex] of Object.entries(marques)) {
     await chips.nth(noms.indexOf(nom)).click()
-    await p.waitForFunction((h) => document.documentElement.dataset.primary === h, hex)
-    await p.waitForFunction(() => !document.querySelector('#palette .cm-specs').textContent.includes('…'))
-    await p.waitForTimeout(50)
+    await p.waitForFunction((n) => document.querySelector('#moteur .mk-grande .mk-base')?.textContent === n, nom)
     const pal = derive(hex)
-    assert.equal(await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()), pal.light.primary, `${nom} — la variable`)
-    assert.equal(await calc(p, '#palette .cm-tuile', 'backgroundColor'), rgb(pal.light.primary), `${nom} — la mosaïque`)
-    assert.equal(await p.evaluate(() => document.querySelector('#palette .cm-tuile .cm-specs span:nth-child(2)').textContent), pal.light.primary, `${nom} — le hex affiché`)
+    /* la scène : le plein et le doux, logo et nom, dérivés de la marque regardée */
     const scene = await p.evaluate(() => [...document.querySelectorAll('#moteur .mk-grande')].map((g) => [getComputedStyle(g).backgroundColor, getComputedStyle(g).color]))
     assert.deepEqual(scene, [[rgb(pal.light.primary), rgb(pal.light['on-primary'])], [rgb(pal.light['primary-subtle']), rgb(pal.light['primary-text'])]], `${nom} — la scène`)
+    /* le chip choisi porte sa marque, et lui seul */
+    assert.equal(await p.evaluate(() => [...document.querySelectorAll('#moteur .mk-chip[title]')].filter((c) => c.getAttribute('aria-pressed') === 'true').length), 1, `${nom} — un seul chip enfoncé`)
+    await p.waitForTimeout(200) /* le chip anime son fond (0,15 s) ; le banc le lit au repos */
+    assert.equal(await calc(p, `#moteur .mk-chip[title="${nom}"]`, 'backgroundColor'), rgb(hex), `${nom} — le chip enfoncé porte sa couleur`)
     const barres = await p.evaluate(() => [...document.querySelectorAll('#moteur .mk-rang')].map((r) => [...r.querySelectorAll('.mk-barre')].map((b) => getComputedStyle(b).backgroundColor)))
     assert.deepEqual(barres[0], gamme(hex).filter(([c]) => [100, 300, 500, 700].includes(c)).map(([, h]) => rgb(h)), `${nom} — la gamme`)
     assert.deepEqual(barres[1], ['danger', 'success', 'warning', 'info'].flatMap((v) => [rgb(pal.light[v]), rgb(pal.light[`${v}-subtle`])]), `${nom} — les sémantiques`)
-    /* un rouge reste un rouge : la teinte de chaque famille ne s'éloigne pas de la charte de plus que le plafond du moteur (30° depuis le 27 août), au degré d'arrondi 8 bits près */
+    /* un rouge reste un rouge : la teinte de chaque famille ne s'éloigne pas de la charte de plus que le plafond du moteur, au degré d'arrondi 8 bits près */
     for (const v of ['danger', 'success', 'warning', 'info']) { const d = Math.abs(((hexVersLch(pal.light[v])[2] - hexVersLch(PAL.light[v])[2] + 540) % 360) - 180); assert.ok(d <= PLAFOND_ETATS + 1, `${nom} — ${v} a tourné de ${d.toFixed(0)}°`) }
-    /* les paires déclarées tiennent sur la page rendue, dans les deux thèmes */
-    for (const t of ['light', 'dark']) {
-      const noms = [...new Set(PAIRES_DECLAREES.flatMap(([a, b]) => [a, b]))]
-      const v = await resoudre(p, t, noms)
-      for (const [a, b, seuil] of PAIRES_DECLAREES) { const r = contraste(versHex(v[a]), versHex(v[b])); assert.ok(r >= seuil, `${nom} ${t} — ${a}/${b} : ${r.toFixed(2)} < ${seuil}`) }
+    /* la famille dérivée tient ses seuils : la conformité n'est pas vérifiée après coup, elle est obtenue */
+    for (const t of ['light', 'dark']) for (const [a, b, seuil] of PAIRES_DECLAREES) {
+      const r = contraste(pal[t][a.replace(/^--/, '')], pal[t][b.replace(/^--/, '')])
+      assert.ok(r >= seuil, `${nom} ${t} — ${a}/${b} : ${r.toFixed(2)} < ${seuil}`)
     }
+    /* et la page n'a pas bougé — c'est la décision du 31 août, mesurée */
+    assert.equal(await p.evaluate(() => document.documentElement.dataset.primary ?? null), null, `${nom} — la démo ne pilote pas le site`)
+    assert.equal(await varPage(), PAL.light.primary, `${nom} — la page reste sur la charte`)
+    assert.equal(await tuilePage(), rgb(PAL.light.primary), `${nom} — la mosaïque reste sur la charte`)
   }
+  /* l'onglet Fili porte la couleur du site — c'est à quoi il sert */
   await chips.nth(noms.indexOf('Fili')).click()
-  await p.waitForFunction(() => document.documentElement.dataset.primary === undefined)
-  assert.equal((await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim())).toUpperCase(), PAL.light.primary, 'retour à la charte')
+  await p.waitForFunction(() => document.querySelector('#moteur .mk-grande .mk-base')?.textContent === 'Fili')
+  assert.equal(await calc(p, '#moteur .mk-grande', 'backgroundColor'), rgb(PAL.light.primary), 'retour à la charte')
+  /* les paires déclarées tiennent aussi sur la page RENDUE, dans les deux thèmes */
+  for (const t of ['light', 'dark']) {
+    const jetons = [...new Set(PAIRES_DECLAREES.flatMap(([a, b]) => [a, b]))]
+    const v = await resoudre(p, t, jetons)
+    for (const [a, b, seuil] of PAIRES_DECLAREES) { const r = contraste(versHex(v[a]), versHex(v[b])); assert.ok(r >= seuil, `page ${t} — ${a}/${b} : ${r.toFixed(2)} < ${seuil}`) }
+  }
   await fermer()
 })
 
@@ -241,14 +285,31 @@ test('5 · dans les deux thèmes, tout tertiaire rendu porte 600 au moins, au cr
 test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une valeur du moteur (déclarées exceptées) ; les titres glissent ; la densité règle les coques ; zéro débord ; zéro erreur', async () => {
   const css = fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
   const exclusions = [...selecteursDeclares(css, 'font-size'), ...selecteursEnEm(css)]
-  /* les espaces en em (une flèche et son chiffre, la pastille d'un statut) : des proportions typographiques, comme le vérificateur du site l'admet */
-  const enEm = ['gap', 'padding', 'padding-inline', 'padding-block', 'margin'].flatMap((prop) => selecteursEnEm(css, prop))
+  /* les espaces en em (une flèche et son chiffre, la pastille d'un statut) : des proportions
+     typographiques, comme le vérificateur du site l'admet — et, comme sur /arrondis, les
+     mesures d'objet DITES sur leur ligne : la lane du ton du nuancier en est une, et le fond
+     doux lui réserve sa place (déclarée depuis le 1er septembre) */
+  const props = ['gap', 'row-gap', 'column-gap', 'padding', 'padding-inline', 'padding-block', 'padding-inline-end', 'border-radius', 'margin']
+  const enEm = props.flatMap((prop) => [...selecteursEnEm(css, prop), ...selecteursDeclares(css, prop)])
   const affiche = []
   for (const W of LARGEURS) {
     const { p, fermer, erreurs } = await nav.page(URL(), { largeur: W }); await releve(p)
     for (const s of ['#palette', '#nuancier', '#situation', '#themes', '#moteur', '#gardefous', '#table', '#adaptation']) for (const d of await p.locator(`${s} details.prov summary`).all()) await d.click()
     const f = await fautesEnDur(p, W, DENSITES.comfortable, { exclusions: enEm })
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
+    /* Le fond doux du nuancier sort du balayage parce qu'il DÉCLARE la place qu'il
+       réserve à la lane du ton. On la mesure donc nommément, et plus durement que le
+       balayage ne le ferait : la place réservée vaut exactement la lane, plus la marge
+       de ligne — et tout le reste de la ligne est bien sur la chaîne. */
+    const lng = await p.evaluate(() => {
+      const d = document.querySelector('#nuancier .gd-lng-doux'), t = document.querySelector('#nuancier .gd-lng-ton')
+      const cd = getComputedStyle(d)
+      return { haut: parseFloat(cd.paddingTop), gauche: parseFloat(cd.paddingLeft), droite: parseFloat(cd.paddingRight), espace: parseFloat(cd.rowGap), lane: t.getBoundingClientRect().width }
+    })
+    ok(lng.haut, attendu('pad-3-block', W), `${W} — le fond doux : marge de ligne`)
+    ok(lng.gauche, attendu('pad-3-inline', W), `${W} — le fond doux : marge de ligne`)
+    ok(lng.espace, attendu('gap-4-block', W), `${W} — le fond doux : au plus serré`)
+    ok(lng.droite, lng.lane + attendu('pad-3-inline', W), `${W} — la place réservée = la lane du ton + la marge`, 0.5)
     const t = await fautesTailles(p, W, { exclusions })
     assert.deepEqual(t, [], `${W} px : ${t.length} taille(s) hors moteur`)
     assert.deepEqual(erreurs, [], 'la page ne jette aucune erreur')

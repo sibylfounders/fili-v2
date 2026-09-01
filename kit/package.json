@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "tokens": "node tokens.ecrire.mjs",
     "test": "node --test derivation.test.mjs",
-    "test:pages": "KIT_DIST=.next-epreuves next build && KIT_DIST=.next-epreuves node --test 'epreuves/*.test.mjs'"
+    "test:pages": "KIT_DIST=.next-epreuves next build && KIT_DIST=.next-epreuves node --test 'epreuves/*.test.mjs'",
+    "banc:etat": "node epreuves/etat-du-banc.mjs",
+    "banc:nuit": "node epreuves/course-de-nuit.mjs"
   },
   "dependencies": {
     "next": "^14.2.15",

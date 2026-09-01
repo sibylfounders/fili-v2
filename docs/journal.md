@@ -4886,3 +4886,472 @@ tranche à 700, 900 et 1240 px, mesure faite avec une fonte plus grande que
 la vraie — la marge est donc plus large encore. Réserve dite : le rendu de
 ces étiquettes n'a pas pu être vu sur banc isolé (leur règle ne s'y déclenche
 pas), seule leur largeur a été mesurée.
+
+## 31 août 2026 (9) — La chaîne se regarde, elle ne se lit pas
+
+**Verdict d'Auteur sur la passe précédente** — « je trouve pas ça
+compréhensible ». Il a raison, et la raison est structurelle : une phrase
+posée dans une bande de douze pixels ne peut pas montrer un RAPPORT entre
+deux longueurs. En prime, l'étiquette de l'espace horizontal débordait de sa
+boîte de huit pixels — on n'en lisait que trois mots.
+
+**Décision** — Les étiquettes redeviennent des noms (« marge · carte »), et
+le rapport se voit à côté, sur une **réglette** : quatre crans dessinés à
+leur VRAIE longueur — la marge de la coque, celle de la carte, l'espace
+entre deux lignes, l'espace dans la ligne — et entre chaque cran, le pas :
+÷ √2. Un escalier montre un rapport ; une phrase le raconte.
+
+**Ce qui rend la réglette honnête** — Les barres prennent leur largeur du
+JETON lui-même, pas d'un nombre recopié : rapports mesurés au rendu, 1,414 ·
+1,415 · 1,405 pour un √2 à 1,414. Les valeurs affichées sont lues dans le
+registre. La réglette est un instrument de mesure, pas une mise en page :
+elle pose côte à côte des jetons des deux axes parce qu'elle les mesure —
+c'est dit dans le CSS.
+
+**Le lien va dans les deux sens** — chaque espace de la scène porte son cran
+(`data-cran`) ; survoler un espace allume son cran, survoler un cran allume
+ses espaces. La cible d'une ligne de réglette est bien plus facile à
+atteindre qu'une bande de douze pixels : c'est par là qu'on entre.
+
+## 31 août 2026 (10) — `/typo` : le zoom du lecteur
+
+Trois retours d'Auteur, trois corrections. **Le bouton ×1 disparaît** : ×1
+est l'état de repos, il n'a pas besoin d'un bouton pour se dire — reste une
+bascule ×2. **Le zoom est allumé d'entrée** : la démo montre ce qui doit
+tenir SOUS zoom, pas l'état de repos. Et **les commandes ne sautent plus sur
+la ligne du titre au clic** : « Casser : vw seul » et « Réparer » occupent
+désormais la même case, le plus long fixe la mesure, donc la rangée se replie
+de la même façon dans les deux états (mesuré : bouton de 154 px et carte de
+157 px de haut, identiques avant et après le clic).
+
+**Correctif — la réglette devient une légende horizontale** — Essayée en
+colonne à droite, écartée : elle se lit SOUS la scène, à l'horizontale, dans
+l'encre de la page. C'est une légende, pas un panneau posé dans le banc. Les
+quatre crans se suivent de gauche à droite, chacun séparé du suivant par son
+pas — la ligne se lit alors comme une phrase : « la marge du panneau ÷ √2
+la marge de la carte ÷ √2 entre deux lignes ÷ √2 dans la ligne ».
+
+**Et « coque » disparaît de l'écran** — le mot est du vocabulaire interne, il
+ne parle à personne. La légende dit « le panneau », qui est déjà le mot des
+légendes d'Arrondis (« panneau r16 marge 24 · carte r8 · ligne r4 ») et se
+comprend sans avoir lu le vocabulaire. Le mot du kit reste dans le code, là
+où il sert.
+
+**Vérifié** — à 1180 et 700 px : la réglette est sous le vert, ses quatre
+crans sur une seule ligne, et les barres gardent leur vraie longueur (26,4 ·
+18,7 · 13,2 · 9,4 à 1180 px — le rapport √2 tient à la mesure).
+
+**Suite — la légende en quatre boîtes** — Trois retours d'Auteur, trois
+corrections. Les crans deviennent **quatre boîtes**, séparées par leur
+opération, et la légende prend **toute la largeur du bloc vert** (mesuré :
+1124 px de vert, 1124 px de légende, même bord gauche). L'écart entre deux
+boîtes est réservé à « ÷ √2 » — sans cette réserve, le symbole passait sous
+la boîte suivante et on n'en lisait que la moitié.
+
+**Et le panneau devient survolable comme les autres** — il n'a pas de bloc
+d'espace dans la scène : sa marge EST le rembourrage de la tranche. On la
+peint donc à même son bord, exactement à l'épaisseur de son jeton (bordure
+haute et basse au `pad-1-block`, côtés au `pad-1-inline`) — la seule façon
+de rendre ce cran-là aussi vivant que les trois autres.
+
+**Suite — la couleur dit la profondeur, et le panneau entre dans la danse**
+
+Deux retours d'Auteur. **Le retrait du panneau se révèle maintenant AVEC les
+autres**, pas seulement quand on survole son cran : c'est un espace de la
+scène comme les trois autres, simplement peint à même le bord de la tranche
+parce qu'il n'a pas de bloc à lui.
+
+**Et les quatre crans prennent quatre teintes** — verdict d'Auteur : UNE
+seule teinte, l'encre de la page, celle qui ne dit aucun état, et quatre
+crans de clarté. La teinte dit « c'est la même chaîne », la clarté dit « et
+voici le cran ». Les quatre pas suivent la chaîne elle-même : 0,85 → 0,60 →
+0,425 → 0,30, soit un ÷ √2 à chaque descente, comme les distances qu'ils
+mesurent. La même teinte se retrouve dans le trait de la boîte de légende et
+dans l'espace de la scène : un seul coup d'œil relie les deux.
+
+**Ce qui est troqué, et dit** — dans CETTE preuve seulement, la couleur ne
+dit plus la NATURE (rouge les retraits, vert les écarts — convention du
+24 août) mais la PROFONDEUR. Le mot de l'étiquette continue de dire la
+nature, et la convention reste entière partout ailleurs : la règle est
+scopée à la preuve.
+
+**Une entorse assumée** — le fond des espaces garde l'ORDRE des crans mais
+pas leur rapport exact : à 0,30 fois vingt pour cent, le dernier cran serait
+invisible. Un plancher le tient lisible. Le rapport √2 vit dans les barres
+de la légende, là où il se compare.
+
+## 31 août 2026 — /rythme · la marge du panneau se nomme, et les quatre crans prennent quatre couleurs
+
+**Il manquait une ligne d'explication.** Trois distances sur quatre se
+nommaient au survol ; la quatrième — la marge du panneau — n'était qu'une
+bande de couleur muette, parce qu'elle n'était pas un élément mais une
+peinture posée sur le bord de la tranche. Elle porte maintenant son nom,
+« marge · panneau », posé dans la bande du haut comme les autres étiquettes
+se posent dans l'espace qu'elles nomment.
+
+**Et cette zone allume la première boîte.** Le lien ne marchait que dans un
+sens : la boîte allumait la bande, la bande n'allumait rien, parce qu'une
+peinture ne se survole pas. La marge est donc tracée par quatre vraies
+bandes posées sur les quatre bords, à l'épaisseur exacte du jeton. Les
+quatre crans répondent désormais dans les deux sens, sans exception.
+
+**Ce qui est troqué, et dit** — ces quatre bandes ne sont pas de vrais
+espaces : le vrai espace est le rembourrage de la tranche, qu'aucun bloc ne
+matérialise. Elles le calquent, à la largeur du jeton, jamais à une valeur
+écrite à la main. C'est le seul cran du kit dans ce cas.
+
+**Quatre couleurs, contre nos propres règles — verdict d'Auteur.**
+L'échelle de clarté d'hier (une seule encre, quatre paliers) est remplacée
+par quatre couleurs que tout le monde nomme sans hésiter : **vert, bleu,
+jaune, rouge**, du cran le plus large au plus serré. Chaque espace de la
+scène porte celle de son cran, la barre de sa boîte de légende porte la
+même : la couleur fait le lien entre le lieu et la mesure avant même qu'on
+survole quoi que ce soit.
+
+Les quatre familles du kit donnent le départ ; deux teintes sont ensuite
+accordées à l'œil, sur verdict d'Auteur. Le bleu tire vers le violet plutôt
+que vers le gris. Le jaune reste franchement jaune plutôt qu'orange : on le
+remonte de la teinte 35° (un ocre) à la teinte 50° (un vrai jaune). En thème
+clair, le jaune vif disparaît sur le fond gris de la légende — 1,6:1 : on
+prend sa version encre, qui tient 3,5:1 ; en sombre, le jaune vif tient tout
+seul.
+
+Le bleu-violet du deuxième cran côtoie le violet de la marque sans s'y
+confondre : il ne se pose jamais sur le fond primaire, la scène le porte à
+l'intérieur de la carte, sur blanc.
+
+**RUPTURE DÉCLARÉE.** Dans cette preuve seulement, la couleur ne dit plus la
+nature (rouge les retraits, vert les écarts — convention du 24 août) ni
+l'état : elle dit la profondeur. Auteur a tranché en connaissance de cause :
+la lisibilité du rapport prime ici sur la convention. Le mot de l'étiquette
+continue de dire la nature ; la convention reste entière partout ailleurs.
+Deux garde-fous tenus quand même : les étiquettes restent à l'encre du texte
+(une teinte décorative ne porte jamais un mot à lire), et les quatre teintes
+tiennent au moins 3:1 sur leur fond dans les deux thèmes.
+
+**Mesuré au navigateur** — contraste des quatre barres sur le fond de la
+légende : clair 4,56 / 7,18 / 3,49 / 5,88 ; sombre 10,19 / 8,91 / 13,47 /
+6,42 — tous au-dessus de 3:1. Les quatre bandes de la marge du panneau sont
+calées au pixel sur le rembourrage (26 px partout) ; survol de la bande →
+boîte 1 allumée, survol de la boîte 1 → bande allumée ; étiquette
+« marge · panneau » présente et opaque. `npx tsc --noEmit` passe.
+
+## 1er septembre 2026 — /rythme · le laboratoire fait la démonstration au lieu de l'affirmer
+
+**Ce qui tenait cette place ne prouvait rien.** Deux rangs de pastilles :
+« Faux · soustraire fait des jumeaux » suivi de trois nombres, « Juste ·
+diviser fait des crans » suivi de trois autres. On affirmait, on ne montrait
+pas. J'ai d'abord cru qu'il suffisait d'écrire l'opération entre les
+pastilles — Auteur a rappelé qu'une pièce libre existait déjà sur ce sujet
+exact, `piste-crans-nu.html` du 31 août, avec d'autres types de démo.
+
+**L'amorce de cette pièce prend la place.** Quatre échantillons, deux à deux :
+on retire le même nombre de pixels en haut de l'échelle, puis en bas. Le
+lecteur regarde et juge — puis un bouton révèle les écarts et les rapports.
+C'est l'ordre qui fait la démonstration : quand la mesure arrive, l'œil a
+déjà tranché, et il découvre qu'il avait raison. Le raisonnement n'est plus
+une phrase à croire.
+
+**Rien n'est écrit à la main.** Les quatre valeurs sont les deux bouts de la
+chaîne du laboratoire — sa plus grande marge, sa plus petite distance —
+moins le même retrait des deux côtés. Bouger un curseur bouge la
+démonstration. Le verdict lui-même se déduit du rapport obtenu, en trois
+paliers : des jumeaux sous 1,3, un pas tout juste visible entre 1,3 et 1,8,
+un changement de sens au-delà. Sur les six préréglages, le haut donne
+toujours des jumeaux (1,12 à 1,33) et le bas toujours un renversement (2,57
+à 47,8) : la démonstration tient partout, sans être écrite nulle part.
+
+**La distance mesurée est rouge.** La teinte de l'espace révélé et sa
+pastille de cote prennent le rouge du kit — la couleur des inspecteurs, et
+celle de la pièce libre d'où vient cette démo. Ici le rouge ne dit pas la
+faute : il dit « voici la distance, à sa taille réelle ». Le jugement reste
+dans le badge du verdict, qui n'est rouge que quand il y a des jumeaux.
+Mesuré : 6,2:1 en clair, 7,2:1 en sombre entre le chiffre et sa pastille.
+
+**Le pied du laboratoire est vidé.** Il avait porté une phrase-fleuve de
+quinze nombres, puis — le temps d'un aller-retour — deux escaliers de
+mesure. Verdict d'Auteur : pas besoin. Le laboratoire montre une mécanique,
+trois réglages qui produisent une géométrie ; ce n'est pas un registre. Ne
+reste que la garantie du moteur, quand il a dû relever une marge au coin —
+la seule chose qu'aucun autre endroit ne dit.
+
+**Les chiffres suivent enfin la densité du site.** Sur la première preuve,
+les barres de la réglette consommaient les jetons, donc elles se resserraient
+avec le réglage ; les nombres à côté d'elles, eux, restaient figés sur la
+chaîne par défaut. Une légende qui annonce 24 pendant que le site est en
+compact décrit un site qu'on n'a pas sous les yeux. Les distances de la
+réglette et celles du vocabulaire lisent maintenant le réglage courant. Les
+coins ne bougent pas avec la densité (décision 4) : ils restent tels quels.
+
+**Ce qui n'a pas bougé, et pourquoi.** Les couleurs de crans posées la
+veille (vert, bleu, jaune, rouge) ne descendent pas dans le laboratoire :
+là-bas, la couleur dit le verdict — rouge la faute, neutre le constat. Deux
+langages de couleur dans la même image en feraient zéro.
+
+**Reste ouvert** — le mot « coque » a disparu de ce qui se lit dans cette
+démo, mais il vit encore dans les énoncés de règles, dans les commentaires
+du registre et sur la page Arrondis. Le remplacer là-dedans touche au
+vocabulaire normatif : c'est une décision à part, pas un effet de bord.
+
+**Mesuré au navigateur** — l'amorce rendue sur les six préréglages : la
+question et le verdict occupent la même case (96 px dans les deux états,
+aucun saut au clic), aucun texte ne chevauche un échantillon, les espaces
+sont rendus à leur taille réelle (20 · 16 · 6 · 2 px sur le préréglage par
+défaut). `npx tsc --noEmit` passe.
+
+## 1er septembre 2026 — le banc d'essai perd ses raccourcis de largeur
+
+**D'abord une notion d'atelier affichée au lecteur.** Dans la barre de
+l'aperçu, entre « 320 px » et « 1024 px », un bouton disait « 768 · gel
+Figma » : la largeur à laquelle on fige l'export Figma du kit. C'est une
+affaire interne — et 768 n'est pas un régime (décision 7). Qui lit la page
+n'a rien à faire de cette information.
+
+**Puis les deux autres, dans la foulée.** La poignée fait déjà le travail,
+et mieux : on ne saute plus à trois largeurs choisies d'avance, on balaie
+la plage entière et on voit la mise en page se réorganiser en continu — ce
+qui est précisément le sujet de la démo. Trois boutons de plus dans la tête
+du banc, c'était un raccourci pour ne pas regarder.
+
+**Rien n'est perdu au clavier ni à la souris.** Le double-clic sur la
+poignée ramène à la largeur de départ ; les flèches la déplacent, Origine
+va au plus étroit, Fin revient au départ. La règle CSS devenue orpheline a
+été retirée avec le reste.
+
+## 1er septembre 2026 — /rythme · la marge de la carte redevient un anneau
+
+**La composition mentait sur ce qu'est une marge.** Dans la scène annotée,
+les deux colonnes de marge latérale vivaient à l'intérieur de CHAQUE ligne
+de la carte. Conséquence : les espaces entre lignes, eux posés au niveau de
+la carte, traversaient toute sa largeur — d'un bord à l'autre — et coupaient
+la marge en morceaux. On lisait quatre fragments de marge empilés là où il y
+a un seul anneau, et un espace intérieur qui mordait sur la marge de son
+propre composant.
+
+**La carte est maintenant une rangée** : sa marge gauche, son dedans, sa
+marge droite. Les deux colonnes courent sur toute la hauteur ; les deux
+bandes horizontales ferment en haut et en bas. L'anneau est continu, et les
+espaces entre lignes ne s'étendent plus que sur la largeur du dedans — ce
+qu'ils sont : des distances INTÉRIEURES au composant, qui ne touchent jamais
+à sa marge.
+
+**Ce que ça vaut au-delà de l'image.** La scène est faite de vrais espaces,
+pas d'un dessin : la corriger, c'est corriger la structure. Un espace entre
+frères appartient au conteneur qui les tient ; la marge appartient au bord
+du conteneur. Les deux ne se recouvrent jamais — la démo le montre
+maintenant au lieu de le contredire.
+
+**Mesuré au navigateur** — les deux colonnes de marge font exactement la
+hauteur de la carte (247 px pour 247), les bandes entre lignes commencent au
+bord intérieur de la marge et pas avant. Vérifié à 320, 375 et 768 px :
+anneau continu partout, aucun débord. `npx tsc --noEmit` passe.
+
+## 1er septembre 2026 — /rythme · un bouton par question dans l'amorce
+
+**Un seul interrupteur pour deux questions, c'était une question de moins.**
+« Montrer les écarts » se tenait d'abord sous la colonne des échantillons,
+alignée à gauche : il ne commentait rien de ce qu'il touchait. Il est passé
+sous les questions — puis il s'est dédoublé. Chaque paire a maintenant son
+bouton, sous SA question, avec son état à elle.
+
+**Pourquoi deux valent mieux qu'un.** La démonstration se fait en deux
+temps : on juge la première paire, on découvre sa mesure, et seulement
+ensuite on descend à la seconde en ayant la première en tête. Un
+interrupteur commun dévoilait les deux d'un coup et supprimait ce
+va-et-vient — le lecteur voyait la réponse à une question qu'il ne s'était
+pas encore posée.
+
+**L'ordre suit le geste : la question, le bouton, la réponse.** Le bouton
+était d'abord sous la réponse — on lisait donc le verdict avant la commande
+qui le donne. Il remonte entre les deux. Et la question ne s'efface plus
+quand la réponse arrive : on la garde sous les yeux pendant qu'on lit ce
+qu'elle a produit.
+
+**Une seule grille pour la paire entière.** Les deux titres et la question
+tiennent la première ligne ; les deux cartes et la commande, la seconde.
+Avant, chaque colonne était un bloc à part : la question flottait au milieu
+de la hauteur des cartes, sans se rattacher à rien. Alignée sur les titres,
+elle redevient ce qu'elle est — le titre de sa colonne, posé au même niveau
+que les deux autres. Sur téléphone, où trois colonnes ne tiennent pas, les
+échantillons gardent les leurs et la question passe dessous, pleine largeur.
+
+**Rien ne bouge quand on clique.** La réponse garde sa place même cachée :
+les boutons des deux paires restent exactement au même endroit, ouvert ou
+fermé, et les paires ne se décalent pas l'une par rapport à l'autre selon
+celle qu'on a ouverte. Mesuré : zéro pixel d'écart entre les deux états.
+
+## 1er septembre 2026 — la réglette débordait de la page sur téléphone
+
+**Dix-sept pixels dehors.** Sur un écran étroit, les boîtes de la réglette
+s'empilent, et le « ÷ √2 » — posé à droite de sa boîte, à moitié dans
+l'écart — sortait de la page. Faute introduite avec la réglette le 31 août,
+attrapée en mesurant.
+
+**Le pas descend dans l'écart vertical.** Empilées, les boîtes ne se suivent
+plus de gauche à droite : l'opération se lit maintenant DESSOUS, entre les
+deux boîtes qu'elle relie — exactement le même geste, tourné d'un quart de
+tour. Mesuré à 320, 375, 420, 900 et 1200 px : zéro débord partout.
+
+
+## 1er septembre 2026 — le banc de crash-tests repasse au niveau des pages
+
+**Le vert était devenu décoratif.** Les épreuves de page dataient du 26 août ;
+les pages, elles, ont bougé les 27, 30, 31 août et encore aujourd'hui, à
+chaque fois sur verdict. Personne n'avait relancé l'instrument qui verrouille.
+Douze épreuves rouges : neuf décrivaient une page qui n'existe plus, trois
+nommaient de vraies fautes. C'est plus grave que les douze échecs — c'est la
+règle de verrouillage elle-même qui avait cessé de mordre.
+
+**La règle de la remise à niveau : ne jamais relâcher une épreuve pour la faire
+passer.** Une épreuve qui s'aligne sur ce qu'elle mesure ne mesure plus rien.
+Chaque fois qu'une mesure n'était plus possible, elle a été remplacée par une
+mesure plus dure au même endroit, pas supprimée.
+
+**Ce que les neuf disent maintenant.** Sur `/rythme` : le pied du laboratoire ne
+récite plus onze nombres, alors l'épreuve mesure l'amorce — les quatre espaces
+sont rendus à leur taille réelle, leur cote dit ce qu'ils mesurent, et la phrase
+du verdict suit le rapport au lieu d'être écrite d'avance ; la marge du panneau
+est devenue un anneau de quatre bandes, la carte une rangée, le menu un
+contrôle, et la réglette dessine chaque cran à sa vraie longueur — tout cela est
+mesuré nommément. Sur `/typo` : la carte du zoom s'ouvre allumée au ×2 depuis le
+31 août ; l'épreuve ne redescend pas au repos pour passer, elle dit l'état par
+défaut de la preuve et éprouve les trois états. Sur `/arrondis` : la planche ne
+compte plus deux recalés mais un seul ; à la place, elle mesure que les deux
+boutons de la paire sont le même objet à un fond près — plus exigeant qu'un
+comptage. Sur `/couleur` : le nuancier est rangé en deux groupes par le
+jugement, et l'épreuve mesure ce rangement ; la démo du moteur regarde au lieu
+de piloter, donc l'épreuve exige désormais DEUX choses au lieu d'une — que la
+scène entière soit dérivée de la marque regardée, et que la page, elle, ne
+bouge pas d'un pixel de couleur.
+
+**Les trois fautes, corrigées.** Le fond doux du nuancier réservait sa place à
+la lane du ton avec un nombre écrit à la main : la lane a maintenant un nom,
+posé une fois, et les deux côtés le lisent — l'exception est dite sur sa ligne.
+L'écart de la réglette de `/rythme` portait la place du « ÷ √2 » sans le dire :
+il le dit. La pastille de cote, elle, était déjà déclarée — c'était l'épreuve
+qui ne savait pas lire les déclarations : elle les lit maintenant comme celles
+de `/couleur`, `/typo` et `/arrondis`, et chaque sélecteur ainsi dispensé du
+balayage est mesuré nommément, jeton par jeton, un peu plus haut.
+
+**Une quatrième faute, trouvée en chemin.** La réglette posée le 31 août appelle
+ses boîtes « cran » — et la section 06, « Le bon cran », appelle sa boîte de
+réponse du même nom. La règle de la réglette rattrapait donc la réponse et
+rabattait son affiche au cran étiquette : un titre qui n'était plus l'affiche,
+invisible à moins de le mesurer. Les règles de la réglette sont tenues sous
+elle. L'épreuve des titres n'a pas été touchée : c'est la page qui avait tort.
+
+**Le bouton-pilule : la feuille ne ment pas pour faire passer un test.**
+L'épreuve exigeait une ligne « casse » sur le bouton en pilule. Mais depuis le
+31 août la page dit le contraire — la forme est permise, dix systèmes lus, et
+la faute nommée est ailleurs : le bouton SANS fond plein. Écrire « casse » là
+aurait été une déclaration fausse. Verdict d'Auteur : l'épreuve dit la vérité
+d'aujourd'hui.
+
+**La carte.** Les quatre pages passent 🟢 → 🟡, et le banc avec elles. Le
+garde-fou 2 est sans ambiguïté : une page n'est verrouillée que par son
+crash-test. Elles reviendront au vert le jour où le banc tourne vert de bout en
+bout — sur la machine d'Auteur, la seule qui puisse l'ouvrir.
+
+**Non mesuré ici, et c'est dit.** Le banc n'a pas pu être lancé depuis ce
+thread : il lui faut le navigateur et les bibliothèques de la machine
+d'Auteur. Tout ce qui précède a été établi en lisant les pages et les épreuves
+ligne à ligne. La commande à passer est `npm run test:pages`, dans `kit/`.
+
+**Un mot sur le mouvement.** Pendant la remise à niveau, `/rythme` a encore
+changé : l'amorce est passée d'un interrupteur commun à un bouton par paire.
+L'épreuve a été reprise sur cette version-là. C'est exactement pour ça que le
+banc doit tourner à chaque verdict, et pas une fois par semaine.
+
+
+**Deux rouges au premier passage sur la machine d'Auteur, et ce qu'ils
+disaient.** Le premier n'était pas une faute de page : le chip du moteur de
+`/couleur` anime son fond en 0,15 s, et l'épreuve le lisait pendant
+l'animation — elle mesurait la couleur de départ. Elle le lit maintenant au
+repos, comme le banc le fait déjà pour les coins de la fiche d'`/arrondis`.
+Le second en était une, et plus intéressante : la scène de preuve de la
+section 03 de `/rythme` est empruntée telle quelle à `/composition`, dont
+la marge est une dette déclarée depuis le 25 août. La dette était écrite —
+mais dans un commentaire AU-DESSUS de la règle, pas sur sa ligne. Le
+balayage ne lit que les lignes : il voyait donc une marge en dur sur une
+page qui vise le vert. La déclaration est descendue sur sa ligne, et
+l'espace de cette scène — lui bien sur la chaîne — est désormais mesuré
+nommément, pour que l'exception ne dispense que ce qu'elle dit.
+
+
+**Troisième passage : la dette de `/composition` dite en entier, une fois
+pour toutes.** Le premier correctif n'avait descendu la déclaration que sur
+la ligne de la scène ; le banc a alors trouvé la suivante, sur le banc de
+preuve. Plutôt que de courir après une ligne à chaque tour, les treize
+valeurs du registre parallèle de `/composition` disent maintenant leur dette
+chacune sur SA ligne. Le commentaire d'en-tête reste, mais il ne fait plus le
+travail tout seul : c'est la ligne qui parle, parce que c'est la ligne que
+l'instrument lit.
+
+**Et l'amorce a encore changé de forme pendant ce temps** : le titre et sa
+carte ne sont plus un bloc, ce sont deux cases de la grille de la paire, et
+la question est passée à droite sur le même rang. Le bloc « échantillon » a
+disparu ; l'épreuve mesure donc maintenant la paire elle-même — ses colonnes,
+et son écart de rangs qui change de cran quand elle se replie sous 56 rem.
+
+**Vert de bout en bout.** Le banc est repassé au vert sur la machine
+d'Auteur. Les quatre pages reviennent 🟢 sur la carte — cette fois mesurées,
+pas déclarées. Le banc redevient 🟢 avec elles.
+
+## 1er septembre 2026 — le banc s'accroche au travail : un voyant à chaque enregistrement, une course chaque nuit
+
+Le matin même, le banc de crash-tests était rouge sur les quatre pages et la
+carte les disait toutes 🟢. Douze épreuves tombées, neuf parce qu'elles
+décrivaient une page qui n'existait plus. Le fait à retenir n'est pas les douze :
+c'est que **le vert avait tenu cinq jours sans être mesuré**. Les pages ont
+bougé les 27, 30 et 31 août sur verdict d'Auteur, le journal a été tenu, la
+carte a été mise à jour à la main — et l'instrument qui verrouille est resté au
+repos. Le garde-fou 2 avait cessé de mordre, sans que personne ne fasse rien de
+mal.
+
+Trois façons d'accrocher le banc au travail réel ont été posées, de la plus
+légère à la plus contraignante : le voyant qui ne bloque pas, la course de nuit,
+le verrou au commit. **Verdict d'Auteur : les deux premières, pas la
+troisième.** Le verrou aurait coûté deux minutes à chaque enregistrement — au
+rythme du 31 août, un quart d'heure par jour — et poussé à grouper les
+enregistrements pour payer l'attente une seule fois. Or le journal vit de leur
+finesse : le remède aurait abîmé ce qu'il protégeait. Il reste la ceinture à
+serrer le jour où le kit sortira d'une seule paire de mains.
+
+**Le voyant.** `kit/epreuves/etat-du-banc.mjs` répond à une seule question, par
+page : la page a-t-elle bougé après le dernier passage au vert de son épreuve ?
+Il lit les dates dans git — le dernier enregistrement qui touche la page, plus
+les fichiers modifiés non enregistrés, qui comptent comme écrits à l'instant —
+et il tient compte du socle (`globals.css`, `tokens.css`, le moteur) qui, en
+bougeant, fait bouger les quatre pages à la fois. Si le vert ne tient plus, il
+rabat la pastille de la carte à 🟡 et écrit pourquoi sur la même ligne. **Il ne
+fait jamais l'inverse** : un instrument peut retirer une confiance, il ne peut
+pas l'accorder — reverrouiller reste une décision d'Auteur tracée ici. Il tourne
+dans le garde-fou `pre-commit` déjà en place, qui portait depuis le 23 août la
+phrase exacte du problème : « un crash-test qu'on doit se souvenir de lancer
+cède exactement au moment où il compte ». Il ne lui manquait que de regarder le
+kit. Il ne refuse aucun enregistrement, et il ne corrige la carte que si
+personne d'autre n'y écrit au même moment.
+
+**La course de nuit.** `kit/epreuves/course-de-nuit.mjs` (3 h 30, un rendez-vous
+macOS posé par `kit/epreuves/installer-la-course.sh` — un rendez-vous lancé par
+le système n'hérite pas du terminal et ne trouve ni node ni npm : les chemins se
+résolvent une fois, à l'installation, depuis l'environnement d'Auteur)
+construit le site une fois, passe les quatre épreuves séparément — une
+page rouge n'emporte plus les autres dans son verdict — et écrit
+`docs/banc-du-jour.md` : trois lignes en français, la liste de ce qui est tombé,
+et le renvoi au détail brut. Deux prudences y sont écrites exprès. Une nuit où le
+site ne se construit pas ne rabat rien : rien n'a été mesuré, ce n'est pas un
+verdict sur les pages, et la dernière mesure connue tient — sans quoi le moindre
+incident de nuit coûterait quatre reverrouillages à la main et l'alarme cesserait
+d'être crue. Et tant qu'aucune course n'a été enregistrée, l'état se déduit des
+seules dates d'écriture, au jour près et non à la minute : c'est moins qu'une
+mesure, et le bulletin le dit.
+
+Effet qui compte autant que le reste : `docs/banc-du-jour.md` devient la première
+pièce que lit un thread qui s'ouvre. Le 31 août, j'ai écrit que les quatre pages
+étaient verrouillées ; je l'avais lu sur la carte, je ne l'avais pas mesuré.
+Cette erreur-là n'a plus où se loger.
+
+La dernière course et son verdict ne se versent pas au dépôt : ce sont des
+mesures locales, faites sur une machine à une heure donnée. Ce qui fait foi, ici
+comme avant, c'est la carte.

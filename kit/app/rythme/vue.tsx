@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Apercu, PanneauCode } from "../apercu";
 import { useAdaptation } from "../adaptation";
@@ -42,12 +42,12 @@ const grille4 = (v: number) => Math.round(v / 4) * 4;
    jeton), pas une illustration — l'interrupteur ne fait que le colorer.
    L'étiquette ne se pose QUE là où on la passe : une par jeton, dans
    l'espace qu'elle nomme — pas une par bloc (lisibilité, 24 août). */
-function E({ j, h, voir, nom, genre }: { j: string; h?: boolean; voir: boolean; nom?: string; genre: "pad" | "gap" }) {
+function E({ j, h, voir, nom, genre, cran }: { j: string; h?: boolean; voir: boolean; nom?: string; genre: "pad" | "gap"; cran?: number }) {
   /* Le code couleur des espaces (décision d'Auteur, 24 août) :
      danger = les marges (padding), success = les espaces (gap/margin).
      La convention des inspecteurs, portée par nos jetons sémantiques. */
   return <span className={`espace ${h ? "h" : ""} ${voir ? "vu" : ""} ${genre}`}
-    data-nom={voir && nom ? nom : undefined}
+    data-nom={voir && nom ? nom : undefined} data-cran={cran}
     style={h ? { width: `var(${j})` } : { height: `var(${j})` }} />;
 }
 
@@ -66,13 +66,18 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
   const margeLigne = "--pad-2-inline";
   const entreLignes = "--gap-2-block";
   const dansLaLigne = "--gap-3-inline";
-  const Ligne = ({ children }: { children: ReactNode }) => (
-    <span className="ry-etire">
-      <E j={margeLigne} h voir={voir} genre="pad" /><span className="ry-plein">{children}</span><E j={margeLigne} h voir={voir} genre="pad" />
-    </span>
-  );
   return (
     <div className="tranche" role="img" aria-label="Tranche d'application : profil de Léa Fontan, chaque distance posée sur la chaîne du kit">
+      {/* Le panneau n'a pas de bloc d'espace à lui : sa marge EST son
+          rembourrage. On la trace donc par quatre bandes posées à même son
+          bord, à l'épaisseur exacte du jeton. Ce sont de vraies cibles :
+          ce cran se nomme et s'allume comme les trois autres (31 août). */}
+      <span className="ry-marge1" aria-hidden="true">
+        <span className="espace vu pad haut" data-cran={1} data-nom="marge · panneau" />
+        <span className="espace vu pad bas" data-cran={1} />
+        <span className="espace vu pad gauche" data-cran={1} />
+        <span className="espace vu pad droite" data-cran={1} />
+      </span>
       <div className="tr-nav">
         <div className="tr-marque">
           <svg className="m" viewBox="211 195 244 301.7" fill="currentColor" aria-hidden="true">
@@ -83,14 +88,22 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
         <div className="tr-item">Messages</div>
         <div className="tr-item on">Profil</div>
       </div>
+      {/* La marge de la carte fait le TOUR de la carte, d'un seul tenant :
+          ses deux colonnes courent sur toute la hauteur, ses deux bandes
+          ferment en haut et en bas. Avant, les marges latérales vivaient
+          dans chaque ligne : les espaces entre lignes les traversaient de
+          bord à bord et coupaient l'anneau en morceaux (verdict d'Auteur,
+          1er septembre). Un espace ENTRE deux lignes appartient au dedans
+          du composant — il ne mord jamais sur sa marge. */}
       <div className="tr-carte">
-        {/* Le libellé ne nomme plus seulement l'espace : il dit D'OÙ il
-            vient. Les trois rapports sont ceux du moteur, vérifiés —
-            24 → 16,97 ; 12 = 12 ; 12 → 8,49. La valeur en pixels, elle,
-            n'est pas écrite : elle glisse avec l'écran, l'afficher
-            inviterait à la retenir. */}
-        <E j={margeBloc} voir={voir} nom="marge · carte — la marge de la coque ÷ √2" genre="pad" />
-        <Ligne>
+        <E j={margeLigne} h voir={voir} genre="pad" cran={2} />
+        <div className="tr-carte-corps">
+          {/* L’étiquette NOMME, elle n’explique pas : une phrase dans une
+              bande de douze pixels ne peut pas montrer un rapport entre deux
+              longueurs (verdict d’Auteur, 31 août). Le rapport se voit à côté,
+              sur la réglette : chaque espace porte son CRAN, et survoler l’un
+              allume l’autre. */}
+          <E j={margeBloc} voir={voir} nom="marge · carte" genre="pad" cran={2} />
           <span className="tr-id">
             <span className="tr-avatar" aria-hidden="true">LF</span>
             <span className="ry-min0">
@@ -98,26 +111,23 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
               <span className="tr-role">UX Designer — chaque distance de cette carte est un jeton de la chaîne.</span>
             </span>
           </span>
-        </Ligne>
-        <E j={entreLignes} voir={voir} nom="espace · entre deux lignes — la marge d'une ligne" genre="gap" />
-        <Ligne>
+          <E j={entreLignes} voir={voir} nom="espace · entre deux lignes" genre="gap" cran={3} />
           <span className="ry-flex">
             <button className="tr-btn premier" type="button" tabIndex={-1}>Suivre</button>
-            <E j={dansLaLigne} h voir={voir} nom="espace · dans la ligne — l'espace entre deux lignes ÷ √2" genre="gap" />
+            <E j={dansLaLigne} h voir={voir} nom="espace · dans la ligne" genre="gap" cran={4} />
             <button className="tr-btn" type="button" tabIndex={-1}>Message</button>
           </span>
-        </Ligne>
-        <E j={entreLignes} voir={voir} genre="gap" />
-        <Ligne>
+          <E j={entreLignes} voir={voir} genre="gap" cran={3} />
           <span className="ry-flex ry-large">
             <span className="tr-sub"><b>24</b><span>cours suivis</span></span>
-            <E j={dansLaLigne} h voir={voir} genre="gap" />
+            <E j={dansLaLigne} h voir={voir} genre="gap" cran={4} />
             <span className="tr-sub"><b>1&nbsp;280</b><span>abonnés</span></span>
-            <E j={dansLaLigne} h voir={voir} genre="gap" />
+            <E j={dansLaLigne} h voir={voir} genre="gap" cran={4} />
             <span className="tr-sub"><b>96&nbsp;%</b><span>assiduité</span></span>
           </span>
-        </Ligne>
-        <E j={margeBloc} voir={voir} genre="pad" />
+          <E j={margeBloc} voir={voir} genre="pad" cran={2} />
+        </div>
+        <E j={margeLigne} h voir={voir} genre="pad" cran={2} />
       </div>
     </div>
   );
@@ -373,12 +383,108 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
+/* ── Le pied du laboratoire (1er septembre) ──
+   Il a porté une phrase-fleuve de quinze nombres, puis deux escaliers de
+   mesure ; ni l'une ni les autres n'y avaient leur place — le laboratoire
+   montre une MÉCANIQUE (trois réglages, une géométrie), pas un registre.
+   Ne reste que ce qu'aucun autre endroit ne dit : la garantie que le
+   moteur a dû appliquer, quand il l'a fait. */
+function PiedLabo({ relevee }: { relevee: boolean }) {
+  if (!relevee) return null;
+  return <p className="gd-legende">une marge a été relevée au coin : elle ne descend jamais dessous</p>;
+}
+
+/* ── L'amorce : « deux fois le même geste, une seule fois ça se voit » ──
+   Portée de la pièce libre du 31 août (piste-crans-nu.html) à la place des
+   deux rangs de pastilles. Les pastilles AFFIRMAIENT que soustraire fait
+   des jumeaux ; ici on le montre, et on laisse juger avant de donner les
+   chiffres — c'est le seul ordre qui rende la démonstration convaincante,
+   parce que l'œil a déjà tranché quand la mesure arrive.
+   Les quatre échantillons sortent du socle du laboratoire : ses deux bouts
+   de chaîne, moins le même nombre de pixels des deux côtés. Rien n'est
+   écrit à la main — bouger un curseur bouge la démonstration. */
+const RETRAIT = 4; /* hors chaîne : le nombre de pixels retiré des deux côtés — c'est le geste qu'on éprouve, pas une distance du kit */
+/* Le titre et sa carte sont deux cases de la grille de la paire, pas un
+   bloc à eux : c'est ce qui met la question de droite sur la MÊME ligne
+   que les titres, et les trois cartes sur la même ligne en dessous
+   (verdict d'Auteur, 1er septembre). */
+function Echantillon({ titre, espace, col }: { titre: string; espace: number; col: 1 | 2 }) {
+  return (
+    <>
+      <span className={`ry-ech-titre mono ry-col-${col}`}>{titre}</span>
+      {/* Les blocs sont encrés, le fond est clair : ce qu'on voit entre eux
+          EST l'espace, à sa taille réelle, jamais schématisé. */}
+      <div className={`ry-ech-carte ry-col-${col}`}>
+        <span className="ry-ech-bloc" />
+        <span className="ry-ech-espace" style={{ height: `${Math.max(espace, 0)}px` }}>
+          <i className="ry-ech-cote mono">{px(Math.max(espace, 0))}</i>
+        </span>
+        <span className="ry-ech-bloc" />
+      </div>
+    </>
+  );
+}
+function Paire({ titre, demande, valeur }: { titre: string; demande: string; valeur: number }) {
+  /* Chaque paire se révèle POUR ELLE SEULE : on juge la première, on
+     regarde sa mesure, puis on descend à la seconde. Un interrupteur
+     commun les dévoilait ensemble et cassait le va-et-vient
+     (verdict d'Auteur, 1er septembre). */
+  const [revele, setRevele] = useState(false);
+  const reste = valeur - RETRAIT;
+  const rapport = reste > 0 ? valeur / reste : Infinity;
+  /* Le verdict se déduit du rapport, il n'est pas écrit d'avance : selon le
+     préréglage, le même retrait peut ne rien faire ou tout casser. */
+  const jumeaux = rapport < 1.3;
+  const franc = rapport >= 1.8;
+  return (
+    <div className={`ry-paire ${revele ? "revele" : ""}`}>
+      <Echantillon titre={titre} espace={valeur} col={1} />
+      <Echantillon titre="le cran d’en dessous" espace={reste} col={2} />
+      {/* La question, le bouton, puis la réponse — dans l'ordre où ça se
+          vit. La question reste sous les yeux pendant qu'on lit sa réponse
+          (verdict d'Auteur, 1er septembre). La réponse garde sa place même
+          cachée : rien ne saute au clic. */}
+      <p className="ry-demande">{demande}</p>
+      <div className="ry-juge">
+        <button type="button" className={`bouton ${revele ? "on" : ""}`} aria-pressed={revele}
+          onClick={() => setRevele(!revele)}>{revele ? "Masquer l’écart" : "Montrer l’écart"}</button>
+        <p className={`ry-verdict ${revele ? "" : "ry-tu"}`} aria-hidden={!revele}>
+          <span className={`badge ${jumeaux ? "ko" : "neutre"}`}>
+            {RETRAIT} px retirés · rapport {rapport === Infinity ? "∞" : fac(rapport)}
+          </span>
+          <span>
+            {rapport === Infinity
+              ? "Il n’y a plus d’espace du tout : les deux blocs se touchent. L’échelle s’arrête ici."
+              : jumeaux
+                ? "L’œil ne voit rien. Deux crans, un seul effet : des jumeaux."
+                : franc
+                  ? "L’un tient les blocs à distance, l’autre les soude. Ici, un cran change le sens de la mise en page."
+                  : "Le pas se voit, mais tout juste : c’est le même geste qui, plus bas, retournera la mise en page."}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
+function Amorce({ haut, bas }: { haut: number; bas: number }) {
+  return (
+    <div className="ry-amorce">
+      <Paire titre="En haut de l’échelle" demande="Voyez-vous une différence entre ces deux-là ?" valeur={haut} />
+      <Paire titre="En bas de l’échelle" demande="Et entre ces deux-là ?" valeur={bas} />
+      <p className="gd-legende">même geste des deux côtés — retirer {RETRAIT} px — et deux résultats sans commune
+        mesure : l&apos;œil ne compte pas ce qu&apos;on retire, il compare une longueur à l&apos;autre.</p>
+    </div>
+  );
+}
+
 /* ── Le laboratoire des décisions maîtresses — trois entrées, toute la
    géométrie sort, par le MÊME moteur que tokens.css. Il ne règle RIEN :
    la chaîne du kit reste celle du registre ; on regarde la mécanique, on
    ne la remplace pas. Les préréglages sont les intentions du moteur. ── */
 function Laboratoire({ intention }: { intention: number }) {
-  const { base, intervalle, racine } = INTENTIONS[intention];
+  const { base, intervalle, racine, note } = INTENTIONS[intention];
+  /* « φ · racine à la borne » : seul le rapport se lit dans l'escalier. */
+  const motIntervalle = String(note).split(" · ")[0];
   const s = chaine({ base, intervalle, racine });
   /* La géométrie de la carte, posée en variables (px, calculées) : la coque
      porte la base et la racine, la carte et les lignes en descendent. */
@@ -413,31 +519,52 @@ function Laboratoire({ intention }: { intention: number }) {
       </div>
     </div>
   );
-  /* Les barres du verdict : leur largeur est proportionnelle à la valeur qu'elles portent. */
-  const LARGEUR_BARRE = 6; // hors chaîne : 6 px de barre par px de marge, pour que les crans se comparent à l'œil
   return (
     <div className="ry-labo">
-      <Apercu plafond={LARGEUR_GEL} enfants={() => carte} pied={
-        <span className="gd-legende">
-          coque : marge {px(s.pad[0])} · coin {px(s.r[0])} — carte : marge {px(s.pad[1])} · coin {px(s.r[1])} —
-          ligne : marge {px(s.pad[2])} · coin {px(s.r[2])} — espace {px(s.gap[0])} entre cartes · {px(s.gap[1])} entre lignes ·
-          {" "}{px(s.gap[2])} dans la ligne · {px(s.gap[3])} au plus serré — bouton {px(s.rCtl)}
-          {relevee && " — une marge relevée au coin : elle ne descend jamais dessous"}
-        </span>
-      } />
-      <div className="ry-verdicts">
-        {/* Le verdict d'abord, et sa couleur (décision d'Auteur, 24 août) :
-            rouge = la faute, vert = le juste — les barres portent le même code. */}
-        <span className="badge ko ry-debut">Faux · soustraire fait des jumeaux</span>
-        <div className="rang">
-          {[base, base - 4, base - 8].map((v, i) => <span key={i} className="ry-barre ko" style={{ width: `${v * LARGEUR_BARRE}px` }}>{px(v)}</span>)}
-        </div>
-        <span className="badge bon ry-debut">Juste · diviser fait des crans</span>
-        <div className="rang">
-          {s.pad.map((v, i) => <span key={i} className="ry-barre bon" style={{ width: `${v * LARGEUR_BARRE}px` }}>{px(v)}</span>)}
-        </div>
-      </div>
+      <Apercu plafond={LARGEUR_GEL} enfants={() => carte} pied={<PiedLabo relevee={relevee} />} />
+      <Amorce haut={s.pad[0]} bas={s.gap[3]} />
     </div>
+  );
+}
+
+/* ── Le registre à la densité du site (1er septembre) ──
+   La densité change la BASE de la chaîne (16 · 24 · 32, décision 4) : les
+   barres suivaient déjà, puisqu'elles consomment les jetons — mais les
+   chiffres, eux, étaient figés sur la chaîne par défaut. Une légende qui
+   annonce 24 pendant que le site est en compact décrit un site qu'on n'a
+   pas sous les yeux. Les coins, eux, ne bougent pas avec la densité. */
+function useSocle(): Socle {
+  const { densite } = useDensite();
+  return useMemo(() => chaine({ base: DENSITES[densite] }) as Socle, [densite]);
+}
+
+/* ── La réglette de la chaîne — quatre crans, dessinés À LEUR VRAIE
+   LONGUEUR. Une phrase ne montre pas un rapport entre deux longueurs
+   (verdict d’Auteur, 31 août) ; un escalier, si : d’un cran au suivant on
+   divise par racine de deux, et ça se voit. Les valeurs sont lues dans le
+   registre, jamais écrites. « Panneau » et non « coque » : c'est le mot
+   déjà employé dans les légendes d'Arrondis, et il se comprend sans avoir
+   lu le vocabulaire. Survoler un espace de la scène allume son
+   cran ; survoler un cran allume ses espaces. ── */
+const CRANS: { cran: number; jeton: string; lire: (s: Socle) => number; role: string }[] = [
+  { cran: 1, jeton: "--pad-1-block", lire: (s) => s.pad[0], role: "la marge du panneau" },
+  { cran: 2, jeton: "--pad-2-block", lire: (s) => s.pad[1], role: "la marge de la carte" },
+  { cran: 3, jeton: "--gap-2-block", lire: (s) => s.gap[1], role: "entre deux lignes" },
+  { cran: 4, jeton: "--gap-3-inline", lire: (s) => s.gap[2], role: "dans la ligne" },
+];
+function Reglette() {
+  const socle = useSocle();
+  return (
+    <ol className="ry-reglette" aria-label="La chaîne des distances de cette tranche, chaque cran à sa vraie longueur">
+      {CRANS.map((c, i) => (
+        <li key={c.cran} className="ry-cran" data-cran={c.cran}>
+          <span className="ry-cran-barre" style={{ width: `var(${c.jeton})` }} aria-hidden="true" />
+          <b className="mono">{px(c.lire(socle))}</b>
+          <span className="ry-cran-role">{c.role}</span>
+          {i < CRANS.length - 1 && <span className="ry-cran-pas mono" aria-hidden="true">÷ √2</span>}
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -576,7 +703,9 @@ function Densites() {
    tuiles consomment les jetons qu'elles nomment ; les chiffres sont lus
    dans le registre calculé. ── */
 function Vocabulaire() {
-  const p = SOCLE.pad, g = SOCLE.gap, r = SOCLE.r;
+  /* Les distances suivent le réglage du site ; les coins n'en dépendent pas (décision 4). */
+  const socle = useSocle();
+  const p = socle.pad, g = socle.gap, r = SOCLE.r;
   return (
     <div className="ry-voc">
       <div className="ry-voc-tuiles">
@@ -668,12 +797,16 @@ export default function Vue() {
               sa profondeur.</p>
             </div>
             <div className="gdoc-corps">
-              <figure className="gd-figure">
+              <figure className="gd-figure ry-preuve-tranche">
                 {/* Plus de bouton : les espaces se révèlent au survol de la
                     tranche (ou au clavier), et s'effacent en la quittant. */}
                 <div className="banc primaire survole-espaces">
                   <TrancheCoursue voir />
                 </div>
+                {/* La réglette est une LÉGENDE : elle se lit sous la scène,
+                    à l'horizontale, dans l'encre de la page — pas une
+                    colonne posée dans le banc (verdict d'Auteur, 31 août). */}
+                <Reglette />
                 {/* La légende parle aux humains : l'effet, pas la mécanique
                     (retour d'Auteur, 24 août — même leçon que les badges de
                     la page Couleur). */}

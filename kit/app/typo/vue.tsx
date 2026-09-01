@@ -348,7 +348,7 @@ export default function Vue() {
   const [justif, setJustif] = useState(false);
   const [serre, setSerre] = useState(false);
   /* répertoire */
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(2); /* le zoom est ALLUMÉ d'entrée : la démo montre ce qui doit tenir sous zoom, pas l'état de repos (verdict d'Auteur, 31 août) */
   const [vwSeul, setVwSeul] = useState(false);
   const [saut, setSaut] = useState(false);
   const [gras, setGras] = useState(false);
@@ -593,10 +593,20 @@ export default function Vue() {
                   <div className="rang" style={{ justifyContent: "space-between" }}>
                     <span className="mono sourd">Le zoom du lecteur</span>
                     <span className="rang">
-                      {[1, 2].map((z) => (
-                        <button key={z} className={`bouton ${zoom === z ? "on" : ""}`} onClick={() => setZoom(z)}>×{z}</button>
-                      ))}
-                      <button className={`bouton casse ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>{vwSeul ? "Réparer" : "Casser : vw seul"}</button>
+                      {/* Un seul bouton : ×1 est l'état de repos, il n'a pas
+                          besoin d'un bouton pour se dire. */}
+                      <button className={`bouton ${zoom === 2 ? "on" : ""}`}
+                        aria-pressed={zoom === 2} onClick={() => setZoom(zoom === 2 ? 1 : 2)}>×2</button>
+                      {/* Les deux libellés occupent la MÊME case : le bouton
+                          garde sa largeur, la rangée ne se replie donc pas
+                          d'un état à l'autre — sinon les commandes sautent
+                          sur la ligne du titre au moment du clic. */}
+                      <button className={`bouton casse ${vwSeul ? "on" : ""}`} onClick={() => setVwSeul(!vwSeul)}>
+                        <span className="tp-bascule">
+                          <span className={vwSeul ? "" : "tp-tu"}>Réparer</span>
+                          <span className={vwSeul ? "tp-tu" : ""}>Casser : vw seul</span>
+                        </span>
+                      </button>
                     </span>
                   </div>
                   <div style={{ display: "grid", gap: "var(--gap-3-block)" }}>

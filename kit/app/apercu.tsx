@@ -5,18 +5,20 @@ import * as React from "react";
    une tête d'outils toujours visibles (plus rien ne se cache au survol),
    le cadre est une feuille de papier collée à gauche, le damier n'est
    plus que la marge — la part d'écran que la largeur simulée ne couvre
-   pas. Poignée au pointeur ET au clavier, paliers cliquables, pastille
-   de largeur, double-clic pour revenir à 1024 px. */
+   pas. Poignée au pointeur ET au clavier, pastille de largeur, double-clic
+   pour revenir à 1024 px. Les flèches déplacent la poignée, Origine va au
+   plus étroit, Fin revient à la largeur de départ. */
 
 const MIN = 320; /* jamais en dessous : la plus petite largeur d'écran du système */
 const DEFAUT = 1024;
 const PAS = 16;
 const PAS_LARGE = 64;
-const PALIERS: { label: string; w: number }[] = [
-  { label: "320 px", w: 320 },
-  { label: "768 · gel Figma", w: 768 }, /* 768 n'est pas un régime (décision 7) : la valeur de gel pour Figma */
-  { label: "1024 px", w: 1024 },
-];
+/* Plus aucun raccourci de largeur (1er septembre). Ils ont d'abord perdu
+   « 768 · gel Figma » — une notion d'atelier exposée au lecteur — puis les
+   deux autres : la poignée fait déjà tout, et mieux. On ne saute plus à
+   trois largeurs choisies d'avance, on balaie la plage entière et on voit
+   la mise en page se réorganiser en continu, ce qui est le sujet. Le
+   double-clic sur la poignée ramène à la largeur de départ. */
 
 export function Apercu({ enfants, outils, pied, plafond }: {
   enfants: (largeur: number) => React.ReactNode;
@@ -66,17 +68,6 @@ export function Apercu({ enfants, outils, pied, plafond }: {
     <div className="apercu">
       <div className="apercu-tete">
         <div className="apercu-outils">{outils}</div>
-        <div className="apercu-cmds" role="group" aria-label="Largeurs de test de l'aperçu">
-          {PALIERS.filter((p) => (max === 0 || p.w <= max) && p.w <= (plafond ?? Infinity)).map((p) => {
-            const actif = courante === p.w;
-            return (
-              <button key={p.label} className={`bouton ${actif ? "on" : ""}`} aria-pressed={actif}
-                onClick={() => setW(borne(p.w))} title={`Aperçu à ${p.w} px`}>
-                {p.label}
-              </button>
-            );
-          })}
-        </div>
       </div>
       <div ref={wrapRef} className="apercu-piste">
         <div className="apercu-cadre" style={{ width: `${courante}px` }}>

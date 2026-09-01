@@ -6,7 +6,13 @@
    3 · la racine sous les yeux : un nombre tourne, toute la chaîne suit, les invariants tiennent ;
    4 · les coins ne suivent ni l'écran ni la densité ; les titres glissent ;
    5 · le tertiaire suit C17 ;
-   6 · rien en dur — marges, espaces, coins, tailles, couleurs écrites, hors des lignes qui le disent. */
+   6 · rien en dur — marges, espaces, coins, tailles, couleurs écrites, hors des lignes qui le disent.
+
+   Remise à niveau du 1er septembre 2026 : la planche de la pilule a changé le
+   31 août — le bouton en pilule n'est plus un recalé (dix systèmes lus), il est
+   devenu une PAIRE qui met en garde. L'épreuve ne compte plus deux recalés :
+   elle mesure que les deux boutons de la paire sont le même objet à un fond
+   près, ce qui est plus exigeant que l'ancien comptage.                    */
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -87,13 +93,37 @@ test('2 · le labo du coin dessine ce qu’il dit : à gauche le même rayon, à
     const verdicts = await textes(p, '#coin .ar-coin .verdict')
     assert.deepEqual(verdicts, ['✗', '✓'])
   }
-  /* la pilule : les quatre membres portent le rayon plein ; les deux recalés aussi — c'est leur faute, déclarée ; la gélule passe à la ligne */
-  const membres = await p.evaluate(() => [...document.querySelectorAll('#pilule .ar-membre')].map((m) => ({ nom: m.querySelector('.nom').textContent, intent: m.dataset.intent ?? null, objet: m.querySelector('.objet > *') ? getComputedStyle(m.querySelector('.objet > *')).borderTopLeftRadius : null })))
-  assert.equal(membres.length, 6)
-  assert.deepEqual(membres.map((m) => m.intent), [null, null, null, null, 'statement', 'statement'])
-  for (const m of membres) assert.ok(parseFloat(m.objet) >= 9999 || /^50%|^[\d.]+px$/.test(m.objet), `${m.nom} : ${m.objet}`)
+  /* La planche compte six cas : QUATRE membres de la pilule, UNE mise en garde et UN
+     seul recalé. Depuis le 31 août (dix systèmes lus), le bouton en pilule n'est plus
+     un recalé : Material 3 en fait la forme par défaut de ses boutons, Apple recommande
+     la capsule. Ce que la planche montre à sa place est plus fin, et plus dur à tenir :
+     le MÊME mot, deux fois, et une seule chose qui change — le fond. L'épreuve mesure
+     donc que les deux boutons sont géométriquement identiques et ne diffèrent que par
+     leur remplissage, et que la mise en garde est bien une mise en garde (⚠), pas un
+     refus (✗) : sinon la démonstration accuserait la forme au lieu du fond. */
+  const membres = await p.evaluate(() => [...document.querySelectorAll('#pilule .ar-membre')].map((m) => ({
+    nom: m.querySelector('.nom').textContent, intent: m.dataset.intent ?? null, refuse: m.classList.contains('refuse'),
+    objet: m.querySelector('.objet > *') ? getComputedStyle(m.querySelector('.objet > *')).borderTopLeftRadius : null,
+  })))
+  assert.equal(membres.length, 6, 'quatre membres, une mise en garde, un recalé')
+  assert.deepEqual(membres.map((m) => m.intent), [null, null, null, null, null, 'statement'], 'un seul cas déclaré fautif : la gélule')
+  assert.deepEqual(membres.map((m) => m.refuse), [false, false, false, false, false, true], 'un seul cas refusé')
+  /* les quatre membres portent le rayon plein — c'est ce qui en fait des membres */
+  for (const m of membres.slice(0, 4)) assert.ok(parseFloat(m.objet) >= 9999 || /^50%/.test(m.objet), `${m.nom} : ${m.objet}`)
   assert.equal(await p.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#pilule .ar-pastille')).borderTopLeftRadius)), HORS_CHAINE.pilule)
-  assert.equal(await p.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#pilule .ar-btn-pilule')).borderTopLeftRadius)), HORS_CHAINE.pilule, 'le bouton recalé porte la pilule qu’il n’a pas le droit de porter')
+  /* la paire du bouton : deux fois le même objet, seul le fond change */
+  const paire = await p.evaluate(() => [...document.querySelectorAll('#pilule .ar-membre.paire .ar-btn-pilule')].map((b) => {
+    const cs = getComputedStyle(b)
+    return { r: parseFloat(cs.borderTopLeftRadius), h: cs.minHeight, pb: cs.paddingTop, pi: cs.paddingLeft, f: cs.fontSize, fond: cs.backgroundColor, encre: cs.color,
+      signe: b.closest('.ar-essai').querySelector('.verdict').className }
+  }))
+  assert.equal(paire.length, 2, 'deux fois le même mot')
+  assert.deepEqual(paire.map((b) => b.r), [HORS_CHAINE.pilule, HORS_CHAINE.pilule], 'les deux sont en pilule — la forme n’est pas la faute')
+  for (const clef of ['h', 'pb', 'pi', 'f']) assert.equal(paire[0][clef], paire[1][clef], `la paire ne diffère pas par « ${clef} » : ${paire[0][clef]} / ${paire[1][clef]}`)
+  assert.notEqual(paire[0].fond, paire[1].fond, 'la seule chose qui change est le fond')
+  assert.deepEqual(paire.map((b) => b.signe), ['verdict attention', 'verdict bon'], 'le doux est une mise en garde (⚠), le plein est juste (✓) — jamais un refus')
+  /* le seul recalé : la pilule sur un contenu qui passe à la ligne */
+  assert.equal(await p.evaluate(() => parseFloat(getComputedStyle(document.querySelector('#pilule .ar-gelule')).borderTopLeftRadius)), HORS_CHAINE.pilule)
   assert.ok(await p.evaluate(() => { const g = document.querySelector('#pilule .ar-gelule'); return g.getBoundingClientRect().height > 2 * parseFloat(getComputedStyle(g).fontSize) }), 'la gélule passe à la ligne')
   /* l'interrupteur et les onglets vivent, au clavier comme au pointeur */
   await p.locator('#pilule .ar-inter').click(); assert.equal(await p.getAttribute('#pilule .ar-inter', 'aria-checked'), 'false')
@@ -116,7 +146,17 @@ test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le
   attend('.ar-ligne', 'border-radius: var(--ar-r3)'); attend('.ar-ligne', 'padding: var(--ar-p3)'); attend('.ar-ligne', 'gap: var(--ar-g3)')
   attend('.ar-btn', 'border-radius: var(--ar-rctl)'); attend('.ar-btn', 'min-height: var(--control-height)')
   for (const sel of ['.ar-pastille', '.ar-avatar', '.ar-inter', '.ar-onglets']) attend(sel, 'border-radius: var(--r-pill)')
-  for (const sel of ['.ar-btn-pilule', '.ar-gelule']) assert.match(bloc(sel), /casse/, `${sel} : casse dite`)
+  /* Le bouton en pilule n'est plus une casse depuis le 31 août : sa règle ne pose que
+     des jetons du kit, elle n'a donc rien à déclarer — et écrire « casse » sur cette
+     ligne serait une déclaration fausse. Ce qu'on exige à la place : que la règle du
+     bouton soit entièrement faite de jetons (la forme est permise), que la seule chose
+     qui distingue le bouton doux soit son fond, et que la gélule — le seul vrai recalé
+     — garde ses deux lignes dites. */
+  for (const decl of ['min-height: var(--control-height)', 'padding: var(--pad-3-block) var(--pad-3-inline)', 'border-radius: var(--r-pill)']) attend('.ar-btn-pilule', decl)
+  assert.equal(bloc('.ar-btn-pilule.doux').replace(/^[^{]*\{/, '').trim().replace(/;\s*$/, '').split(';').map((d) => d.split(':')[0].trim()).sort().join(' '), 'background color',
+    'le bouton doux ne se distingue que par son remplissage')
+  assert.doesNotMatch(bloc('.ar-btn-pilule'), /casse/, '.ar-btn-pilule : la forme est permise, rien à déclarer')
+  assert.match(bloc('.ar-gelule'), /casse/, '.ar-gelule : casse dite')
 })
 
 /* ── 3 · La racine sous les yeux ── */

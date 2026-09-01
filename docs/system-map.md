@@ -105,11 +105,11 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Page | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
 | `/` · La porte | 🟢 | Couverture de charte, le moteur en objet vivant, trois spécimens de fondation, la carte du système | — (`#111`) |
-| `/typo` · Typographie | 🟢 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, douze épreuves (`#127`) |
-| `/rythme` · Rythme | 🟢 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | — verrouillée le 26 août par son crash-test de page, quinze épreuves (`#126`) |
-| `/couleur` · Couleur | 🟢 | Dix-sept règles, deux thèmes, le nuancier en six lignes signées (31 août), les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | — verrouillée le 26 août par son crash-test de page, huit épreuves (`#128`) |
+| `/typo` · Typographie | 🟢 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
+| `/rythme` · Rythme | 🟢 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
+| `/couleur` · Couleur | 🟢 | Dix-sept règles, deux thèmes, le nuancier en six lignes signées (31 août), les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
-| `/arrondis` · Arrondis | 🟢 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | — verrouillée le 26 août par son crash-test de page, neuf épreuves (`#129`) |
+| `/arrondis` · Arrondis | 🟢 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, neuf épreuves (`#129`) ; le bouton en pilule n'est plus un recalé depuis le 31 août — l'épreuve comptait encore deux recalés. Remise au niveau le 1er septembre : elle mesure désormais que les deux boutons de la paire sont le même objet à un fond près. |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 
 **Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
@@ -123,13 +123,34 @@ nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
 de page, titres du site à un cran et demi au-dessus de l'affiche.
 
 **Le banc des crash-tests de page** (`kit/epreuves/`, `npm run test:pages`,
-`#125`) — 🟢. Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
+`#125`) — 🟢, repassé vert le 1er septembre. Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
 dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
 prédit, au dixième de pixel. Six épreuves communes — les chiffres affichés, les
 preuves par leur jeton, la densité, les titres, C17, rien en dur — et, par page,
-ce que sa terre exige : 44 épreuves vertes sur les quatre pages (`#126` → `#129`).
+ce que sa terre exige : 44 épreuves sur les quatre pages (`#126` → `#129`).
+Le 1er septembre, douze d'entre elles étaient rouges — les pages avaient bougé
+les 27, 30 et 31 août et le banc n'avait pas été relancé. Neuf disaient une page
+qui n'existait plus, trois nommaient de vraies fautes. Les neuf ont été
+réécrites sur ce que les pages prouvent aujourd'hui, sans baisser l'exigence,
+et les fautes corrigées ; le banc tourne vert de bout en bout depuis le
+1er septembre au soir.
 Une page ne passe 🟢 que par lui. Le gabarit commun ne s'élargit plus au-delà de
 la page (zéro débord à 320, règle 15).
+
+**Le banc s'accroche au travail** (1er septembre, décision d'Auteur). Le
+décrochage de fin août n'était pas une panne : on oubliait de lancer
+l'instrument. Deux pièces retirent l'oubli, sans jamais bloquer la main.
+`kit/epreuves/etat-du-banc.mjs` tourne à chaque enregistrement, dans le
+garde-fou déjà en place : il compare la date de la dernière écriture d'une page
+à celle de son dernier passage au vert, et **rabat lui-même le 🟢 de cette table
+à 🟡** quand le vert ne tient plus. Il ne fait jamais l'inverse — reverrouiller
+reste une décision d'Auteur, écrite au journal (garde-fou 2).
+`kit/epreuves/course-de-nuit.mjs` lance le banc chaque nuit à 3 h 30
+(`npm run banc:nuit`), écrit son verdict en clair dans `docs/banc-du-jour.md` et
+remet cette table au vrai. Une nuit où le site ne se construit pas ne rabat
+rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au commit
+a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
+pousseraient à grouper les commits, et le journal vit de leur finesse.
 
 **Le moteur de couleur** — 🟢 verrouillé. Une décision
 d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses
