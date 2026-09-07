@@ -73,7 +73,7 @@ test('1 · la légende des quatre durées lit sur le rendu ce que chaque cadre j
   assert.deepEqual(await textes(p, '#durees .mv-cadre-tete span'), Object.values(MOUVEMENT.durees).map((d) => d.emploi), 'et son emploi')
   await fermer()
 })
-test('1 · la molette qui ment : la barre de droite est en retard sur la gauche, image par image, puis la rejoint — le badge dit le retard mesuré, jamais un chiffre déclaré', async () => {
+test('1 · la molette qui ment : la barre du bas est en retard sur celle du haut, image par image, puis la rejoint — le badge dit le retard mesuré, jamais un chiffre déclaré', async () => {
   const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
   await p.locator('#mv-cred').scrollIntoViewIfNeeded(); await p.waitForTimeout(150)
   const avant = await texte(p, '#molette .mv-scene > .badge')
@@ -87,7 +87,7 @@ test('1 · la molette qui ment : la barre de droite est en retard sur la gauche,
     requestAnimationFrame(pas)
   }))
   const ecarts = film.map((f) => Math.abs(f.g - f.d))
-  assert.ok(ecarts[0] > 5, `à la première image, la droite est loin derrière : ${ecarts[0]} px`)
+  assert.ok(ecarts[0] > 5, `à la première image, celle du bas est loin derrière : ${ecarts[0]} px`)
   assert.ok(ecarts.slice(1).every((e, i) => e <= ecarts[i] + TOL), `le retard ne fait que diminuer : ${ecarts.map((e) => e.toFixed(1)).join(' ')}`)
   const pendant = film.find((f) => /derrière la molette/.test(f.badge))
   assert.ok(pendant, 'pendant le retard, le badge le dit')
@@ -107,12 +107,17 @@ test('1 · la molette qui ment : la barre de droite est en retard sur la gauche,
 })
 
 /* ── 2 · Chaque pièce du kit est rendue par son jeton ── */
-test('2 · la fiche est une carte, le cadre une surface, le menu une card ; la paire est deux colonnes de coque ; la légende parle au cran étiquette', async () => {
+test('2 · la fiche est une carte et ses trois pistes partagent le même bord ; le cadre une surface, le menu une card ; la paire d’une bande est deux colonnes de coque ; la légende parle au cran étiquette', async () => {
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
     ok(await calcPx(p, '#molette .mv-temoin', 'paddingTop'), attendu('pad-2-block', W), `${W} — la fiche, marge de carte`)
     ok(await calcPx(p, '#molette .mv-temoin', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — la fiche, coin de carte`)
-    ok(await calcPx(p, '#molette .mv-duo', 'rowGap'), attendu('pad-1-block', W), `${W} — la paire, l'écart de coque`)
+    ok(await calcPx(p, `${bande(1)} .mv-duo`, 'rowGap'), attendu('pad-1-block', W), `${W} — la paire, l'écart de coque`)
+    /* la pile : la molette et les deux barres commencent au même bord et finissent au même bord — l'œil ne bouge pas */
+    const pistes = await p.$$eval('#molette .mv-pile-molette, #molette .mv-jauge-piste', (es) => es.map((e) => { const r = e.getBoundingClientRect(); return [r.left, r.right] }))
+    assert.equal(pistes.length, 3, `${W} — une molette, deux barres`)
+    const demiBouton = await calcPx(p, '#molette .mv-pile-barres', 'paddingLeft')
+    for (const [g, d] of pistes.slice(1)) { assert.ok(Math.abs(g - pistes[0][0] - demiBouton) < 1 && Math.abs(pistes[0][1] - demiBouton - d) < 1, `${W} — la barre finit sous le curseur (${g}→${d} contre ${pistes[0]})`) }
     ok(await calcPx(p, '#durees .mv-cadre', 'paddingTop'), attendu('pad-2-block', W), `${W} — le cadre, marge de profondeur 2`)
     ok(await calcPx(p, '#durees .mv-cadre', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — le cadre, coin de profondeur 2`)
     ok(await calcPx(p, '#durees .mv-verdict', 'borderTopLeftRadius'), attendu('r-3', W), `${W} — le verdict dans le cadre, coin de la ligne`)
@@ -120,8 +125,8 @@ test('2 · la fiche est une carte, le cadre une surface, le menu une card ; la p
     ok(await calcPx(p, '#mots .mv-menu', 'paddingTop'), attendu('pad-3-block', W), `${W} — le menu, marge de ligne`)
     ok(await calcPx(p, '#mots .mv-menu-item', 'minHeight'), attendu('control-height-compact', W), `${W} — une entrée de menu, la cible compacte`)
     ok(await calcPx(p, '#molette .gd-legende', 'fontSize'), attendu('font-size-label', W), `${W} — la légende au cran étiquette`)
-    const [g, d] = await p.$$eval('#molette .mv-cote', (es) => es.map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, b: r.bottom } }))
-    if (W >= 640) { ok(await calcPx(p, '#molette .mv-duo', 'columnGap'), attendu('pad-1-inline', W), `${W} — l'écart entre les colonnes`); assert.ok(Math.abs(g.y - d.y) < 1 && d.x > g.x + g.w, `${W} — deux colonnes côte à côte`) }
+    const [g, d] = await p.$$eval(`#casser .doc-bande:nth-child(1) .mv-cote`, (es) => es.map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, b: r.bottom } }))
+    if (W >= 640) { ok(await calcPx(p, `${bande(1)} .mv-duo`, 'columnGap'), attendu('pad-1-inline', W), `${W} — l'écart entre les colonnes`); assert.ok(Math.abs(g.y - d.y) < 1 && d.x > g.x + g.w, `${W} — deux colonnes côte à côte`) }
     else assert.ok(d.y >= g.b - TOL && Math.abs(d.x - g.x) < 1, `${W} — sur téléphone, la paire s'empile`)
     await fermer()
   }
@@ -241,7 +246,7 @@ test('6 · la scène suit la base de la densité ; le corps de la légende ne bo
   for (const densite of ['compact', 'airy']) {
     const { p, fermer } = await nav.page(URL(), { largeur: W, densite })
     ok(await calcPx(p, '#durees .mv-cadre', 'paddingTop'), attendu('pad-2-block', W, DENSITES[densite]), `${densite} — le cadre suit la base`)
-    ok(await calcPx(p, '#molette .mv-duo', 'columnGap'), attendu('pad-1-inline', W, DENSITES[densite]), `${densite} — la paire suit la base`)
+    ok(await calcPx(p, `${bande(1)} .mv-duo`, 'columnGap'), attendu('pad-1-inline', W, DENSITES[densite]), `${densite} — la paire suit la base`)
     ok(await calcPx(p, '#molette .gd-legende', 'fontSize'), attendu('font-size-label', W), `${densite} — la légende ne bouge pas`)
     await fermer()
   }

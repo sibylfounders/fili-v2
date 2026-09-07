@@ -5918,3 +5918,34 @@ pages vertes**. La carte passe Mouvement à 🟢 — par le banc, pas par la mai
 reçu de verdict distinct de la courbe ; elle reste sur les crans, à juger. Le
 menu, le rail, le tiroir et l'accueil lisent désormais Mouvement dans la liste
 unique des pages, versée par le fil de l'accueil le même jour.
+
+
+## 7 septembre 2026 (9) — la molette qui ment : l'œil ne bouge plus
+
+**Le verdict d'Auteur, sur capture.** « Ça ne fonctionne pas à l'œil. En
+termes d'UX c'est typiquement ce qu'il ne faut jamais faire. L'œil doit être à
+la fois sur le slider, la proposition mauvaise et la bonne. » La première forme
+de la preuve 01 dispersait ce qu'elle voulait faire comparer : la molette
+centrée en haut, deux fiches côte à côte en dessous, le badge plus bas encore.
+Pour voir la barre traîner, il fallait regarder trois endroits — et le
+mouvement, précisément, ne se regarde qu'au moment où il se produit. Une
+démonstration de mouvement qui oblige à déplacer l'œil ne démontre rien.
+
+**La forme qui reste : une seule pile, à l'endroit du curseur.** Une seule
+fiche de témoin. La molette en haut, et juste dessous, sur la même largeur et le
+même bord, les deux barres — « à la valeur » et « animée ». Les barres rentrent
+d'une moitié de bouton de chaque côté pour que leur bout tombe exactement sous
+le curseur : l'œil reste sur le doigt, et voit la barre du bas courir après lui.
+Le banc mesure désormais que les trois pistes partagent le même bord, à un pixel
+près, aux trois largeurs. La paire de coque (deux colonnes, l'écart de coque
+entre elles) se mesure sur la première bande, où elle vit encore.
+
+**En chemin.** Une valeur écrite `padding-inline` échappait au balayage « rien
+en dur » du banc, qui ne lit que `padding` : elle a été réécrite pour être lue,
+et déclarée hors chaîne sur sa ligne. Et un flottement de deux fils dans le
+même arbre : une course lancée par l'autre fil a reconstruit le site pendant
+que celui-ci le mesurait — six épreuves rouges le temps d'une course, douze
+vertes à la suivante, sans qu'une ligne ait changé. À retenir : deux fils ne
+mesurent pas le même site construit en même temps.
+
+Banc : douze vertes deux fois, puis la course complète — six pages vertes.

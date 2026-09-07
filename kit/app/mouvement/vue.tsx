@@ -101,47 +101,18 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
-/* ── Un réglage de scène : un curseur, une valeur ── */
-function Dial({ id, label, min, max, step, value, onChange }: {
-  id: string; label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void;
-}) {
-  return (
-    <span className="mv-dial">
-      <label htmlFor={id}>{label}</label>
-      <input type="range" id={id} min={min} max={max} step={step} value={value} onChange={(e) => onChange(+e.target.value)} />
-      <output htmlFor={id}>{value}</output>
-    </span>
-  );
-}
-
-/* ── 01 · La molette qui ment. Deux fois la même fiche ; à droite, la barre
-   porte une transition sur la valeur qu'on règle. Le retard n'est pas
-   décrété : la page lit la largeur rendue des deux barres à chaque image
-   tant qu'elles diffèrent, et le badge dit l'écart en pixels. ── */
-function FicheTemoin({ valeur, ment, barre }: { valeur: number; ment?: boolean; barre: React.RefObject<HTMLDivElement> }) {
-  return (
-    <div className="carte mv-temoin" role="img"
-      aria-label={`Fiche du témoin Léa Fontan, crédibilité ${valeur} pour cent`}>
-      <div className="mv-temoin-tete">
-        <span className="mv-avatar" aria-hidden="true">LF</span>
-        <span className="mv-temoin-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
-      </div>
-      <div className="mv-jauge">
-        <div className="mv-jauge-ligne"><span>Crédibilité</span><output>{valeur} %</output></div>
-        <div className="mv-jauge-piste">
-          <div ref={barre} className={`mv-jauge-barre${ment ? " ment" : ""}`} style={{ "--mv-w": `${valeur}%` } as React.CSSProperties} />
-        </div>
-      </div>
-    </div>
-  );
-}
+/* ── 01 · La molette qui ment. Une seule fiche, une seule pile : la molette,
+   et juste dessous, sur la même largeur et le même bord, les deux barres —
+   à la valeur, et animée pendant qu'on la règle. Le bout de chaque barre
+   tombe sous le bouton du curseur : l'œil ne bouge pas (verdict d'Auteur,
+   7 septembre : « l'œil doit être à la fois sur le slider, la proposition
+   mauvaise et la bonne »). Le retard n'est pas décrété : la page lit la
+   largeur rendue des deux barres à chaque image tant qu'elles diffèrent. ── */
 function Molette() {
   const [v, setV] = useState(72);
   const juste = useRef<HTMLDivElement>(null), faux = useRef<HTMLDivElement>(null);
   const [retard, setRetard] = useState(0);
   const [pic, setPic] = useState(0);
-  /* À chaque changement, on lit les deux barres image par image jusqu'à ce
-     qu'elles se rejoignent : l'écart maximal observé est le mensonge. */
   useEffect(() => {
     let vivant = true;
     let max = 0;
@@ -156,25 +127,29 @@ function Molette() {
     return () => { vivant = false; };
   }, [v]);
   const ment = retard > 0.5;
+  const style = { "--mv-w": `${v}%` } as React.CSSProperties;
   return (
     <div className="mv-scene">
-      <Dial id="mv-cred" label="Crédibilité" min={0} max={100} step={1} value={v} onChange={setV} />
-      <div className="mv-duo">
-        <div className="mv-cote">
-          <p className="mv-verdict-tete"><span className="verdict bon" aria-hidden="true">✓</span><span>la barre est à la valeur, à l&apos;image près</span></p>
-          <FicheTemoin valeur={v} barre={juste} />
+      <div className="carte mv-temoin" style={style}>
+        <div className="mv-temoin-tete">
+          <span className="mv-avatar" aria-hidden="true">LF</span>
+          <span className="mv-temoin-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
         </div>
-        <div className="mv-cote" data-intent="statement">
-          <p className="mv-verdict-tete"><span className="verdict ko" aria-hidden="true">✗</span><span>la barre s&apos;anime pendant qu&apos;on la règle</span></p>
-          <FicheTemoin valeur={v} ment barre={faux} />
+        <div className="mv-pile">
+          <label className="mv-pile-dit" htmlFor="mv-cred">Crédibilité <output htmlFor="mv-cred">{v} %</output></label>
+          <input className="mv-pile-molette" type="range" id="mv-cred" min={0} max={100} step={1} value={v} onChange={(e) => setV(+e.target.value)} />
+          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict bon" aria-hidden="true">✓</span><span>à la valeur</span></p>
+          <div className="mv-pile-barres"><div className="mv-jauge-piste"><div ref={juste} className="mv-jauge-barre" /></div></div>
+          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict ko" aria-hidden="true">✗</span><span>animée</span></p>
+          <div className="mv-pile-barres" data-intent="statement"><div className="mv-jauge-piste"><div ref={faux} className="mv-jauge-barre ment" /></div></div>
         </div>
       </div>
       {/* Le verdict se LIT : l'écart entre les deux barres, mesuré sur le rendu. */}
       <span className={`badge ${ment ? "ko" : "bon"}`} aria-live="polite">
         {ment
-          ? `la barre de droite est ${fmt(retard)} px derrière la molette`
+          ? `la barre du bas est ${fmt(retard)} px derrière la molette`
           : pic > 0.5
-            ? `les deux barres se sont rejointes — la droite a menti de ${fmt(pic)} px au plus`
+            ? `les deux barres se sont rejointes — celle du bas a menti de ${fmt(pic)} px au plus`
             : "les deux barres sont à la valeur — glissez la molette"}
       </span>
     </div>
@@ -504,8 +479,8 @@ export default function Vue() {
             <p className="chapo">
               On ne peut pas le regarder, seulement l&apos;attraper — et c&apos;est pour ça qu&apos;on le
               règle si mal. Une durée de trop se sent sans se voir, une courbe héritée ne signe rien, et
-              une interface qui bouge partout finit par ne plus rien dire. Ici, quatre durées,
-              <b>une</b> courbe, et chacune sait où elle va. Ce que vous ne pouvez pas voir, la page le mesure pour vous.
+              une interface qui bouge partout finit par ne plus rien dire. Ici, quatre
+              durées, <b>une</b> courbe, et chacune sait où elle va. Ce que vous ne pouvez pas voir, la page le mesure pour vous.
             </p>
           </section>
 
@@ -517,7 +492,8 @@ export default function Vue() {
               <p className="sourd">Une molette promet une chose simple : ce que vous voyez est la valeur
               où est votre doigt. Dès que la scène porte une transition, elle traîne derrière — et vous
               regardez l&apos;animation au lieu du nombre. La démonstration cesse de démontrer. Tenez la
-              molette et regardez les deux barres : l&apos;écart entre elles est mesuré à chaque image.</p>
+              molette et ne quittez pas son curseur des yeux : la barre du bas court après lui, et
+              l&apos;écart est mesuré à chaque image.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -525,7 +501,7 @@ export default function Vue() {
                   <Molette />
                 </div>
                 <figcaption className="gd-legende">
-                  même fiche, même molette · à gauche aucune transition sur la largeur réglée · à droite {ms("slow")} ms
+                  une molette, deux barres sous son curseur · en haut aucune transition sur la largeur réglée · en bas {ms("slow")} ms
                   sur la valeur qu&apos;on tient — le retard est lu sur le rendu, pas décrété
                 </figcaption>
               </figure>
