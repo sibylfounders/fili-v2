@@ -1,0 +1,148 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   MOUVEMENT — la feuille de la page (7 septembre 2026, plan de preuves
+   validé par l'Auteur le 4). Tout ce qui bouge ici prend un jeton de
+   mouvement (--m-*, --e-out) ; une durée ou une courbe écrite à la main
+   est une casse, et sa ligne le dit. Tout déplacement vit sous son
+   portillon (prefers-reduced-motion: no-preference) ; un fondu s'écrit nu.
+   Les objets sont ceux de Fili : la fiche d'un témoin, le verdict qui se
+   pose, le menu des actions. Leurs mesures descendent de la chaîne.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Un réglage de scène : un curseur, une valeur — même tête d'outil que
+      les autres pages (grille fixe : le mot ne décide de rien). ── */
+.mv-dial { display: grid; grid-template-columns: minmax(8rem, 16rem) 3ch;
+  gap: var(--gap-3-block) var(--gap-3-inline); align-items: center; }
+.mv-dial label { grid-area: 1 / 1; justify-self: center;
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.mv-dial output { grid-area: 2 / 2;
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mv-dial input[type=range] {
+  grid-area: 2 / 1; width: 100%; min-width: 0;
+  appearance: none; -webkit-appearance: none;
+  background: transparent; height: var(--control-height-compact); margin: 0; cursor: pointer;
+  --mv-piste: var(--border-strong); --mv-curseur: var(--text-primary);
+}
+.mv-dial input[type=range]::-webkit-slider-runnable-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--mv-piste); }
+.mv-dial input[type=range]::-moz-range-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--mv-piste); }
+.mv-dial input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 1.25rem; height: 1.25rem; margin-top: -0.5rem; /* hors chaîne : le bouton du curseur, centré sur la piste */
+  border-radius: var(--r-pill); background: var(--mv-curseur); border: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */
+}
+.mv-dial input[type=range]::-moz-range-thumb {
+  width: 1.25rem; height: 1.25rem; /* hors chaîne : le bouton du curseur */
+  border-radius: var(--r-pill); background: var(--mv-curseur); border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */
+}
+
+/* ── Une scène à deux côtés : le juste et le faux côte à côte, en même
+      temps (la forme de /composition). L'écart entre les colonnes est la
+      marge de coque, le verdict en tête de colonne. ── */
+.mv-duo { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
+@media (min-width: 40em) { .mv-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mv-cote { display: grid; gap: var(--gap-3-block); align-content: start; }
+.mv-verdict-tete { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
+  font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
+.mv-verdict-tete .verdict.bon { color: var(--success); font-weight: 700; }
+.mv-verdict-tete .verdict.ko { color: var(--danger); font-weight: 700; }
+
+/* ── 01 · La fiche du témoin et sa jauge. La barre prend la largeur que la
+      molette lui donne — à gauche tout de suite, à droite avec un retard
+      qu'on mesure. ── */
+.mv-temoin { display: grid; gap: var(--gap-2-block); width: 100%; }
+.mv-temoin-tete { display: flex; align-items: center; gap: var(--gap-3-inline); }
+.mv-avatar { width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill);
+  background: var(--primary-subtle); color: var(--primary-text); display: grid; place-items: center;
+  font: 700 var(--font-size-label)/1 var(--font-mono); flex: none; }
+.mv-temoin-nom { display: grid; gap: var(--gap-4-block); }
+.mv-temoin-nom b { font-size: var(--font-size-body); }
+.mv-temoin-nom span { font-size: var(--font-size-small); color: var(--text-secondary); }
+.mv-jauge { display: grid; gap: var(--gap-3-block); }
+.mv-jauge-ligne { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-3-inline);
+  font: 600 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.mv-jauge-ligne output { font-variant-numeric: tabular-nums; }
+.mv-jauge-piste { height: var(--gap-4-block); border-radius: var(--r-pill); background: var(--surface-hover); overflow: hidden; }
+.mv-jauge-barre { height: 100%; border-radius: var(--r-pill); background: var(--primary); width: var(--mv-w, 0%); }
+.mv-jauge-barre.ment { transition: width var(--m-slow) var(--e-out); } /* casse (hors chaîne) : une valeur qu'on fait glisser s'anime — la barre traîne derrière le doigt, et l'œil regarde l'animation au lieu du nombre */
+
+/* ── 02 · Le même verdict, quatre fois. Une seule chose change d'un cadre
+      à l'autre : la durée. Le fondu s'écrit nu, le déplacement sous son
+      portillon — c'est aussi ce que voit quelqu'un qui a demandé moins de
+      mouvement : le verdict apparaît, il ne monte pas. ── */
+.mv-quatre { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (min-width: 52em) { .mv-quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mv-cadre { display: grid; gap: var(--gap-2-block); align-content: start;
+  background: var(--surface); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); min-height: 11rem; }
+.mv-cadre[data-cran="fast"] { --mv-d: var(--m-fast); }
+.mv-cadre[data-cran="base"] { --mv-d: var(--m-base); }
+.mv-cadre[data-cran="slow"] { --mv-d: var(--m-slow); }
+.mv-cadre[data-cran="expressive"] { --mv-d: var(--m-expressive); }
+.mv-cadre-tete { display: grid; gap: var(--gap-4-block); }
+.mv-cadre-tete b { font: 700 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mv-cadre-tete span { font-size: var(--font-size-small); color: var(--text-secondary); }
+.mv-pose { opacity: 0; transition: opacity var(--mv-d) var(--e-out); } /* le fondu s'écrit nu */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-pose { translate: 0 var(--gap-2-block); transition: opacity var(--mv-d) var(--e-out), translate var(--mv-d) var(--e-out); }
+}
+.mv-cadre.joue .mv-pose { opacity: 1; translate: 0 0; }
+.mv-verdict { display: grid; gap: var(--gap-3-block); background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
+.mv-verdict-mot { font: 700 var(--font-size-small)/1.2 var(--font-sans); }
+.mv-verdict-dit { font-size: var(--font-size-label); color: var(--text-secondary); }
+
+/* ── 03 · Le menu des actions et les mots qu'on emploie pour le décrire.
+      Un seul objet ; chaque mot lui donne une autre façon d'arriver, et
+      la page lit dans la feuille ce que le mot produit vraiment. ── */
+.mv-mots { display: flex; flex-wrap: wrap; gap: var(--gap-3-block) var(--gap-3-inline); justify-content: center; }
+.mv-scene-menu { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3-block);
+  width: 100%; min-height: 14rem; }
+.mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block));
+  min-width: 14rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2);
+  padding: var(--pad-3-block) var(--pad-3-inline); display: grid; gap: var(--gap-4-block); z-index: 1;
+  opacity: 0; pointer-events: none; transform-origin: 0 0;
+  transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
+.mv-menu.ouvert { opacity: 1; pointer-events: auto; }
+.mv-menu.saute { transition: none; } /* casse (hors chaîne) : il saute — un état remplace l'autre sans passage */
+.mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne, le fondu nu aussi */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-menu { scale: 0.95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* menu : il grandit depuis presque sa taille, depuis le coin de son bouton */
+  .mv-menu.ouvert { scale: 1; }
+  /* les mots refusés — chacun dit sa faute sur sa ligne */
+  .mv-menu.neant { scale: 0; } /* casse (hors chaîne) : il naît du néant — un objet réel ne part pas d'une taille nulle */
+  .mv-menu.neant.ouvert { scale: 1; }
+  .mv-menu.rebond { transition: opacity var(--m-base) var(--e-out), scale var(--m-base) cubic-bezier(0.34, 1.56, 0.64, 1); } /* casse (hors chaîne) : il rebondit — une courbe qui dépasse sa cible, jamais sur de l'interface */
+  .mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out), scale var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne — le cran expressif sur un menu, qui vit à 200 */
+  .mv-menu.milieu { transform-origin: 50% 50%; } /* casse (hors chaîne) : il s'ouvre du milieu — pas depuis le bouton qui l'a appelé */
+}
+.mv-menu-item { display: flex; align-items: center; min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.mv-menu-item:hover { background: var(--surface-hover); }
+.mv-menu-item.danger { color: var(--danger); }
+
+/* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
+      bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
+.mv-scene { display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
+.mv-rangee { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+.mv-scene-toast { display: grid; justify-items: start; min-height: calc(var(--control-height) + var(--gap-2-block)); }
+/* 1 · le survol qui poursuit : la même rangée, la durée du panneau au lieu de celle du survol */
+.mv-rangee.lente .bouton { transition-duration: var(--m-slow); } /* casse (hors chaîne) : le survol poursuit le curseur — 300 là où un survol vit à 100 */
+
+/* 3 · la notification : elle arrive depuis presque sa taille ; cassée, depuis rien */
+.mv-toast { display: flex; align-items: center; gap: var(--gap-3-inline);
+  background: var(--text-primary); color: var(--bg); border-radius: var(--r-2);
+  padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: 600;
+  opacity: 0; transition: opacity var(--m-base) var(--e-out); } /* le fondu s'écrit nu */
+.mv-toast .point { width: var(--gap-3-inline); height: var(--gap-3-inline); border-radius: var(--r-pill); background: var(--success); flex: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .mv-toast { scale: 0.95; translate: 0 var(--gap-3-block);
+    transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out), translate var(--m-base) var(--e-out); }
+  .mv-toast.neant { scale: 0; } /* casse (hors chaîne) : elle naît du néant */
+  .mv-toast.la { scale: 1; translate: 0 0; }
+  /* 4 · moins de mouvement : ce que voit quelqu'un qui l'a demandé — le déplacement part, le fondu reste.
+     Une simulation du réglage système, à l'échelle de la scène ; le site, lui, y obéit par ses portillons. */
+  .mv-reduit .mv-toast { scale: none; translate: none; transition: opacity var(--m-base) var(--e-out); }
+  .mv-coupe .mv-toast { scale: none; translate: none; transition: none; } /* casse (hors chaîne) : l'ancienne règle — tout coupé, elle surgit sans passage */
+}
+.mv-coupe .mv-toast { transition: none; } /* casse (hors chaîne) : l'ancienne règle, nue aussi */
+.mv-toast.la { opacity: 1; }
