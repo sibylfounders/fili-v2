@@ -279,7 +279,6 @@
   --code-str: #4ADE80;
   --code-kw: #A8B3FB;
   --code-tag: #FBBF25;
-  --code-danger: #F87171;
 }
 
 [data-theme="dark"] {
@@ -325,7 +324,6 @@
   --code-str: #4ADE80;
   --code-kw: #A8B3FB;
   --code-tag: #FBBF25;
-  --code-danger: #F87171;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -372,6 +370,5 @@
     --code-str: #4ADE80;
     --code-kw: #A8B3FB;
     --code-tag: #FBBF25;
-    --code-danger: #F87171;
   }
 }

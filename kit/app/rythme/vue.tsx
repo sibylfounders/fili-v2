@@ -889,8 +889,11 @@ export default function Vue() {
               <figure className="gd-figure">
                 {/* La terre sombre, comme la gazette de Typo : un panneau se lit
                       comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
-                      du papier. Variante déjà déclarée du banc. */}
-                <div className="banc sombre">
+                      du papier. Variante déjà déclarée du banc — et la scène se
+                      déclare en thème sombre (verdict d'Auteur, 7 septembre) : le
+                      rouge de la faute et les encres des cotes viennent du système,
+                      pas d'un jeton propre à la terre de code. */}
+                <div className="banc sombre" data-theme="dark">
                   <Profondeurs casse={casseProf} />
                 </div>
                 <figcaption className="gd-legende">{casseProf

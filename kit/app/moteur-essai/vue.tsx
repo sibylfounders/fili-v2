@@ -87,7 +87,7 @@ export default function Vue() {
                 </button>
               </div>
               <figure className="gd-figure">
-                <div className="banc sombre">
+                <div className="banc sombre" data-theme="dark">
                   <Profondeurs casse={casse} />
                 </div>
                 <figcaption className="gd-legende">{casse

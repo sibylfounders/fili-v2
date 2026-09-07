@@ -470,14 +470,11 @@
   min-height: 36px; /* casse : sous le plancher de la cible au doigt — le vide dans la jauge est ce qui manque */
 }
 
-/* ── La profondeur sur terre sombre (2 septembre) ──
-   Le panneau « Réglages » pose son propre papier et garde ses encres. La
-   colonne des cotes, elle, repose directement sur la terre. L'accent la
-   traverse sans retouche — il a la même valeur dans les deux thèmes — donc
-   seuls le texte et le rouge de la faute changent de versant. */
-.banc.sombre .ry-pf-cote.faux { color: var(--code-danger); } /* le rouge de la faute sur le fond de code : calé 4,5:1 par le moteur */
-.banc.sombre .ry-pf-cote-dit b { color: var(--code-text); }
-.banc.sombre .ry-pf-cote-dit .mono { color: var(--code-com); }
+/* ── La profondeur sur terre sombre (2 septembre, tranché le 7) ──
+   La scène se déclare en thème sombre (data-theme="dark" sur le banc, dans
+   la vue) : le panneau, ses papiers, les encres des cotes et le rouge de la
+   faute sont ceux du versant sombre du système — aucune encre propre à la
+   scène, aucun jeton neuf. L'accent la traverse sans retouche. */
 
 /* ═══ LE SCÉNARIO DU MOTEUR — DES SLIDES (2 septembre 2026) ═══════════
    Un seul plateau, toujours le même, et des slides qui s'y succèdent : une

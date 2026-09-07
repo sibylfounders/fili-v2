@@ -409,10 +409,6 @@
       "code-tag": {
         "$type": "color",
         "$value": "#FBBF25"
-      },
-      "code-danger": {
-        "$type": "color",
-        "$value": "#F87171"
       }
     },
     "dark": {
@@ -579,10 +575,6 @@
       "code-tag": {
         "$type": "color",
         "$value": "#FBBF25"
-      },
-      "code-danger": {
-        "$type": "color",
-        "$value": "#F87171"
       }
     }
   },

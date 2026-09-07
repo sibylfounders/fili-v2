@@ -5706,3 +5706,29 @@ règles 2, 3 et 5 sont déjà au répertoire des règles qu'on ne peut pas montr
 la règle 4 y est aussi, avec « nulle part » pour lieu de vérification tant que
 le chantier n'est pas ouvert. La page reste verrouillée telle qu'elle a été
 mesurée ce matin.
+
+## 7 septembre 2026 (3) — le rouge sur la terre de code : pas de jeton, la scène se déclare en sombre
+
+**« Y'a pas un risque à ajouter une couleur au système juste pour une
+démo ? »** Si. Le jeton `--code-danger` né le matin avait un consommateur
+maigre — une cote fausse dans une scène — et un registre qui grossit pour
+les besoins d'une scène est la pente exacte des trente bleus. Une étude a
+mis le problème côte à côte sur huit composants (cote, ligne de code, badge,
+champ, alerte, diff, table, papier posé) et trois traitements
+(`livrables-projet/etude-rouge-terre-de-code-2026-09-07.html`) : le rouge du
+thème clair s'éteint huit fois sur la terre de code ; le jeton et le thème
+sombre donnent **exactement la même couleur** — le moteur avait produit la même
+valeur pour les deux. La différence n'était pas la couleur, c'était qui la
+porte : une septième encre propre à la terre de code, ou toute la famille
+sombre du système.
+
+**Verdict d'Auteur : « passe en mode sombre le fond, c'est plus simple. »**
+La scène de la profondeur de `/rythme` (et la page d'essai qui partage la
+scène) se déclare en thème sombre. Le panneau, ses papiers, les encres des
+cotes et le rouge de la faute viennent du versant sombre du système ; les
+trois lignes d'encres propres à la scène disparaissent, et `--code-danger`
+est retiré du moteur le jour même de sa naissance. La terre de code garde ses
+six encres de syntaxe, et une règle s'écrit à côté d'elles : une scène qui a
+besoin de toute la famille sombre se déclare en thème sombre plutôt que
+d'inventer une encre. Le moteur repasse 29/29 ; la course complète repasse
+verte.

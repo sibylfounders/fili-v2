@@ -389,9 +389,6 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   light['code-kw'] = dark['code-kw'] = codeSur(lchVersHex([0.785, Math.min(0.104, Cp), H]), Math.min(0.104, Cp), H)
   light['code-str'] = dark['code-str'] = codeSur(lchVersHex(pose([0.800, 0.182, 151.7])), 0.182, suit(151.7))
   light['code-tag'] = dark['code-tag'] = codeSur(lchVersHex(pose([0.837, 0.164, 84.4])), 0.164, suit(84.4))
-  /* la faute (rouge du versant sombre de danger, tiré par le déplacement) — née avec son premier
-     consommateur, la cote fausse de la profondeur sur terre sombre (/rythme, 2 septembre) */
-  light['code-danger'] = dark['code-danger'] = codeSur(lchVersHex(pose([0.711, 0.166, 22.2])), 0.166, suit(22.2))
 
   /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu.
      L'aplat glisse en zone médiane (aplatAjuste), le lien se cale (lienAjuste). */
@@ -509,7 +506,7 @@ export const PAIRES_DECLAREES = [
   ['border-strong', 'bg', 3], ['focus-ring', 'bg', 3], ['focus-ring', 'surface', 3],
   ['focus-ring-danger', 'bg', 3], ['focus-ring-danger', 'surface', 3], ['focus-ring-neutral', 'bg', 3], ['focus-ring-neutral', 'surface', 3],
   ['code-text', 'code-bg', 4.5], ['code-com', 'code-bg', 4.5],
-  ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5], ['code-danger', 'code-bg', 4.5],
+  ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5],
 ]
 export function verifier(pal) {
   const fautes = []
@@ -532,7 +529,7 @@ export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
     'success', 'success-subtle', 'on-success', 'on-success-subtle',
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',
     'info', 'info-subtle', 'on-info', 'on-info-subtle',
-    'code-bg', 'code-text', 'code-com', 'code-str', 'code-kw', 'code-tag', 'code-danger']
+    'code-bg', 'code-text', 'code-com', 'code-str', 'code-kw', 'code-tag']
   const bloc = (o) => NOMS.map((n) => ligne(o, n)).join('\n')
   return [
     `/* GÉNÉRÉ par kit/derivation.mjs depuis primary ${primaire} — ne pas éditer`,
@@ -1003,7 +1000,7 @@ export const color = ${q({
     warning: { DEFAULT: 'var(--warning)', subtle: 'var(--warning-subtle)' }, 'on-warning': { DEFAULT: 'var(--on-warning)', subtle: 'var(--on-warning-subtle)' },
     info: { DEFAULT: 'var(--info)', subtle: 'var(--info-subtle)' }, 'on-info': { DEFAULT: 'var(--on-info)', subtle: 'var(--on-info-subtle)' },
     accent: 'var(--accent)',
-    code: { bg: 'var(--code-bg)', text: 'var(--code-text)', com: 'var(--code-com)', str: 'var(--code-str)', kw: 'var(--code-kw)', tag: 'var(--code-tag)', danger: 'var(--code-danger)' },
+    code: { bg: 'var(--code-bg)', text: 'var(--code-text)', com: 'var(--code-com)', str: 'var(--code-str)', kw: 'var(--code-kw)', tag: 'var(--code-tag)' },
   },
 })};
 

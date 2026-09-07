@@ -711,9 +711,10 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 /* Une terre sombre posée dans une page claire. Ce qui pose sa propre
    surface claire par-dessus (une feuille, un panneau) garde ses encres ;
    ce qui repose DIRECTEMENT sur la terre doit prendre celles du versant
-   sombre — --code-text, --code-com, --code-danger — sinon
-   le texte secondaire, l'accent et le rouge de la faute s'y éteignent.
-   Chaque page le déclare pour les éléments qu'elle y pose. */
+   sombre — --code-text, --code-com — sinon le texte secondaire s'y éteint.
+   Chaque page le déclare pour les éléments qu'elle y pose ; une scène qui a
+   besoin de toute la famille sombre (le rouge d'une faute) se déclare en
+   thème sombre plutôt que d'inventer une encre (7 septembre). */
 .banc.sombre { background: var(--code-bg); color: var(--code-text); }
 /* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
    (décision d'Auteur, 24 août). */

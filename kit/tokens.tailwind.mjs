@@ -149,8 +149,7 @@ export const color = {
       com: 'var(--code-com)',
       str: 'var(--code-str)',
       kw: 'var(--code-kw)',
-      tag: 'var(--code-tag)',
-      danger: 'var(--code-danger)'
+      tag: 'var(--code-tag)'
     }
   }
 };
