@@ -39,6 +39,8 @@ p { margin: 0; }
 }
 .badge.ko { color: var(--danger); background: var(--danger-subtle); }
 .bouton {
+  /* Le texte est centré dans le bouton, toujours — quel que soit l'élément qui porte la classe (verdict d'Auteur, 7 septembre) */
+  display: inline-flex; align-items: center; justify-content: center;
   min-height: var(--control-height); padding: 0 var(--pad-3-inline);
   border: 1px solid var(--border); border-radius: var(--r-ctl);
   background: var(--bg); font: 600 var(--font-size-small)/1 inherit; cursor: pointer;
