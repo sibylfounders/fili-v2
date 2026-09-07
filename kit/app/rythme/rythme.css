@@ -471,8 +471,9 @@
 }
 
 /* ── La profondeur sur terre sombre (2 septembre, tranché le 7) ──
-   La scène se déclare en thème sombre (data-theme="dark" sur le banc, dans
-   la vue) : le panneau, ses papiers, les encres des cotes et le rouge de la
+   Le panneau pose son propre papier clair et garde ses encres. La colonne
+   des cotes repose directement sur la terre : elle se déclare en thème
+   sombre (data-theme="dark", dans la vue) et ses encres comme le rouge de la
    faute sont ceux du versant sombre du système — aucune encre propre à la
    scène, aucun jeton neuf. L'accent la traverse sans retouche. */
 

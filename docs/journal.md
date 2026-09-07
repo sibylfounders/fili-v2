@@ -5732,3 +5732,16 @@ six encres de syntaxe, et une règle s'écrit à côté d'elles : une scène qui
 besoin de toute la famille sombre se déclare en thème sombre plutôt que
 d'inventer une encre. Le moteur repasse 29/29 ; la course complète repasse
 verte.
+
+## 7 septembre 2026 (4) — le fond reste bleu foncé, le panneau garde son papier clair
+
+**Regardé, corrigé.** Passée entière en thème sombre, la scène de la
+profondeur perdait ce qui la faisait lire : le panneau « Réglages » n'était
+plus un objet posé sur une terre, c'était du sombre sur du sombre. Verdict
+d'Auteur, capture à l'appui : « passe le fond bleu foncé et surface gris
+clair ». Le banc garde sa terre de code, le panneau retrouve son papier clair
+et ses encres — et seule la colonne des cotes, celle qui repose directement
+sur la terre, se déclare en thème sombre. C'est plus juste que la version du
+matin : ce n'est pas la scène qui change de versant, c'est ce qui touche la
+terre. La loi du 2 septembre, à la lettre — l'encre dépend de son parent
+direct. Aucun jeton, toujours ; le banc repasse vert.

@@ -508,7 +508,9 @@ export function Profondeurs({ casse, socle }: { casse: boolean; socle?: Socle })
           <button className="ry-pf-btn" type="button" tabIndex={-1}>Enregistrer</button>
         </div>
       </div>
-      <ol className="ry-pf-cotes" aria-label="Les trois coins, dessinés à leur vraie taille">
+      {/* Les cotes reposent directement sur la terre sombre : elles se déclarent
+          en thème sombre pour prendre ses encres et son rouge (7 septembre). */}
+      <ol className="ry-pf-cotes" data-theme="dark" aria-label="Les trois coins, dessinés à leur vraie taille">
         <Arc r={r[0]} nom="le container" marge={p[0]} />
         <Arc r={r[1]} nom="la card" marge={p[1]} />
         <Arc r={rLigne} nom="la row" marge={p[2]} faux={casse} />
@@ -889,11 +891,12 @@ export default function Vue() {
               <figure className="gd-figure">
                 {/* La terre sombre, comme la gazette de Typo : un panneau se lit
                       comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
-                      du papier. Variante déjà déclarée du banc — et la scène se
-                      déclare en thème sombre (verdict d'Auteur, 7 septembre) : le
-                      rouge de la faute et les encres des cotes viennent du système,
-                      pas d'un jeton propre à la terre de code. */}
-                <div className="banc sombre" data-theme="dark">
+                      du papier. Variante déjà déclarée du banc. Le panneau garde
+                      son papier clair ; ce qui repose directement sur la terre — la
+                      colonne des cotes — se déclare en thème sombre (verdict
+                      d'Auteur, 7 septembre) : ses encres et le rouge de la faute
+                      viennent du système, pas d'un jeton propre à la terre de code. */}
+                <div className="banc sombre">
                   <Profondeurs casse={casseProf} />
                 </div>
                 <figcaption className="gd-legende">{casseProf
