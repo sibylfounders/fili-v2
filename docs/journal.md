@@ -5949,3 +5949,53 @@ vertes à la suivante, sans qu'une ligne ait changé. À retenir : deux fils ne
 mesurent pas le même site construit en même temps.
 
 Banc : douze vertes deux fois, puis la course complète — six pages vertes.
+
+## 7 septembre 2026 (10) — la page qui se lit : trois preuves refondues à l'œil, portées dans le kit
+
+**Ce que l'Auteur a jugé, en dix verdicts.** La page verrouillée le matin ne
+tenait pas à l'œil : tout allait trop vite, tout avait le même ton graphique, le
+texte ne parlait pas comme les autres pages, et une démonstration de mouvement
+sans voix ni sous-titre ne se comprend pas. Le fil a donc quitté le site pour
+une pièce HTML à part, jugée à part, puis l'a portée dans le kit. Ce qui reste :
+rien ne se joue seul (« Lire », jamais de lecture automatique), un problème
+énoncé puis une démo puis l'explication, la faute d'abord et le juste ensuite
+(plus simple à voir qu'une comparaison côte à côte), lentement, avec des
+sous-titres — et pas de deux colonnes « bon / pas bon » : ça ne marche pas dans
+ces démos.
+
+**01 · La main invisible.** Une seule fiche, une seule pile, et une main dessinée
+qui fait glisser la molette par à-coups — parce qu'un glissé régulier cachait le
+retard (neuf pixels, invisibles). Six étapes sous-titrées : la faute annoncée, la
+barre qui court après la main avec l'écart peint en rouge et chiffré, le pic
+mesuré, puis « comme il faut » où la barre est sous la main à l'image près, et
+la règle en dernier. Sous mouvement réduit, on avance à la main, « Étape
+suivante ».
+
+**02 · Quatre situations, et une de trop.** La présentation du film de `/rythme`,
+reprise sur verdict : à gauche ce que vous faites et la durée en grand avec son
+emploi, à droite l'objet qui répond pour de vrai — le bouton survolé, le menu,
+le panneau, la section — sept secondes par situation, le temps de lire avant que
+l'objet réponde ; un lecteur avec précédente, suivante, lire, un compteur. La
+cinquième est la faute : le même menu au cran d'une section. La durée de chaque
+objet est lue sur son rendu dès que la situation est posée, au repos ; la légende
+dit les quatre crans lus.
+
+**03 · Dire ce qu'on voit.** Six mots, une tuile par mot, un objet témoin par
+tuile qui joue son mot au ralenti (trois fois) quand on le lit, ou « Tout lire »
+les enchaîne. Le verdict de chaque tuile est déduit de la feuille et ramené à la
+vitesse réelle — la traîne à 700 reste une faute, le néant part de zéro.
+
+**Le wording.** Clair, concis, accessible : chaque commande dit ce qu'elle fait
+(« Lire », « Arrêter », « Rejouer », « Situation suivante »), le sous-titre est
+une zone vivante lue par les lecteurs d'écran, les objets non joués sont cachés
+à l'assistance, tout se pilote au clavier.
+
+**En chemin.** La première situation n'était pas lue quand on passait à la
+suivante trop vite — la mesure vivait dans la réponse de l'objet, elle vit
+maintenant dans la pose de la situation. Le banc cherchait le menu à la première
+situation ; il avance d'une avant de le mesurer. Et une course sur deux rouge
+sans qu'une ligne ait changé : l'autre fil reconstruisait le site pendant la
+mesure — la suivante, douze vertes.
+
+Banc : douze vertes trois fois (dont une reprise après la reconstruction
+croisée), puis la course complète — six pages vertes.
