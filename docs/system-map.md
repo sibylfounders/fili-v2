@@ -105,11 +105,11 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Page | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
 | `/` · La porte | 🟢 | Couverture de charte, le moteur en objet vivant, trois spécimens de fondation, la carte du système | — (`#111`) |
-| `/typo` · Typographie | 🟢 | Onze règles, huit crans et un seul rapport, la mesure, la gazette et son banc — passée sur la chaîne le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
-| `/rythme` · Rythme | 🟢 | La chaîne : coque, carte, ligne ; quatre axes ; la densité qui change la base ; le bon cran calculé par le moteur — réécrite sur les huit décisions le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
-| `/couleur` · Couleur | 🟢 | Dix-sept règles, deux thèmes, le nuancier en six lignes signées (31 août), les départs, le moteur et ses garde-fous — géométrie passée sur la chaîne le 25 août | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
+| `/typo` · Typographie | 🟡 | Douze règles (T12, le calage, depuis le 4 septembre), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
+| `/rythme` · Rythme | 🟡 | Le moteur en ouverture (le scénario, douze slides, depuis le 2 septembre) ; la chaîne : coque, carte, ligne ; la densité qui change la base ; la profondeur — réécrite sur les huit décisions le 25 août | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : le film déclare ses valeurs écrites à la main, le couple chiffre-légende est mesuré, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
+| `/couleur` · Couleur | 🟡 | Dix-sept règles, la palette, le nuancier en six lignes signées, la situation, le moteur, cinq bandes (dont « teinter ne coûte rien ») — passée à la voix et aux quatre étages le 2 septembre | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : cinq épreuves réécrites (un seul panneau mesuré dans les deux thèmes, la casse de la teinte entre à l'épreuve), une faute corrigée (la marque du panneau de code écrite à la main, lue au moteur), le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré, les quinze lois | Ses jetons sont rabattus sur la chaîne, ses valeurs propres restent hors chaîne (dette déclarée) |
-| `/arrondis` · Arrondis | 🟢 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; le répertoire des intentions — racine 16, bouton = coin de la ligne | **Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, neuf épreuves (`#129`) ; le bouton en pilule n'est plus un recalé depuis le 31 août — l'épreuve comptait encore deux recalés. Remise au niveau le 1er septembre : elle mesure désormais que les deux boutons de la paire sont le même objet à un fond près. |
+| `/arrondis` · Arrondis | 🟡 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; six pièges révélés par leur curseur (2 septembre) — racine 16, bouton = coin de la ligne ; le répertoire des intentions a quitté la page | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : deux épreuves réécrites sur les pièges, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, neuf épreuves (`#129`) ; le bouton en pilule n'est plus un recalé depuis le 31 août — l'épreuve comptait encore deux recalés. Remise au niveau le 1er septembre : elle mesure désormais que les deux boutons de la paire sont le même objet à un fond près. |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 
 **Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
@@ -122,8 +122,38 @@ nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
 (`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
 de page, titres du site à un cran et demi au-dessus de l'affiche.
 
+**Le menu et le rail** (2 septembre, direction A) — 🟢 posés, mesurés par le
+banc. Le rail garde la page : une ligne en tête dit la famille et s'ouvre, la
+colonne entière est au sommaire ; le site part dans une feuille à un panneau
+(la maison, Système, Produit, Contact, Téléchargements) ; en petit, une barre à
+deux boutons sous l'en-tête. La page en cours n'est plus cliquable et la
+navigation passe par le routeur. Restent à nommer : les paquets, le contenu de
+Contact et Téléchargements.
+
+**Le calage vertical** (4 septembre) — 🟡 posé sur `/typo` : T12, une bande
+mesurée sur la font livrée, trois règles au répertoire. Les cinq règles du
+calage attendent le verdict règle par règle ; le kit n'est pas rogné, seule la
+carte de la démo l'est. La question S3 (la valeur vue) est remontée, non
+rouverte.
+
+**Le mouvement du kit** (4 septembre, décisions d'Auteur du 3) — 🟡 posé, à
+valider à l'œil. Le moteur porte désormais quatre durées avec leur emploi
+(100 bouton · survol · appui ; 200 menu · infobulle · dépliant ; 300 tiroir ·
+fenêtre · panneau ; 700 arrivée d'une section) et la courbe du kit
+(`cubic-bezier(0.23, 1, 0.32, 1)`, proposée, à juger sur le site). Plus une
+seule durée écrite à la main dans les feuilles : chaque transition prend son
+jeton et dit son emploi, ou dit « chorégraphie » sur sa ligne — trois seulement
+(le film de `/rythme`, l'entrée de l'accueil, la boucle du chemin de l'œil sur
+`/composition`). Une valeur qu'on fait glisser ne s'anime plus (`/arrondis`, le
+film de `/rythme` pendant qu'on tourne sa molette). Les vraies commandes
+répondent à l'appui. Sous mouvement réduit, les déplacements partent et les
+fondus restent — écrit par construction (un déplacement n'existe que sous son
+portillon), vérifié par deux épreuves du moteur. Reste à l'œil de l'Auteur :
+la courbe, et la cascade du nuancier de `/couleur` ramenée sur les crans.
+
 **Le banc des crash-tests de page** (`kit/epreuves/`, `npm run test:pages`,
-`#125`) — 🟢, repassé vert le 1er septembre. Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
+`#125`) — 🟢, repassé vert le 7 septembre (course complète sur la machine
+d'Auteur : moteur 29/29, pages 12 · 12 · 9 · 8). Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
 dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
 prédit, au dixième de pixel. Six épreuves communes — les chiffres affichés, les
 preuves par leur jeton, la densité, les titres, C17, rien en dur — et, par page,
@@ -132,8 +162,10 @@ Le 1er septembre, douze d'entre elles étaient rouges — les pages avaient boug
 les 27, 30 et 31 août et le banc n'avait pas été relancé. Neuf disaient une page
 qui n'existait plus, trois nommaient de vraies fautes. Les neuf ont été
 réécrites sur ce que les pages prouvent aujourd'hui, sans baisser l'exigence,
-et les fautes corrigées ; le banc tourne vert de bout en bout depuis le
-1er septembre au soir.
+et les fautes corrigées. Le 7 septembre, dix-sept étaient rouges pour la même
+raison — les lots du 2 au 4 n'avaient pas été remis au niveau : quinze
+réécrites sur la page d'aujourd'hui, deux vraies fautes corrigées, aucune
+relâchée ; le banc tourne vert de bout en bout depuis le 7 au matin.
 Une page ne passe 🟢 que par lui. Le gabarit commun ne s'élargit plus au-delà de
 la page (zéro débord à 320, règle 15).
 
@@ -152,7 +184,9 @@ rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au co
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
 pousseraient à grouper les commits, et le journal vit de leur finesse.
 
-**Le moteur de couleur** — 🟢 verrouillé. Une décision
+**Le moteur de couleur** — 🟢 verrouillé ; un jeton né le 7 septembre,
+`--code-danger` (le rouge de la faute sur la terre de code, calé 4,5:1), en
+attente du verdict d'Auteur. Une décision
 d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses
 seuils sont arrêtés le 2026-08-24 et ne se retouchent plus sans nouvel
 arbitrage (`#110`) — un seul l'a été depuis, sur pièce : le déplacement des

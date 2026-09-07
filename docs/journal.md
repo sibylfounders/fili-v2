@@ -5355,3 +5355,320 @@ Cette erreur-là n'a plus où se loger.
 La dernière course et son verdict ne se versent pas au dépôt : ce sont des
 mesures locales, faites sur une machine à une heure donnée. Ce qui fait foi, ici
 comme avant, c'est la carte.
+
+## 2 septembre 2026 — le menu à l'échelle : le rail garde la page, le site part dans une feuille
+
+*Écrit au dépôt le 7 septembre, à partir des pièces du 2 (`claude/menu-a-l-echelle-2026-09-02.md`, `claude/menu-le-clic-qui-recharge-2026-09-02.md`).*
+
+**L'intuition d'Auteur était en dessous de la vérité.** « Le menu des ancres ne
+survivra pas à l'ajout de pages. » Mesuré sur le vrai rail, à trois tailles
+d'écran : il ne survivait pas non plus au présent. Il lui fallait 845 px de
+haut à six pages ; un portable lui en donne 712. Il ne tenait qu'au-dessus de
+933 px de fenêtre — un écran de bureau. Trois fautes : sa hauteur dépendait de
+la feuille de route ; la liste des pages mangeait le sommaire, qu'on utilise
+tout le temps, pendant la lecture ; et les ancres n'existaient pas en petit.
+
+**La direction retenue — A.** Le rail garde la page, pas le site : une ligne en
+tête dit la famille en cours et s'ouvre ; toute la colonne revient au
+sommaire. Le site part dans une feuille : une rangée d'onglets (la maison, puis
+Système, Produit, Contact, Téléchargements) et **un panneau à la fois** — c'est
+ce qui a réglé l'équilibre pour de bon, la feuille passant de 1 250 à 640 px
+sans ascenseur. En petit, une barre à deux boutons sous l'en-tête, chacun
+ouvrant sa feuille par le bas : les ancres existent enfin sur téléphone.
+Écartées : le site dans le bandeau (déplace le problème), le rail qui se replie
+(repousse le mur et ajoute un clic). Cinq verdicts ont fait le contenu de la
+feuille : couper par le sens et non par un compte ; récupérer tout le corpus
+réel (Méthode en premier) ; un seul sens de lecture, une famille par colonne ;
+rééquilibrer par les colonnes plutôt que par la hauteur ; le mega-menu à un
+panneau. Règle des niveaux : **les repères parlent mono, les destinations
+parlent en sans**, et seule la page en cours est en gras avec sa marque. La
+rive du contenu est la même pour le bandeau, la barre et les feuilles. Les
+onglets suivent le motif de rangée au clavier, la feuille garde le clavier et
+Échap rend le focus.
+
+**« Parfois ça recharge au lieu de m'emmener » — ce n'était pas un mauvais
+clic.** Deux causes, antérieures au chantier : la page en cours était un lien
+vers elle-même ; et toute la navigation passait par des liens nus, donc un
+rechargement complet à chaque fois — l'arrivée sur une ancre se perdait en
+route. Corrigé : la page en cours n'est plus cliquable (on ne propose pas
+d'aller là où l'on est), et les entrées du menu passent par le routeur.
+
+**Non tranché, et dit** : le nom des paquets, l'ordre des pages à venir (la
+liste sert d'échelle, pas de feuille de route), le contenu réel de Contact et
+Téléchargements.
+
+## 2 septembre 2026 — /rythme prend le moteur en ouverture, et l'intervalle n'a pas de scène
+
+*Écrit au dépôt le 7 septembre, à partir des pièces du 2 (`claude/moteur-quatre-nombres`, `moteur-pas-a-pas`, `moteur-l-intervalle-na-pas-de-scene`, `rythme-le-moteur-verse`, `une-molette-ne-repeint-que-sa-scene`, `accent-premier-consommateur`, `rythme-passe-verbeux`).*
+
+**Le moteur a quatre nombres, et la page en disait trois.** La base,
+l'intervalle, la racine, l'intervalle des titres. Trois planches HTML ont été
+rejetées d'affilée (« je veux exactement les mêmes blocs existants ») : une
+planche recopie une scène, et une copie n'est jamais la scène. La démonstration
+a donc été mise au point sur une page d'essai du kit, `/moteur-essai`, qui
+importe les vraies scènes de `/rythme` et n'en garde aucune copie. Elle reste
+comme banc : on y juge une scène avant de la verser.
+
+**Le scénario.** Douze slides, une fiche montée une fois et jamais remontée —
+elle traverse les slides et c'est ce qui permet de la voir évoluer au lieu de
+réapparaître. Un compteur de décisions pour enjeu : dix-sept par page,
+vingt-cinq pages, quatre cent vingt-cinq ; puis zéro ; puis un, deux, trois,
+quatre — et un seul choix. Les règles qui en sont sorties : une slide masque,
+elle ne fabrique pas ; une cote dérivée du jeton ne décroche jamais quand on
+tourne la molette (les arcs des coins sont dessinés par les coins eux-mêmes) ;
+le compteur est un instrument, il ne quitte pas son coin ; quatre familles,
+quatre couleurs, celles des inspecteurs du 24 août ; **l'accent surligne, il
+n'encre pas** — et c'est le premier consommateur de `--accent` (« super
+idée ») : les repères d'annotation, qui ne sont ni une fonction ni un signal,
+et traversent les deux thèmes.
+
+**Une molette ne repeint que sa scène** (« les sliders influent dans les blocs
+de démo, pas sur tout le site »). Les quatre molettes posaient leurs valeurs sur
+la racine du document ; elles ne les posent plus que sur la scène.
+
+**L'intervalle n'a pas de section à lui, et c'est une décision.** Six scènes
+refusées (« on voit des blocs, pas des espaces », « compact les cards sont
+aérées, aéré les cards sont compactes »). Ce qu'on a compris : l'intervalle
+n'existe que dans un emboîtement ; sur une page entière il fait bouger les
+niveaux en sens inverse ; ce qui se lit sur une page, c'est la base. Le
+scénario le montre déjà à sa sixième slide. Chaque nombre du moteur se règle
+désormais à un seul endroit du site : la base par la densité, la racine sur
+`/arrondis`, l'intervalle des titres sur `/typo` — le sélecteur de types de
+produit a quitté `/arrondis` le matin même pour cette raison.
+
+**Le versement.** Tout ce que la page d'essai avait mis au point vit dans
+`/rythme`, avec la page qu'il sert : le scénario ouvre (01), parce qu'il répond
+à la question que tout le reste suppose réglée. Au passage, le chapô et les
+intros ont perdu un quart (« un poil verbeux ») : on coupe la fin de phrase qui
+rejoue le début, jamais un argument. Et le chiffre et sa légende, dans la fiche,
+sont tenus par l'interligne, plus par un espace — un couple typographique, pas
+deux voisins.
+
+**Reste à arbitrer** : la page compte huit sections là où le gabarit en prévoit
+trois preuves et un répertoire.
+
+## 2 septembre 2026 — /typo, /couleur, /arrondis passent à la voix et aux quatre étages
+
+*Écrit au dépôt le 7 septembre, à partir des pièces du 2 (`claude/typo-voix-et-etages`, `couleur-voix-et-etages`, `une-legende-tient-en-une-ligne`, `verdict-lu-pas-decrete`, `regle-bande-cassee-nomme-sa-faute`, `arrondis-demos-a-revoir`, `couleur-deux-badges-a-reprendre`, `faille-surface-et-encre`).*
+
+**`/typo`** garde ses preuves de 01 à 04 et prend le reste au gabarit des
+quatre étages. Un seul mot pour l'objet : *la font* (« deux voix suffisent — je
+remplacerais par Font »), et la section s'appelle « Les fonts ». La mesure
+était « trop haute » : elle se joue maintenant dans un cadre à poignée, un cas à
+la fois, trois boutons — et c'est là que trois règles sont nées, verrouillées
+sur pièce :
+
+- **Une légende tient en une ligne** (« trop long, personne ne lira ça, encore
+  moins si petit »). Deux au plus si la seconde est un geste ; le reste descend
+  au dépliant. Test : lire à voix haute.
+- **Un verdict se lit, il ne se décrète pas.** Le badge de la mesure disait
+  « trop long » à 320 px alors que l'écran bornait la ligne ; il jugeait sur un
+  seuil inventé de 75 caractères pendant que le trait montrait la borne du
+  registre. Un seul critère désormais — la largeur du bloc contre la borne,
+  rendue visible en pointillé et qui s'efface hors du cadre — et quatre états :
+  Juste, Trop long, Trop court, **L'écran suffit**. Une contrainte plus large
+  que le cadre n'est plus une contrainte. Deux mots par pastille (« je préfère
+  juste "trop long" »).
+- **Une bande cassée nomme sa faute** (« ça mérite un petit message d'erreur
+  dans le bloc gris »). À l'état cassé, une phrase courte dans la scène, jamais
+  dans la colonne de gauche ; une scène qui porte déjà son rouge n'en a pas
+  besoin.
+
+**`/couleur`** : « garde de 01 à 03 puis 05 ; 04 devient une règle qu'on peut
+casser ». Deux thèmes descend d'un étage et devient la première bande — un
+seul panneau, dans le thème du lecteur, la table des paires dans son dépliant ;
+les six garde-fous bricolés deviennent quatre bandes ; neuf règles qui
+dormaient dans les dépliants prennent la liste ; la table des rôles descend
+dans le dépliant du code. Une casse inventée, tranchée A : **« Teinter ne coûte
+rien »** devient une bande cassable — teinter sans tenir la luminance, les
+trois gris se ressemblent encore et leurs rapports n'ont plus rien à voir,
+chaque rapport calculé sur la tuile rendue. La page gagne sa feuille propre.
+
+**`/arrondis`** : les six pièges de l'étage cassable étaient illisibles
+(« niveau contraste c'est vraiment pas bon, et parfois on ne comprend pas ce
+qui veut être montré ») — objets sans silhouette, figure identique dans les
+deux états, deux pièges impossibles sur une figure fixe. Ils ont été refaits
+sur trois principes : le juste et le faux côte à côte, en permanence ; la
+commande ne bascule pas entre juste et faux, elle fait bouger **la variable qui
+révèle la faute** (la racine, la longueur du texte, la hauteur) ; les objets
+portent fond et filet, parce qu'ici la forme est le sujet. Le répertoire des
+six intentions a quitté la page — il réglait la même chose que les densités de
+`/rythme`, et le sujet appartient au moteur.
+
+**Une loi d'Auteur, trouvée en chemin.** « Le fond et l'encre peuvent dépendre
+l'un de l'autre, mais quand une surface s'immisce entre les deux, l'encre est
+dépendante de son parent direct. » Le panneau « Réglages » de `/rythme`
+s'affichait bleu ciel sur blanc quand le banc passait au sombre ; il pose
+maintenant son encre. La règle générale — peindre un fond, c'est déclarer une
+encre — reste à porter dans un thread à elle : 97 règles peignent un fond
+opaque sans encre.
+
+## 3 septembre 2026 — deux décisions sur pièce : les fonts, et les trois lois du mouvement
+
+*Écrit au dépôt le 7 septembre, à partir de `claude/polices-du-kit-2026-09-03.md` et `claude/decision-mouvement-trois-lois-2026-09-03.md`.*
+
+**Les fonts.** Geist pour le texte, JetBrains Mono pour le code, Inter écarté.
+Fichiers au dépôt, servis depuis notre domaine, aucun appel extérieur. Le relevé
+a ensuite montré que le kit livrait déjà tout cela depuis le 23 août, découpé
+par jeu de caractères — la note disait la condition non remplie, le dépôt
+disait le contraire. Une seule chose manque : l'italique de Geist. Conséquence
+qui compte : les métriques sont lisibles, et le calage vertical n'est plus
+bloqué.
+
+**Le mouvement.** Trois lois, jugées sur la page d'essai : sous mouvement
+réduit, les déplacements partent et les fondus restent ; le kit se donne sa
+propre courbe de sortie ; quatre durées avec leur emploi — 100 bouton et
+survol, 200 menu et infobulle, 300 tiroir et panneau, 700 arrivée d'une
+section. Versées au kit le 4 (entrée suivante).
+
+## 4 septembre 2026 — le calage vertical est versé dans /typo
+
+*Écrit au dépôt le 7 septembre, à partir de `claude/calage-verse-dans-typo-2026-09-04.md` et `claude/reprise-calage-vertical-regles-2026-09-03.md`.*
+
+**La famille séparée n'avait pas de raison d'être** (« on rajoute ça à Typo »).
+Le calage — la boîte d'un texte n'est pas son encre, et les deux se pilotent
+séparément — entre dans la typographie : une règle, **T12, « Le calage se
+déclare, il ne se tape pas »** ; une sixième bande dans les règles qu'on peut
+casser ; et trois règles au répertoire, celles qui ne se montrent pas —
+l'ancienne écriture est refusée (Figma la produit encore), on rogne par rôle
+et jamais par composant, la pile de secours est calée sur la font livrée.
+
+**La bande.** Une carte qui prend une seule valeur d'espace, des quatre côtés.
+Au repos, le texte est calé sur ses capitales et sa ligne de base : la valeur
+écrite est celle qu'on voit. Cassée, l'air de la ligne revient et le haut cesse
+d'être égal aux côtés. **Les nombres de la légende sont mesurés sur la page,
+jamais déclarés** : un témoin de la hauteur des capitales, posé sur la ligne de
+base, donne le haut des lettres à même la font livrée. Une erreur trouvée en
+chemin : le haut se mesurait depuis le bord extérieur et les côtés depuis
+l'intérieur — les deux partent maintenant du même endroit. Le calage de la démo
+nomme ses deux bords, comme la règle qu'il enseigne.
+
+**Ce qui n'a pas bougé, et pourquoi.** Le kit n'est pas rogné : seule la carte
+de la démo l'est. Rogner par rôle est une décision de registre, et les cinq
+règles du calage attendent le verdict règle par règle. Et la question qui ne se
+règle pas règle par règle : le calage supprime le trou connu de S3 — l'écart
+entre la valeur vérifiée et la valeur vue — mais S3 est verrouillé, et seul
+l'Auteur rouvre un sujet verrouillé.
+
+## 4 septembre 2026 — le mouvement : la passe sur les pages existantes
+
+Les trois lois du 3 septembre avaient été décidées sur pièce ; elles n'étaient
+écrites nulle part dans le kit. Le relevé du jour a été plus sévère que celui
+de la veille : le site faisait bouger une centaine de choses et **aucune
+n'avait de jeton**. Les quatre durées vivaient dans la charte HTML, pas dans le
+moteur ; chaque page écrivait la sienne au sentiment — dix-huit valeurs
+différentes entre 0,1 et 0,9 s, plus une boucle de 4,6 s. Deux bonnes
+nouvelles seulement : le défilement doux n'existait pas sur le site (il
+n'était que sur la pièce de référence), et l'arrivée des sections était déjà à
+700 ms.
+
+**Cinq gestes, dans l'ordre.** Les jetons naissent au moteur (`MOUVEMENT`
+dans `derivation.mjs`) : quatre durées, chacune avec son emploi écrit sur sa
+ligne dans `tokens.css`, exportées Figma et Tailwind, et la courbe du kit.
+Chaque mouvement prend ensuite son jeton et dit son emploi : les survols passent
+de 300 à 100 ms (le sommaire suit le curseur au lieu de le poursuivre), les
+infobulles et les scènes qui changent d'état au bouton prennent 200, la feuille
+du menu 300, l'arrivée d'une section 700. Le trait du sommaire ne s'anime plus
+en largeur mais par mise à l'échelle. Une valeur qu'on fait glisser ne s'anime
+plus : la fiche Navette d'`/arrondis` perd ses transitions, et le film de
+`/rythme` les suspend pendant qu'on tient sa molette — entre deux slides, il
+garde son tempo. Les vraies commandes répondent à l'appui, par une animation
+plutôt qu'une transition, pour s'ajouter à ce que chacune anime déjà sans
+l'écraser ; l'enfoncement prend le cran rapide, le relâchement est immédiat.
+Et le mouvement réduit s'écrit par construction : un déplacement n'existe que
+sous son portillon, un fondu s'écrit nu.
+
+**Trois chorégraphies déclarées, pas recalées** (verdict d'Auteur) : le film de
+`/rythme`, l'entrée en scène de l'accueil, la boucle du chemin de l'œil sur
+`/composition`. Elles gardent leur tempo et le disent sur chaque ligne ; leurs
+déplacements passent sous le portillon. La courbe du film, à un centième de
+celle du kit, devient celle du kit.
+
+**Ce que le moteur vérifie désormais** — deux épreuves de plus dans
+`derivation.test.mjs` : aucune durée ni courbe écrite à la main dans les
+feuilles (jeton, ou « chorégraphie » sur la ligne) ; aucun déplacement hors de
+son portillon. Vérifiées en mutant une ligne : elles mordent.
+
+**Ce qui reste à l'œil de l'Auteur.** La courbe `0.23, 1, 0.32, 1` est celle du
+3 septembre, proposée et jamais vue sur le site. La cascade du nuancier de
+`/couleur`, qui vivait à 440 et 500 ms avec un pas de 70, tourne maintenant sur
+les crans (300, pas de 100) : un peu plus lente, à juger.
+
+**Ce qui n'a pas bougé.** Le banc des pages était rouge ce matin (dix-sept
+épreuves, sur les quatre pages) et l'est toujours, sur exactement les mêmes
+dix-sept : la passe n'en a fait tomber aucune et n'en a relevé aucune. Ce rouge
+est celui des pages qui ont bougé les 2 et 3 septembre (menu, rail, typo) sans
+que le banc soit remis au niveau ; il a son propre périmètre. Le crash-test du
+moteur, lui, portait déjà trois rouges pour les mêmes raisons (tertiaires non
+dits du menu, variables du scénario, une marge de la feuille) — inchangés.
+
+## 7 septembre 2026 — remise au vert du banc, et mise en dépôt du lot du 2 au 4
+
+**Dix-sept rouges sur les quatre pages, trois sur le moteur — depuis le 2.**
+Le dépôt n'avait pas été enregistré depuis le 1er septembre ; trois lots
+dormaient sur disque (le menu et le rail, le calage dans `/typo`, la passe du
+mouvement), et le banc les refusait chaque nuit. Le voyant avait fait son
+travail : la carte disait 🟡, personne n'avait menti. Il restait à trier.
+
+**Le tri.** Même règle que le 1er septembre : ne jamais relâcher une épreuve
+pour la faire passer. Quinze des dix-sept décrivaient une page qui n'existe
+plus ; deux nommaient de vraies fautes.
+
+- `/typo` (sept rouges, tous d'un autre âge) : les gardes sont devenues des
+  bandes, les voix vivent sous « Les fonts », la mesure se joue dans son cadre,
+  la légende tient en une ligne. L'épreuve dit la page d'aujourd'hui, et elle
+  mesure plus dur qu'avant : le verdict de la mesure est LU sur la ligne rendue
+  et confronté à ce que le bouton prétend ; le trait de la borne est mesuré à sa
+  vraie largeur, jamais plus large que le cadre ; et la carte calée entre à
+  l'épreuve — au repos le haut mesuré sur la font livrée vaut les côtés, cassée
+  l'air revient, réparée il repart. Quand le navigateur du banc ne sait pas
+  caler, la page le dit et l'épreuve le lit.
+- `/couleur` (six rouges) : cinq d'un autre âge — le panneau du contraste est
+  un seul, dans le thème du lecteur, mesuré dans les deux thèmes en rechargeant
+  la page ; la table des paires vit sous sa règle, la table des rôles sous le
+  code ; les garde-fous sont des bandes ; et la casse « teinter ne coûte rien »
+  entre à l'épreuve, chaque rapport recalculé sur la tuile rendue. **Une vraie
+  faute** : le panneau du code écrivait la marque de la charte à la main ; il la
+  lit maintenant au moteur.
+- `/arrondis` (deux rouges) : le répertoire des intentions a quitté la page le
+  2 septembre. À sa place, l'épreuve mesure les pièges par leur curseur — la
+  racine tourne, le juste suit le cran de la card et le faux reste à sa valeur
+  écrite, déclarée ; la hauteur descend et le coin sature exactement à la
+  moitié, verdict lu.
+- `/rythme` (deux rouges) : le chiffre et sa légende n'ont plus d'espace entre
+  eux depuis le 2 — c'est l'interligne qui les tient, et c'est maintenant ce
+  qu'on mesure. **Une vraie faute** : le film écrit ses valeurs à la main sur
+  la slide « avant », le crible et les versions — c'est son sujet, c'est dit en
+  tête du fichier, mais la fiche ne le disait pas sur elle-même ; elle le
+  déclare désormais, comme toute rupture. Et la marge de la mise en scène était
+  dite trois lignes au-dessus de sa ligne : elle l'est sur sa ligne.
+
+**Le moteur.** Vingt-six emplois du tertiaire n'étaient pas dits sur leur
+ligne (le menu, le film, la carte calée, la page d'essai) : ils le sont. Deux
+fautes de fond parmi eux — le pied du rail est une phrase qu'on lit, il prend
+l'encre seconde sans graisse et cesse d'être un tertiaire ; le trait pointillé
+de la mesure de `/typo` empruntait une encre de texte, il prend le bord fort.
+Les variables de la scène de densité étaient posées par la page dans une forme
+que l'instrument ne savait pas lire : posées en dictionnaire, il les lit. La
+cale du mega-menu (4 rem) est dite hors chaîne sur sa ligne. **Et un jeton est
+né : `--code-danger`**, le rouge de la faute sur la terre de code — consommé
+depuis le 2 septembre par la cote fausse de la profondeur, jamais défini. Il
+naît au moteur comme les autres encres de syntaxe, calé à 4,5:1 sur le fond de
+code depuis le rouge du versant sombre ; il sort en CSS, Tailwind et Figma.
+C'est une naissance de jeton : elle attend le verdict d'Auteur (voir plus bas).
+
+**Mesuré, cette fois.** Le moteur passe 29/29. La course complète est repassée
+sur la machine d'Auteur le 7 septembre au matin : les quatre pages vertes, le
+site construit, le bulletin écrit. Les quatre pages reviennent 🟢 sur la carte,
+et le banc avec elles.
+
+**Ce qui attend l'œil de l'Auteur, et n'est pas verrouillé par ce fil** : la
+courbe du mouvement (jamais vue sur le site avant ce jour), la cascade du
+nuancier de `/couleur` ramenée sur les crans, les cinq règles du calage (une
+seule est posée sur la page), et la naissance de `--code-danger`.
+
+**Le dépôt.** Le lot est enregistré en commits fins, un par sujet : le menu et
+le rail ; le moteur versé dans `/rythme` ; les trois pages à la voix et aux
+étages ; le calage ; le mouvement ; le banc remis au niveau ; le journal et la
+carte. Les deux copies de sauvegarde du 2 septembre (`globals.css.avant`,
+`rail.tsx.avant`) ne sont pas versées : elles rejoignent le dossier à jeter.
