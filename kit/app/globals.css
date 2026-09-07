@@ -1297,6 +1297,9 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
   .acc-mo-duo { grid-template-columns: 1fr; }
 }
 
+/* FIN DE LA DETTE — .accueil (borne posée le 7 septembre 2026 : la dette
+   exemptait tout ce qui suivait dans la feuille, Composition comprise) */
+
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE COMPOSITION — pièce de référence : kit-composition-nu.html.
    Le sujet de la page est le REGARD, et chaque preuve a SON objet : une
@@ -1304,21 +1307,30 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
    faute écartée en séance : faire servir le même écran à toutes.
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
-   Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
+/* LA DETTE DU 25 AOÛT EST FERMÉE (7 septembre 2026). Treize valeurs vivaient
+   ici hors chaîne. L'arbitrage :
+   · ce qui appartient au KIT — la scène de preuve et les écarts entre une
+     scène et ce qu'elle dit (quatre valeurs) — descend de la chaîne : marge
+     de coque pour la scène, deuxième cran de page pour l'écart d'un banc ;
+   · ce qui appartient à l'OBJET IMITÉ — les boutons, champs et lignes de
+     la fausse interface, les colonnes du journal, l'affiche (neuf valeurs)
+     — n'entre PAS dans la chaîne, et c'est dit sur chaque ligne : un objet
+     mis en scène à échelle réduite imite un autre produit ; ses mesures
+     sont celles de ce produit, réduites d'un même facteur, pas des crans
+     du kit. Le banc des pages exclut ces objets par leur nom. */
 .co-scene { background: var(--surface); border-radius: var(--r-1);
-  padding: clamp(1.6rem, 3.5vw, 2.6rem); /* hors chaîne : la dette déclarée de /composition (25 août) — le registre parallèle de ses scènes de preuve */
+  padding: var(--pad-1-block) var(--pad-1-inline);
   width: 100%; }
 /* La preuve 01 empile le verdict et le banc : elle seule, les autres
    scènes de la page gardent leur mise en page. */
 .co-preuve1 { display: grid; justify-items: start; gap: var(--pad-3-block); }
 .co-duo-t { display: grid; grid-template-columns: 3fr 2fr;
-  gap: clamp(1.4rem, 4vw, 3rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: center; }
+  gap: var(--page-2-inline); align-items: center; }
 /* Le banc de la preuve 01 : l'écran à gauche, les mots à droite, et les
    filets tracés PAR-DESSUS les deux — d'où le calque en position absolue
    sur le banc entier, et non sur la seule carte. */
 .co-banc { position: relative; display: grid; grid-template-columns: 3fr 2fr;
-  gap: clamp(1.6rem, 4vw, 3.4rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: stretch; width: 100%; }
+  gap: var(--page-2-inline); align-items: stretch; width: 100%; }
 @media (max-width: 64rem) {
   .co-banc { grid-template-columns: 1fr; }
   .co-lex-pied { padding-left: 0; }
@@ -1335,11 +1347,11 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .co-lex[data-pose] { position: absolute; inset: 0; display: block;
   grid-area: auto; align-self: stretch; justify-self: stretch; }
 .co-lex[data-pose] > div { position: absolute; left: 0; right: 0; }
-.co-lex > div > dt, .co-lex-pied dt { font-weight: 600; font-size: 0.875rem; }
-.co-lex > div > dd, .co-lex-pied dd { margin: 0; font-size: 0.875rem;
+.co-lex > div > dt, .co-lex-pied dt { font-weight: 600; font-size: var(--font-size-small); }
+.co-lex > div > dd, .co-lex-pied dd { margin: 0; font-size: var(--font-size-small);
   line-height: 1.55; color: var(--text-secondary); }
 /* L'axe est une verticale : son mot descend avec elle, sous la carte. */
-.co-lex-pied { padding-left: 2.8rem; padding-top: var(--pad-2-block); max-width: 46ch; }
+.co-lex-pied { padding-left: var(--page-2-inline); padding-top: var(--pad-2-block); max-width: 46ch; }
 .co-lex.off, .co-dit.off { visibility: hidden; }
 /* Le mot de l'axe part vraiment quand on casse : réserver sa place
    creusait un trou sous la carte, et rien au-dessus ne bouge. */
@@ -1347,12 +1359,12 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .co-gauche { display: grid; gap: var(--pad-3-block); justify-items: start; min-width: 0; }
 .co-porte { position: relative; width: 100%; }
 .co-pied { position: relative; min-height: 1.5rem; width: 100%; }
-.co-dit { font-size: clamp(0.95rem, 0.9rem + 0.35vw, 1.12rem); line-height: 1.6;
+.co-dit { font-size: var(--font-size-body); line-height: 1.6;
   color: var(--text-primary); max-width: 32ch; }
 
 /* Au repos l'invite ; au survol, la solution prend exactement sa place. */
 .co-invite, .co-solution { position: absolute; left: 0; top: 0;
-  font: 500 0.6875rem/1.5 var(--font-mono); transition: opacity var(--m-fast) var(--e-out); /* survol */
+  font: 500 var(--font-size-label)/1.5 var(--font-mono); transition: opacity var(--m-fast) var(--e-out); /* survol */
   pointer-events: none; max-width: 100%; }
 .co-invite { color: var(--text-secondary); }
 /* Le pied ne dit plus un état — il dit le geste. Même voix que l'invite. */
@@ -1373,31 +1385,31 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .co-app-tete { display: flex; align-items: center; gap: var(--gap-3-inline);
   padding: var(--pad-3-block) var(--pad-3-inline); border-bottom: 1px solid var(--border); }
 .co-app-tete i { width: 0.5rem; height: 0.5rem; border-radius: var(--r-pill); background: var(--primary); flex: none; }
-.co-app-tete b { font-size: 0.8125rem; letter-spacing: -0.01em; }
+.co-app-tete b { font-size: 0.8125rem; letter-spacing: -0.01em; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-app-corps { padding: var(--pad-2-block) var(--pad-3-inline);
-  display: grid; gap: var(--co-g, 1.5rem); }
-.co-b { display: grid; gap: var(--co-gi, 0.35rem); margin-left: var(--co-dx, 0); }
+  display: grid; gap: var(--co-g, 1.5rem); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-b { display: grid; gap: var(--co-gi, 0.35rem); margin-left: var(--co-dx, 0); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-etq { font: 500 0.5625rem/1.4 var(--font-mono); letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--text-secondary); }
-.co-kpi b { font-size: 2.6rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700; display: block; }
-.co-sous { font-size: 0.75rem; color: var(--text-secondary); }
+.co-kpi b { font-size: 2.6rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700; display: block; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-sous { font-size: 0.75rem; color: var(--text-secondary); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-li { display: flex; align-items: center; gap: var(--gap-3-inline);
-  font-size: 0.8125rem; padding-block: 0.28rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
+  font-size: 0.8125rem; padding-block: 0.28rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
 .co-li i { width: 0.35rem; height: 0.35rem; border-radius: var(--r-pill);
   background: var(--border-strong); flex: none; }
 .co-pct { margin-left: auto; color: var(--text-secondary);
-  font-family: var(--font-mono); font-size: 0.625rem; }
+  font-family: var(--font-mono); font-size: 0.625rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-cta { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
-.co-b1 { font-size: 0.75rem; font-weight: 600; border-radius: var(--r-ctl);
-  padding: 0.45rem 0.8rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ background: var(--primary); color: var(--on-primary); }
-.co-b2 { font-size: 0.75rem; font-weight: 500; border-radius: var(--r-ctl);
-  padding: 0.45rem 0.8rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ border: 1px solid var(--border-strong); }
-.co-champ { font-size: 0.75rem; color: var(--text-secondary);
-  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
+.co-b1 { font-size: 0.75rem; font-weight: 600; border-radius: var(--r-ctl); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  padding: 0.45rem 0.8rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ background: var(--primary); color: var(--on-primary); }
+.co-b2 { font-size: 0.75rem; font-weight: 500; border-radius: var(--r-ctl); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  padding: 0.45rem 0.8rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ border: 1px solid var(--border-strong); }
+.co-champ { font-size: 0.75rem; color: var(--text-secondary); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
 /* Les cinq fautes — appliquées TANT QU'ON NE SURVOLE PAS : le survol est
    la solution, l'écran reprend sa forme juste. */
 .co-porte:not(:hover) .f-dominant .co-liste .co-etq {
-  font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; text-transform: none;
+  font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; text-transform: none; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
   font-family: var(--font-sans); color: var(--text-primary); line-height: 1; }
 .co-porte:not(:hover) .f-cloison .co-b {
   border: 1px solid var(--border); border-radius: var(--r-3); padding: var(--pad-3-block); }
@@ -1428,38 +1440,38 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .co-r-etq.fin { transform: translate(-100%, -50%); }
 .co-r-etq { position: absolute; font: 600 0.5625rem/1.35 var(--font-mono);
   color: var(--on-danger); background: var(--danger); border-radius: var(--r-ctl);
-  padding: 0.15rem 0.4rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ white-space: nowrap; transform: translateY(-50%); }
+  padding: 0.15rem 0.4rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ white-space: nowrap; transform: translateY(-50%); }
 
 /* ── OBJET 2 · la page de journal et l'affiche ── */
 .co-paire { display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(1.4rem, 4vw, 2.6rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ align-items: stretch; width: 100%; }
+  gap: var(--page-2-inline); align-items: stretch; width: 100%; }
 .co-paire > div { display: grid; grid-template-rows: auto 1fr; gap: var(--pad-3-block); }
-.co-nom-objet { font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em;
+.co-nom-objet { font: 500 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
   text-transform: uppercase; color: var(--text-secondary); }
 .co-presse { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
   padding: var(--pad-1-block) var(--pad-1-inline); font-family: var(--font-serif, Georgia, serif); height: 100%; }
 .co-surtitre { font: 500 0.5625rem/1 var(--font-mono); letter-spacing: 0.16em;
   text-transform: uppercase; color: var(--danger); }
-.co-presse h3 { font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em;
-  margin: 0.5rem 0 0.1rem; font-weight: 700; }
+.co-presse h3 { font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  margin: 0.5rem 0 0.1rem; font-weight: 700; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-signature { font: 400 0.625rem/1.4 var(--font-mono); color: var(--text-secondary);
   margin-bottom: var(--pad-3-block); }
-.co-cols { column-count: 2; column-gap: 1.1rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ font-size: 0.6875rem; line-height: 1.5;
+.co-cols { column-count: 2; column-gap: 1.1rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ font-size: 0.6875rem; line-height: 1.5;
   text-align: justify; hyphens: auto; }
-.co-cols p { margin-bottom: 0.5rem; }
+.co-cols p { margin-bottom: 0.5rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-filet { height: 1px; background: var(--surface-hover); margin: var(--pad-3-block) 0; }
-.co-breve { font-size: 0.625rem; line-height: 1.5; color: var(--text-secondary);
-  display: grid; gap: 0.35rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
+.co-breve { font-size: 0.625rem; line-height: 1.5; color: var(--text-secondary); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; gap: 0.35rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
 .co-affiche { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
-  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem); /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */
-  display: grid; align-content: space-between; gap: 1.4rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ }
+  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; align-content: space-between; gap: 1.4rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
 .co-marque { font: 600 0.625rem/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; }
-.co-titre-aff { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.05;
+.co-titre-aff { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.05; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
   letter-spacing: -0.03em; font-weight: 700; }
-.co-sous-aff { font-size: 0.8125rem; color: var(--text-secondary); max-width: 26ch;
+.co-sous-aff { font-size: 0.8125rem; color: var(--text-secondary); max-width: 26ch; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
   margin-top: var(--pad-3-block); }
-.co-action { justify-self: start; font-size: 0.8125rem; font-weight: 600;
-  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; /* hors chaîne : dette déclarée de /composition (25 août) — registre parallèle */ background: var(--primary); color: var(--on-primary); }
+.co-action { justify-self: start; font-size: 0.8125rem; font-weight: 600; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ background: var(--primary); color: var(--on-primary); }
 
 /* Le chemin, en pointillé permanent — et le regard, un segment plein qui
    le parcourt. Sans mouvement demandé, le pointillé dit le chemin. */
@@ -1482,18 +1494,18 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 
 /* ── OBJET 3 · la page de magazine, pour l'espace blanc ── */
 .co-mag { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
-  padding: var(--co-mp, clamp(2rem, 5vw, 3.4rem));
-  display: grid; gap: var(--co-mg, 1.6rem); font-family: var(--font-serif, Georgia, serif); }
+  padding: var(--co-mp, clamp(2rem, 5vw, 3.4rem)); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; gap: var(--co-mg, 1.6rem); font-family: var(--font-serif, Georgia, serif); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-rubrique { font: 500 0.5625rem/1 var(--font-mono); letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--text-secondary); }
-.co-mag h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.1;
+.co-mag h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.1; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
   letter-spacing: -0.02em; font-weight: 700; }
-.co-chapo-mag { font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); max-width: 34ch; }
-.co-exergue { font-size: 1.05rem; line-height: 1.35; font-style: italic;
-  border-left: 2px solid var(--text-primary); padding-left: 1rem; max-width: 30ch; }
-.co-corps-mag { column-count: 2; column-gap: var(--co-mg, 1.6rem);
-  font-size: 0.75rem; line-height: 1.65; text-align: justify; hyphens: auto; }
-.co-corps-mag p { margin-bottom: 0.6rem; }
+.co-chapo-mag { font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); max-width: 34ch; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-exergue { font-size: 1.05rem; line-height: 1.35; font-style: italic; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border-left: 2px solid var(--text-primary); padding-left: 1rem; max-width: 30ch; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-corps-mag { column-count: 2; column-gap: var(--co-mg, 1.6rem); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  font-size: 0.75rem; line-height: 1.65; text-align: justify; hyphens: auto; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-corps-mag p { margin-bottom: 0.6rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
 .co-porte.serre .co-mag { --co-mp: 3px; --co-mg: 2px; }
 .co-porte.serre .co-mag h3 { line-height: 0.98; }
 .co-porte.serre .co-corps-mag, .co-porte.serre .co-chapo-mag { line-height: 1.15; }

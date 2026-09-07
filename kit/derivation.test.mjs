@@ -345,6 +345,7 @@ test('site — « pas de nombre » : dans les feuilles du kit, un espace, une ta
     let dette = false
     src.split('\n').forEach((ligne, i) => {
       if (/HORS CHAÎNE — dette déclarée/.test(ligne)) dette = true
+      if (/FIN DE LA DETTE/.test(ligne)) dette = false /* une dette est bornée : elle n'exempte que son bloc (7 septembre 2026) */
       if (dette) return
       if (/hors chaîne|casse/.test(ligne)) return
       for (const m of ligne.matchAll(/(?:^|[\s;{])(font-size|border-radius|padding(?:-[a-z]+)?|gap|row-gap|column-gap|margin(?:-[a-z]+)?)\s*:\s*([^;}]+)/g)) {
