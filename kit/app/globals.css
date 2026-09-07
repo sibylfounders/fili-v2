@@ -42,6 +42,7 @@ p { margin: 0; }
   min-height: var(--control-height); padding: 0 var(--pad-3-inline);
   border: 1px solid var(--border); border-radius: var(--r-ctl);
   background: var(--bg); font: 600 var(--font-size-small)/1 inherit; cursor: pointer;
+  transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); /* survol */
 }
 .bouton.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
 .bouton:hover:not(.on):not(.casse) { background: var(--surface-hover); }
@@ -165,10 +166,8 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
 /* ── L'aperçu : tout le bloc est la surface redimensionnable ;
       la barre d'options vit au-dessus, « d'où ça vient » en dessous ── */
 .apercu { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); min-width: 0; }
-.apercu-tete { display: flex; align-items: center; justify-content: space-between;
-  gap: var(--gap-2-inline); flex-wrap: wrap; }
-.apercu-outils { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
-.apercu-tete .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+.apercu-outils { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.apercu-outils .bouton { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
 .apercu-piste { position: relative; min-width: 0; overflow: hidden; border-radius: var(--r-1); }
 .apercu-cadre {
   position: relative; max-width: 100%; overflow: hidden;
@@ -181,6 +180,12 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
     linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 6%, transparent) 75%);
   background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }
+/* La variante déclarée « uni » : le damier s'efface au profit d'un gris
+   clair. Réservée aux scènes où l'objet du jugement est le TEXTE lui-même —
+   un damier qui court derrière une ligne qu'on mesure est un bruit, pas une
+   information (verdict d'Auteur, 2 septembre). */
+.apercu.uni .apercu-cadre { background-image: none; background-color: var(--surface); }
+
 .apercu-scene { padding: var(--pad-1-block) var(--pad-1-inline);
   display: grid; justify-items: stretch; text-align: left; }
 .puce-w {
@@ -194,7 +199,8 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   cursor: ew-resize; touch-action: none; border-radius: var(--r-ctl);
 }
 .poignee-trait { width: 0.4rem; height: 2.75rem; border-radius: var(--r-pill);
-  background: var(--text-secondary); opacity: 0.6; transition: all 0.15s; }
+  background: var(--text-secondary); opacity: 0.6;
+  transition: height var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out), opacity var(--m-fast) var(--e-out); } /* survol : le cran rapide, propriété par propriété — jamais « all » */
 .poignee:hover .poignee-trait, .poignee:focus-visible .poignee-trait,
 .poignee.en-prise .poignee-trait { height: 3.5rem; background: var(--primary); opacity: 1; }
 .poignee::after {
@@ -202,7 +208,7 @@ html[data-adaptation="html"] [data-choix-adaptation="html"] {
   top: calc(50% + 2.4rem); left: 50%; transform: translateX(-85%);
   background: var(--code-bg); color: var(--code-text); font-size: var(--font-size-label); line-height: 1;
   padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-2); white-space: nowrap;
-  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+  opacity: 0; pointer-events: none; transition: opacity var(--m-base) var(--e-out); /* infobulle */
 }
 .poignee:hover::after, .poignee:focus-visible::after { opacity: 1; }
 .poignee.en-prise::after { opacity: 0; }
@@ -255,8 +261,8 @@ pre.code .cs-var { color: var(--code-kw); }
    et s'efface en le quittant. Les blocs d'espace restent de vrais espaces :
    seule leur encre apparaît. */
 .survole-espaces .espace.vu { background: transparent; outline-color: transparent;
-  transition: background 0.15s, outline-color 0.15s; }
-.survole-espaces .espace.vu[data-nom]::after { opacity: 0; transition: opacity 0.15s; }
+  transition: background-color var(--m-fast) var(--e-out), outline-color var(--m-fast) var(--e-out); } /* survol */
+.survole-espaces .espace.vu[data-nom]::after { opacity: 0; transition: opacity var(--m-fast) var(--e-out); }
 .survole-espaces:hover .espace.vu, .survole-espaces:focus-within .espace.vu {
   background: var(--surface-hover); outline-color: var(--border-strong); }
 .survole-espaces:hover .espace.vu[data-nom]::after,
@@ -303,7 +309,7 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
   border-radius: var(--r-1);
   padding: var(--pad-1-block) var(--pad-1-inline);
   text-decoration: none; color: var(--text-primary);
-  transition: border-color 0.15s, box-shadow 0.15s; }
+  transition: border-color var(--m-fast) var(--e-out), box-shadow var(--m-fast) var(--e-out); } /* survol */
 .tuile:hover, .tuile:focus-visible { border-color: var(--primary);
   box-shadow: 0 12px 32px -24px color-mix(in srgb, var(--primary) 50%, transparent); }
 .tuile-titre { font-size: var(--font-size-h2); font-weight: 600; letter-spacing: -0.015em; }
@@ -345,21 +351,21 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
   --halo-bande: var(--danger-subtle); --halo-trait: var(--focus-ring-danger); }
 /* le coin de l'objet, quand ce n'est pas celui du composant */
 .tuile { --halo-r: var(--r-1); } .bn-tuile { --halo-r: var(--r-2); }
-.navigation a, .rail-lien, .tiroir-poignee { --halo-r: var(--r-3); }
+.navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee { --halo-r: var(--r-3); }
 .ar-onglets button, .ar-inter, .ar-dial input[type=range] { --halo-r: var(--r-pill); }
 /* Les porteurs à deux calques (leurs pseudo-éléments sont libres) — un champ de saisie le reçoit par son enveloppe. */
-.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite { position: relative; }
-:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
-:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
+.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite { position: relative; }
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
 .champ-boite:has(:focus-visible)::before, .champ-boite:has(:focus-visible)::after {
   content: ""; position: absolute; pointer-events: none; }
 /* le trait : au bord extérieur de la bordure (1 px, B3) + la bande */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
 .champ-boite:has(:focus-visible)::before {
   inset: calc(-1px - var(--focus-band) - var(--focus-line)); border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
   border: var(--focus-line) solid var(--halo-trait); }
 /* la bande : au bord extérieur de la bordure, creuse — son coin intérieur retombe sur celui de l'objet */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
 .champ-boite:has(:focus-visible)::after {
   inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
   border: var(--focus-band) solid var(--halo-bande); }
@@ -381,7 +387,7 @@ details.prov summary { --halo-r: var(--r-3); }
 :is(.cm-tuile, .cp-col):focus-visible::before { content: ""; position: absolute; pointer-events: none; inset: 0; border: var(--focus-line) solid var(--halo-trait); }
 :is(.cm-tuile, .cp-col):focus-visible::after { content: ""; position: absolute; pointer-events: none; inset: var(--focus-line); border: var(--focus-band) solid var(--halo-bande); }
 /* Le contour natif du navigateur se tait : le halo le remplace. */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite input, details.prov summary, .poignee, .ar-inter, .cm-tuile, .cp-col):focus { outline: none; }
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite input, details.prov summary, .poignee, .ar-inter, .cm-tuile, .cp-col):focus { outline: none; }
 details.prov summary:hover { color: var(--text-primary); }
 ::selection { background: var(--primary-subtle); color: var(--text-primary); }
 
@@ -396,6 +402,9 @@ details.prov summary:hover { color: var(--text-primary); }
      est ENCRE, jamais accent — l'accent se dépense en un seul moment.
    · CG4 — les tranches d'application emboîtent leurs fonds en cascade.
    · CG5 — l'échelle de titres du gabarit est déclarée (tokens.css). */
+/* La rive : la marge de page, ou ce qu'il faut pour que le contenu reste
+   dans ses 90 rem. Le fond va d'un bord à l'autre, le texte jamais. */
+:root { --doc-rive: max(var(--doc-marge), calc((100% - 90rem) / 2 + var(--doc-marge))); }
 .gdoc-fond { background: var(--bg); }
 .gdoc {
   display: grid; grid-template-columns: var(--doc-rail) minmax(0, 1fr);
@@ -411,8 +420,10 @@ details.prov summary:hover { color: var(--text-primary); }
 .gdoc .badge:not(.ko):not(.bon) { color: var(--text-primary); background: var(--surface-hover); }
 .gdoc details.prov { border-left: 0; padding-left: 0; }
 
-/* ── Le rail nu (CG2) : navigation du site + sommaire de la page.
-      Aucun fond, aucune bordure — l'alignement et le blanc le portent. ── */
+/* ── Le rail nu (CG2) : il garde la PAGE, plus le site (2 septembre 2026).
+      UNE ligne pour la famille en cours — sa hauteur ne dépend plus du
+      nombre de pages du kit — et la colonne entière pour le sommaire.
+      Aucun fond, aucune bordure : l'alignement et le blanc le portent. ── */
 .gdoc-rail { min-width: 0; }
 .rail-fixe {
   position: sticky; top: 5.5rem; max-height: calc(100vh - 5.5rem);
@@ -430,19 +441,227 @@ details.prov summary:hover { color: var(--text-primary); }
   align-items: baseline; gap: var(--gap-3-inline);
   padding: var(--gap-3-block) 0; min-height: var(--target-min); text-decoration: none;
   color: var(--text-secondary); font-size: var(--font-size-body); line-height: 1.35;
-  transition: color 0.3s;
+  transition: color var(--m-fast) var(--e-out); /* survol : le sommaire suit le curseur, il ne le poursuit pas (relevé du 3 septembre : 300 → 100) */
 }
 .rail-lien.simple { grid-template-columns: minmax(0, 1fr) auto; }
 .rail-index {
   font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
-  color: var(--text-tertiary); transition: color 0.3s; /* tertiaire : l'index du menu — l'encre, plus une opacité (C17) */
+  color: var(--text-tertiary); transition: color var(--m-fast) var(--e-out); /* tertiaire : l'index du menu */
 }
-.rail-marque { align-self: center; width: 0; height: 1px; background: var(--text-primary); transition: width 0.3s; }
+.rail-marque { align-self: center; width: 1.25rem; height: 1px; background: var(--text-primary);
+  scale: 0 1; transform-origin: left center; } /* le trait se déploie par mise à l'échelle, jamais par sa largeur (relevé du 3 septembre : la largeur remet en page) */
 .rail-lien:hover, .rail-lien.actif { color: var(--text-primary); }
 .rail-lien.actif { font-weight: 600; }
 .rail-lien.actif .rail-index { color: var(--text-primary); }
-.rail-lien.actif .rail-marque { width: 1.25rem; }
-.rail-pied { margin-top: auto; font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : le pied du rail */
+.rail-lien.actif .rail-marque { scale: 1 1; }
+@media (prefers-reduced-motion: no-preference) { .rail-marque { transition: scale var(--m-base) var(--e-out); } } /* la marque suit la section : le cran du menu */
+/* Le pied porte une phrase, plus une fiche : il perd sa graisse et gagne de
+   l'interligne — on le lit, on ne le consulte pas. */
+.rail-pied { margin-top: auto; font: 400 var(--font-size-label)/1.6 var(--font-mono);
+  color: var(--text-secondary); max-width: 24ch; } /* une phrase qu'on lit n'est pas un tertiaire (C17) : l'encre seconde, sans graisse */
+
+/* L'étage du site : un bouton qui dit son métier — trois traits et le mot
+   « Menu ». Un chevron gris de huit pixels ne se voyait pas (verdict du
+   2 septembre) ; un mot, si. Sous lui, la famille en cours dit où l'on est. */
+.rail-ouvre {
+  appearance: none; background: none; border: 0; padding: var(--gap-4-block) 0; margin: 0;
+  width: 100%; display: grid; justify-items: start;
+  min-height: var(--target-min); cursor: pointer; text-align: left;
+  font-family: inherit; border-radius: var(--r-3);
+}
+/* L'étiquette est un repère, pas une destination : trois traits et un mot,
+   en mono capitales et en gris clair, comme tous les repères du rail. */
+.rail-ouvre-dit {
+  display: flex; align-items: center; gap: var(--gap-4-inline);
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); transition: color var(--m-fast) var(--e-out); /* survol · tertiaire : la mention « où suis-je » qui ouvre la feuille */
+}
+/* La boîte est réglée sur l'ENCRE, épaisseur du trait comprise : les traits
+   vont de 3 à 13 sur 16, plus un demi-trait de chaque côté, soit 12/16 de la
+   boîte. Pour que cette encre fasse la hauteur des capitales (0,73 em),
+   la boîte vaut 0,73 ÷ 0,75 ≈ 0,97 em. */
+.rail-burger { display: block; width: .97em; height: .97em; flex: none; }
+/* Les pages de la famille reprennent exactement le type des ancres : même
+   corps, même marque qui glisse. Le rail retrouve ainsi sa hiérarchie
+   d'origine — une étiquette mono, puis une liste, deux fois. */
+/* Seule l'étiquette répond au survol : elle passe à l'encre. La famille en
+   cours ne bouge pas — c'est une information, pas une commande, et le rail
+   est nu (verdict d'Auteur, 2 septembre). La cible, elle, reste le bouton
+   entier : les deux lignes se cliquent, une seule s'allume. */
+.rail-ouvre:hover .rail-ouvre-dit,
+.rail-ouvre[aria-expanded="true"] .rail-ouvre-dit { color: var(--text-primary); }
+
+/* La barre du petit écran : deux boutons là où le sommaire disparaissait. */
+.nav-barre { display: none; }
+.pastille {
+  appearance: none; background: none; border: 0; border-top: 1px solid var(--border);
+  padding: var(--gap-3-block) 0 0; margin: 0; text-align: left; cursor: pointer;
+  display: grid; gap: var(--gap-4-block); min-height: var(--target-min);
+  border-radius: 0 0 var(--r-3) var(--r-3);
+}
+.pastille-ou { display: flex; align-items: center; gap: var(--gap-4-inline);
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : la pastille « où suis-je » du petit écran */
+.pastille-ou .rail-burger { width: .85rem; height: .85rem; }
+.pastille b { font-weight: 600; font-size: var(--font-size-small); color: var(--text-primary);
+  line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pastille[aria-expanded="true"] { border-top-color: var(--text-primary); }
+
+/* ── La feuille : tout le site, sans coûter une ligne au rail ── */
+.feuille { position: fixed; inset: 0; z-index: 200; }
+.feuille[hidden] { display: none; }
+.feuille-voile { position: absolute; inset: 0; background: color-mix(in srgb, var(--text-primary) 18%, transparent); }
+.feuille-tenu {
+  position: absolute; inset: 0 0 auto; background: var(--bg);
+  border-bottom: 1px solid var(--border); max-height: 100%; overflow-y: auto;
+  padding: var(--page-2-block) var(--doc-rive);
+}
+.feuille.par-le-bas .feuille-tenu {
+  inset: auto 0 0; border-bottom: 0; border-top: 1px solid var(--border);
+  max-height: 82%; border-radius: var(--r-1) var(--r-1) 0 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .feuille.ouverte .feuille-tenu { animation: feuille-pose var(--m-slow) var(--e-out); } /* panneau */
+  .feuille.par-le-bas.ouverte .feuille-tenu { animation: feuille-monte var(--m-slow) var(--e-out); }
+}
+@keyframes feuille-pose { from { transform: translateY(-1.25rem); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes feuille-monte { from { transform: translateY(1.5rem); opacity: 0 } to { transform: none; opacity: 1 } }
+.feuille-tete { display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--gap-1-inline); margin-bottom: var(--page-2-block); }
+/* La tête de la feuille : « Accueil » à gauche, qui mène à l'accueil, et la
+   version du kit à droite. Les deux parlent mono capitales — ce sont des
+   repères ; seul le premier est une destination. */
+.feuille-accueil, .feuille-version {
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; }
+.feuille-accueil { color: var(--text-secondary); text-decoration: none;
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline: calc(var(--gap-3-inline) * -1);
+  border-radius: var(--r-3); transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+.feuille-accueil:hover { color: var(--text-primary); background: var(--surface-hover); }
+/* Un numéro de version ne se met pas en capitales : « v1.5 » s'écrit
+   comme il se dit. */
+.feuille-version { color: var(--text-tertiary); font-weight: 600; text-transform: none; } /* tertiaire : le numéro de version, une méta */
+
+/* ── Le mega-menu : une rangée d'onglets, un panneau à la fois. Chaque
+      panneau tient d'un regard — c'est ce qui règle l'équilibre. ── */
+/* La cale qui pose la croix exactement là où était le burger. Le rail part de
+   5,5 rem sous le haut de l'écran ; la feuille, elle, part de sa propre marge
+   — laquelle glisse avec la largeur. L'écart mesuré n'est donc pas constant :
+   il vaut 4 rem MOINS ce cran de page, ce qui le rend juste de 1 200 à
+   1 900 px. En marge il aurait été avalé (fusion avec la marge du titre) —
+   c'est un retrait. */
+.mega { display: grid; gap: var(--page-2-block);
+  padding-top: calc(4rem - var(--page-2-block)); } /* hors chaîne : 4 rem est la cale du rail (5,5 rem moins sa marge), pas un espace de la chaîne */
+.mega-onglets { display: flex; align-items: stretch; flex-wrap: wrap;
+  gap: 0 var(--page-2-inline); border-bottom: 1px solid var(--border); }
+.mega-rangee { display: flex; align-items: stretch; flex-wrap: wrap;
+  gap: 0 var(--page-2-inline); }
+/* La croix ouvre la rangée : fermer se fait là où l'œil arrive, pas à
+   l'autre bout de la feuille. */
+.mega-fermer { appearance: none; background: none; border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; padding: 0 0 var(--gap-2-block);
+  margin-bottom: -1px; color: var(--text-secondary);
+  border-radius: var(--r-3) var(--r-3) 0 0; transition: color var(--m-fast) var(--e-out); } /* survol */
+.mega-fermer:hover { color: var(--text-primary); }
+/* La croix reprend exactement la boîte du burger — même taille, même bord
+   gauche : en s'ouvrant, la feuille pose sa croix là où était le signe. */
+.mega-fermer svg { display: block;
+  width: calc(var(--font-size-label) * .97); height: calc(var(--font-size-label) * .97); }
+.mega-onglet { appearance: none; background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: var(--font-size-body); font-weight: 500; line-height: 1.25;
+  color: var(--text-secondary); padding: 0 0 var(--gap-2-block); margin-bottom: -1px;
+  border-bottom: 1px solid transparent; border-radius: var(--r-3) var(--r-3) 0 0;
+  transition: color var(--m-fast) var(--e-out); } /* survol */
+.mega-onglet:hover { color: var(--text-primary); }
+.mega-onglet[aria-selected="true"] { color: var(--text-primary); font-weight: 600;
+  border-bottom-color: var(--text-primary); }
+.mega-panneau[hidden] { display: none; }
+.mega-info { max-width: 46ch; display: grid; gap: var(--gap-2-block); }
+.mega-info p:last-child { margin: 0; color: var(--text-secondary); }
+
+/* Les niveaux, tenus par la nature du signe et non par le poids : la
+   FAMILLE est une étiquette capitale en mono, la PAGE parle en sans. On ne
+   peut pas confondre un repère avec une destination (verdicts du
+   2 septembre — les paquets ont cessé de se nommer, la famille a pris le
+   traitement du titre du rail). */
+.index-familles { display: grid; align-items: start;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--page-2-block) var(--doc-gouttiere); }
+/* Le nombre de colonnes d'un panneau est écrit en clair : une longueur de
+   grille ne peut pas venir d'une variable — repeat() veut un entier au
+   moment de l'analyse, et var() arrive trop tard. */
+.index-familles[data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.index-familles[data-cols="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.index-familles[data-cols="6"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.index-familles[data-cols="7"] { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.index-familles[data-cols="8"] { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.index-famille { display: grid; align-content: start; gap: var(--gap-2-block); }
+.index-famille[data-large="2"] { grid-column: span 2; }
+.index-famille[data-large="3"] { grid-column: span 3; }
+.index-famille[data-large="4"] { grid-column: span 4; }
+/* Le nom de famille est un repère : il reste en gris. Les pages, elles,
+   sont des destinations — elles prennent l'encre, et celle où l'on se
+   trouve prend la graisse (verdict d'Auteur, 2 septembre). */
+/* Le nom d'une famille est un REPÈRE, pas une destination : il prend donc
+   le même traitement que « Toutes les pages » dans le rail — capitales,
+   mono, tertiaire (verdict d'Auteur, 2 septembre). Le menu n'a plus que
+   deux niveaux depuis que les paquets ne se nomment plus, et deux niveaux
+   se distinguent par la NATURE du signe, jamais par le poids : le repère
+   parle en capitales mono, la page parle en sans. */
+.index-fam { margin: 0;
+  font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : le repère d'une famille */ }
+/* Les paquets d'une famille sont une GRILLE, pas un flux de colonnes.
+   En colonnes (columns: 4), le navigateur équilibre les hauteurs et pose
+   chaque paquet où ça l'arrange : les étiquettes ne commencent jamais à la
+   même ligne, et le panneau se lit en escalier sur un large écran (verdict
+   d'Auteur, 2 septembre : « bof sur desktop »). En grille, chaque paquet
+   part du même bord haut, et les colonnes se lisent d'un regard. */
+.index-paquets { display: grid; align-items: start;
+  gap: var(--page-2-block) var(--doc-gouttiere); }
+.index-famille[data-large="2"] .index-paquets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.index-famille[data-large="3"] .index-paquets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.index-famille[data-large="4"] .index-paquets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Les colonnes d'une famille ne portent plus d'étiquette : le groupement se
+   voit à la colonne, il ne se dit pas. Une étiquette de catégorie posée
+   au-dessus d'une liste de pages se confondait avec les pages (2 septembre). */
+.index-liste { display: grid; gap: var(--gap-4-block); }
+/* La cible déborde le mot : une entrée occupe toute la largeur de sa
+   colonne, avec sa marge intérieure, et se décale de la même marge vers la
+   gauche pour que le texte reste aligné sur le nom de la famille. On vise
+   une ligne, pas un mot (verdict d'Auteur, 2 septembre). */
+.index-lien { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  gap: var(--gap-3-inline); min-height: var(--control-height-compact); text-decoration: none;
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline: calc(var(--gap-3-inline) * -1);
+  color: var(--text-primary); font-size: var(--font-size-small); line-height: 1.3;
+  border-radius: var(--r-3); transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+/* Le survol se voit : la couleur seule ne disait rien sur une ligne isolée.
+   Le fond de survol des listes existait déjà dans la famille — il sert ici. */
+/* La couleur de survol des liens du site (a:hover, indigo) est reprise ici :
+   dans l'index, le survol se dit par le fond, jamais par l'accent — celui-ci
+   se dépense en un seul moment par écran (CG3). */
+a.index-lien:hover { background: var(--surface-hover); color: var(--text-primary); }
+/* La page où l'on est se lit d'un regard : elle prend l'encre en fond et
+   rend sa couleur au texte. Une graisse de plus ne suffisait pas — dans un
+   panneau de quarante liens, le lecteur perdait sa position (verdict
+   d'Auteur, 2 septembre). C'est déjà la façon dont ce kit dit « actif » :
+   la commande en cours du gabarit documentaire est en encre renversée.
+   Aucune couleur nouvelle, et le neutre reste au rédactionnel. La pastille
+   pose son fond ET son encre, comme toute surface qui peint. */
+.index-lien.on { background: var(--text-primary); color: var(--bg); font-weight: 600; }
+/* Le survol ne reprend pas la main sur la page en cours : on est déjà dessus. */
+a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
+.index-lien .rail-marque { width: 0; }
+.index-lien.on .rail-marque { width: 1rem; }
+/* Une page à faire porte son état sur elle : barrée, elle ne se confond plus
+   avec une page qu'on peut ouvrir — et le gris seul ne suffisait pas à le
+   dire (il ne dit rien à qui ne distingue pas les gris). */
+.index-lien.avenir { color: var(--danger);
+  text-decoration: line-through; text-decoration-thickness: 1px;
+  text-decoration-color: var(--danger); }
 
 /* ── Le contenu : héros à titre-affiche (CG5), sections séparées par le
       grand silence (CG1) — jamais par un trait. ── */
@@ -489,6 +708,12 @@ details.prov summary:hover { color: var(--text-primary); }
   gap: var(--gap-1-block); width: 100%;
 }
 .banc.primaire { background: var(--primary); color: var(--on-primary); }
+/* Une terre sombre posée dans une page claire. Ce qui pose sa propre
+   surface claire par-dessus (une feuille, un panneau) garde ses encres ;
+   ce qui repose DIRECTEMENT sur la terre doit prendre celles du versant
+   sombre — --code-text, --code-com, --code-danger — sinon
+   le texte secondaire, l'accent et le rouge de la faute s'y éteignent.
+   Chaque page le déclare pour les éléments qu'elle y pose. */
 .banc.sombre { background: var(--code-bg); color: var(--code-text); }
 /* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
    (décision d'Auteur, 24 août). */
@@ -514,10 +739,33 @@ details.prov summary:hover { color: var(--text-primary); }
 .tr-btn.premier { background: var(--text-primary); color: var(--bg); }
 
 
+/* ── LE MOUVEMENT DU SITE (décisions d'Auteur du 3 septembre 2026) ──────────
+      Quatre durées, chacune avec son emploi (tokens.css) ; la courbe du kit.
+      Moins de mouvement ne veut plus dire aucun mouvement : sous
+      prefers-reduced-motion, les DÉPLACEMENTS partent (transform, translate,
+      scale, rotate, défilement doux) et les FONDUS restent (opacité, couleur).
+      La règle s'écrit par construction : un déplacement n'existe que sous
+      « (prefers-reduced-motion: no-preference) », un fondu s'écrit nu. Le
+      crash-test du moteur le vérifie ligne à ligne. Une valeur qu'on fait
+      glisser ne s'anime pas. Une commande répond à l'appui. ── */
+/* ── Le retour à l'appui : une vraie commande s'enfonce, légèrement et
+      brièvement, pendant qu'on la tient — le mouvement le plus rentable qui
+      existe (relevé du 3 septembre : rien ne répondait nulle part). Par
+      ANIMATION, pas par transition : elle s'ajoute à ce que chaque commande
+      anime déjà sans l'écraser ; l'enfoncement prend le cran rapide, le
+      relâchement est immédiat. C'est un déplacement : sous son portillon. ── */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.bouton, .ar-onglets button, .ar-inter, .tiroir-poignee, .mo-intentions button, .mk-chip,
+      .doc-casser, .doc-deplier, .rail-ouvre, .pastille, .mega-onglet, .mega-fermer, .feuille-accueil,
+      .cp-col, .index-lien, details.prov summary):active:not([disabled]) {
+    animation: appui var(--m-fast) var(--e-out) both; }
+}
+@keyframes appui { to { scale: 0.97; } }
+
 /* ── L'entrée en scène : la section se pose au moment où on la découvre.
       Jamais si le système demande moins de mouvement. ── */
 @media (prefers-reduced-motion: no-preference) {
-  .gdoc .pose { opacity: 0; transform: translateY(0.875rem); transition: opacity 0.7s cubic-bezier(0, 0, 0.2, 1), transform 0.7s cubic-bezier(0, 0, 0.2, 1); }
+  .gdoc .pose { opacity: 0; transform: translateY(0.875rem); transition: opacity var(--m-expressive) var(--e-out), transform var(--m-expressive) var(--e-out); } /* l'arrivée d'une section */
   .gdoc .pose.posee { opacity: 1; transform: none; }
 }
 
@@ -527,7 +775,7 @@ details.prov summary:hover { color: var(--text-primary); }
   margin-left: auto; background: none; border: 0; cursor: pointer;
   color: var(--text-secondary); font: 500 var(--font-size-small)/1 var(--font-sans);
   display: inline-flex; align-items: center; gap: var(--gap-3-inline);
-  transition: color 0.15s; padding: var(--gap-3-block) 0;
+  transition: color var(--m-fast) var(--e-out); padding: var(--gap-3-block) 0; /* survol */
 }
 .tiroir-poignee:hover { color: var(--text-primary); }
 .tiroir {
@@ -545,13 +793,46 @@ details.prov summary:hover { color: var(--text-primary); }
 
 /* ── Palier unique du gabarit : sous 69rem, le rail cède la colonne — la
       navigation devient une rangée nue, le sommaire s'efface. ── */
+/* Sous 75 rem la feuille passe à trois colonnes ; sous 52 rem elle n'en
+   garde qu'une. Deux colonnes, c'est là que les trous se creusent : des
+   familles de longueurs très différentes côte à côte ne se rattrapent pas. */
+@media (max-width: 75rem) {
+  .index-familles, .index-familles[data-cols] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .index-famille[data-large] { grid-column: 1 / -1; }
+  .index-famille[data-large] .index-paquets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Sur petit écran, les familles se posent l'une sous l'autre — deux familles
+   côte à côte ne se rattrapent pas, leurs longueurs sont trop différentes.
+   Mais À L'INTÉRIEUR d'une famille, les pages passent sur deux colonnes :
+   la hauteur est divisée par deux et aucun trou ne s'ouvre, puisque ce sont
+   les mêmes pages qui se répartissent (verdict d'Auteur, 2 septembre). */
+@media (max-width: 52rem) {
+  .index-familles, .index-familles[data-cols] { grid-template-columns: minmax(0, 1fr); }
+  .index-famille[data-large] { grid-column: auto; }
+  .index-famille[data-large] .index-paquets,
+  .index-famille > .index-liste {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap-1-inline); }
+  /* Le rang d'onglets ne tient plus sur une ligne : il s'enroule. Le filet
+     sous l'onglet actif, lui, ne peut pas suivre — il se retrouverait au
+     milieu du bloc. Sur deux lignes, l'onglet actif se dit donc par l'encre
+     et la graisse seules ; le filet du bas ferme le bloc entier. */
+  .mega-onglets { gap: var(--gap-2-block) var(--gap-1-inline); }
+  .mega-rangee { gap: var(--gap-2-block) var(--gap-1-inline); }
+  .mega-onglet, .mega-fermer { padding-bottom: 0; margin-bottom: 0; }
+  .mega-onglet, .mega-onglet[aria-selected="true"] { border-bottom: 0; }
+  .mega-onglets { padding-bottom: var(--gap-2-block); }
+}
+
+/* ── Palier unique du gabarit : sous 69 rem, le rail cède la colonne. Les
+      ancres ne disparaissent plus : une barre à deux boutons les reprend,
+      et chacun ouvre sa feuille. ── */
 @media (max-width: 69rem) {
   .gdoc { grid-template-columns: minmax(0, 1fr); }
-  .rail-fixe { position: static; max-height: none; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: var(--gap-1-inline); padding: var(--pad-3-block) 0 0; }
-  .rail-somm, .rail-pied { display: none; }
-  .rail-sites .rail-liste { flex-direction: row; gap: var(--gap-1-inline); }
-  .rail-lien { padding: var(--gap-4-block) 0; }
-  .rail-marque { display: none; }
+  .gdoc-rail { display: none; }
+  .nav-barre { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-2-inline);
+    position: sticky; top: 3.5rem; z-index: 20; background: var(--bg);
+    padding: var(--gap-3-block) 0 var(--pad-3-block); border-bottom: 1px solid var(--border); }
 }
 
 /* le banc neutre : une scène qui n'est pas un geste de couleur */
@@ -594,12 +875,12 @@ details.prov summary:hover { color: var(--text-primary); }
   justify-content: space-between; flex-grow: 1; min-width: 0; overflow: hidden;
   padding: var(--pad-2-block) var(--pad-3-inline);
   border: 0; text-align: left; cursor: pointer; font: inherit;
-  transition: min-width 0.48s cubic-bezier(0, 0, 0.2, 1); }
+  transition: min-width var(--m-base) var(--e-out); } /* la colonne se déplie : le cran du dépliant */
 .cp-meta { display: flex; flex-direction: column; gap: var(--gap-4-block); white-space: nowrap; }
 .cp-nom { font-size: var(--font-size-small); font-weight: 500; }
 .cp-hex { font: 400 var(--font-size-small)/1.4 var(--font-mono); }
 .cp-pct { align-self: flex-end; font: 400 var(--font-size-small)/1 var(--font-mono); white-space: nowrap; }
-.cp-col.etroite .cp-meta, .cp-col.etroite .cp-pct { opacity: 0; transition: opacity 0.3s; }
+.cp-col.etroite .cp-meta, .cp-col.etroite .cp-pct { opacity: 0; transition: opacity var(--m-base) var(--e-out); }
 .cp-col.etroite:hover, .cp-col.etroite:focus-visible { min-width: 13rem; }
 .cp-col.etroite:hover .cp-meta, .cp-col.etroite:focus-visible .cp-meta,
 .cp-col.etroite:hover .cp-pct, .cp-col.etroite:focus-visible .cp-pct { opacity: 1; }
@@ -667,12 +948,12 @@ details.prov summary:hover { color: var(--text-primary); }
   inset-inline: calc(var(--pad-3-inline) + var(--gd-lane) / 2) var(--pad-3-inline);
   opacity: 0; }
 @media (hover: hover) {
-  .gd-lng-ton { transition: width 0.34s cubic-bezier(0, 0, 0.2, 1); }
-  .gd-lng-tondit { transition: opacity 0.22s linear; }
+  .gd-lng-ton { transition: width var(--m-base) var(--e-out); } /* le ton se déplie au survol : le cran du dépliant */
+  .gd-lng-tondit { transition: opacity var(--m-base) var(--e-out); }
   .gd-lng:hover .gd-lng-ton, .gd-lng:focus-within .gd-lng-ton {
     width: 62%; justify-content: flex-start; }
   .gd-lng:hover .gd-lng-tondit, .gd-lng:focus-within .gd-lng-tondit {
-    opacity: 1; transition-delay: 0.12s; }
+    opacity: 1; transition-delay: var(--m-fast); }
 }
 /* Sans survol possible (doigt), la phrase du ton est là d'emblée : rien
    d'essentiel ne se cache derrière un geste qui n'existe pas. */
@@ -691,11 +972,11 @@ details.prov summary:hover { color: var(--text-primary); }
 @media (prefers-reduced-motion: no-preference) {
   .gdoc .pose .gd-lng { opacity: 0; }
   .gdoc .pose.posee .gd-lng {
-    animation: gd-lng-pose 0.44s cubic-bezier(0, 0, 0.2, 1) both;
-    animation-delay: calc(var(--rang, 0) * 70ms); }
+    animation: gd-lng-pose var(--m-slow) var(--e-out) both; /* chaque ligne se pose au cran du panneau, en cascade d'un cran rapide */
+    animation-delay: calc(var(--rang, 0) * var(--m-fast)); }
   .gdoc .pose.posee .gd-lng-ton {
-    animation: gd-lng-ton-pose 0.5s cubic-bezier(0, 0, 0.2, 1) both;
-    animation-delay: calc(var(--rang, 0) * 70ms + 130ms); }
+    animation: gd-lng-ton-pose var(--m-slow) var(--e-out) both;
+    animation-delay: calc(var(--rang, 0) * var(--m-fast) + var(--m-fast)); }
 }
 
 /* ═══════════ Le bento — l'objet en situation de la page Couleur (25 août 2026) ═══════════
@@ -713,7 +994,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .bn-tuile { position: relative; background: var(--bg); border: 1px solid var(--border);
   border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline);
   display: grid; gap: var(--gap-2-block); align-content: start; min-width: 0;
-  transition: border-color 0.1s cubic-bezier(0, 0, 0.2, 1); }
+  transition: border-color var(--m-fast) var(--e-out); } /* survol */
 .bn-tuile:hover, .bn-tuile:focus-within { border-color: var(--border-strong); }
 .bn-photo { grid-area: photo; } .bn-stat { grid-area: stat; } .bn-tags { grid-area: tags; }
 .bn-liste { grid-area: liste; } .bn-mot { grid-area: form; } .bn-vide { grid-area: vide; } .bn-session { grid-area: session; }
@@ -743,7 +1024,8 @@ details.prov summary:hover { color: var(--text-primary); }
   border-radius: 0 0 var(--r-2) var(--r-2);
   padding: var(--gap-3-block) var(--pad-2-inline);
   opacity: 0; transform: translateY(4px); pointer-events: none;
-  transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1), transform 0.2s cubic-bezier(0, 0, 0.2, 1); }
+  transition: opacity var(--m-base) var(--e-out); } /* infobulle */
+@media (prefers-reduced-motion: no-preference) { .bn-roles { transition: opacity var(--m-base) var(--e-out), transform var(--m-base) var(--e-out); } }
 .bn-roles b { font-weight: 600; color: var(--bg); }
 .bn-tuile:hover .bn-roles, .bn-tuile:focus-within .bn-roles { opacity: 1; transform: none; }
 .bn-photo .bn-roles, .bn-liste .bn-roles, .bn-mot .bn-roles, .bn-session .bn-roles {
@@ -784,7 +1066,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .bn-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline);
   padding: var(--gap-3-block) var(--gap-3-inline); margin: 0 calc(-1 * var(--gap-3-inline)); /* la ligne déborde de sa marge : son fond de survol touche le bord de la tuile */
   border-radius: var(--r-3); text-decoration: none; color: var(--text-primary);
-  transition: background 0.1s cubic-bezier(0, 0, 0.2, 1); }
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
 .bn-ligne:hover { background: var(--surface-hover); color: var(--text-primary); }
 .bn-qui { display: grid; gap: var(--gap-4-block); min-width: 0; } /* nom et poste : le plus petit cran, serrés (retour d'Auteur) */
 .bn-nom { font-weight: 500; line-height: 1.25; }
@@ -822,15 +1104,18 @@ details.prov summary:hover { color: var(--text-primary); }
 .bn-lien:hover { color: var(--primary-text-hover); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* Deux thèmes, une exigence : chaque panneau EST son thème. */
-.gd-duo { display: grid; width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: var(--gap-1-inline); }
-.gd-pan { background: var(--bg); color: var(--text-primary);
-  border: 1px solid var(--border); border-radius: var(--r-1);
+/* Le panneau de la scène du contraste : il vit dans le thème de la page.
+   La grille des deux panneaux (.gd-duo) est retirée le 2 septembre — la
+   scène n'en montre plus qu'un. */
+/* Le container est le gris, la card est le blanc posé dessus — la cascade
+   des fonds du kit, et non l'inverse (verdict d'Auteur, 2 septembre). Le
+   container pose son encre en même temps que son fond : une surface qui
+   peint déclare ce qui s'écrit dessus. */
+.gd-pan { background: var(--surface); color: var(--text-primary);
+  border-radius: var(--r-1);
   padding: var(--pad-1-block) var(--pad-1-inline);
   display: grid; gap: var(--gap-2-block); align-content: start; }
-.gd-pan-carte { background: var(--surface); border-radius: var(--r-2);
+.gd-pan-carte { background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
   padding: var(--pad-2-block) var(--pad-2-inline);
   display: grid; gap: var(--gap-3-block); justify-items: start; }
 
@@ -847,7 +1132,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .mk-chip { width: 3rem; height: 3rem; border-radius: var(--r-ctl);
   border: 0; cursor: pointer; background: var(--surface); color: var(--text-secondary);
   display: grid; place-items: center; padding: 0; overflow: hidden;
-  transition: background 0.15s, color 0.15s; }
+  transition: background-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); } /* survol */
 .mk-chip:hover { background: var(--surface-hover); color: var(--text-primary); }
 .mk-scene { display: grid; gap: var(--gap-2-block); min-width: 0; }
 .mk-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
@@ -909,21 +1194,23 @@ details.prov summary:hover { color: var(--text-primary); }
 .acc-chapo b { color: var(--text-primary); font-weight: 600; }
 .acc-couv-pied { padding-bottom: 1.4rem; }
 
-/* Le dévoilement (rise-mask de la charte) */
+/* Le dévoilement (rise-mask de la charte) — l'entrée en scène de l'accueil est une
+   CHORÉGRAPHIE déclarée (verdict d'Auteur, 4 septembre) : ses durées ne sont pas des
+   réponses d'interface, elles sont dites sur leur ligne. Les déplacements ne jouent
+   que si le système ne demande pas moins de mouvement ; le fondu joue toujours. */
 .acc-rise { overflow: hidden; display: block; }
-.acc-rise > span { display: block; transform: translateY(118%);
-  animation: acc-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
-@keyframes acc-rise { to { transform: translateY(0); } }
-.acc-fade { opacity: 0; animation: acc-fade 0.8s ease forwards;
-  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
+.acc-fade { opacity: 0; animation: acc-fade 0.8s ease forwards; /* chorégraphie : le fondu de l'accueil */
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
 @keyframes acc-fade { to { opacity: 1; } }
-.acc-pop { transform: scale(0); animation: acc-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 130ms + 120ms); }
-@keyframes acc-pop { to { transform: scale(1); } }
-@media (prefers-reduced-motion: reduce) {
-  .acc-rise > span, .acc-fade, .acc-pop { animation: none; transform: none; opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .acc-rise > span { display: block; transform: translateY(118%);
+    animation: acc-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* chorégraphie : la levée de l'accueil */
+    animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
+  .acc-pop { transform: scale(0); animation: acc-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* chorégraphie : le rebond de l'accueil */
+    animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
 }
+@keyframes acc-rise { to { transform: translateY(0); } }
+@keyframes acc-pop { to { transform: scale(1); } }
 
 /* Sections documentaires de la porte */
 .acc-sec { padding-top: var(--acc-silence); }
@@ -961,7 +1248,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .acc-fond { border: 1px solid var(--border); border-radius: var(--r-2);
   padding: clamp(1.2rem, 2.4vw, 1.8rem); display: grid; gap: 1.1rem;
   align-content: start; text-decoration: none; color: inherit;
-  transition: border-color 0.2s ease; }
+  transition: border-color var(--m-fast) var(--e-out); } /* survol */
 .acc-fond:hover { border-color: var(--border-strong); }
 .acc-fond .kicker { color: var(--primary-text); }
 .acc-fond h3 { font-size: 1.25rem; letter-spacing: -0.015em; }
@@ -1057,7 +1344,7 @@ details.prov summary:hover { color: var(--text-primary); }
 
 /* Au repos l'invite ; au survol, la solution prend exactement sa place. */
 .co-invite, .co-solution { position: absolute; left: 0; top: 0;
-  font: 500 0.6875rem/1.5 var(--font-mono); transition: opacity 0.16s linear;
+  font: 500 0.6875rem/1.5 var(--font-mono); transition: opacity var(--m-fast) var(--e-out); /* survol */
   pointer-events: none; max-width: 100%; }
 .co-invite { color: var(--text-secondary); }
 /* Le pied ne dit plus un état — il dit le geste. Même voix que l'invite. */
@@ -1067,7 +1354,7 @@ details.prov summary:hover { color: var(--text-primary); }
 /* L'état, lui, est en haut : faux au repos de la faute, réparé au survol.
    Les deux badges se superposent — la largeur ne bouge pas. */
 .co-verdict { display: inline-grid; }
-.co-verdict > .badge { grid-area: 1 / 1; transition: opacity 0.16s linear; }
+.co-verdict > .badge { grid-area: 1 / 1; transition: opacity var(--m-fast) var(--e-out); } /* survol */
 .co-verdict > .badge.bon { opacity: 0; }
 .co-preuve1:has(.co-porte:hover) .co-verdict > .badge.ko { opacity: 0; }
 .co-preuve1:has(.co-porte:hover) .co-verdict > .badge.bon { opacity: 1; }
@@ -1118,7 +1405,7 @@ details.prov summary:hover { color: var(--text-primary); }
 
 /* ── Le calque de repères — il montre la faute là où elle est ── */
 .co-calque { position: absolute; inset: 0; pointer-events: none; z-index: 5;
-  transition: opacity 0.16s linear; }
+  transition: opacity var(--m-fast) var(--e-out); } /* survol */
 .co-porte:hover .co-calque { opacity: 0; }
 .co-r-cadre { position: absolute; border: 1.5px solid var(--danger); border-radius: var(--r-ctl); }
 .co-r-fil { position: absolute; border-left: 1px dashed var(--danger); }
@@ -1175,7 +1462,7 @@ details.prov summary:hover { color: var(--text-primary); }
 .co-regard { opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
   .co-regard { opacity: 1; stroke-width: 5; stroke-dasharray: 54 var(--len);
-    animation: co-lire 4.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: co-lire 4.6s cubic-bezier(0.5, 0, 0.5, 1) infinite; /* chorégraphie : la boucle du chemin de l'œil (verdict d'Auteur, 4 septembre) */
     animation-delay: var(--retard, 0s); }
 }
 @keyframes co-lire {
@@ -1209,3 +1496,163 @@ details.prov summary:hover { color: var(--text-primary); }
   .co-dit { max-width: var(--measure); }
   .co-paire { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES TROIS ÉTAGES DU DESSOUS — gabarit commun aux pages du kit
+   (verdict d'Auteur, 1er septembre 2026 ; composants dans etages.tsx).
+   L'étage des preuves n'a pas de gabarit : rien ici ne le concerne.
+   Tout consomme le registre ; les rares valeurs hors chaîne sont dites
+   sur leur ligne.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Étage « en bandes » — ce qui se voit ──
+   Une règle par bande, séparées par un filet. À gauche la parole (le
+   titre, la cote, la phrase, la commande) dans une colonne étroite et
+   fixe ; à droite la scène, à la largeur qu'il lui faut. Une petite
+   scène fait une bande courte, une grande scène une bande haute : rien
+   ne se tasse, rien ne flotte, et tout s'aligne parce que chaque règle a
+   sa propre ligne (verdict d'Auteur, 1er septembre — la grille de trois
+   colonnes écrasait les scènes et laissait des trous). */
+/* Aucune marge en tête : le corps de section (.gdoc-corps) porte déjà
+   l'espace qui suit le titre. L'ajouter ici le comptait deux fois — le
+   titre se détachait de son contenu, la faute même que la page documente
+   (attrapé par l'Auteur, 1er septembre). */
+/* Une pile de bandes est une pile : elle n'a ni colonnes, ni écart propre
+   (les filets et les marges des bandes font tout). Pas de boîte souple
+   pour rien. */
+.doc-bandes { display: block; }
+.doc-bande { display: grid; grid-template-columns: 18rem minmax(0, 1fr); /* hors chaîne : la mesure de la colonne de parole */
+  gap: var(--doc-gouttiere);
+  padding-block: var(--pad-1-block);
+  border-top: 1px solid var(--border); align-items: start; }
+.doc-bande:last-child { padding-bottom: 0; }
+@media (max-width: 62rem) {
+  .doc-bande { grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
+}
+.doc-bande-dire { display: grid; gap: var(--gap-2-block); align-content: start; max-width: var(--measure); }
+.doc-bande-nom { margin: 0; font-size: var(--font-size-h3); font-weight: 600;
+  letter-spacing: -0.015em; line-height: var(--leading-heading); text-wrap: balance; }
+.doc-bande-cote { font-weight: 600; color: var(--text-tertiary); } /* tertiaire : la cote d'une bande */
+.doc-bande-dit { color: var(--text-secondary); font-size: var(--font-size-small); line-height: 1.55; }
+.doc-bande-prov { grid-column: 1 / -1; }
+
+/* La scène porte la marge et le coin de la profondeur 2 ; celle qui
+   apporte déjà sa propre coque s'en passe (variante « nue », CG4). */
+.doc-scene { background: var(--surface); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; justify-items: center; align-content: center; }
+.doc-scene.nue { background: transparent; padding: 0; justify-items: stretch; }
+
+/* Une commande secondaire : la cible réduite. Au repos un trait
+   pointillé — six aplats rouges dans une page feraient du rouge son
+   rythme. Elle vit dans la colonne de parole, sous la phrase. */
+.doc-casser { justify-self: start;
+  min-height: var(--control-height-compact); min-width: var(--control-height-compact);
+  padding-inline: var(--gap-2-inline); border-radius: var(--r-3);
+  font-family: inherit; font-size: var(--font-size-label); font-weight: 600; cursor: pointer;
+  color: var(--on-danger-subtle); background: transparent;
+  border: 1px dashed var(--danger);
+  transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); } /* survol */
+.doc-casser:hover { background: var(--danger-subtle); }
+.doc-casser[aria-pressed="true"] { background: var(--danger-subtle); border-style: solid; }
+
+/* ── Étage « en liste » — ce qu'aucune image ne prouve ── */
+.doc-liste { width: 100%; border-collapse: collapse; }
+.doc-liste th, .doc-liste td { text-align: left; vertical-align: top;
+  padding: var(--pad-3-block) var(--gap-2-inline);
+  border-bottom: 1px solid var(--border); }
+.doc-liste th { color: var(--text-secondary); font-weight: 600;
+  font-family: var(--font-mono); font-size: var(--font-size-label);
+  text-transform: uppercase; letter-spacing: var(--tracking-label);
+  border-bottom-color: var(--border-strong); }
+.doc-liste td { font-size: var(--font-size-small); }
+.doc-liste th:nth-child(1), .doc-liste td:nth-child(1) { width: 30%; }
+.doc-liste th:nth-child(2), .doc-liste td:nth-child(2) { width: 47%; }
+.doc-liste th:nth-child(3), .doc-liste td:nth-child(3) { width: 23%; }
+.doc-liste .l-nom { font-weight: 600; }
+.doc-liste .l-dit { color: var(--text-secondary); }
+/* Tertiaire rendu : graisse 600 au moins, au cran étiquette — la règle
+   du kit sur les encres faibles. */
+.doc-liste .l-ou { font-family: var(--font-mono); font-size: var(--font-size-label);
+  font-weight: 600; color: var(--text-secondary); }
+.doc-liste .l-ou.rendu { color: var(--on-primary-subtle); }
+.doc-liste .l-ou.auteur { color: var(--text-tertiary); font-weight: 600; } /* tertiaire : une décision d'Auteur, vérifiée nulle part */
+
+/* ── Étage « dans le code » — le registre, pas de la prose ── */
+.doc-panneau {
+  /* Le panneau est une terre sombre posée dans une page claire : il
+     emprunte les encres du thème sombre du kit. Aucune couleur nouvelle. */
+  background: var(--code-bg); color: var(--code-text);
+  border-radius: var(--r-1); overflow: hidden;
+  padding: var(--pad-1-block) var(--pad-1-inline) var(--pad-2-block); }
+.doc-code { width: 100%; border-collapse: collapse; }
+.doc-code th, .doc-code td { text-align: left; vertical-align: top;
+  padding: var(--pad-3-block) var(--gap-2-inline);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.doc-code th { font-family: var(--font-sans); font-weight: 600;
+  font-size: var(--font-size-small); color: #FFFFFF;
+  border-bottom-color: rgba(255, 255, 255, 0.22); }
+.doc-code th:first-child, .doc-code td:first-child { width: 46%; }
+.doc-code tr:last-child td { border-bottom: 0; }
+.doc-code td { font-family: var(--font-mono); font-size: var(--font-size-label); line-height: 1.75; }
+.doc-code .cs-kw { color: var(--code-kw); }
+.doc-code .cs-var { color: var(--code-str); }
+.doc-code .cs-com { color: var(--code-com); }
+.doc-code .cs-val { color: var(--code-text); }
+/* Dans « ce que ça produit » : la valeur sur sa ligne, le commentaire sous elle. */
+.doc-code td:last-child .cs-val, .doc-code td:last-child .cs-com { display: block; }
+.doc-code .regle { display: block; font-family: var(--font-sans);
+  font-size: var(--font-size-small); font-weight: 600; color: #FFFFFF;
+  margin-bottom: var(--gap-4-block); }
+.doc-code tr[data-repli="oui"] { display: none; }
+.doc-code[data-ouvert="oui"] tr[data-repli="oui"] { display: table-row; }
+.doc-panneau-pied { display: flex; justify-content: center; padding-top: var(--pad-2-block); }
+.doc-deplier { min-height: var(--control-height); min-width: var(--control-height);
+  padding-inline: var(--pad-2-inline); border-radius: var(--r-ctl); cursor: pointer; border: 0;
+  font-family: var(--font-mono); font-size: var(--font-size-label);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: 600;
+  color: var(--code-text); background: rgba(255, 255, 255, 0.09);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.doc-deplier:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* Les deux tables se dépilent en fiches sur écran étroit : zéro débord
+   à la largeur minimale (invariant d'audit). */
+@media (max-width: 56rem) {
+  .doc-code, .doc-code tbody, .doc-code tr, .doc-code td,
+  .doc-liste, .doc-liste tbody, .doc-liste tr, .doc-liste td { display: block; width: 100%; }
+  .doc-code thead, .doc-liste thead { display: none; }
+  .doc-code tr, .doc-liste tr { border-bottom: 1px solid var(--border);
+    padding-block: var(--pad-3-block); }
+  .doc-code tr { border-bottom-color: rgba(255, 255, 255, 0.08); }
+  .doc-code[data-ouvert="oui"] tr[data-repli="oui"] { display: block; }
+  .doc-code td:nth-child(n), .doc-liste td:nth-child(n) { width: auto; }
+  .doc-code td, .doc-liste td { border: 0; padding: var(--gap-4-block) 0;
+    display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--gap-2-inline); }
+  .doc-code td { grid-template-columns: minmax(0, 1fr); }
+  .doc-liste td::before { content: attr(data-quoi); font-family: var(--font-mono);
+    font-size: var(--font-size-label); letter-spacing: var(--tracking-label);
+    text-transform: uppercase; color: var(--text-tertiary); font-weight: 600; } /* tertiaire : l'en-tête de colonne, replié devant sa cellule */
+}
+@media (max-width: 30rem) {
+  .doc-liste td { grid-template-columns: minmax(0, 1fr); gap: var(--gap-4-block); }
+}
+
+/* Le halo des deux commandes du gabarit — même forme que partout (bande
+   3 px collée à l'objet, trait 1 px qui la ferme), au clavier seulement.
+   « Casser » est de la famille rouge ; « Tout voir » vit sur la terre
+   sombre du panneau : sa famille est dite ici, faute de jeton clair. */
+.doc-casser { --halo-r: var(--r-3); --halo-bande: var(--danger-subtle); --halo-trait: var(--focus-ring-danger); }
+.doc-deplier { position: relative; --halo-r: var(--r-ctl);
+  --halo-bande: rgba(255, 255, 255, 0.16); --halo-trait: var(--code-kw); }
+:is(.doc-casser, .doc-deplier):focus-visible::before,
+:is(.doc-casser, .doc-deplier):focus-visible::after {
+  content: ""; position: absolute; pointer-events: none; }
+:is(.doc-casser, .doc-deplier):focus-visible::before {
+  inset: calc(-1px - var(--focus-band) - var(--focus-line));
+  border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
+  border: var(--focus-line) solid var(--halo-trait); }
+:is(.doc-casser, .doc-deplier):focus-visible::after {
+  inset: calc(-1px - var(--focus-band));
+  border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-bande); }
+:is(.doc-casser, .doc-deplier):focus { outline: none; }
