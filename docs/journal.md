@@ -5770,3 +5770,81 @@ coup faute de contraste ». Sur la scène de nuit, le gris second est un gris
 pâle ; devant l'encre claire de l'enfant, le parent ne se lisait plus. Il
 prend le cran tertiaire du versant sombre — un gris moyen — et le petit
 nombre de l'écart repasse en blanc dessus.
+
+## 7 septembre 2026 (6) — `/composition` : la dernière page des fondations passe au banc
+
+Composition était la seule page restée 🟡 pour de bonnes raisons : aucune
+épreuve, treize valeurs hors chaîne, et un étage du bas qui n'en était pas un —
+une table de quinze lois là où les quatre autres pages ont des bandes. Une page
+d'essai existait depuis le 3 : une fausse page du kit qu'on cassait. Le thread
+devait la faire juger, verser ce qui tient, fermer la dette, écrire les
+épreuves.
+
+**Trois verdicts pour trouver la forme.** Le premier a écarté la page d'essai
+telle quelle : « incompréhensibles, moches et bien trop complexes visuellement,
+et le wording est à chier ». Le diagnostic, relu à la lumière des règles déjà
+posées (une bande cassée nomme sa faute dans la scène ; la voix est celle de
+l'Auteur) : chaque scène était une page entière en miniature — rail, titre,
+chapô, deux sections, cotes, boutons — et le bouton « Casser » bougeait une
+chose parmi trente. Les bandes de Typo montrent UN objet et UNE chose qui
+change. Deuxième forme, refaite sur ce modèle : un objet, un bouton, une phrase
+rouge. Refusée aussi : « les démos doivent se comprendre indépendamment du
+texte ». Les fautes de composition sont douces par nature — un filet fin, trois
+débords de quelques pixels — et une bascule oblige l'œil à se souvenir de
+l'état d'avant. La troisième forme est celle qui reste, et c'est une décision
+d'Auteur : **le bon et le mauvais côte à côte, en même temps, sans bouton**. Le
+même objet deux fois, une seule chose change. Le signe ✓ / ✗ est celui de la
+planche des Arrondis.
+
+**Trois corrections sur pièce, toutes justes.** D'abord, sur la paire des
+photos : « marrant, on est sur composition et tu fais une faute de composition
+— on voit quatre éléments, pas deux colonnes ». L'écart entre les deux colonnes
+valait celui entre une photo et sa légende ; c'est la loi de la page (dedans
+plus serré que dehors) que la paire violait. Le verdict passe en tête de
+colonne, et l'écart entre colonnes prend la marge de coque — le plus large de la
+scène. Le banc le mesure depuis. Ensuite la boîte : double cadre, ombre,
+hachures, bandeau, coins coupés — « pas besoin d'en faire autant, ça dessert ce
+que tu veux montrer, c'est plus une règle de composition mais un jeu des sept
+différences ». Une seule chose change : le cadre. Enfin les blocs gris nus ne
+se lisaient pas comme des images : ils portent l'icône d'un emplacement vide.
+Et une faute du registre, relevée au passage : le bouton du kit ne centrait son
+texte que sur un vrai `<button>` ; il le centre maintenant quel que soit
+l'élément qui porte la classe — « toujours ! ».
+
+**Versé, avec une réserve.** « Je suis toujours pas convaincu des textes… mais
+bon, verse ça sur le kit. » La réserve est consignée ici et sur la carte ; elle
+n'est pas fermée. Les trois preuves du haut n'ont pas bougé (« on ne touche plus
+01 à 03 »). La table des quinze lois disparaît : cinq lois sur l'écran de la
+preuve 01, une par preuve 02 et 03, quatre en paires, quatre en liste — le banc
+compte qu'elles sont toutes là, une fois chacune. La page d'essai a fait son
+travail et quitte le kit.
+
+**La dette des treize valeurs, fermée par arbitrage.** Ce qui appartient au kit
+— la scène de preuve, l'écart d'un banc, la légende — descend de la chaîne :
+marge de coque, deuxième cran de page, petit cran de texte. Ce qui appartient à
+l'objet imité — les boutons et champs de la fausse interface, les colonnes du
+journal, l'affiche — n'y entre pas, et chaque ligne dit pourquoi : un objet mis
+en scène à échelle réduite imite un autre produit ; ses mesures sont celles de
+ce produit, réduites d'un même facteur, pas des crans du kit. Le banc exclut ces
+objets par leur nom. Découverte en fermant : le marqueur de dette exemptait
+**tout ce qui le suivait dans la feuille** — celui de l'accueil, posé plus haut,
+couvrait Composition et vingt-six autres valeurs de la page que personne ne
+lisait. Une dette est maintenant bornée (« FIN DE LA DETTE ») ; celle de
+l'accueil reste ouverte, mais elle ne cache plus rien d'autre.
+
+**Dix épreuves, et le banc a mordu trois fois.** Écrites au niveau des quatre
+autres pages : les cotes de « écarts tous égaux » sont recomptées sur le rendu,
+la part d'encre de la preuve 03 aussi ; la scène est une coque et le banc
+s'écarte du deuxième cran de page ; les cinq fautes de l'écran sont rendues et
+le survol les répare ; l'espace blanc retiré garde ses mots, son corps et sa
+surface ; les quatre paires diffèrent du juste par une seule chose, mesurée
+(deux fonds identiques, une légende plus près de la photo d'après, un cadre
+double sans ombre, trois départs distincts) ; densité, titres, C17, rien en
+dur, zéro débord, quinze lois. Avant de passer, trois vraies fautes : une casse
+non dite sur sa ligne, la légende du chemin de l'œil — un paragraphe lu en
+tertiaire, contraire à « une légende tient en une ligne » (le détail est passé au
+dépliant) — et deux tailles de 11 px écrites à la main sous les preuves. Puis
+les quatre autres pages repassées (le socle avait bougé : 41 vertes), et la
+course complète sur la machine d'Auteur : cinq pages vertes, Composition
+enregistrée dans les pièces du banc. **La carte passe Composition à 🟢 — par le
+banc, pas par la main.**
