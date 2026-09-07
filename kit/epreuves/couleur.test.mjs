@@ -54,7 +54,15 @@ const resoudre = (p, theme, noms) => p.evaluate(([theme, noms]) => {
 }, [theme, noms])
 const versHex = (rgbTexte) => '#' + rgbTexte.match(/\d+/g).slice(0, 3).map((v) => Number(v).toString(16).padStart(2, '0')).join('').toUpperCase()
 /* attendre que la page ait fini ses relevés (elle mesure après le rendu) */
-const releve = (p) => p.waitForFunction(() => ![...document.querySelectorAll('#palette .cm-specs, #nuancier .gd-lng-fiche, #table td')].some((e) => e.textContent.includes('…')))
+const releve = (p) => p.waitForFunction(() => ![...document.querySelectorAll('#palette .cm-specs, #nuancier .gd-lng-fiche, #code table td')].some((e) => e.textContent.includes('…')))
+/* Remise à niveau du 7 septembre 2026 : la page a pris les quatre étages (2 septembre,
+   verdict d'Auteur : « garde 01 à 03 puis 05 ; 04 devient une règle qu'on peut casser »).
+   « Deux thèmes » est devenu la première bande de #casser — UN seul panneau, dans le thème
+   du lecteur, et la table des paires dans son dépliant ; les garde-fous sont quatre bandes ;
+   la table des rôles est descendue dans le dépliant de #code. Aucune mesure relâchée : le
+   panneau unique est mesuré dans les DEUX thèmes en rechargeant la page, et la casse
+   « teinter ne coûte rien » (inventée le 2 septembre) entre à l'épreuve 4. */
+const TABLE_ROLES = '#code details.prov table'
 
 let site, nav
 before(async () => { site = await ouvrirSite(); nav = await ouvrirNavigateur() })
@@ -80,7 +88,7 @@ test('1 · la mosaïque, ses proportions et la table des rôles disent les valeu
     attendus.forEach(([role, part], i) => { assert.equal(props[i][0], pal[role], `${theme} — proportion ${role}`); assert.equal(props[i][1], `${part} %`); assert.equal(props[i][2], `${part}%`) })
     assert.equal(attendus.reduce((s, [, x]) => s + x, 0), 100, 'les parts font 100')
     /* la table des rôles : quinze rôles, la valeur claire ET sombre, quel que soit le thème de la page */
-    const lignes = await p.evaluate(() => [...document.querySelectorAll('#table tbody tr')].map((tr) => [...tr.children].map((td) => td.textContent.trim())))
+    const lignes = await p.evaluate((t) => [...document.querySelectorAll(`${t} tbody tr`)].map((tr) => [...tr.children].map((td) => td.textContent.trim())), TABLE_ROLES)
     assert.equal(lignes.length, 15)
     const roles = { 'primary': ['primary'], 'on-primary': ['on-primary'], 'primary-subtle': ['primary-subtle'], background: ['bg'], surface: ['surface'], 'text-primary': ['text-primary'], 'text-secondary': ['text-secondary'], 'text-tertiary': ['text-tertiary'], border: ['border'], 'border-strong': ['border-strong'], 'danger / subtil': ['danger', 'danger-subtle'], 'success / subtil': ['success', 'success-subtle'], 'warning / subtil': ['warning', 'warning-subtle'], 'on-warning-subtle': ['on-warning-subtle'], 'info / subtil': ['info', 'info-subtle'] }
     for (const [nom, clair, sombre] of lignes) {
@@ -104,15 +112,13 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
     const fiches = await textes(p, '#nuancier .gd-lng-fiche')
     assert.equal(fiches.length, 6, `${theme} — six lignes signées`)
     LANGUETTES.forEach(([jeton, ton, , doux, surDoux], i) => assert.equal(fiches[i], `${jeton} · ${pal[ton.slice(2)]} · doux ${pal[doux.slice(2)]} · ${fmt(rapport(pal, surDoux, doux))}`, `${theme} — languette ${jeton}`))
-    /* les deux panneaux : chacun son thème, trois rapports */
-    for (const [i, t] of [[0, 'light'], [1, 'dark']]) {
-      const badges = await p.evaluate((i) => [...document.querySelectorAll('#themes .gd-pan')[i].querySelectorAll('.badge')].map((b) => b.textContent), i)
-      assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface'], ['--on-primary', '--primary']].map(([a, b]) => fmt(rapport(PAL[t], a, b))), `panneau ${t}`)
-      for (const b of badges) assert.ok(parseFloat(b.replace(',', '.')) >= 4.5, `panneau ${t} : ${b}`)
-    }
-    /* la table complète : chaque ligne, les deux thèmes, au seuil */
-    await p.locator('#themes details.prov').first().locator('summary').click()
-    const lignes = await p.evaluate(() => [...document.querySelectorAll('#themes table tbody tr')].map((tr) => [tr.querySelector('.mono').textContent, tr.children[1].textContent, tr.children[2].textContent, tr.children[3].textContent]))
+    /* le panneau du contraste par paire : UN seul, dans le thème du lecteur (2 septembre) — trois rapports, lus */
+    const badges = await p.evaluate(() => [...document.querySelectorAll('#casser .gd-pan .badge')].map((b) => b.textContent))
+    assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface'], ['--on-primary', '--primary']].map(([a, b]) => fmt(rapport(pal, a, b))), `panneau ${theme}`)
+    for (const b of badges) assert.ok(parseFloat(b.replace(',', '.')) >= 4.5, `panneau ${theme} : ${b}`)
+    /* la table complète, dans le dépliant de sa règle : chaque ligne, les deux thèmes, au seuil */
+    await p.locator('#casser .doc-bande:nth-child(1) details.prov summary').click()
+    const lignes = await p.evaluate(() => [...document.querySelectorAll('#casser .doc-bande:nth-child(1) table tbody tr')].map((tr) => [tr.querySelector('.mono').textContent, tr.children[1].textContent, tr.children[2].textContent, tr.children[3].textContent]))
     assert.equal(lignes.length, 27) /* 23 + les quatre traits clavier du halo de focus, rouge et neutre (#133) */
     for (const [paire, seuil, clair, sombre] of lignes) {
       const [t, f] = paire.split(' / ')
@@ -121,11 +127,12 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
       assert.equal(clair, fmt(rapport(PAL.light, t, f)), `${paire} clair`); assert.equal(sombre, fmt(rapport(PAL.dark, t, f)), `${paire} sombre`)
       assert.ok(rapport(PAL.light, t, f) >= s && rapport(PAL.dark, t, f) >= s, `${paire} tient ${s}`)
     }
-    /* le mini-écran, dans ses deux thèmes ; les gris à luminance constante */
-    for (const t of ['light', 'dark']) assert.equal(await texte(p, `#gardefous [data-theme="${t}"] .badge`), fmt(rapport(PAL[t], '--on-primary', '--primary')), `mini-écran ${t}`)
+    /* le mini-écran, dans ses deux versants ; les gris à luminance constante : un rapport sous chaque tuile */
+    for (const t of ['light', 'dark']) assert.equal(await texte(p, `#casser .cl-versant[data-theme="${t}"] .badge`), fmt(rapport(PAL[t], '--on-primary', '--primary')), `mini-écran ${t}`)
     const gris = ['#6B7280', '#78716A', '#67737F'].map((h) => (Math.round(contraste(h, '#FFFFFF') * 10) / 10).toFixed(1).replace('.', ','))
     assert.ok(gris.every((g) => g === gris[0]), `trois gris, un rapport : ${gris}`)
-    assert.equal(await texte(p, '#gardefous .carte:nth-child(6) .badge'), `${gris[0]}:1 pour les trois — la teinte bouge, le rapport ne bouge pas`)
+    assert.deepEqual(await textes(p, '#casser .cl-teinte-rapport'), gris.map((g) => `${g}:1`), 'chaque gris porte son rapport')
+    assert.equal(await texte(p, '#casser .cl-teinte .badge'), 'le même rapport pour les trois')
     await fermer()
   }
 })
@@ -158,13 +165,15 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
       barres[i].crans.forEach(({ cran, roles: lus }) => assert.deepEqual(lus, (poses[cran] ?? []).map((r) => (r.exact ? r.role : `≈ ${r.role}`)), `gamme ${i} — rôles sur ${cran}`))
     })
     /* l'alerte : fond doux, filet et encre du danger — une carte (coin, marge) */
-    const al = '#gardefous .carte:nth-child(1) [style*="border-inline-start"]'
+    const al = '#casser .doc-bande:nth-child(2) [style*="border-inline-start"]'
     assert.equal(await calc(p, al, 'backgroundColor'), rgb(pal['danger-subtle'])); assert.equal(await calc(p, al, 'borderLeftColor'), rgb(pal.danger)); assert.equal(await calc(p, al, 'color'), rgb(pal.danger))
     ok(await calcPx(p, al, 'borderTopLeftRadius'), attendu('r-2', 1440), 'alerte : coin de carte'); ok(await calcPx(p, al, 'paddingTop'), attendu('pad-2-block', 1440), 'alerte : marge de carte')
-    /* les deux panneaux : chacun rend son thème, au milieu de la page */
-    for (const [i, t] of [[0, 'light'], [1, 'dark']]) {
-      const c = await p.evaluate((i) => { const pan = document.querySelectorAll('#themes .gd-pan')[i]; return [getComputedStyle(pan.querySelector('.gd-pan-carte')).backgroundColor, getComputedStyle(pan.querySelector('.gd-pan-carte span')).color] }, i)
-      assert.deepEqual(c, [rgb(PAL[t].surface), rgb(PAL[t]['text-primary'])], `panneau ${t} peint dans son thème`)
+    /* le panneau du contraste rend le thème du lecteur ; les deux versants du mini-écran rendent chacun le leur */
+    const c = await p.evaluate(() => { const pan = document.querySelector('#casser .gd-pan'); return [getComputedStyle(pan.querySelector('.gd-pan-carte')).backgroundColor, getComputedStyle(pan.querySelector('.gd-pan-carte span')).color] })
+    assert.deepEqual(c, [rgb(pal.bg), rgb(pal['text-primary'])], `panneau peint dans le thème ${theme}`)
+    for (const t of ['light', 'dark']) {
+      const v = await p.evaluate((t) => { const e = document.querySelector(`#casser .cl-versant[data-theme="${t}"] [style*="border"]`); return [getComputedStyle(e).backgroundColor, getComputedStyle(e.firstElementChild).backgroundColor] }, t)
+      assert.deepEqual(v, [rgb(PAL[t].bg), rgb(PAL[t].primary)], `versant ${t} peint dans son thème`)
     }
     /* le voile du bento : un calcul, dit, qui tient 4,5 */
     await p.waitForFunction(() => /voile \d+ %/.test(document.querySelector('#situation .bn-voile-dit')?.textContent ?? ''))
@@ -232,39 +241,52 @@ test('3 · une marque entre par le rail : la scène entière est dérivée d’e
 })
 
 /* ── 4 · Les casses ── */
-test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une action sombre — chacune déclarée, rendue, jugée, réparée', async () => {
+test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une action sombre, teinter sans tenir la luminance — chacune déclarée, rendue, jugée, réparée', async () => {
   const { p, fermer } = await nav.page(URL()); await releve(p)
+  const bande = (i) => `#casser .doc-bande:nth-child(${i})`
+  const casser = (i) => p.locator(`${bande(i)} .doc-casser`).click()
   /* pâlir l'encre douce : le gris refusé, posé de force, et le verdict tombe */
-  const pan = '#themes .gd-pan[data-theme="light"]'
-  await p.locator('#themes .bouton.casse').click(); await p.waitForSelector(`${pan}[data-intent="statement"] .badge.ko`)
+  const pan = `${bande(1)} .gd-pan`
+  await casser(1); await p.waitForSelector(`${pan}[data-intent="statement"] .badge.ko`)
   assert.equal(await p.getAttribute(pan, 'data-intent'), 'statement')
   assert.equal(await p.evaluate((s) => getComputedStyle(document.querySelector(s)).getPropertyValue('--text-secondary').trim(), pan), '#9CA3AF')
   const badge = await texte(p, `${pan} .badge.ko`)
   assert.ok(badge.startsWith(fmt(contraste('#9CA3AF', PAL.light.surface))) && /recalé d'office/.test(badge) && contraste('#9CA3AF', PAL.light.surface) < 4.5, `pâli : ${badge}`)
-  await p.locator('#themes .bouton.casse').click(); await p.waitForFunction((s) => !document.querySelector(`${s}[data-intent]`) && !document.querySelector(`${s} .badge.ko`), pan, { timeout: 3000 })
+  await casser(1); await p.waitForFunction((s) => !document.querySelector(`${s}[data-intent]`) && !document.querySelector(`${s} .badge.ko`), pan, { timeout: 3000 })
   assert.equal(await p.getAttribute(pan, 'data-intent'), null); assert.equal(await p.locator(`${pan} .badge.ko`).count(), 0, 'réparé : le verdict remonte')
   /* la marque prêtée à l'erreur */
-  const c1 = '#gardefous .carte:nth-child(1)'
-  await p.locator(`${c1} .bouton.casse`).click()
+  const c1 = bande(2)
+  await casser(2)
   const al = `${c1} [style*="border-inline-start"]`
   assert.equal(await p.getAttribute(al, 'data-intent'), 'statement'); assert.equal(await calc(p, al, 'backgroundColor'), rgb(PAL.light['primary-subtle'])); assert.match(await texte(p, `${c1} .badge.ko`), /marque/)
-  await p.locator(`${c1} .bouton.casse`).click(); assert.equal(await calc(p, al, 'backgroundColor'), rgb(PAL.light['danger-subtle']))
+  await casser(2); assert.equal(await calc(p, al, 'backgroundColor'), rgb(PAL.light['danger-subtle']))
   /* le survol par filtre : une couleur qu'aucun registre ne connaît */
-  const c2 = '#gardefous .carte:nth-child(2)'
+  const c2 = bande(3)
   await p.locator(`${c2} .demo-plein`).hover(); await p.waitForTimeout(350)
   assert.equal(await calc(p, `${c2} .demo-plein`, 'filter'), 'none'); assert.equal(await calc(p, `${c2} .demo-plein`, 'backgroundColor'), rgb(PAL.light['primary-hover']), 'au repos, le survol est un jeton')
-  await p.locator(`${c2} .bouton.casse`).click(); await p.locator(`${c2} .demo-plein`).hover(); await p.waitForTimeout(350)
+  await casser(3); await p.locator(`${c2} .demo-plein`).hover(); await p.waitForTimeout(350)
   assert.match(await calc(p, `${c2} .demo-plein`, 'filter'), /brightness/); assert.equal(await calc(p, `${c2} .demo-plein`, 'backgroundColor'), rgb(PAL.light.primary), 'cassé : un filtre sur la marque')
-  await p.locator(`${c2} .bouton.casse`).click()
+  assert.match(await texte(p, `${c2} .badge.ko`), /calculé à la volée/)
+  await casser(3)
   /* l'action sombre forcée en thème sombre : C14 mord */
-  const c3 = '#gardefous .carte:nth-child(3)'
-  await p.locator(`${c3} .bouton.casse`).click(); await p.waitForSelector(`${c3} [data-theme="dark"][data-intent="statement"] .badge.ko`)
+  const c3 = bande(4)
+  await casser(4); await p.waitForSelector(`${c3} [data-theme="dark"][data-intent="statement"] .badge.ko`)
   assert.equal(await p.getAttribute(`${c3} [data-theme="dark"]`, 'data-intent'), 'statement')
   const r = contraste(PAL.dark['on-primary'], '#312E81'); assert.ok(r < 4.5)
-  assert.equal(await texte(p, `${c3} [data-theme="dark"] .badge`), `${fmt(r)} — illisible, C14 mord`)
+  assert.equal(await texte(p, `${c3} [data-theme="dark"] .badge`), `${fmt(r)} — illisible`)
   assert.equal(await texte(p, `${c3} [data-theme="light"] .badge`), fmt(rapport(PAL.light, '--on-primary', '--primary')), 'le clair ne bouge pas')
-  await p.locator(`${c3} .bouton.casse`).click(); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c3)
+  await casser(4); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c3)
   assert.equal(await texte(p, `${c3} [data-theme="dark"] .badge`), fmt(rapport(PAL.dark, '--on-primary', '--primary')), 'réparé')
+  /* teinter sans tenir la luminance (casse inventée le 2 septembre) : les trois gris se ressemblent encore,
+     leurs rapports n'ont plus rien à voir — chacun calculé sur la valeur rendue, jamais recopié */
+  const c5 = bande(5)
+  const rapports = async () => { const t = await p.evaluate((s) => [...document.querySelectorAll(`${s} .cl-teinte-tuile`)].map((e) => getComputedStyle(e).backgroundColor), c5)
+    return [t.map((c) => (Math.round(contraste(versHex(c), '#FFFFFF') * 10) / 10).toFixed(1).replace('.', ',') + ':1'), await textes(p, `${c5} .cl-teinte-rapport`)] }
+  let [calcules, dits] = await rapports(); assert.deepEqual(dits, calcules, 'au repos, chaque rapport dit est celui de la tuile rendue'); assert.ok(dits.every((d) => d === dits[0]), 'un seul rapport pour les trois')
+  await casser(5); await p.waitForSelector(`${c5} .badge.ko`)
+  ;[calcules, dits] = await rapports(); assert.deepEqual(dits, calcules, 'cassé, chaque rapport dit est encore celui de la tuile rendue'); assert.ok(new Set(dits).size === 3, `cassé : trois rapports différents (${dits})`)
+  assert.equal(await texte(p, `${c5} .badge.ko`), 'trois rapports différents')
+  await casser(5); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c5)
   await fermer()
 })
 
@@ -294,7 +316,9 @@ test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une val
   const affiche = []
   for (const W of LARGEURS) {
     const { p, fermer, erreurs } = await nav.page(URL(), { largeur: W }); await releve(p)
-    for (const s of ['#palette', '#nuancier', '#situation', '#themes', '#moteur', '#gardefous', '#table', '#adaptation']) for (const d of await p.locator(`${s} details.prov summary`).all()) await d.click()
+    /* chaque bande porte son propre dépliant : on les ouvre tous, d'un coup */
+    await p.evaluate(() => document.querySelectorAll('details.prov').forEach((d) => { d.open = true }))
+    await p.waitForTimeout(120)
     const f = await fautesEnDur(p, W, DENSITES.comfortable, { exclusions: enEm })
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
     /* Le fond doux du nuancier sort du balayage parce qu'il DÉCLARE la place qu'il
@@ -320,7 +344,7 @@ test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une val
   assert.ok(affiche[0] < affiche[1] && affiche[1] < affiche[2], `l'affiche glisse : ${affiche}`)
   for (const densite of ['compact', 'airy']) {
     const { p, fermer } = await nav.page(URL(), { largeur: 1440, densite })
-    ok(await calcPx(p, '#gardefous .carte:nth-child(1) [style*="border-inline-start"]', 'paddingTop'), attendu('pad-2-block', 1440, DENSITES[densite]), `${densite} — l'alerte suit la base`)
+    ok(await calcPx(p, '#casser .doc-bande:nth-child(2) [style*="border-inline-start"]', 'paddingTop'), attendu('pad-2-block', 1440, DENSITES[densite]), `${densite} — l'alerte suit la base`)
     ok(await calcPx(p, '#situation .banc', 'paddingTop'), attendu('pad-1-block', 1440, DENSITES[densite]), `${densite} — la scène suit la base`)
     await fermer()
   }

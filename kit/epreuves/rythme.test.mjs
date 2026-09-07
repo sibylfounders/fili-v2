@@ -8,14 +8,14 @@
    5 · le tertiaire suit C17 ;
    6 · rien en dur hors des lignes déclarées.
 
-   Remise à niveau du 1er septembre 2026 : la page a changé les 31 août et
-   1er septembre — le pied du laboratoire a perdu sa phrase-fleuve au profit
-   de l'amorce « deux fois le même geste », la marge du panneau est devenue
-   un anneau de quatre bandes, la carte de la tranche est devenue une rangée,
-   le menu est devenu un contrôle, et la réglette de la chaîne est arrivée
-   sous la scène. Les épreuves disent maintenant CE QUE LA PAGE PROUVE
-   AUJOURD'HUI — aucune n'a été relâchée pour passer : ce qui n'était plus
-   mesurable a été remplacé par une mesure plus dure au même endroit.       */
+   Remise à niveau du 1er septembre 2026, second passage : la page est passée
+   au gabarit des quatre étages. Elle garde TROIS preuves — la chaîne (01), la
+   densité en situation (02), la profondeur (03) — puis trois étages communs à
+   toutes les pages du kit : les bandes (04), la liste (05), le code (06). Le
+   bon cran, le
+   laboratoire des six intentions, les trois cartes de densité et les tuiles du
+   vocabulaire ont été retirés (verdict d'Auteur). Les épreuves disent CE QUE LA PAGE PROUVE
+   AUJOURD'HUI — aucune n'a été relâchée pour passer.                        */
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -36,85 +36,10 @@ after(async () => { await nav?.fermer(); site?.fermer() })
 const URL = () => site.url + '/rythme'
 
 /* ── 1 · Chaque chiffre affiché sort du moteur ── */
-/* Le pied du laboratoire ne porte plus onze nombres (1er septembre) : il ne
-   dit que la garantie que le moteur a dû appliquer. La démonstration, elle,
-   est passée dans l'amorce — quatre échantillons d'espace RENDUS À LEUR
-   TAILLE RÉELLE. C'est plus dur à tenir qu'une phrase de chiffres : la scène
-   elle-même doit mesurer ce que le moteur produit, au dixième de pixel. */
-const INTENTIONS_SEL = '#decisions .gdoc-corps > .rang .bouton'
-test('1 · l’amorce du laboratoire rend, pour les six intentions, les quatre espaces que le moteur produit — leur taille réelle, leur cote, leur rapport', async () => {
-  const { p, fermer } = await nav.page(URL())
-  /* chaque paire se révèle POUR ELLE SEULE depuis le 1er septembre : deux boutons, deux gestes */
-  const revelateurs = p.locator('#decisions .ry-paire .ry-juge > .bouton')
-  assert.equal(await revelateurs.count(), 2, 'une paire, un bouton')
-  for (let k = 0; k < 2; k++) { await revelateurs.nth(k).click(); assert.equal(await revelateurs.nth(k).getAttribute('aria-pressed'), 'true', `l’écart ${k} se montre`) }
-  for (let i = 0; i < INTENTIONS.length; i++) {
-    await p.locator(INTENTIONS_SEL).nth(i).click()
-    const s = chaine(INTENTIONS[i]), n = INTENTIONS[i].nom
-    /* le retrait n'est pas recopié ici : il se lit dans le verdict, et tout en découle */
-    const badges = await textes(p, '#decisions .ry-verdict .badge')
-    assert.equal(badges.length, 2, `${n} — deux paires, deux verdicts`)
-    const retrait = nombres(badges[0])[0]
-    assert.ok(retrait > 0 && nombres(badges[1])[0] === retrait, `${n} — le même geste des deux côtés : ${badges}`)
-    /* en haut la marge de la coque, en bas l'espace le plus serré ; à droite, le même moins le retrait */
-    const attendus = [s.pad[0], s.pad[0] - retrait, s.gap[3], s.gap[3] - retrait].map((v) => Math.max(v, 0))
-    const hauteurs = await p.evaluate(() => [...document.querySelectorAll('#decisions .ry-ech-espace')].map((e) => parseFloat(getComputedStyle(e).height)))
-    liste(hauteurs, attendus, `${n} — les quatre espaces, à leur taille réelle`, 0.51)
-    /* la cote écrite dans l'espace est ce que l'espace mesure */
-    liste((await textes(p, '#decisions .ry-ech-cote')).flatMap(nombres), attendus.map(arrondi), `${n} — les cotes`)
-    /* le verdict n'est pas écrit d'avance : le rapport se déduit des deux longueurs */
-    for (const [k, r] of [attendus[0] / attendus[1], attendus[2] / attendus[3]].entries()) {
-      const lus = nombres(badges[k])
-      assert.equal(lus.length, 2, `${n} — le verdict ${k} dit le retrait et le rapport : ${badges[k]}`)
-      ok(lus[1], Math.round(r * 100) / 100, `${n} — rapport ${k}`, 0.005)
-      /* la phrase suit le rapport, elle ne le commente pas au hasard */
-      const phrase = await texte(p, '#decisions .ry-verdict', k)
-      assert.match(phrase, r < 1.3 ? /jumeaux/ : r >= 1.8 ? /soude/ : /tout juste/, `${n} — la phrase du verdict ${k} (rapport ${r.toFixed(2)})`)
-    }
-    /* la garantie du moteur est dite quand elle a joué, et seulement là */
-    const relevee = s.garanties.margeRelevee.some(Boolean)
-    const pied = await p.evaluate(() => document.querySelector('#decisions').textContent.includes('une marge a été relevée au coin'))
-    assert.equal(pied, relevee, `${n} — la marge relevée est dite si et seulement si le moteur l'a relevée`)
-  }
-  await fermer()
-})
-test('1 · les chiffres du vocabulaire et de la table des axes sont ceux du moteur', async () => {
-  const { p, fermer } = await nav.page(URL())
-  const legendes = await textes(p, '#vocabulaire .ry-voc-tuile .gd-legende')
-  const { pad: pd, gap: g, r } = SOCLE
-  liste(nombres(legendes[0]), [pd[0], r[0], g[0]].map(arrondi), 'coque')
-  liste(nombres(legendes[1]), [pd[1], r[1], g[1]].map(arrondi), 'carte')
-  liste(nombres(legendes[2]), [pd[2], r[2], g[2], g[3]].map(arrondi), 'ligne')
-  const rangs = await p.evaluate(() => [...document.querySelectorAll('#vocabulaire table tbody tr')].map((tr) => tr.lastElementChild.textContent))
-  const axes = ['inline', 'block', 'type', 'control']
-  axes.forEach((a, i) => liste(nombres(rangs[i]), [AXES[a].min, AXES[a].max], `axe ${a}`, 0.001))
-  assert.match(rangs[4], /fixes/)
-  await fermer()
-})
-test('1 · les douze réponses du « bon cran » lisent le registre calculé (charte, bornes, jeton nommé)', async () => {
-  const { p, fermer } = await nav.page(URL())
-  const natures = await p.locator('#cran .ry-question').nth(0).locator('.bouton').count()
-  const profs = await p.locator('#cran .ry-question').nth(1).locator('.bouton').count()
-  assert.equal(natures * profs, 12)
-  for (let n = 0; n < natures; n++) for (let q = 0; q < profs; q++) {
-    await p.locator('#cran .ry-question').nth(0).locator('.bouton').nth(n).click()
-    await p.locator('#cran .ry-question').nth(1).locator('.bouton').nth(q).click()
-    const noms = (await texte(p, '#cran .ry-reponse b')).split(' · ').map((s) => s.replace(/^--/, ''))
-    const lignes = await textes(p, '#cran .ry-reponse .gd-legende > span')
-    assert.equal(lignes.length, noms.length)
-    noms.forEach((nom, i) => {
-      const t = J[nom]; assert.ok(t, `jeton inconnu du moteur : ${nom}`)
-      assert.ok(lignes[i].startsWith(`--${nom} : `), `${nom} : la ligne nomme un autre jeton (${lignes[i]})`)
-      const lus = nombres(lignes[i].split(' : ')[1])
-      liste(lus, (t.axe ? [t.base, t.bas, t.haut] : [t.base]).map(arrondi), nom)
-    })
-  }
-  await fermer()
-})
 test('1 · la table de correspondance (dépliant de 08) est le registre ligne à ligne : charte, bornes, grille de 4, CSS', async () => {
   const { p, fermer } = await nav.page(URL())
-  await p.locator('#adaptation details.prov summary').click()
-  const rangs = await p.evaluate(() => [...document.querySelectorAll('#adaptation table tbody tr')].map((tr) => [...tr.children].map((td) => td.textContent)))
+  await p.locator('#code details.prov summary').click()
+  const rangs = await p.evaluate(() => [...document.querySelectorAll('#code details.prov table tbody tr')].map((tr) => [...tr.children].map((td) => td.textContent)))
   const noms = Object.keys(J).filter((n) => /^(pad|gap|edge|page)-/.test(n))
   assert.deepEqual(rangs.map((r) => r[0]), noms.map((n) => `--${n}`))
   for (const [nom, base, bornes, tw, css] of rangs) {
@@ -124,7 +49,7 @@ test('1 · la table de correspondance (dépliant de 08) est le registre ligne à
     liste(nombres(tw), [grille4(t.bas), grille4(t.haut)], `${nom} grille de 4`)
     assert.equal(css, t.css, `${nom} CSS`)
   }
-  const tete = await texte(p, '#adaptation table thead')
+  const tete = await texte(p, '#code details.prov table thead')
   assert.ok(tete.includes(`${LARGEUR_MIN} → ${LARGEUR_MAX}`))
   await fermer()
 })
@@ -140,7 +65,7 @@ test('1 · dans la vue, aucun nombre en pixels n’est écrit à la main hors d�
 
 /* ── 2 · Chaque preuve est rendue par son propre jeton — mesuré aux trois largeurs ── */
 const PREUVES = [
-  /* [sélecteur, propriété calculée, jeton] — la tranche Coursue : coque → carte → ligne */
+  /* [sélecteur, propriété calculée, jeton] — la tranche Fili : coque → carte → ligne */
   ['#echelle .tranche', 'paddingTop', 'pad-1-block'], ['#echelle .tranche', 'paddingLeft', 'pad-1-inline'],
   ['#echelle .tranche', 'borderTopLeftRadius', 'r-1'], ['#echelle .tranche', 'columnGap', 'gap-1-inline'],
   /* la marge du panneau est tracée par quatre bandes posées sur son bord (31 août) :
@@ -155,7 +80,7 @@ const PREUVES = [
   ['#echelle .tr-carte-corps > .espace.gap', 'height', 'gap-2-block'],
   ['#echelle .tr-carte-corps .espace.gap.h', 'width', 'gap-3-inline'],
   ['#echelle .tr-sub', 'paddingTop', 'pad-3-block'], ['#echelle .tr-sub', 'paddingLeft', 'pad-3-inline'],
-  ['#echelle .tr-sub', 'borderTopLeftRadius', 'r-3'], ['#echelle .tr-sub', 'rowGap', 'gap-4-block'],
+  ['#echelle .tr-sub', 'borderTopLeftRadius', 'r-3'],
   ['#echelle .tr-btn', 'borderTopLeftRadius', 'r-ctl'], ['#echelle .tr-btn', 'minHeight', 'control-height'],
   /* une entrée de menu est un CONTRÔLE, pas une ligne de texte (31 août) : sa hauteur est
      la cible compacte, sa marge est horizontale seule — et le menu se serre au plus serré */
@@ -165,32 +90,44 @@ const PREUVES = [
   ['#echelle .ry-reglette .ry-cran', 'paddingTop', 'pad-3-block'], ['#echelle .ry-reglette .ry-cran', 'paddingLeft', 'pad-3-inline'],
   ['#echelle .ry-reglette .ry-cran', 'borderTopLeftRadius', 'r-3'], ['#echelle .ry-reglette .ry-cran', 'rowGap', 'gap-4-block'],
   /* l'amorce : sa carte est une carte, ses échantillons se tiennent au plus serré */
-  ['#decisions .ry-ech-carte', 'paddingTop', 'pad-2-block'], ['#decisions .ry-ech-carte', 'borderTopLeftRadius', 'r-2'],
-  ['#decisions .ry-amorce', 'rowGap', 'gap-1-block'], ['#decisions .ry-juge', 'rowGap', 'gap-2-block'],
   /* la paire est une grille : les deux échantillons et la question sur les mêmes rangs (1er septembre) */
-  ['#decisions .ry-paire', 'columnGap', 'gap-1-inline'],
-  ['#decisions .ry-ech-bloc', 'borderTopLeftRadius', 'r-4'], ['#decisions .ry-ech-cote', 'borderTopLeftRadius', 'r-4'],
   /* la profondeur : coque, carte, ligne, et le bouton au coin de la ligne */
-  ['#profondeur .ry-prof-coque', 'borderTopLeftRadius', 'r-1'], ['#profondeur .ry-prof-coque', 'paddingTop', 'pad-1-block'],
-  ['#profondeur .ry-prof-carte', 'borderTopLeftRadius', 'r-2'], ['#profondeur .ry-prof-carte', 'paddingLeft', 'pad-2-inline'],
-  ['#profondeur .ry-prof-ligne', 'borderTopLeftRadius', 'r-3'], ['#profondeur .ry-prof-ligne', 'paddingTop', 'pad-3-block'],
-  ['#profondeur .ry-prof-btn', 'borderTopLeftRadius', 'r-ctl'],
+  /* 03 · la profondeur : la coque, sa carte, ses lignes, son bouton */
+  ['#profondeur .ry-pf', 'borderTopLeftRadius', 'r-1'], ['#profondeur .ry-pf', 'paddingTop', 'pad-1-block'],
+  ['#profondeur .ry-pf', 'rowGap', 'gap-1-block'],
+  ['#profondeur .ry-pf-carte', 'borderTopLeftRadius', 'r-2'], ['#profondeur .ry-pf-carte', 'paddingLeft', 'pad-2-inline'],
+  ['#profondeur .ry-pf-carte', 'rowGap', 'gap-2-block'],
+  ['#profondeur .ry-pf-ligne', 'borderTopLeftRadius', 'r-3'], ['#profondeur .ry-pf-ligne', 'paddingTop', 'pad-3-block'],
+  ['#profondeur .ry-pf-ligne', 'columnGap', 'gap-3-inline'],
+  ['#profondeur .ry-pf-btn', 'borderTopLeftRadius', 'r-ctl'], ['#profondeur .ry-pf-btn', 'minHeight', 'control-height'],
   /* la proximité, au repos : entre cartes au-dessus du titre, dans la ligne sous le titre et sous le libellé */
-  ['#proximite .ry-prox-carte', 'borderTopLeftRadius', 'r-2'], ['#proximite .ry-prox-carte', 'paddingTop', 'pad-2-block'],
-  ['#proximite .ry-champ', 'borderTopLeftRadius', 'r-ctl'], ['#proximite .ry-champ', 'minHeight', 'control-height'],
+  ['#bandes .ry-prox-carte', 'borderTopLeftRadius', 'r-2'], ['#bandes .ry-prox-carte', 'paddingTop', 'pad-2-block'],
+  ['#bandes .ry-champ', 'borderTopLeftRadius', 'r-ctl'], ['#bandes .ry-champ', 'minHeight', 'control-height'],
   /* la densité et le vocabulaire consomment ce qu'ils nomment */
-  ['#densite .ry-dcarte', 'borderTopLeftRadius', 'r-2'], ['#densite .ry-sk', 'borderTopLeftRadius', 'r-pill'],
-  ['#vocabulaire .ry-vocfig.coque', 'borderTopLeftRadius', 'r-1'],
-  ['#vocabulaire .ry-vocfig.carte', 'paddingTop', 'pad-2-block'], ['#vocabulaire .ry-vocfig.ligne', 'columnGap', 'gap-3-inline'],
-  ['#vocabulaire .ry-vocbadge', 'paddingTop', 'gap-4-block'], ['#vocabulaire .ry-vocbadge', 'paddingLeft', 'gap-3-inline'],
-  /* les boîtes des figures portent le coin de leur profondeur — la figure DIT ce qu'elle nomme */
-  ['#vocabulaire .ry-vocbox', 'borderTopLeftRadius', 'r-2'], ['#vocabulaire .ry-vocbox.ligne', 'borderTopLeftRadius', 'r-3'],
-  ['#vocabulaire .ry-vocbox.item', 'borderTopLeftRadius', 'r-3'],
-  /* la proximité : la carte et sa colonne */
-  ['#proximite .ry-prox', 'rowGap', 'gap-2-block'],
-  /* la scène de preuve de 03 est empruntée à /composition, dont la marge est une dette
-     déclarée : son ESPACE, lui, est sur la chaîne, et c'est ce qu'on mesure ici */
-  ['#profondeur .co-preuve1', 'rowGap', 'pad-3-block'], ['#profondeur .co-gauche', 'rowGap', 'pad-3-block'],
+  /* 02 · les COINS de la scène de densité : eux ne bougent ni avec la densité,
+     ni avec la largeur — c'est la moitié de ce que la preuve affirme. Ses marges
+     et ses espaces suivent la largeur SIMULÉE du cadre : ils sont mesurés dans
+     leur propre épreuve, plus bas. */
+  ['#densite .ry-sd', 'borderTopLeftRadius', 'r-1'],
+  ['#densite .ry-sd-carte', 'borderTopLeftRadius', 'r-2'],
+  ['#densite .ry-sd-ligne', 'borderTopLeftRadius', 'r-3'],
+  /* les fiches de l'étage « en colonnes » : le filet, la vignette, la commande */
+  /* les scènes des bandes : deux sœurs, l'escalier des rapports, la carte en rem, la cible */
+  ['#bandes .ry-fr-coque', 'paddingTop', 'pad-1-block'], ['#bandes .ry-fr-coque', 'borderTopLeftRadius', 'r-1'],
+  ['#bandes .ry-fr-carte', 'borderTopLeftRadius', 'r-2'], ['#bandes .ry-fr-dit', 'paddingTop', 'pad-2-block'],
+  ['#bandes .ry-rap-crans', 'rowGap', 'gap-3-block'], ['#bandes .ry-rap-cran', 'columnGap', 'gap-3-inline'],
+  ['#bandes .ry-rem-carte', 'paddingTop', 'pad-2-block'], ['#bandes .ry-rem-carte', 'borderTopLeftRadius', 'r-2'],
+  ['#bandes .ry-cible-btn', 'minHeight', 'control-height'], ['#bandes .ry-cible-btn', 'borderTopLeftRadius', 'r-ctl'],
+  ['#bandes .ry-cible-jauge', 'minHeight', 'control-height'],
+  /* l'étage « en bandes » : la parole à gauche, la scène à droite, la commande sous la phrase */
+  ['#bandes .doc-bande', 'paddingTop', 'pad-1-block'],
+  ['#bandes .doc-bande-dire', 'rowGap', 'gap-2-block'],
+  /* la scène pleine : la variante « nue » s'efface, elle n'a ni fond ni marge — c'est son propos */
+  ['#bandes .doc-scene:not(.nue)', 'borderTopLeftRadius', 'r-2'], ['#bandes .doc-scene:not(.nue)', 'paddingTop', 'pad-2-block'],
+  ['#bandes .doc-casser', 'borderTopLeftRadius', 'r-3'], ['#bandes .doc-casser', 'minHeight', 'control-height-compact'],
+  /* l'étage « dans le code » : le panneau et sa table */
+  ['#code .doc-panneau', 'borderTopLeftRadius', 'r-1'], ['#code .doc-panneau', 'paddingTop', 'pad-1-block'],
+  ['#code .doc-deplier', 'borderTopLeftRadius', 'r-ctl'], ['#code .doc-deplier', 'minHeight', 'control-height'],
 ]
 /* Les quatre crans de la réglette, dans l'ordre où elle les pose : le jeton
    qu'elle DESSINE, et la valeur de charte qu'elle ÉCRIT à côté. */
@@ -202,6 +139,12 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
     for (const [sel, prop, jeton] of PREUVES) ok(await calcPx(p, sel, prop), attendu(jeton, W), `${W} px — ${sel} ${prop} = --${jeton}`)
+    /* le chiffre et sa légende (2 septembre, retour d'Auteur) : un COUPLE typographique, pas
+       deux voisins — aucun espace entre eux, c'est l'interligne du chiffre qui fait le travail */
+    const couple = await p.evaluate(() => { const c = document.querySelector('#echelle .tr-sub'), b = c.querySelector('b'), cs = getComputedStyle(b)
+      return [parseFloat(getComputedStyle(c).rowGap), parseFloat(cs.lineHeight) / parseFloat(cs.fontSize), parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--leading-heading'))] })
+    assert.equal(couple[0], 0, `${W} px — le chiffre et sa légende n'ont pas d'espace entre eux`)
+    ok(couple[1], couple[2], `${W} px — c'est l'interligne de titre qui les tient`, 0.01)
     /* la réglette (31 août) : quatre crans DESSINÉS à leur vraie longueur — c'est
        tout son propos, et c'est la seule preuve de la page qu'on peut fausser sans
        que rien ne se voie. Chaque barre vaut son jeton à cette largeur ; le nombre
@@ -214,11 +157,24 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
        et elle est dite sur sa ligne */
     const pas = await p.evaluate(() => { const cs = getComputedStyle(document.querySelector('#echelle .ry-reglette')); return [parseFloat(cs.rowGap), parseFloat(cs.columnGap)] })
     ok(pas[0], W >= 56 * 16 ? attendu('gap-1-block', W) : pas[1], `${W} px — l’écart vertical de la réglette`)
-    /* la paire de l'amorce se replie sous 56 rem : la question descend sous les deux cartes,
-       et l'écart des rangs passe d'un cran serré au cran de la carte — les deux sont des jetons */
-    ok(await calcPx(p, '#decisions .ry-paire', 'rowGap'), attendu(W >= 56 * 16 ? 'gap-4-block' : 'gap-2-block', W), `${W} px — l’écart des rangs de la paire`)
+    /* la bande se replie sous 62 rem : la scène passe sous la parole, et l'écart
+       des colonnes devient l'écart des rangs — les deux sont des jetons */
+    ok(await calcPx(p, '#bandes .doc-bande', W >= 62 * 16 ? 'columnGap' : 'rowGap'),
+       attendu(W >= 62 * 16 ? 'doc-gouttiere' : 'gap-1-block', W), `${W} px — l’écart de la bande`)
+    /* la règle 1, mesurée pour elle-même : l'écart entre deux sœurs EST leur marge,
+       au même pixel — c'est le même chiffre, pas deux réglages qui se ressemblent */
+    const soeurs = await p.evaluate(() => {
+      const c = document.querySelector('#bandes .ry-fr-coque')
+      return [parseFloat(getComputedStyle(c.querySelector(':scope > .espace.h')).width),
+              parseFloat(getComputedStyle(c.querySelector('.ry-fr-carte > .espace.h')).width)]
+    })
+    ok(soeurs[0], soeurs[1], `${W} px — l’écart entre sœurs = leur marge`)
+    ok(soeurs[0], attendu('gap-1-inline', W), `${W} px — et c’est le jeton de l’espace entre frères`)
+    /* l'escalier des rapports : quatre barres à leur vraie longueur, celles du registre */
+    const barresRap = await p.evaluate(() => [...document.querySelectorAll('#bandes .ry-rap-barre')].map((b) => parseFloat(getComputedStyle(b).width)))
+    liste(barresRap, [SOCLE.pad[0], SOCLE.pad[1], SOCLE.pad[2], SOCLE.gap[2]], `${W} px — l’escalier des rapports`, TOL)
     /* la proximité : les quatre écarts de la carte, au repos */
-    const ecarts = await p.evaluate(() => [...document.querySelectorAll('#proximite .ry-prox-carte .espace')].map((e) => parseFloat(getComputedStyle(e).height)))
+    const ecarts = await p.evaluate(() => [...document.querySelectorAll('#bandes .ry-prox-carte .espace')].map((e) => parseFloat(getComputedStyle(e).height)))
     liste(ecarts, ['gap-1-block', 'gap-3-block', 'gap-1-block', 'gap-3-block'].map((n) => attendu(n, W)), `${W} px — proximité au repos`, TOL)
     await fermer()
   }
@@ -227,35 +183,56 @@ test('2 · les casses sont rendues par le jeton menteur, déclarées (data-inten
   const W = 1440
   const { p, fermer } = await nav.page(URL(), { largeur: W })
   /* la profondeur */
-  await p.locator('#profondeur .bouton.casse').click()
-  assert.equal(await p.getAttribute('#profondeur .ry-prof-ligne', 'data-intent'), 'statement')
-  ok(await calcPx(p, '#profondeur .ry-prof-ligne', 'borderTopLeftRadius'), 2 * attendu('r-2', W), 'coin cassé = 2 × coin de la carte')
-  await p.locator('#profondeur .bouton.casse').click()
-  ok(await calcPx(p, '#profondeur .ry-prof-ligne', 'borderTopLeftRadius'), attendu('r-3', W), 'réparé : le coin de la ligne')
+  /* Chaque commande est désignée par LA SCÈNE de sa bande : l'épreuve ne
+     dépend plus de l'ordre des bandes dans la section. Les scènes glissent
+     en 0,3 s : on lit après le mouvement, jamais pendant. */
+  const basculer = async (scene) => { await p.locator(`#bandes .doc-bande:has(${scene}) .doc-casser`).click(); await p.waitForTimeout(600) }
+
+  /* y1 · l'écart entre deux sœurs tombe sous leur marge */
+  const ecartSoeurs = () => calcPx(p, '#bandes .ry-fr-coque > .espace.h', 'width')
+  const margeSoeurs = () => calcPx(p, '#bandes .ry-fr-carte > .espace.h', 'width')
+  await basculer('.ry-fr-coque')
+  assert.equal(await p.getAttribute('#bandes .ry-fr-coque > .espace.h', 'data-intent'), 'statement')
+  ok(await ecartSoeurs(), attendu('gap-3-inline', W), 'sœurs cassées : l’écart tombe sous la marge')
+  await basculer('.ry-fr-coque')
+  ok(await ecartSoeurs(), await margeSoeurs(), 'sœurs réparées : l’écart vaut la marge')
+
+  /* y12 · la chaîne construite en retranchant : quatre longueurs jumelles */
+  await basculer('.ry-rap')
+  const barres = await p.evaluate(() => [...document.querySelectorAll('#bandes .ry-rap-barre')].map((b) => parseFloat(getComputedStyle(b).width)))
+  liste(barres, [0, 1, 2, 3].map((i) => SOCLE.pad[0] - 4 * i), 'rapports cassés : on retire 4 px à chaque pas', TOL)
+  await basculer('.ry-rap')
+
+  /* y9 · au repos les deux cartes se ressemblent ; le texte agrandi les sépare :
+     la marge en jetons grandit avec lui, la marge en pixels ne bouge pas */
+  const margesRem = () => p.evaluate(() => [...document.querySelectorAll('#bandes .ry-rem-carte')].map((e) => parseFloat(getComputedStyle(e).paddingTop)))
+  const auRepos = await margesRem()
+  ok(auRepos[0], attendu('pad-2-block', W), 'au repos : la carte en jetons porte la marge du registre')
+  ok(auRepos[1], 16, 'au repos : la carte en pixels porte 16')
+  await basculer('.ry-rem')
+  const agrandi = await margesRem()
+  assert.ok(agrandi[0] > auRepos[0] + 1, `texte agrandi : la marge en jetons a suivi (${auRepos[0]} → ${agrandi[0]})`)
+  ok(agrandi[1], 16, 'texte agrandi : la marge en pixels n’a pas bougé')
+  await basculer('.ry-rem')
+
+  /* y17 · la commande passe sous le plancher de la cible */
+  await basculer('.ry-cible')
+  ok(await calcPx(p, '#bandes .ry-cible-btn', 'minHeight'), 36, 'cible cassée : sous le plancher')
+  await basculer('.ry-cible')
+  ok(await calcPx(p, '#bandes .ry-cible-btn', 'minHeight'), attendu('control-height', W), 'cible réparée : la hauteur due')
   /* la proximité : le titre, puis le libellé */
-  const ecarts = () => p.evaluate(() => [...document.querySelectorAll('#proximite .ry-prox-carte .espace')].map((e) => [parseFloat(getComputedStyle(e).height), e.dataset.intent ?? null]))
-  await p.locator('#proximite .bouton.casse').nth(1).click()
+  const ecarts = () => p.evaluate(() => [...document.querySelectorAll('#bandes .ry-prox-carte .espace')].map((e) => [parseFloat(getComputedStyle(e).height), e.dataset.intent ?? null]))
+  /* deux fiches, deux commandes : la deuxième casse le libellé, la troisième le titre.
+     Dans l'ordre du document, la carte du libellé vient avant celle du titre. */
+  await basculer('.ry-prox-carte .ry-h3')
   let e = await ecarts()
-  liste(e.map((x) => x[0]), ['gap-2-block', 'gap-2-block', 'gap-1-block', 'gap-3-block'].map((n) => attendu(n, W)), 'titre cassé : le même écart des deux côtés', TOL)
-  assert.deepEqual(e.map((x) => x[1]), ['statement', 'statement', null, null])
-  await p.locator('#proximite .bouton.casse').nth(1).click()
-  await p.locator('#proximite .bouton.casse').nth(0).click()
-  e = await ecarts()
-  liste(e.map((x) => x[0]), ['gap-1-block', 'gap-3-block', 'gap-1-block', 'gap-1-block'].map((n) => attendu(n, W)), 'libellé cassé : aussi loin de son champ que de ce qui précède', TOL)
+  liste(e.map((x) => x[0]), ['gap-1-block', 'gap-3-block', 'gap-2-block', 'gap-2-block'].map((n) => attendu(n, W)), 'titre cassé : le même écart des deux côtés', TOL)
   assert.deepEqual(e.map((x) => x[1]), [null, null, 'statement', 'statement'])
-  await fermer()
-})
-test('2 · le laboratoire rend la géométrie des six intentions, en px calculés par le moteur', async () => {
-  const { p, fermer } = await nav.page(URL())
-  for (let i = 0; i < INTENTIONS.length; i++) {
-    await p.locator(INTENTIONS_SEL).nth(i).click()
-    const s = chaine(INTENTIONS[i]), n = INTENTIONS[i].nom
-    ok(await calcPx(p, '#decisions .ry-lab', 'paddingTop'), s.pad[0], `${n} coque marge`); ok(await calcPx(p, '#decisions .ry-lab', 'borderTopLeftRadius'), s.r[0], `${n} coque coin`)
-    ok(await calcPx(p, '#decisions .ry-lab-carte', 'paddingTop'), s.pad[1], `${n} carte marge`); ok(await calcPx(p, '#decisions .ry-lab-carte', 'borderTopLeftRadius'), s.r[1], `${n} carte coin`)
-    ok(await calcPx(p, '#decisions .ry-lab-carte', 'rowGap'), s.gap[0], `${n} entre cartes`); ok(await calcPx(p, '#decisions .ry-lab-ligne', 'columnGap'), s.gap[1], `${n} entre lignes`)
-    ok(await calcPx(p, '#decisions .ry-lab-cellule', 'paddingTop'), s.pad[2], `${n} ligne marge`); ok(await calcPx(p, '#decisions .ry-lab-cellule', 'borderTopLeftRadius'), s.r[2], `${n} ligne coin`)
-    ok(await calcPx(p, '#decisions .ry-lab-cellule', 'rowGap'), s.gap[2], `${n} dans la ligne`); ok(await calcPx(p, '#decisions .ry-lab-btn', 'borderTopLeftRadius'), s.rCtl, `${n} bouton`)
-  }
+  await basculer('.ry-prox-carte .ry-h3')
+  await basculer('.ry-champ')
+  e = await ecarts()
+  liste(e.map((x) => x[0]), ['gap-1-block', 'gap-1-block', 'gap-1-block', 'gap-3-block'].map((n) => attendu(n, W)), 'libellé cassé : aussi loin de son champ que de ce qui précède', TOL)
+  assert.deepEqual(e.map((x) => x[1]), ['statement', 'statement', null, null])
   await fermer()
 })
 test('2 · la feuille de la page consomme, pour chaque preuve, le jeton qu’elle nomme', () => {
@@ -265,40 +242,41 @@ test('2 · la feuille de la page consomme, pour chaque preuve, le jeton qu’ell
   attend('.tranche', 'padding: var(--pad-1-block) var(--pad-1-inline)'); attend('.tranche', 'border-radius: var(--r-1)'); attend('.tranche', 'gap: var(--gap-1-inline)')
   attend('.tr-carte', 'border-radius: var(--r-2)'); attend('.tr-sub', 'padding: var(--pad-3-block) var(--pad-3-inline)'); attend('.tr-sub', 'border-radius: var(--r-3)')
   attend('.tr-btn', 'border-radius: var(--r-ctl)'); attend('.tr-btn', 'min-height: var(--control-height)')
-  attend('.ry-prof-coque', 'border-radius: var(--r-1)'); attend('.ry-prof-carte', 'border-radius: var(--r-2)'); attend('.ry-prof-ligne', 'border-radius: var(--r-3)')
-  attend('.ry-prox-carte', 'padding: var(--pad-2-block) var(--pad-2-inline)'); attend('.ry-dcarte', 'padding: var(--pad-2-block) var(--pad-2-inline)')
-  attend('.ry-vocfig.coque', 'padding: var(--pad-1-block) var(--pad-1-inline)'); attend('.ry-vocfig.carte', 'padding: var(--pad-2-block) var(--pad-2-inline)'); attend('.ry-vocfig.ligne', 'padding: var(--pad-3-block) var(--pad-3-inline)')
+  attend('.ry-pf', 'border-radius: var(--r-1)'); attend('.ry-pf-carte', 'border-radius: var(--r-2)'); attend('.ry-pf-ligne', 'border-radius: var(--r-3)')
+  attend('.ry-prox-carte', 'padding: var(--pad-2-block) var(--pad-2-inline)')
+  attend('.ry-sd', 'padding: var(--sd-p1) var(--sd-p1i)'); attend('.ry-sd', 'border-radius: var(--r-1)')
+  attend('.ry-sd-carte', 'padding: var(--sd-p2) var(--sd-p2i)'); attend('.ry-sd-carte', 'border-radius: var(--r-2)')
+  attend('.ry-sd-ligne', 'padding: var(--sd-p3) var(--sd-p3i)'); attend('.ry-sd-ligne', 'border-radius: var(--r-3)')
+  attend('.ry-cible-btn', 'min-height: var(--control-height)')
+  attend('.ry-fr-dit', 'padding-block: var(--pad-2-block)')
+  /* les casses des bandes sont dites, chacune sur SA ligne */
+  for (const sel of ['.ry-rem-carte.dur', '.ry-cible[data-intent="statement"] .ry-cible-btn'])
+    assert.match(bloc(sel), /casse/, `${sel} : la casse n’est pas dite`)
   /* la réglette et l'amorce sont faites des mêmes boîtes que le reste de la page */
   attend('.ry-reglette .ry-cran', 'padding: var(--pad-3-block) var(--pad-3-inline)'); attend('.ry-reglette .ry-cran', 'border-radius: var(--r-3)')
-  attend('.ry-ech-carte', 'padding: var(--pad-2-block) var(--pad-2-inline)'); attend('.ry-ech-carte', 'border-radius: var(--r-2)')
   /* la casse est dite sur sa ligne */
-  assert.match(bloc('.ry-prof-ligne[data-intent="statement"]'), /casse/)
-  /* les deux mesures qui ne descendent pas de la chaîne sont dites, chacune sur SA ligne :
-     la place du « ÷ √2 » entre deux boîtes de réglette, et la pastille de cote de l'amorce */
-  for (const sel of ['.ry-reglette', '.ry-ech-cote']) assert.match(bloc(sel), /hors chaîne/, `${sel} : l’exception n’est pas dite`)
+  assert.match(bloc('.ry-pf-ligne[data-intent="statement"]'), /casse/)
+  /* les mesures qui ne descendent pas de la chaîne sont dites, chacune sur SA ligne :
+     la place du « ÷ √2 » entre deux boîtes de réglette, la mesure de la scène de densité */
+  for (const sel of ['.ry-reglette']) assert.match(bloc(sel), /hors chaîne/, `${sel} : l’exception n’est pas dite`)
 })
 
 /* ── 3 · La densité recalcule sous les yeux ── */
-test('3 · par le tiroir, la densité change la base de la tranche, du silence, de la carte du milieu — jamais les coins, jamais les colonnes', async () => {
+test('3 · par le tiroir, la densité change la base de la tranche et du silence — jamais les coins, jamais les colonnes', async () => {
   const W = 1440
   const { p, fermer } = await nav.page(URL(), { largeur: W })
   const mesurer = async () => ({
     tranche: await calcPx(p, '#echelle .tranche', 'paddingTop'), coin: await calcPx(p, '#echelle .tranche', 'borderTopLeftRadius'),
-    silence: await calcPx(p, '#densite.gdoc-sec', 'paddingTop'), milieu: await calcPx(p, '#densite .ry-dcarte', 'paddingTop', 1),
-    aere: await calcPx(p, '#densite .ry-dcarte', 'paddingTop', 0), compact: await calcPx(p, '#densite .ry-dcarte', 'paddingTop', 2),
+    silence: await calcPx(p, '#densite.gdoc-sec', 'paddingTop'),
     rail: parseFloat((await calc(p, '.gdoc', 'gridTemplateColumns')).split(' ')[0]), gouttiere: await calcPx(p, '.gdoc', 'columnGap'), marge: await calcPx(p, '.gdoc', 'paddingLeft'),
-    etiquette: await texte(p, '#densite .ry-detiq', 1),
   })
   const attendre = (densite) => ({
     tranche: attendu('pad-1-block', W, DENSITES[densite]), coin: attendu('r-1', W), silence: attendu('doc-silence', W, DENSITES[densite]),
-    milieu: attendu('pad-2-block', W, DENSITES[densite]), aere: attendu('pad-2-block', W, DENSITES.airy), compact: attendu('pad-2-block', W, DENSITES.compact),
     rail: attendu('doc-rail', W), gouttiere: attendu('doc-gouttiere', W), marge: attendu('doc-marge', W),
   })
-  const noms = { compact: 'compact', comfortable: 'confortable', airy: 'aéré' }
   const verifier = async (densite) => {
     const m = await mesurer(), a = attendre(densite)
     for (const k of Object.keys(a)) ok(m[k], a[k], `${densite} — ${k}`)
-    assert.ok(m.etiquette.includes(`${noms[densite]} · base ${DENSITES[densite]}`), `${densite} — étiquette : ${m.etiquette}`)
   }
   await verifier('comfortable')
   liste([attendre('compact').silence, attendre('comfortable').silence, attendre('airy').silence].map((v) => v / attendu('page-4-block', W) * 96), [64, 96, 128], 'le silence, 64 · 96 · 128 à la base')
@@ -313,38 +291,87 @@ test('3 · par le tiroir, la densité change la base de la tranche, du silence, 
   }
   await fermer()
 })
-test('3 · la densité chargée au démarrage donne la même chaîne, aux trois largeurs', async () => {
-  for (const densite of DENSITES_SITE) for (const W of LARGEURS) {
-    const { p, fermer } = await nav.page(URL(), { largeur: W, densite })
-    ok(await calcPx(p, '#echelle .tranche', 'paddingTop'), attendu('pad-1-block', W, DENSITES[densite]), `${densite} ${W} — coque`)
-    ok(await calcPx(p, '#echelle .tr-sub', 'paddingLeft'), attendu('pad-3-inline', W, DENSITES[densite]), `${densite} ${W} — ligne`)
-    ok(await calcPx(p, '#echelle .tr-btn', 'borderTopLeftRadius'), attendu('r-ctl', W), `${densite} ${W} — bouton fixe`)
-    ok(await calcPx(p, '.gdoc', 'columnGap'), attendu('doc-gouttiere', W), `${densite} ${W} — gouttière fixe`)
+/* La preuve 02 déclare SA densité, entière : posée dans un site réglé
+   autrement, elle rend quand même ce que sa légende annonce. Et la légende
+   dit les bornes que le moteur produit pour CETTE base — jamais un chiffre
+   recopié. */
+test('3 · la scène de la preuve 02 suit ses DEUX réglages — la densité qu’elle annonce et la largeur simulée du cadre', async () => {
+  const W = 1440
+  const CRANS = [['.ry-sd', 'paddingTop', 'pad-1-block'], ['.ry-sd', 'paddingLeft', 'pad-1-inline'], ['.ry-sd', 'rowGap', 'gap-1-block'],
+                 ['.ry-sd-carte', 'paddingTop', 'pad-2-block'], ['.ry-sd-carte', 'rowGap', 'gap-2-block'],
+                 ['.ry-sd-ligne', 'paddingTop', 'pad-3-block'], ['.ry-sd-ligne', 'paddingLeft', 'pad-3-inline'],
+                 ['.ry-sd-lignes', 'rowGap', 'gap-3-block']]
+  /* la largeur que le cadre SIMULE — c'est elle qui règle la chaîne de la scène,
+     pas la fenêtre : c'est tout le propos de la poignée */
+  const simulee = async (p) => nombres(await texte(p, '#densite .puce-w'))[0]
+  for (const site of DENSITES_SITE) {
+    const { p, fermer } = await nav.page(URL(), { largeur: W, densite: site })
+    const boutons = p.locator('#densite .apercu-outils .bouton')
+    assert.equal(await boutons.count(), 3, 'trois densités au choix')
+    for (const [i, d] of ['airy', 'comfortable', 'compact'].entries()) {
+      await boutons.nth(i).click()
+      await p.waitForTimeout(120)
+      assert.equal(await p.getAttribute('#densite .ry-sd', 'data-densite'), d, `${site} — la scène déclare ${d}`)
+      const S = await simulee(p)
+      for (const [sel, prop, jeton] of CRANS)
+        ok(await calcPx(p, `#densite ${sel}`, prop), attendu(jeton, S, DENSITES[d]), `site ${site} · scène ${d} à ${S} px — ${sel} ${prop}`)
+      /* la légende dit la largeur simulée et les trois marges qu'on voit */
+      const dit = nombres(await texte(p, '#densite .gd-legende'))
+      liste(dit, [S, ...['pad-1-block', 'pad-2-block', 'pad-3-block'].map((n) => arrondi(attendu(n, S, DENSITES[d])))], `site ${site} · scène ${d} — la légende`)
+      /* les coins, eux, ne bougent d'aucun des deux réglages */
+      ok(await calcPx(p, '#densite .ry-sd', 'borderTopLeftRadius'), attendu('r-1', W), `site ${site} · scène ${d} — le coin ne suit pas la densité`)
+    }
+    /* la poignée : on la pousse au plus étroit, et toute la chaîne descend */
+    const avant = await calcPx(p, '#densite .ry-sd', 'paddingTop')
+    await p.locator('#densite .poignee').focus()
+    await p.keyboard.press('Home')
+    await p.waitForTimeout(200)
+    const S = await simulee(p)
+    assert.ok(S < 400, `la poignée est allée au plus étroit : ${S} px`)
+    const apres = await calcPx(p, '#densite .ry-sd', 'paddingTop')
+    ok(apres, attendu('pad-1-block', S, DENSITES.compact), `à ${S} px simulés — la marge de la coque`)
+    assert.ok(apres < avant, `la chaîne a suivi la poignée : ${avant} → ${apres}`)
     await fermer()
   }
 })
 
-/* ── 4 · Les titres glissent avec l'écran ── */
-test('4 · l’affiche et les titres de section valent la règle déclarée à chaque largeur, et grandissent strictement', async () => {
-  const affiche = [], section = []
+/* Les trois arcs de la preuve 03 sont tracés AU VRAI RAYON du registre : c'est
+   tout leur propos — on doit voir le coin se plier en deux d'un niveau au
+   suivant. Cassée, la ligne prend deux fois le coin de sa carte. */
+test('3 · les trois arcs de la profondeur valent les coins du registre, et la casse double celui de la ligne', async () => {
+  const W = 1440
+  const { p, fermer } = await nav.page(URL(), { largeur: W })
+  const rayons = () => p.evaluate(() => [...document.querySelectorAll('#profondeur .ry-pf-cote path')]
+    .map((e) => { const d = e.getAttribute('d'); return parseFloat(d.slice(d.indexOf(' A ') + 3)) }))
+  liste(await rayons(), [SOCLE.r[0], SOCLE.r[1], SOCLE.r[2]], 'les trois arcs, au vrai rayon', TOL)
+  ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), attendu('r-3', W), 'la ligne, au repos')
+  await p.locator('#profondeur .bouton.casse').click()
+  await p.waitForTimeout(600)
+  assert.equal(await p.getAttribute('#profondeur .ry-pf-ligne', 'data-intent'), 'statement')
+  ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), 2 * attendu('r-2', W), 'cassée : deux fois le coin de sa carte')
+  liste(await rayons(), [SOCLE.r[0], SOCLE.r[1], SOCLE.r[1] * 2], 'cassée : le troisième arc dépasse le deuxième', TOL)
+  await p.locator('#profondeur .bouton.casse').click()
+  await p.waitForTimeout(600)
+  ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), attendu('r-3', W), 'réparée')
+  await fermer()
+})
+
+/* La page obéit à la règle 2 sur ELLE-MÊME : pour chaque section, l'espace
+   AU-DESSUS du titre (le silence) dépasse celui d'AU-DESSOUS (la tête). Un
+   titre équidistant flotte — c'est exactement la faute que la page documente. */
+test('4 · chaque titre de section appartient à ce qu’il ouvre : le silence au-dessus dépasse la tête au-dessous', async () => {
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
-    const h1 = await calcPx(p, '.gdoc-heros h1', 'fontSize'), h2 = await calcPx(p, '.gdoc-sec h2', 'fontSize')
-    ok(h1, attendu('doc-cover', W), `${W} — affiche`); ok(h2, attendu('doc-section', W), `${W} — section`)
-    /* La réponse du bon cran est en affiche, elle aussi — « grossir énormément le
-       résultat ». Elle vit dans une boîte qui porte le mot « cran », comme les boîtes
-       de la réglette : cette mesure est ce qui empêche une règle de voisinage de
-       rabattre l'affiche au cran étiquette sans que rien ne se voie. */
-    ok(await calcPx(p, '#cran .ry-affiche', 'fontSize'), attendu('doc-cover', W), `${W} — réponse en affiche`)
-    affiche.push(h1); section.push(h2)
+    const ids = ['echelle', 'densite', 'profondeur', 'bandes', 'liste', 'code']
+    for (const id of ids) {
+      const dessus = await calcPx(p, `#${id}.gdoc-sec`, 'paddingTop')
+      const dessous = await calcPx(p, `#${id} .gdoc-corps`, 'marginTop')
+      ok(dessus, attendu('doc-silence', W), `${W} px — #${id} : le silence au-dessus`)
+      ok(dessous, attendu('doc-tete', W), `${W} px — #${id} : la tête au-dessous`)
+      assert.ok(dessus > dessous, `#${id} : le titre flotte — ${dessus} au-dessus, ${dessous} au-dessous`)
+    }
     await fermer()
   }
-  assert.ok(affiche[0] < affiche[1] && affiche[1] < affiche[2], `l'affiche glisse : ${affiche}`)
-  assert.ok(section[0] < section[1] && section[1] < section[2], `la section glisse : ${section}`)
-  /* la densité ne touche pas aux titres */
-  const { p, fermer } = await nav.page(URL(), { largeur: 1440, densite: 'compact' })
-  ok(await calcPx(p, '.gdoc-heros h1', 'fontSize'), affiche[2], 'compact — la même affiche')
-  await fermer()
 })
 
 /* ── 5 · Le tertiaire suit C17 ── */
@@ -374,8 +401,14 @@ test('6 · dans les corps de sections, chaque marge, espace et coin calculé est
     .flatMap((prop) => [...selecteursDeclares(css, prop), ...selecteursDeclares(globales, prop), ...selecteursEnEm(css, prop), ...selecteursEnEm(globales, prop)])
   for (const W of LARGEURS) {
     const { p, fermer, erreurs } = await nav.page(URL(), { largeur: W })
-    for (const s of ['#adaptation', '#echelle', '#decisions', '#profondeur', '#densite', '#proximite', '#cran', '#vocabulaire']) await p.locator(`${s} details.prov summary`).click()
-    const f = await fautesEnDur(p, W, DENSITES.comfortable, { exclusions })
+    /* chaque bande porte son propre dépliant : on les ouvre tous, d'un coup */
+    await p.evaluate(() => document.querySelectorAll('details.prov').forEach((d) => { d.open = true }))
+    await p.waitForTimeout(120)
+    /* La scène de la preuve 02 est réglée sur la largeur SIMULÉE par le cadre,
+       pas sur celle de la fenêtre : ses marges sont bien des valeurs du moteur,
+       mais à une autre largeur. Elle est mesurée nommément, jeton par jeton, dans
+       son épreuve (3 · les deux réglages) — elle sort donc de ce balayage-ci. */
+    const f = await fautesEnDur(p, W, DENSITES.comfortable, { exclusions: [...exclusions, '.ry-sd', '.ry-sd *'] })
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
     assert.deepEqual(erreurs, [], 'la page ne jette aucune erreur')
     assert.equal(await debord(p), 0, `${W} px : la page déborde de l'écran`)

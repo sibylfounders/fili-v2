@@ -24,6 +24,8 @@ const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), 
 const liste = (a, b, msg, tol = 0.051) => { assert.equal(a.length, b.length, `${msg} : ${a.length} nombres, ${b.length} attendus (${a} / ${b})`); a.forEach((v, i) => ok(v, b[i], `${msg} [${i}]`, tol)) }
 const arrondi = (v) => Math.round(v * 10) / 10
 const RACINES = [CHARTE.racine, 0, 24, BORNES.racine[1]]
+/* hors chaîne, dits dans la vue : la valeur écrite à la main du piège 1, et le coin qui sature du piège 5 */
+const HORS_CHAINE_DUR = 10, COIN_SAT = 24
 const CSS = () => fs.readFileSync(path.join(KIT, 'app/arrondis/arrondis.css'), 'utf8')
 
 let site, nav
@@ -33,7 +35,13 @@ const URL = () => site.url + '/arrondis'
 const regler = async (p, id, v) => { await p.locator(`#${id}`).fill(String(v)); await p.waitForFunction(([id, v]) => document.querySelector(`output[for="${id}"]`).textContent === String(v), [id, v]) }
 
 /* ── 1 · Chaque chiffre affiché sort du moteur ── */
-test('1 · la légende de la fiche Navette suit la racine du curseur, chiffre par chiffre ; la légende du coin dit √2 ; la table dit chaque intention', async () => {
+/* Remise à niveau du 7 septembre 2026 : le répertoire des six intentions a quitté la page
+   (verdict d'Auteur, 2 septembre — il réglait la même chose que les densités de /rythme, et
+   le sujet appartient au moteur). À sa place, l'étage des bandes montre six pièges, le juste
+   et le faux côte à côte, et c'est un CURSEUR qui révèle la faute. L'épreuve mesure donc ce
+   mouvement-là : la racine tourne, l'objet juste suit le moteur, le faux reste à sa valeur
+   écrite ; la hauteur descend, et le coin sature sous les yeux — verdict lu, pas décrété. */
+test('1 · la légende de la fiche Navette suit la racine du curseur, chiffre par chiffre ; la légende du coin dit √2 ; dans les pièges, le juste dit le cran du moteur et le faux sa valeur écrite', async () => {
   const { p, fermer } = await nav.page(URL())
   for (const racine of RACINES) {
     await regler(p, 'ar-racine', racine)
@@ -47,16 +55,20 @@ test('1 · la légende de la fiche Navette suit la racine du curseur, chiffre pa
     const attendus = e > 0 ? [ri, e, ri, arrondi(e * Math.SQRT2), Math.round((Math.SQRT2 - 1) * 100), ri + e, e] : [ri, e, ri, 0, ri + e, e]
     liste(lus, attendus, `coin ${ri} · écart ${e}`)
   }
-  for (let i = 0; i < INTENTIONS.length; i++) {
-    await p.locator('#repertoire .rang .bouton').nth(i).click()
-    const t = INTENTIONS[i], s = chaine(t)
-    const rangs = await p.evaluate(() => [...document.querySelectorAll('#repertoire .ar-table tbody tr')].map((tr) => [...tr.children].slice(2).map((td) => td.textContent)))
-    assert.equal(rangs.length, 7)
-    for (let k = 0; k < 4; k++) { liste(nombres(rangs[k][0]), [arrondi(s.r[k])], `${t.nom} — coin ${k}`); if (k < 3) liste(nombres(rangs[k][1]), [arrondi(s.pad[k])], `${t.nom} — marge ${k}`); else assert.equal(rangs[k][1], '—') }
-    liste(nombres(rangs[4][0]), [arrondi(s.rCtl)], `${t.nom} — composant`); liste(nombres(rangs[4][1]), [arrondi(s.pad[2])], `${t.nom} — marge du composant`)
-    assert.deepEqual(rangs[5], ['plein', '—']); assert.deepEqual(rangs[6], ['—', '—'])
-    const legende = await texte(p, '#repertoire .gd-legende')
-    assert.ok(legende.startsWith(`${t.nom} — base ${t.base} · racine ${t.racine} · intervalle ${t.note}`), `${t.nom} — légende : ${legende}`)
+  /* le piège de la valeur en dur : la racine tourne, le juste dit le cran de la card, le faux dit toujours son nombre */
+  const bande = (i) => `#casser .doc-bande:nth-child(${i})`
+  for (const racine of RACINES) {
+    await regler(p, 'ar-p-dur', racine)
+    const dits = await textes(p, `${bande(1)} .ar-duo-dit`)
+    liste(nombres(dits[0]), [arrondi(chaine({ racine }).r[1])], `piège 1, racine ${racine} — le juste dit le cran de la card`)
+    liste(nombres(dits[1]), [HORS_CHAINE_DUR], `piège 1, racine ${racine} — le faux dit sa valeur écrite`)
+  }
+  /* le coin saturé : la hauteur descend, et le verdict bascule exactement à la moitié — lu sur la scène */
+  for (const h of [72, 56, 48, 46, 40, 20]) {
+    await regler(p, 'ar-p-sat', h)
+    const dits = await textes(p, `${bande(5)} .ar-duo-dit`); liste(nombres(dits[1]), [COIN_SAT, h], `piège 5, hauteur ${h} — le faux dit son coin et sa hauteur`)
+    const badge = await p.evaluate((b) => document.querySelector(`${b} .badge`).className, bande(5))
+    assert.equal(badge.includes('ko'), COIN_SAT > h / 2, `piège 5, hauteur ${h} — le verdict suit la moitié de la hauteur`)
   }
   await fermer()
 })
@@ -128,13 +140,24 @@ test('2 · le labo du coin dessine ce qu’il dit : à gauche le même rayon, à
   /* l'interrupteur et les onglets vivent, au clavier comme au pointeur */
   await p.locator('#pilule .ar-inter').click(); assert.equal(await p.getAttribute('#pilule .ar-inter', 'aria-checked'), 'false')
   await p.locator('#pilule .ar-onglets button').nth(1).click(); assert.equal(await p.getAttribute('#pilule .ar-onglets button >> nth=1', 'aria-selected'), 'true')
-  /* les vignettes de la table portent le coin de chaque intention */
-  for (let i = 0; i < INTENTIONS.length; i++) {
-    await p.locator('#repertoire .rang .bouton').nth(i).click(); await p.waitForTimeout(250)
-    const s = chaine(INTENTIONS[i])
-    const v = await p.evaluate(() => [...document.querySelectorAll('#repertoire .ar-ex')].map((e) => getComputedStyle(e).borderTopLeftRadius))
-    liste(v.slice(0, 5).map(parseFloat), [...s.r, s.rCtl], `${INTENTIONS[i].nom} — vignettes`, TOL); assert.ok(parseFloat(v[5]) >= 9999); assert.equal(v[6], '0px')
+  /* les pièges sont RENDUS par ce qu'ils disent : à chaque racine, l'objet juste porte le cran de
+     la card et le faux sa valeur écrite (déclarée : data-intent) ; le coin saturé porte son coin
+     fixe quand la boîte descend, et le juste le cran du composant */
+  const bande = (i) => `#casser .doc-bande:nth-child(${i})`
+  for (const racine of RACINES) {
+    await regler(p, 'ar-p-dur', racine)
+    const r = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-obj-boite`)].map((e) => parseFloat(getComputedStyle(e).borderTopLeftRadius)), bande(1))
+    liste(r, [chaine({ racine }).r[1], HORS_CHAINE_DUR], `piège 1, racine ${racine} — les deux coins rendus`, TOL)
+    assert.equal(await p.getAttribute(`${bande(1)} .ar-duo-un:nth-child(2)`, 'data-intent'), 'statement', 'le faux est déclaré')
   }
+  for (const h of [72, 40]) {
+    await regler(p, 'ar-p-sat', h)
+    const v = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-obj-boite`)].map((e) => { const cs = getComputedStyle(e); return [parseFloat(cs.borderTopLeftRadius), parseFloat(cs.height)] }), bande(5))
+    liste(v[0], [chaine().rCtl, h], `piège 5, hauteur ${h} — le juste : le cran du composant`, TOL); liste(v[1], [COIN_SAT, h], `piège 5, hauteur ${h} — le faux : son coin fixe`, TOL)
+  }
+  /* les voisins dépareillés : dans la même rangée, le juste met le cran du composant sur le champ ET le bouton */
+  const rangees = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-rangee`)].map((r) => [...r.children].map((e) => parseFloat(getComputedStyle(e).borderTopLeftRadius))), bande(3))
+  assert.equal(rangees[0][0], rangees[0][1], 'juste : le même cran pour les deux'); assert.notEqual(rangees[1][0], rangees[1][1], 'faux : deux crans dans la même rangée')
   await fermer()
 })
 test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le jeton qu’elle nomme, et dit ses casses', () => {
