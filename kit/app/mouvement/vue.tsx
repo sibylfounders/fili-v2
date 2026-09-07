@@ -14,17 +14,13 @@ import "./mouvement.css";
    produit. On ne peut pas le regarder, seulement l'attraper. Les trois
    preuves partent de là, et aucune ne reprend une preuve d'une autre page.
 
-   · LES PREUVES (01 à 03) — sans gabarit, sur la scène de nuit (verdicts
-     d'Auteur du 7 septembre, d'après les vidéos de Sajid : un seul objet,
-     gros, sur le noir ; la valeur écrite à côté de la chose ; l'objet se
-     transforme tout seul et le sous-titre explique) : LA MOLETTE QUI MENT
-     (situation — une main dessinée fait glisser la jauge d'un témoin, la
-     barre du bas traîne, l'écart se peint en rouge et se MESURE, trois
-     sous-titres) ; QUATRE DURÉES (variation — quatre situations en conseil,
-     l'objet qui répond pour de vrai, puis une taille de trop) ; DO / DON'T
-     (vocabulaire — le même menu deux fois au même instant, quatre choses à
-     comparer, le verdict de chaque colonne déduit de la feuille). Les deux
-     boucles se figent sous mouvement réduit et s'avancent alors à la main.
+   · LES PREUVES (01 à 03) — sans gabarit : LA MOLETTE QUI MENT (situation —
+     la jauge d'un témoin de Fili, à gauche elle suit le doigt, à droite
+     elle traîne, et le retard est MESURÉ) ; LE MÊME GESTE, QUATRE DURÉES
+     (variation — un verdict qui se pose, rejoué à chacun des quatre crans,
+     lus au moteur) ; DIRE CE QU'ON VOIT (vocabulaire — sept mots pour un
+     menu ; la page lit dans la feuille ce que chaque mot produit et rend
+     son verdict).
    · LES TROIS ÉTAGES (04 à 06) — au gabarit commun d'etages.tsx : quatre
      bandes en PAIRES, le juste et le faux côte à côte sans bouton (verdict
      d'Auteur du 7 septembre) — le survol qui suit, l'objet qui sort de son
@@ -105,10 +101,110 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
+/* ── 01 · La molette qui ment. Une seule fiche, une seule pile : la molette,
+   et juste dessous, sur la même largeur et le même bord, les deux barres —
+   à la valeur, et animée pendant qu'on la règle. Le bout de chaque barre
+   tombe sous le bouton du curseur : l'œil ne bouge pas (verdict d'Auteur,
+   7 septembre : « l'œil doit être à la fois sur le slider, la proposition
+   mauvaise et la bonne »). Le retard n'est pas décrété : la page lit la
+   largeur rendue des deux barres à chaque image tant qu'elles diffèrent. ── */
+function Molette() {
+  const [v, setV] = useState(72);
+  const juste = useRef<HTMLDivElement>(null), faux = useRef<HTMLDivElement>(null);
+  const [retard, setRetard] = useState(0);
+  const [pic, setPic] = useState(0);
+  useEffect(() => {
+    let vivant = true;
+    let max = 0;
+    const lire = () => {
+      if (!vivant || !juste.current || !faux.current) return;
+      const ecart = Math.abs(juste.current.getBoundingClientRect().width - faux.current.getBoundingClientRect().width);
+      max = Math.max(max, ecart);
+      setRetard(ecart);
+      if (ecart > 0.5) requestAnimationFrame(lire); else setPic(max);
+    };
+    requestAnimationFrame(lire);
+    return () => { vivant = false; };
+  }, [v]);
+  const ment = retard > 0.5;
+  const style = { "--mv-w": `${v}%` } as React.CSSProperties;
+  return (
+    <div className="mv-scene">
+      <div className="carte mv-temoin" style={style}>
+        <div className="mv-temoin-tete">
+          <span className="mv-avatar" aria-hidden="true">LF</span>
+          <span className="mv-temoin-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+        </div>
+        <div className="mv-pile">
+          <label className="mv-pile-dit" htmlFor="mv-cred">Crédibilité <output htmlFor="mv-cred">{v} %</output></label>
+          <input className="mv-pile-molette" type="range" id="mv-cred" min={0} max={100} step={1} value={v} onChange={(e) => setV(+e.target.value)} />
+          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict bon" aria-hidden="true">✓</span><span>à la valeur</span></p>
+          <div className="mv-pile-barres"><div className="mv-jauge-piste"><div ref={juste} className="mv-jauge-barre" /></div></div>
+          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict ko" aria-hidden="true">✗</span><span>animée</span></p>
+          <div className="mv-pile-barres" data-intent="statement"><div className="mv-jauge-piste"><div ref={faux} className="mv-jauge-barre ment" /></div></div>
+        </div>
+      </div>
+      {/* Le verdict se LIT : l'écart entre les deux barres, mesuré sur le rendu. */}
+      <span className={`badge ${ment ? "ko" : "bon"}`} aria-live="polite">
+        {ment
+          ? `la barre du bas est ${fmt(retard)} px derrière la molette`
+          : pic > 0.5
+            ? `les deux barres se sont rejointes — celle du bas a menti de ${fmt(pic)} px au plus`
+            : "les deux barres sont à la valeur — glissez la molette"}
+      </span>
+    </div>
+  );
+}
+
+/* ── 02 · Le même geste, nos quatre durées. Un verdict qui se pose, quatre
+   fois, et une seule chose change : la durée. Les crans et leurs emplois
+   sont lus au moteur ; la légende lit sur le rendu ce que chaque cadre
+   joue vraiment. ── */
+function QuatreDurees({ surMesure }: { surMesure: (m: number[]) => void }) {
+  const [joue, setJoue] = useState(false);
+  const cadres = useRef<HTMLDivElement>(null);
+  const rejouer = () => {
+    setJoue(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setJoue(true)));
+  };
+  useEffect(() => { const t = setTimeout(() => setJoue(true), 200); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    if (!cadres.current) return;
+    const lus = Array.from(cadres.current.querySelectorAll<HTMLElement>(".mv-pose")).map((e) => enMs(getComputedStyle(e).transitionDuration.split(",")[0]));
+    surMesure(lus);
+  }, [surMesure]);
+  return (
+    <div className="mv-scene">
+      <div className="mv-quatre" ref={cadres}>
+        {CRANS.map((c) => (
+          <div key={c} className={`mv-cadre${joue ? " joue" : ""}`} data-cran={c}>
+            <div className="mv-cadre-tete"><b>{ms(c)} ms</b><span>{emploi(c)}</span></div>
+            <div className="mv-verdict mv-pose">
+              <span className="badge">Verdict</span>
+              <span className="mv-verdict-mot">Recevable</span>
+              <span className="mv-verdict-dit">Témoignage de Léa Fontan</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <button type="button" className="bouton" onClick={rejouer}>Rejouer</button>
+    </div>
+  );
+}
+
 /* ── 03 · Dire ce qu'on voit. Sept mots pour un seul menu. Chaque mot
    donne au menu une autre façon d'arriver ; la page lit ensuite dans la
    feuille ce que le mot produit — durée, courbe, taille de départ, point
    d'origine — et rend son verdict. Rien n'est décrété par le bouton. ── */
+const MOTS: { cle: string; mot: string }[] = [
+  { cle: "pose", mot: "ça se pose" },
+  { cle: "bouton", mot: "ça sort de son bouton" },
+  { cle: "rebond", mot: "ça rebondit" },
+  { cle: "saute", mot: "ça saute" },
+  { cle: "neant", mot: "ça naît du néant" },
+  { cle: "traine", mot: "ça traîne" },
+  { cle: "milieu", mot: "ça s'ouvre du milieu" },
+];
 type Lu = { duree: number; depasse: boolean; depart: number | null; origine: string; proprietes: string };
 /* Lire un objet AU REPOS : pendant qu'une transition court, la valeur calculée
    est celle de l'image en cours, pas celle de la règle. On lit donc un jumeau
@@ -139,279 +235,42 @@ function juger(lu: Lu, aucoin: boolean): { ok: boolean; dit: string } {
   if (!aucoin) return { ok: false, dit: `${lu.duree} ms, mais depuis le milieu — pas depuis le bouton qui l'a appelé` };
   return { ok: true, dit: `${lu.duree} ms · la courbe du kit${lu.depart !== null ? ` · part de ${dec(lu.depart)}` : ""} · depuis le bouton` };
 }
-/* ── La boucle. Une preuve qui se joue toute seule est une suite d'étapes ;
-   la boucle avance d'elle-même quand le mouvement est libre, et se fige
-   sous mouvement réduit — on avance alors à la main, une étape par appui.
-   Elle se met en pause quand l'onglet n'est plus visible, et au clic.
-   Les tempos de la boucle sont une chorégraphie (verdict d'Auteur,
-   7 septembre : « une petite animation automatique, c'est bien plus
-   parlant ») ; ce qui bouge à l'écran prend les jetons du kit. ── */
-function useLibre() {
-  const [libre, setLibre] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
-    const lire = () => setLibre(mq.matches);
-    lire(); mq.addEventListener("change", lire);
-    return () => mq.removeEventListener("change", lire);
-  }, []);
-  return libre;
-}
-function useBoucle(n: number, periode: (i: number) => number) {
-  const [i, setI] = useState(0);
-  const [pause, setPause] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const libre = useLibre();
-  useEffect(() => {
-    const lire = () => setVisible(!document.hidden);
-    lire(); document.addEventListener("visibilitychange", lire);
-    return () => document.removeEventListener("visibilitychange", lire);
-  }, []);
-  const avancer = () => setI((x) => (x + 1) % n);
-  useEffect(() => {
-    if (!libre || pause || !visible) return;
-    const t = setTimeout(avancer, periode(i));
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i, pause, visible, libre, n]);
-  return { i, avancer, aller: (x: number) => setI(x % n), pause, setPause, libre };
-}
-/* La commande de la boucle : pause et lecture quand elle tourne seule ;
-   « étape suivante » quand le mouvement est réduit. */
-function Commande({ b }: { b: ReturnType<typeof useBoucle> }) {
-  return b.libre
-    ? <button type="button" className="bouton mv-commande" aria-pressed={b.pause} onClick={() => b.setPause(!b.pause)}>{b.pause ? "Lecture" : "Pause"}</button>
-    : <button type="button" className="bouton mv-commande" onClick={b.avancer}>Étape suivante</button>;
-}
-/* Deux images qu'on rejoue : on retire l'état, on laisse passer une image, on le remet. */
-function rejouer(setEtat: (v: boolean) => void) {
-  setEtat(false);
-  return requestAnimationFrame(() => requestAnimationFrame(() => setEtat(true)));
-}
-
-/* ── 01 · La molette qui ment — la main invisible. La fiche du témoin en
-   grand ; une main dessinée fait glisser la jauge ; sous la piste, la barre
-   qui suit et la barre qui traîne, et l'écart entre elles se peint en rouge
-   tant qu'il existe, son chiffre lu sur le rendu. Sans voix, c'est le
-   sous-titre qui explique : trois, un par étape. ── */
-const V0 = 22, V1 = 84; /* chorégraphie : les deux positions de la main */
-const GLISSE_MS = 1600; /* chorégraphie : le temps que met la main */
-function Main() {
-  return (
-    <svg className="mv-main-dessin" viewBox="0 0 24 32" aria-hidden="true">
-      <path d="M9 2.5c0-1.4 2.6-1.4 2.6 0V14l1.2-.4c.9-.3 1.7.1 2 .9l.3.8 1.1-.5c.9-.4 1.9 0 2.2.9l.2.6 1.3-.3c1-.2 1.9.5 1.9 1.5v6.2c0 3.6-2.9 6.3-6.5 6.3h-2.6c-2 0-3.9-.9-5.1-2.5L2.3 22c-.7-.9-.5-2.1.4-2.7.8-.6 1.9-.4 2.5.4L7 21.5V2.5z" />
-    </svg>
-  );
-}
-function Molette() {
-  const b = useBoucle(3, (i) => [GLISSE_MS + ms("slow") + 300, 2000, 2400][i]);
-  const [v, setV] = useState(V0);
-  const [saut, setSaut] = useState(true);
-  const juste = useRef<HTMLDivElement>(null), faux = useRef<HTMLDivElement>(null), piste = useRef<HTMLDivElement>(null);
-  const [ecart, setEcart] = useState({ de: 0, a: 0, px: 0 });
-  const [pic, setPic] = useState(0);
-  /* étape 0 : la main revient au départ sans se jouer, puis glisse — libre,
-     image par image ; réduite, elle saute (un déplacement ne se joue pas) */
-  useEffect(() => {
-    if (b.i !== 0) return;
-    let vivant = true;
-    setSaut(true); setV(V0); setPic(0);
-    const depart = requestAnimationFrame(() => requestAnimationFrame(() => {
-      if (!vivant) return;
-      setSaut(false);
-      if (!b.libre) { setV(V1); return; }
-      const debut = performance.now();
-      const pas = (t: number) => {
-        if (!vivant) return;
-        const k = Math.min(1, (t - debut) / GLISSE_MS);
-        setV(Math.round(V0 + (V1 - V0) * k));
-        if (k < 1) requestAnimationFrame(pas);
-      };
-      requestAnimationFrame(pas);
-    }));
-    return () => { vivant = false; cancelAnimationFrame(depart); };
-  }, [b.i, b.libre]);
-  /* le mensonge, lu : tant que les deux barres diffèrent, on lit leurs largeurs à chaque image */
-  useEffect(() => {
-    let vivant = true; let max = 0;
-    const lire = () => {
-      if (!vivant || !juste.current || !faux.current || !piste.current) return;
-      const L = piste.current.getBoundingClientRect().width || 1;
-      const j = juste.current.getBoundingClientRect().width, f = faux.current.getBoundingClientRect().width;
-      const e = Math.abs(j - f); max = Math.max(max, e);
-      setEcart({ de: (Math.min(j, f) / L) * 100, a: (Math.max(j, f) / L) * 100, px: e });
-      if (e > 0.5) requestAnimationFrame(lire); else if (max > 0.5) setPic((p) => Math.max(p, max));
-    };
-    requestAnimationFrame(lire);
-    return () => { vivant = false; };
-  }, [v]);
-  const ment = ecart.px > 0.5;
-  const style = { "--mv-w": `${v}%`, "--mv-de": `${ecart.de}%`, "--mv-l": `${Math.max(0, ecart.a - ecart.de)}%` } as React.CSSProperties;
-  const sousTitre = b.i === 0
-    ? (ment ? `la main glisse — la barre du bas traîne : ${fmt(ecart.px)} px derrière` : "la main glisse")
-    : b.i === 1
-      ? (pic > 0.5 ? `la main s'est arrêtée — la barre du bas a menti de ${fmt(pic)} px au plus` : "la main s'est arrêtée")
-      : "une valeur qu'on fait glisser ne s'anime pas";
-  return (
-    <div className="mv-scene" style={style} data-etape={b.i}>
-      <div className="mv-fiche" role="img" aria-label={`Fiche du témoin Léa Fontan, crédibilité ${v} pour cent ; la barre animée est ${ment ? `${fmt(ecart.px)} pixels derrière` : "à la valeur"}`}>
-        <div className="mv-fiche-tete">
-          <span className="mv-avatar" aria-hidden="true">LF</span>
-          <span className="mv-fiche-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
-          <output className="mv-fiche-nombre">{v} %</output>
-        </div>
-        <div className="mv-pile">
-          <span className="mv-pile-dit">Crédibilité</span>
-          <div ref={piste} className="mv-piste">
-            <span className="mv-trace" />
-            <span className={`mv-doigt${b.libre && b.i === 0 && !saut ? " glisse" : ""}`}><Main /></span>
-          </div>
-          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict bon" aria-hidden="true">✓</span><span>à la valeur</span></p>
-          <div className="mv-jauge-piste"><div ref={juste} className="mv-jauge-barre" /></div>
-          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict ko" aria-hidden="true">✗</span><span>animée</span></p>
-          <div className="mv-jauge-piste" data-intent="statement">
-            <div ref={faux} className={`mv-jauge-barre ment${saut ? " saut" : ""}`} />
-            <span className="mv-mensonge" hidden={!ment} />
-            <span className="mv-mensonge-cote" hidden={!ment}>{fmt(ecart.px)} px</span>
-          </div>
-        </div>
-      </div>
-      <p className={`mv-sous-titre${b.i === 2 ? " regle" : ment ? " ko" : ""}`} aria-live="polite">{sousTitre}</p>
-      <Commande b={b} />
-    </div>
-  );
-}
-
-/* ── 02 · Quatre durées — la situation d'abord. Quatre cas concrets, l'un
-   après l'autre, en conseil : ce que vous faites, l'objet qui répond, la
-   durée qu'il prend et pourquoi cette taille-là. Cinquième cas : un menu
-   au cran expressif — il traîne. Les durées sont lues au moteur ; ce que
-   chaque objet joue est lu sur le rendu. ── */
-type Cas = { cran: Cran; vous: string; pourquoi: string; faute?: boolean };
-const CAS: Cas[] = [
-  { cran: "fast", vous: "Vous survolez un bouton", pourquoi: "Un survol répond, il ne se regarde pas. Au-delà de 160 ms, la couleur poursuit le curseur au lieu de le suivre." },
-  { cran: "base", vous: "Vous ouvrez un menu", pourquoi: "Un menu s'ouvre des dizaines de fois par jour : assez long pour être vu, trop court pour être attendu." },
-  { cran: "slow", vous: "Vous ouvrez un panneau", pourquoi: "Un panneau change l'écran. Il a besoin d'un passage, sinon l'état d'avant disparaît sans qu'on sache où il est allé." },
-  { cran: "expressive", vous: "Une section arrive au défilement", pourquoi: "Une découverte, pas une réponse : elle peut prendre son temps. Le plafond des réponses d'interface ne la vise pas." },
-  { cran: "expressive", vous: "Vous ouvrez un menu… à 700 ?", pourquoi: "Le cran d'une section sur un objet qu'on ouvre cent fois par jour : on l'attend.", faute: true },
-];
-function QuatreDurees({ surMesure }: { surMesure: (m: number[]) => void }) {
-  const b = useBoucle(CAS.length, (i) => ms(CAS[i].cran) + 2600);
-  const cas = CAS[b.i];
-  const [joue, setJoue] = useState(false);
-  const objet = useRef<HTMLDivElement>(null);
-  const lus = useRef<number[]>([]);
-  useEffect(() => {
-    const r = rejouer(setJoue);
-    const lecture = setTimeout(() => {
-      if (!objet.current) return;
-      const cible = objet.current.querySelector<HTMLElement>("[data-joue]");
-      if (!cible) return;
-      const d = enMs(getComputedStyle(cible).transitionDuration.split(",")[0]);
-      if (!lus.current.includes(d)) { lus.current = [...lus.current, d]; surMesure(lus.current); }
-    }, 60);
-    return () => { cancelAnimationFrame(r); clearTimeout(lecture); };
-  }, [b.i, surMesure]);
-  return (
-    <div className="mv-scene" data-etape={b.i}>
-      <div className="mv-cas">
-        <div className="mv-cas-dire">
-          <p className="mv-cas-vous">{cas.vous}</p>
-          <p className={`mv-cas-duree${cas.faute ? " ko" : ""}`}><b>{ms(cas.cran)} ms</b><span>{cas.faute ? "il traîne" : emploi(cas.cran)}</span></p>
-          <p className="mv-cas-pourquoi">{cas.pourquoi}</p>
-        </div>
-        <div ref={objet} className="mv-cadre" data-cran={cas.cran} data-intent={cas.faute ? "statement" : undefined}>
-          {b.i === 0 && (
-            <button type="button" className={`bouton mv-obj-bouton${joue ? " survole" : ""}`} data-joue tabIndex={-1}>Enregistrer</button>
-          )}
-          {(b.i === 1 || b.i === 4) && (
-            <div className="mv-scene-menu">
-              <button type="button" className="bouton" aria-expanded={joue} tabIndex={-1}>Actions du témoin</button>
-              <div className={`mv-menu${cas.faute ? " traine" : ""}${joue ? " ouvert" : ""}`} role="menu" aria-hidden={!joue} data-joue>
-                <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span>
-                <span className="mv-menu-item" role="menuitem">Confronter</span>
-                <span className="mv-menu-item danger" role="menuitem">Récuser</span>
-              </div>
-            </div>
-          )}
-          {b.i === 2 && (
-            <div className="mv-obj-ecran">
-              <span className="mv-obj-ligne large" /><span className="mv-obj-ligne" /><span className="mv-obj-ligne courte" />
-              <div className={`mv-panneau${joue ? " ouvert" : ""}`} data-joue aria-hidden={!joue}>
-                <b>Récuser le témoin ?</b><span>Le témoignage sera retiré du dossier.</span>
-                <span className="mv-panneau-actions"><span className="bouton on">Récuser</span><span className="bouton">Annuler</span></span>
-              </div>
-            </div>
-          )}
-          {b.i === 3 && (
-            <div className={`mv-obj-section${joue ? " la" : ""}`} data-joue aria-hidden={!joue}>
-              <b>Les témoins entendus</b><span className="mv-obj-ligne large" /><span className="mv-obj-ligne" /><span className="mv-obj-ligne courte" />
-            </div>
-          )}
-        </div>
-      </div>
-      <Commande b={b} />
-    </div>
-  );
-}
-
-/* ── 03 · Dire ce qu'on voit — Do / Don't. Deux colonnes fixes, le même
-   menu de chaque côté ; on choisit ce qu'on compare (la durée, la courbe,
-   le départ, l'origine) et les deux menus se rejouent en même temps : à
-   gauche la règle tenue, à droite la faute qui lui répond. La légende de
-   chaque colonne est lue sur le rendu. ── */
-const CHOIX: { cle: string; nom: string; faute: string; mot: string }[] = [
-  { cle: "duree", nom: "La durée", faute: "traine", mot: "il traîne" },
-  { cle: "courbe", nom: "La courbe", faute: "rebond", mot: "il rebondit" },
-  { cle: "depart", nom: "Le départ", faute: "neant", mot: "il naît du néant" },
-  { cle: "origine", nom: "L'origine", faute: "milieu", mot: "il s'ouvre du milieu" },
-];
-function MenuTemoin({ classe, ouvert, refMenu }: { classe?: string; ouvert: boolean; refMenu: React.RefObject<HTMLDivElement> }) {
-  return (
-    <div className="mv-scene-menu">
-      <button type="button" className="bouton" aria-expanded={ouvert} tabIndex={-1}>Actions du témoin</button>
-      <div ref={refMenu} className={`mv-menu${classe ? ` ${classe}` : ""}${ouvert ? " ouvert" : ""}`} role="menu" aria-hidden={!ouvert}>
-        <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span>
-        <span className="mv-menu-item" role="menuitem">Confronter à un autre témoin</span>
-        <span className="mv-menu-item danger" role="menuitem">Récuser</span>
-      </div>
-    </div>
-  );
-}
-function DoDont() {
-  const [choix, setChoix] = useState(0);
+function Mots() {
+  const [mot, setMot] = useState("pose");
   const [ouvert, setOuvert] = useState(false);
-  const bon = useRef<HTMLDivElement>(null), mauvais = useRef<HTMLDivElement>(null);
-  const [lus, setLus] = useState<{ bon: { ok: boolean; dit: string }; mauvais: { ok: boolean; dit: string } } | null>(null);
-  const jouer = (i: number) => { setChoix(i); rejouer(setOuvert); };
+  const [verdict, setVerdict] = useState<{ ok: boolean; dit: string } | null>(null);
+  const menu = useRef<HTMLDivElement>(null);
+  const choisir = (cle: string) => {
+    setMot(cle); setOuvert(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setOuvert(true)));
+  };
   useEffect(() => {
-    const r = rejouer(setOuvert);
-    if (bon.current && mauvais.current) {
-      const lire = (el: HTMLElement) => { const lu = lireMenu(el); const o = lu.origine.split(" ").map(parseFloat); return juger(lu, o[0] === 0 && o[1] === 0); };
-      setLus({ bon: lire(bon.current), mauvais: lire(mauvais.current) });
-    }
-    return () => cancelAnimationFrame(r);
-  }, [choix]);
-  const c = CHOIX[choix];
+    if (!menu.current) return;
+    const lu = lireMenu(menu.current);
+    const origine = lu.origine.split(" ").map(parseFloat);
+    setVerdict(juger(lu, origine[0] === 0 && origine[1] === 0));
+  }, [mot]);
   return (
     <div className="mv-scene">
-      <div className="mv-choix" role="group" aria-label="Ce qu'on compare">
-        {CHOIX.map((x, i) => (
-          <button key={x.cle} type="button" className={`bouton${choix === i ? " on" : ""}`} aria-pressed={choix === i} onClick={() => jouer(i)}>{x.nom}</button>
+      <div className="mv-mots" role="group" aria-label="Comment le menu arrive">
+        {MOTS.map((m) => (
+          <button key={m.cle} type="button" className={`bouton${mot === m.cle ? " on" : ""}`} aria-pressed={mot === m.cle}
+            onClick={() => choisir(m.cle)}>{m.mot}</button>
         ))}
       </div>
-      <div className="mv-duo">
-        <div className="mv-cote">
-          <p className="mv-verdict-tete"><span className={`verdict ${lus?.bon.ok === false ? "ko" : "bon"}`} aria-hidden="true">{lus?.bon.ok === false ? "✗" : "✓"}</span><span>il se pose</span></p>
-          <MenuTemoin ouvert={ouvert} refMenu={bon} />
-          <span className="mv-lu" data-verdict={lus?.bon.ok === false ? "ko" : "bon"}>{lus?.bon.dit}</span>
-        </div>
-        <div className="mv-cote" data-intent="statement">
-          <p className="mv-verdict-tete"><span className={`verdict ${lus?.mauvais.ok ? "bon" : "ko"}`} aria-hidden="true">{lus?.mauvais.ok ? "✓" : "✗"}</span><span>{c.mot}</span></p>
-          <MenuTemoin classe={c.faute} ouvert={ouvert} refMenu={mauvais} />
-          <span className="mv-lu" data-verdict={lus?.mauvais.ok ? "bon" : "ko"}>{lus?.mauvais.dit}</span>
+      <div className="mv-scene-menu">
+        <button type="button" className="bouton" aria-expanded={ouvert} aria-controls="mv-menu-actions" onClick={() => setOuvert(!ouvert)}>Actions du témoin</button>
+        <div ref={menu} id="mv-menu-actions" className={`mv-menu ${mot === "pose" || mot === "bouton" ? "" : mot}${ouvert ? " ouvert" : ""}`}
+          role="menu" aria-hidden={!ouvert} data-mot={mot} data-intent={mot === "pose" || mot === "bouton" ? undefined : "statement"}>
+          <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span>
+          <span className="mv-menu-item" role="menuitem">Confronter à un autre témoin</span>
+          <span className="mv-menu-item" role="menuitem">Joindre une pièce</span>
+          <span className="mv-menu-item danger" role="menuitem">Récuser</span>
         </div>
       </div>
-      <button type="button" className="bouton mv-commande" onClick={() => jouer(choix)}>Rejouer</button>
+      {verdict && (
+        <span className={`badge ${verdict.ok ? "bon" : "ko"}`} aria-live="polite" data-verdict={verdict.ok ? "bon" : "ko"}>{verdict.dit}</span>
+      )}
     </div>
   );
 }
@@ -632,17 +491,18 @@ export default function Vue() {
               <h2>Une valeur qu&apos;on fait glisser ne s&apos;anime pas</h2>
               <p className="sourd">Une molette promet une chose simple : ce que vous voyez est la valeur
               où est votre doigt. Dès que la scène porte une transition, elle traîne derrière — et vous
-              regardez l&apos;animation au lieu du nombre. La démonstration cesse de démontrer. Regardez la
-              main glisser : la barre du bas court après elle, et l&apos;écart est mesuré à chaque image.</p>
+              regardez l&apos;animation au lieu du nombre. La démonstration cesse de démontrer. Tenez la
+              molette et ne quittez pas son curseur des yeux : la barre du bas court après lui, et
+              l&apos;écart est mesuré à chaque image.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc noir" data-theme="dark">
+                <div className="banc voile">
                   <Molette />
                 </div>
                 <figcaption className="gd-legende">
-                  une main, deux barres · en haut aucune transition sur la largeur réglée · en bas {ms("slow")} ms
-                  sur la valeur qu&apos;on tient — le rouge est l&apos;écart rendu, son chiffre est lu, pas décrété
+                  une molette, deux barres sous son curseur · en haut aucune transition sur la largeur réglée · en bas {ms("slow")} ms
+                  sur la valeur qu&apos;on tient — le retard est lu sur le rendu, pas décrété
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -659,20 +519,21 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">02 · Quatre durées</p>
               <h2>Une durée n&apos;est pas un goût, c&apos;est une taille</h2>
-              <p className="sourd">À cent millisecondes on ne le voit pas, on le sent : c&apos;est la
-              taille d&apos;un bouton. À sept cents, on l&apos;attend : c&apos;est la taille d&apos;une
-              section qui arrive. Entre les deux, le menu et le panneau. Quatre situations, quatre
-              tailles — et une cinquième, où la taille n&apos;est pas la bonne.</p>
+              <p className="sourd">Le même verdict se pose quatre fois, et une seule chose change. À
+              cent millisecondes on ne le voit pas, on le sent : c&apos;est la taille d&apos;un bouton.
+              À sept cents, on l&apos;attend : c&apos;est la taille d&apos;une section qui arrive. Entre
+              les deux, le menu et le panneau. Rejouez-les autant de fois qu&apos;il faut pour que
+              l&apos;échelle vous entre dans l&apos;œil.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc noir" data-theme="dark">
+                <div className="banc voile">
                   <QuatreDurees surMesure={setMesures} />
                 </div>
                 <figcaption className="gd-legende">
                   {mesures.length
-                    ? `${mesures.map((m) => fmt(m)).join(" · ")} ms, lus sur le rendu · quatre objets, une courbe — chacun prend la durée de son emploi`
-                    : "quatre objets, une courbe — chacun prend la durée de son emploi"}
+                    ? `${mesures.map((m) => fmt(m)).join(" · ")} ms, lus sur le rendu · même objet, même courbe, même distance — seule la durée change`
+                    : "même objet, même courbe, même distance — seule la durée change"}
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -691,18 +552,17 @@ export default function Vue() {
               <p className="kicker">03 · Dire ce qu&apos;on voit</p>
               <h2>On ne gouverne pas ce qu&apos;on ne sait pas nommer</h2>
               <p className="sourd">« Ça fait bizarre » n&apos;est pas un verdict. Un mouvement se décrit
-              avec des mots précis — il se pose, il rebondit, il naît du néant, il s&apos;ouvre du
-              milieu — et chaque mot est déjà une règle, tenue ou cassée. Le même menu deux fois, au
-              même instant : à gauche la règle, à droite le mot qui la casse, et la page lit dans la
-              feuille ce que chacun produit vraiment.</p>
+              avec des mots précis — il se pose, il sort de son bouton, il rebondit, il saute — et
+              chaque mot est déjà une règle, tenue ou cassée. Choisissez un mot : le menu arrive comme
+              vous l&apos;avez dit, et la page lit dans la feuille ce que ce mot produit vraiment.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc noir" data-theme="dark">
-                  <DoDont />
+                <div className="banc voile">
+                  <Mots />
                 </div>
                 <figcaption className="gd-legende">
-                  le même menu deux fois · quatre choses à comparer · le verdict de chaque colonne est déduit de la
+                  un seul menu, sept façons d&apos;arriver · deux sont justes · le verdict est déduit de la
                   durée, de la courbe, de la taille de départ et du point d&apos;origine — lus sur le rendu
                 </figcaption>
               </figure>

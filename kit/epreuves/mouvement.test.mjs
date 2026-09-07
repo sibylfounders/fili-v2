@@ -1,21 +1,18 @@
 /* LE CRASH-TEST DE LA PAGE MOUVEMENT — kit/epreuves/mouvement.test.mjs
    Ce qui doit être vrai à l'écran, mesuré sans l'œil (écrit le 7 septembre
    2026, avec la page) :
-   1 · chaque chiffre affiché est LU, jamais déclaré — les quatre situations
-       jouent la durée de leur emploi et la légende lit ce qui a été joué ; le
-       retard de la main invisible est l'écart réel entre les deux barres, image
-       par image, peint en rouge à sa vraie largeur ;
+   1 · chaque chiffre affiché est LU, jamais déclaré — les quatre durées de la
+       légende sont celles que le rendu joue, et le retard de la molette qui ment
+       est l'écart réel entre les deux barres, image par image ;
    2 · chaque pièce du kit est rendue par son jeton : la fiche est une carte, le
-       cadre une surface, le menu une card, la paire deux colonnes de coque ; la
-       main est au bout de la barre, les trois pistes partagent le même bord ;
+       cadre une surface, le menu une card, la paire deux colonnes de coque ;
    3 · tout ce qui bouge sur la page prend un cran du moteur et la courbe du kit —
        sauf ce qui se déclare casse, et chaque casse dit sa faute sur sa ligne ;
    4 · chaque casse rend le mensonge qu'elle déclare, et le verdict est DÉDUIT du
-       rendu : les quatre Do / Don't, les quatre bandes ;
-   5 · sous mouvement réduit, les boucles se figent et s'avancent à la main, les
-       déplacements partent et les fondus restent — mesuré dans les deux
-       réglages ; et trois des quatre Don't cessent d'être des fautes, parce que
-       leur faute était un déplacement ;
+       rendu : les sept mots, les quatre bandes ;
+   5 · sous mouvement réduit, les déplacements partent et les fondus restent —
+       mesuré dans les deux réglages ; et trois des sept mots cessent d'être
+       des fautes, parce que leur faute était un déplacement ;
    6 · la densité règle les coques, jamais un corps ; les titres glissent ; le
        tertiaire suit C17 ; rien en dur ; zéro débord ; zéro erreur ; la page est
        une fondation dans le menu, et ses étages sont comptés.
@@ -52,48 +49,39 @@ async function pageLibre(url, { largeur = 1440 } = {}) {
   await p.evaluate(() => document.fonts.ready)
   return { p, erreurs, fermer: () => ctx.close() }
 }
-/* Sous mouvement réduit — le réglage du banc — les boucles ne tournent pas
-   seules : on les avance à la main, comme le ferait un lecteur. */
-const etape = (p, sec) => p.locator(`${sec} .mv-commande`).click()
-const choisir = (p, nom) => p.locator('#mots .mv-choix .bouton', { hasText: nom }).click()
-const lus = (p) => p.$$eval('#mots .mv-lu', (es) => es.map((e) => [e.dataset.verdict, e.textContent]))
+const glisser = (p, valeur) => p.evaluate((v) => {
+  const dial = document.querySelector('#mv-cred')
+  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(dial, v)
+  dial.dispatchEvent(new Event('input', { bubbles: true }))
+}, valeur)
+const mot = (p, texteMot) => p.locator('#mots .mv-mots .bouton', { hasText: texteMot }).click()
+const verdictMot = (p) => p.getAttribute('#mots .badge[data-verdict]', 'data-verdict')
 const bande = (i) => `#casser .doc-bande:nth-child(${i})`
 const casser = (p, i) => p.locator(`${bande(i)} .doc-casser`).click()
 const badge = (p, i) => texte(p, `${bande(i)} .mv-scene .badge`)
 
 /* ── 1 · Chaque chiffre affiché est lu ── */
-test('1 · quatre situations : à chaque étape l’objet qui répond joue la durée de son emploi, lue sur le rendu ; la légende lit les quatre crans ; la cinquième est la faute — un menu au cran expressif', async () => {
+test('1 · la légende des quatre durées lit sur le rendu ce que chaque cadre joue, et ce sont les quatre crans du moteur', async () => {
   const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
-  await p.locator('#durees').scrollIntoViewIfNeeded()
-  assert.match(await texte(p, '#durees .mv-commande'), /Étape suivante/, 'réduit : la boucle se fige et s\'avance à la main')
-  const emplois = Object.values(MOUVEMENT.durees).map((d) => d.emploi)
-  const objets = ['.mv-obj-bouton', '.mv-menu', '.mv-panneau', '.mv-obj-section']
-  for (let i = 0; i < MS.length; i++) {
-    if (i > 0) { await etape(p, '#durees'); await p.waitForTimeout(150) }
-    assert.equal(await p.locator(`#durees .mv-cadre ${objets[i]}[data-joue]`).count(), 1, `étape ${i} : l'objet de la situation est ${objets[i]}`)
-    assert.equal(enMs(await calc(p, `#durees .mv-cadre [data-joue]`, 'transitionDuration')), MS[i], `étape ${i} : il joue ${MS[i]} ms`)
-    assert.match(await texte(p, '#durees .mv-cas-duree b'), new RegExp(`^${MS[i]} ms`)); assert.equal(await texte(p, '#durees .mv-cas-duree span'), emplois[i])
-    assert.equal(await p.getAttribute('#durees .mv-cadre', 'data-intent'), null, `étape ${i} : pas une casse`)
-  }
-  assert.match(await texte(p, '#durees .gd-legende'), new RegExp(`^${MS.join(' · ')} ms, lus sur le rendu`), 'la légende dit ce qui a été joué')
-  await etape(p, '#durees'); await p.waitForTimeout(150)
-  assert.equal(enMs(await calc(p, '#durees .mv-cadre .mv-menu[data-joue]', 'transitionDuration')), MOUVEMENT.durees.expressive.ms, 'la faute : un menu au cran expressif')
-  assert.equal(await p.getAttribute('#durees .mv-cadre', 'data-intent'), 'statement', 'déclarée')
-  assert.equal(await texte(p, '#durees .mv-cas-duree.ko span'), 'il traîne')
-  await etape(p, '#durees'); await p.waitForTimeout(150)
-  assert.equal(enMs(await calc(p, '#durees .mv-cadre [data-joue]', 'transitionDuration')), MS[0], 'et la boucle recommence')
+  await p.waitForTimeout(300)
+  const jouees = await p.$$eval('#durees .mv-pose', (es) => es.map((e) => getComputedStyle(e).transitionDuration.split(',')[0]))
+  assert.deepEqual(jouees.map(enMs), MS, 'les cadres jouent les quatre crans, dans l\'ordre du moteur')
+  const legende = await texte(p, '#durees .gd-legende')
+  assert.match(legende, new RegExp(`^${MS.join(' · ')} ms, lus sur le rendu`), `la légende dit ce qui est joué : « ${legende.slice(0, 40)} »`)
+  const tetes = await textes(p, '#durees .mv-cadre-tete b')
+  assert.deepEqual(tetes.map(parseFloat), MS, 'chaque cadre porte sa durée, lue au moteur')
+  assert.deepEqual(await textes(p, '#durees .mv-cadre-tete span'), Object.values(MOUVEMENT.durees).map((d) => d.emploi), 'et son emploi')
   await fermer()
 })
-test('1 · la main invisible : la barre du bas est en retard sur celle du haut, image par image, l’écart est peint en rouge à sa vraie largeur et chiffré ; puis les deux se rejoignent et le sous-titre dit le pic mesuré', async () => {
+test('1 · la molette qui ment : la barre du bas est en retard sur celle du haut, image par image, puis la rejoint — le badge dit le retard mesuré, jamais un chiffre déclaré', async () => {
   const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
-  await p.locator('#molette').scrollIntoViewIfNeeded(); await p.waitForTimeout(600)
-  /* réduit : à l'étape 0 la main saute au départ puis à l'arrivée — la barre du bas, elle, traîne quand même (c'est sa casse) ; on la refait partir */
-  await etape(p, '#molette'); await etape(p, '#molette'); await etape(p, '#molette'); await p.waitForTimeout(80)
-  const piste = await p.$eval('#molette .mv-piste', (e) => e.getBoundingClientRect().width)
+  await p.locator('#mv-cred').scrollIntoViewIfNeeded(); await p.waitForTimeout(150)
+  const avant = await texte(p, '#molette .mv-scene > .badge')
+  assert.match(avant, /glissez la molette/, 'au repos, aucune faute')
+  await glisser(p, 20)
+  /* on regarde les deux barres pendant douze images, et le badge à chaque image */
   const film = await p.evaluate(() => new Promise((res) => {
-    const lire = () => { const [g, d] = [...document.querySelectorAll('#molette .mv-jauge-barre')].map((e) => e.getBoundingClientRect().width)
-      const r = document.querySelector('#molette .mv-mensonge'), rr = r && !r.hidden ? r.getBoundingClientRect() : null
-      return { g, d, rouge: rr ? rr.width : null, cote: document.querySelector('#molette .mv-mensonge-cote')?.textContent ?? '', st: document.querySelector('#molette .mv-sous-titre').textContent } }
+    const lire = () => { const [g, d] = [...document.querySelectorAll('#molette .mv-jauge-barre')].map((e) => e.getBoundingClientRect().width); return { g, d, badge: document.querySelector('#molette .mv-scene > .badge').textContent } }
     const out = []; let n = 0
     const pas = () => { out.push(lire()); if (++n < 14) requestAnimationFrame(pas); else res(out) }
     requestAnimationFrame(pas)
@@ -101,44 +89,38 @@ test('1 · la main invisible : la barre du bas est en retard sur celle du haut, 
   const ecarts = film.map((f) => Math.abs(f.g - f.d))
   assert.ok(ecarts[0] > 5, `à la première image, celle du bas est loin derrière : ${ecarts[0]} px`)
   assert.ok(ecarts.slice(1).every((e, i) => e <= ecarts[i] + TOL), `le retard ne fait que diminuer : ${ecarts.map((e) => e.toFixed(1)).join(' ')}`)
-  const pendant = film.map((f, i) => ({ ...f, i })).filter((f) => f.rouge !== null)
-  assert.ok(pendant.length >= 2, 'pendant le retard, le rouge est peint')
-  for (const f of pendant) {
-    /* le rouge est peint à partir de ce qui a été lu : jamais plus large que l'écart entier, jamais plus étroit que l'écart de cette image, et il ne fait que fondre */
-    assert.ok(f.rouge >= ecarts[f.i] - 2.5 && f.rouge <= piste * 0.62 + 1, `le rouge couvre l'écart rendu (${f.rouge.toFixed(1)} pour ${ecarts[f.i].toFixed(1)})`)
-    assert.match(f.cote, /px$/); assert.match(f.st, /traîne : [\d,]+ px derrière/)
-  }
-  assert.ok(pendant.slice(1).every((f, k) => f.rouge <= pendant[k].rouge + TOL), 'le rouge ne fait que fondre')
-  const lu = Math.max(...pendant.map((f) => parseFloat(f.cote.replace(',', '.'))))
-  assert.ok(lu >= Math.min(...ecarts) - TOL && lu <= piste * 0.62 + 1, `le chiffre du rouge (${lu}) est un écart rendu`)
+  const pendant = film.find((f) => /derrière la molette/.test(f.badge))
+  assert.ok(pendant, 'pendant le retard, le badge le dit')
+  const lu = parseFloat(pendant.badge.match(/([\d,]+) px/)[1].replace(',', '.'))
+  /* la page et l'épreuve ne lisent pas forcément la même image : le chiffre du badge est
+     borné par ce qui a pu être rendu — au plus l'écart entier (de 72 à 20 sur la piste),
+     au moins le plus petit écart que l'épreuve a vu */
+  const piste = await p.$eval('#molette .mv-jauge-piste', (e) => e.getBoundingClientRect().width)
+  assert.ok(lu >= Math.min(...ecarts) - TOL && lu <= piste * 0.52 + 1, `le chiffre du badge (${lu}) est un écart rendu, entre ${Math.min(...ecarts).toFixed(1)} et ${(piste * 0.52).toFixed(1)}`)
   await p.waitForTimeout(MOUVEMENT.durees.slow.ms + 200)
+  const apres = await texte(p, '#molette .mv-scene > .badge')
+  const pic = parseFloat((apres.match(/menti de ([\d,]+) px/) ?? [])[1]?.replace(',', '.'))
+  assert.ok(pic >= Math.max(...ecarts) - TOL && pic <= piste * 0.52 + 1, `rejointes : le pic dit (${pic}) vaut au moins le plus grand écart vu (${Math.max(...ecarts).toFixed(1)})`)
   const [g, d] = await p.$$eval('#molette .mv-jauge-barre', (es) => es.map((e) => e.getBoundingClientRect().width))
-  ok(g, d, 'les deux barres se sont rejointes', 0.5)
-  assert.equal(await p.locator('#molette .mv-mensonge:not([hidden])').count(), 0, 'le rouge a fondu')
-  await etape(p, '#molette'); await p.waitForTimeout(120)
-  const st = await texte(p, '#molette .mv-sous-titre')
-  const pic = parseFloat((st.match(/menti de ([\d,]+) px/) ?? [])[1]?.replace(',', '.'))
-  assert.ok(pic >= Math.max(...ecarts) - TOL && pic <= piste * 0.62 + 1, `le sous-titre dit le pic mesuré (${pic}), au moins le plus grand écart vu (${Math.max(...ecarts).toFixed(1)})`)
-  await etape(p, '#molette'); await p.waitForTimeout(120)
-  assert.match(await texte(p, '#molette .mv-sous-titre.regle'), /une valeur qu'on fait glisser ne s'anime pas/, 'la règle, en dernier')
+  ok(g, d, 'les deux barres sont enfin égales', 0.5)
   await fermer()
 })
 
 /* ── 2 · Chaque pièce du kit est rendue par son jeton ── */
-test('2 · la fiche est une carte, la main est au bout de la barre et les trois pistes partagent le même bord ; le cadre une surface, le menu une card ; la paire d’une bande est deux colonnes de coque ; la légende parle au cran étiquette', async () => {
+test('2 · la fiche est une carte et ses trois pistes partagent le même bord ; le cadre une surface, le menu une card ; la paire d’une bande est deux colonnes de coque ; la légende parle au cran étiquette', async () => {
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
-    ok(await calcPx(p, '#molette .mv-fiche', 'paddingTop'), attendu('pad-2-block', W), `${W} — la fiche, marge de carte`)
-    ok(await calcPx(p, '#molette .mv-fiche', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — la fiche, coin de carte`)
+    ok(await calcPx(p, '#molette .mv-temoin', 'paddingTop'), attendu('pad-2-block', W), `${W} — la fiche, marge de carte`)
+    ok(await calcPx(p, '#molette .mv-temoin', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — la fiche, coin de carte`)
     ok(await calcPx(p, `${bande(1)} .mv-duo`, 'rowGap'), attendu('pad-1-block', W), `${W} — la paire, l'écart de coque`)
-    /* la pile : la piste de la main et les deux barres commencent et finissent au même bord, et la main est au bout de la barre juste — l'œil ne bouge pas */
-    const pistes = await p.$$eval('#molette .mv-trace, #molette .mv-jauge-piste', (es) => es.map((e) => { const r = e.getBoundingClientRect(); return [r.left, r.right] }))
-    assert.equal(pistes.length, 3, `${W} — une piste, deux barres`)
-    for (const [g, d] of pistes.slice(1)) assert.ok(Math.abs(g - pistes[0][0]) < 1 && Math.abs(d - pistes[0][1]) < 1, `${W} — même bord (${g}→${d} contre ${pistes[0]})`)
-    const [doigt, barre] = await p.$$eval('#molette .mv-doigt, #molette .mv-jauge-barre', (es) => es.map((e) => { const r = e.getBoundingClientRect(); return { c: (r.left + r.right) / 2, d: r.right } }))
-    assert.ok(Math.abs(doigt.c - barre.d) < 1, `${W} — la main est au bout de la barre (${doigt.c} / ${barre.d})`)
+    /* la pile : la molette et les deux barres commencent au même bord et finissent au même bord — l'œil ne bouge pas */
+    const pistes = await p.$$eval('#molette .mv-pile-molette, #molette .mv-jauge-piste', (es) => es.map((e) => { const r = e.getBoundingClientRect(); return [r.left, r.right] }))
+    assert.equal(pistes.length, 3, `${W} — une molette, deux barres`)
+    const demiBouton = await calcPx(p, '#molette .mv-pile-barres', 'paddingLeft')
+    for (const [g, d] of pistes.slice(1)) { assert.ok(Math.abs(g - pistes[0][0] - demiBouton) < 1 && Math.abs(pistes[0][1] - demiBouton - d) < 1, `${W} — la barre finit sous le curseur (${g}→${d} contre ${pistes[0]})`) }
     ok(await calcPx(p, '#durees .mv-cadre', 'paddingTop'), attendu('pad-2-block', W), `${W} — le cadre, marge de profondeur 2`)
     ok(await calcPx(p, '#durees .mv-cadre', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — le cadre, coin de profondeur 2`)
+    ok(await calcPx(p, '#durees .mv-verdict', 'borderTopLeftRadius'), attendu('r-3', W), `${W} — le verdict dans le cadre, coin de la ligne`)
     ok(await calcPx(p, '#mots .mv-menu', 'borderTopLeftRadius'), attendu('r-2', W), `${W} — le menu, coin de card`)
     ok(await calcPx(p, '#mots .mv-menu', 'paddingTop'), attendu('pad-3-block', W), `${W} — le menu, marge de ligne`)
     ok(await calcPx(p, '#mots .mv-menu-item', 'minHeight'), attendu('control-height-compact', W), `${W} — une entrée de menu, la cible compacte`)
@@ -176,7 +158,7 @@ test('3 · la feuille : aucune durée ni courbe à la main hors d’une ligne qu
     const main = /(?<![\w-])\d*\.?\d+(ms|s)(?![\w-])/.test(nu) || /cubic-bezier|\bease\b/.test(nu)
     if (main) assert.match(l, /casse \(hors chaîne\)/, `${sel} : une valeur à la main qui ne se déclare pas`)
   }
-  for (const sel of ['.mv-jauge-barre.ment', '.mv-menu.neant', '.mv-menu.rebond', '.mv-menu.traine', '.mv-menu.milieu', '.mv-toast.neant', '.mv-rangee.lente .bouton', '.mv-coupe .mv-toast']) {
+  for (const sel of ['.mv-jauge-barre.ment', '.mv-menu.saute', '.mv-menu.neant', '.mv-menu.rebond', '.mv-menu.traine', '.mv-menu.milieu', '.mv-toast.neant', '.mv-rangee.lente .bouton']) {
     const i = css.indexOf(sel); assert.ok(i >= 0, `casse absente : ${sel}`)
     assert.match(css.slice(i, css.indexOf('\n', i)), /casse/, `${sel} : casse dite sur sa ligne`)
   }
@@ -184,25 +166,24 @@ test('3 · la feuille : aucune durée ni courbe à la main hors d’une ligne qu
 })
 
 /* ── 4 · Chaque casse rend ce qu'elle déclare, et le verdict est déduit ── */
-test('4 · Do / Don’t : quatre choses à comparer, le même menu deux fois — à gauche la règle tenue, à droite la faute qui lui répond, chacune lue dans la feuille (cran expressif, courbe qui dépasse, départ à zéro, origine au milieu)', async () => {
+test('4 · les sept mots : deux justes, cinq fautes — chacune lue dans la feuille (durée nulle, départ à zéro, courbe qui dépasse, cran expressif, origine au milieu)', async () => {
   const { p, fermer } = await pageLibre(URL())
   await p.locator('#mots').scrollIntoViewIfNeeded(); await p.waitForTimeout(150)
-  const attendus = [['La durée', new RegExp(`${MOUVEMENT.durees.expressive.ms} ms sur un menu, qui vit à ${MOUVEMENT.durees.base.ms}`), 'il traîne', 'traine'],
-    ['La courbe', /dépasse sa cible/, 'il rebondit', 'rebond'], ['Le départ', /part de 0/, 'il naît du néant', 'neant'], ["L'origine", /depuis le milieu/, "il s'ouvre du milieu", 'milieu']]
-  for (const [nom, dit, mot, classe] of attendus) {
-    await choisir(p, nom); await p.waitForTimeout(80)
-    const [bon, mauvais] = await lus(p)
-    assert.equal(bon[0], 'bon', `${nom} : la gauche tient la règle`); assert.match(bon[1], /200 ms · la courbe du kit · part de 0,95 · depuis le bouton/)
-    assert.equal(mauvais[0], 'ko', `${nom} : la droite est la faute`); assert.match(mauvais[1], dit, `${nom} : le verdict dit ce qui est lu`)
-    assert.equal(await texte(p, '#mots .mv-cote:nth-child(2) .mv-verdict-tete'), `✗${mot}`, `${nom} : le mot de la faute`)
-    assert.equal(await p.locator(`#mots .mv-cote:nth-child(2) .mv-menu.${classe}`).count(), 1, `${nom} : la faute est la classe déclarée`)
-    assert.equal(await p.getAttribute('#mots .mv-cote:nth-child(2)', 'data-intent'), 'statement'); assert.equal(await p.getAttribute('#mots .mv-cote:nth-child(1)', 'data-intent'), null)
-    await p.waitForTimeout(MOUVEMENT.durees.base.ms + 80)
-    assert.equal(await p.locator('#mots .mv-menu.ouvert').count(), 2, `${nom} : les deux menus sont ouverts en même temps`)
+  const attendus = [['ça se pose', 'bon', /200 ms · la courbe du kit · part de 0,95 · depuis le bouton/],
+    ['ça sort de son bouton', 'bon', /depuis le bouton/],
+    ['ça rebondit', 'ko', /dépasse sa cible/], ['ça saute', 'ko', /aucune durée/],
+    ['ça naît du néant', 'ko', /part de 0/], ['ça traîne', 'ko', new RegExp(`${MOUVEMENT.durees.expressive.ms} ms sur un menu, qui vit à ${MOUVEMENT.durees.base.ms}`)],
+    ["ça s'ouvre du milieu", 'ko', /depuis le milieu/]]
+  for (const [m, v, dit] of attendus) {
+    await mot(p, m); await p.waitForTimeout(60)
+    assert.equal(await verdictMot(p), v, `« ${m} » : ${v}`)
+    assert.match(await texte(p, '#mots .badge[data-verdict]'), dit, `« ${m} » : le verdict dit ce qui est lu`)
+    assert.equal(await p.getAttribute('#mv-menu-actions', 'data-intent'), v === 'ko' ? 'statement' : null, `« ${m} » : ${v === 'ko' ? 'déclaré' : 'pas une casse'}`)
   }
-  /* et le rendu rend bien la faute : le départ à zéro est lu sur un jumeau au repos */
-  await choisir(p, 'Le départ'); await p.waitForTimeout(MOUVEMENT.durees.base.ms + 100)
-  assert.equal(await p.evaluate(() => { const m = document.querySelector('#mots .mv-cote:nth-child(2) .mv-menu'), j = m.cloneNode(false); j.classList.remove('ouvert'); m.parentElement.appendChild(j); const s = getComputedStyle(j).scale; j.remove(); return s }), '0')
+  /* et le rendu rend bien la faute : « ça saute » n'a aucune transition, « ça naît du néant » part de 0 (lu sur un jumeau au repos) */
+  await mot(p, 'ça saute'); assert.equal(await calc(p, '#mv-menu-actions', 'transitionDuration'), '0s')
+  await mot(p, 'ça naît du néant'); await p.waitForTimeout(MOUVEMENT.durees.base.ms + 100)
+  assert.equal(await p.evaluate(() => { const m = document.querySelector('#mv-menu-actions'), j = m.cloneNode(false); j.classList.remove('ouvert'); j.removeAttribute('id'); m.parentElement.appendChild(j); const s = getComputedStyle(j).scale; j.remove(); return s }), '0')
   await fermer()
 })
 test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste joue les deux — le survol lent, l’origine au milieu, la naissance à zéro, l’ancienne règle qui coupait tout ; chaque tête de colonne est lue', async () => {
@@ -242,22 +223,20 @@ test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste
 })
 
 /* ── 5 · Sous mouvement réduit, les déplacements partent et les fondus restent ── */
-test('5 · dans les deux réglages : libre, les boucles tournent seules et les objets se déplacent en entrant ; réduit, elles se figent, plus un déplacement, mais les fondus gardent leurs durées — et trois Don’t sur quatre cessent d’être des fautes', async () => {
+test('5 · dans les deux réglages : libre, le verdict monte et le menu grandit ; réduit, plus un déplacement sur la page, mais les fondus gardent leurs durées — et trois mots seulement restent des fautes', async () => {
   const libre = await pageLibre(URL()), reduit = await nav.page(URL(), { largeur: 1440 })
   const deplacements = (p) => p.evaluate(() => [...document.querySelectorAll('main [class*="mv-"]')].filter((e) => /translate|scale|transform/.test(getComputedStyle(e).transitionProperty)).length)
-  assert.ok(await deplacements(libre.p) >= 5, 'libre : les objets se déplacent en entrant')
+  assert.ok(await deplacements(libre.p) >= 6, 'libre : les objets se déplacent en entrant')
   assert.equal(await deplacements(reduit.p), 0, 'réduit : plus un seul déplacement en transition')
-  assert.match(await texte(libre.p, '#molette .mv-commande'), /Pause|Lecture/, 'libre : la boucle tourne seule et se met en pause')
-  assert.match(await texte(reduit.p, '#molette .mv-commande'), /Étape suivante/, 'réduit : la boucle se fige')
-  assert.equal(await calc(reduit.p, '#durees .mv-cadre [data-joue]', 'transitionProperty'), 'background-color, border-color, color', 'réduit : le survol reste une couleur, nue')
-  await etape(reduit.p, '#durees'); await etape(reduit.p, '#durees'); await reduit.p.waitForTimeout(150)
-  assert.equal(await calc(reduit.p, '#durees .mv-panneau', 'transitionProperty'), 'opacity', 'réduit : le panneau ne fait que paraître')
-  assert.equal(enMs(await calc(reduit.p, '#durees .mv-panneau', 'transitionDuration')), MOUVEMENT.durees.slow.ms, 'réduit : et garde son cran')
-  /* réduit : la courbe, le départ, l'origine ne sont plus des fautes — leur faute était un déplacement ; la durée, si */
+  const fondus = (p) => p.$$eval('#durees .mv-pose', (es) => es.map((e) => getComputedStyle(e).transitionDuration.split(',')[0]))
+  assert.deepEqual((await fondus(reduit.p)).map(enMs), MS, 'réduit : les fondus gardent les quatre crans')
+  assert.equal(await calc(reduit.p, '#durees .mv-pose', 'transitionProperty'), 'opacity', 'réduit : le fondu seul')
+  assert.match(await calc(libre.p, '#durees .mv-pose', 'transitionProperty'), /opacity, translate/, 'libre : le fondu et la montée')
+  /* réduit : « ça rebondit », « ça naît du néant », « ça s'ouvre du milieu » ne sont plus des fautes — leur faute était un déplacement */
   await reduit.p.locator('#mots').scrollIntoViewIfNeeded()
   const verdicts = {}
-  for (const nom of ['La durée', 'La courbe', 'Le départ', "L'origine"]) { await choisir(reduit.p, nom); await reduit.p.waitForTimeout(60); verdicts[nom] = (await lus(reduit.p))[1][0] }
-  assert.deepEqual(verdicts, { 'La durée': 'ko', 'La courbe': 'bon', 'Le départ': 'bon', "L'origine": 'bon' }, 'réduit : seule la faute de durée reste')
+  for (const m of ['ça rebondit', 'ça naît du néant', "ça s'ouvre du milieu", 'ça saute', 'ça traîne']) { await mot(reduit.p, m); await reduit.p.waitForTimeout(60); verdicts[m] = await verdictMot(reduit.p) }
+  assert.deepEqual(verdicts, { 'ça rebondit': 'bon', 'ça naît du néant': 'bon', "ça s'ouvre du milieu": 'bon', 'ça saute': 'ko', 'ça traîne': 'ko' }, 'réduit : seules les fautes de durée restent')
   await libre.fermer(); await reduit.fermer()
 })
 
@@ -315,7 +294,7 @@ test('6 · le mouvement est une fondation (arbitrage du 7 septembre) : le rail l
   assert.ok(!langages.includes('Mouvement') && fondations.includes('Mouvement'), 'Mouvement a quitté les langages pour les fondations')
   assert.ok(fondations.indexOf('Mouvement') < fondations.indexOf('Tactile'), 'sous Geste, avant Tactile')
   await p.keyboard.press('Escape')
-  assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'six sections'); assert.equal(await p.locator('#mots .mv-choix .bouton').count(), 4, 'quatre choses à comparer')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'six sections')
   assert.equal(await p.locator('#casser .doc-bande').count(), 4, 'quatre bandes')
   assert.equal(await p.locator('#invisibles .doc-liste tbody tr').count(), 8, 'huit lignes en liste')
   assert.equal(await p.locator('#code .doc-code tbody tr').count(), 9, 'neuf lignes de code')
