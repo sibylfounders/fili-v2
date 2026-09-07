@@ -703,8 +703,8 @@ export default function Vue() {
         <main className="gdoc-contenu" id="contenu">
 
           <section className="gdoc-heros">
-            <p className="kicker">Fondation · La composition</p>
-            <h1>Rien n&apos;est faux dans le détail — et l&apos;écran ne se lit pas<span className="point" aria-hidden="true" /></h1>
+            <p className="kicker">La composition</p>
+            <h1>L&apos;œil décide avant vous<span className="point" aria-hidden="true" /></h1>
             <p className="chapo"><b>Les autres fondations règlent une matière : des lettres, des
             distances, des couleurs.</b> Celle-ci règle ce qui arrive quand toutes sont justes et
             que ça ne marche pas quand même — l&apos;ordre du regard, ce qu&apos;il groupe, ce
@@ -717,8 +717,7 @@ export default function Vue() {
               <h2>Un écran juste. Cassez-le, une faute à la fois.</h2>
               <p className="sourd">Au repos, l&apos;écran nomme ses organes — le dominant,
               l&apos;espace blanc, le groupe, l&apos;axe de départ : <b>quatre mots suffisent</b>
-              à parler de composition avec quelqu&apos;un d&apos;autre. Chaque mot est écrit à
-              côté de l&apos;écran et relié par un filet à ce qu&apos;il désigne. Cassez-en
+              à parler de composition avec quelqu&apos;un d&apos;autre. Cassez-en
               un, et les repères deviennent rouges à l&apos;endroit exact où ça casse.
               <b> Survolez l&apos;écran</b> — il se répare sous vos yeux.</p>
             </div>

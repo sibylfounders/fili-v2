@@ -1,42 +1,46 @@
 "use client";
 import { useState } from "react";
 import { RailDoc, useDocSections, type Sommaire } from "../rail";
-import { PanneauCode } from "../apercu";
-import { useAdaptation } from "../adaptation";
-import { chaine, INTENTIONS, CHARTE, BORNES } from "../../derivation.mjs";
+import { Bandes, Bande, ListeRegles, PanneauRegistre } from "../etages";
+import type { LigneListe, LigneCode } from "../etages";
+import { chaine, CHARTE, BORNES } from "../../derivation.mjs";
 import "./arrondis.css";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   PAGE ARRONDIS — gabarit « documentaire nu », même squelette que la page
-   Rythme (pièce de référence kit-rythme-nu.html, verdict PARFAIT).
-   Pièce libre jugée par l'Auteur le 25 août 2026 (« très mature »), puis
-   versée ici : claude/livrables/kit-arrondis-nu.html. Migrée sur le
-   registre unique le 25 août 2026 (les huit décisions, séance sur pièce).
+   PAGE ARRONDIS — gabarit « documentaire nu ». Pièce libre jugée par
+   l'Auteur le 25 août 2026 (« très mature »), migrée sur le registre
+   unique le 25 août, passée à la voix d'Auteur et au gabarit des étages
+   le 2 septembre.
 
-   Deux étages (formule de contenu du 24 août) :
-   · trois preuves mises en scène, chacune de nature différente et sur son
-     propre objet — la fiche d'arrêt de Navette branchée sur la racine
-     (situation), le labo du coin (variation), la liste fermée de la
-     pilule (vocabulaire) ;
-   · le répertoire — la chaîne selon l'intention, les pièges, les règles.
+   · LES PREUVES (01 à 03) — sans gabarit, c'est la part de séduction et
+     elle diffère d'une page à l'autre : LA PROFONDEUR (situation — la
+     fiche d'arrêt de Navette branchée sur la racine), LE COIN (variation
+     — le labo du coin intérieur), LA PILULE (vocabulaire — la liste
+     fermée). Leur FORME est conservée ; seul leur texte a été repris.
+   · LES TROIS ÉTAGES (04 à 06) — au gabarit commun d'etages.tsx, comme
+     Rythme, Typo et Couleur : les six pièges deviennent six bandes qui
+     montrent le juste au repos et commettent la faute au clic ; la liste
+     des règles qu'aucune image ne prouve ; le registre des six coins.
 
-   Un geste de couleur par écran (CG3) : le point du titre, la scène verte
-   de la première preuve ; la scène sombre du labo porte le vert et le
-   rouge comme VERDICTS (décision d'Auteur, 25 août), pas comme décor.
+   Ce qui a quitté la page le 2 septembre : le sélecteur de six types de
+   produit et sa table. Il réglait la même chose que les trois densités de
+   la page Rythme — la base — et deux commandes qui règlent la même chose
+   à deux endroits perdent le lecteur. L'extrait prêt à coller et sa
+   bascule HTML / React / Angular sont retirés aussi.
 
    La famille des coins, telle que le registre la porte (décisions 2 et 3) :
-   · la coque porte la racine (16 à la charte), ÷ 2 par niveau : coque,
-     carte, ligne, marque — un conteneur prend le cran de sa PROFONDEUR,
-     jamais de sa taille ;
+   · le container porte la racine (16 à la charte), ÷ 2 par niveau —
+     container, card, row, marque : un container prend le cran de sa
+     PROFONDEUR, jamais de sa taille ;
    · la marge d'une surface ne descend jamais sous son coin ;
-   · un composant prend le coin de la ligne : racine ÷ 4 (4 à la charte) —
-     réglé par la racine du produit, jamais par l'écran ni la densité ;
+   · un composant prend le coin de la row : racine ÷ 4 — réglé par la
+     racine du produit, jamais par l'écran ni la densité ;
    · la racine est bornée à 38 ; les coins ne glissent pas avec l'écran ;
    · la pilule est une forme réservée à une liste fermée.
+
    Les démos ne recopient aucune table : elles appellent chaine() du moteur
-   (derivation.mjs) avec la racine du curseur ou l'intention choisie, et
-   posent le résultat en variables --ar-* ; le chrome de la page, lui,
-   consomme le registre.
+   avec la racine du curseur, et posent le résultat en variables --ar-*.
+   Les styles propres à la page vivent dans arrondis.css.
    ═══════════════════════════════════════════════════════════════════════ */
 
 const r1 = (v: number) => Math.round(v * 10) / 10;
@@ -47,12 +51,10 @@ const fmt = (v: number) => String(r1(v)).replace(".", ",");
 type Entrees = { base?: number; intervalle?: number; racine?: number };
 type Socle = { r: number[]; rCtl: number; pad: number[]; gap: number[]; edge: number };
 const socle = (e: Entrees): Socle => chaine(e) as Socle;
-type Intention = { nom: string; base: number; intervalle: number; racine: number; note: string };
-const INTENTS = INTENTIONS as Intention[];
 const RACINE_MAX: number = BORNES.racine[1];
 
 /* ── 01 · La fiche d'arrêt de Navette — un seul nombre, toute la chaîne.
-   Panneau, carte, ligne, marque : coin ÷ 2 par profondeur ; marge de
+   Container, card, row, marque : coin ÷ 2 par profondeur ; marge de
    profondeur, qui ne descend jamais sous le coin ; l'espace entre deux
    frères vaut leur marge. Les boutons sont des composants : le coin de
    la ligne, racine ÷ 4. ── */
@@ -71,7 +73,7 @@ function FicheNavette({ racine }: { racine: number }) {
   } as React.CSSProperties;
   return (
     <div className="ar-tel" style={style} role="img"
-      aria-label="Navette, fiche de l'arrêt Place des Tilleuls : un panneau, une carte de départs, trois lignes, deux boutons">
+      aria-label="Navette, fiche de l'arrêt Place des Tilleuls : un container, une card de départs, trois rows, deux boutons">
       <div className="ar-ecran">
         <div className="ar-fond" aria-hidden="true"><div className="barre" /><div className="barre c" /><div className="plan" /></div>
         <div className="ar-voile" aria-hidden="true" />
@@ -197,157 +199,12 @@ function Planche() {
   );
 }
 
-/* ── 04 · La chaîne selon l'intention — les préréglages du moteur, une
-   seule table pour tout le kit (INTENTIONS), calculée par chaine(). ── */
-function Chaine({ i }: { i: number }) {
-  const t = INTENTS[i];
-  const s = socle({ base: t.base, intervalle: t.intervalle, racine: t.racine });
-  const lignes: [number, string, string][] = [
-    [0, "le panneau, la fenêtre, le toast", "coque · la racine"],
-    [1, "la carte dans le panneau", "carte · profondeur 2"],
-    [2, "la ligne dans la carte", "ligne · profondeur 3"],
-    [3, "la marque, la vignette, la puce", "marque · profondeur 4"],
-  ];
-  return (
-    <div style={{ display: "grid", gap: "var(--gap-2-block)" }}>
-      <div style={{ overflowX: "auto" }}>
-        <table className="tableau ar-table">
-          <thead><tr><th>Objet</th><th>Famille</th><th>Coin</th><th>Marge</th></tr></thead>
-          <tbody>
-            {lignes.map(([k, objet, famille]) => (
-              <tr key={k}>
-                <td><span className="ar-ex" style={{ borderTopLeftRadius: `${s.r[k]}px` }} />{objet}</td>
-                <td>{famille}</td>
-                <td className="mono">{fmt(s.r[k])}</td>
-                <td className="mono">{k < 3 ? fmt(s.pad[k]) : "—"}</td>
-              </tr>
-            ))}
-            <tr><td><span className="ar-ex" style={{ borderTopLeftRadius: `${s.rCtl}px` }} />bouton, champ, sélecteur</td><td>composant · le coin de la ligne</td><td className="mono">{fmt(s.rCtl)}</td><td className="mono">{fmt(s.pad[2])}</td></tr>
-            <tr><td><span className="ar-ex" style={{ borderTopLeftRadius: "var(--r-pill)" }} />pastille, avatar, interrupteur, onglets</td><td>pilule · liste fermée</td><td className="mono">plein</td><td className="mono">—</td></tr>
-            <tr><td><span className="ar-ex" />l&apos;angle droit</td><td>absent de l&apos;échelle</td><td className="mono">—</td><td className="mono">—</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <span className="gd-legende">
-        {t.nom} — base {t.base} · racine {t.racine} · intervalle {t.note} : coin ÷ 2 par profondeur · marge ÷ intervalle
-        par profondeur, jamais sous le coin · composant = racine ÷ 4 · le coin ne glisse pas avec l&apos;écran
-      </span>
-    </div>
-  );
-}
+/* La table « la chaîne selon l'intention » et son sélecteur de six types de
+   produit sont retirés le 2 septembre 2026 (verdict d'Auteur) : ils réglaient
+   la même chose que les trois densités de la page Rythme — la base — et deux
+   commandes qui règlent la même chose à deux endroits perdent le lecteur. Le
+   registre des six coins vit désormais dans l'étage « dans le code ». */
 
-/* ── 05 · L'adaptation — le même système, dans votre stack. Le normatif
-   est la règle et le jeton : quatre coins de profondeur (r-1 … r-4), le
-   coin du composant (r-ctl) et la pilule (r-pill) ; React, Angular ou
-   HTML n'en sont que des consommateurs. ── */
-const SNIPPETS: Record<string, Record<string, string>> = {
-  React: {
-    Tailwind: `// tailwind.config : theme.extend <- rhythm (tokens.tailwind.mjs)
-// rounded-1 … rounded-4, rounded-ctl, rounded-pill — des variables, jamais des nombres
-export function FicheArret({ enfants }) {
-  return (
-    <section className="rounded-t-1 py-pad-1-block px-pad-1-inline">   {/* le panneau : la coque, la racine */}
-      <div className="rounded-2 py-pad-2-block px-pad-2-inline">          {/* la carte : un cran plus bas */}
-        <div className="rounded-3 py-pad-3-block px-pad-3-inline">{enfants}</div>  {/* la ligne : encore un cran */}
-      </div>
-      <button className="rounded-ctl h-control">Itinéraire</button>  {/* le composant : le coin de la ligne */}
-    </section>
-  );
-}`,
-    shadcn: `// shadcn/ui lit UN rayon (--radius) et en dérive ses crans : on lui
-// donne le coin du composant, la chaîne au-dessus reste la nôtre
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-
-export function FicheArret({ enfants }) {
-  return (
-    <section className="rounded-t-1 py-pad-1-block px-pad-1-inline">
-      <Card className="rounded-2">
-        <CardContent className="py-pad-2-block px-pad-2-inline">{enfants}</CardContent>
-      </Card>
-      <Button>Itinéraire</Button>   {/* rounded-md = var(--r-ctl) */}
-    </section>
-  );
-}`,
-    "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
-export function FicheArret({ enfants }) {
-  return (
-    <section className="panneau">
-      <div className="carte"><div className="ligne">{enfants}</div></div>
-      <button className="bouton">Itinéraire</button>
-    </section>
-  );
-}
-
-/* styles.css — la chaîne descend, le composant prend le coin de la ligne */
-.panneau { border-radius: var(--r-1) var(--r-1) 0 0; padding: var(--pad-1-block) var(--pad-1-inline); }
-.carte   { border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); }
-.ligne   { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
-.bouton  { border-radius: var(--r-ctl); min-height: var(--control-height); }
-.pastille{ border-radius: var(--r-pill); }         /* la pilule : une forme, pas un cran */`,
-  },
-  Angular: {
-    Tailwind: `@Component({
-  selector: "kit-fiche-arret",
-  template: \`
-    <section class="rounded-t-1 py-pad-1-block px-pad-1-inline">
-      <div class="rounded-2 py-pad-2-block px-pad-2-inline">
-        <div class="rounded-3 py-pad-3-block px-pad-3-inline"><ng-content /></div>
-      </div>
-      <button class="rounded-ctl h-control">Itinéraire</button>
-    </section>\`,
-})
-export class FicheArret {}`,
-    shadcn: `// spartan/ui porte l'esprit de shadcn côté Angular — mêmes classes,
-// donc mêmes jetons : le --radius de shadcn reçoit --r-ctl pour le composant, la chaîne pour le reste
-@Component({
-  selector: "kit-fiche-arret",
-  template: \`
-    <section class="rounded-t-1 py-pad-1-block px-pad-1-inline">
-      <hlm-card class="rounded-2"><div hlmCardContent><ng-content /></div></hlm-card>
-      <button hlmBtn>Itinéraire</button>
-    </section>\`,
-})
-export class FicheArret {}`,
-    "HTML natif": `@Component({
-  selector: "kit-fiche-arret",
-  template: \`
-    <section class="panneau">
-      <div class="carte"><div class="ligne"><ng-content /></div></div>
-      <button class="bouton">Itinéraire</button>
-    </section>\`,
-  styleUrl: "./fiche-arret.css", // var(--r-1) · var(--r-2) · var(--r-3) · var(--r-ctl)
-})
-export class FicheArret {}`,
-  },
-  HTML: {
-    Tailwind: `<section class="rounded-t-1 py-pad-1-block px-pad-1-inline">
-  <div class="rounded-2 py-pad-2-block px-pad-2-inline">
-    <div class="rounded-3 py-pad-3-block px-pad-3-inline">Hôpital Nord · 2 min</div>
-  </div>
-  <button class="rounded-ctl h-control">Itinéraire</button>
-</section>`,
-    shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
-     ses classes Tailwind — rounded-md y résout notre --r-ctl -->
-<section class="rounded-t-1 py-pad-1-block px-pad-1-inline">
-  <div class="rounded-2 border bg-card py-pad-2-block px-pad-2-inline">…</div>
-  <button class="rounded-md">Itinéraire</button>
-</section>`,
-    "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
-
-<section class="panneau">
-  <div class="carte"><div class="ligne">Hôpital Nord · 2 min</div></div>
-  <button class="bouton">Itinéraire</button>
-</section>
-
-<style>
-  .panneau { border-radius: var(--r-1) var(--r-1) 0 0; padding: var(--pad-1-block) var(--pad-1-inline); }
-  .carte   { border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); }
-  .ligne   { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
-  .bouton  { border-radius: var(--r-ctl); }
-</style>`,
-  },
-};
 
 /* ── Les règles — dans les dépliants « Règles & sources » de leur preuve ── */
 type Src = { t: string; h: string };
@@ -357,7 +214,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; src: Src
     enonce: "Propriété d'identité, pas d'état : aucun sélecteur de survol, focus, erreur ou sélection ne modifie un coin déclaré au repos.",
     src: [{ t: "RADIUS-UX 1.3.0 — R02", h: "#" }] },
   { id: "a2", nom: "2", titre: "Tout coin vient de la chaîne",
-    enonce: "Chaque coin résout un cran de la chaîne — coque, carte, ligne, marque, ou le coin du composant ; aucune valeur en dur. Une racine, et tout descend.",
+    enonce: "Chaque coin résout un cran de la chaîne — container, card, row, marque, ou le coin du composant ; aucune valeur en dur. Une racine, et tout descend.",
     src: [{ t: "RADIUS-UX 1.3.0 — R03", h: "#" }, DECISIONS] },
   { id: "a3", nom: "3", titre: "Jamais un pourcentage, jamais un calcul",
     enonce: "Le coin est un cran choisi, jamais dérivé d'un pourcentage ni d'une fraction de la hauteur — la dérive proportionnelle fabrique des pilules accidentelles.",
@@ -378,17 +235,17 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; src: Src
       { t: "Apple HIG — Buttons (« prefer circular or capsule-shape buttons »)", h: "https://developer.apple.com/design/human-interface-guidelines/buttons" },
       { t: "Fluent 2 — Shapes (la pilule pour les tags, le rectangle pour les boutons)", h: "https://fluent2.microsoft.design/shapes" }] },
   { id: "a8", nom: "8", titre: "Un jeton déclare ses consommateurs",
-    enonce: "Chaque jeton de coin porte au moins un consommateur nommé : la coque, la carte, la ligne, la marque, le composant, la pilule.",
+    enonce: "Chaque jeton de coin porte au moins un consommateur nommé : le container, la card, la row, la marque, le composant, la pilule.",
     src: [{ t: "RADIUS-UX 1.3.0 — R09", h: "#" }] },
   { id: "a9", nom: "9", titre: "L'angle droit n'a pas de jeton",
     enonce: "Rien n'est carré par défaut dans ce système — décision d'identité. Une racine nulle reste possible par arbitrage journalisé (intention « Technique ») ; ce n'est pas un cran, c'est une racine. La case à cocher reste anguleuse : exception dite.",
     src: [{ t: "RADIUS-UX 1.3.0 — R10", h: "#" }, { t: "Sibyl — la théorie, v2, §7", h: "#" }, DECISIONS] },
   { id: "a10", nom: "10", titre: "Conteneur ou composant, la question qui décide tout",
-    enonce: "Un conteneur (carte, encart, fenêtre superposée, liste flottante, toast) prend le cran de sa profondeur, jamais de sa taille ; un composant prend le coin de la ligne — la racine divisée par quatre — qui suit la racine du produit et ne suit ni l'écran ni la densité ; la pilule est la liste fermée de la règle 7. Ni l'importance, ni l'état, ni le goût de l'écran n'entrent dans le choix.",
+    enonce: "Un container (card, encart, fenêtre superposée, liste flottante, toast) prend le cran de sa profondeur, jamais de sa taille ; un composant prend le coin de la row — la racine divisée par quatre — qui suit la racine du produit et ne suit ni l'écran ni la densité ; la pilule est la liste fermée de la règle 7. Ni l'importance, ni l'état, ni le goût de l'écran n'entrent dans le choix.",
     src: [{ t: "RADIUS-UX 1.3.0 — R12", h: "#" }, { t: "Sibyl — la théorie, v2, §2 et §8", h: "#" }, DECISIONS] },
   { id: "pente", nom: "pente", titre: "Marge et coin, même pente",
-    enonce: "La marge d'une surface ne descend jamais sous son coin : quand la racine grandit, la marge de la coque la rattrape et monte avec elle. C'est la seule façon dont un coin touche à un espace.",
-    src: [{ t: "Relevé Coursue, 24 août 2026", h: "#" }, { t: "Sibyl — la théorie, v2, §1 « dégagement »", h: "#" }, DECISIONS] },
+    enonce: "La marge d'une surface ne descend jamais sous son coin : quand la racine grandit, la marge du container la rattrape et monte avec elle. C'est la seule façon dont un coin touche à un espace.",
+    src: [{ t: "Relevé d'application, 24 août 2026", h: "#" }, { t: "Sibyl — la théorie, v2, §1 « dégagement »", h: "#" }, DECISIONS] },
   { id: "degagement", nom: "candidate", titre: "Le dégagement d'angle",
     enonce: "Marge intérieure ≥ 0,293 × coin, sinon le contenu entre dans l'arc. Seule raison légitime de gonfler une marge avec l'arrondi, en largeur uniquement.",
     src: [{ t: "Sibyl — la théorie, v2, §1", h: "#" }, { t: "Moteur des neuf invariants — i3", h: "#" }] },
@@ -425,21 +282,245 @@ function Dial({ id, label, min, max, step, value, onChange }: {
   );
 }
 
+/* ══════════════════════════════════════════════════════════════════════
+   LES SIX PIÈGES — plan de preuves validé par l'Auteur le 2 septembre 2026,
+   après trois reproches sur la première version :
+   · les objets de démonstration n'avaient pas de traitement à eux et
+     disparaissaient sur leur scène ;
+   · la faute était cachée derrière un clic, si bien que le juste et le
+     faux ne cohabitaient jamais ;
+   · deux pièges — le pourcentage, la saturation — ne PEUVENT PAS se
+     montrer sur une figure immobile : leur faute n'existe qu'en mouvement.
+
+   D'où trois principes, tenus par les six scènes :
+   1. Le juste et le faux sont côte à côte, en permanence. Rien derrière un
+      clic : une faute d'arrondi ne se voit jamais sur un objet isolé.
+   2. La commande, quand il y en a une, ne bascule pas entre juste et faux —
+      elle fait bouger LA VARIABLE qui révèle la faute (la racine, la
+      longueur du texte, la hauteur). C'est le mouvement qui démontre.
+   3. Les objets portent un traitement à eux — fond de page et filet — parce
+      qu'ici la FORME est le sujet : un objet sans contour est un fantôme.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Le couple juste / faux : deux objets et ce qu'ils disent d'eux-mêmes. */
+function Duo({ juste, faux, ditJuste, ditFaux }: {
+  juste: React.ReactNode; faux: React.ReactNode; ditJuste: string; ditFaux: string;
+}) {
+  return (
+    <div className="ar-duo">
+      <div className="ar-duo-un">
+        {juste}
+        <span className="mono ar-duo-dit">{ditJuste}</span>
+      </div>
+      <div className="ar-duo-un" data-intent="statement">
+        {faux}
+        <span className="mono ar-duo-dit ko">{ditFaux}</span>
+      </div>
+    </div>
+  );
+}
+
+/* 1 · La valeur en dur — la racine bouge, l'une suit, l'autre reste. */
+const DUR = 10; /* hors chaîne : la valeur écrite à la main, le sujet de la démonstration */
+function PiegeDur() {
+  const [r, setR] = useState<number>(CHARTE.racine);
+  const s = socle({ racine: r });
+  return (
+    <div className="ar-scene">
+      <Dial id="ar-p-dur" label="La racine du produit" min={0} max={RACINE_MAX} step={2} value={r} onChange={setR} />
+      <Duo
+        juste={<span className="ar-obj ar-obj-boite" style={{ borderRadius: `${s.r[1]}px` }} />}
+        faux={<span className="ar-obj ar-obj-boite" style={{ borderRadius: `${DUR}px` }} />}
+        ditJuste={`le cran de la card — ${fmt(s.r[1])} px`}
+        ditFaux={`${DUR} px, écrits à la main`}
+      />
+    </div>
+  );
+}
+
+/* 2 · Le pourcentage — le texte s'allonge, la faute apparaît. */
+const MOTS = ["Nouveau", "sur", "votre", "ligne", "de", "ce", "matin"];
+function PiegePct() {
+  const [n, setN] = useState(2);
+  const texte = MOTS.slice(0, n).join(" ");
+  return (
+    <div className="ar-scene">
+      <Dial id="ar-p-pct" label="La longueur du texte" min={1} max={MOTS.length} step={1} value={n} onChange={setN} />
+      <Duo
+        juste={<span className="ar-obj ar-obj-etiq">{texte}</span>}
+        faux={<span className="ar-obj ar-obj-etiq" style={{ borderRadius: "50%" }}>{texte}</span>}
+        ditJuste="le cran du composant"
+        ditFaux="50 % de la hauteur"
+      />
+    </div>
+  );
+}
+
+/* 3 · Les voisins dépareillés — deux rangées, l'œil tranche seul. */
+function Rangee({ coinBouton }: { coinBouton: string }) {
+  return (
+    <span className="ar-rangee">
+      <span className="ar-obj ar-obj-champ">prenom@exemple.fr</span>
+      <span className="ar-obj ar-obj-bouton" style={{ borderRadius: coinBouton }}>Envoyer</span>
+    </span>
+  );
+}
+function PiegeVoisins() {
+  return (
+    <div className="ar-scene">
+      <Duo
+        juste={<Rangee coinBouton="var(--r-ctl)" />}
+        faux={<Rangee coinBouton="var(--r-2)" />}
+        ditJuste="le même cran pour les deux"
+        ditFaux="deux crans dans la même rangée"
+      />
+    </div>
+  );
+}
+
+/* 4 · Le survol qui arrondit — la faute, c'est vous qui la provoquez. */
+function PiegeEtat() {
+  return (
+    <div className="ar-scene">
+      <Duo
+        juste={<button type="button" className="ar-obj ar-obj-bouton">Enregistrer</button>}
+        faux={<button type="button" className="ar-obj ar-obj-bouton ar-obj-mou">Enregistrer</button>}
+        ditJuste="survolez : le coin ne bouge pas"
+        ditFaux="survolez : le coin change"
+      />
+    </div>
+  );
+}
+
+/* 5 · Le coin saturé — un seuil qu'on franchit sans le décider. */
+const COIN_SAT = 24; /* hors chaîne : le coin de la démonstration, celui qui va saturer */
+function PiegeSature() {
+  const [h, setH] = useState(56);
+  const sature = COIN_SAT > h / 2;
+  return (
+    <div className="ar-scene">
+      <Dial id="ar-p-sat" label="La hauteur de la boîte" min={20} max={72} step={2} value={h} onChange={setH} />
+      <Duo
+        juste={<span className="ar-obj ar-obj-boite" style={{ height: `${h}px`, borderRadius: "var(--r-ctl)" }} />}
+        faux={<span className="ar-obj ar-obj-boite" style={{ height: `${h}px`, borderRadius: `${COIN_SAT}px` }} />}
+        ditJuste="le cran du composant"
+        ditFaux={`coin ${COIN_SAT} sur ${h} de haut`}
+      />
+      {/* Le verdict se LIT sur la scène : le coin sature dès qu'il dépasse la
+          moitié du petit côté. Il n'est pas décrété par un bouton. */}
+      <span className={`badge ${sature ? "ko" : "bon"}`}>
+        {sature ? "le coin a dépassé la moitié de la hauteur — la boîte est devenue une pilule" : "le coin tient sous la moitié de la hauteur"}
+      </span>
+    </div>
+  );
+}
+
+/* 6 · Le contenu dans l'arc — la courbe mange le texte. */
+function PiegeArc() {
+  return (
+    <div className="ar-scene">
+      <Duo
+        juste={<span className="ar-obj ar-obj-arc">14:02</span>}
+        faux={<span className="ar-obj ar-obj-arc ar-obj-serre">14:02</span>}
+        ditJuste="la marge respecte la courbe"
+        ditFaux="une marge d'un pixel pour un coin de douze"
+      />
+    </div>
+  );
+}
+
+const PIEGES: { cle: string; nom: string; cote: string; dit: string; regles: string[]; scene: React.ReactNode }[] = [
+  { cle: "dur", nom: "La valeur en dur", cote: "la racine bouge, elle non",
+    dit: "Un coin qui n'est pas un cran ne bouge pas quand la racine bouge. Il a l'air juste aujourd'hui, et il est déjà faux demain — le jour où le produit change de racine, lui seul restera en arrière. Tournez la racine et regardez-les se séparer.",
+    regles: ["a2", "a8"], scene: <PiegeDur /> },
+  { cle: "pct", nom: "Le pourcentage", cote: "la faute dort jusqu'au contenu",
+    dit: "Un coin dérivé de la hauteur ne se voit pas tant que le texte est court. Allongez-le : la forme se met à fondre toute seule, et personne n'aura vu venir la gélule.",
+    regles: ["a3"], scene: <PiegePct /> },
+  { cle: "vois", nom: "Les voisins dépareillés", cote: "deux crans dans une rangée",
+    dit: "Un champ et un bouton de même taille, côte à côte, avec deux coins différents. L'œil lit deux systèmes dans la même rangée, et personne ne sait dire lequel est le bon.",
+    regles: ["a4", "a10"], scene: <PiegeVoisins /> },
+  { cle: "etat", nom: "Le survol qui arrondit", cote: "le coin dit l'identité",
+    dit: "La couleur, l'ombre et l'anneau sont là pour dire l'état. Le coin, lui, dit ce que l'objet EST — s'il change sous la main, l'objet change d'identité en cours de route. Passez la souris sur les deux boutons.",
+    regles: ["a1"], scene: <PiegeEtat /> },
+  { cle: "sat", nom: "Le coin saturé", cote: "un seuil, pas une pente",
+    dit: "Au-delà de la moitié du petit côté, le coin s'écrase et la surface devient une pilule sans l'avoir demandé. Réduisez la hauteur : vous verrez le moment exact où ça bascule.",
+    regles: ["saturation", "a7"], scene: <PiegeSature /> },
+  { cle: "arc", nom: "Le contenu dans l'arc", cote: "marge ≥ trois dixièmes du coin",
+    dit: "La marge intérieure vaut au moins trois dixièmes du coin, sinon le texte entre dans la courbe. C'est la seule raison légitime de gonfler une marge à cause d'un arrondi.",
+    regles: ["degagement", "pente"], scene: <PiegeArc /> },
+];
+
+/* ── Étage « en liste » — ce qu'aucune image ne prouve. ── */
+const LISTE: LigneListe[] = [
+  { nom: "Conteneur ou composant, la question qui décide tout",
+    dit: "Un conteneur prend le cran de sa profondeur, jamais celui de sa taille ; un composant prend le coin de la ligne. Ni l'importance, ni l'état, ni le goût de l'écran n'entrent dans le choix.",
+    ou: "dans le code" },
+  { nom: "Tout coin vient de la chaîne",
+    dit: "Chaque coin résout un cran — le container, la card, la row, la marque, ou le coin du composant. Aucune valeur en dur : une racine, et tout descend.",
+    ou: "dans le code" },
+  { nom: "Un jeton déclare ses consommateurs",
+    dit: "Chaque jeton de coin porte au moins un consommateur nommé. Un cran que rien ne consomme sort du registre.",
+    ou: "dans le code" },
+  { nom: "L'angle droit n'a pas de jeton",
+    dit: "Rien n'est carré par défaut dans ce système — c'est une décision d'identité. Une racine nulle reste possible par arbitrage écrit ; ce n'est pas un cran, c'est une racine. La case à cocher reste anguleuse : exception dite.",
+    ou: "nulle part — décision d'Auteur", ton: "auteur" },
+  { nom: "Les coins ne suivent ni l'écran ni la densité",
+    dit: "Un coin est réglé par la racine du produit. Les marges, les espaces, le texte et la cible glissent avec la largeur ; les coins, non — un coin qui change avec l'écran change la marque.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+  { nom: "Marge et coin, même pente",
+    dit: "La marge d'une surface ne descend jamais sous son coin : quand la racine grandit, la marge du container la rattrape et monte avec elle. C'est la seule façon dont un coin touche à un espace.",
+    ou: "dans le code" },
+  { nom: "L'anneau de focus est concentrique, à l'envers",
+    dit: "Posé à l'extérieur d'un composant, l'anneau prend le coin du composant augmenté de son écart — ce que le navigateur fait tout seul quand on le laisse faire.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+];
+
+/* ── Étage « dans le code » — les valeurs sont LUES dans le registre calculé
+   à la charte, jamais recopiées : si la racine bouge, ce tableau bouge. ── */
+const REGISTRE = socle({});
+const CODE: LigneCode[] = [
+  { regle: "Le container",
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-1)</span></>,
+    produit: fmt(REGISTRE.r[0]) + " px", note: "la racine du produit — le cran le plus haut de la chaîne" },
+  { regle: "La card, dans le container",
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-2)</span></>,
+    produit: fmt(REGISTRE.r[1]) + " px", note: "la racine divisée par deux" },
+  { regle: "La row, dans la card",
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-3)</span></>,
+    produit: fmt(REGISTRE.r[2]) + " px", note: "encore divisée par deux — un enfant n'est jamais plus rond que son parent" },
+  { regle: "Un bouton, un champ, un sélecteur",
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-ctl)</span></>,
+    produit: fmt(REGISTRE.rCtl) + " px", note: "le coin de la row : un composant ne prend pas le cran de sa taille" },
+  { regle: "La marque, la vignette, la puce", repli: true,
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-4)</span></>,
+    produit: fmt(REGISTRE.r[3]) + " px", note: "le dernier cran de la chaîne" },
+  { regle: "La pastille, l'avatar, l'interrupteur", repli: true,
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">var(--r-pill)</span></>,
+    produit: "plein", note: "une forme réservée à une liste fermée, jamais un cran de la chaîne" },
+  { regle: "La marge qui va avec le coin", repli: true,
+    ecrit: <><span className="cs-kw">padding</span>: <span className="cs-var">var(--pad-2-block) var(--pad-2-inline)</span></>,
+    produit: fmt(REGISTRE.pad[1]) + " px", note: "elle ne descend jamais sous le coin de sa surface" },
+  { regle: "L'angle droit", repli: true,
+    ecrit: <><span className="cs-kw">border-radius</span>: <span className="cs-var">0</span></>,
+    produit: "aucun jeton", note: "rien n'est carré par défaut ici — une racine nulle est une racine, pas un cran" },
+  { regle: "La racine du produit", repli: true,
+    ecrit: <><span className="cs-kw">--r-1</span>: <span className="cs-var">{fmt(CHARTE.racine)}px</span></>,
+    produit: "toute la chaîne se recalcule", note: "un seul nombre engendre les six coins ; il est borné à " + fmt(RACINE_MAX) },
+];
+
 const SOMMAIRE: Sommaire = [
   ["profondeur", "01", "La profondeur"],
   ["coin", "02", "Le coin"],
   ["pilule", "03", "La pilule"],
-  ["repertoire", "04", "Le répertoire"],
-  ["adaptation", "05", "L'adaptation"],
+  ["casser", "04", "Les règles qu'on peut casser"],
+  ["invisibles", "05", "Les règles qu'on ne peut pas montrer"],
+  ["code", "06", "Dans le code"],
 ];
 
 export default function Vue() {
   const [racine, setRacine] = useState<number>(CHARTE.racine);
   const [ri, setRi] = useState(12);
   const [ecart, setEcart] = useState(12);
-  const [intention, setIntention] = useState(1);
-  const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const { styl } = useAdaptation();
   const actifId = useDocSections("profondeur");
   const s = socle({ racine });
   const dL = ecart * Math.SQRT2, pct = ecart > 0 ? Math.round((dL / ecart - 1) * 100) : 0;
@@ -452,13 +533,15 @@ export default function Vue() {
         <main className="gdoc-contenu" id="contenu">
 
           <section className="gdoc-heros">
-            <p className="kicker">Fondation · Les arrondis</p>
-            <h1>Un coin ne se choisit pas, il se déduit<span className="point" aria-hidden="true" /></h1>
+            <p className="kicker">Les arrondis</p>
+            <h1>Un seul nombre dessine tous les coins de cette page<span className="point" aria-hidden="true" /></h1>
             <p className="chapo">
-              Le coin d&apos;un objet dit ce qu&apos;il est et où il vit : un conteneur prend le
-              coin de sa profondeur, un composant prend celui de la ligne, la pilule est une forme réservée.
-              <b> Un seul nombre engendre toute la chaîne</b> — personne ne choisit plus un coin, et
-              l&apos;écran n&apos;y touche pas.
+              Demandez à trois personnes d&apos;arrondir le même bouton : vous aurez
+              trois valeurs, et aucune ne saura dire pourquoi la sienne. Le coin n&apos;est pourtant
+              pas une affaire de goût — il dit ce qu&apos;un objet <b>est</b> et où il vit. Un
+              container prend le coin de sa profondeur, un composant celui de la row, et la pilule
+              est une forme réservée à quelques objets nommés. Tout ça descend d&apos;un seul
+              nombre, et l&apos;écran n&apos;y touche jamais.
             </p>
           </section>
 
@@ -467,11 +550,12 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">01 · La profondeur</p>
               <h2>La profondeur choisit le coin, personne d&apos;autre</h2>
-              <p className="sourd">Quand chaque écran choisit ses coins, deux cartes voisines ne se
-              ressemblent plus. Ici, tout descend d&apos;un seul nombre : tourne la racine, le panneau,
-              la carte, la ligne et la marque suivent, leur marge intérieure avec eux, et les boutons
-              prennent le coin de la ligne. Poussée au bout, la racine fait monter la marge du panneau
-              avec elle — c&apos;est pour ça qu&apos;elle a une borne.</p>
+              <p className="sourd">Quand chaque écran choisit ses coins, deux cards voisines finissent
+              par ne plus se ressembler — et personne ne sait à quel moment ça a dérapé. Tournez la
+              racine : le container, la card, la row et la marque suivent d&apos;un bloc, leurs marges
+              avec eux, et les boutons prennent le coin de la row. Poussez-la au bout, et vous verrez
+              la marge du container monter avec elle : c&apos;est exactement pour ça qu&apos;elle a
+              une borne.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -488,7 +572,7 @@ export default function Vue() {
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>« On ne choisit jamais un coin : la profondeur le choisit, divisé par deux à chaque
-                niveau. » Le registre porte quatre coins de profondeur — la coque, la carte, la ligne,
+                niveau. » Le registre porte quatre coins de profondeur — le container, la card, la row,
                 la marque — et le coin du composant, qui est celui de la ligne : le bouton, le champ,
                 le sélecteur le prennent tel quel. Une racine, tout descend ; l&apos;écran et la
                 densité n&apos;y touchent pas.</p>
@@ -503,9 +587,10 @@ export default function Vue() {
               <p className="kicker">02 · Le coin</p>
               <h2>Un coin intérieur épouse celui qui le contient</h2>
               <p className="sourd">Deux arrondis identiques séparés par un espace ne sont jamais
-              parallèles : dans le coin, l&apos;écart se creuse de 41 %. L&apos;œil l&apos;attrape avant de
-              savoir le nommer — c&apos;est l&apos;oreille de la modale. Même intérieur, même écart ;
-              seul le coin extérieur change.</p>
+              parallèles : dans l&apos;angle, l&apos;écart se creuse de moitié. Vous l&apos;avez
+              déjà vu sans savoir le nommer — c&apos;est cette petite oreille disgracieuse au coin
+              des fenêtres. Ici, le contenu et l&apos;écart ne bougent pas : seul le coin extérieur
+              change, et vous voyez le moment où l&apos;intérieur redevient parallèle.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -544,11 +629,13 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">03 · La pilule</p>
               <h2>La pilule est un passeport, pas un cran</h2>
-              <p className="sourd">Le rayon plein n&apos;a pas de valeur : il sature. Quatre objets de
-              Navette y ont droit. Un cinquième frappe à la porte et n&apos;entrera pas — un texte qui
-              passe à la ligne devient une gélule. Et un sixième cas n&apos;est pas une faute de forme
-              du tout : <b>un bouton peut être en pilule</b> — c&apos;est ce que font Material 3 et
-              Apple — mais sans son fond plein, court, il se confond avec une puce.</p>
+              <p className="sourd">Le rayon plein n&apos;a pas de valeur : il sature, c&apos;est tout ou
+              rien. Quatre objets y ont droit chez Navette, et la liste est fermée — un cinquième
+              frappe à la porte et n&apos;entrera pas, parce qu&apos;un texte qui passe à la ligne
+              se transforme en gélule. Le dernier cas n&apos;est pas une faute de forme du tout :
+              <b>un bouton a le droit d&apos;être en pilule</b>, Material 3 et Apple en font même
+              leur forme par défaut. Ce qui le fait passer pour une puce, c&apos;est l&apos;absence
+              de fond plein, pas le rayon.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -567,93 +654,71 @@ export default function Vue() {
           </section>
 
           {/* ══════════ 04 · répertoire ══════════ */}
-          <section className="gdoc-sec pose" id="repertoire">
+          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
+          <section className="gdoc-sec pose" id="casser">
             <div className="gdoc-sec-tete">
-              <p className="kicker">04 · Le répertoire</p>
-              <h2>Ce que la page n&apos;a pas mis en scène</h2>
-              <p className="sourd">La chaîne complète selon l&apos;intention, les pièges connus, et les
-              règles qui restent avec leurs sources.</p>
+              <p className="kicker">04 · Les règles qu&apos;on peut casser</p>
+              <h2>Voyez ce qui se passe quand la règle saute</h2>
+              <p className="sourd">Six pièges ordinaires, et pas un seul ne déclenche d&apos;erreur
+              nulle part — c&apos;est ce qui les rend coûteux. Ici, rien ne se
+              casse d&apos;un clic : une faute d&apos;arrondi ne se voit jamais sur un objet seul et
+              immobile. Ce sont les curseurs qui la révèlent — tournez la racine, allongez le texte,
+              baissez la hauteur, et regardez les deux objets se séparer.</p>
             </div>
             <div className="gdoc-corps">
-              <div className="ar-bloc">
-                <h3>La chaîne, selon l&apos;intention</h3>
-                <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
-                  {INTENTS.map((t, i) => (
-                    <button key={t.nom} className={`bouton ${intention === i ? "on" : ""}`} onClick={() => setIntention(i)}>{t.nom}</button>
-                  ))}
-                </div>
-                <Chaine i={intention} />
-              </div>
+              <Bandes>
+                {PIEGES.map((p) => (
+                  <Bande key={p.cle} nom={p.nom} cote={p.cote} dit={p.dit}
+                    regles={<Regles ids={p.regles} />}>
+                    {p.scene}
+                  </Bande>
+                ))}
+              </Bandes>
+            </div>
+          </section>
 
-              <div className="ar-bloc">
-                <h3>Les pièges</h3>
-                <div className="ar-pieges">
-                  {([
-                    ["Valeur en dur", "10 px", "Un coin qui n'est pas un cran ne bouge pas quand la racine bouge. Il est déjà faux demain.", "dur"],
-                    ["Pourcentage", "50 %", "Un coin dérivé de la hauteur fabrique une pilule dès que le contenu grandit.", "pct"],
-                    ["Voisins dépareillés", "4 et 8", "Un champ et un bouton de même taille, côte à côte, avec deux coins. L'œil lit deux systèmes.", "vois"],
-                    ["Le survol arrondit", "4 → plein", "Le coin change avec l'état : l'objet change d'identité sous la main. Couleur, ombre, anneau disent l'état ; le coin, jamais.", "etat"],
-                    ["Saturé", "24 sur 28 de haut", "Le coin dépasse la moitié du petit côté : une pilule qui n'a pas de passeport.", "sat"],
-                    ["Dans l'arc", "marge 1 pour 12", "La marge intérieure vaut au moins trois dixièmes du coin, sinon le contenu entre dans l'arc.", "arc"],
-                  ] as const).map(([titre, mesure, texte, fig]) => (
-                    <div className="ar-piege" key={fig} data-intent="statement">
-                      <h4>{titre} <span className="mono">{mesure}</span></h4>
-                      <p>{texte}</p>
-                      <div className="ar-piegefig">
-                        {fig === "dur" && <span className="v-dur" />}
-                        {fig === "pct" && <span className="v-pct" />}
-                        {fig === "vois" && <span className="v-vois"><i /><b /></span>}
-                        {fig === "etat" && <span className="v-etat"><i /><span className="fleche">→</span><b /></span>}
-                        {fig === "sat" && <span className="v-sat" />}
-                        {fig === "arc" && <span className="v-arc">14:02</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
+          <section className="gdoc-sec pose" id="invisibles">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">05 · Les règles qu&apos;on ne peut pas montrer</p>
+              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
+              <p className="sourd">Certaines règles ne se photographient pas. Elles se vérifient
+              dans le code, à l&apos;écran allumé, ou nulle part du tout.</p>
+            </div>
+            <div className="gdoc-corps">
+              <ListeRegles lignes={LISTE} />
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["a1", "a2", "a3", "a4", "a8", "a9", "degagement", "saturation"]} />
-                <p>Fonds : Décisions du 25 août 2026, séance sur pièce · RADIUS-UX 1.3.0 (R02 à R12) ·
-                Sibyl — le système, la théorie v2 (août 2026) · Sibyl Scale, générateur, §1 et §8 ·
-                W3C CSS Backgrounds and Borders, corner shaping · Atlassian Design System, Badge · WCAG 2.4.11.</p>
+                <Regles ids={["a10", "a2", "a8", "a9", "pente", "a6"]} />
               </div></details>
             </div>
           </section>
 
-          {/* ══════════ 05 · l'adaptation ══════════ */}
-          <section className="gdoc-sec pose" id="adaptation">
+          <section className="gdoc-sec pose" id="code">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · L&apos;adaptation</p>
+              <p className="kicker">06 · Dans le code</p>
               <h2>Le même système, dans votre stack</h2>
-              <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
-              qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton — quatre
-              coins de profondeur, le coin du composant et la pilule ; React, Angular ou HTML
-              n&apos;en sont que des consommateurs.</p>
             </div>
             <div className="gdoc-corps">
-              <PanneauCode langage={styl} outils={
-                <>{(["HTML", "React", "Angular"] as const).map((f) => (
-                  <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-                ))}</>
-              } code={SNIPPETS[fw][styl]} />
+              <PanneauRegistre lignes={CODE} />
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
-                registre porte six coins : quatre de profondeur (<code>--r-1</code> la coque,
-                <code> --r-2</code> la carte, <code>--r-3</code> la ligne, <code>--r-4</code> la marque),
-                le coin du composant (<code>--r-ctl</code>, qui est celui de la ligne) et la pilule
-                (<code>--r-pill</code>, une forme, jamais un cran). Ils descendent tous de la racine et
-                ne glissent pas avec l&apos;écran. La sortie Tailwind (<code>rounded-1</code> à
-                <code> rounded-4</code>, <code>rounded-ctl</code>, <code>rounded-pill</code>) pointe sur
-                les mêmes variables ; shadcn lit <code>--radius</code>, on lui donne <code>--r-ctl</code>.</p>
+                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait un composant prêt à
+                coller, avec une bascule HTML / React / Angular. On l&apos;a retiré : un extrait
+                vieillit, et le jour où le composant bouge il se met à mentir sans prévenir. Le
+                jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la règle et le
+                jeton</b> — pas le code. La sortie Tailwind pointe sur les mêmes variables, et
+                shadcn lit une seule racine, à qui on donne le coin du composant.</p>
+                <p><b>Ce qui a quitté cette page.</b> Un sélecteur proposait de rejouer toute la
+                chaîne selon six types de produit. Il réglait la même chose que les trois
+                densités de la page Rythme — la base — et deux boutons qui règlent la même chose
+                à deux endroits différents perdent le lecteur. Le sujet « on peut régler le
+                système pour un autre produit » appartient au moteur, pas aux arrondis.</p>
                 <Regles ids={["a2", "a8"]} />
               </div></details>
             </div>
           </section>
 
           <footer className="gd-pied">
-            <span>Gabarit «&nbsp;documentaire nu&nbsp;» — page Arrondis, 25&nbsp;août&nbsp;2026</span>
-            <span>Chaîne ÷ 2 depuis la racine · marge jamais sous le coin · composant = racine ÷ 4 — Navette est une application fictive</span>
+            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
+            <span>Un seul nombre, six coins · Navette est une application fictive</span>
           </footer>
 
         </main>

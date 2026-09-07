@@ -15,6 +15,10 @@
    Toutes les valeurs viennent de atelier/core/DESIGN.md v1.31.0.
    Aucune valeur brute n'est introduite ici : chaque déclaration ci-dessous
    pointe le token dont elle est la copie.
+
+   DEUX EXCEPTIONS, dites : l'accent et le halo de focus ne viennent pas du
+   document de référence mais de deux décisions d'Auteur prises sur pièce,
+   les 30 et 31 août 2026. Elles sont commentées à l'endroit où elles vivent.
    ========================================================================= */
 
 :root {
@@ -22,7 +26,12 @@
   --color-primary:            #4F46E5;
   --color-primary-hover:      #4338CA;
   --color-on-primary:         #FFFFFF;
-  --color-accent:             #0891B2;
+  /* L'ACCENT EST UN CHOIX D'AUTEUR (30 août 2026), pas une valeur calculée.
+     Il vit dans le marketing — illustrations, animations, blocs et graphiques —
+     et jamais dans un état du système : les deux ne se rencontrent pas. Il est
+     donc hors du contrat de contraste, et il n'entoure plus rien : le focus a
+     désormais ses propres jetons, juste en dessous. */
+  --color-accent:             #75E242;
   --color-secondary:          #E0E7FF;
   --color-on-secondary:       #3730A3;
   --color-danger:             #B91C1C;
@@ -51,8 +60,18 @@
   /* ---- radius (DESIGN.md > radius) ---- */
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
 
-  /* ---- border / focus (DESIGN.md > border) ---- */
-  --focus-width: 2px; --focus-offset: 2px;
+  /* ---- le halo de focus (décisions d'Auteur des 30 et 31 août 2026) ----
+     Le focus n'est plus un anneau posé à distance : c'est un HALO COLLÉ à
+     l'objet — une bande large prise dans le fond doux de sa famille, fermée
+     par un trait fin. Sans fente : il part du bord extérieur de la bordure et
+     ne la touche jamais. Quatre pixels en tout, soit le coin du composant :
+     les coins du halo restent donc sur la chaîne. */
+  --focus-band: 3px; --focus-line: 1px;
+  /* Le trait, par famille — le cran le moins soutenu qui tienne encore 3:1
+     sur le fond ET sur la surface. Sous contrat, lui. */
+  --color-focus-ring:         #7881FD;   /* la marque */
+  --color-focus-ring-danger:  #F3594E;   /* le danger et l'erreur */
+  --color-focus-ring-neutral: #6E717F;   /* le neutre, par défaut */
 
   /* ---- elevation (DESIGN.md > elevation) ---- */
   --elevation-raised: 0 1px 3px rgba(17,24,39,.10);
@@ -108,7 +127,12 @@
   --v-hairline:      var(--color-border);
   --v-accent:        var(--color-primary);
   --v-on-accent:     var(--color-on-primary);
-  --v-focus:         var(--color-accent);
+  /* Le halo se dit en deux rôles : la bande et le trait. La famille est celle
+     de l'objet — neutre par défaut, marque pour ce que la marque colore. */
+  --v-focus:         var(--color-focus-ring-neutral);   /* le trait */
+  --v-focus-band:    var(--color-surface);              /* la bande — le fond doux du neutre */
+  --v-focus-brand:      var(--color-focus-ring);        /* le trait, famille marque */
+  --v-focus-brand-band: var(--color-secondary);         /* la bande, famille marque */
   --v-stage-light:   var(--color-surface);
   --v-stage-dark:    var(--color-surface-contrast);
 
@@ -191,12 +215,25 @@ ul,ol { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; color: inherit; }
 a { color: inherit; }
 
-/* Anneau de focus — outline + offset, jamais border (BORDER-UI).
-   Il n'est JAMAIS animé (MOTION-UX : c'est une information de position). */
+/* Le halo de focus — jamais une bordure (BORDER-UI), jamais animé
+   (MOTION-UX : c'est une information de position).
+
+   IL NE SE MONTRE QU'AU CLAVIER. Le clic ne montre rien — ni pendant l'appui,
+   ni après (décision d'Auteur du 31 août 2026, rendue sur le site) : un geste
+   n'a pas besoin d'être commenté, l'objet cliqué répond déjà par lui-même.
+
+   Ce document pose le halo en UN calque — la bande en ombre étalée, le trait
+   en outline décalé de la bande. C'est la variante que le kit réserve aux
+   porteurs sans pseudo-élément libre ; elle est ici la règle, parce qu'une
+   charte ne doit pas réécrire les composants qu'elle documente. Réserve dite :
+   Safari ne gonfle pas le coin d'une ombre étalée — sur un grand rayon, le
+   coin extérieur du halo y est un cheveu plus serré qu'ailleurs.
+
+   Aucun rayon n'est imposé ici : les coins du halo suivent ceux de l'objet. */
 :focus-visible {
-  outline: var(--focus-width) solid var(--v-focus);
-  outline-offset: var(--focus-offset);
-  border-radius: var(--radius-sm);
+  outline: var(--focus-line) solid var(--v-focus);
+  outline-offset: var(--focus-band);
+  box-shadow: 0 0 0 var(--focus-band) var(--v-focus-band);
 }
 
 .u-sr {
@@ -254,7 +291,7 @@ a { color: inherit; }
 .doc-shell.rail-replie .doc-poignee,
 .doc-poignee:focus-visible { opacity: 1; pointer-events: auto; transform: none; }
 .doc-poignee:hover { color: var(--v-ink); }
-.doc-poignee:focus-visible { outline: var(--focus-width) solid var(--v-focus); outline-offset: 1px; border-radius: var(--radius-sm); }
+.doc-poignee:focus-visible { outline: var(--focus-line) solid var(--v-focus); outline-offset: var(--focus-band); box-shadow: 0 0 0 var(--focus-band) var(--v-focus-band); }
 .doc-poignee svg { width: 16px; height: 16px; transition: transform var(--m-base) var(--e-inout); }
 .doc-shell.rail-replie .doc-poignee svg { transform: rotate(180deg); }
 .doc-content {
@@ -734,7 +771,12 @@ svg [data-reveal="pop"] { transform-box: fill-box; transform-origin: center; }
   padding: var(--space-lg) var(--space-lg);
   border: 0; text-align: left; cursor: pointer; font: inherit;
 }
-.cm-tile:focus-visible { outline-offset: -4px; }
+/* EXCEPTION DÉCLARÉE au halo : les cellules sont bord à bord dans un cadre
+   qui rogne — dehors, le halo serait coupé. Il est donc tracé DEDANS, mêmes
+   jetons, même épaisseur : le trait au bord, la bande juste derrière. */
+.cm-tile:focus-visible { outline: none;
+  box-shadow: inset 0 0 0 var(--focus-line) var(--v-focus),
+              inset 0 0 0 calc(var(--focus-line) + var(--focus-band)) var(--v-focus-band); }
 .cm-name { position: relative; font-size: .82rem; letter-spacing: .01em; font-weight: 500; }
 .cm-mask { display: inline-block; height: 1.3em; overflow: hidden; vertical-align: top; }
 .cm-swap { display: flex; flex-direction: column; transition: transform var(--m-slow) var(--e-out); }
@@ -759,7 +801,10 @@ svg [data-reveal="pop"] { transform-box: fill-box; transform-origin: center; }
   border: 0; text-align: left; cursor: pointer; font: inherit;
   transition: min-width 480ms var(--e-out);
 }
-.cp-col:focus-visible { outline-offset: -4px; }
+/* Même exception déclarée que la mosaïque : cadre qui rogne, halo dedans. */
+.cp-col:focus-visible { outline: none;
+  box-shadow: inset 0 0 0 var(--focus-line) var(--v-focus),
+              inset 0 0 0 calc(var(--focus-line) + var(--focus-band)) var(--v-focus-band); }
 .cp-meta { display: flex; flex-direction: column; gap: 3px; white-space: nowrap; }
 .cp-name { font-size: .82rem; font-weight: 500; }
 .cp-hex { font-family: var(--font-mono); font-size: .72rem; }
@@ -782,7 +827,8 @@ svg [data-reveal="pop"] { transform-box: fill-box; transform-origin: center; }
   transition: border-color var(--m-fast) var(--e-out);
 }
 .tn-item:hover { border-color: currentColor; }
-.tn-item:focus-visible { outline: var(--focus-width) solid var(--v-focus); outline-offset: var(--focus-offset); }
+.tn-item:focus-visible { outline: var(--focus-line) solid var(--v-focus-brand);
+  outline-offset: var(--focus-band); box-shadow: 0 0 0 var(--focus-band) var(--v-focus-brand-band); }
 .tn-nom { font-size: 1rem; font-weight: 500; }
 .tn-hex { font-family: var(--font-mono); font-size: .72rem; }
 .tn-ratio { margin-top: auto; font-family: var(--font-mono); font-size: .72rem; font-weight: 500; }
@@ -1754,10 +1800,11 @@ body.demos-off .is-demo { animation-play-state: paused !important; }
             <span class="sec-block-cap">Garde-fous</span>
             <div>
               <p class="color-note" data-reveal="fade">Jamais la couleur de marque pour dire une erreur, un succès ou une alerte. Ces états ont la leur. Les mélanger, c'est confondre « c'est nous » et « il se passe quelque chose ».</p>
+              <p class="color-note" data-reveal="fade">Le focus est un halo, et il ne se montre qu'au clavier. Une bande prise dans le fond doux de la famille de l'objet, fermée par un trait fin calé à 3:1 — collée à l'objet, sans fente. Le clic, lui, ne montre rien : un geste n'a pas besoin d'être commenté. Trois familles seulement, celle de l'objet : le neutre par défaut, la marque pour ce que la marque colore, le rouge pour l'erreur.</p>
               <p class="color-note" data-reveal="fade">Deux gris de bordure, deux métiers. Le fort tient 3:1 et sert quand le trait est la <em>seule</em> chose qui dit « on peut cliquer ici ». Le clair sert à séparer, à ranger. Le test tient en une question : si cette bordure disparaît, sait-on encore où interagir ?</p>
-              <p class="color-note" data-reveal="fade">Quatre couleurs ont été assombries d'un cran ou deux, parce qu'elles ne tenaient pas les seuils qu'on s'impose : le cyan est passé de 2,43 à 3,68 ; le rouge de 3,95 à 5,30 ; l'ambre de 2,86 à 6,37 ; le gris de bordure de 1,47 à 4,83. Aucune n'a changé de famille — seule la luminosité a bougé.</p>
+              <p class="color-note" data-reveal="fade">Trois couleurs ont été assombries d'un cran ou deux, parce qu'elles ne tenaient pas les seuils qu'on s'impose : le rouge est passé de 3,95 à 5,30 ; l'ambre de 2,86 à 6,37 ; le gris de bordure de 1,47 à 4,83. Aucune n'a changé de famille — seule la luminosité a bougé.</p>
               <p class="color-note" data-reveal="fade">Le gris le plus clair (#9CA3AF) ne porte jamais un texte qu'il faut lire : 2,54:1 sur blanc. Ici il ne sert qu'aux petits points de séparation. Même histoire avec l'opacité — un texte adouci à 82 % tombe à 3,86:1 sur fond gris. La hiérarchie se fait à la taille et à la famille, pas au voile.</p>
-              <p class="color-note" data-reveal="fade">Le cyan n'est pas dans cette rangée, et c'est normal : ce n'est pas un ton, c'est l'anneau de focus. Il n'a pas de fond subtil et ne porte pas de texte — 3,68:1 avec le blanc, 4,82:1 avec l'encre : ni l'un ni l'autre n'est confortable au petit corps. Son métier est d'entourer, pas d'accueillir.</p>
+              <p class="color-note" data-reveal="fade">L'accent n'est pas dans cette rangée, et c'est voulu : ce n'est pas un ton, c'est une signature. Il a été <em>choisi</em>, pas calculé, et il ne dit jamais un état — sa vie est ailleurs : illustrations, animations, blocs et graphiques. Les tons du système et lui ne se rencontrent pas, donc il n'a ni fond doux, ni seuil à tenir, ni texte à porter.</p>
             </div>
           </div>
         </section>
@@ -2175,7 +2222,7 @@ body.demos-off .is-demo { animation-play-state: paused !important; }
                   <span class="ar-dl">dist/</span>
                 </div>
                 <div class="ar" data-reveal="fade">
-                  <div class="ar-main"><span class="ar-preview"><span class="as-strip"><i style="background:#4F46E5"></i><i style="background:#0891B2"></i><i style="background:#6B7280"></i></span></span>
+                  <div class="ar-main"><span class="ar-preview"><span class="as-strip"><i style="background:#4F46E5"></i><i style="background:#75E242"></i><i style="background:#6B7280"></i></span></span>
                     <span class="ar-label">tokens.yaml</span><span class="ar-meta"><span class="ar-meta-item">YAML</span><span class="ar-meta-item">15,3 ko</span><span class="ar-meta-item">16 groupes</span></span></div>
                   <span class="ar-dl">dist/</span>
                 </div>

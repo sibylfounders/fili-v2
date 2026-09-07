@@ -1,15 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE TYPOGRAPHIE — styles propres (préfixes gd-, gz-), migrés sur la
    chaîne le 25 août 2026. Le squelette du gabarit documentaire nu (gdoc,
-   banc, gd-figure, gd-legende, carte, badge, bouton, prov…) vit dans
+   banc, gd-figure, gd-legende, card, badge, bouton, prov…) vit dans
    globals.css et n'est pas touché ici. Tout ce qui suit consomme les
    jetons du registre ; ce qui n'en descend pas est dit sur sa ligne.
    Ces blocs REMPLACENT leurs homonymes de globals.css (mêmes sélecteurs,
    chargés après) — à retirer là-bas.
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* ── 01 · Les voix : deux familles face à face, à taille d'affiche.
-      Deux coques côte à côte : l'espace entre cartes, le coin de la coque. ── */
+/* ── 01 · Les fonts : deux fonts face à face, à taille d'affiche.
+      Deux containers côte à côte : l'espace entre cards, le coin du container. ── */
 .gd-voix { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
 @media (max-width: 48rem) { .gd-voix { grid-template-columns: 1fr; } }
 .gd-vbloc {
@@ -56,7 +56,6 @@
 
 /* ── 03 · La mesure : même texte, seule la largeur change — trois figures,
       séparées par le cran de page ── */
-.gd-mesures { display: grid; gap: var(--page-2-block); width: 100%; }
 .gd-mesure { display: grid; gap: var(--gap-3-block); justify-items: start; text-align: left; }
 .gd-mesure p { position: relative; line-height: var(--leading-body); font-size: var(--font-size-body); }
 .gd-mesure.sourdine p { color: var(--text-secondary); opacity: 0.55; }
@@ -64,7 +63,7 @@
    un jeton pâle : le registre n'a pas de text-muted, à dessein */
 
 /* ── 04 · La gazette : l'imprimé, terre natale de la typographie.
-      Une feuille = une coque : son coin, sa marge. Encre sur papier —
+      Une feuille = un container : son coin, sa marge. Encre sur papier —
       aucun accent dedans ; le rouge reste à la faute. ── */
 .gazette {
   background: var(--bg); border-radius: var(--r-1);
@@ -95,11 +94,9 @@
 .gazette.j-cassee .gz-cols p { text-align: justify; }  /* casse : T9 rouge — les rivières */
 .gazette.i-cassee .gz-cols p { line-height: 1.15; }    /* casse : T6 rouge — le texte étouffe, sous le plancher de 1,5 */
 
-/* ── 05 · Les garde-fous : une grille de cartes, l'espace entre cartes ── */
-.gd-gardes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); } /* hors chaîne : la largeur minimale d'une carte, une mesure */
 
 /* l'arbre des titres : une pile de lignes ; un niveau = la marge d'une
-   carte, par imbrication — jamais un multiplicateur */
+   card, par imbrication — jamais un multiplicateur */
 .gd-arbre { width: 100%; display: grid; gap: var(--gap-3-block); text-align: left; }
 .gd-arbre-niveau { padding-inline-start: var(--pad-2-inline); }
 .gd-arbre-rang {
@@ -117,3 +114,57 @@
 .tp-bascule { display: grid; place-items: center; }
 .tp-bascule > * { grid-area: 1 / 1; white-space: nowrap; }
 .tp-bascule > .tp-tu { visibility: hidden; }
+
+/* La scène d'une bande : une pile simple, l'air pris dans la chaîne. Les
+   bandes de l'étage « à casser » n'ont pas de mise en page à elles — elles
+   empilent ce qu'on leur donne (gabarit des étages, 2 septembre). */
+.tp-scene { display: grid; gap: var(--gap-3-block); justify-items: start; width: 100%; }
+.tp-scene > p { margin: 0; }
+
+/* ── 03 · La borne, rendue visible ──
+   Un bloc à la largeur du registre, dont le bord droit porte le trait : le
+   texte « juste » s'arrête dessus, le texte sans borne le franchit. Quand
+   le cadre est plus étroit que la borne, le trait s'efface (« hors ») — il
+   n'a plus rien à dire, et collé au bord il mentirait. Il garde sa place
+   pour rester mesurable : c'est sa largeur qui dit si la borne est dans le
+   cadre ou dehors. */
+.gd-mesure-piste { position: relative; width: 100%; }
+.gd-mesure-borne {
+  position: absolute; inset-block: 0; left: 0;
+  width: var(--measure); max-width: 100%;
+  border-right: 1px dashed var(--border-strong); pointer-events: none; /* un trait n'est pas une encre : le bord fort, 3:1 */
+}
+.gd-mesure-borne.hors { visibility: hidden; }
+.gd-mesure-borne b {
+  position: absolute; top: 100%; right: 0; padding-top: var(--gap-4-block);
+  font: 600 var(--font-size-label)/1.5 var(--font-mono);
+  color: var(--text-tertiary); white-space: nowrap; /* tertiaire : la cote de la borne */
+}
+
+/* Le verdict et sa mesure sur la même ligne : la pastille juge en deux mots,
+   le compte mesure à côté, en sourdine. Il ne juge pas — ch mesure la chasse
+   du « 0 », pas la moyenne (divergence T5). */
+.gd-mesure-dit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-inline); }
+
+/* ── 05 · Le calage : la même valeur d'espace, des quatre côtés ─────────
+      La carte prend UNE seule valeur, posée des quatre côtés — c'est le
+      sujet de la démo : rien d'autre ne doit varier. Au repos, le texte
+      est calé sur ses capitales et sur sa ligne de base ; cassée, la
+      carte laisse revenir l'air de la ligne. Le calage est écrit ici avec
+      SES DEUX BORDS nommés (T12) : la forme courte active le rognage en
+      ne disant rien, et une déclaration dont le sens tient à ce piège
+      n'est pas relisible. ── */
+.tp-calage {
+  padding: var(--pad-1-inline); /* la même valeur des quatre côtés : le sujet de la démo, pas un espace de page */
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-1);
+  max-width: 34ch; /* hors chaîne : la largeur du spécimen, une mesure de lecture */
+}
+.tp-calage > p {
+  margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading);
+  text-box: trim-both cap alphabetic;
+}
+.tp-calage.casse > p { text-box: normal; }
+/* le témoin : la hauteur des capitales de la font livrée, posée sur la
+   ligne de base — sans chasse, il ne déplace rien et n'agrandit pas la
+   ligne (la hauteur des capitales est sous l'ascendante). */
+.tp-temoin { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
