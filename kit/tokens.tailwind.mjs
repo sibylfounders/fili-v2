@@ -149,7 +149,8 @@ export const color = {
       com: 'var(--code-com)',
       str: 'var(--code-str)',
       kw: 'var(--code-kw)',
-      tag: 'var(--code-tag)'
+      tag: 'var(--code-tag)',
+      danger: 'var(--code-danger)'
     }
   }
 };
@@ -281,5 +282,19 @@ export const rhythmLiteral = {
       max: '224px',
       calcule: '172.8 → 222.7 px'
     }
+  }
+};
+
+/* Sortie jumelle — mouvement (décisions du 3 septembre 2026) : quatre durées
+   avec leur emploi, la courbe du kit. Les utilitaires pointent sur les variables. */
+export const motion = {
+  transitionDuration: {
+    fast: 'var(--m-fast)',
+    base: 'var(--m-base)',
+    slow: 'var(--m-slow)',
+    expressive: 'var(--m-expressive)'
+  },
+  transitionTimingFunction: {
+    out: 'var(--e-out)'
   }
 };

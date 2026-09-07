@@ -409,6 +409,10 @@
       "code-tag": {
         "$type": "color",
         "$value": "#FBBF25"
+      },
+      "code-danger": {
+        "$type": "color",
+        "$value": "#F87171"
       }
     },
     "dark": {
@@ -575,7 +579,43 @@
       "code-tag": {
         "$type": "color",
         "$value": "#FBBF25"
+      },
+      "code-danger": {
+        "$type": "color",
+        "$value": "#F87171"
       }
+    }
+  },
+  "motion": {
+    "fast": {
+      "$type": "duration",
+      "$value": "100ms",
+      "$description": "Emploi : bouton, survol, appui."
+    },
+    "base": {
+      "$type": "duration",
+      "$value": "200ms",
+      "$description": "Emploi : menu, infobulle, dépliant."
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": "300ms",
+      "$description": "Emploi : tiroir, fenêtre, panneau."
+    },
+    "expressive": {
+      "$type": "duration",
+      "$value": "700ms",
+      "$description": "Emploi : arrivée d'une section au défilement."
+    },
+    "ease-out": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.23,
+        1,
+        0.32,
+        1
+      ],
+      "$description": "La courbe du kit : ce qui entre décélère — départ vif, pose franche."
     }
   }
 }

@@ -114,6 +114,32 @@
   --page-4-block: clamp(7.2rem, 6.6057rem + 2.9714vw, 9.28rem);
   --page-6-block: clamp(14.4rem, 13.2114rem + 5.9429vw, 18.56rem);
 }
+[data-density="comfortable"] {
+  --pad-1-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --pad-2-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --pad-3-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --gap-1-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --gap-2-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --gap-3-inline: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
+  --gap-4-inline: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
+  --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
+  --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
+  --page-6-inline: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
+  --pad-1-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --pad-2-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --pad-3-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --gap-1-block: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --gap-2-block: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --gap-3-block: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
+  --gap-4-block: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
+  --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
+  --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
+  --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
+  --page-6-block: clamp(10.8rem, 9.9086rem + 4.4571vw, 13.92rem);
+}
 
 /* Hors chaîne — déclaré au registre, jamais dérivé : familles, interligne, mesure, capitales. */
 :root {
@@ -195,6 +221,17 @@
   --focus-line: 1px;
 }
 
+/* Le mouvement (décisions d'Auteur du 3 septembre 2026) — quatre durées, chacune avec son emploi, et la
+   courbe du kit. Une durée écrite à la main dans une page est une faute, ou une chorégraphie dite sur sa ligne.
+   Sous mouvement réduit, les déplacements partent et les fondus restent (globals.css). */
+:root {
+  --m-fast: 100ms; /* bouton, survol, appui */
+  --m-base: 200ms; /* menu, infobulle, dépliant */
+  --m-slow: 300ms; /* tiroir, fenêtre, panneau */
+  --m-expressive: 700ms; /* arrivée d'une section au défilement */
+  --e-out: cubic-bezier(0.23, 1, 0.32, 1); /* ce qui entre décélère — départ vif, pose franche */
+}
+
 
 /* GÉNÉRÉ par kit/derivation.mjs depuis primary #4F46E5 — ne pas éditer
    à la main : une valeur retouchée serait une valeur sans provenance.
@@ -242,6 +279,7 @@
   --code-str: #4ADE80;
   --code-kw: #A8B3FB;
   --code-tag: #FBBF25;
+  --code-danger: #F87171;
 }
 
 [data-theme="dark"] {
@@ -287,6 +325,7 @@
   --code-str: #4ADE80;
   --code-kw: #A8B3FB;
   --code-tag: #FBBF25;
+  --code-danger: #F87171;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -333,5 +372,6 @@
     --code-str: #4ADE80;
     --code-kw: #A8B3FB;
     --code-tag: #FBBF25;
+    --code-danger: #F87171;
   }
 }

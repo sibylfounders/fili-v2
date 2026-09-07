@@ -389,6 +389,9 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   light['code-kw'] = dark['code-kw'] = codeSur(lchVersHex([0.785, Math.min(0.104, Cp), H]), Math.min(0.104, Cp), H)
   light['code-str'] = dark['code-str'] = codeSur(lchVersHex(pose([0.800, 0.182, 151.7])), 0.182, suit(151.7))
   light['code-tag'] = dark['code-tag'] = codeSur(lchVersHex(pose([0.837, 0.164, 84.4])), 0.164, suit(84.4))
+  /* la faute (rouge du versant sombre de danger, tiré par le déplacement) — née avec son premier
+     consommateur, la cote fausse de la profondeur sur terre sombre (/rythme, 2 septembre) */
+  light['code-danger'] = dark['code-danger'] = codeSur(lchVersHex(pose([0.711, 0.166, 22.2])), 0.166, suit(22.2))
 
   /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu.
      L'aplat glisse en zone médiane (aplatAjuste), le lien se cale (lienAjuste). */
@@ -506,7 +509,7 @@ export const PAIRES_DECLAREES = [
   ['border-strong', 'bg', 3], ['focus-ring', 'bg', 3], ['focus-ring', 'surface', 3],
   ['focus-ring-danger', 'bg', 3], ['focus-ring-danger', 'surface', 3], ['focus-ring-neutral', 'bg', 3], ['focus-ring-neutral', 'surface', 3],
   ['code-text', 'code-bg', 4.5], ['code-com', 'code-bg', 4.5],
-  ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5],
+  ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5], ['code-danger', 'code-bg', 4.5],
 ]
 export function verifier(pal) {
   const fautes = []
@@ -529,7 +532,7 @@ export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
     'success', 'success-subtle', 'on-success', 'on-success-subtle',
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',
     'info', 'info-subtle', 'on-info', 'on-info-subtle',
-    'code-bg', 'code-text', 'code-com', 'code-str', 'code-kw', 'code-tag']
+    'code-bg', 'code-text', 'code-com', 'code-str', 'code-kw', 'code-tag', 'code-danger']
   const bloc = (o) => NOMS.map((n) => ligne(o, n)).join('\n')
   return [
     `/* GÉNÉRÉ par kit/derivation.mjs depuis primary ${primaire} — ne pas éditer`,
@@ -646,6 +649,23 @@ export const HORS_CHAINE = {
      coin du composant (r-ctl à la charte) : le coin extérieur du halo tombe donc sur le cran
      au-dessus (r-2). En px, comme les traits (B3). Deux calques creux, jamais une ombre. */
   focus: { bande: 3, trait: 1 },
+}
+
+/* LE MOUVEMENT (décisions d'Auteur du 3 septembre 2026, sur pièce — les trois lois) :
+   quatre durées et une courbe, hors chaîne — une durée ne descend pas d'une marge.
+   Chaque durée porte son EMPLOI : une durée sans emploi écrit est une valeur libre
+   avec un joli nom. Toute durée employée hors de cette table est une faute, ou une
+   chorégraphie déclarée sur sa ligne (le film de /rythme, l'entrée de l'accueil,
+   la boucle de /composition). La courbe est celle du kit, plus celle de Material :
+   départ vif, pose franche — valeur proposée, à valider à l'œil. */
+export const MOUVEMENT = {
+  durees: {
+    fast: { ms: 100, emploi: 'bouton, survol, appui' },
+    base: { ms: 200, emploi: 'menu, infobulle, dépliant' },
+    slow: { ms: 300, emploi: 'tiroir, fenêtre, panneau' },
+    expressive: { ms: 700, emploi: "arrivée d'une section au défilement" },
+  },
+  courbe: 'cubic-bezier(0.23, 1, 0.32, 1)',
 }
 
 const r4 = (v) => Math.round(v * 10000) / 10000
@@ -838,6 +858,10 @@ export function versCssRythme(entrees = {}) {
     `/* La densité change la base (décision 4) : la chaîne se recalcule, coins et composants ne bougent pas. */`,
     densite('compact'),
     densite('airy'),
+    /* Le confortable est la chaîne de :root ; on l'émet quand même, pour qu'une
+       scène puisse déclarer sa densité EN ENTIER — sinon, posée dans un site en
+       compact, une démonstration étiquetée « confortable » rendrait du compact. */
+    densite('comfortable'),
     ``,
     `/* Hors chaîne — déclaré au registre, jamais dérivé : familles, interligne, mesure, capitales. */`,
     `:root {`,
@@ -880,6 +904,14 @@ export function versCssRythme(entrees = {}) {
     `  --focus-line: ${HORS_CHAINE.focus.trait}px;`,
     `}`,
     ``,
+    `/* Le mouvement (décisions d'Auteur du 3 septembre 2026) — quatre durées, chacune avec son emploi, et la`,
+    `   courbe du kit. Une durée écrite à la main dans une page est une faute, ou une chorégraphie dite sur sa ligne.`,
+    `   Sous mouvement réduit, les déplacements partent et les fondus restent (globals.css). */`,
+    `:root {`,
+    ...Object.entries(MOUVEMENT.durees).map(([n, d]) => `  --m-${n}: ${d.ms}ms; /* ${d.emploi} */`),
+    `  --e-out: ${MOUVEMENT.courbe}; /* ce qui entre décélère — départ vif, pose franche */`,
+    `}`,
+    ``,
   ].join('\n')
 }
 
@@ -909,6 +941,10 @@ export function versFigma(entrees = {}, primaire = PRIMAIRE_DEFAUT) {
     control: groupe(/^(control-height|target-min)$/),
     focus: { band: { $type: 'dimension', $value: `${HORS_CHAINE.focus.bande}px`, $description: 'Le halo de focus : la bande collée à l’objet, en px.' }, line: { $type: 'dimension', $value: `${HORS_CHAINE.focus.trait}px`, $description: 'Le halo de focus : le trait qui ferme la bande, en px.' } },
     color: { light: couleurs(pal.light), dark: couleurs(pal.dark) },
+    motion: {
+      ...Object.fromEntries(Object.entries(MOUVEMENT.durees).map(([n, d]) => [n, { $type: 'duration', $value: `${d.ms}ms`, $description: `Emploi : ${d.emploi}.` }])),
+      'ease-out': { $type: 'cubicBezier', $value: MOUVEMENT.courbe.match(/[\d.]+/g).map(Number), $description: 'La courbe du kit : ce qui entre décélère — départ vif, pose franche.' },
+    },
   }
 }
 
@@ -921,7 +957,8 @@ export function versTailwind(entrees = {}) {
   const borderRadius = { 1: v('r-1'), 2: v('r-2'), 3: v('r-3'), 4: v('r-4'), ctl: v('r-ctl'), pill: v('r-pill') }
   const fontSize = Object.fromEntries(Object.keys(socle.texte).map((n) => [n, v(`font-size-${n}`)]))
   const literal = Object.fromEntries(Object.entries(j).filter(([n]) => /^(pad|gap|edge|page)-/.test(n)).map(([n, t]) => [n, { min: `${Math.round(t.bas / 4) * 4}px`, max: `${Math.round(t.haut / 4) * 4}px` }]))
-  return { spacing, borderRadius, fontSize, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${HORS_CHAINE.seuilMiseEnPage}em` }, literal }
+  const transitionDuration = Object.fromEntries(Object.keys(MOUVEMENT.durees).map((n) => [n, v(`m-${n}`)]))
+  return { spacing, borderRadius, fontSize, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${HORS_CHAINE.seuilMiseEnPage}em` }, transitionDuration, transitionTimingFunction: { out: v('e-out') }, literal }
 }
 
 /* ── tokens.tailwind.mjs ENTIER — les mêmes exports qu'avant (rhythm,
@@ -966,7 +1003,7 @@ export const color = ${q({
     warning: { DEFAULT: 'var(--warning)', subtle: 'var(--warning-subtle)' }, 'on-warning': { DEFAULT: 'var(--on-warning)', subtle: 'var(--on-warning-subtle)' },
     info: { DEFAULT: 'var(--info)', subtle: 'var(--info-subtle)' }, 'on-info': { DEFAULT: 'var(--on-info)', subtle: 'var(--on-info-subtle)' },
     accent: 'var(--accent)',
-    code: { bg: 'var(--code-bg)', text: 'var(--code-text)', com: 'var(--code-com)', str: 'var(--code-str)', kw: 'var(--code-kw)', tag: 'var(--code-tag)' },
+    code: { bg: 'var(--code-bg)', text: 'var(--code-text)', com: 'var(--code-com)', str: 'var(--code-str)', kw: 'var(--code-kw)', tag: 'var(--code-tag)', danger: 'var(--code-danger)' },
   },
 })};
 
@@ -976,6 +1013,10 @@ export const color = ${q({
    mélange jamais les deux. min = borne 320 px, max = borne 1440 px ; le
    calcul exact est dit à côté. */
 export const rhythmLiteral = ${q({ spacing: literal })};
+
+/* Sortie jumelle — mouvement (décisions du 3 septembre 2026) : quatre durées
+   avec leur emploi, la courbe du kit. Les utilitaires pointent sur les variables. */
+export const motion = ${q({ transitionDuration: tw.transitionDuration, transitionTimingFunction: tw.transitionTimingFunction })};
 `
 }
 

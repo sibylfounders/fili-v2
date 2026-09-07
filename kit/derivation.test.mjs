@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chaine, jetons, fluide, aLargeur, facteur, AXES, CHARTE, BORNES, DENSITES, HORS_CHAINE,
-  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, lchVersHex, gamme, gammeFamille, gammeNeutres, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS,
+  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, lchVersHex, gamme, gammeFamille, gammeNeutres, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS, MOUVEMENT,
 } from './derivation.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
@@ -358,3 +358,64 @@ test('site — « pas de nombre » : dans les feuilles du kit, un espace, une ta
   assert.deepEqual(fautes.slice(0, 40), [], `${fautes.length} valeur(s) posée(s)`)
 })
 
+
+/* ── Le mouvement (décisions d'Auteur du 3 septembre 2026) : quatre durées avec leur emploi, une courbe,
+   et plus une seule durée écrite à la main dans les pages ── */
+test('mouvement — quatre durées (100 · 200 · 300 · 700), chacune avec son emploi, et la courbe du kit ; les trois sorties les portent', () => {
+  assert.deepEqual(Object.values(MOUVEMENT.durees).map((d) => d.ms), [100, 200, 300, 700])
+  for (const [n, d] of Object.entries(MOUVEMENT.durees)) assert.ok(d.emploi.length > 3, `${n} : une durée sans emploi écrit est une valeur libre`)
+  assert.notEqual(MOUVEMENT.courbe, 'cubic-bezier(0, 0, 0.2, 1)', 'la courbe de Material n’est pas une décision')
+  const css = versCssRythme(), tw = versTailwind(), fg = versFigma()
+  for (const [n, d] of Object.entries(MOUVEMENT.durees)) {
+    assert.ok(css.includes(`--m-${n}: ${d.ms}ms; /* ${d.emploi} */`), `css ${n} avec son emploi sur la ligne`)
+    assert.equal(tw.transitionDuration[n], `var(--m-${n})`)
+    assert.equal(fg.motion[n].$value, `${d.ms}ms`)
+  }
+  assert.ok(css.includes(`--e-out: ${MOUVEMENT.courbe};`))
+  assert.equal(tw.transitionTimingFunction.out, 'var(--e-out)')
+  assert.deepEqual(fg.motion['ease-out'].$value, [0.23, 1, 0.32, 1])
+})
+test('site — aucune durée ni courbe écrite à la main dans les feuilles : une transition ou une animation prend un jeton de mouvement, ou dit « chorégraphie » sur sa ligne', () => {
+  const fautes = []
+  for (const [f, src] of lireApp().filter(([f]) => f.endsWith('.css') && f !== 'app/tokens.css')) {
+    src.split('\n').forEach((ligne, i) => {
+      if (/chorégraphie|hors chaîne/.test(ligne)) return
+      const sansCommentaire = ligne.replace(/\/\*.*?\*\//g, '')
+      if (!/transition|animation/.test(sansCommentaire)) return
+      for (const m of sansCommentaire.matchAll(/(?<![\w-])(\d*\.?\d+)(ms|s)(?![\w-])/g)) {
+        const ms = m[2] === 's' ? parseFloat(m[1]) * 1000 : parseFloat(m[1])
+        if (ms === 0) continue /* « 0s » : pas une durée, un ordre */
+        fautes.push(`${f}:${i + 1} ${m[0]}`)
+      }
+      if (/cubic-bezier|\bease(-in|-out|-in-out)?\b/.test(sansCommentaire)) fautes.push(`${f}:${i + 1} courbe à la main`)
+    })
+  }
+  assert.deepEqual(fautes.slice(0, 60), [], `${fautes.length} durée(s) ou courbe(s) posée(s) à la main`)
+})
+test('site — mouvement réduit (décision 1 du 3 septembre) : un déplacement (transform, translate, scale, rotate, défilement doux) ne s’écrit que sous « no-preference » ; un fondu s’écrit nu — les chorégraphies déclarées sont gardées par leur propre portillon', () => {
+  const fautes = []
+  const DEPLACE = /\b(transform|translate|scale|rotate|offset-path|offset-distance)\b/
+  for (const [f, src] of lireApp().filter(([f]) => f.endsWith('.css') && f !== 'app/tokens.css')) {
+    const lignes = src.split('\n')
+    /* les images-clés qui déplacent */
+    const bouge = new Set()
+    for (const m of src.matchAll(/@keyframes\s+([\w-]+)\s*\{([\s\S]*?)\}\s*\}/g)) if (DEPLACE.test(m[2])) bouge.add(m[1])
+    for (const m of src.matchAll(/@keyframes\s+([\w-]+)\s*\{([^{}]*\{[^{}]*\}[^{}]*)*\}/g)) if (DEPLACE.test(m[0])) bouge.add(m[1])
+    /* où l'on est : dans un bloc no-preference, ou pas — au compte des accolades */
+    let prof = 0, portillon = -1
+    lignes.forEach((ligne, i) => {
+      const nc = ligne.replace(/\/\*.*?\*\//g, '')
+      if (/prefers-reduced-motion:\s*no-preference/.test(nc)) portillon = prof
+      const dedans = portillon >= 0
+      if (!/chorégraphie|hors chaîne/.test(ligne)) {
+        if (/scroll-behavior\s*:\s*smooth/.test(nc) && !dedans) fautes.push(`${f}:${i + 1} défilement doux hors portillon`)
+        const tr = nc.match(/transition(?:-property)?\s*:\s*([^;}]+)/)
+        if (tr && DEPLACE.test(tr[1]) && !dedans) fautes.push(`${f}:${i + 1} déplacement en transition hors portillon`)
+        const an = nc.match(/animation(?:-name)?\s*:\s*([^;}]+)/)
+        if (an && !dedans && an[1].split(/\s+/).some((mot) => bouge.has(mot))) fautes.push(`${f}:${i + 1} déplacement en animation hors portillon`)
+      }
+      for (const c of nc) { if (c === '{') prof++; else if (c === '}') { prof--; if (portillon >= 0 && prof <= portillon) portillon = -1 } }
+    })
+  }
+  assert.deepEqual(fautes, [], `${fautes.length} déplacement(s) qui joueraient encore sous mouvement réduit`)
+})
