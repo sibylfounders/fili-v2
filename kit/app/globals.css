@@ -716,6 +716,11 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
    besoin de toute la famille sombre (le rouge d'une faute) se déclare en
    thème sombre plutôt que d'inventer une encre (7 septembre). */
 .banc.sombre { background: var(--code-bg); color: var(--code-text); }
+/* La scène de nuit : le banc se déclare en thème sombre (data-theme="dark",
+   dans la vue) et prend le fond de page de ce versant — noir — avec toute
+   sa famille d'encres. Rien de propre à la scène : une faute y est rouge et
+   un juste y est vert par le système (verdict d'Auteur, 7 septembre). */
+.banc.noir { background: var(--bg); color: var(--text-primary); }
 /* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
    (décision d'Auteur, 24 août). */
 .gd-figure { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); justify-items: center; } /* même règle : la figure ne s'élargit jamais au-delà de sa colonne */

@@ -109,10 +109,10 @@ function Coin({ Ro, ri, E, ok }: { Ro: number; ri: number; E: number; ok: boolea
   const { k, ox, oy, W, H } = DESSIN;
   const Rk = Ro * k, rk = ri * k, Ek = E * k;
   /* Les surfaces du labo suivent le thème : le parent en encre secondaire,
-     l'enfant en surface, les mesures en encre / en fond (retour d'Auteur).
-     Verdicts : vert = le juste, rouge = la faute — valeurs fixes, les
-     jetons danger/success de la charte sont trop sombres sur cette scène. */
-  const teinte = ok ? "#4ADE80" : "#F87171";
+     l'enfant en encre claire, les mesures en encre / en fond (retour d'Auteur).
+     Verdicts : vert = le juste, rouge = la faute — ceux du système, la scène
+     étant déclarée en thème sombre (7 septembre). */
+  const teinte = ok ? "var(--success)" : "var(--danger)";
   const a = ox + Rk - Rk / Math.SQRT2, b = ox + Ek + rk - rk / Math.SQRT2;
   const d = (b - a) * Math.SQRT2 / k;
   const mono = "var(--font-mono)";
@@ -120,14 +120,15 @@ function Coin({ Ro, ri, E, ok }: { Ro: number; ri: number; E: number; ok: boolea
     <svg viewBox={`0 0 ${W} ${H}`} role="img"
       aria-label={ok ? "Le coin extérieur vaut le coin intérieur plus l'écart : les deux arcs sont parallèles"
                      : "Le coin extérieur porte le même rayon que le coin intérieur : l'écart se creuse dans la diagonale"}>
-      <rect x="0" y="0" width={W} height={H} fill="var(--code-bg)" />
-      <rect x={ox} y={oy} width="2000" height="2000" rx={Rk} fill="var(--text-secondary)" />
-      <rect x={ox + Ek} y={oy + Ek} width="2000" height="2000" rx={rk} fill="var(--surface)" />
+      <rect x="0" y="0" width={W} height={H} fill="var(--bg)" />
+      {/* le parent : un gris qui tient devant l'encre claire de l'enfant — sur la scène de nuit, c'est le cran tertiaire (retour d'Auteur, 7 septembre : le gris second y était trop clair) */}
+      <rect x={ox} y={oy} width="2000" height="2000" rx={Rk} fill="var(--text-tertiary)" />
+      <rect x={ox + Ek} y={oy + Ek} width="2000" height="2000" rx={rk} fill="var(--text-primary)" />
       <path d={`M${ox + Rk} ${oy} A ${Rk} ${Rk} 0 0 0 ${ox} ${oy + Rk}`} stroke={teinte} strokeWidth={DESSIN.arc} fill="none" strokeLinecap="round" />
       <line x1={a} y1={oy + (a - ox)} x2={b} y2={oy + (b - ox)} stroke={teinte} strokeWidth={DESSIN.trait} />
       <text x={ox - 10} y={oy + Rk * 0.55 + 5} textAnchor="end" fontSize={DESSIN.mesure} fontWeight="600" fontFamily={mono} fill={teinte}>{Ro}</text>
-      <text x={ox + Ek + rk + 6} y={oy + Ek + rk + 5} fontSize={DESSIN.mesure} fontWeight="600" fontFamily={mono} fill="var(--text-primary)">{ri}</text>
-      {E > 0 && <text x={W - 10} y={oy + Ek / 2 + 5} textAnchor="end" fontSize={DESSIN.mesurePetite} fontWeight="600" fontFamily={mono} fill="var(--bg)">{E}</text>}
+      <text x={ox + Ek + rk + 6} y={oy + Ek + rk + 5} fontSize={DESSIN.mesure} fontWeight="600" fontFamily={mono} fill="var(--bg)">{ri}</text>
+      {E > 0 && <text x={W - 10} y={oy + Ek / 2 + 5} textAnchor="end" fontSize={DESSIN.mesurePetite} fontWeight="600" fontFamily={mono} fill="var(--text-primary)">{E}</text>}
       <text x={(a + b) / 2 + 12} y={oy + ((a + b) / 2 - ox) - 8} fontSize={DESSIN.mesurePetite} fontWeight="600" fontFamily={mono} fill={teinte}>{fmt(d)}</text>
     </svg>
   );
@@ -594,7 +595,9 @@ export default function Vue() {
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc sombre">
+                {/* La scène de nuit (verdict d'Auteur, 7 septembre) : fond noir,
+                    et les verdicts par le système — plus une couleur écrite. */}
+                <div className="banc noir" data-theme="dark">
                   <div className="ar-dials">
                     <Dial id="ar-ri" label="Coin intérieur" min={4} max={36} step={1} value={ri} onChange={setRi} />
                     <Dial id="ar-ecart" label="Écart" min={0} max={24} step={1} value={ecart} onChange={setEcart} />

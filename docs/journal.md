@@ -5745,3 +5745,28 @@ sur la terre, se déclare en thème sombre. C'est plus juste que la version du
 matin : ce n'est pas la scène qui change de versant, c'est ce qui touche la
 terre. La loi du 2 septembre, à la lettre — l'encre dépend de son parent
 direct. Aucun jeton, toujours ; le banc repasse vert.
+
+## 7 septembre 2026 (5) — /arrondis : le labo du coin passe sur fond noir, et ses verdicts au système
+
+**« Du coup sur arrondis, fond noir, pas bleu foncé. »** Le labo du coin
+vivait sur la terre de code — le bleu nuit des blocs de code — et, pour y
+être lisible, il écrivait son vert et son rouge à la main : « valeurs fixes,
+les jetons de la charte sont trop sombres sur cette scène ». C'était
+exactement le problème de la matinée, résolu de la mauvaise façon, deux
+mois plus tôt.
+
+**La scène de nuit.** Une variante déclarée du banc, `noir` : le banc se
+déclare en thème sombre et prend le fond de page de ce versant — noir —
+avec toute sa famille d'encres. Le labo du coin y passe : le vert du juste et
+le rouge de la faute sont ceux du système, la piste et le curseur des
+molettes prennent le bord fort et l'encre du versant, le bloc intérieur du
+dessin passe en encre claire et son nombre en fond. Quatre couleurs écrites
+à la main en moins, une variante de scène en plus — et la même règle que le
+matin, confirmée sur une deuxième page : une scène qui a besoin de toute la
+famille sombre se déclare en thème sombre.
+
+**Un retour de suite** : « le gris des cards de démo est bien trop clair, du
+coup faute de contraste ». Sur la scène de nuit, le gris second est un gris
+pâle ; devant l'encre claire de l'enfant, le parent ne se lisait plus. Il
+prend le cran tertiaire du versant sombre — un gris moyen — et le petit
+nombre de l'écart repasse en blanc dessus.

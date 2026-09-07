@@ -187,8 +187,10 @@ a été examiné et **écarté** : deux minutes d'attente à chaque enregistreme
 pousseraient à grouper les commits, et le journal vit de leur finesse.
 
 **Le moteur de couleur** — 🟢 verrouillé. Le 7 septembre, un jeton
-`--code-danger` est né et mort le même jour : la scène qui en avait besoin se
-déclare en thème sombre et prend le rouge du système (verdict d'Auteur). Une décision
+`--code-danger` est né et mort le même jour : ce qui a besoin de toute la
+famille sombre se déclare en thème sombre et prend le rouge du système
+(verdict d'Auteur) — la colonne des cotes de `/rythme`, et le labo du coin de
+`/arrondis` sur sa scène de nuit (`banc noir`, une variante déclarée). Une décision
 d'entrée : primary. Il dérive la famille entière pour les deux thèmes ; ses
 seuils sont arrêtés le 2026-08-24 et ne se retouchent plus sans nouvel
 arbitrage (`#110`) — un seul l'a été depuis, sur pièce : le déplacement des
