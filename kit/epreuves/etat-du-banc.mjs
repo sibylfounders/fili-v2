@@ -31,12 +31,12 @@ const RACINE = path.resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const CARTE = path.join(RACINE, 'docs', 'system-map.md')
 const COURSE = path.join(RACINE, 'kit', 'epreuves', 'derniere-course.json')
 
-/* Les quatre pages qui ont une épreuve. `/` et `/composition` n'en ont pas :
-   cette pièce ne parle jamais d'elles — leur cas est écrit sur la carte à la
-   main, et c'est une dette dite, pas un vert qui ment. */
-export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur']
+/* Les cinq pages qui ont une épreuve (Composition depuis le 7 septembre
+   2026). `/` n'en a pas : cette pièce ne parle jamais d'elle — son cas est
+   écrit sur la carte à la main, et c'est une dette dite, pas un vert qui ment. */
+export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition']
 
-/* Le socle : ce qui, en bougeant, fait bouger les quatre pages à la fois. */
+/* Le socle : ce qui, en bougeant, fait bouger toutes les pages à la fois. */
 const SOCLE = [
   'kit/app/globals.css',
   'kit/app/tokens.css',
@@ -153,7 +153,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const lignes = etat()
   const malades = lignes.filter((l) => !l.sain)
 
-  console.log('\nÉTAT DU BANC — quatre pages\n')
+  console.log('\nÉTAT DU BANC — cinq pages\n')
   for (const l of lignes) console.log(`  ${l.sain ? '🟢' : '🟡'} /${l.page} — ${l.raison}`)
 
   if (process.argv.includes('--ecrire')) {
@@ -164,5 +164,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
 
   if (malades.length) console.log(`\n  ${malades.length} page(s) à repasser au banc : npm run test:pages\n`)
-  else console.log('\n  🟢 les quatre pages disent vrai.\n')
+  else console.log('\n  🟢 les cinq pages disent vrai.\n')
 }

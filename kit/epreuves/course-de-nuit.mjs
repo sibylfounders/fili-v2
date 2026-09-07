@@ -45,7 +45,7 @@ const debut = new Date()
       les pages n'ont plus de référence à laquelle se comparer. */
 const moteur = lancer('moteur', 'npm', ['test', '--silent'])
 
-/* 2 · Le site construit à part, une seule fois pour les quatre pages. */
+/* 2 · Le site construit à part, une seule fois pour toutes les pages. */
 const construction = lancer('construction', 'npm', ['run', 'build', '--silent'])
 
 /* 3 · Chaque page sur son épreuve, séparément : une page rouge n'emporte pas
@@ -54,7 +54,7 @@ const construction = lancer('construction', 'npm', ['run', 'build', '--silent'])
    Et si le site n'a pas pu être construit, RIEN n'est mesuré : on garde alors
    la dernière mesure connue au lieu d'inventer un refus. Une panne de la nuit
    n'est pas une faute de la page — la faire passer pour telle obligerait à
-   reverrouiller quatre pages à la main pour un incident qui ne les concerne
+   reverrouiller toutes les pages à la main pour un incident qui ne les concerne
    pas, et l'alarme cesserait d'être crue. */
 const precedent = fs.existsSync(COURSE) ? JSON.parse(fs.readFileSync(COURSE, 'utf8')) : {}
 const pages = { ...(precedent.pages ?? {}) }
@@ -89,7 +89,7 @@ const bulletin = [
   !construction.ok
     ? '## 🔴 Le site n\'a pas pu être construit — rien n\'a été mesuré cette nuit.\n\nCe n\'est pas un verdict sur les pages : l\'état ci-dessous reste celui de la dernière course qui a abouti. À regarder quand même, une panne qui dure aveugle le banc.'
     : rouges.length === 0
-      ? '## 🟢 Les quatre pages sont vertes.'
+      ? `## 🟢 Les ${PAGES.length === 5 ? 'cinq' : PAGES.length} pages sont vertes.`
       : `## 🔴 ${rouges.length} page(s) refusée(s) : ${rouges.map((p) => '`/' + p + '`').join(', ')}`,
   '',
   `Le moteur : ${moteur.ok ? '🟢 vert' : '🔴 rouge — c\'est lui qu\'il faut regarder d\'abord'}.`,
