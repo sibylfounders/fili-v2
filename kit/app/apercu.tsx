@@ -20,12 +20,21 @@ const PAS_LARGE = 64;
    la mise en page se réorganiser en continu, ce qui est le sujet. Le
    double-clic sur la poignée ramène à la largeur de départ. */
 
-export function Apercu({ enfants, outils, pied, plafond }: {
+export function Apercu({ enfants, outils, pied, plafond, surLargeur, fond }: {
   enfants: (largeur: number) => React.ReactNode;
   outils?: React.ReactNode;
   pied?: React.ReactNode;
+  /* Une variante DÉCLARÉE, pas une liberté : « uni » — le damier dit la part
+     d'écran que la largeur simulée ne couvre pas, ce qui est précieux quand
+     on juge une mise en page. Quand on juge une LONGUEUR DE LIGNE, il devient
+     un bruit qui court juste derrière le texte à mesurer. Une scène de
+     lecture prend donc un fond uni (verdict d'Auteur, 2 septembre). */
+  fond?: "damier" | "uni";
   /* largeur maximale du cadre — le damier reprend le reste (24 août) */
   plafond?: number;
+  /* La largeur simulée, dite à l'appelant : une légende posée SOUS le cadre
+     doit pouvoir parler de ce que le cadre montre (1er septembre). */
+  surLargeur?: (largeur: number) => void;
 }) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const [w, setW] = React.useState(plafond ? Math.min(DEFAUT, plafond) : DEFAUT);
@@ -42,8 +51,13 @@ export function Apercu({ enfants, outils, pied, plafond }: {
     return () => ro.disconnect();
   }, []);
 
+  const dire = React.useRef(surLargeur);
+  dire.current = surLargeur;
+
   const borne = (v: number) => Math.max(MIN, Math.min(plafond ?? Infinity, Math.min(max || v, v)));
   const courante = Math.round(Math.min(plafond ?? Infinity, max ? Math.min(w, max) : w));
+
+  React.useEffect(() => { dire.current?.(courante); }, [courante]);
 
   const onDown = (e: React.PointerEvent) => {
     e.preventDefault();
@@ -65,10 +79,11 @@ export function Apercu({ enfants, outils, pied, plafond }: {
   };
 
   return (
-    <div className="apercu">
-      <div className="apercu-tete">
-        <div className="apercu-outils">{outils}</div>
-      </div>
+    <div className={`apercu${fond === "uni" ? " uni" : ""}`}>
+      {/* Une rangée de commandes = UNE boîte. Il y avait ici deux boîtes
+          souples imbriquées pour un seul enfant, et une rangée vide quand
+          l'aperçu n'a pas d'outils (verdict d'Auteur, 1er septembre). */}
+      {outils && <div className="apercu-outils">{outils}</div>}
       <div ref={wrapRef} className="apercu-piste">
         <div className="apercu-cadre" style={{ width: `${courante}px` }}>
           <div className="apercu-scene">{courante > 0 ? enfants(courante) : null}</div>

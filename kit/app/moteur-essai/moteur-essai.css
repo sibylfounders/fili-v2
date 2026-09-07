@@ -1,0 +1,3 @@
+/* Les styles du scénario et de la hiérarchie vivent désormais dans
+   rythme.css, avec la page qu'ils servent. La page d'essai importe déjà
+   rythme.css : elle consomme le même code, elle n'en garde pas une copie. */

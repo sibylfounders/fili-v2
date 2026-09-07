@@ -1,11 +1,13 @@
 "use client";
+import Scenario from "./scenario";
 import { Fragment, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { Apercu, PanneauCode } from "../apercu";
-import { useAdaptation } from "../adaptation";
+import { Bandes, Bande, ListeRegles, PanneauRegistre } from "../etages";
+import type { LigneListe, LigneCode } from "../etages";
 import { useDensite } from "../densite";
 import { RailDoc, useDocSections, type Sommaire } from "../rail";
-import { chaine, jetons, INTENTIONS, DENSITES, AXES, LARGEUR_MIN, LARGEUR_MAX, LARGEUR_GEL } from "../../derivation.mjs";
+import { Apercu } from "../apercu";
+import { chaine, jetons, DENSITES, CHARTE, BORNES, LARGEUR_MIN, LARGEUR_MAX } from "../../derivation.mjs";
 
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE RYTHME — recomposée au gabarit « documentaire nu » (24 août 2026),
@@ -15,13 +17,13 @@ import { chaine, jetons, INTENTIONS, DENSITES, AXES, LARGEUR_MIN, LARGEUR_MAX, L
      seules grandes surfaces de leur écran.
    · Rail nu (CG2) : navigation + sommaire, portés par l'alignement.
    · Un geste de couleur par écran (CG3) : le point du titre, puis la
-     scène de la tranche Coursue. Les commandes actives sont encre.
-   · La tranche Coursue emboîte ses fonds en cascade (CG4) : coque →
-     carte → ligne, chaque profondeur avec sa marge et son coin.
+     scène de la tranche Fili. Les commandes actives sont encre.
+   · La tranche Fili emboîte ses fonds en cascade : container →
+     card → row, chaque profondeur avec sa marge et son coin.
    · Titre-affiche déclaré (CG5) : alias --doc-* de tokens.css.
-   Plan de preuves validé : 01 la tranche Coursue en situation · 04 la
+   Plan de preuves validé : 01 la tranche Fili en situation · 04 la
    densité en variation · 07 le vocabulaire. Objets vivants : Léa Fontan,
-   Coursue. Tout chiffre affiché est CALCULÉ par le moteur (derivation.mjs),
+   Fili. Tout chiffre affiché est CALCULÉ par le moteur (derivation.mjs),
    jamais recopié. Les styles propres à la page vivent dans rythme.css.
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -33,8 +35,10 @@ const SOCLE: Socle = chaine();
 const J = jetons(SOCLE) as unknown as Record<string, Jeton>;
 /* Les nombres s'écrivent à la française dans les légendes, un chiffre après la virgule. */
 const px = (v: number) => String(Math.round(v * 10) / 10).replace(".", ",");
-/* Un facteur d'axe garde ses deux décimales (1,16 n'est pas 1,2) — attrapé par le crash-test de page, 26 août. */
-const fac = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
+/* Les mêmes arrondis, sous les noms que la page d'essai leur donnait — le
+   code versé le 2 septembre les emploie tels quels. */
+const fr = px;
+const fr2 = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
 /* L'accrochage Tailwind : la grille de 4, comme tokens.tailwind.mjs. */
 const grille4 = (v: number) => Math.round(v / 4) * 4;
 
@@ -55,30 +59,44 @@ function E({ j, h, voir, nom, genre, cran }: { j: string; h?: boolean; voir: boo
    maquette montre le système du kit, pas celui d'un autre (24 août). */
 const D_FILI = "M356.879 197C377.293 197 391.501 204.877 394.412 217.448C395.121 220.046 395.493 223.172 395.493 226.924C395.493 239.317 385.756 248.688 372.672 248.688C364.199 248.688 357.063 244.568 353.216 238.18C353.14 238.054 353.066 237.927 352.993 237.799C351.177 234.635 350.156 230.938 350.156 226.924C350.156 216.714 356.765 208.556 366.239 205.999C363.899 203.331 360.302 201.836 355.368 201.836C339.045 201.836 329.977 216.043 321.514 257.453L317.584 277.101H338.67L391.566 277.101V391.962C391.566 411.912 393.682 417.655 407.889 424.305V424.909H340.181V424.305C354.387 417.655 356.503 411.912 356.503 391.962V310.35C356.503 298.163 355.002 290.617 349.615 284.96H316.073L281.917 424.909C270.128 472.97 248.668 493.222 213 494.733V494.128C232.345 485.363 242.018 452.113 253.202 404.355L280.406 284.96H260.456L261.06 282.542L282.521 275.892L286.451 261.987C299.146 218.461 321.514 197 356.879 197ZM430.349 381C417.664 381 408 390.472 408 403C408 415.528 417.664 425 430.349 425C443.336 425 453 415.528 453 403C453 390.472 443.336 381 430.349 381Z";
 
-/* ── La tranche d'application — la scène de la démo Léa Fontan (CG4) ──
-   L'emboîtement en cascade relevé sur Coursue : la tranche est la coque
-   (marge 1, coin 1) → la carte (marge 2, coin 2) → les lignes (marge 3,
-   coin 3), profondeur par les fonds, ni ombre ni bordure. Dans la carte,
+/* Les quatre scènes de cette page sont EXPORTÉES (2 septembre 2026) : la
+   page d'essai du moteur les consomme telles quelles, sans les recopier.
+   Une planche qui recopie une scène finit toujours par en dériver ; celle-ci
+   montre les vrais blocs, ou elle ne montre rien.
+   ── La tranche d'application — la scène de la démo Léa Fontan (CG4) ──
+   L'emboîtement en cascade relevé sur une application en production : la tranche est le container
+   (marge 1, coin 1) → la card (marge 2, coin 2) → les rows (marge 3,
+   coin 3), profondeur par les fonds, ni ombre ni bordure. Dans la card,
    chaque distance est un bloc d'espace explicite : au survol, chacun se
    nomme — sa nature et sa profondeur. */
-function TrancheCoursue({ voir }: { voir: boolean }) {
+/* Deux réglages OPTIONNELS, ajoutés le 2 septembre 2026 pour le scénario du
+   moteur — la page Rythme ne passe ni l'un ni l'autre et ne bouge pas d'un
+   pixel :
+   · menu     : le faux menu de gauche est un décor. Dans un récit où la
+                fiche est le seul sujet, il mange la moitié de la scène.
+   Corrigé au passage : les quatre bandes de la marge du container
+   s'affichaient en permanence, sans regarder l'interrupteur des autres
+   espaces. Sur Rythme la scène ne les révèle qu'au survol, donc ça ne se
+   voyait pas ; ailleurs, une marge restait allumée toute seule. */
+export function TrancheFili({ voir, menu = true }:
+  { voir: boolean; menu?: boolean }) {
   const margeBloc = "--pad-2-block";
   const margeLigne = "--pad-2-inline";
   const entreLignes = "--gap-2-block";
   const dansLaLigne = "--gap-3-inline";
   return (
     <div className="tranche" role="img" aria-label="Tranche d'application : profil de Léa Fontan, chaque distance posée sur la chaîne du kit">
-      {/* Le panneau n'a pas de bloc d'espace à lui : sa marge EST son
+      {/* Le container n'a pas de bloc d'espace à lui : sa marge EST son
           rembourrage. On la trace donc par quatre bandes posées à même son
           bord, à l'épaisseur exacte du jeton. Ce sont de vraies cibles :
           ce cran se nomme et s'allume comme les trois autres (31 août). */}
       <span className="ry-marge1" aria-hidden="true">
-        <span className="espace vu pad haut" data-cran={1} data-nom="marge · panneau" />
-        <span className="espace vu pad bas" data-cran={1} />
-        <span className="espace vu pad gauche" data-cran={1} />
-        <span className="espace vu pad droite" data-cran={1} />
+        <span className={`espace ${voir ? "vu" : ""} pad haut`} data-cran={1} data-nom={voir ? "marge · container" : undefined} />
+        <span className={`espace ${voir ? "vu" : ""} pad bas`} data-cran={1} />
+        <span className={`espace ${voir ? "vu" : ""} pad gauche`} data-cran={1} />
+        <span className={`espace ${voir ? "vu" : ""} pad droite`} data-cran={1} />
       </span>
-      <div className="tr-nav">
+      {menu && <div className="tr-nav">
         <div className="tr-marque">
           <svg className="m" viewBox="211 195 244 301.7" fill="currentColor" aria-hidden="true">
             <path fillRule="evenodd" d={D_FILI} />
@@ -87,13 +105,13 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
         <div className="tr-item">Cours</div>
         <div className="tr-item">Messages</div>
         <div className="tr-item on">Profil</div>
-      </div>
-      {/* La marge de la carte fait le TOUR de la carte, d'un seul tenant :
+      </div>}
+      {/* La marge de la card fait le TOUR de la card, d'un seul tenant :
           ses deux colonnes courent sur toute la hauteur, ses deux bandes
           ferment en haut et en bas. Avant, les marges latérales vivaient
-          dans chaque ligne : les espaces entre lignes les traversaient de
+          dans chaque row : les espaces entre rows les traversaient de
           bord à bord et coupaient l'anneau en morceaux (verdict d'Auteur,
-          1er septembre). Un espace ENTRE deux lignes appartient au dedans
+          1er septembre). Un espace ENTRE deux rows appartient au dedans
           du composant — il ne mord jamais sur sa marge. */}
       <div className="tr-carte">
         <E j={margeLigne} h voir={voir} genre="pad" cran={2} />
@@ -103,18 +121,18 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
               longueurs (verdict d’Auteur, 31 août). Le rapport se voit à côté,
               sur la réglette : chaque espace porte son CRAN, et survoler l’un
               allume l’autre. */}
-          <E j={margeBloc} voir={voir} nom="marge · carte" genre="pad" cran={2} />
+          <E j={margeBloc} voir={voir} nom="marge · card" genre="pad" cran={2} />
           <span className="tr-id">
             <span className="tr-avatar" aria-hidden="true">LF</span>
             <span className="ry-min0">
               <span className="tr-nom">Léa Fontan</span>
-              <span className="tr-role">UX Designer — chaque distance de cette carte est un jeton de la chaîne.</span>
+              <span className="tr-role">UX Designer — chaque distance de cette card est un jeton de la chaîne.</span>
             </span>
           </span>
-          <E j={entreLignes} voir={voir} nom="espace · entre deux lignes" genre="gap" cran={3} />
+          <E j={entreLignes} voir={voir} nom="espace · entre deux rows" genre="gap" cran={3} />
           <span className="ry-flex">
             <button className="tr-btn premier" type="button" tabIndex={-1}>Suivre</button>
-            <E j={dansLaLigne} h voir={voir} nom="espace · dans la ligne" genre="gap" cran={4} />
+            <E j={dansLaLigne} h voir={voir} nom="espace · dans la row" genre="gap" cran={4} />
             <button className="tr-btn" type="button" tabIndex={-1}>Message</button>
           </span>
           <E j={entreLignes} voir={voir} genre="gap" cran={3} />
@@ -133,7 +151,7 @@ function TrancheCoursue({ voir }: { voir: boolean }) {
   );
 }
 
-/* Les distances de la carte sont des blocs d'espace explicites : quand une
+/* Les distances de la card sont des blocs d'espace explicites : quand une
    casse est active, l'écart menteur se matérialise en rouge, étiquette
    dedans (décision d'Auteur, 24 août — on voit l'erreur, on ne la devine
    plus). Au repos, les espaces sont invisibles : ils espacent, c'est tout. */
@@ -141,127 +159,32 @@ function Esp({ j, faute, nom }: { j: string; faute?: boolean; nom?: string }) {
   return <span className={`espace ${faute ? "ko" : ""}`} data-nom={faute ? nom : undefined}
     data-intent={faute ? "statement" : undefined} style={{ height: `var(${j})` }} />;
 }
-/* Le juste : au-dessus d'un titre, l'espace entre deux cartes ; sous le
-   titre, l'espace d'un titre à sa phrase ; d'un libellé à son champ, le
-   même. La casse du titre : le même espace des deux côtés. La casse du
-   libellé : aussi loin de son champ que de ce qui précède. */
-function Proximite({ casseY1, casseY2 }: { casseY1: boolean; casseY2: boolean }) {
+/* Deux fautes, deux fiches : elles ne se cassent plus ensemble (gabarit
+   des étages, 1er septembre). Le juste : au-dessus d'un titre, l'espace
+   entre deux cards ; sous le titre, l'espace d'un titre à sa phrase ;
+   d'un libellé à son champ, le même. */
+function ProximiteLibelle({ casse }: { casse: boolean }) {
   return (
-    <div className="ry-prox">
-      <div className="ry-prox-carte">
-        <p className="sourd">Un paragraphe qui précède la section.</p>
-        <Esp j={casseY2 ? "--gap-2-block" : "--gap-1-block"} faute={casseY2} nom="le même écart au-dessus…" />
-        <h3 className="ry-h3">Vos coordonnées</h3>
-        <Esp j={casseY2 ? "--gap-2-block" : "--gap-3-block"} faute={casseY2} nom="…qu'au-dessous : le titre flotte" />
-        <Esp j="--gap-1-block" faute={casseY1} nom="aussi loin de ce qui précède…" />
-        <label className="mono ry-bloc">Adresse e-mail</label>
-        <Esp j={casseY1 ? "--gap-1-block" : "--gap-3-block"} faute={casseY1} nom="…que de son champ : le libellé flotte" />
-        <span className="champ-boite"><input readOnly value="prenom@exemple.fr" className="ry-champ" /></span>
-      </div>
-      {(casseY1 || casseY2) && (
-        <div className="oeil">
-          {casseY1 && <span>👁 Le libellé flotte à mi-chemin : l&apos;œil ne sait plus à quel champ il appartient. </span>}
-          {casseY2 && <span>👁 Le titre est aussi proche du paragraphe qu&apos;il ferme que de la section qu&apos;il ouvre : il n&apos;introduit plus rien.</span>}
-        </div>
-      )}
+    <div className="ry-prox-carte">
+      <p className="sourd">Un paragraphe qui précède.</p>
+      <Esp j="--gap-1-block" faute={casse} nom="aussi loin de ce qui précède…" />
+      <label className="mono ry-bloc">Adresse e-mail</label>
+      <Esp j={casse ? "--gap-1-block" : "--gap-3-block"} faute={casse} nom="…que de son champ" />
+      <span className="champ-boite"><input readOnly value="prenom@exemple.fr" className="ry-champ" /></span>
     </div>
   );
 }
-
-/* Les extraits « à copier » enseignent le registre : la carte (marge 2,
-   coin 2) et l'espace entre ses lignes (espace 2). Tailwind : les noms
-   d'espacement sont ceux des variables (tokens.tailwind.mjs). */
-const SNIPPETS: Record<string, Record<string, string>> = {
-  React: {
-    Tailwind: `// tailwind.config : theme.extend.spacing <- rhythm.spacing (les variables, fluide)
-// ou rhythmLiteral (grille de 4, arrondie) — jamais les deux à la fois
-export function Fiche({ enfants }) {
+function ProximiteTitre({ casse }: { casse: boolean }) {
   return (
-    <section className="py-pad-2-block px-pad-2-inline rounded-2">
-      <div className="grid gap-gap-2-block">{enfants}</div>
-    </section>
-  );
-}`,
-    shadcn: `// shadcn/ui vit sur Tailwind — donc sur nos jetons, via theme.extend
-import { Card, CardContent } from "@/components/ui/card";
-
-export function Fiche({ enfants }) {
-  return (
-    <Card className="rounded-2">
-      <CardContent className="py-pad-2-block px-pad-2-inline grid gap-gap-2-block">
-        {enfants}
-      </CardContent>
-    </Card>
-  );
-}`,
-    "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
-export function Fiche({ enfants }) {
-  return (
-    <section className="fiche">   {/* une carte : marge 2, coin 2 */}
-      <div className="pile">{enfants}</div>
-    </section>
+    <div className="ry-prox-carte">
+      <p className="sourd">Un paragraphe qui précède la section.</p>
+      <Esp j={casse ? "--gap-2-block" : "--gap-1-block"} faute={casse} nom="le même écart au-dessus…" />
+      <h3 className="ry-h3">Vos coordonnées</h3>
+      <Esp j={casse ? "--gap-2-block" : "--gap-3-block"} faute={casse} nom="…qu&apos;au-dessous" />
+      <p className="sourd">La section qu&apos;il ouvre commence ici.</p>
+    </div>
   );
 }
-
-/* styles.css — tout sort des jetons, rien en dur */
-.fiche { padding: var(--pad-2-block) var(--pad-2-inline);
-         border-radius: var(--r-2); }
-.pile  { display: grid; gap: var(--gap-2-block); }  /* entre deux lignes : l'espace de la carte */`,
-  },
-  Angular: {
-    Tailwind: `@Component({
-  selector: "kit-fiche",
-  template: \`
-    <section class="py-pad-2-block px-pad-2-inline rounded-2">
-      <div class="grid gap-gap-2-block"><ng-content /></div>
-    </section>\`,
-})
-export class Fiche {}`,
-    shadcn: `// shadcn est né côté React ; côté Angular son esprit vit dans spartan/ui —
-// mêmes classes Tailwind, donc mêmes jetons
-@Component({
-  selector: "kit-fiche",
-  template: \`
-    <hlm-card class="rounded-2">
-      <div hlmCardContent class="py-pad-2-block px-pad-2-inline grid gap-gap-2-block">
-        <ng-content />
-      </div>
-    </hlm-card>\`,
-})
-export class Fiche {}`,
-    "HTML natif": `@Component({
-  selector: "kit-fiche",
-  template: \`
-    <section class="fiche">
-      <div class="pile"><ng-content /></div>
-    </section>\`,
-  styleUrl: "./fiche.css", // mêmes classes : var(--pad-2-block), var(--gap-2-block)…
-})
-export class Fiche {}`,
-  },
-  HTML: {
-    Tailwind: `<section class="py-pad-2-block px-pad-2-inline rounded-2">
-  <div class="grid gap-gap-2-block">
-    <p>Les classes résolvent les jetons — le système reste le même.</p>
-  </div>
-</section>`,
-    shadcn: `<!-- shadcn est une bibliothèque React : en HTML pur il n'en reste que
-     l'essentiel — ses classes Tailwind, qui résolvent nos jetons -->
-<section class="py-pad-2-block px-pad-2-inline rounded-2 border bg-card">
-  <div class="grid gap-gap-2-block">…</div>
-</section>`,
-    "HTML natif": `<link rel="stylesheet" href="kit/tokens.css" />
-
-<section class="fiche">
-  <p>Chaque distance vient d'un jeton — une marge, un espace, un coin, à sa profondeur.</p>
-</section>
-
-<style>
-  .fiche { padding: var(--pad-2-block) var(--pad-2-inline); border-radius: var(--r-2); }
-  .fiche p { margin-block: var(--gap-2-block); }
-</style>`,
-  },
-};
 
 type Src = { t: string; h: string };
 const DECISIONS: Src = { t: "Décisions du 25 août 2026, séance sur pièce", h: "#" };
@@ -275,7 +198,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     pourquoi: "Un titre équidistant flotte ; un titre plus proche du bloc précédent ment. Convention éditoriale constante, transposée en crans de la chaîne.",
     src: [{ t: "Butterick — Space above & below", h: "https://practicaltypography.com/space-above-and-below.html" }, { t: "Rutter — Vertical rhythm", h: "https://webtypography.net/2.2.2" }] },
   { id: "y3", nom: "3", titre: "Toute distance descend d'une seule base",
-    enonce: "Toute distance posée par le système descend de la marge de la coque, divisée par racine de deux à chaque profondeur — coque, carte, ligne. La densité choisit cette base parmi trois ; rien d'autre n'en choisit une.",
+    enonce: "Toute distance posée par le système descend de la marge du container, divisée par racine de deux à chaque profondeur — container, card, row. La densité choisit cette base parmi trois ; rien d'autre n'en choisit une.",
     pourquoi: "La régularité vient du petit nombre de valeurs et du rapport constant entre elles, pas de leur précision — l'œil reconnaît une chaîne, pas une grille.",
     src: [DECISIONS, { t: "Carbon — Spacing", h: "https://carbondesignsystem.com/elements/spacing/overview/" }] },
   { id: "y4", nom: "4", titre: "L'interligne suit la lisibilité, pas la grille",
@@ -304,7 +227,7 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     pourquoi: "Quand l'utilisateur agrandit le texte, les espaces qui l'entourent doivent suivre — sinon la page casse au premier réglage d'accessibilité.",
     src: [{ t: "WCAG 1.4.4 — Resize Text", h: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html" }] },
   { id: "y10", nom: "10", titre: "La profondeur choisit — pas toi",
-    enonce: "La marge et le coin d'une surface descendent ensemble à chaque profondeur — les coins divisés par deux, les marges par racine de deux — et la marge ne descend jamais sous le coin. Coque, carte, ligne forment une chaîne, pas trois choix. Un composant prend le coin de la ligne.",
+    enonce: "La marge et le coin d'une surface descendent ensemble à chaque profondeur — les coins divisés par deux, les marges par racine de deux — et la marge ne descend jamais sous le coin. Container, card, row forment une chaîne, pas trois choix. Un composant prend le coin de la row.",
     pourquoi: "Trois niveaux réglés à la main dérivent ; une chaîne tient toute seule.",
     src: [DECISIONS] },
   { id: "y11", nom: "11", titre: "Les titres sortent du même pas",
@@ -316,15 +239,15 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     pourquoi: "L'œil lit les rapports, pas les écarts : trois crans obtenus en retranchant sont presque jumeaux ; trois crans obtenus en divisant sont lisibles.",
     src: [{ t: "Le générateur du système (leçon 5)", h: "#" }] },
   { id: "y13", nom: "13", titre: "Un seul registre, site compris",
-    enonce: "Les crans de page — la tête d'une section, la gouttière, le silence entre deux sections — sont la même chaîne continuée au-dessus de la coque. Le gabarit du site ne possède aucune valeur à lui : chaque distance qu'il consomme est un jeton dérivé.",
+    enonce: "Les crans de page — la tête d'une section, la gouttière, le silence entre deux sections — sont la même chaîne continuée au-dessus du container. Le gabarit du site ne possède aucune valeur à lui : chaque distance qu'il consomme est un jeton dérivé.",
     pourquoi: "Un site qui vivrait sur une autre échelle que ses composants aurait deux rythmes ; on n'en veut qu'un.",
     src: [DECISIONS] },
   { id: "y14", nom: "14", titre: "Deux questions choisissent le cran",
-    enonce: "Est-ce un espace, une marge ou un coin ? À quelle profondeur — coque, carte, ligne, ou au plus serré ? La réponse désigne le jeton — le cran se déduit, il ne se choisit pas à l'œil.",
+    enonce: "Est-ce un espace, une marge ou un coin ? À quelle profondeur — container, card, row, ou au plus serré ? La réponse désigne le jeton — le cran se déduit, il ne se choisit pas à l'œil.",
     pourquoi: "Méthode : chaque valeur posée doit pouvoir citer ses deux réponses.",
     src: [DECISIONS] },
   { id: "y15", nom: "15", titre: "Les six invariants d'audit",
-    enonce: "Aucun enfant plus rond que son parent · aucune marge sous son coin · deux axes verticaux d'alignement par carte, jamais trois · sœurs alignées au pixel · zéro débord à la largeur minimale · l'espace entre deux frères vaut leur marge.",
+    enonce: "Aucun enfant plus rond que son parent · aucune marge sous son coin · deux axes verticaux d'alignement par card, jamais trois · sœurs alignées au pixel · zéro débord à la largeur minimale · l'espace entre deux frères vaut leur marge.",
     pourquoi: "Six phrases vérifiables sur toute vue — les futures assertions du Gardien quand il mordra sur ce kit.",
     src: [DECISIONS] },
   { id: "y16", nom: "16", titre: "Les coins ne suivent pas l'écran",
@@ -383,150 +306,6 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
-/* ── Le pied du laboratoire (1er septembre) ──
-   Il a porté une phrase-fleuve de quinze nombres, puis deux escaliers de
-   mesure ; ni l'une ni les autres n'y avaient leur place — le laboratoire
-   montre une MÉCANIQUE (trois réglages, une géométrie), pas un registre.
-   Ne reste que ce qu'aucun autre endroit ne dit : la garantie que le
-   moteur a dû appliquer, quand il l'a fait. */
-function PiedLabo({ relevee }: { relevee: boolean }) {
-  if (!relevee) return null;
-  return <p className="gd-legende">une marge a été relevée au coin : elle ne descend jamais dessous</p>;
-}
-
-/* ── L'amorce : « deux fois le même geste, une seule fois ça se voit » ──
-   Portée de la pièce libre du 31 août (piste-crans-nu.html) à la place des
-   deux rangs de pastilles. Les pastilles AFFIRMAIENT que soustraire fait
-   des jumeaux ; ici on le montre, et on laisse juger avant de donner les
-   chiffres — c'est le seul ordre qui rende la démonstration convaincante,
-   parce que l'œil a déjà tranché quand la mesure arrive.
-   Les quatre échantillons sortent du socle du laboratoire : ses deux bouts
-   de chaîne, moins le même nombre de pixels des deux côtés. Rien n'est
-   écrit à la main — bouger un curseur bouge la démonstration. */
-const RETRAIT = 4; /* hors chaîne : le nombre de pixels retiré des deux côtés — c'est le geste qu'on éprouve, pas une distance du kit */
-/* Le titre et sa carte sont deux cases de la grille de la paire, pas un
-   bloc à eux : c'est ce qui met la question de droite sur la MÊME ligne
-   que les titres, et les trois cartes sur la même ligne en dessous
-   (verdict d'Auteur, 1er septembre). */
-function Echantillon({ titre, espace, col }: { titre: string; espace: number; col: 1 | 2 }) {
-  return (
-    <>
-      <span className={`ry-ech-titre mono ry-col-${col}`}>{titre}</span>
-      {/* Les blocs sont encrés, le fond est clair : ce qu'on voit entre eux
-          EST l'espace, à sa taille réelle, jamais schématisé. */}
-      <div className={`ry-ech-carte ry-col-${col}`}>
-        <span className="ry-ech-bloc" />
-        <span className="ry-ech-espace" style={{ height: `${Math.max(espace, 0)}px` }}>
-          <i className="ry-ech-cote mono">{px(Math.max(espace, 0))}</i>
-        </span>
-        <span className="ry-ech-bloc" />
-      </div>
-    </>
-  );
-}
-function Paire({ titre, demande, valeur }: { titre: string; demande: string; valeur: number }) {
-  /* Chaque paire se révèle POUR ELLE SEULE : on juge la première, on
-     regarde sa mesure, puis on descend à la seconde. Un interrupteur
-     commun les dévoilait ensemble et cassait le va-et-vient
-     (verdict d'Auteur, 1er septembre). */
-  const [revele, setRevele] = useState(false);
-  const reste = valeur - RETRAIT;
-  const rapport = reste > 0 ? valeur / reste : Infinity;
-  /* Le verdict se déduit du rapport, il n'est pas écrit d'avance : selon le
-     préréglage, le même retrait peut ne rien faire ou tout casser. */
-  const jumeaux = rapport < 1.3;
-  const franc = rapport >= 1.8;
-  return (
-    <div className={`ry-paire ${revele ? "revele" : ""}`}>
-      <Echantillon titre={titre} espace={valeur} col={1} />
-      <Echantillon titre="le cran d’en dessous" espace={reste} col={2} />
-      {/* La question, le bouton, puis la réponse — dans l'ordre où ça se
-          vit. La question reste sous les yeux pendant qu'on lit sa réponse
-          (verdict d'Auteur, 1er septembre). La réponse garde sa place même
-          cachée : rien ne saute au clic. */}
-      <p className="ry-demande">{demande}</p>
-      <div className="ry-juge">
-        <button type="button" className={`bouton ${revele ? "on" : ""}`} aria-pressed={revele}
-          onClick={() => setRevele(!revele)}>{revele ? "Masquer l’écart" : "Montrer l’écart"}</button>
-        <p className={`ry-verdict ${revele ? "" : "ry-tu"}`} aria-hidden={!revele}>
-          <span className={`badge ${jumeaux ? "ko" : "neutre"}`}>
-            {RETRAIT} px retirés · rapport {rapport === Infinity ? "∞" : fac(rapport)}
-          </span>
-          <span>
-            {rapport === Infinity
-              ? "Il n’y a plus d’espace du tout : les deux blocs se touchent. L’échelle s’arrête ici."
-              : jumeaux
-                ? "L’œil ne voit rien. Deux crans, un seul effet : des jumeaux."
-                : franc
-                  ? "L’un tient les blocs à distance, l’autre les soude. Ici, un cran change le sens de la mise en page."
-                  : "Le pas se voit, mais tout juste : c’est le même geste qui, plus bas, retournera la mise en page."}
-          </span>
-        </p>
-      </div>
-    </div>
-  );
-}
-function Amorce({ haut, bas }: { haut: number; bas: number }) {
-  return (
-    <div className="ry-amorce">
-      <Paire titre="En haut de l’échelle" demande="Voyez-vous une différence entre ces deux-là ?" valeur={haut} />
-      <Paire titre="En bas de l’échelle" demande="Et entre ces deux-là ?" valeur={bas} />
-      <p className="gd-legende">même geste des deux côtés — retirer {RETRAIT} px — et deux résultats sans commune
-        mesure : l&apos;œil ne compte pas ce qu&apos;on retire, il compare une longueur à l&apos;autre.</p>
-    </div>
-  );
-}
-
-/* ── Le laboratoire des décisions maîtresses — trois entrées, toute la
-   géométrie sort, par le MÊME moteur que tokens.css. Il ne règle RIEN :
-   la chaîne du kit reste celle du registre ; on regarde la mécanique, on
-   ne la remplace pas. Les préréglages sont les intentions du moteur. ── */
-function Laboratoire({ intention }: { intention: number }) {
-  const { base, intervalle, racine, note } = INTENTIONS[intention];
-  /* « φ · racine à la borne » : seul le rapport se lit dans l'escalier. */
-  const motIntervalle = String(note).split(" · ")[0];
-  const s = chaine({ base, intervalle, racine });
-  /* La géométrie de la carte, posée en variables (px, calculées) : la coque
-     porte la base et la racine, la carte et les lignes en descendent. */
-  const vars = {
-    "--lab-p1": `${s.pad[0]}px`, "--lab-p2": `${s.pad[1]}px`, "--lab-p3": `${s.pad[2]}px`,
-    "--lab-g1": `${s.gap[0]}px`, "--lab-g2": `${s.gap[1]}px`, "--lab-g3": `${s.gap[2]}px`, "--lab-g4": `${s.gap[3]}px`,
-    "--lab-r1": `${s.r[0]}px`, "--lab-r2": `${s.r[1]}px`, "--lab-r3": `${s.r[2]}px`, "--lab-rctl": `${s.rCtl}px`,
-  } as CSSProperties;
-  const relevee = s.garanties.margeRelevee.some(Boolean);
-  /* La carte Léa Fontan, née des trois décisions, sur le banc d'essai
-     (demande d'Auteur, 24 août) : la même carte que la tranche, la
-     géométrie en variable. */
-  const carte = (
-    <div className="ry-lab" style={vars}>
-      <div className="ry-lab-carte">
-        <span className="ry-lab-ligne ry-lab-id">
-          <span className="tr-avatar" aria-hidden="true">LF</span>
-          <span className="ry-min0">
-            <span className="tr-nom">Léa Fontan</span>
-            <span className="tr-role">UX Designer — chaque distance de cette carte sort des trois décisions.</span>
-          </span>
-        </span>
-        <span className="ry-lab-ligne">
-          <button className="tr-btn premier ry-lab-btn" type="button" tabIndex={-1}>Suivre</button>
-          <button className="tr-btn ry-lab-btn" type="button" tabIndex={-1}>Message</button>
-        </span>
-        <span className="ry-lab-ligne">
-          {([["24", "cours suivis"], ["1 280", "abonnés"], ["96 %", "assiduité"]] as const).map(([v, l]) => (
-            <span key={l} className="tr-sub ry-lab-cellule"><b>{v}</b><span>{l}</span></span>
-          ))}
-        </span>
-      </div>
-    </div>
-  );
-  return (
-    <div className="ry-labo">
-      <Apercu plafond={LARGEUR_GEL} enfants={() => carte} pied={<PiedLabo relevee={relevee} />} />
-      <Amorce haut={s.pad[0]} bas={s.gap[3]} />
-    </div>
-  );
-}
-
 /* ── Le registre à la densité du site (1er septembre) ──
    La densité change la BASE de la chaîne (16 · 24 · 32, décision 4) : les
    barres suivaient déjà, puisqu'elles consomment les jetons — mais les
@@ -542,17 +321,17 @@ function useSocle(): Socle {
    LONGUEUR. Une phrase ne montre pas un rapport entre deux longueurs
    (verdict d’Auteur, 31 août) ; un escalier, si : d’un cran au suivant on
    divise par racine de deux, et ça se voit. Les valeurs sont lues dans le
-   registre, jamais écrites. « Panneau » et non « coque » : c'est le mot
+   registre, jamais écrites. « Container » — le mot du trio arrêté le 1er septembre
    déjà employé dans les légendes d'Arrondis, et il se comprend sans avoir
    lu le vocabulaire. Survoler un espace de la scène allume son
    cran ; survoler un cran allume ses espaces. ── */
 const CRANS: { cran: number; jeton: string; lire: (s: Socle) => number; role: string }[] = [
-  { cran: 1, jeton: "--pad-1-block", lire: (s) => s.pad[0], role: "la marge du panneau" },
-  { cran: 2, jeton: "--pad-2-block", lire: (s) => s.pad[1], role: "la marge de la carte" },
-  { cran: 3, jeton: "--gap-2-block", lire: (s) => s.gap[1], role: "entre deux lignes" },
-  { cran: 4, jeton: "--gap-3-inline", lire: (s) => s.gap[2], role: "dans la ligne" },
+  { cran: 1, jeton: "--pad-1-block", lire: (s) => s.pad[0], role: "la marge du container" },
+  { cran: 2, jeton: "--pad-2-block", lire: (s) => s.pad[1], role: "la marge de la card" },
+  { cran: 3, jeton: "--gap-2-block", lire: (s) => s.gap[1], role: "entre deux rows" },
+  { cran: 4, jeton: "--gap-3-inline", lire: (s) => s.gap[2], role: "dans la row" },
 ];
-function Reglette() {
+export function Reglette() {
   const socle = useSocle();
   return (
     <ol className="ry-reglette" aria-label="La chaîne des distances de cette tranche, chaque cran à sa vraie longueur">
@@ -568,204 +347,438 @@ function Reglette() {
   );
 }
 
-/* ── La profondeur — la chaîne coque > carte > ligne, avec sa casse.
-   La ligne porte deux lignes de texte : assez haute pour que ses coins se
-   lisent. Le coin cassé vaut exactement DEUX FOIS celui de sa carte mère :
-   l'œil compare les deux arcs voisins (valeur cassée volontaire, rythme.css). ── */
-function Profondeur({ casse }: { casse: boolean }) {
+/* ── Les scènes de l'étage « en bandes » — chacune porte UNE règle et sa
+   casse. Toutes consomment le registre ; les valeurs cassées sont dites
+   sur leur ligne, dans rythme.css. ── */
+
+/* y1 · L'espace entre deux sœurs vaut leur marge — le même chiffre, et on
+   le LIT : la marge de chaque card et l'écart qui les sépare sont rendus
+   visibles, avec le code couleur de la page (rouge = marge, vert = espace)
+   et leur cote. Au repos, deux fois le même nombre. */
+/* Une seule étiquette par rôle : la première card nomme sa marge, l'écart
+   se nomme lui-même. Trois étiquettes sur cette largeur se chevaucheraient. */
+function CarteSoeur({ nom, role, nomme }: { nom: string; role: string; nomme?: boolean }) {
   return (
-    <div className="ry-prof-coque">
-      <span className="mono sourd ry-petit">coque — marge 1 · coin 1</span>
-      <div className="ry-prof-carte">
-        <span className="mono sourd ry-petit">carte — marge ÷ √2 · coin ÷ 2</span>
-        {/* Les cotes ne s'affichent qu'à la casse : au repos il n'y a rien à
-            comparer. La valeur cassée n'est pas écrite en dur — c'est le
-            coin de la carte, doublé : la faute reste liée à la chaîne. */}
-        {casse && <span className="ry-coin-cote contenant">r{SOCLE.r[1]}</span>}
-        <div className="ry-prof-ligne" data-intent={casse ? "statement" : undefined}
-          style={casse ? { ["--ry-casse" as string]: `${SOCLE.r[1] * 2}px` } : undefined}>
-          <b className="ry-petit">ligne</b>
-          {/* Les deux phrases occupent la MÊME case : le survol passe de
-              l'une à l'autre sans que la scène change de hauteur. */}
-          <span className="ry-prof-dire">
-            <span className="mono ry-petit sourd juste">encore une profondeur — le coin suit la chaîne, sans glisser avec l&apos;écran</span>
-            <span className="mono ry-petit ry-faute cassee">coin ×2 — PLUS RONDE que la carte qui la contient</span>
+    <div className="ry-fr-carte">
+      <E j="--pad-2-inline" h voir nom={nomme ? "la marge" : undefined} genre="pad" cran={2} />
+      <span className="ry-fr-dit"><b>{nom}</b><span className="sourd ry-petit">{role}</span></span>
+      <E j="--pad-2-inline" h voir genre="pad" cran={2} />
+    </div>
+  );
+}
+function Freres({ casse }: { casse: boolean }) {
+  const s = useSocle();
+  const ecart = casse ? s.gap[2] : s.gap[0];
+  return (
+    <div className="ry-fr">
+      {/* Les bandes restent visibles : cette scène EST la comparaison de deux
+          longueurs — les cacher jusqu'au survol reviendrait à ne rien montrer. */}
+      <div className="ry-fr-coque">
+        <CarteSoeur nom="Léa Fontan" role="UX Designer" nomme />
+        <span className={`espace h ${casse ? "ko" : "vu gap"}`} data-nom={casse ? "l’écart ment" : "l’écart"}
+          data-cran={2} data-intent={casse ? "statement" : undefined}
+          style={{ width: `var(${casse ? "--gap-3-inline" : "--gap-1-inline"})` }} />
+        <CarteSoeur nom="Marc Aubin" role="Développeur" />
+      </div>
+      <span className="gd-legende">{casse
+        ? `l’écart ${px(ecart)} · la marge ${px(s.pad[1])} — ils ne sont plus égaux : chaque texte est plus près de sa voisine que de son propre bord`
+        : `l’écart ${px(ecart)} · la marge ${px(s.pad[1])} — le même chiffre, et c’est la règle`}</span>
+    </div>
+  );
+}
+
+/* y12 · Des rapports, jamais des soustractions — quatre crans dessinés à
+   leur vraie longueur. Au repos ils descendent par racine de deux ; cassés,
+   on retire le même nombre de pixels à chaque pas. */
+const CHAINE = [SOCLE.pad[0], SOCLE.pad[1], SOCLE.pad[2], SOCLE.gap[2]];
+const RETRAIT = 4; /* hors chaîne : le nombre de pixels retiré à chaque pas — c'est le geste qu'on éprouve, pas une distance du kit */
+function Rapports({ casse }: { casse: boolean }) {
+  const crans = casse ? CHAINE.map((_, i) => CHAINE[0] - i * RETRAIT) : CHAINE;
+  return (
+    <div className="ry-rap" data-intent={casse ? "statement" : undefined}>
+      <ol className="ry-rap-crans">
+        {crans.map((v, i) => (
+          <li className="ry-rap-cran" key={i}>
+            <span className="ry-rap-barre" style={{ width: `${v}px` }} aria-hidden="true" />
+            <b className="mono">{px(v)}</b>
+          </li>
+        ))}
+      </ol>
+      <span className="gd-legende">{casse
+        ? "on retire le même nombre de pixels à chaque pas : quatre longueurs presque jumelles — l’œil ne compte pas ce qu’on retire"
+        : "on divise par racine de deux à chaque pas : quatre longueurs qu’on distingue sans effort"}</span>
+    </div>
+  );
+}
+
+/* y9 · La géométrie d'espacement vit en rem. Ici la commande n'est pas une
+   faute : c'est le GESTE de l'utilisateur — il agrandit le texte. Deux
+   cards jumelles, l'une dont les marges sont des jetons, l'autre dont les
+   marges sont gelées en pixels. Au repos elles se ressemblent ; agrandi,
+   l'une respire et l'autre étouffe. */
+const MARGE_DURE = 16; /* hors chaîne : la marge fautive de la démonstration — une valeur qu'on ne pose jamais */
+function EnRem({ grand }: { grand: boolean }) {
+  const carte = (dur: boolean) => (
+    <div className={`ry-rem-carte ${dur ? "dur" : ""}`} data-intent={dur && grand ? "statement" : undefined}>
+      <span className="ry-rem-etiq mono">{dur ? `marge : ${MARGE_DURE} px` : "marge : var(--pad-2-block)"}</span>
+      <b>Vos coordonnées</b>
+      <span className="sourd">Nom, adresse, téléphone.</span>
+    </div>
+  );
+  return (
+    <div className={`ry-rem ${grand ? "grand" : ""}`}>
+      <div className="ry-rem-paire">{carte(false)}{carte(true)}</div>
+      <span className="gd-legende">{grand
+        ? "texte agrandi de moitié : à gauche la marge a grandi avec lui, à droite elle est restée où elle était — le contenu touche le bord"
+        : "au repos, les deux cards se ressemblent : c’est en agrandissant le texte que la différence apparaît"}</span>
+    </div>
+  );
+}
+
+/* y17 · La cible au doigt a un plancher. La jauge en pointillé est la
+   hauteur due ; la commande doit la remplir. Cassée, on voit le vide entre
+   la commande et sa jauge, et la légende dit les deux chiffres. */
+const CIBLE_CASSEE = 36; /* hors chaîne : la hauteur fautive de la démonstration — une valeur qu'on ne pose jamais */
+function Cible({ casse }: { casse: boolean }) {
+  const due = J["control-height"];
+  const hauteur = px(due.haut ?? due.base);
+  return (
+    <div className="ry-cible" data-intent={casse ? "statement" : undefined}>
+      <div className="ry-cible-rang">
+        {["Enregistrer", "Annuler", "Aide"].map((n) => (
+          <span className="ry-cible-jauge" key={n}>
+            <button className="ry-cible-btn" type="button" tabIndex={-1}>{n}</button>
           </span>
-          {casse && (
-            <span className="ry-coin-cote">
-              <span className="juste">r{SOCLE.r[2]}</span>
-              <span className="cassee">r{SOCLE.r[1] * 2}</span>
-            </span>
-          )}
-        </div>
-        {/* Discret et à distance : la vedette de la démo, c'est la chaîne
-            des surfaces — pas le composant (retour d'Auteur, 24 août). */}
-        <button className="bouton ry-debut ry-prof-btn">le bouton prend le coin de la ligne</button>
+        ))}
       </div>
+      <span className="gd-legende">{casse
+        ? `la jauge ${hauteur} px · la commande ${CIBLE_CASSEE} px — la commande ne remplit plus sa hauteur, elle se rate au doigt`
+        : `la jauge ${hauteur} px · la commande ${hauteur} px — la commande remplit exactement la hauteur due`}</span>
     </div>
   );
 }
 
-/* ── Le bon cran — deux questions, une réponse : la nature, la profondeur.
-   La valeur affichée est lue dans le registre calculé. ── */
-type Nature = "espace" | "marge" | "coin";
-type Prof = "coque" | "carte" | "ligne" | "serre";
-const NATURES: [Nature, string][] = [["espace", "Un espace"], ["marge", "Une marge"], ["coin", "Un coin"]];
-const PROFONDEURS: [Prof, string][] = [["coque", "La coque"], ["carte", "La carte"], ["ligne", "La ligne"], ["serre", "Au plus serré"]];
-const REPONSES: Record<Nature, Record<Prof, { jetons: string[]; role: string }>> = {
-  espace: {
-    coque: { jetons: ["gap-1-block", "gap-1-inline"], role: "entre deux cartes, dans la coque" },
-    carte: { jetons: ["gap-2-block", "gap-2-inline"], role: "entre deux lignes, dans la carte" },
-    ligne: { jetons: ["gap-3-block", "gap-3-inline"], role: "dans une ligne — une icône et son texte, deux boutons" },
-    serre: { jetons: ["gap-4-block", "gap-4-inline"], role: "au plus serré — un chiffre et son libellé, l'intérieur d'un badge" },
-  },
-  marge: {
-    coque: { jetons: ["pad-1-block", "pad-1-inline"], role: "la marge de la coque — panneau, scène, feuille" },
-    carte: { jetons: ["pad-2-block", "pad-2-inline"], role: "la marge de la carte" },
-    ligne: { jetons: ["pad-3-block", "pad-3-inline"], role: "la marge de la ligne — rangée, cellule, bouton, champ" },
-    serre: { jetons: ["gap-4-block", "gap-3-inline"], role: "la marge d'un badge, d'une pastille" },
-  },
-  coin: {
-    coque: { jetons: ["r-1"], role: "le coin de la coque — la racine" },
-    carte: { jetons: ["r-2"], role: "le coin de la carte" },
-    ligne: { jetons: ["r-3", "r-ctl"], role: "le coin de la ligne — et du bouton, du champ, du sélecteur" },
-    serre: { jetons: ["r-4"], role: "le coin d'une marque, d'une vignette" },
-  },
+/* ── La profondeur — une vraie tranche de réglages, emboîtée sur trois
+   niveaux, et à côté les TROIS ARCS dessinés à leur vraie taille : d'un
+   niveau au suivant, le coin se plie en deux. C'est ce que la scène rend
+   sensible — la chaîne, pas trois choix. La valeur cassée n'est pas écrite
+   en dur : c'est le coin de la card, doublé. ── */
+function Arc({ r, nom, marge, faux }: { r: number; nom: string; marge: number; faux?: boolean }) {
+  const c = 52, m = 6; /* hors chaîne : la boîte du croquis et sa marge — un dessin, pas une distance du kit */
+  return (
+    <li className={`ry-pf-cote ${faux ? "faux" : ""}`}>
+      <svg viewBox={`0 0 ${c} ${c}`} aria-hidden="true">
+        <path d={`M ${m} ${c - m} L ${m} ${m + r} A ${r} ${r} 0 0 1 ${m + r} ${m} L ${c - m} ${m}`}
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+      <span className="ry-pf-cote-dit">
+        <b>{nom}</b>
+        <span className="mono">marge {px(marge)} · coin {px(r)}</span>
+      </span>
+    </li>
+  );
+}
+/* La scène accepte un SOCLE : par défaut celui de la charte — la page
+   Rythme ne change pas d'un pixel — et, quand on lui en passe un autre, elle
+   pose sa géométrie en variables sur la scène elle-même. C'est ce qui permet
+   à la page d'essai du moteur de faire tourner l'intervalle sur ce bloc sans
+   le recopier, et sans qu'aucune valeur ne descende sur le document
+   (2 septembre 2026). */
+export function Profondeurs({ casse, socle }: { casse: boolean; socle?: Socle }) {
+  const s = socle ?? SOCLE;
+  const r = s.r, p = s.pad;
+  const rLigne = casse ? r[1] * 2 : r[2];
+  const vars = socle ? ({
+    "--pf-p1": `${s.pad[0]}px`, "--pf-p2": `${s.pad[1]}px`, "--pf-p3": `${s.pad[2]}px`,
+    "--pf-g1": `${s.gap[0]}px`, "--pf-g2": `${s.gap[1]}px`, "--pf-g3": `${s.gap[2]}px`,
+  } as CSSProperties) : undefined;
+  return (
+    <div className="ry-pf-scene" style={vars}>
+      <div className="ry-pf">
+        <div className="ry-pf-tete">
+          <b>Réglages</b>
+          <span className="mono">Fili</span>
+        </div>
+        <div className="ry-pf-carte">
+          {([["Notifications", "Toutes"], ["Langue", "Français"], ["Thème", "Clair"]] as const).map(([n, v]) => (
+            <div className="ry-pf-ligne" key={n} data-intent={casse ? "statement" : undefined}>
+              <span>{n}</span><span className="mono sourd">{v}</span>
+            </div>
+          ))}
+          <button className="ry-pf-btn" type="button" tabIndex={-1}>Enregistrer</button>
+        </div>
+      </div>
+      <ol className="ry-pf-cotes" aria-label="Les trois coins, dessinés à leur vraie taille">
+        <Arc r={r[0]} nom="le container" marge={p[0]} />
+        <Arc r={r[1]} nom="la card" marge={p[1]} />
+        <Arc r={rLigne} nom="la row" marge={p[2]} faux={casse} />
+      </ol>
+    </div>
+  );
+}
+
+/* ── La situation : une tranche d'application, et DEUX variables — la
+   densité, et la largeur d'écran. La densité ne retouche aucune valeur :
+   elle recalcule la base. La largeur, elle, fait glisser chaque cran entre
+   ses deux bornes. La poignée de l'aperçu montre le second mouvement ; le
+   damier est la part d'écran que la largeur simulée ne couvre pas.
+   Toute la géométrie est LUE dans le moteur, pour cette base et cette
+   largeur — aucune valeur n'est recopiée. ── */
+type Cle = "airy" | "comfortable" | "compact";
+const DEMO: { cle: Cle; nom: string; fin: string }[] = [
+  { cle: "airy", nom: "Aéré", fin: "un cran au-dessus, partout" },
+  { cle: "comfortable", nom: "Confortable", fin: "trois profondeurs, un seul rapport" },
+  { cle: "compact", nom: "Compact", fin: "un cran en dessous ; coins et cibles n'ont pas bougé" },
+];
+const REGISTRES = Object.fromEntries(DEMO.map((d) =>
+  [d.cle, jetons(chaine({ base: DENSITES[d.cle] })) as unknown as Record<string, Jeton>],
+)) as Record<Cle, Record<string, Jeton>>;
+/* Un jeton, à une largeur donnée : la même interpolation que le clamp
+   généré dans tokens.css — bornée en bas et en haut. */
+function aLaLargeur(t: Jeton, W: number) {
+  if (t.bas === undefined || t.haut === undefined) return t.base;
+  const k = Math.min(1, Math.max(0, (W - LARGEUR_MIN) / (LARGEUR_MAX - LARGEUR_MIN)));
+  return t.bas + (t.haut - t.bas) * k;
+}
+/* Les variables de la scène, définies ICI par la page (chaque nom porte le
+   jeton qu'il rejoue à la largeur simulée) — la feuille les consomme. */
+const CRANS_SD: Record<string, string> = {
+  "--sd-p1": "pad-1-block", "--sd-p1i": "pad-1-inline",
+  "--sd-p2": "pad-2-block", "--sd-p2i": "pad-2-inline",
+  "--sd-p3": "pad-3-block", "--sd-p3i": "pad-3-inline",
+  "--sd-g1": "gap-1-block", "--sd-g2": "gap-2-block", "--sd-g3": "gap-3-block",
+  "--sd-g2i": "gap-2-inline", "--sd-g3i": "gap-3-inline",
 };
-function valeur(nom: string) {
-  const t = J[nom];
-  return t.axe
-    ? `${px(t.base)} px à la charte · de ${px(t.bas ?? t.base)} à ${px(t.haut ?? t.base)} selon l'écran`
-    : `${px(t.base)} px — fixe, ne suit pas l'écran`;
+function ditDensite(cle: Cle, W: number) {
+  const r = REGISTRES[cle], d = DEMO.find((x) => x.cle === cle)!;
+  const v = (n: string) => px(aLaLargeur(r[n], W));
+  return `${d.nom.toLowerCase()}, à ${W} px — container ${v("pad-1-block")} · card ${v("pad-2-block")} · row ${v("pad-3-block")} px · ${d.fin}`;
 }
-function BonCran() {
-  const [nature, setNature] = useState<Nature>("espace");
-  const [prof, setProf] = useState<Prof>("carte");
-  const rep = REPONSES[nature][prof];
+/* La mesure du cadre : hors chaîne, et dite. C'est la largeur d'écran que
+   la démonstration simule au départ — le damier reprend le reste. */
+const CADRE = 720;
+export function SituationDensite() {
+  const [d, setD] = useState<Cle>("comfortable");
+  const [larg, setLarg] = useState(0);
+  const vars = (W: number) => Object.fromEntries(
+    Object.entries(CRANS_SD).map(([css, jeton]) => [css, `${aLaLargeur(REGISTRES[d][jeton], W)}px`]),
+  ) as CSSProperties;
   return (
-    <div className="ry-cran">
-      <div className="ry-question">
-        <span className="mono sourd">1 · C&apos;est quoi ?</span>
-        <div className="rang">
-          {NATURES.map(([v, nom]) => (
-            <button key={v} className={`bouton ${nature === v ? "on" : ""}`} onClick={() => setNature(v)}>{nom}</button>
-          ))}
+    <Apercu
+      plafond={CADRE}
+      surLargeur={setLarg}
+      outils={<>
+        <span className="mono sourd">La densité :</span>
+        {DEMO.map((x) => (
+          <button key={x.cle} className={`bouton ${d === x.cle ? "on" : ""}`}
+            aria-pressed={d === x.cle} onClick={() => setD(x.cle)}>{x.nom}</button>
+        ))}
+      </>}
+      enfants={(W) => (
+        <div className="ry-sd" style={vars(W)} data-density={d} data-densite={d}
+          role="img" aria-label="Tranche d&apos;application : la fiche de Léa Fontan, dont chaque espace est un cran de la chaîne">
+          <div className="ry-sd-tete">
+            <span className="ry-sd-nom">Fili</span>
+            <span className="ry-sd-meta mono">PROFIL</span>
+          </div>
+          <div className="ry-sd-carte">
+            <div className="ry-sd-id">
+              <span className="ry-sd-rond" aria-hidden="true" />
+              <span className="ry-sd-qui">
+                <b>Léa Fontan</b>
+                <span>UX Designer — chaque distance de cette card est un jeton.</span>
+              </span>
+            </div>
+            <div className="ry-sd-lignes">
+              {([["Cours suivis", "24"], ["Abonnés", "1 280"], ["Assiduité", "96 %"]] as const).map(([l, v]) => (
+                <div className="ry-sd-ligne" key={l}><span>{l}</span><b>{v}</b></div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="ry-question">
-        <span className="mono sourd">2 · À quelle profondeur ?</span>
-        <div className="rang">
-          {PROFONDEURS.map(([v, nom]) => (
-            <button key={v} className={`bouton ${prof === v ? "on" : ""}`} onClick={() => setProf(v)}>{nom}</button>
-          ))}
-        </div>
-      </div>
-      {/* La réponse en affiche (demande d'Auteur, 24 août : « grossir
-          énormément le résultat ») — le cran du titre-affiche du gabarit,
-          l'encre, pas l'accent. */}
-      <div className="ry-reponse">
-        <b className="mono ry-affiche">{rep.jetons.map((n) => `--${n}`).join(" · ")}</b>
-        <span className="sourd ry-h3">{rep.role}</span>
-        <span className="gd-legende">
-          {rep.jetons.map((n, i) => <span key={n}>{i > 0 && <br />}--{n} : {valeur(n)}</span>)}
-        </span>
-      </div>
-    </div>
+      )}
+      pied={<span className="gd-legende">{ditDensite(d, larg)}</span>}
+    />
   );
 }
 
-/* ── La densité — trois fois la même carte, seule la BASE change.
-   Chaque carte porte sa densité : la chaîne de ses jetons se recalcule
-   toute seule (tokens.css). La carte du milieu ne porte rien : elle vit
-   sur le réglage du site, celui du tiroir. ── */
-function CarteDensite({ densite, etiquette }: { densite?: "airy" | "compact"; etiquette: string }) {
-  return (
-    <div className="ry-dcarte" data-density={densite}>
-      <div className="ry-detiq">{etiquette}</div>
-      <h3 className="ry-h3">Léa Fontan</h3>
-      <div className="ry-lignes"><div className="ry-sk" /><div className="ry-sk c" /></div>
-    </div>
-  );
-}
-function Densites() {
-  const { densite } = useDensite();
-  const nomSite = densite === "airy" ? "aéré" : densite === "compact" ? "compact" : "confortable";
-  return (
-    <div className="ry-densites">
-      <CarteDensite densite="airy" etiquette={`aéré · base ${DENSITES.airy}`} />
-      <CarteDensite etiquette={`le réglage du site — ${nomSite} · base ${DENSITES[densite]}`} />
-      <CarteDensite densite="compact" etiquette={`compact · base ${DENSITES.compact}`} />
-    </div>
-  );
-}
+/* ── Étage « en liste » — ce qu'aucune image ne prouve. Chaque ligne dit
+   où elle se vérifie : dans le code (le Gardien la mordra), sur l'écran
+   allumé (elle se constate au rendu), nulle part (décision d'Auteur). ── */
+const LISTE: LigneListe[] = [
+  { nom: "La chaîne se dérive, elle ne s'écrit pas",
+    dit: "Toute distance descend d'une base unique divisée par racine de deux à chaque profondeur, et la variation vit dans la définition du jeton — jamais dans une largeur d'écran. Aucune valeur d'espacement n'est écrite à la main.",
+    ou: "dans le code" },
+  { nom: "Le silence est un cran de la même chaîne",
+    dit: "La tête d'une section, la gouttière, le silence entre deux sections sont la chaîne continuée au-dessus du container. Le gabarit du site ne possède aucune valeur à lui.",
+    ou: "dans le code" },
+  { nom: "La densité change la base, jamais la structure",
+    dit: "Compact, confortable, aéré remplacent la base et recalculent toute la chaîne. L'ordre des emplacements, la présence des éléments et le nombre de colonnes restent identiques.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+  { nom: "Zéro débord à la largeur minimale",
+    dit: "Aucun débordement horizontal au plus petit écran déclaré ; deux axes verticaux d'alignement par card, jamais trois ; sœurs alignées au pixel.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+  { nom: "Une marge, un espace, un coin — à sa profondeur, sur son axe",
+    dit: "Deux distances de même valeur peuvent faire deux métiers. Le kit n'a que trois mots — la marge qui encadre, l'espace qui sépare, le coin qui arrondit — et deux questions pour les poser : à quelle profondeur, sur quel axe. La règle parle du métier, jamais du pixel.",
+    ou: "dans le code" },
+  { nom: "Quatre décisions, et rien d'autre, entrent dans le moteur",
+    dit: "La base, l'intervalle, la racine des coins, l'intervalle des titres : tout le reste en sort. Les crans naissent d'un diviseur appliqué en chaîne, jamais d'une différence fixe — l'œil lit les rapports, pas les écarts.",
+    ou: "dans le code" },
+  { nom: "Quatre axes glissent, les coins non",
+    dit: "L'horizontal, le vertical, le texte et la cible glissent chacun entre deux bornes de l'écran étroit au large. Les coins sont réglés par la racine du produit : ils ne glissent pas.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+  { nom: "Les titres montent du même pas que les espaces",
+    dit: "Le corps ne descend jamais sous son plancher ; chaque cran de titre vaut le précédent multiplié par le même intervalle. Une seule dérivation, pas deux échelles qui finiraient par se contredire.",
+    ou: "dans le code" },
+  { nom: "L'interligne suit la lisibilité, pas la grille",
+    dit: "Aucun interligne n'est recalé sur la chaîne sans une décision explicite et datée : la grille stricte des livres suppose des corps fixes, la lecture prime.",
+    ou: "nulle part — décision d'Auteur", ton: "auteur" },
+];
 
-/* ── Le vocabulaire — marge et espace, par profondeur et par axe. Les
-   tuiles consomment les jetons qu'elles nomment ; les chiffres sont lus
-   dans le registre calculé. ── */
-function Vocabulaire() {
-  /* Les distances suivent le réglage du site ; les coins n'en dépendent pas (décision 4). */
-  const socle = useSocle();
-  const p = socle.pad, g = socle.gap, r = SOCLE.r;
-  return (
-    <div className="ry-voc">
-      <div className="ry-voc-tuiles">
-        <div className="ry-voc-tuile">
-          <h3 className="ry-h3">La coque <span className="mono">profondeur 1</span></h3>
-          <p>Le panneau, la scène, la feuille, la fenêtre : la surface qui contient tout. Elle porte
-          la base et la racine des coins — tout le reste en descend.</p>
-          <div className="ry-vocfig coque"><div className="ry-vocbox" /><div className="ry-vocbox" /></div>
-          <span className="gd-legende">marge {px(p[0])} · coin {px(r[0])} · entre ses cartes {px(g[0])}</span>
-        </div>
-        <div className="ry-voc-tuile">
-          <h3 className="ry-h3">La carte <span className="mono">profondeur 2</span></h3>
-          <p>Le bloc posé dans la coque. Sa marge est la base divisée par racine de deux, son coin la
-          racine divisée par deux — et l&apos;espace qui la sépare de sa sœur vaut sa marge.</p>
-          <div className="ry-vocfig carte"><div className="ry-vocbox ligne" /><div className="ry-vocbox ligne" /></div>
-          <span className="gd-legende">marge {px(p[1])} · coin {px(r[1])} · entre ses lignes {px(g[1])}</span>
-        </div>
-        <div className="ry-voc-tuile">
-          <h3 className="ry-h3">La ligne <span className="mono">profondeur 3</span></h3>
-          <p>La rangée, la cellule, le bouton, le champ. Encore un pas de chaîne. Le bouton prend son
-          coin ; dedans vivent les espaces les plus serrés — un chiffre et son libellé, un badge.</p>
-          <div className="ry-vocfig ligne"><div className="ry-vocbox item" /><span className="ry-vocbadge">badge</span><div className="ry-vocbox item" /></div>
-          <span className="gd-legende">marge {px(p[2])} · coin {px(r[2])} · dans la ligne {px(g[2])} · au plus serré {px(g[3])}</span>
-        </div>
-      </div>
-      <div className="ry-defile">
-        <table className="tableau mono">
-          <thead><tr><th>par axe</th><th>ce qui glisse</th><th>de l&apos;écran étroit au large</th></tr></thead>
-          <tbody>
-            <tr><td>horizontal (inline)</td><td>marges, espaces, bord, crans de page</td><td>× {fac(AXES.inline.min)} → × {fac(AXES.inline.max)}</td></tr>
-            <tr><td>vertical (block)</td><td>marges, espaces, bord, crans de page</td><td>× {fac(AXES.block.min)} → × {fac(AXES.block.max)}</td></tr>
-            <tr><td>texte (type)</td><td>les crans de texte, corps borné</td><td>× {fac(AXES.type.min)} → × {fac(AXES.type.max)}</td></tr>
-            <tr><td>cible (control)</td><td>la hauteur des commandes</td><td>× {fac(AXES.control.min)} → × {fac(AXES.control.max)}</td></tr>
-            <tr><td>les coins</td><td>rien — réglés par la racine, pas par l&apos;écran</td><td>fixes</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+/* ── Étage « dans le code » — les valeurs sont LUES dans le registre
+   calculé, jamais recopiées : si la chaîne bouge, ce tableau bouge. ── */
+const CODE: LigneCode[] = [
+  { regle: "La marge d'un container",
+    ecrit: <><span className="cs-kw">padding</span>: <span className="cs-var">var(--pad-1-block) var(--pad-1-inline)</span></>,
+    produit: px(SOCLE.pad[0]) + " px", note: "la base du produit — elle glisse avec l'écran, sur son axe" },
+  { regle: "La marge d'une card",
+    ecrit: <><span className="cs-kw">padding</span>: <span className="cs-var">var(--pad-2-block) var(--pad-2-inline)</span></>,
+    produit: px(SOCLE.pad[1]) + " px", note: "la base divisée par racine de deux" },
+  { regle: "Entre deux cards",
+    ecrit: <><span className="cs-kw">gap</span>: <span className="cs-var">var(--gap-1-block)</span></>,
+    produit: px(SOCLE.gap[0]) + " px", note: "l'espace entre deux frères vaut leur marge — c'est le même chiffre" },
+  { regle: "Entre deux rows d'une card",
+    ecrit: <><span className="cs-kw">gap</span>: <span className="cs-var">var(--gap-2-block)</span></>,
+    produit: px(SOCLE.gap[1]) + " px", note: "un cran plus bas — la marge de la row" },
+  { regle: "Dans la row",
+    ecrit: <><span className="cs-kw">gap</span>: <span className="cs-var">var(--gap-3-inline)</span></>,
+    produit: px(SOCLE.gap[2]) + " px", note: "une icône et son texte, deux boutons côte à côte" },
+  { regle: "Au plus serré", repli: true,
+    ecrit: <><span className="cs-kw">gap</span>: <span className="cs-var">var(--gap-4-block)</span></>,
+    produit: px(SOCLE.gap[3]) + " px", note: "un chiffre et son libellé, le dedans d'un badge" },
+  { regle: "Le silence entre deux sections", repli: true,
+    ecrit: <><span className="cs-kw">padding-top</span>: <span className="cs-var">var(--doc-silence)</span></>,
+    produit: "un cran de page", note: "la même chaîne, continuée au-dessus du container" },
+  { regle: "La densité", repli: true,
+    ecrit: <><span className="cs-kw">data-density</span>=<span className="cs-var">&quot;compact&quot;</span></>,
+    produit: "toute la chaîne se recalcule", note: "une autre base, pas un multiplicateur" },
+  { regle: "La cible au doigt", repli: true,
+    ecrit: <><span className="cs-kw">min-height</span>: <span className="cs-var">var(--control-height)</span></>,
+    produit: "la cible pleine", note: "dérivée du registre, jamais sous le plancher de la norme" },
+  { regle: "Le cran d'un titre", repli: true,
+    ecrit: <><span className="cs-kw">font-size</span>: <span className="cs-var">var(--font-size-h2)</span></>,
+    produit: "le cran précédent × l'intervalle", note: "la même dérivation que les espaces" },
+];
 
 /* ── Le sommaire de la page — le rail vit dans rail.tsx (partagé) ── */
+/* ── LES COMMANDES ET LA HIÉRARCHIE (versées de la page d'essai le
+      2 septembre 2026) ─────────────────────────────────────────────
+   La page d'essai a fait son travail : ce qu'elle a mis au point vit
+   maintenant ici, avec la page qu'il sert. Elle, en retour, l'importe —
+   elle ne garde pas de copie. ── */
+/* Les molettes des sections. Chaque nombre du moteur se règle à UN endroit
+   du site — sauf la base, qui se tourne à deux : sur une card (section 02)
+   et sur une page (section 03). C'est le même nombre à deux échelles
+   d'observation, pas deux commandes. L'intervalle, lui, ne se tourne que
+   dans le scénario : sur une page entière il se lit comme un défaut, parce
+   qu'il fait bouger les niveaux en sens inverse. */
+export function Molette({ id, label, min, max, pas, valeur, surValeur, dit }: {
+  id: string; label: string; min: number; max: number; pas: number;
+  valeur: number; surValeur: (v: number) => void; dit: string;
+}) {
+  return (
+    <span className="mo-molette">
+      <label htmlFor={id}>{label}</label>
+      <input type="range" id={id} min={min} max={max} step={pas} value={valeur}
+        onChange={(e) => surValeur(+e.target.value)} />
+      <output htmlFor={id} className="mono">{dit}</output>
+    </span>
+  );
+}
+
+/* ── LA HIÉRARCHIE (2 septembre 2026) ─────────────────────────────────
+   La scène de la section 05. Elle remplace un couple titre + texte, qui ne
+   montrait qu'un seul cran : à ce compte-là, le curseur « ne fait que
+   grossir le texte » (verdict d'Auteur). Or ce nombre ne règle pas une
+   taille, il règle un CONTRASTE — l'écart entre tous les niveaux à la fois.
+   Il faut donc une hiérarchie entière pour le voir.
+   Le corps ne bouge pas : c'est son plancher, et c'est le point fixe autour
+   duquel tout se règle. Les crans en dessous de lui (la légende, l'étiquette)
+   ne sont pas montrés ici — ils descendent quand les titres montent, ce qui
+   est vrai mais brouillerait la démonstration ; la page Typographie est
+   leur endroit.
+   Le verdict est LU sur les nombres rendus, jamais décrété. ── */
+export function Hierarchie({ socle, ratio }: { socle: Socle; ratio: number }) {
+  const t = socle.texte;
+  const r = fr2(ratio);
+  const lignes = [
+    { nom: "la taille du titre de page", v: t.h1, calc: `16 × ${r}³`, txt: "Le rythme d'une page" },
+    { nom: "la taille du titre de section", v: t.h2, calc: `16 × ${r}²`, txt: "Ce qui sépare deux niveaux" },
+    { nom: "la taille du sous-titre", v: t.h3, calc: `16 × ${r}`, txt: "Et ce qui les rapproche" },
+    { nom: "la taille du corps", v: t.body, calc: "son plancher", fixe: true,
+      txt: "Le corps ne bouge pas : seize pixels, quoi qu'il arrive. C'est le point fixe autour duquel toute la hiérarchie se règle." },
+  ];
+  const contraste = t.h3 / t.body;
+  const cri = t.h1 / t.body;
+  const verdict = contraste < 1.16
+    ? { mot: "Trop serré", dit: "le sous-titre ne se distingue plus de son texte : plus rien ne se hiérarchise.", ton: "ko" }
+    : cri > 3
+      ? { mot: "Trop large", dit: "le titre crie, et le corps a l'air d'une note de bas de page.", ton: "ko" }
+      : { mot: "Ça tient", dit: "chaque niveau se détache du suivant sans écraser le corps.", ton: "ok" };
+  return (
+    <div className="hier">
+      <div className="hier-feuille">
+        {lignes.map((l) => (
+          /* La cote est collée À SA LIGNE, avec le calcul qui la produit :
+             en colonne à part, elle ne se rattachait à rien et ne voulait
+             rien dire (verdict d'Auteur, 2 septembre). */
+          <div key={l.nom} className={`hier-ligne ${l.fixe ? "fixe" : ""}`}>
+            <span className="hier-cote">
+              <b className="mono">{fr(l.v)} px</b>
+              <em className="mono">{l.calc}</em>
+              <i>{l.nom}</i>
+            </span>
+            {/* La taille d'un texte EST une hauteur : on la mesure sur lui,
+                comme le kit mesure un espace — deux repères et un trait
+                (verdict d'Auteur, 2 septembre). Un nombre dans une colonne
+                à côté ne se rattachait à rien. */}
+            <span className="hier-mesure" aria-hidden="true"
+              style={{ height: `${Math.round(l.v * 10) / 10}px` }} />
+            <p className={l.fixe ? "hier-corps" : "hier-titre"}
+              style={{ fontSize: `${Math.round(l.v * 10) / 10}px` }}>{l.txt}</p>
+          </div>
+        ))}
+      </div>
+      <p className={`hier-verdict ${verdict.ton}`}>
+        <b>{verdict.mot}</b> <span>{verdict.dit}</span>
+      </p>
+    </div>
+  );
+}
+
 const SOMMAIRE: Sommaire = [
-  ["echelle", "01", "La chaîne"],
-  ["decisions", "02", "Les décisions maîtresses"],
-  ["profondeur", "03", "La profondeur"],
-  ["densite", "04", "La densité"],
-  ["proximite", "05", "La proximité"],
-  ["cran", "06", "Le bon cran"],
-  ["vocabulaire", "07", "Le vocabulaire"],
-  ["adaptation", "08", "L'adaptation"],
+  ["moteur", "01", "Le moteur"],
+  ["echelle", "02", "La chaîne"],
+  ["densite", "03", "La densité"],
+  ["profondeur", "04", "La profondeur"],
+  ["titres", "05", "L'intervalle des titres"],
+  ["bandes", "06", "Les règles qu'on peut casser"],
+  ["liste", "07", "Les règles qu'on ne peut pas montrer"],
+  ["code", "08", "Dans le code"],
 ];
 export default function Vue() {
-  const [casseY1, setCasseY1] = useState(false);
-  const [casseY2, setCasseY2] = useState(false);
-  const [intention, setIntention] = useState(1);
-  const [casseRond, setCasseRond] = useState(false);
-  const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const { styl } = useAdaptation();
-  const actifId = useDocSections("echelle");
+  const [casseProf, setCasseProf] = useState(false);
+  const [casseLib, setCasseLib] = useState(false);
+  const [casseTit, setCasseTit] = useState(false);
+  const [casseFre, setCasseFre] = useState(false);
+  const [casseRap, setCasseRap] = useState(false);
+  const [grandTexte, setGrandTexte] = useState(false);
+  const [casseCib, setCasseCib] = useState(false);
+  /* L'intervalle des titres : le quatrième nombre du moteur. Versé de la
+     page d'essai le 2 septembre. */
+  const [titres, setTitres] = useState<number>(CHARTE.intervalleTitres);
+  const socleTitres = chaine({ intervalleTitres: titres }) as Socle;
+  const actifId = useDocSections("moteur");
 
   return (
     <div className="gdoc-fond ry">
@@ -775,33 +788,49 @@ export default function Vue() {
         <main className="gdoc-contenu" id="contenu">
 
           <section className="gdoc-heros">
-            <p className="kicker">Fondation · Le rythme (espacement)</p>
-            <h1>Chaque distance de cette page a une raison<span className="point" aria-hidden="true" /></h1>
+            <p className="kicker">Le rythme (espacement)</p>
+            <h1>Rien ici n&apos;a été espacé à l&apos;œil<span className="point" aria-hidden="true" /></h1>
             <p className="chapo">
-              Espacer, c&apos;est décider qui est lié à qui : quand une distance est
-              arbitraire, la page ment. Ici, toute distance sort d&apos;une seule chaîne — une base,
-              un intervalle, une racine — et <b>chaque règle porte son pourquoi, sa source
-              vérifiable, et ses divergences assumées</b>. Sous chaque banc d&apos;essai,
-              « Règles &amp; sources » se déplie.
+              Posez deux cards côte à côte. Si le texte de l&apos;une se retrouve plus près du bord de
+              l&apos;autre que du sien, votre œil le rattache à la mauvaise card — sans que vous sachiez
+              dire pourquoi la page vous gêne. C&apos;est tout le travail de l&apos;espace : dire qui va avec
+              qui.
             </p>
+          </section>
+
+          {/* ── 01 · LE MOTEUR ────────────────────────────────────────────
+              Versé de la page d'essai le 2 septembre 2026. Douze slides, une
+              seule fiche montée une fois, un compteur de décisions pour
+              enjeu. Il ouvre la page parce qu'il répond à la question que
+              tout le reste suppose réglée : combien de décisions faut-il
+              pour composer une card, et pourquoi quatre suffisent. ── */}
+          <section className="gdoc-sec pose" id="moteur">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">01 · Le moteur</p>
+              <h2>Comment le moteur décide à notre place</h2>
+            </div>
+            <div className="gdoc-corps">
+              <Scenario />
+            </div>
           </section>
 
           <section className="gdoc-sec pose" id="echelle">
             <div className="gdoc-sec-tete">
-              <p className="kicker">01 · La chaîne</p>
-              <h2>Chaque distance vient d&apos;une seule chaîne</h2>
-              <p className="sourd">Des distances décidées au cas par cas finissent par se
-              contredire. Ici, chaque espace de cette tranche d&apos;application est un jeton de
-              la chaîne commune — la coque, puis la carte, puis la ligne — qui glisse avec la
-              largeur de l&apos;écran. Survolez la tranche : chaque espace se nomme, sa nature et
-              sa profondeur.</p>
+              <p className="kicker">02 · La chaîne</p>
+              <h2>Tout descend d&apos;un seul réglage, du bord de l&apos;écran au moindre bouton</h2>
+              <p className="sourd">
+                Une équipe qui décide ses marges écran par écran finit par se contredire — pas par
+                négligence : personne ne se souvient de ce qui a été tranché trois mois plus tôt. Ici,
+                chaque espace descend de la même chaîne, du container à la card puis à la row, et glisse
+                avec la largeur de l&apos;écran.
+              </p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure ry-preuve-tranche">
                 {/* Plus de bouton : les espaces se révèlent au survol de la
                     tranche (ou au clavier), et s'effacent en la quittant. */}
                 <div className="banc primaire survole-espaces">
-                  <TrancheCoursue voir />
+                  <TrancheFili voir />
                 </div>
                 {/* La réglette est une LÉGENDE : elle se lit sous la scène,
                     à l'horizontale, dans l'encre de la page — pas une
@@ -811,224 +840,188 @@ export default function Vue() {
                     (retour d'Auteur, 24 août — même leçon que les badges de
                     la page Couleur). */}
                 <figcaption className="gd-legende">
-                  Du bord de l&apos;écran au moindre bouton, chaque distance sort du même
-                  réglage — rien n&apos;est espacé à l&apos;œil. Plus on entre profond,
-                  plus les marges et les coins se resserrent, d&apos;eux-mêmes ; et entre
-                  deux frères, l&apos;espace vaut leur marge.
+                  Plus vous entrez profond dans la card, plus les marges et les coins se resserrent — sans que personne ait eu à le décider niveau par niveau. Et entre deux voisines, l&apos;espace vaut exactement leur marge.
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>Toutes les distances sortent d&apos;<b>un moteur</b> : trois décisions entrent
-                (la base, l&apos;intervalle, la racine des coins), toute la géométrie sort, sur
-                quatre axes — l&apos;horizontal, le vertical, le texte, la cible. Aucune valeur
-                n&apos;est écrite à la main. La tranche emboîte ses fonds en cascade : la coque, la
-                carte, la ligne — marges et coins descendent à chaque profondeur (CG4, relevé
-                Coursue).</p>
+                <p>Quatre décisions entrent dans <b>le moteur</b> — la base, l&apos;intervalle, la racine des coins, l&apos;intervalle des titres — et toute la géométrie en sort, sur quatre axes : l&apos;horizontal, le vertical, le texte et la cible. Aucune valeur n&apos;est écrite à la main. La tranche, elle, emboîte ses fonds en cascade : le container, la card, la row, avec des marges et des coins qui se resserrent à chaque étage — l&apos;emboîtement est relevé sur une application en production.</p>
                 <Regles ids={["y8", "y9", "y3", "y7", "y17", "y4"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="decisions">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">02 · Les décisions maîtresses</p>
-              <h2>Trois décisions, toute la géométrie</h2>
-              <p className="sourd">Régler chaque valeur à la main, c&apos;est la dérive assurée. Ici,
-              trois décisions entrent — la base, l&apos;intervalle, la racine des coins — et toute la
-              géométrie sort : les marges divisées par l&apos;intervalle, les coins par deux, l&apos;espace
-              entre deux frères égal à leur marge. Ce laboratoire montre la mécanique ; la chaîne du
-              kit, elle, reste celle du registre.</p>
-            </div>
-            <div className="gdoc-corps">
-              <div className="rang">
-                {INTENTIONS.map((it, i) => (
-                  <button key={it.nom} className={`bouton ${intention === i ? "on" : ""}`}
-                    onClick={() => setIntention(i)}>{it.nom}</button>
-                ))}
-              </div>
-              <Laboratoire intention={intention} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["y12", "y1", "y11"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="profondeur">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">03 · La profondeur</p>
-              <h2>Coque, carte, ligne — une chaîne, pas trois choix</h2>
-              <p className="sourd">Trois niveaux réglés séparément finissent par se contredire. Ici la
-              marge et le coin descendent ensemble à chaque profondeur — la marge divisée par racine
-              de deux, le coin par deux — et l&apos;enfant n&apos;est jamais plus rond que son parent.
-              Les coins, eux, ne bougent pas avec l&apos;écran : seules les marges glissent. Cassez la
-              chaîne pour voir la profondeur se brouiller.</p>
-            </div>
-            <div className="gdoc-corps">
-              <div className="rang">
-                <button className={`bouton casse ${casseRond ? "on" : ""}`} onClick={() => setCasseRond(!casseRond)}>
-                  {casseRond ? "Réparer" : "Casser : l'enfant plus rond"}
-                </button>
-              </div>
-              {/* Le banc de preuve — le même que la première preuve de
-                  Composition, aux mêmes classes : l'état en haut, la scène à
-                  gauche, ce qu'elle dit à droite, le geste en pied, et le
-                  survol qui répare. Deux pages, une seule façon de lire. */}
-              <div className="co-scene co-preuve1">
-                <span className="co-verdict">
-                  <span className={`badge ${casseRond ? "ko" : ""}`}>
-                    {casseRond ? "Faux · l'enfant est plus rond que son parent"
-                               : "rien de cassé — le coin divisé par deux à chaque profondeur"}
-                  </span>
-                  {casseRond && <span className="badge bon">Réparé · le coin redescend par deux</span>}
-                </span>
-                <div className="co-banc">
-                  <div className="co-gauche">
-                    <div className="co-porte"><Profondeur casse={casseRond} /></div>
-                    <div className="co-pied">
-                      <span className="co-invite">
-                        {casseRond ? "↑ survolez la scène : elle se répare sous vos yeux"
-                                   : "↑ cassez la chaîne — la profondeur cesse de se lire"}
-                      </span>
-                      {casseRond && <span className="co-solution">↑ relâchez : la faute revient</span>}
-                    </div>
-                  </div>
-                  <div className="co-droite">
-                    <p className={`co-dit ${casseRond ? "off" : ""}`}>La marge se divise par racine de
-                    deux, le coin par deux. Trois profondeurs, une seule décision — et rien à régler
-                    niveau par niveau.</p>
-                    <p className={`co-dit ${casseRond ? "" : "off"}`}>👁 Comparez les coins voisins :
-                    l&apos;enfant est plus rond que son parent. La chaîne est rompue, la profondeur ne
-                    se lit plus — c&apos;est le premier invariant d&apos;audit.</p>
-                  </div>
-                </div>
-              </div>
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["y10", "y16", "y15"]} />
               </div></details>
             </div>
           </section>
 
           <section className="gdoc-sec pose" id="densite">
             <div className="gdoc-sec-tete">
-              <p className="kicker">04 · La densité</p>
-              <h2>Un mode compact qui reste dans le système</h2>
-              <p className="sourd">Un « mode compact à 80 % » fabriquerait des valeurs hors
-              système, introuvables au changement de marque. Ici, la densité (tiroir « Réglages »,
-              en haut à droite) change la base de la chaîne — pour tout le site, cette page
-              comprise — et chaque marge, chaque espace se recalcule. Ce qui ne bouge jamais : les
-              coins, les composants, l&apos;ordre et la présence de chaque élément.</p>
+              <p className="kicker">03 · La densité</p>
+              <h2>Serrez la page : elle respire autrement, elle n&apos;invente rien</h2>
+              <p className="sourd">
+                On ne regarde pas de la même façon un tableau de bord qu&apos;on scrute toute la journée et
+                une fiche qu&apos;on ouvre trois secondes. D&apos;où deux réglages, et deux seulement. La
+                <b>densité</b> repose la base, et toute la chaîne suit d&apos;un cran. La <b>largeur
+                d&apos;écran</b> fait glisser chaque cran entre ses bornes, sans palier. Ne bougent jamais : les coins, les cibles et la hiérarchie.
+              </p>
             </div>
             <div className="gdoc-corps">
-              <figure className="gd-figure">
-                <div className="banc sombre">
-                  <Densites />
-                </div>
-                <figcaption className="gd-legende">même carte, même chaîne — seule la base change d&apos;une densité à l&apos;autre ; la carte du milieu suit le réglage du site</figcaption>
-              </figure>
+              <SituationDensite />
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>Un « mode compact à 80 % » fabriquerait des valeurs hors chaîne, introuvables au
-                changement de marque. Une autre base, elle, reste dans le système : chaque distance
-                garde sa provenance.</p>
+                <p>Un « mode compact à 80 % » a l&apos;air commode, et fabrique des valeurs que personne ne retrouvera le jour où la marque change. Reposer la base, au contraire, garde tout le monde dans le système : chaque distance sait encore d&apos;où elle vient. Et la densité règle le contenu, jamais le châssis — le rail, la gouttière et les marges de page ne bougent pas.</p>
                 <Regles ids={["y5", "y6"]} />
               </div></details>
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="proximite">
+          <section className="gdoc-sec pose" id="profondeur">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · La proximité</p>
-              <h2>Quand une distance ment, la page ment</h2>
-              <p className="sourd">Plus deux éléments sont proches, plus leur lien perçu est fort —
-              quand une distance ment, la page raconte autre chose. Un libellé équidistant flotte
-              entre deux champs ; un titre mal espacé change de camp. Les deux casses le
-              démontrent.</p>
+              <p className="kicker">04 · La profondeur</p>
+              <h2>Regardez les coins : à chaque étage, ils se plient en deux</h2>
+              <p className="sourd">
+                Une fenêtre contient une card, qui contient une row : trois occasions de se contredire
+                si on les règle chacune dans son coin. La marge et le coin descendent donc ensemble — la
+                marge divisée par racine de deux, le coin par deux. Cassez la chaîne : l&apos;emboîtement cesse net de se lire.
+              </p>
             </div>
             <div className="gdoc-corps">
               <div className="rang">
-                <button className={`bouton casse ${casseY1 ? "on" : ""}`} onClick={() => setCasseY1(!casseY1)}>
-                  {casseY1 ? "Réparer le libellé" : "Casser le libellé"}
-                </button>
-                <button className={`bouton casse ${casseY2 ? "on" : ""}`} onClick={() => setCasseY2(!casseY2)}>
-                  {casseY2 ? "Réparer le titre" : "Casser le titre"}
+                <button className={`bouton casse ${casseProf ? "on" : ""}`} onClick={() => setCasseProf(!casseProf)}>
+                  {casseProf ? "Réparer" : "Casser : l'enfant plus rond"}
                 </button>
               </div>
-              <Proximite casseY1={casseY1} casseY2={casseY2} />
+              <figure className="gd-figure">
+                {/* La terre sombre, comme la gazette de Typo : un panneau se lit
+                      comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
+                      du papier. Variante déjà déclarée du banc. */}
+                <div className="banc sombre">
+                  <Profondeurs casse={casseProf} />
+                </div>
+                <figcaption className="gd-legende">{casseProf
+                  ? "la row est devenue plus ronde que la card qui la contient — l'emboîtement ne se lit plus"
+                  : "la marge se divise par racine de deux, le coin par deux — et les trois étages tiennent"}</figcaption>
+              </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>La loi de proximité (Gestalt), formulée presque mot pour mot par les grands
-                systèmes — et la faute la plus fréquente des interfaces : des distances qui
-                racontent autre chose que le contenu.</p>
-                <Regles ids={["y1", "y2"]} />
+                <Regles ids={["y10", "y16", "y15"]} />
               </div></details>
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="cran">
+          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
+          {/* ── 05 · L'INTERVALLE DES TITRES ─────────────────────────────
+              Le quatrième nombre du moteur, versé de la page d'essai. Il ne
+              règle pas une taille mais un CONTRASTE — l'écart entre tous les
+              niveaux à la fois — et il faut une hiérarchie entière pour le
+              voir : un couple titre + texte ne montre qu'un cran, et le
+              curseur y « ne fait que grossir le texte ». ── */}
+          <section className="gdoc-sec pose" id="titres">
             <div className="gdoc-sec-tete">
-              <p className="kicker">06 · Le bon cran</p>
-              <h2>Le bon cran se déduit, il ne se choisit pas</h2>
-              <p className="sourd">Choisir un cran à l&apos;œil, c&apos;est rouvrir la dérive à chaque
-              écran. Deux questions suffisent — sa nature, sa profondeur — et chaque valeur posée
-              doit pouvoir citer ses deux réponses.</p>
+              <p className="kicker">05 · L&apos;intervalle des titres</p>
+              <h2>Ce nombre ne règle pas une taille, il règle un contraste</h2>
+              <p className="sourd">
+                C&apos;est la décision qu&apos;on oublie de compter, et pourtant elle est dans le moteur comme
+                les trois autres. Elle ne grossit pas un titre : elle écarte tous les niveaux d&apos;un seul
+                geste. Le corps, lui, ne bouge pas d&apos;un pixel — c&apos;est le point fixe autour duquel tout
+                se règle. Tournez le nombre jusqu&apos;aux deux bouts : la hiérarchie a deux façons de casser.
+              </p>
             </div>
             <div className="gdoc-corps">
-              <BonCran />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["y14"]} />
-              </div></details>
+              <div className="rang">
+                <Molette id="ry-tit" label="Le titre plus ou moins haut"
+                  min={BORNES.intervalleTitres[0]} max={BORNES.intervalleTitres[1]} pas={0.01}
+                  valeur={titres} surValeur={setTitres} dit={fr2(titres)} />
+              </div>
+              <div className="banc voile">
+                <Hierarchie socle={socleTitres} ratio={titres} />
+              </div>
+              <span className="gd-legende">
+                {`quatre tailles de texte, un seul nombre — chaque cran vaut le précédent × ${fr2(titres)}, et le corps ne bouge pas`}
+              </span>
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="vocabulaire">
+          <section className="gdoc-sec pose" id="bandes">
             <div className="gdoc-sec-tete">
-              <p className="kicker">07 · Le vocabulaire</p>
-              <h2>Une marge, un espace, un coin — à sa profondeur, sur son axe</h2>
-              <p className="sourd">Deux distances de même valeur peuvent faire deux métiers. Le kit
-              n&apos;a que trois mots — la marge qui encadre, l&apos;espace qui sépare, le coin qui
-              arrondit — et deux questions pour les poser : à quelle profondeur, sur quel axe. La
-              règle parle du métier, jamais du pixel.</p>
+              <p className="kicker">06 · Les règles qu&apos;on peut casser</p>
+              <h2>Voyez ce qui se passe quand la règle saute</h2>
+              <p className="sourd"> Le
+                bouton « Casser » ne dessine pas la faute, il la commet pour de vrai — puis la répare.
+                C&apos;est en voyant la version fausse qu&apos;on comprend à quoi sert la juste.
+              </p>
             </div>
             <div className="gdoc-corps">
-              <Vocabulaire />
+              <Bandes>
+                <Bande nom="L&apos;espace entre deux sœurs vaut leur marge" cote="le même chiffre"
+                  dit="Le dedans et le dehors d&apos;une surface se règlent ensemble, pas chacun de son côté. Un texte plus proche du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine — et l&apos;œil s&apos;y laisse prendre à chaque fois."
+                  casse={casseFre} surCasse={setCasseFre}
+                  regles={<Regles ids={["y1", "y15"]} />}>
+                  <Freres casse={casseFre} />
+                </Bande>
+                <Bande nom="Le libellé qui flotte" cote="autant d&apos;un côté que de l&apos;autre"
+                  dit="Un libellé posé aussi loin de son champ que du paragraphe du dessus n&apos;appartient plus à personne. On croit lire l&apos;étiquette du champ suivant — c&apos;est la faute la plus courante des formulaires."
+                  casse={casseLib} surCasse={setCasseLib}
+                  regles={<Regles ids={["y1"]} />}>
+                  <ProximiteLibelle casse={casseLib} />
+                </Bande>
+                <Bande nom="Le titre qui change de camp" cote="au-dessus &gt; au-dessous"
+                  dit="L&apos;espace au-dessus d&apos;un titre dépasse celui du dessous d&apos;au moins un cran. À égalité, le titre ferme le paragraphe précédent au lieu d&apos;ouvrir sa section — et le lecteur cherche un instant où commence la suite."
+                  casse={casseTit} surCasse={setCasseTit}
+                  regles={<Regles ids={["y2"]} />}>
+                  <ProximiteTitre casse={casseTit} />
+                </Bande>
+                <Bande nom="Des rapports, jamais des soustractions" cote="÷ √2 à chaque pas"
+                  dit="Retirez le même nombre de pixels à chaque cran : vous obtenez des longueurs presque jumelles, que personne ne distingue. Divisez à chaque cran, et les mêmes longueurs se lisent d&apos;un coup d&apos;œil. L&apos;œil compare, il ne compte pas."
+                  casse={casseRap} surCasse={setCasseRap}
+                  regles={<Regles ids={["y12", "y3"]} />}>
+                  <Rapports casse={casseRap} />
+                </Bande>
+                <Bande nom="La géométrie vit en rem" cote="la même card, deux marges"
+                  dit="Un lecteur agrandit le texte : les espaces autour doivent grandir avec lui. Une marge figée en pixels, elle, reste où elle est — et la page se referme sur son contenu au premier réglage d&apos;accessibilité."
+                  casse={grandTexte} surCasse={setGrandTexte}
+                  libelleCasse="Agrandir le texte" libelleRepare="Revenir"
+                  regles={<Regles ids={["y9", "y8"]} />}>
+                  <EnRem grand={grandTexte} />
+                </Bande>
+                <Bande nom="La cible au doigt a un plancher" cote="rien ne descend dessous"
+                  dit="Un bouton, un champ, un sélecteur ont une hauteur de cible dérivée du registre. Une commande trop petite se rate au doigt, et aucune décision de mise en page ne passe avant ça."
+                  casse={casseCib} surCasse={setCasseCib}
+                  regles={<Regles ids={["y17"]} />}>
+                  <Cible casse={casseCib} />
+                </Bande>
+              </Bandes>
+            </div>
+          </section>
+
+          <section className="gdoc-sec pose" id="liste">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">07 · Les règles qu&apos;on ne peut pas montrer</p>
+              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
+              <p className="sourd">
+                Certaines règles ne se photographient pas. Elles se vérifient dans le code, à l&apos;écran
+                allumé, ou nulle part.
+              </p>
+            </div>
+            <div className="gdoc-corps">
+              <ListeRegles lignes={LISTE} />
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>Trois profondeurs — la coque, la carte, la ligne — et un cran de plus pour ce qui
-                vit au plus serré. Sur chaque profondeur, une marge et un espace, chacun sur ses deux
-                axes ; un coin, qui n&apos;a pas d&apos;axe. Les anciens rôles nommés (retrait, pile,
-                ligne, grille) ne sont plus le vocabulaire du kit : ils disaient la forme de
-                l&apos;espace, pas sa provenance.</p>
-                <Regles ids={["y14", "y13"]} />
+                <Regles ids={["y3", "y13", "y8", "y9", "y7", "y4"]} />
               </div></details>
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="adaptation">
+          <section className="gdoc-sec pose" id="code">
             <div className="gdoc-sec-tete">
-              <p className="kicker">08 · L&apos;adaptation</p>
+              <p className="kicker">08 · Dans le code</p>
               <h2>Le même système, dans votre stack</h2>
-              <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
-              qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton ; React,
-              Angular ou HTML n&apos;en sont que des consommateurs — le même système, traduit.</p>
             </div>
             <div className="gdoc-corps">
-              <PanneauCode langage={styl} outils={
-                <>{(["HTML", "React", "Angular"] as const).map((f) => (
-                  <button key={f} className={`bouton ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-                ))}</>
-              } code={SNIPPETS[fw][styl]} />
+              <PanneauRegistre lignes={CODE} />
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. Un seul
-                calcul produit des variables CSS natives et une sortie Tailwind jumelle ; React,
-                Angular ou HTML n&apos;en sont que des consommateurs.</p>
-                <p><b>Deux échelles assumées</b> : le CSS natif garde les décimales calculées ;
-                Tailwind s&apos;accroche à sa grille de 4, valeurs arrondies, jamais de décimales.
-                On ne mélange pas les deux — la correspondance, jeton par jeton, lue dans le
-                moteur :</p>
+                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait un extrait prêt à coller, avec une bascule HTML / React / Angular. On l&apos;a retiré : un extrait vieillit, et le jour où le composant bouge il se met à mentir sans prévenir. Le jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la règle et le jeton</b> — pas le code.</p>
+                <p><b>Deux échelles, assumées.</b> Le CSS natif garde les décimales calculées ; Tailwind s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux — voici la correspondance, jeton par jeton, lue dans le moteur :</p>
                 <Correspondance />
               </div></details>
             </div>
           </section>
 
           <footer className="gd-pied">
-            <span>Cette page est composée par les règles qu&apos;elle documente</span>
+            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
             <span>Un seul registre, site compris · aucune valeur hors chaîne</span>
           </footer>
 

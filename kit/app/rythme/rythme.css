@@ -39,7 +39,7 @@
 .ry-h3 { margin: 0; font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.01em; line-height: var(--leading-heading); }
 .ry-faute { color: var(--danger); }
 
-/* ── 01 · La tranche Coursue (CG4) : la coque (marge 1, coin 1) → la carte
+/* ── 01 · La chaîne — la tranche Fili (CG4) : la coque (marge 1, coin 1) → la carte
       (marge 2, coin 2) → les lignes (marge 3, coin 3). Profondeur par les
       fonds, ni ombre ni bordure ; l'espace entre deux frères vaut leur marge. ── */
 .tranche {
@@ -85,19 +85,34 @@
 }
 .tr-nom { display: block; font-weight: 600; font-size: var(--font-size-body); letter-spacing: -0.01em; }
 .tr-role { color: var(--text-secondary); }
+/* La commande secondaire et les blocs de chiffres prennent le traitement du
+   kit : fond blanc, filet gris (2 septembre 2026). Ils étaient en gris
+   plein, alors que le bouton secondaire du kit (.bouton) et la tuile
+   (.tuile) sont blancs à filet — la fiche de démonstration divergeait des
+   composants qu'elle est censée montrer.
+   Le filet est posé en ombre INTERNE, jamais en bordure : une bordure
+   ajoute deux pixels et fausserait les cotes que la scène mesure. */
 .tr-btn {
   border: 0; cursor: default; border-radius: var(--r-ctl);
   min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
   font: 600 var(--font-size-small)/1 var(--font-sans);
-  background: var(--surface); color: var(--text-primary);
+  background: var(--bg); color: var(--text-primary);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
-.tr-btn.premier { background: var(--text-primary); color: var(--bg); }
+.tr-btn.premier { background: var(--text-primary); color: var(--bg); box-shadow: none; }
+/* Un chiffre et sa légende ne sont pas deux blocs séparés par un écart :
+   c'est un COUPLE typographique, et ce qui les tient est l'interligne, pas
+   un jeton d'espacement. Le cran 4 les écartait comme deux voisins (retour
+   d'Auteur, 2 septembre) ; ici l'écart est nul et c'est la hauteur de ligne
+   du chiffre qui fait le travail — aucune valeur écrite à la main. */
 .tr-sub {
-  flex: 1; min-width: 0; background: var(--surface); border-radius: var(--r-3);
+  flex: 1; min-width: 0; background: var(--bg); box-shadow: inset 0 0 0 1px var(--border);
+  border-radius: var(--r-3);
   padding: var(--pad-3-block) var(--pad-3-inline);
-  display: flex; flex-direction: column; gap: var(--gap-4-block);
+  display: flex; flex-direction: column; gap: 0;
 }
-.tr-sub b { font-size: var(--font-size-body); font-variant-numeric: tabular-nums; }
+.tr-sub b { font-size: var(--font-size-body); font-variant-numeric: tabular-nums;
+  line-height: var(--leading-heading); }
 .tr-sub span { color: var(--text-secondary); font-size: var(--font-size-small); }
 @media (max-width: 40em) {
   /* Empilé, le menu redevient une barre : il reprend toute la largeur, et
@@ -111,97 +126,99 @@
   .tr-sub { flex-basis: 7rem; /* hors chaîne : mesure minimale d'une cellule (comme le laboratoire) */ }
 }
 
-/* ── 02 · Le laboratoire : la géométrie en variables --lab-*, posées par la
-      vue depuis le moteur (px calculés, jamais écrits). La coque porte la
-      base et la racine ; la carte et les lignes en descendent. ── */
-.ry-labo { display: grid; gap: var(--gap-1-block); width: 100%; }
-.ry-lab {
-  background: var(--surface); border-radius: var(--lab-r1); padding: var(--lab-p1);
-  max-width: 34rem; /* hors chaîne : mesure de la carte */ margin-inline: auto;
+/* ── 03 · La profondeur : une tranche de réglages emboîtée sur trois
+      niveaux, et les trois arcs dessinés à leur vraie taille. La cascade
+      alterne les deux fonds (CG4) : banc → coque → carte → ligne. ── */
+.ry-pf-scene {
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 14rem; /* hors chaîne : la mesure de la colonne des cotes */
+  gap: var(--gap-1-inline); align-items: center;
 }
-.ry-lab-carte { background: var(--bg); border-radius: var(--lab-r2); padding: var(--lab-p2); display: grid; gap: var(--lab-g1); }
-.ry-lab-ligne { display: flex; gap: var(--lab-g2); flex-wrap: wrap; }
-.ry-lab-id { align-items: center; flex-wrap: nowrap; }
-.ry-lab-btn { border-radius: var(--lab-rctl); }
-.ry-lab-cellule { border-radius: var(--lab-r3); padding: var(--lab-p3); gap: var(--lab-g3); flex: 1 1 7rem; /* hors chaîne : mesure minimale d'une cellule */ }
-.ry-verdicts { display: grid; gap: var(--gap-2-block); }
-/* La barre chiffrée du verdict : la valeur vit DANS sa barre — largeur
-   proportionnelle (posée par la vue), verdict en fond. */
-.ry-barre {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: var(--control-height-compact); border-radius: var(--r-pill);
-  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+@media (max-width: 52rem) { .ry-pf-scene { grid-template-columns: minmax(0, 1fr); } }
+.ry-pf {
+  background: var(--bg); border-radius: var(--r-1);
+  /* Le jeton est le repli : sans socle passé à la scène, rien ne change. */
+  padding: var(--pf-p1, var(--pad-1-block)) var(--pf-p1, var(--pad-1-inline));
+  display: grid; gap: var(--pf-g1, var(--gap-1-block));
+  /* Une surface qui pose son fond pose AUSSI son encre. Sans cette ligne,
+     le panneau héritait de l'encre pâle du banc sombre et s'affichait en
+     bleu ciel sur son propre papier blanc (2 septembre). */
+  color: var(--text-primary);
 }
-.ry-barre.ko { background: var(--danger); color: var(--on-danger); }
-.ry-barre.bon { background: var(--success); color: var(--on-success); }
+.ry-pf-tete { display: flex; align-items: baseline; justify-content: space-between; gap: var(--gap-2-inline); }
+.ry-pf-tete b { font-size: var(--font-size-h3); letter-spacing: -0.02em; }
+.ry-pf-tete .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; letter-spacing: var(--tracking-label); }
+.ry-pf-ligne .mono { color: var(--text-secondary); }
+.ry-pf-carte {
+  background: var(--surface); border-radius: var(--r-2);
+  padding: var(--pf-p2, var(--pad-2-block)) var(--pf-p2, var(--pad-2-inline));
+  display: grid; gap: var(--pf-g2, var(--gap-2-block));
+}
+.ry-pf-ligne {
+  background: var(--bg); border-radius: var(--r-3);
+  padding: var(--pf-p3, var(--pad-3-block)) var(--pf-p3, var(--pad-3-inline));
+  display: flex; align-items: center; justify-content: space-between; gap: var(--gap-3-inline);
+  font-size: var(--font-size-small); transition: border-radius var(--m-fast) var(--e-out); /* le survol qui répare */
+}
+.ry-pf-ligne .mono { color: var(--text-secondary); }
+.ry-pf-ligne[data-intent="statement"] {
+  border-radius: calc(var(--r-2) * 2); /* casse : le coin de la ligne vaut deux fois celui de sa carte — l'enfant plus rond que son parent */
+}
+/* Le surlignage des coins : un équerre posée sur le coin haut-gauche de
+   chaque profondeur, qui épouse exactement son arc. C'est ce qu'on vient
+   regarder — trois fonds voisins ne le montraient pas assez. Bleu tant que
+   la chaîne tient, rouge sur la ligne dès qu'elle est cassée. */
+.ry-pf, .ry-pf-carte, .ry-pf-ligne { position: relative; }
+.ry-pf::before, .ry-pf-carte::before, .ry-pf-ligne:first-child::before {
+  content: ""; position: absolute; top: -1px; left: -1px; pointer-events: none;
+  border-top: 2px solid currentColor; border-left: 2px solid currentColor;
+  border-top-left-radius: inherit; color: var(--accent);
+  transition: border-top-left-radius var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); /* le survol qui répare */
+}
+/* La longueur de chaque équerre suit son cran : assez pour que la courbe
+   domine le trait droit. Hors chaîne, et dite : c'est un tracé, pas une
+   distance du kit. */
+.ry-pf::before { width: 3rem; height: 3rem; }
+.ry-pf-carte::before { width: 2rem; height: 2rem; }
+.ry-pf-ligne:first-child::before { width: 1.5rem; height: 1.5rem; }
+.ry-pf-ligne[data-intent="statement"]:first-child::before { width: 2.5rem; height: 2.5rem; color: var(--danger); }
+/* La vedette de cette scène, c'est la chaîne des surfaces — pas le
+   composant. Une action pleine, en encre, tirait l'œil à elle : le bouton
+   reste ici pour montrer qu'il prend le coin de la ligne, et rien d'autre
+   (verdict d'Auteur, 1er septembre — même leçon que le 24 août). */
+.ry-pf-btn {
+  justify-self: start; min-height: var(--control-height);
+  padding: 0 var(--pad-2-inline); border-radius: var(--r-ctl);
+  background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border);
+  font: inherit; font-size: var(--font-size-small);
+}
+/* Les cotes : un arc par profondeur, tracé au vrai rayon. */
+.ry-pf-cotes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap-2-block); }
+/* ── LE VERT DES COINS EST L'ACCENT D'AUTEUR (2 septembre 2026) ──
+   Premier consommateur de --accent depuis sa naissance le 30 août. Il est
+   ici à sa place exacte : l'accent est « une signature, pas un contrat »,
+   il ne colore ni une action ni un état, et la couche d'annotation d'une
+   page du kit est du rédactionnel — un trait qui pointe une géométrie
+   n'agit pas (doctrine d'Auteur : rédactionnel = neutre, fonctionnel =
+   marque, et la signature d'Auteur par-dessus, déclarée).
+   Deux conséquences, dites et non corrigées en silence :
+   · L'accent porte la MÊME valeur dans les deux thèmes. Les équerres et
+     les arcs n'ont donc besoin d'aucune variante sur terre sombre — c'est
+     ce qui rend ce choix propre.
+   · Sur le blanc du panneau, il tient 1,65:1 ; sur la terre sombre, 9,67:1.
+     Le premier chiffre est sous tous les seuils, et c'est ASSUMÉ : l'accent
+     sort explicitement des paires déclarées (COLOR-UX 2.9.0). Un repère
+     d'annotation n'est ni un texte ni un indicateur de focus ; ce qu'il
+     pointe reste lisible sans lui.
+   Le rouge de la faute, lui, n'est pas une signature : c'est un signal, et
+   il garde la sémantique. */
+.ry-pf-cote { display: flex; align-items: center; gap: var(--gap-3-inline); color: var(--accent); }
+.ry-pf-cote svg { width: 3.25rem; height: 3.25rem; /* hors chaîne : la boîte du croquis d'arc */ flex: none; }
+.ry-pf-cote.faux { color: var(--danger); }
+.ry-pf-cote-dit { display: grid; gap: var(--gap-4-block); min-width: 0; }
+.ry-pf-cote-dit b { color: var(--text-primary); font-size: var(--font-size-small); }
+.ry-pf-cote-dit .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; }
 
-/* ── 03 · La profondeur : coque → carte → ligne, et sa casse. ── */
-.ry-prof-coque {
-  width: 100%; max-width: 30rem; /* hors chaîne : mesure de la scène */
-  background: var(--surface); border-radius: var(--r-1);
-  padding: var(--pad-1-block) var(--pad-1-inline); display: grid; gap: var(--gap-1-block);
-}
-.ry-prof-carte { background: var(--bg); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: var(--gap-2-block); }
-.ry-prof-ligne { background: var(--surface); border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); display: grid; gap: var(--gap-4-block); }
-/* casse : la ligne deux fois plus ronde que sa carte. La valeur vient de
-   la vue, qui double le coin de la carte — plus de nombre écrit ici. */
-.ry-prof-ligne[data-intent="statement"] { border-radius: var(--ry-casse, 16px); }
-/* Marquer l'ARRONDI, pas la boîte. Un quart d'arc posé sur le coin, qui
-   reprend EXACTEMENT le rayon de son élément (border-radius: inherit sur un
-   pseudo-élément hérite de l'élément qui le porte) : on compare deux arcs
-   voisins, plus deux rectangles. Le coin haut-droit est le seul des quatre
-   qui soit vide dans les deux boîtes. */
-.ry-prof-carte, .ry-prof-ligne { position: relative; }
-.ry-prof-carte:has(.ry-prof-ligne[data-intent="statement"])::after,
-.ry-prof-ligne[data-intent="statement"]::after {
-  content: ""; position: absolute; top: -2px; right: -2px;
-  width: 2.75rem; height: 2.75rem; /* hors chaîne : la longueur de l'amorce d'arc */
-  border-top: 2px solid var(--danger); border-right: 2px solid var(--danger);
-  border-top-right-radius: inherit; pointer-events: none;
-}
-/* Le contenant est la RÉFÉRENCE, pas la faute : encre calme. */
-.ry-prof-carte:has(.ry-prof-ligne[data-intent="statement"])::after { border-color: var(--text-secondary); }
-/* Réparé sous le curseur : l'arc de la ligne passe au vert, et il rentre
-   de lui-même dans celui de la carte. */
-.co-porte:hover .ry-prof-ligne[data-intent="statement"]::after { border-color: var(--success); }
-/* Les cotes : posées à côté de leur arc, dans la même case pour que le
-   survol change le nombre sans rien déplacer. */
-.ry-coin-cote { position: absolute; top: 0.5rem; right: 3.1rem; display: grid;
-  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
-  color: var(--danger); }
-.ry-coin-cote > * { grid-area: 1 / 1; text-align: right; }
-.ry-coin-cote.contenant { color: var(--text-secondary); }
-.co-porte:hover .ry-prof-ligne .ry-coin-cote { color: var(--success); }
-/* Le survol répare — comme sur la première preuve de Composition : la
-   faute ne tient que tant qu'on ne regarde pas la scène de près. Le
-   crash-test, lui, clique le bouton et mesure sans survoler la scène :
-   la casse y reste entière. */
-.co-porte:hover .ry-prof-ligne[data-intent="statement"] { border-radius: var(--r-3); outline: 0; }
-/* Les deux phrases de la ligne, dans la même case : la hauteur ne bouge
-   ni à la casse ni au survol. */
-.ry-prof-dire { display: grid; }
-.ry-prof-dire > * { grid-area: 1 / 1; }
-.ry-prof-dire > .cassee { visibility: hidden; }
-.ry-prof-ligne[data-intent="statement"] .juste { visibility: hidden; }
-.ry-prof-ligne[data-intent="statement"] .cassee { visibility: visible; }
-.co-porte:hover .ry-prof-ligne[data-intent="statement"] .juste { visibility: visible; }
-.co-porte:hover .ry-prof-ligne[data-intent="statement"] .cassee { visibility: hidden; }
-.ry-prof-btn { margin-top: var(--gap-2-block); }
-
-/* ── 04 · La densité : trois fois la même carte, seule la base change —
-      chaque carte porte data-density, tokens.css recalcule sa chaîne. ── */
-.ry-densites { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
-.ry-dcarte {
-  background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
-  padding: var(--pad-2-block) var(--pad-2-inline); display: flex; flex-direction: column; gap: var(--gap-2-block);
-}
-.ry-lignes { display: flex; flex-direction: column; gap: var(--gap-3-block); }
-.ry-sk { height: 0.625rem; /* hors chaîne : barre de squelette, un objet décoratif */ border-radius: var(--r-pill); background: var(--surface-hover); }
-.ry-sk.c { width: 72%; }
-.ry-detiq { font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; } /* tertiaire : l’étiquette d’une carte de densité */
-@media (max-width: 48em) { .ry-densites { grid-template-columns: 1fr; } }
-
-/* ── 05 · La proximité : une carte dont chaque distance est un bloc d'espace explicite. ── */
+/* ── La proximité : une carte dont chaque distance est un bloc d'espace explicite. ── */
 .ry-prox { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 26rem; /* hors chaîne : mesure de la carte */ }
 .ry-prox-carte { background: var(--surface); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: 0; }
 .ry-champ {
@@ -209,35 +226,7 @@
   padding: 0 var(--pad-3-inline); font: inherit; background: var(--bg);
 }
 
-/* ── 06 · Le bon cran ── */
-.ry-cran { display: grid; gap: var(--gap-1-block); max-width: var(--measure); }
-.ry-question { display: grid; gap: var(--gap-3-block); }
-.ry-reponse { display: grid; gap: var(--gap-3-block); padding-top: var(--gap-2-block); }
-.ry-affiche { font-size: var(--doc-cover); line-height: 1.04; font-weight: 600; letter-spacing: -0.02em; overflow-wrap: anywhere; }
-
-/* ── 07 · Le vocabulaire : trois tuiles (coque, carte, ligne), chaque figure
-      consomme les jetons qu'elle nomme. ── */
-.ry-voc { display: grid; gap: var(--page-2-block); }
-.ry-voc-tuiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--page-2-block) var(--page-2-inline); }
-.ry-voc-tuile { display: flex; flex-direction: column; gap: var(--gap-3-block); }
-.ry-voc-tuile h3 { display: flex; align-items: baseline; gap: var(--gap-3-inline); }
-.ry-voc-tuile h3 .mono { color: var(--text-secondary); font-weight: 400; }
-.ry-voc-tuile p { color: var(--text-secondary); font-size: var(--font-size-small); line-height: var(--leading-body); }
-.ry-vocfig { margin-top: auto; background: var(--surface); display: flex; align-items: stretch; }
-.ry-vocfig.coque { border-radius: var(--r-1); padding: var(--pad-1-block) var(--pad-1-inline); gap: var(--gap-1-inline); }
-.ry-vocfig.carte { border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); gap: var(--gap-2-block); flex-direction: column; }
-.ry-vocfig.ligne { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); gap: var(--gap-3-inline); align-items: center; }
-.ry-vocbox { background: var(--bg); border-radius: var(--r-2); flex: 1; min-height: 2.5rem; /* hors chaîne : hauteur de la boîte de figure */ }
-.ry-vocbox.ligne { border-radius: var(--r-3); min-height: 1.5rem; /* hors chaîne : hauteur d'une ligne de figure */ }
-.ry-vocbox.item { border-radius: var(--r-3); min-height: 1.25rem; /* hors chaîne : hauteur d'un item de figure */ }
-.ry-vocbadge {
-  flex: none; background: var(--bg); border-radius: var(--r-pill);
-  padding: var(--gap-4-block) var(--gap-3-inline);
-  font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-tertiary); /* tertiaire : la fiche d’une figure du vocabulaire */
-}
-@media (max-width: 48em) { .ry-voc-tuiles { grid-template-columns: 1fr; } }
-
-/* ── 08 · Les dépliants de règles ── */
+/* ── Les dépliants de règles ── */
 .ry-regles { display: grid; gap: var(--gap-1-block); }
 .ry-regle { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
 .ry-regle > b { color: var(--text-primary); }
@@ -263,7 +252,7 @@
 .ry-reglette .ry-cran { position: relative; flex: 1 1 9rem; /* hors chaîne : la mesure d'une boîte de réglette */
   display: grid; gap: var(--gap-4-block); align-content: start; justify-items: start;
   background: var(--surface); border-radius: var(--r-3);
-  padding: var(--pad-3-block) var(--pad-3-inline); transition: background 0.15s; }
+  padding: var(--pad-3-block) var(--pad-3-inline); transition: background-color var(--m-fast) var(--e-out); } /* survol */
 .ry-cran-barre { height: 0.375rem; /* hors chaîne : l'épaisseur du trait de mesure */
   border-radius: var(--r-pill); background: var(--ry-couleur, var(--text-primary)); }
 .ry-reglette .ry-cran b { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
@@ -360,60 +349,653 @@
 .ry-preuve-tranche .espace.vu[data-cran][data-nom]::after { color: var(--text-primary); }
 
 
-/* ── L'amorce — « deux fois le même geste » (1er septembre) ──
-   Portée de la pièce libre du 31 août. Des blocs encrés séparés par de
-   VRAIS espaces : ce qu'on voit entre eux est la distance elle-même, à sa
-   taille réelle. Les deux rangs de pastilles qui tenaient cette place
-   affirmaient le raisonnement ; celle-ci le fait faire au lecteur. */
-.ry-amorce { display: grid; gap: var(--gap-1-block); width: 100%; justify-items: start; }
-/* Une seule grille pour la paire entière : les deux titres ET la question
-   sur la première ligne, les deux cartes ET la commande sur la seconde.
-   Chacun dans son bloc, la question flottait au milieu de la hauteur des
-   cartes et ne répondait visuellement à rien (verdict d'Auteur, 1er sept.). */
-.ry-paire { display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
-  column-gap: var(--gap-1-inline); row-gap: var(--gap-4-block);
-  align-items: start; width: 100%; }
-.ry-paire > .ry-col-1 { grid-column: 1; }
-.ry-paire > .ry-col-2 { grid-column: 2; }
-.ry-paire > .ry-ech-titre { grid-row: 1; }
-.ry-paire > .ry-ech-carte { grid-row: 2; }
-.ry-paire > .ry-demande { grid-column: 3; grid-row: 1; }
-.ry-paire > .ry-juge { grid-column: 3; grid-row: 2; }
-.ry-ech-titre { font-size: var(--font-size-label); letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--text-secondary); }
-.ry-ech-carte { display: grid; background: var(--bg); border-radius: var(--r-2);
-  padding: var(--pad-2-block) var(--pad-2-inline); }
-.ry-ech-bloc { background: var(--surface-hover); border-radius: var(--r-4);
-  height: 1.9rem; /* hors chaîne : décor de scène — un bloc de contenu, pas une distance du kit */ }
-/* L'espace est un vrai espace : il ne se teinte que quand on demande à voir. */
-.ry-ech-espace { position: relative; background: none; transition: background 0.2s linear; }
-/* La distance mesurée est rouge — la couleur des inspecteurs, et celle de
-   la pièce libre d'où vient cette démo (verdict d'Auteur, 1er septembre).
-   Ici le rouge ne dit pas la faute : il dit « voici la distance, à sa
-   taille réelle ». Le jugement, lui, reste dans le badge du verdict. */
-.ry-ech-cote { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  z-index: 2; font-style: normal; opacity: 0; transition: opacity 0.2s linear;
-  background: var(--danger); color: var(--on-danger); border-radius: var(--r-4);
-  padding: 0.14rem 0.38rem; /* hors chaîne : la pastille de cote, une étiquette d'inspecteur */
-  font: 600 var(--font-size-label)/1 var(--font-mono); white-space: nowrap; }
-.ry-paire.revele .ry-ech-espace { background: color-mix(in srgb, var(--danger) 16%, transparent); }
-.ry-paire.revele .ry-ech-cote { opacity: 1; }
-/* La question, le bouton, puis la réponse : l'ordre de lecture est aussi
-   l'ordre du geste. La réponse garde sa place quand elle est cachée — la
-   scène ne saute pas d'un pixel au clic, et les deux paires restent
-   alignées l'une sous l'autre quelle que soit celle qu'on a ouverte. */
-.ry-juge { display: grid; align-content: start; justify-items: start; gap: var(--gap-2-block); }
-.ry-juge .ry-tu { visibility: hidden; }
-.ry-demande { color: var(--text-secondary); max-width: 34ch; }
-.ry-verdict { display: grid; gap: var(--gap-3-block); justify-items: start; max-width: 40ch; align-content: center; }
-@media (max-width: 56rem) {
-  /* Trop étroit pour trois colonnes : les deux échantillons gardent la
-     leur, la question et sa commande passent dessous, pleine largeur. */
-  .ry-paire { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); row-gap: var(--gap-2-block); }
-  .ry-paire > .ry-demande { grid-column: 1 / -1; grid-row: 3; }
-  .ry-paire > .ry-juge { grid-column: 1 / -1; grid-row: 4; }
+/* ── Les étages du dessous, tels que cette page les consomme (le gabarit
+      commun vit dans globals.css, préfixe doc-). Rien ici ne redéfinit le
+      gabarit : on y pose seulement ce que les scènes de RYTHME exigent. ── */
+/* Les deux cartes de proximité vivent DANS la scène : elles descendent
+   d'un cran de fond, la cascade continue (CG4). */
+.ry .doc-scene .ry-prox-carte { background: var(--bg); width: 100%; max-width: 26rem; /* hors chaîne : mesure de la carte */ }
+
+/* ── 02 · La densité — la situation : la tranche, et DEUX variables.
+      La géométrie est posée en variables --sd-*, calculées par la vue
+      depuis le moteur pour la base choisie ET la largeur simulée du cadre
+      (px calculés, jamais écrits). Les coins, eux, ne bougent d'aucune
+      des deux : ce sont les jetons du registre. ── */
+.ry-sd {
+  width: 100%; background: var(--surface); color: var(--text-primary);
+  border-radius: var(--r-1); padding: var(--sd-p1) var(--sd-p1i);
+  text-align: left; display: flex; flex-direction: column; gap: var(--sd-g1);
 }
-/* Le badge du verdict de l'amorce : neutre tant qu'il n'y a rien à
-   reprocher — la couleur de marque ne dit pas un jugement. */
-.ry-verdict .badge.neutre { color: var(--text-secondary); background: var(--surface-hover); }
+.ry-sd-tete { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sd-g2i); }
+.ry-sd-nom { font-weight: 700; letter-spacing: -0.02em; font-size: var(--font-size-h3); }
+.ry-sd-meta { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; letter-spacing: var(--tracking-label); }
+.ry-sd-carte {
+  background: var(--bg); border-radius: var(--r-2);
+  padding: var(--sd-p2) var(--sd-p2i);
+  display: flex; flex-direction: column; gap: var(--sd-g2);
+}
+.ry-sd-id { display: flex; align-items: center; gap: var(--sd-g2i); }
+.ry-sd-rond { width: 2.75rem; height: 2.75rem; /* hors chaîne : la pastille d'avatar, un objet — pas une cible */
+  border-radius: var(--r-pill); flex: none; background: var(--primary-subtle); }
+.ry-sd-qui { display: flex; flex-direction: column; min-width: 0; }
+.ry-sd-qui b { font-weight: 600; letter-spacing: -0.015em; }
+.ry-sd-qui span { color: var(--text-secondary); font-size: var(--font-size-small); }
+.ry-sd-lignes { display: flex; flex-direction: column; gap: var(--sd-g3); }
+.ry-sd-ligne {
+  background: var(--surface); border-radius: var(--r-3);
+  padding: var(--sd-p3) var(--sd-p3i);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sd-g3i);
+  font-size: var(--font-size-small);
+}
+.ry-sd-ligne b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* ── Les scènes de l'étage « en bandes ». Chaque casse est dite sur SA
+      ligne : c'est la seule valeur hors chaîne qu'elle porte. ── */
+
+/* y1 · deux sœurs dans leur coque : l'écart qui les sépare EST leur marge,
+      et les deux se lisent — bandes rouges pour les marges, verte pour
+      l'espace, comme partout sur cette page. */
+.ry-fr { width: 100%; display: grid; gap: var(--gap-2-block); }
+.ry-fr-coque {
+  background: var(--surface); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  display: flex; align-items: stretch;
+}
+.ry-fr-carte {
+  flex: 1; min-width: 0; background: var(--bg); border-radius: var(--r-2);
+  display: flex; align-items: stretch;
+}
+.ry-fr-coque > .espace.h { align-self: stretch; height: auto; transition: width var(--m-base) var(--e-out); } /* la scène change d'état au bouton : le cran du dépliant */
+/* Ailleurs, la couleur des espaces n'apparaît qu'au survol (les espaces
+   espacent, d'abord). Ici les bandes sont montrées en permanence — la
+   scène EST la comparaison de deux longueurs — alors elles portent tout
+   de suite la couleur de leur rôle, la même que leur étiquette : rouge
+   pour la marge, vert pour l'écart. Une bande grise sous une étiquette
+   verte, c'était deux codes pour une seule chose. */
+.ry-fr .espace.vu.pad { background: var(--danger-subtle); outline-color: var(--danger); }
+.ry-fr .espace.vu.gap { background: var(--success-subtle); outline-color: var(--success); }
+.ry-fr-dit {
+  flex: 1; min-width: 0; display: grid; gap: var(--gap-4-block);
+  padding-block: var(--pad-2-block); align-content: center;
+}
+
+/* y12 · quatre crans dessinés à leur vraie longueur. */
+.ry-rap { width: 100%; display: grid; gap: var(--gap-2-block); }
+.ry-rap-crans { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap-3-block); }
+.ry-rap-cran { display: flex; align-items: center; gap: var(--gap-3-inline); }
+.ry-rap-barre { height: var(--gap-4-block); border-radius: var(--r-pill); background: var(--text-primary); transition: width var(--m-base) var(--e-out); } /* la scène change d'état au bouton : le cran du dépliant */
+.ry-rap[data-intent="statement"] .ry-rap-barre { background: var(--danger); }
+.ry-rap-cran b { font-size: var(--font-size-label); font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+
+/* y9 · deux cartes jumelles : à gauche des marges en jetons, à droite des
+      marges gelées en pixels. Le texte grandit d'un demi — une proportion,
+      pas un cran — et seule la première suit. */
+.ry-rem { width: 100%; display: grid; gap: var(--gap-2-block); }
+.ry-rem-paire { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-inline); }
+@media (max-width: 44rem) { .ry-rem-paire { grid-template-columns: minmax(0, 1fr); } }
+/* Agrandir le texte, c'est agrandir la racine : TOUT ce qui est en rem
+   grandit du même facteur. La démonstration applique ce facteur au texte
+   et aux marges en jetons — c'est fidèle au mécanisme ; la carte en pixels,
+   elle, ne peut pas suivre, et c'est le sujet. */
+.ry-rem { --f: 1; }
+.ry-rem.grand { --f: 1.5; }
+.ry-rem-carte {
+  background: var(--bg); border-radius: var(--r-2);
+  padding: calc(var(--pad-2-block) * var(--f)) calc(var(--pad-2-inline) * var(--f)); /* hors chaîne : la marge du registre, multipliée par l'agrandissement simulé du texte */
+  font-size: calc(1rem * var(--f)); /* hors chaîne : le corps de la démonstration suit l'agrandissement */
+  display: grid; gap: var(--gap-3-block); align-content: start;
+  transition: padding var(--m-base) var(--e-out), font-size var(--m-base) var(--e-out); /* la scène change d'état au bouton : le cran du dépliant */
+}
+.ry-rem-carte.dur {
+  padding: 16px; /* casse : une marge gelée en pixels — elle ne suivra pas le texte */
+}
+.ry-rem-etiq { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; }
+.ry-rem-carte[data-intent="statement"] .ry-rem-etiq { color: var(--danger); }
+
+/* y17 · la jauge en pointillé est la hauteur due ; la commande la remplit. */
+.ry-cible { width: 100%; display: grid; gap: var(--gap-2-block); }
+.ry-cible-rang { display: flex; flex-wrap: wrap; gap: var(--gap-2-inline); }
+.ry-cible-jauge {
+  display: inline-grid; place-items: center; min-height: var(--control-height);
+  border-radius: var(--r-ctl); outline: 1px dashed var(--border-strong);
+}
+.ry-cible-btn {
+  min-height: var(--control-height); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-ctl); border: 1px solid var(--border); background: var(--bg);
+  color: var(--text-primary); font: inherit; font-size: var(--font-size-small);
+  display: inline-flex; align-items: center; transition: min-height var(--m-base) var(--e-out), padding var(--m-base) var(--e-out); /* la scène change d'état au bouton : le cran du dépliant */
+}
+.ry-cible[data-intent="statement"] .ry-cible-jauge { outline-color: var(--danger); background: var(--danger-subtle); }
+.ry-cible[data-intent="statement"] .ry-cible-btn {
+  min-height: 36px; /* casse : sous le plancher de la cible au doigt — le vide dans la jauge est ce qui manque */
+}
+
+/* ── La profondeur sur terre sombre (2 septembre) ──
+   Le panneau « Réglages » pose son propre papier et garde ses encres. La
+   colonne des cotes, elle, repose directement sur la terre. L'accent la
+   traverse sans retouche — il a la même valeur dans les deux thèmes — donc
+   seuls le texte et le rouge de la faute changent de versant. */
+.banc.sombre .ry-pf-cote.faux { color: var(--code-danger); } /* le rouge de la faute sur le fond de code : calé 4,5:1 par le moteur */
+.banc.sombre .ry-pf-cote-dit b { color: var(--code-text); }
+.banc.sombre .ry-pf-cote-dit .mono { color: var(--code-com); }
+
+/* ═══ LE SCÉNARIO DU MOTEUR — DES SLIDES (2 septembre 2026) ═══════════
+   Un seul plateau, toujours le même, et des slides qui s'y succèdent : une
+   slide de texte ne montre que sa phrase, une slide de visuel ne porte pas
+   de récit. L'œil n'a jamais deux endroits où aller en même temps.
+
+   LA MISE EN PAGE (maquette d'Auteur, 2 septembre). Le jaune n'est plus le
+   cadre de tout : c'est un PANNEAU décalé vers la droite. Ce qui traverse
+   le scénario lui DÉBORDE dessus — la fiche par la gauche, le compteur par
+   le coin haut droit — et ce qui n'appartient à aucune slide reste sur la
+   page : le chapô et le lecteur. Ce qui est DEDANS est ce qui change de
+   slide en slide : le titre, la molette, les mots.
+   La grille tient tout : la fiche n'est plus dans le même flux que les
+   mots, donc plus rien de ce qu'on écrit à côté d'elle ne peut la déplacer.
+   ═══════════════════════════════════════════════════════════════════════ */
+.mo-scena {
+  /* hors chaîne : les trois cotes de la mise en scène, données par l'Auteur
+     le 2 septembre. La fiche mord de 24 px dans le panneau ; le panneau a
+     72 px de marge interne — donc les mots commencent 48 px après le bord
+     droit de la fiche. */
+  --mo-large: 27rem; --mo-mord: 1.5rem; --mo-marge: 4.5rem; --mo-h: 34rem;
+  /* le retrait haut et bas du panneau — la fiche prend le MÊME, sinon elle
+     se centre sur une autre boîte que lui et le centrage est faux */
+  --mo-retrait: 2.5rem;
+  position: relative; height: var(--mo-h);
+  display: grid;
+  grid-template-columns:
+    minmax(0.5rem, 2.5rem)
+    calc(var(--mo-large) - var(--mo-mord))
+    var(--mo-mord)
+    minmax(0, 1fr)
+    2.5rem;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+/* Le panneau. Il porte la terre colorée du kit et son coin ; il est décalé
+   en haut et en bas pour que le compteur et le lecteur respirent autour. */
+.mo-cadre { grid-column: 3 / 5; grid-row: 1 / -1; align-self: stretch; z-index: 0;
+  margin-block: var(--mo-retrait);
+  /* 72 px de marge interne sur les quatre bords, et le contenu centré
+     verticalement dedans (verdict d'Auteur, 2 septembre). */
+  padding: var(--mo-marge); /* hors chaîne : la marge de la mise en scène, une cote d'Auteur (2 septembre) — pas un espace de la chaîne */
+  gap: var(--gap-1-block);
+  align-items: stretch; justify-content: center; overflow: hidden; }
+/* Quand le panneau ne porte qu'un titre et une molette, il les range en
+   haut : le reste de sa surface appartient aux blocs d'infos, qui viennent
+   se poser en face de ce qu'ils nomment sur la fiche. */
+.mo-cadre.haut { justify-content: flex-start; }
+
+/* Le chapô et le lecteur vivent sur la page, pas dans le panneau. */
+.mo-chap { grid-column: 1 / 4; grid-row: 1; z-index: 3; margin: 0;
+  align-self: start; padding-block-start: 0.5rem;
+  font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); } /* tertiaire : le chapô du film, un kicker */
+.mo-player { grid-column: 1 / 5; grid-row: 3; z-index: 3; align-self: end; }
+
+/* L'en-tête d'une slide : ce qui change, dans le panneau, au-dessus des
+   mots. Elle RÉSERVE sa hauteur — sans ça, un titre ou une molette de plus
+   déplacerait tout ce qui est en dessous d'une slide à l'autre. */
+/* L'en-tête ne réserve plus sa hauteur : la fiche a sa propre case de
+   grille, plus rien ne la déplace, et le contenu du panneau se centre. */
+.mo-entete { display: grid; justify-items: start; align-content: start;
+  gap: var(--gap-3-block); }
+.mo-entete:empty { display: none; }
+/* UNE seule voix pour les grandes lignes du panneau : le titre d'une slide
+   de visuel, la question d'ouverture et la phrase d'une slide de texte sont
+   la même chose — la ligne que le lecteur doit retenir. Même cran, même
+   graisse, même surlignage d'auteur (verdict d'Auteur, 2 septembre :
+   « garde ce traitement sur toutes les pages »). */
+.mo-titre, .mo-question, .mo-phrase { margin: 0; max-width: var(--measure);
+  font-size: var(--font-size-h2); font-weight: 700; letter-spacing: -0.03em;
+  line-height: var(--leading-heading); text-wrap: balance; }
+/* L'accent de l'auteur ne colore pas le texte — il le SURLIGNE. Un vert de
+   signature en encre serait illisible ; posé derrière la ligne, il garde
+   l'encre du texte et fait quand même entendre la voix. */
+.mo-titre em, .mo-question em, .mo-phrase em { font-style: normal;
+  box-shadow: inset 0 -0.28em 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+.mo-titre s, .mo-question s, .mo-phrase s { text-decoration: none; opacity: 0.72;
+  box-shadow: inset 0 -0.09em 0 color-mix(in srgb, currentColor 55%, transparent); }
+/* La molette est une commande : elle se range au pied du panneau, jamais
+   entre le titre et ce qu'il annonce. Elle y prend toute la place qui
+   reste, si bien que les blocs d'infos gardent la hauteur pour eux.
+   Elle entre en dernier — après le commentaire, qui se pose à 620 ms et met
+   420 ms à s'installer. Par ANIMATION et non par transition : elle n'est
+   montée que sur les slides qui en ont une, et un élément qui vient
+   d'apparaître ne transitionne pas, il s'affiche déjà à son état final. Le
+   délai ne s'appliquait à rien (verdict d'Auteur : « toujours pareil »). */
+.mo-pied { margin-block-start: auto; width: min(100%, 22rem);
+  animation-name: mo-entre; animation-duration: 400ms; /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+  animation-timing-function: var(--e-out);
+  animation-fill-mode: both; animation-delay: 1300ms; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-scena.sort .mo-pied { animation: none; opacity: 0; }
+
+/* ── Le relais entre deux slides ────────────────────────────────────
+   Ce qui se remplace SORT avant que la suite entre : sans ce relais, tout
+   disparaissait d'un coup et réapparaissait — « cassant » (verdict
+   d'Auteur, enregistrement à l'appui). La fiche et le compteur ne
+   participent pas : ce sont les points fixes, l'une se transforme et
+   l'autre compte, ils ne clignotent jamais. */
+.mo-entete, .mo-colonne, .mo-chap {
+  /* entrée posée, sortie vive : ce qui part n'a pas à se faire regarder */
+  transition: opacity 300ms ease 40ms, transform 400ms var(--e-out) 40ms; /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+}
+/* L'ordre d'apparition d'une slide dit dans quel ordre on la lit : le titre
+   annonce, le commentaire explique, la commande invite. Trois temps, jamais
+   ensemble (verdict d'Auteur, 2 septembre). Le bloc d'infos, lui, a son
+   propre minuteur — il se pose entre les deux. */
+.mo-colonne { transition-delay: 260ms; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-scena.sort .mo-entete, .mo-scena.sort .mo-colonne, .mo-scena.sort .mo-chap {
+  opacity: 0; transition-duration: 170ms; transition-delay: 0s; /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+}
+.mo-scena.sort .mo-entete, .mo-scena.sort .mo-chap { transform: translateY(-0.45rem); }
+.mo-scena.sort .mo-colonne { transform: translateY(0.6rem); }
+
+/* La colonne : un seul endroit pour tous les mots de la slide. */
+.mo-colonne { flex: none; min-width: 0; }
+.mo-colonne > * { width: 100%; }
+
+/* ── La slide de texte ── */
+.mo-slide-texte { display: grid; gap: var(--gap-2-block); }
+@keyframes mo-entre { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: none; } }
+.mo-sous { margin: 0; font-size: var(--font-size-body); line-height: 1.6; opacity: 0.86; }
+.mo-sous b { opacity: 1; font-weight: 700; }
+
+/* ── Le compteur : une ANNOTATION, pas un bloc. Il a d'abord été une
+      feuille grise arrondie posée sur le coin du panneau — et c'est la
+      feuille qui pesait, pas le chiffre : elle faisait une troisième masse
+      dans une composition qui n'en veut que deux, le panneau et la fiche
+      (verdict d'Auteur, 2 septembre). Sans boîte, il reste sur la page
+      blanche, donc le rouge et le vert du verdict s'y lisent : c'est le
+      seul endroit où il pouvait perdre son fond sans perdre ses encres. ── */
+.mo-compteur { grid-column: 4 / -1; grid-row: 1; justify-self: end; z-index: 3;
+  margin: 0; padding-block-start: 0.25rem;
+  display: grid; justify-items: end; gap: var(--gap-4-block); text-align: right; }
+/* Une carte émotionnelle : le chiffre dit combien, la couleur dit si ça
+   tient, l'humeur dit ce que ça fait de le vivre. */
+.mo-compteur b { display: flex; align-items: center; gap: var(--gap-4-inline);
+  font-size: var(--font-size-h1); font-weight: 700; line-height: 1;
+  letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.mo-compteur b i { font-style: normal; }
+.mo-humeur { font-size: 0.78em; line-height: 1;
+  animation: mo-humeur 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+@keyframes mo-humeur {
+  from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  to { opacity: 1; transform: none; }
+}
+.mo-compteur span { font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : l'étiquette du compteur */
+/* Le chiffre reste à l'encre du texte, toujours (verdict d'Auteur,
+   2 septembre). Le rouge et le vert le faisaient basculer d'un registre à
+   l'autre à chaque slide, alors qu'un instrument doit se lire de la même
+   façon d'un bout à l'autre. C'est l'humeur qui porte le verdict — et elle
+   le porte mieux : elle change sans changer de voix. */
+
+/* ── La scène : la fiche et ce qu'elle traîne avec elle (les traits, les
+      blocs d'infos). Posée par-dessus le panneau, du bord gauche de la
+      fiche jusqu'au bord droit de la page, elle ne capte pas le pointeur —
+      sinon elle couvrirait les molettes du panneau. ── */
+/* La fiche se centre sur LE PANNEAU, pas sur la rangée du milieu : elle
+   occupe donc exactement la même boîte que lui — mêmes rangées, même
+   retrait haut et bas — sinon les deux centres ne tombent pas au même
+   endroit (bande verte d'Auteur, 2 septembre). */
+.mo-scene { grid-column: 2 / -1; grid-row: 1 / -1; z-index: 2;
+  align-self: stretch; margin-block: var(--mo-retrait);
+  position: relative; width: 100%;
+  display: flex; align-items: center;
+  pointer-events: none; }
+.mo-scene > * { pointer-events: auto; }
+/* La fiche, et ce qui se pose autour d'elle sans la pousser (les onglets). */
+.mo-porte { position: relative; width: min(100%, var(--mo-large)); }
+.mo-fiche { position: relative; width: 100%;
+  display: grid; gap: var(--gap-2-block); align-content: start; }
+
+/* ── LA FICHE ÉVOLUE, ELLE NE SE REMPLACE PAS ────────────────────────
+   Elle est montée une fois pour tout le scénario : ce sont ses JETONS qui
+   changent d'une slide à l'autre, et ce qui les consomme a le droit d'y
+   mettre le temps. Sans cette règle, la fiche saute d'un état à l'autre et
+   on perd le seul endroit où le moteur se voit travailler (verdict
+   d'Auteur, 2 septembre — la règle avait été emportée par une coupe).
+   On anime les propriétés DÉRIVÉES, jamais une valeur écrite à la main. */
+.mo-fiche .tranche, .mo-fiche .tranche * {
+  transition: padding 620ms var(--e-out), /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+              margin 620ms var(--e-out),
+              gap 620ms var(--e-out),
+              border-radius 620ms var(--e-out),
+              font-size 620ms var(--e-out),
+              min-height 620ms var(--e-out),
+              width 620ms var(--e-out),
+              height 620ms var(--e-out),
+              inset 620ms var(--e-out);
+}
+/* Une valeur qu'on fait glisser ne s'anime pas (loi du 3 septembre) : pendant
+   qu'on tourne une molette du film, la fiche et ses arcs suivent le doigt
+   sans transition — sinon on regarde l'animation au lieu du nombre. Le
+   passage d'une slide à l'autre, lui, garde son tempo. */
+.mo-scena:has(.mo-molette input:active) .mo-fiche .tranche,
+.mo-scena:has(.mo-molette input:active) .mo-fiche .tranche *,
+.mo-scena:has(.mo-molette input:active) .mo-fiche.coins :is(.tranche, .tr-carte, .tr-sub)::before,
+.mo-scena:has(.mo-molette input:active) .mo-fiche.coins :is(.tranche, .tr-carte, .tr-sub)::after { transition: none; }
+/* ── La pastille de version ──────────────────────────────────────────
+   v1, v1.1, v2, v2-final, v2-final-2 : la blague la plus vraie du métier.
+   Elle se pose dans le coin de la démo et change au rythme du défilé — une
+   étiquette, pas une commande : c'est le défilé qui raconte, et on n'a rien
+   à piloter pour le comprendre. */
+.mo-version { position: absolute; z-index: 3;
+  inset-block-start: 0.4rem; inset-inline-start: 0.5rem;
+  background: var(--text-primary); color: var(--bg);
+  border-radius: var(--r-3); padding: 0.22em 0.5em;
+  font: 700 var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
+  animation: mo-version 0.35s var(--e-out) both; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+@keyframes mo-version {
+  from { opacity: 0; transform: translateY(-0.25rem); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Le crible : les dix-sept décisions de l'ancienne méthode, épinglées sur
+      le POURTOUR de la fiche. Elles étaient posées par-dessus son contenu :
+      une étiquette qui masque le texte qu'elle commente ne commente plus
+      rien (capture d'Auteur, 2 septembre). ── */
+.mo-crible { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.mo-crible i { position: absolute; transform: translate(-50%, -50%) rotate(-3deg);
+  background: var(--bg); color: var(--fam-ink); border: 1px solid var(--fam-bord);
+  border-radius: var(--r-3); padding: 0.2em 0.45em; white-space: nowrap;
+  font: 700 var(--font-size-label)/1 var(--font-mono); font-style: normal;
+  animation: mo-tombe 0.28s var(--e-out) both; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-crible i em { font-style: normal; font-weight: 500; margin-inline-start: 0.18em; }
+.mo-crible i:nth-child(even) { transform: translate(-50%, -50%) rotate(4deg); }
+@keyframes mo-tombe { from { opacity: 0; scale: 0.4; } to { opacity: 1; scale: 1; } }
+
+/* ── La liste : chaque décision DITE, à côté de la fiche. L'étiquette dit
+      OÙ, la liste dit QUOI. Deux colonnes en FLOT, pas en grille : une
+      ligne qui se plie en deux creusait un trou en face. ── */
+.mo-liste { list-style: none; margin: 0; padding: 0; padding-block-start: 0;
+  columns: 2; column-gap: var(--gap-2-inline); }
+.mo-liste li { display: flex; align-items: baseline; gap: var(--gap-4-inline);
+  break-inside: avoid; margin-block-end: var(--gap-4-block);
+  opacity: 0; transform: translateY(0.25rem);
+  transition: opacity 0.3s ease, transform 0.35s var(--e-out); } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-liste li.on { opacity: 1; transform: none; }
+/* Une valeur sans unité se lit comme un numéro de ticket (verdict d'Auteur).
+   Le nombre garde sa colonne alignée à droite, l'unité le suit d'un cran en
+   dessous — elle qualifie, elle ne compte pas. */
+ /* Les quatre couleurs de famille sont accordées au blanc, pas à la terre
+   du panneau : posées à même le fond coloré, le vert tombait à 2,5:1. Elles
+   reprennent donc la pastille des étiquettes de la fiche — même forme, même
+   encre, et chaque ligne de la liste ressemble enfin à l'étiquette qu'elle
+   raconte (verdict d'Auteur, 2 septembre : « attention au contraste »). */
+.mo-liste b { flex: none; display: flex; align-items: baseline; gap: 0.2em;
+  background: var(--bg); border-radius: var(--r-3); padding: 0.16em 0.4em;
+  font: 700 var(--font-size-label)/1.4 var(--font-mono);
+  font-variant-numeric: tabular-nums; color: var(--fam-ink); }
+.mo-liste b i { font-style: normal; }
+.mo-liste .mo-n { min-width: 2.2ch; text-align: right; }
+ /* L'unité se distingue par sa graisse, jamais par un voile : le vert à
+   62 % sur blanc ne se lit plus (2,5:1 mesuré). */
+.mo-liste .mo-u { font-weight: 500; }
+.mo-liste span { font-size: var(--font-size-label); line-height: 1.4; opacity: 0.86; }
+
+/* Les quatre familles. Les marges en rouge et les écarts en vert reprennent
+   la convention des inspecteurs, verrouillée le 24 août ; les coins et les
+   tailles prennent les deux familles sémantiques qui restent. L'encre est
+   toujours celle du fond clair (--on-X-subtle) : sur une pastille blanche,
+   le jaune de l'avertissement en encre pleine ne se lirait pas. */
+.f-marge { --fam-ink: var(--on-danger-subtle); --fam-bord: var(--danger); }
+.f-espace { --fam-ink: var(--on-success-subtle); --fam-bord: var(--success); }
+.f-coin { --fam-ink: var(--on-info-subtle); --fam-bord: var(--info); }
+.f-taille { --fam-ink: var(--on-warning-subtle); --fam-bord: var(--warning); }
+
+/* ── Les blocs d'infos : chacun relié par un trait à l'endroit qu'il nomme.
+      Le trait fait le coude quand deux blocs se marcheraient dessus — c'est
+      lui qui rattrape l'écart, jamais le bloc qui ment sur son ancre. ── */
+.mo-traits { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mo-trait polyline { fill: none; stroke: currentColor; stroke-width: 1; opacity: 0.5; }
+.mo-trait circle { fill: currentColor; }
+.mo-trait.deduit polyline { stroke-dasharray: 3 3; }
+
+/* Le conteneur des blocs couvre tout le panneau : il ne doit surtout pas
+   capter le pointeur, sinon il intercepte les molettes qui vivent en
+   dessous (verdict d'Auteur, 2 septembre). Seuls les blocs eux-mêmes le
+   reprennent, pour qu'on puisse sélectionner leur texte. */
+ /* Les blocs et leurs traits sont posés PAR-DESSUS le panneau sans être
+   dedans : ils héritaient donc de l'encre de la page — un titre sombre sur
+   la terre colorée, 2,3:1 mesuré. Ils prennent l'encre du panneau tant
+   qu'ils y sont ; sous 62rem ils passent sur la page et la rendent. */
+.mo-notes, .mo-traits { color: var(--on-primary); }
+.mo-notes { position: absolute; inset-block: 0; inset-inline-end: 0;
+  pointer-events: none; }
+.mo-note { pointer-events: auto; }
+/* Le bloc est posé PAR SON CENTRE (translateY -50 %), et son animation
+   d'entrée doit le respecter : avec la keyframe commune, qui finit sur
+   « transform: none », l'animation écrasait le centrage et le bloc tombait
+   une demi-hauteur trop bas — une règle d'animation bat toujours une
+   déclaration ordinaire (verdict d'Auteur, 2 septembre : « toujours pas »). */
+.mo-note { position: absolute; transform: translateY(-50%);
+  width: min(20rem, 34vw); display: grid; gap: var(--gap-4-block);
+  animation: mo-note 0.42s var(--e-out) both; /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+  transition: top 420ms var(--e-out); } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+@keyframes mo-note {
+  from { opacity: 0; transform: translateY(calc(-50% + 0.75rem)); }
+  to { opacity: 1; transform: translateY(-50%); }
+}
+.mo-note b { font-size: var(--font-size-small); font-weight: 700; }
+.mo-note span { font-size: var(--font-size-small); line-height: 1.5; opacity: 0.86; }
+
+
+.mo-legende { margin: 0; align-self: flex-start;
+  font: 600 var(--font-size-label)/1.4 var(--font-mono); opacity: 0.85; }
+
+/* ── Le lecteur ── */
+.mo-player { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.mo-rond { display: grid; place-items: center; flex: none; cursor: pointer; position: relative;
+  width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill);
+  border: 1px solid var(--border); background: var(--bg); color: var(--text-primary);
+  font: 600 var(--font-size-small)/1 inherit; }
+.mo-rond:hover:not(:disabled) { background: var(--surface-hover); }
+.mo-rond:disabled { opacity: 0.35; cursor: default; }
+.mo-lect { border-color: var(--text-primary); }
+.mo-lect .ic { width: 1rem; height: 1rem; fill: var(--text-primary);
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.mo-lect .ic-pause, .mo-lect .ic-re { display: none; }
+.mo-lect.en-cours .ic-play { display: none; }
+.mo-lect.en-cours .ic-pause { display: block; }
+.mo-lect.fin .ic-play, .mo-lect.fin .ic-pause { display: none; }
+.mo-lect.fin .ic-re { display: block; }
+.mo-cpt { color: var(--text-tertiary); font-weight: 600; font-variant-numeric: tabular-nums; } /* tertiaire : le rang du slide, une méta du lecteur */
+.mo-temps { flex: 1; max-width: 9rem; height: 2px; border-radius: var(--r-pill);
+  background: var(--border); overflow: hidden; }
+.mo-temps i { display: block; height: 100%; background: var(--text-primary); transform-origin: 0 50%; }
+
+/* Sous 62rem, les blocs ne tiennent plus à côté de la fiche : ils passent
+   dessous, en liste, et les traits disparaissent — un trait qui ne relie
+   plus rien ment. */
+/* Sous 62rem, la mise en page décalée n'a plus la place de se lire : tout
+   s'empile dans l'ordre du récit — la fiche, puis les mots — et le panneau
+   redevient un simple banc autour d'eux. */
+@media (max-width: 62rem) {
+  .mo-scena { display: grid; grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto; height: auto; }
+  .mo-chap { grid-column: 1; grid-row: 1; }
+  .mo-compteur { grid-column: 1; grid-row: 2; justify-self: start;
+    text-align: left; justify-items: start; padding: 0; background: transparent; }
+  .mo-scene { grid-column: 1; grid-row: 3; margin-block: 0; display: block; }
+  .mo-cadre { grid-column: 1; grid-row: 4; margin-block: 0;
+    padding: var(--doc-scene-block) var(--doc-scene-inline); }
+  .mo-player { grid-column: 1; grid-row: 5; }
+  .mo-porte, .mo-commandes { width: 100%; }
+  .mo-liste { columns: 1; }
+  .mo-traits { display: none; }
+  .mo-notes { position: static; display: grid; gap: var(--gap-2-block);
+    color: var(--text-primary); }
+  .mo-note { position: static !important; transform: none; width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mo-fiche, .mo-version, .mo-fiche .tranche, .mo-fiche .tranche *, .mo-note, .mo-slide-texte,
+  .mo-crible i, .mo-entete, .mo-colonne, .mo-pied, .mo-humeur, .mo-liste li { transition: none; animation: none; }
+}
+
+/* ── La dernière slide : la main sur les quatre molettes ──────────────
+   La fiche à gauche, les quatre nombres à droite. C'est la seule slide où
+   rien ne se joue tout seul : la lecture s'arrête en y arrivant. */
+.mo-commandes { display: grid; gap: var(--gap-3-block); justify-items: start; }
+.mo-commandes .mo-legende { opacity: 0.85; }
+
+/* Une molette est un contrôle, pas une preuve — et un contrôle a une
+   mesure. Étalée sur toute la colonne, elle prenait la place d'une scène
+   sans rien montrer de plus : la course d'un curseur n'a pas besoin d'être
+   longue pour être précise (verdict d'Auteur, 2 septembre). */
+.mo-molette { width: 100%;
+  max-width: 23.75rem; /* hors chaîne : la course d'un curseur, 380 px */
+  display: grid; grid-template-columns: minmax(0, 1fr) 5ch;
+  align-items: center; gap: var(--gap-4-block) var(--gap-3-inline); }
+.mo-molette label { grid-column: 1 / -1;
+  font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; opacity: 0.85; }
+.mo-molette input[type=range] { width: 100%; accent-color: var(--accent); }
+.mo-molette output { font: 600 var(--font-size-small)/1 var(--font-mono);
+  font-variant-numeric: tabular-nums; }
+
+
+/* ── Les intentions : la dernière marche. Le moteur range des jeux de
+      nombres qui vont ensemble et qui portent un nom de métier ; en
+      choisir un, c'est prendre UNE décision et en recevoir trois. Ce sont
+      des choix, donc des contrôles — même traitement que les commandes du
+      kit, avec l'encre du panneau puisqu'ils y vivent. ── */
+.mo-intentions { list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: var(--gap-4-block) var(--gap-4-inline); }
+.mo-intentions button {
+  min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: var(--r-ctl); background: transparent; color: inherit;
+  cursor: pointer; white-space: nowrap;
+  font: 600 var(--font-size-small)/1 inherit;
+  transition: background-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); } /* survol */
+.mo-intentions button:hover:not(.on) { background: color-mix(in srgb, currentColor 12%, transparent); }
+.mo-intentions button.on { background: var(--text-primary); border-color: var(--text-primary);
+  color: var(--bg); }
+
+/* ── Les arcs des coins ──────────────────────────────────────────────
+   À l'étape de la racine, la seule chose qui change est un rayon de seize
+   pixels sur une carte de quatre cents : sans repère, personne ne le voit
+   (verdict d'Auteur, 2 septembre). Chaque coin trace donc SON arc, à partir
+   du jeton qui le règle — rien n'est mesuré, donc rien ne peut décrocher
+   quand on tourne la molette. Et la cote porte son calcul, pas un nombre
+   nu : 16 px, puis ÷ 2 = 8, puis ÷ 2 = 4. Les trois arrivent l'un après
+   l'autre, dans l'ordre de la division. */
+.mo-fiche.coins .tranche, .mo-fiche.coins .tr-carte, .mo-fiche.coins .tr-sub:first-of-type {
+  position: relative;
+}
+.mo-fiche.coins .tranche::before, .mo-fiche.coins .tr-carte::before,
+.mo-fiche.coins .tr-sub:first-of-type::before,
+.mo-fiche.coins .tranche::after, .mo-fiche.coins .tr-carte::after,
+.mo-fiche.coins .tr-sub:first-of-type::after {
+  content: ""; position: absolute; z-index: 4; pointer-events: none;
+  animation: mo-coin 0.45s var(--e-out) both; /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+}
+/* l'arc : un carré du rayon, arrondi sur le seul angle qu'il souligne */
+.mo-fiche.coins .tranche::before, .mo-fiche.coins .tr-carte::before,
+.mo-fiche.coins .tr-sub:first-of-type::before {
+  inset-block-start: 0; inset-inline-start: 0;
+  border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+  /* l'arc bouge au même rythme que le coin qu'il souligne, sinon il flotte
+     à côté pendant qu'on tourne la molette */
+  transition: width 620ms var(--e-out), /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+              height 620ms var(--e-out),
+              border-radius 620ms var(--e-out);
+}
+.mo-fiche.coins .tranche::after, .mo-fiche.coins .tr-carte::after,
+.mo-fiche.coins .tr-sub:first-of-type::after {
+  transition: inset-inline-start 620ms var(--e-out); /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+}
+.mo-fiche.coins .tranche::before {
+  width: var(--r-1); height: var(--r-1); border-top-left-radius: var(--r-1); }
+.mo-fiche.coins .tr-carte::before {
+  width: var(--r-2); height: var(--r-2); border-top-left-radius: var(--r-2); }
+.mo-fiche.coins .tr-sub:first-of-type::before {
+  width: var(--r-3); height: var(--r-3); border-top-left-radius: var(--r-3); }
+
+/* la cote : elle sort du même jeton, donc elle ne peut pas mentir */
+.mo-fiche.coins .tranche::after, .mo-fiche.coins .tr-carte::after,
+.mo-fiche.coins .tr-sub:first-of-type::after {
+  inset-block-start: -0.15em; white-space: nowrap;
+  font: 700 var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
+}
+.mo-fiche.coins .tranche::after {
+  content: var(--coin-1); inset-inline-start: calc(var(--r-1) + 0.4rem); }
+.mo-fiche.coins .tr-carte::after {
+  content: var(--coin-2); inset-inline-start: calc(var(--r-2) + 0.4rem); }
+.mo-fiche.coins .tr-sub:first-of-type::after {
+  content: var(--coin-3); inset-inline-start: calc(var(--r-3) + 0.4rem); }
+
+.mo-fiche.coins .tranche::before, .mo-fiche.coins .tranche::after { animation-delay: 700ms; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-fiche.coins .tr-carte::before, .mo-fiche.coins .tr-carte::after { animation-delay: 840ms; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+.mo-fiche.coins .tr-sub:first-of-type::before,
+.mo-fiche.coins .tr-sub:first-of-type::after { animation-delay: 980ms; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
+
+@keyframes mo-coin {
+  from { opacity: 0; transform: translate(0.4rem, 0.4rem); }
+  to { opacity: 1; transform: none; }
+}
+
+/* La question qui cadre les intentions : ce ne sont pas des réglages, ce
+   sont des positionnements de produit. */
+.mo-demande { margin: 0; font-size: var(--font-size-small); font-weight: 700; }
+
+/* ═══ LA HIÉRARCHIE — la scène de la section 04 (2 septembre 2026) ═══
+   Elle remplace un couple titre + texte, qui ne montrait qu'un seul cran :
+   à ce compte-là le curseur « ne fait que grossir le texte ». Ce nombre ne
+   règle pas une taille, il règle un CONTRASTE — l'écart entre tous les
+   niveaux à la fois — et il faut une hiérarchie entière pour le voir.
+   Chaque cote est collée à SA ligne, avec le calcul qui la produit : en
+   colonne à part, elle ne se rattachait à rien. Le corps est marqué comme
+   fixe : c'est le point autour duquel tout tourne. */
+.hier { width: 100%; display: grid; gap: var(--gap-1-block); }
+.hier-feuille { background: var(--bg); color: var(--text-primary);
+  border-radius: var(--r-2); padding: var(--pad-1-block) var(--pad-1-inline);
+  display: grid; gap: var(--gap-2-block); }
+.hier-ligne { display: flex; align-items: center; gap: var(--gap-3-inline); }
+.hier-ligne p { margin: 0; flex: 1; min-width: 0; line-height: var(--leading-heading); }
+
+/* La mesure : la taille d'un texte EST une hauteur, alors on la mesure sur
+   lui — deux repères et un trait, le geste que le kit fait déjà pour les
+   espaces. Sa hauteur vaut exactement la taille du texte d'en face. */
+.hier-mesure { flex: none; width: 0.5rem; align-self: center;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background: linear-gradient(var(--border-strong), var(--border-strong)) 50% 0 / 1px 100% no-repeat; }
+.hier-ligne.fixe .hier-mesure { border-color: var(--success);
+  background-image: linear-gradient(var(--success), var(--success)); }
+.hier-titre { font-weight: 700; letter-spacing: -0.02em; }
+.hier-corps { font-weight: 400; line-height: 1.6; color: var(--text-secondary); }
+/* Aucune transition sur la taille : sous le doigt, un texte qui met un
+   tiers de seconde à rejoindre le curseur donne l'impression que la mise en
+   page se réajuste APRÈS lui (verdict d'Auteur, 2 septembre). */
+
+.hier-cote { flex: none; width: 9rem; display: grid; gap: 0.15em;
+  text-align: right; justify-items: end; align-self: center; }
+.hier-cote b { font: 700 var(--font-size-label)/1.3 var(--font-mono);
+  font-variant-numeric: tabular-nums; }
+.hier-cote em { font: 600 var(--font-size-label)/1.3 var(--font-mono); font-style: normal;
+  color: var(--text-tertiary); } /* tertiaire : le nom du cran, à côté de sa cote */
+.hier-cote i { font-style: normal; font-size: var(--font-size-label); line-height: 1.3;
+  color: var(--text-secondary); }
+/* Le corps est le point fixe : sa cote le dit. */
+.hier-ligne.fixe .hier-cote b { color: var(--success); }
+
+/* Le verdict est LU sur les nombres rendus, jamais décrété. */
+.hier-verdict { margin: 0; font-size: var(--font-size-small); line-height: 1.5; }
+.hier-verdict b { font-weight: 700; }
+.hier-verdict.ko b { color: var(--danger); }
+.hier-verdict.ok b { color: var(--success); }
+.hier-verdict span { color: var(--text-secondary); }
+
+@media (max-width: 62rem) {
+  .hier-ligne { flex-wrap: wrap; }
+  .hier-cote { width: auto; grid-auto-flow: column; justify-content: start;
+    gap: var(--gap-4-inline); text-align: left; justify-items: start; order: 2; }
+  .hier-ligne p { flex: 1 0 100%; }
+}
