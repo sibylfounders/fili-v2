@@ -31,10 +31,10 @@ const RACINE = path.resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const CARTE = path.join(RACINE, 'docs', 'system-map.md')
 const COURSE = path.join(RACINE, 'kit', 'epreuves', 'derniere-course.json')
 
-/* Les cinq pages qui ont une épreuve (Composition depuis le 7 septembre
-   2026). `/` n'en a pas : cette pièce ne parle jamais d'elle — son cas est
+/* Les six pages qui ont une épreuve (Composition et Mouvement depuis le
+   7 septembre 2026). `/` n'en a pas : cette pièce ne parle jamais d'elle — son cas est
    écrit sur la carte à la main, et c'est une dette dite, pas un vert qui ment. */
-export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition']
+export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition', 'mouvement']
 
 /* Le socle : ce qui, en bougeant, fait bouger toutes les pages à la fois. */
 const SOCLE = [

@@ -89,7 +89,7 @@ const bulletin = [
   !construction.ok
     ? '## 🔴 Le site n\'a pas pu être construit — rien n\'a été mesuré cette nuit.\n\nCe n\'est pas un verdict sur les pages : l\'état ci-dessous reste celui de la dernière course qui a abouti. À regarder quand même, une panne qui dure aveugle le banc.'
     : rouges.length === 0
-      ? `## 🟢 Les ${PAGES.length === 5 ? 'cinq' : PAGES.length} pages sont vertes.`
+      ? `## 🟢 Les ${({ 5: 'cinq', 6: 'six' })[PAGES.length] ?? PAGES.length} pages sont vertes.`
       : `## 🔴 ${rouges.length} page(s) refusée(s) : ${rouges.map((p) => '`/' + p + '`').join(', ')}`,
   '',
   `Le moteur : ${moteur.ok ? '🟢 vert' : '🔴 rouge — c\'est lui qu\'il faut regarder d\'abord'}.`,
