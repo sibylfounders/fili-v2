@@ -130,11 +130,13 @@ deux boutons sous l'en-tête. La page en cours n'est plus cliquable et la
 navigation passe par le routeur. Restent à nommer : les paquets, le contenu de
 Contact et Téléchargements.
 
-**Le calage vertical** (4 septembre) — 🟡 posé sur `/typo` : T12, une bande
-mesurée sur la font livrée, trois règles au répertoire. Les cinq règles du
-calage attendent le verdict règle par règle ; le kit n'est pas rogné, seule la
-carte de la démo l'est. La question S3 (la valeur vue) est remontée, non
-rouverte.
+**Le calage vertical** (4 septembre, verdict du 7 délégué à Claude) — 🟡
+acté : les cinq règles sont actées (le calage se déclare ; les deux bords
+nommés ; l'ancienne écriture refusée ; on rogne par rôle ; la pile de secours
+calée), aucune verrouillée — chacune passera 🟢 avec son test au Gardien. La
+règle 4 n'est pas engagée : appliquer le rognage au kit est un chantier à part
+(quels rôles, puis la relecture des espaces), le kit reste non rogné, seule la
+carte de la démo l'est. S3 ne se rouvre que dans ce chantier-là.
 
 **Le mouvement du kit** (4 septembre, décisions d'Auteur du 3) — 🟡 posé, à
 valider à l'œil. Le moteur porte désormais quatre durées avec leur emploi

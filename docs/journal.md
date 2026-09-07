@@ -5672,3 +5672,37 @@ le rail ; le moteur versé dans `/rythme` ; les trois pages à la voix et aux
 étages ; le calage ; le mouvement ; le banc remis au niveau ; le journal et la
 carte. Les deux copies de sauvegarde du 2 septembre (`globals.css.avant`,
 `rail.tsx.avant`) ne sont pas versées : elles rejoignent le dossier à jeter.
+
+## 7 septembre 2026 (2) — le calage : verdict règle par règle, délégué
+
+**« Je te laisse trancher. »** Les cinq règles du calage attendaient un verdict
+depuis le 3 ; l'Auteur délègue. Voici ce qui est tranché, et pourquoi.
+
+**Les règles 1, 2, 3 et 5 sont actées.** Le calage se déclare, il ne se tape
+pas ; le rognage nomme ses deux bords ; l'ancienne écriture est refusée
+(Figma la produit encore, le copier-coller est le chemin de la faute) ; la pile
+de secours est calée sur la font livrée. Quatre règles de code, chacune
+vérifiable par le Gardien le jour où son test existe. Elles entrent au corpus
+🟡, actées — pas verrouillées : le garde-fou 2 réserve le vert au crash-test,
+et aucune n'a encore le sien.
+
+**La règle 4 est actée comme règle, pas engagée comme chantier.** « On rogne
+par rôle, jamais par composant » est juste, et c'est elle qui donne son sens
+aux quatre autres : tant que le demi-interligne traîne autour de chaque texte,
+un espace de 24 n'en vaut jamais 24 à l'œil. Mais l'appliquer, c'est décider au
+registre quels rôles on rogne, puis relire tous les espaces posés à l'œil
+autour des textes — la facture dite le 3 septembre. Ça ne se fait pas en
+passant. Le kit reste non rogné, seule la carte de la démo l'est, et
+l'application ouvre son propre thread.
+
+**S3 n'est pas rouvert.** Le trou connu de S3 — la valeur vérifiée n'est pas la
+valeur vue — ne disparaît que le jour où le rognage est appliqué au kit. C'est
+le même chantier que la règle 4. Rouvrir un verrou avant d'avoir de quoi le
+refermer serait rouvrir pour rien : S3 se rouvre dans ce thread-là, et pas
+avant.
+
+**Ce que ça change sur la page.** Rien. `/typo` porte T12 et sa bande ; les
+règles 2, 3 et 5 sont déjà au répertoire des règles qu'on ne peut pas montrer ;
+la règle 4 y est aussi, avec « nulle part » pour lieu de vérification tant que
+le chantier n'est pas ouvert. La page reste verrouillée telle qu'elle a été
+mesurée ce matin.
