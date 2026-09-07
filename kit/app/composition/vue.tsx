@@ -3,6 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Sommaire } from "../rail";
 import { PanneauCode } from "../apercu";
 import { useAdaptation } from "../adaptation";
+import { Bandes, Bande, ListeRegles } from "../etages";
+import type { LigneListe } from "../etages";
+import type { ReactNode } from "react";
 
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE COMPOSITION — gabarit « documentaire nu ».
@@ -19,8 +22,13 @@ import { useAdaptation } from "../adaptation";
      parcours de l'œil, et le tracé le rejoue en boucle.
    · MATIÈRE — une page de magazine : l'encre est couverte de taches
      mesurées, et l'espace blanc apparaît pour ce qu'il est.
-   Puis le répertoire : les quinze lois du fonds, où vit chacune, qui la
-   juge — et ce que la machine ne sait pas juger, dit et non tu.
+   Puis les deux étages du gabarit commun (versés le 7 septembre 2026
+   depuis la page d'essai, jugée sur pièce) : en bandes, quatre lois qui
+   se VOIENT — le bon et le mauvais côte à côte, le même objet deux fois,
+   une seule chose qui change ; en liste, celles qu'aucune image ne
+   prouve, avec la page qui les tient. Les quinze lois du fonds sont
+   toutes là : cinq sur l'écran de la preuve 01, une par preuve 02 et 03,
+   quatre en bandes, quatre en liste — la table qui les répétait a disparu.
    Enfin l'adaptation : le même écran, écrit dans votre stack — la
    composition n'a pas de jeton à elle, elle dépense ceux des autres
    familles, dans un ordre.
@@ -30,8 +38,9 @@ const SOMMAIRE: Sommaire = [
   ["casse", "01", "L'écran qu'on casse"],
   ["parcours", "02", "Le chemin de l'œil"],
   ["blanc", "03", "L'espace blanc"],
-  ["fonds", "04", "Le fonds complet"],
-  ["adaptation", "05", "L'adaptation"],
+  ["bandes", "04", "Les règles qu'on peut voir"],
+  ["liste", "05", "Les règles qu'on ne peut pas montrer"],
+  ["adaptation", "06", "L'adaptation"],
 ];
 
 const px = (n: number) => `${Math.round(n)}px`;
@@ -442,27 +451,79 @@ function Magazine() {
   );
 }
 
-/* ══ Le fonds : quinze lois, où vit chacune, qui la juge ══════════════ */
-const FONDS: [string, string, string, string][] = [
-  /* Alinéa entré le 31 août 2026 : la proximité ne fait pas que lier, elle
-     efface — un élément posé contre ses sosies cesse d'être reconnu.
-     Material 3 le dit du bouton placé « à côté d'éléments visuellement
-     similaires ». Ce n'est pas une loi de plus : c'est la même, poussée. */
-  ["Proximité", "ce qui est proche est perçu comme lié — et posé contre des éléments qui lui ressemblent, un élément cesse d'être reconnu pour ce qu'il est", "Rythme", ""],
-  ["Similarité", "un costume visuel = un rôle : deux rôles sous le même costume mentent au lecteur", "ici", "machine"],
-  ["Région commune", "une surface se mérite : elle n'apparaît que là où le blanc ne suffit pas", "ici", "machine"],
-  ["Connexion uniforme", "un trait qui relie unit plus fort que tout", "en référence", ""],
-  ["Prägnanz", "l'œil cherche la forme la plus simple : le simple gagne", "principe de tête", ""],
-  ["Un dominant par vue", "une seule chose se lit en premier ; deux dominants, c'est aucun", "ici", "machine"],
-  ["Hiérarchie par combinaison", "corps, graisse, couleur, position — jamais la taille seule", "Typographie", ""],
-  ["Sens de lecture", "l'œil balaie en F ou en Z ; l'essentiel vit sur ce chemin", "ici", "œil"],
-  ["La rupture se dépense", "une seule famille de rupture par vue", "ici", "machine"],
-  ["Le blanc d'abord", "on part de trop d'espace blanc, puis on retire — jamais l'inverse", "ici", "œil"],
-  ["Peu d'axes, tenus", "tout élément partage un axe de départ ; un axe par élément, c'est du bruit", "ici", "machine"],
-  ["Grille", "colonnes et gouttières sortent de la même base que l'échelle", "à venir", ""],
-  ["Mesure de lecture", "sept à dix mots par ligne", "Typographie", ""],
-  ["Dedans plus serré que dehors", "l'interne ne dépasse jamais l'externe, sur l'échelle", "Rythme", ""],
-  ["Rôles d'espace nommés", "retrait, empilement, alignement, gouttière", "ici", "machine"],
+/* ══ 04 · Les règles qu'on peut voir — la paire ══════════════════════
+   À gauche ce qui tient, à droite ce qui casse, en même temps : l'œil
+   compare, il n'a pas à se souvenir (verdict d'Auteur, 7 septembre). Le
+   verdict est en TÊTE de colonne — c'est lui qui fait lire deux colonnes
+   et non quatre objets. Le signe (✓ / ✗) est celui de la planche des
+   Arrondis : même langue. ══ */
+function Paire({ bon, mauvais, ditBon, ditMauvais }: {
+  bon: ReactNode; mauvais: ReactNode; ditBon: string; ditMauvais: string;
+}) {
+  return (
+    <div className="cb-paire">
+      <div className="cb-cote">
+        <p className="cb-verdict"><span className="verdict bon" aria-hidden="true">✓</span>{ditBon}</p>
+        <div className="cb-objet">{bon}</div>
+      </div>
+      <div className="cb-cote" data-intent="statement">
+        <p className="cb-verdict"><span className="verdict ko" aria-hidden="true">✗</span>{ditMauvais}</p>
+        <div className="cb-objet">{mauvais}</div>
+      </div>
+    </div>
+  );
+}
+
+/* Un emplacement d'image, vide, avec son icône — la matière de la paire
+   des photos. L'icône est décorative : la légende dit tout. */
+const Photo = () => (
+  <div className="cb-photo" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+      strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="15.5" cy="9.5" r="1.5" fill="currentColor" stroke="none" />
+      <path d="M3 17l5.5-5.5 4 4 2.5-2.5L21 19" />
+    </svg>
+  </div>
+);
+
+const Photos = ({ coupees }: { coupees?: boolean }) => (
+  <div className={`cb-photos${coupees ? " coupees" : ""}`}>
+    <Photo /><p className="cb-legende">Le port au matin</p>
+    <Photo /><p className="cb-legende">Le quai à midi</p>
+  </div>
+);
+
+const Carte = ({ lourde }: { lourde?: boolean }) => (
+  <div className={`carte cb-carte${lourde ? " lourde" : ""}`}>
+    <p className="cb-carte-titre">Trois dossiers en attente</p>
+    <p className="cb-carte-texte">Deux depuis hier, un depuis ce matin. Aucun n&apos;est en retard.</p>
+  </div>
+);
+
+const Colonne = ({ defaite }: { defaite?: boolean }) => (
+  <div className={`cb-colonne${defaite ? " defaite" : ""}`}>
+    <p className="cb-bloc titre">Avant de partir</p>
+    <p className="cb-bloc texte">Le train part à l&apos;heure, le quai change parfois.</p>
+    <div className="cb-bloc pave"><i /><i /><i /></div>
+  </div>
+);
+
+/* ══ 05 · Les règles qu'on ne peut pas montrer — elles vivent chez les
+   autres familles, et on dit où. ══ */
+const LISTE: LigneListe[] = [
+  { nom: "Hiérarchie par combinaison", ton: "code",
+    dit: "un titre se reconnaît à plusieurs signes — corps, graisse, couleur, place — jamais à sa taille seule",
+    ou: <>La typographie — l&apos;échelle et ses graisses</> },
+  { nom: "Mesure de lecture", ton: "rendu",
+    dit: "sept à dix mots par ligne ; au-delà, l'œil perd le début de la ligne suivante",
+    ou: <>La typographie — mesurée à l&apos;écran</> },
+  { nom: "Dedans plus serré que dehors", ton: "code",
+    dit: "l'espace à l'intérieur d'un groupe est toujours plus petit que celui qui le sépare du voisin",
+    ou: <>Le rythme — deux crans de la même chaîne</> },
+  { nom: "Rôles d'espace nommés", ton: "code",
+    dit: "retrait, empilement, alignement, gouttière : chaque espace a un nom, aucun n'est réglé à l'œil",
+    ou: <>Le rythme — la chaîne</> },
 ];
 
 /* ── 05 · L'adaptation — le même système, dans votre stack. L'objet est
@@ -830,11 +891,14 @@ export default function Vue() {
                   </div>
                 </div>
               </div>
-              <p className="gd-legende">à gauche, l&apos;œil descend la première colonne et balaie
-              de moins en moins loin — les fins de lignes sont les moins lues ; à droite, il fait
-              deux allers-retours et s&apos;arrête sur le dernier coin : c&apos;est là que se met
-              l&apos;action, jamais au milieu.</p>
+              {/* une légende tient en une ligne (verdict d'Auteur, 2 septembre) : le détail est au dépliant */}
+              <p className="gd-legende">à gauche, l&apos;œil descend et balaie de moins en moins
+              loin ; à droite, deux allers-retours, et l&apos;action au dernier coin</p>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p><b>Ce que les deux tracés disent</b> — sur le journal, l&apos;œil descend la
+                première colonne et balaie de moins en moins loin : les fins de lignes sont les
+                moins lues. Sur l&apos;affiche, il fait deux allers-retours et s&apos;arrête sur le
+                dernier coin : c&apos;est là que se met l&apos;action, jamais au milieu.</p>
                 <p><b>L&apos;essentiel sur le chemin de l&apos;œil</b> — l&apos;essentiel vit sur
                 le parcours ; les réglages et les métadonnées vivent en dehors. Cette règle se
                 juge à la relecture : aucune mesure ne dit où est l&apos;essentiel.</p>
@@ -867,39 +931,72 @@ export default function Vue() {
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="fonds">
+          <section className="gdoc-sec pose" id="bandes">
             <div className="gdoc-sec-tete">
-              <p className="kicker">04 · Le fonds complet</p>
-              <h2>Quinze lois, et il n&apos;y en a pas d&apos;autres</h2>
-              <p className="sourd">En croisant la psychologie de la perception, les référentiels
-              du métier et la tradition éditoriale, le fonds de la composition tient en quinze
-              lois. Sept vivent déjà dans nos autres familles — les y répéter serait fabriquer
-              deux sources pour une même chose ; huit vivent ici.</p>
+              <p className="kicker">04 · Les règles qu&apos;on peut voir</p>
+              <h2>Le même objet, deux fois. Une seule chose change.</h2>
+              <p className="sourd">À gauche, ce qui tient. À droite, la même chose avec une faute.
+              Regardez avant de lire : si vous voyez laquelle, la page a fait son travail. Ces
+              fautes-là ne cassent rien — la page marche toujours, elle est juste un peu moins
+              claire, et personne ne sait dire pourquoi.</p>
             </div>
             <div className="gdoc-corps">
-              <div style={{ width: "100%", overflowX: "auto" }}>
-                <table className="tableau aere" style={{ width: "100%" }}>
-                  <thead><tr><th>loi</th><th>en une phrase</th><th>où elle vit</th><th>qui la juge</th></tr></thead>
-                  <tbody>
-                    {FONDS.map(([nom, phrase, ou, juge]) => (
-                      <tr key={nom}>
-                        <td style={{ whiteSpace: "nowrap" }}>{nom}</td>
-                        <td className="sourd">{phrase}</td>
-                        <td><span className={`badge ${ou === "ici" ? "bon" : ""}`}>{ou}</span></td>
-                        <td>{juge
-                          ? <span className={`badge ${juge === "œil" ? "ko" : "bon"}`}>{juge === "œil" ? "l'œil" : "la machine"}</span>
-                          : <span className="sourd">—</span>}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="sourd" style={{ maxWidth: "var(--measure)" }}><b>Deux des huit se
-              jugent à l&apos;œil, et on ne fait pas semblant de les mesurer.</b> Aucune mesure ne
-              dit où est l&apos;essentiel d&apos;une page, ni si l&apos;air a été donné avant
-              d&apos;être repris. Un dispositif qui surestime ses garanties est le pire des
-              dispositifs : le contrôle dira « aucune des fautes nommées n&apos;est présente » —
-              jamais « c&apos;est bien composé ». Cette phrase-là reste à un lecteur.</p>
+              <Bandes>
+
+                <Bande nom="Un habit, un rôle" cote="ce qui agit et ce qui constate ne s'habillent pas pareil"
+                  dit="« Enregistré » constate, « Enregistrer » agit. Même habit pour les deux : le lecteur clique sur le mauvais, rien ne se passe, et il ne croit plus aux boutons de la page."
+                  regles={<p>Loi de similarité (Gestalt) : ce qui se ressemble est perçu comme de même
+                    nature. Sur une interface, l&apos;habit d&apos;un bouton est une promesse
+                    d&apos;usage — Material 3 le dit du bouton posé « à côté d&apos;éléments visuellement
+                    similaires ».</p>}>
+                  <Paire ditBon="un état, un bouton" ditMauvais="deux boutons — un seul agit"
+                    bon={<div className="cb-ligne"><span className="badge bon">Enregistré</span><span className="bouton on">Enregistrer</span></div>}
+                    mauvais={<div className="cb-ligne"><span className="bouton on">Enregistré</span><span className="bouton on">Enregistrer</span></div>} />
+                </Bande>
+
+                <Bande nom="Le trait relie plus fort que l'espace" cote="un filet mal posé change une légende de camp"
+                  dit="Une légende tient à sa photo par l'espace : un peu d'air dessous, davantage avant la suivante. Posez un filet entre les deux, et l'œil suit le trait — la légende part avec la photo d'après."
+                  regles={<p>Connexion uniforme (Palmer &amp; Rock, 1994) : un trait qui relie deux
+                    éléments l&apos;emporte sur la proximité et sur la similarité. Un séparateur
+                    n&apos;est jamais décoratif — il déplace un groupe.</p>}>
+                  <Paire ditBon="la légende est sous sa photo" ditMauvais="la légende a rejoint la photo d'après"
+                    bon={<Photos />} mauvais={<Photos coupees />} />
+                </Bande>
+
+                <Bande nom="Le simple gagne" cote="une surface se mérite"
+                  dit="Une carte, c'est un fond et un peu d'espace. Ajoutez un cadre appuyé « pour faire fini » : le texte n'a pas changé, mais l'œil regarde d'abord la boîte, et lit après."
+                  regles={<p>Prägnanz (Gestalt) : l&apos;œil retient la forme la plus simple qu&apos;on
+                    lui donne. Wathan &amp; Schoger, <i>Refactoring UI</i> : les bordures sont le
+                    dernier recours pour séparer, après l&apos;espace et le fond.</p>}>
+                  <Paire ditBon="on lit le texte" ditMauvais="on regarde la boîte"
+                    bon={<Carte />} mauvais={<Carte lourde />} />
+                </Bande>
+
+                <Bande nom="Un bord commun" cote="tout part de la même verticale"
+                  dit="Un titre, un texte, un tableau : trois choses, un seul bord. Que chacune parte d'un peu ailleurs et la colonne n'existe plus — aucun bloc ne paraît fautif, mais la page n'a plus de bord."
+                  regles={<p>La grille (Müller-Brockmann, <i>Grid Systems</i>) : colonnes et
+                    gouttières sortent de la même base que l&apos;échelle ; un élément qui ne part
+                    pas d&apos;un axe existant en crée un, et chaque axe de plus est du bruit.</p>}>
+                  <Paire ditBon="trois blocs, un bord" ditMauvais="trois blocs, trois bords"
+                    bon={<Colonne />} mauvais={<Colonne defaite />} />
+                </Bande>
+
+              </Bandes>
+            </div>
+          </section>
+
+          <section className="gdoc-sec pose" id="liste">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">05 · Les règles qu&apos;on ne peut pas montrer</p>
+              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
+              <p className="sourd">La composition n&apos;a pas de matière à elle : elle dépense
+              celle des autres familles. Ces lois-là vivent donc chez elles. Et deux lois de cette
+              page se jugent à l&apos;œil, sans faire semblant de les mesurer : le chemin de
+              l&apos;œil et le blanc donné avant d&apos;être repris. Le contrôle dira « aucune des
+              fautes nommées n&apos;est présente » — jamais « c&apos;est bien composé ».</p>
+            </div>
+            <div className="gdoc-corps">
+              <ListeRegles lignes={LISTE} />
               <details className="prov"><summary>Les lois comportementales, et pourquoi elles ne sont pas ici</summary><div>
                 <p>Hick, Fitts, Miller — le temps de décision, la difficulté d&apos;atteindre une
                 cible, la charge de mémoire — gouvernent l&apos;<b>interaction</b>, pas la
@@ -910,10 +1007,10 @@ export default function Vue() {
             </div>
           </section>
 
-          {/* ══════════ 05 · l'adaptation ══════════ */}
+          {/* ══════════ 06 · l'adaptation ══════════ */}
           <section className="gdoc-sec pose" id="adaptation">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · L&apos;adaptation</p>
+              <p className="kicker">06 · L&apos;adaptation</p>
               <h2>Le même système, dans votre stack</h2>
               <p className="sourd">Un système normatif enfermé dans un framework n&apos;est
               qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton — et la
