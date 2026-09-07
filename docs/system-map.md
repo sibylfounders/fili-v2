@@ -110,6 +110,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | `/couleur` · Couleur | 🟡 | Dix-sept règles, la palette, le nuancier en six lignes signées, la situation, le moteur, cinq bandes (dont « teinter ne coûte rien ») — passée à la voix et aux quatre étages le 2 septembre | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : cinq épreuves réécrites (un seul panneau mesuré dans les deux thèmes, la casse de la teinte entre à l'épreuve), une faute corrigée (la marque du panneau de code écrite à la main, lue au moteur), le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré — et, depuis le 7 septembre, les deux étages du bas : quatre paires (le bon et le mauvais côte à côte, le même objet deux fois, une seule chose change — un habit, un trait, un cadre, un bord) et quatre lois en liste ; la table des quinze lois a disparu, les quinze sont toutes là | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Verrouillée le 7 septembre : dix épreuves écrites au niveau des quatre autres pages, le banc passé vert (course complète), la dette des treize valeurs fermée — quatre sur la chaîne, neuf déclarées réductions de l'objet imité.** Réserve d'Auteur consignée : les textes des paires ne le convainquent pas encore. |
 | `/arrondis` · Arrondis | 🟡 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; six pièges révélés par leur curseur (2 septembre) — racine 16, bouton = coin de la ligne ; le répertoire des intentions a quitté la page | **Rabattue par le banc : passée au vert le 7 septembre, retouchée depuis, le 7 septembre.** **Reverrouillée le 7 septembre : deux épreuves réécrites sur les pièges, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, neuf épreuves (`#129`) ; le bouton en pilule n'est plus un recalé depuis le 31 août — l'épreuve comptait encore deux recalés. Remise au niveau le 1er septembre : elle mesure désormais que les deux boutons de la paire sont le même objet à un fond près. |
+| `/mouvement` · Mouvement | 🟢 | Fondation depuis le 7 septembre (sous Geste — arbitrage délégué). La molette qui ment (le retard lu image par image), le même geste aux quatre durées (lues au moteur), dire ce qu'on voit (sept mots, le verdict déduit de la feuille) ; quatre paires — le survol qui suit, l'objet qui sort de son bouton, rien ne naît du néant, moins de mouvement mais pas aucun ; huit règles en liste, neuf lignes de code | **Verrouillée le 7 septembre : douze épreuves écrites avec la page, l'épreuve mord (deux mutations), course complète sur la machine d'Auteur — six pages vertes.** |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 
 **Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
@@ -138,28 +139,29 @@ règle 4 n'est pas engagée : appliquer le rognage au kit est un chantier à par
 (quels rôles, puis la relecture des espaces), le kit reste non rogné, seule la
 carte de la démo l'est. S3 ne se rouvre que dans ce chantier-là.
 
-**Le mouvement du kit** (4 septembre, décisions d'Auteur du 3) — 🟡 posé, à
-valider à l'œil. Le moteur porte désormais quatre durées avec leur emploi
-(100 bouton · survol · appui ; 200 menu · infobulle · dépliant ; 300 tiroir ·
-fenêtre · panneau ; 700 arrivée d'une section) et la courbe du kit
-(`cubic-bezier(0.23, 1, 0.32, 1)`, proposée, à juger sur le site). Plus une
-seule durée écrite à la main dans les feuilles : chaque transition prend son
-jeton et dit son emploi, ou dit « chorégraphie » sur sa ligne — trois seulement
-(le film de `/rythme`, l'entrée de l'accueil, la boucle du chemin de l'œil sur
-`/composition`). Une valeur qu'on fait glisser ne s'anime plus (`/arrondis`, le
-film de `/rythme` pendant qu'on tourne sa molette). Les vraies commandes
-répondent à l'appui. Sous mouvement réduit, les déplacements partent et les
-fondus restent — écrit par construction (un déplacement n'existe que sous son
-portillon), vérifié par deux épreuves du moteur. Reste à l'œil de l'Auteur :
-la courbe, et la cascade du nuancier de `/couleur` ramenée sur les crans.
+**Le mouvement du kit** (décisions d'Auteur du 3 septembre, posé le 4, jugé et
+ouvert le 7) — 🟢. Le moteur porte quatre durées avec leur emploi (100 bouton ·
+survol · appui ; 200 menu · infobulle · dépliant ; 300 tiroir · fenêtre · panneau ;
+700 arrivée d'une section) et la courbe du kit, `cubic-bezier(0.23, 1, 0.32, 1)`,
+**validée à l'œil sur le site le 7 septembre** (« courbe OK », jugée contre celle
+de Material sur `/couleur`). Plus une seule durée écrite à la main dans les
+feuilles : chaque transition prend son jeton et dit son emploi, ou dit
+« chorégraphie » sur sa ligne — trois seulement (le film de `/rythme`, l'entrée
+de l'accueil, la boucle du chemin de l'œil sur `/composition`). Une valeur qu'on
+fait glisser ne s'anime pas. Les vraies commandes répondent à l'appui. Sous
+mouvement réduit, les déplacements partent et les fondus restent — écrit par
+construction, vérifié par deux épreuves du moteur. La page `/mouvement` porte la
+famille depuis le 7 septembre, verrouillée par le banc ; le mouvement est une
+**fondation**, sous Geste. Reste à l'œil de l'Auteur : la cascade du nuancier de
+`/couleur`, ramenée sur les crans (300, pas de 100), sans verdict distinct.
 
 **Le banc des crash-tests de page** (`kit/epreuves/`, `npm run test:pages`,
 `#125`) — 🟢, repassé vert le 7 septembre (course complète sur la machine
-d'Auteur : moteur 29/29, pages 12 · 12 · 9 · 8 · 10 — Composition a rejoint le banc le 7 septembre). Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
+d'Auteur : moteur 29/29, pages 12 · 12 · 9 · 8 · 10 · 12 — Composition puis Mouvement ont rejoint le banc le 7 septembre). Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
 dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
 prédit, au dixième de pixel. Six épreuves communes — les chiffres affichés, les
 preuves par leur jeton, la densité, les titres, C17, rien en dur — et, par page,
-ce que sa terre exige : 54 épreuves sur les cinq pages (`#126` → `#129`, et Composition le 7 septembre).
+ce que sa terre exige : 66 épreuves sur les six pages (`#126` → `#129`, Composition et Mouvement le 7 septembre).
 Le 1er septembre, douze d'entre elles étaient rouges — les pages avaient bougé
 les 27, 30 et 31 août et le banc n'avait pas été relancé. Neuf disaient une page
 qui n'existait plus, trois nommaient de vraies fautes. Les neuf ont été

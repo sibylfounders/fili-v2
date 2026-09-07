@@ -5848,3 +5848,73 @@ les quatre autres pages repassées (le socle avait bougé : 41 vertes), et la
 course complète sur la machine d'Auteur : cinq pages vertes, Composition
 enregistrée dans les pièces du banc. **La carte passe Composition à 🟢 — par le
 banc, pas par la main.**
+
+
+## 7 septembre 2026 (8) — `/mouvement` : la page naît, le banc la verrouille, et le mouvement devient une fondation
+
+Le moteur portait les quatre durées et la courbe depuis le 4 ; la courbe
+n'avait jamais été vue sur le site, la cascade du nuancier tournait sur les
+crans sans verdict, et le plan de preuves validé le 4 attendait son fil. Le
+fil a fait les quatre choses demandées, dans l'ordre.
+
+**Le verdict à l'œil, d'abord.** Une boîte de juge posée dans le navigateur
+d'Auteur, sur `/couleur`, hors dépôt : un bouton bascule toute la page entre la
+courbe du kit et celle de Material, un autre rejoue l'entrée de la section
+visible et la cascade du nuancier. Verdict d'Auteur : « courbe OK ». La
+décision 2 du 3 septembre est close — `cubic-bezier(0.23, 1, 0.32, 1)` est la
+courbe du kit, vue et jugée.
+
+**Le plan de preuves, confirmé tel quel.** La molette qui ment · le même
+geste, nos quatre durées · dire ce qu'on voit. Rien n'a été construit avant
+le « Ok ».
+
+**La page, sur la terre de sa famille.** Le mouvement n'existe que pendant
+qu'il se produit ; on ne peut pas le regarder, seulement l'attraper — donc la
+page mesure ce que l'œil ne peut pas voir. La molette qui ment : la jauge de
+crédibilité d'un témoin de Fili, deux fois ; à gauche la barre est à la valeur
+à l'image près, à droite elle porte une transition sur la valeur qu'on tient,
+et le retard est **lu** sur le rendu image par image, en pixels, jusqu'à ce
+que les deux barres se rejoignent. Le même geste, quatre durées : un verdict
+qui se pose, quatre fois, et une seule chose change ; les crans et leurs
+emplois sont lus au moteur, la légende lit ce que chaque cadre joue. Dire ce
+qu'on voit : sept mots pour un seul menu — il se pose, il sort de son bouton,
+il rebondit, il saute, il naît du néant, il traîne, il s'ouvre du milieu — et
+le verdict n'est pas décrété par le mot cliqué : il est déduit de ce que la
+feuille produit (durée, courbe, taille de départ, point d'origine), lu sur un
+jumeau au repos parce qu'un objet en transition ne dit que l'image en cours.
+Sous mouvement réduit, trois des cinq fautes cessent d'en être — leur faute
+était un déplacement, et il est parti. C'est la loi 1, rendue par la page
+elle-même.
+
+**Deux verdicts d'Auteur en cours de route.** D'abord : « pour le mouvement
+je vois plus deux colonnes bon / pas bon qu'un bouton casser ». Les quatre
+bandes sont devenues des paires, la forme de Composition : le même objet deux
+fois, une seule chose change, un seul geste joue les deux côtés, et la tête
+de chaque colonne est lue sur le rendu. La bande du mouvement réduit y a gagné
+son vrai sujet : notre règle (le fondu reste) contre l'ancienne (tout coupé,
+elle surgit sans passage). Ensuite, délégué : **le mouvement reste-t-il un
+langage ou devient-il une fondation ?** Tranché fondation, sous Geste, avec
+Tactile et Superpositions. Depuis le 4 septembre, le mouvement est une
+matière du moteur — quatre jetons et une courbe consommés par toutes les
+pages, relus par un crash-test, empruntés déjà par deux familles écrites. Un
+langage dit comment le produit parle ; une fondation dit de quoi il est fait.
+
+**Douze épreuves, et l'épreuve mord.** Au niveau des cinq autres pages : les
+chiffres lus, les pièces par leur jeton, chaque transition de la page sur un
+cran et la courbe du kit hors des casses déclarées, chaque casse dite sur sa
+ligne, les sept mots et les quatre paires rendus et lus, les deux réglages
+(libre : les objets se déplacent en entrant ; réduit : plus un seul
+déplacement, mais les fondus gardent leurs durées), densité, titres, C17,
+rien en dur, zéro débord, zéro erreur, la place dans le menu. Douze vertes du
+premier coup, ce qui n'est pas une preuve : deux mutations de la feuille (le
+survol lent ramené au cran rapide, le néant ramené à 0,95) font tomber les
+deux épreuves qui les regardent. Une épreuve chanceuse corrigée au passage —
+la page et le banc ne lisent pas la même image, le chiffre du badge est
+maintenant borné par ce qui a pu être rendu. Trois courses de suite, douze
+vertes ; puis la course complète sur la machine d'Auteur : moteur 29/29, **six
+pages vertes**. La carte passe Mouvement à 🟢 — par le banc, pas par la main.
+
+**Ce qui reste hors de ce fil.** La cascade du nuancier de `/couleur` n'a pas
+reçu de verdict distinct de la courbe ; elle reste sur les crans, à juger. Le
+menu, le rail, le tiroir et l'accueil lisent désormais Mouvement dans la liste
+unique des pages, versée par le fil de l'accueil le même jour.
