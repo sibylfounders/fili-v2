@@ -35,6 +35,7 @@ const COURSE = path.join(RACINE, 'kit', 'epreuves', 'derniere-course.json')
    7 septembre 2026). `/` n'en a pas : cette pièce ne parle jamais d'elle — son cas est
    écrit sur la carte à la main, et c'est une dette dite, pas un vert qui ment. */
 export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition', 'mouvement']
+const MOT = { 5: 'cinq', 6: 'six', 7: 'sept' }
 
 /* Le socle : ce qui, en bougeant, fait bouger toutes les pages à la fois. */
 const SOCLE = [
@@ -153,7 +154,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const lignes = etat()
   const malades = lignes.filter((l) => !l.sain)
 
-  console.log('\nÉTAT DU BANC — cinq pages\n')
+  console.log(`\nÉTAT DU BANC — ${MOT[PAGES.length] ?? PAGES.length} pages\n`)
   for (const l of lignes) console.log(`  ${l.sain ? '🟢' : '🟡'} /${l.page} — ${l.raison}`)
 
   if (process.argv.includes('--ecrire')) {
@@ -164,5 +165,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
 
   if (malades.length) console.log(`\n  ${malades.length} page(s) à repasser au banc : npm run test:pages\n`)
-  else console.log('\n  🟢 les cinq pages disent vrai.\n')
+  else console.log(`\n  🟢 les ${MOT[PAGES.length] ?? PAGES.length} pages disent vrai.\n`)
 }
