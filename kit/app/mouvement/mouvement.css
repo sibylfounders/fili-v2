@@ -19,94 +19,211 @@
 .mv-verdict-tete .verdict.bon { color: var(--success); font-weight: 700; }
 .mv-verdict-tete .verdict.ko { color: var(--danger); font-weight: 700; }
 
-/* ── 01 · La fiche du témoin, une seule : la molette et, sous elle, les deux
-      barres sur la même largeur et le même bord. La piste de la molette et
-      les barres partagent la colonne ; les barres rentrent d'une moitié de
-      bouton de chaque côté pour finir exactement sous le curseur. ── */
-.mv-temoin { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 44rem; }
-.mv-temoin-tete { display: flex; align-items: center; gap: var(--gap-3-inline); }
+/* ── Les commandes d'une lecture, et le sous-titre — la voix de la scène :
+      une phrase à la fois, qui reste le temps d'être lue. ── */
+.mv-commande { justify-self: center; }
+.mv-sous-titre { margin: 0; min-height: 3.2em; max-width: var(--measure); text-align: center; text-wrap: balance;
+  font: 500 var(--font-size-h3)/1.3 var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;
+  opacity: 0; transition: opacity var(--m-base) var(--e-out), color var(--m-base) var(--e-out); } /* le sous-titre entre en fondu : le cran du menu */
+.mv-sous-titre.on { opacity: 1; }
+.mv-sous-titre b { font-weight: 700; color: var(--text-primary); }
+.mv-sous-titre .ko { color: var(--danger); font-weight: 700; }
+.mv-sous-titre.regle { color: var(--text-primary); }
+
+/* ── 01 · La main invisible, sur la marque. La fiche du témoin : la piste
+      et sa main dessinée ; dessous, la barre qui montre la valeur. La main et
+      le bout de la barre partagent la même abscisse (--mv-w) : l'œil ne bouge
+      pas. Le mensonge est l'écart rendu entre la barre et la main, peint en
+      rouge sur la piste (--mv-de, --mv-l, lus). ── */
+.banc.primaire .mv-sous-titre { color: var(--on-primary); }
+.banc.primaire .mv-sous-titre b, .banc.primaire .mv-sous-titre.regle { color: var(--on-primary); }
+.banc.primaire .mv-sous-titre .ko { color: var(--danger-subtle); } /* sur la marque, le rouge de la faute prend son fond doux : lisible sur l'aplat */
+.banc.primaire .mv-commande { background: transparent; color: var(--on-primary); border-color: var(--on-primary); }
+.banc.primaire .mv-commande:hover { background: var(--primary-hover); }
+.mv-fiche { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 44rem; }
+.mv-fiche-tete { display: flex; align-items: center; gap: var(--gap-3-inline); }
 .mv-avatar { width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill);
   background: var(--primary-subtle); color: var(--primary-text); display: grid; place-items: center;
   font: 700 var(--font-size-label)/1 var(--font-mono); flex: none; }
-.mv-temoin-nom { display: grid; gap: var(--gap-4-block); }
-.mv-temoin-nom b { font-size: var(--font-size-body); }
-.mv-temoin-nom span { font-size: var(--font-size-small); color: var(--text-secondary); }
-.mv-pile { display: grid; grid-template-columns: 11rem minmax(0, 1fr); /* hors chaîne : la colonne des mots, fixe pour que les trois pistes partagent le même bord */
-  gap: var(--gap-3-block) var(--gap-2-inline); align-items: center; }
-.mv-pile-dit { margin: 0; font: 600 var(--font-size-label)/1.2 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase;
-  display: flex; align-items: center; gap: var(--gap-3-inline); }
-.mv-pile-dit output { font-variant-numeric: tabular-nums; margin-inline-start: auto; }
-.mv-pile-dit .verdict.bon { color: var(--success); font-weight: 700; }
-.mv-pile-dit .verdict.ko { color: var(--danger); font-weight: 700; }
-.mv-pile-molette { width: 100%; min-width: 0; appearance: none; -webkit-appearance: none; background: transparent;
-  height: var(--control-height-compact); margin: 0; cursor: pointer; --mv-piste: var(--border-strong); --mv-curseur: var(--text-primary); }
-.mv-pile-molette::-webkit-slider-runnable-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--mv-piste); }
-.mv-pile-molette::-moz-range-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--mv-piste); }
-.mv-pile-molette::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
-  width: 1.25rem; height: 1.25rem; margin-top: -0.5rem; /* hors chaîne : le bouton du curseur, centré sur la piste */
-  border-radius: var(--r-pill); background: var(--mv-curseur); border: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */ }
-.mv-pile-molette::-moz-range-thumb { width: 1.25rem; height: 1.25rem; /* hors chaîne : le bouton du curseur */
-  border-radius: var(--r-pill); background: var(--mv-curseur); border: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */ }
-.mv-pile-barres { padding: 0 0.625rem; /* hors chaîne : la moitié du bouton de curseur — la barre finit sous le curseur */ }
-.mv-jauge-piste { height: var(--gap-4-block); border-radius: var(--r-pill); background: var(--surface-hover); overflow: hidden; }
-.mv-jauge-barre { height: 100%; border-radius: var(--r-pill); background: var(--primary); width: var(--mv-w, 0%); }
-.mv-jauge-barre.ment { transition: width var(--m-slow) var(--e-out); } /* casse (hors chaîne) : une valeur qu'on fait glisser s'anime — la barre traîne derrière le doigt, et l'œil regarde l'animation au lieu du nombre */
+.mv-fiche-nom { display: grid; gap: var(--gap-4-block); }
+.mv-fiche-nom b { font-size: var(--font-size-body); }
+.mv-fiche-nom span { font-size: var(--font-size-small); color: var(--text-secondary); }
+.mv-fiche-nombre { margin-inline-start: auto; font: 700 var(--font-size-h1)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mv-pile { display: grid; grid-template-columns: 9rem minmax(0, 1fr); /* hors chaîne : la colonne des mots, fixe pour que la piste et la barre partagent le même bord */
+  gap: var(--gap-2-block) var(--gap-2-inline); align-items: center; }
 @media (max-width: 40em) { .mv-pile { grid-template-columns: minmax(0, 1fr); } }
-
-/* ── 02 · Le même verdict, quatre fois. Une seule chose change d'un cadre
-      à l'autre : la durée. Le fondu s'écrit nu, le déplacement sous son
-      portillon — c'est aussi ce que voit quelqu'un qui a demandé moins de
-      mouvement : le verdict apparaît, il ne monte pas. ── */
-.mv-quatre { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
-@media (min-width: 52em) { .mv-quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.mv-cadre { display: grid; gap: var(--gap-2-block); align-content: start;
-  background: var(--surface); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); min-height: 11rem; }
-.mv-cadre[data-cran="fast"] { --mv-d: var(--m-fast); }
-.mv-cadre[data-cran="base"] { --mv-d: var(--m-base); }
-.mv-cadre[data-cran="slow"] { --mv-d: var(--m-slow); }
-.mv-cadre[data-cran="expressive"] { --mv-d: var(--m-expressive); }
-.mv-cadre-tete { display: grid; gap: var(--gap-4-block); }
-.mv-cadre-tete b { font: 700 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
-.mv-cadre-tete span { font-size: var(--font-size-small); color: var(--text-secondary); }
-.mv-pose { opacity: 0; transition: opacity var(--mv-d) var(--e-out); } /* le fondu s'écrit nu */
+.mv-pile-dit { margin: 0; display: flex; align-items: center; gap: var(--gap-3-inline); font: 700 var(--font-size-label)/1.2 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-secondary); }
+.mv-pile-dit .verdict.bon { color: var(--success); } .mv-pile-dit .verdict.ko { color: var(--danger); }
+.mv-piste { position: relative; height: var(--control-height); }
+.mv-trace { position: absolute; inset-inline: 0; top: 50%; height: 4px; /* hors chaîne : l'épaisseur de la piste */
+  translate: 0 -50%; border-radius: var(--r-pill); background: var(--surface-hover); }
+.mv-trace::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--mv-w, 0%); border-radius: var(--r-pill); background: var(--text-primary); }
+.mv-doigt { position: absolute; top: 50%; left: var(--mv-w, 0%); width: 1.25rem; height: 1.25rem; /* hors chaîne : le bouton du curseur */
+  translate: -50% -50%; border-radius: var(--r-pill); background: var(--text-primary); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); } /* hors chaîne : le relief du bouton de curseur */
+.mv-main { position: absolute; left: 50%; top: 40%; width: 1.9rem; height: 2.5rem; translate: -35% 0; /* hors chaîne : la main dessinée, le doigt sur le bouton */
+  fill: var(--bg); stroke: var(--text-primary); stroke-width: 1.4; stroke-linejoin: round; opacity: 0; transition: opacity var(--m-base) var(--e-out); } /* la main paraît : le cran du menu */
+.mv-piste.tenue .mv-main { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
-  .mv-pose { translate: 0 var(--gap-2-block); transition: opacity var(--mv-d) var(--e-out), translate var(--mv-d) var(--e-out); }
+  .mv-main { transition: opacity var(--m-base) var(--e-out), translate var(--m-fast) var(--e-out); }
+  .mv-piste.tenue .mv-main { translate: -35% -10%; } /* la main appuie */
 }
-.mv-cadre.joue .mv-pose { opacity: 1; translate: 0 0; }
-.mv-verdict { display: grid; gap: var(--gap-3-block); background: var(--bg); border: 1px solid var(--border);
-  border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
-.mv-verdict-mot { font: 700 var(--font-size-small)/1.2 var(--font-sans); }
-.mv-verdict-dit { font-size: var(--font-size-label); color: var(--text-secondary); }
+.mv-jauge-piste { position: relative; height: var(--gap-3-block); border-radius: var(--r-pill); background: var(--surface-hover); }
+.mv-jauge-barre { height: 100%; border-radius: var(--r-pill); background: var(--primary); width: var(--mv-w, 0%); }
+.mv-jauge-barre.ment { transition: width var(--m-slow) var(--e-out); } /* casse (hors chaîne) : une valeur qu'on fait glisser s'anime — la barre traîne derrière la main */
+.mv-jauge-barre.saut { transition: none; } /* le retour au départ ne se joue pas */
+.mv-mensonge { position: absolute; top: 0; bottom: 0; left: var(--mv-de, 0%); width: var(--mv-l, 0%); border-radius: var(--r-pill); background: var(--danger); }
+.mv-mensonge-cote { position: absolute; bottom: 100%; left: calc(var(--mv-de, 0%) + var(--mv-l, 0%)); translate: -100% 0; margin-bottom: var(--gap-4-block);
+  font: 700 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--danger); white-space: nowrap; }
 
-/* ── 03 · Le menu des actions et les mots qu'on emploie pour le décrire.
-      Un seul objet ; chaque mot lui donne une autre façon d'arriver, et
-      la page lit dans la feuille ce que le mot produit vraiment. ── */
-.mv-mots { display: flex; flex-wrap: wrap; gap: var(--gap-3-block) var(--gap-3-inline); justify-content: center; }
-.mv-scene-menu { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3-block);
-  width: 100%; min-height: 14rem; }
-.mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block));
-  min-width: 14rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2);
-  padding: var(--pad-3-block) var(--pad-3-inline); display: grid; gap: var(--gap-4-block); z-index: 1;
-  opacity: 0; pointer-events: none; transform-origin: 0 0;
-  transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
+/* ── 02 · Quatre situations — la mise en scène du film de Rythme (verdict
+      d'Auteur, 7 septembre). Le panneau de marque décalé vers la droite, la
+      carte de l'objet qui mord dessus par la gauche, le compteur par le coin
+      haut droit, et le lecteur sur la page. ── */
+.mv-scena {
+  /* hors chaîne : les cotes de la mise en scène, celles du film de Rythme (Auteur, 2 septembre) — la carte mord de 24 px dans le panneau */
+  --mv-sc-large: 24rem; --mv-sc-mord: 1.5rem; --mv-sc-marge: 3.5rem; --mv-sc-h: 32rem; --mv-sc-retrait: 2.5rem;
+  position: relative; min-height: var(--mv-sc-h); width: 100%;
+  display: grid; grid-template-columns: minmax(0.5rem, 2.5rem) calc(var(--mv-sc-large) - var(--mv-sc-mord)) var(--mv-sc-mord) minmax(0, 1fr) 2.5rem;
+  grid-template-rows: auto minmax(0, 1fr) auto; align-items: start; }
+.mv-scena-chap { grid-column: 1 / 4; grid-row: 1; z-index: 3; align-self: start; margin: 0; padding-block-start: var(--gap-3-block);
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le chapô du film, un kicker */
+.mv-scena-cpt { grid-column: 4 / -1; grid-row: 1; z-index: 3; justify-self: end; margin: 0; padding-block-start: var(--gap-4-block);
+  display: grid; justify-items: end; gap: var(--gap-4-block); text-align: right; }
+.mv-scena-cpt b { font-size: var(--font-size-h1); font-weight: 700; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.mv-scena-cpt span { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : l'étiquette du compteur */
+.mv-scena-panneau { grid-column: 3 / 5; grid-row: 1 / -1; align-self: stretch; z-index: 0; margin-block: var(--mv-sc-retrait);
+  background: var(--primary); color: var(--on-primary); border-radius: var(--r-1);
+  padding: var(--mv-sc-marge); padding-inline-start: calc(var(--mv-sc-marge) + var(--mv-sc-mord)); /* hors chaîne : la marge de la mise en scène, une cote d'Auteur */
+  display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.mv-scena-mots { display: grid; gap: var(--gap-2-block); transition: opacity var(--m-slow) var(--e-out); } /* les mots se relaient : le cran du panneau */
+.mv-scena-mots.off { opacity: 0; }
+.mv-scena-titre { margin: 0; font-size: var(--font-size-h2); font-weight: 700; letter-spacing: -0.03em; line-height: var(--leading-heading); text-wrap: balance; max-width: var(--measure); }
+.mv-scena-titre em { font-style: normal; box-shadow: inset 0 -0.28em 0 color-mix(in srgb, var(--accent) 60%, transparent); } /* le surlignage d'auteur, celui du film */
+.mv-scena-duree { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline); color: var(--accent); }
+.mv-scena-duree b { font: 700 var(--font-size-h1)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.mv-scena-duree span { font: 600 var(--font-size-small)/1.2 var(--font-sans); color: var(--on-primary); }
+.mv-scena-duree.ko { color: var(--danger-subtle); } /* la faute sur la marque : le fond doux du rouge, lisible sur l'aplat */
+.mv-scena-sous { margin: 0; font-size: var(--font-size-body); line-height: 1.6; max-width: 34ch; }
+.mv-scena-scene { grid-column: 2 / -1; grid-row: 1 / -1; z-index: 2; align-self: stretch; margin-block: var(--mv-sc-retrait);
+  position: relative; display: flex; align-items: center; pointer-events: none; }
+.mv-scena-scene > * { pointer-events: auto; }
+.mv-scena-carte { position: relative; width: min(100%, var(--mv-sc-large)); min-height: 17rem; overflow: hidden;
+  background: var(--surface); border-radius: var(--r-2); padding: var(--pad-1-block) var(--pad-1-inline);
+  display: grid; justify-items: center; align-content: center;
+  box-shadow: 0 24px 48px -24px rgba(21, 23, 37, 0.35); } /* hors chaîne : l'ombre de la carte posée sur le panneau, comme la fiche du film */
+.mv-player { grid-column: 1 / 5; grid-row: 3; z-index: 3; align-self: end; display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.mv-rond { display: grid; place-items: center; flex: none; cursor: pointer; position: relative; width: var(--control-height); height: var(--control-height);
+  border-radius: var(--r-pill); border: 1px solid var(--border); background: var(--bg); color: var(--text-primary); font: 600 var(--font-size-small)/1 inherit;
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.mv-rond:hover:not(:disabled) { background: var(--surface-hover); }
+.mv-rond:disabled { opacity: 0.35; cursor: default; }
+.mv-lect { border-color: var(--text-primary); }
+.mv-lect .ic { width: 1rem; height: 1rem; fill: var(--text-primary); position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.mv-lect .ic-pause, .mv-lect .ic-re { display: none; }
+.mv-lect.en-cours .ic-play { display: none; } .mv-lect.en-cours .ic-pause { display: block; }
+.mv-lect.fin .ic-play, .mv-lect.fin .ic-pause { display: none; } .mv-lect.fin .ic-re { display: block; }
+.mv-cpt { color: var(--text-tertiary); font-weight: 600; font-variant-numeric: tabular-nums; font-size: var(--font-size-small); } /* tertiaire : le rang de la situation */
+.mv-temps { flex: 1; max-width: 9rem; height: 2px; border-radius: var(--r-pill); background: var(--border); overflow: hidden; } /* hors chaîne : le trait du temps */
+.mv-temps i { display: block; height: 100%; background: var(--text-primary); transform-origin: 0 50%; scale: 0 1; }
+@media (max-width: 62rem) {
+  .mv-scena { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto auto; min-height: 0; gap: var(--gap-2-block); }
+  .mv-scena-chap { grid-column: 1; grid-row: 1; } .mv-scena-cpt { grid-column: 1; grid-row: 2; justify-self: start; justify-items: start; text-align: left; }
+  .mv-scena-scene { grid-column: 1; grid-row: 3; margin-block: 0; display: block; }
+  .mv-scena-carte { width: 100%; }
+  .mv-scena-panneau { grid-column: 1; grid-row: 4; margin-block: 0; padding: var(--pad-1-block) var(--pad-1-inline); }
+  .mv-player { grid-column: 1; grid-row: 5; }
+}
+/* les objets, sur la carte claire */
+.mv-obj { cursor: default; }
+.mv-obj.survole { background: var(--surface-hover); } /* survol : simulé par le film, la même transition que le vrai survol */
+.mv-curseur { position: absolute; width: 1.1rem; height: 1.5rem; fill: var(--text-primary); stroke: var(--bg); stroke-width: 1; opacity: 0; /* hors chaîne : le curseur de souris, dessiné */
+  transition: opacity var(--m-base) var(--e-out); } /* le curseur paraît : le cran du menu */
+@media (prefers-reduced-motion: no-preference) { .mv-curseur { transition: opacity var(--m-base) var(--e-out), translate var(--m-slow) var(--e-out); } } /* il rejoint le bouton : le cran du panneau */
+.mv-curseur.la { opacity: 1; }
+.mv-scene-menu { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3-block); width: max-content; min-height: 12rem; }
+.mv-scene-menu > .bouton { align-self: start; }
+.mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block)); min-width: 14rem; display: grid; gap: var(--gap-4-block);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3-block) var(--pad-3-inline); z-index: 1;
+  box-shadow: 0 8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du menu posé */
+  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
 .mv-menu.ouvert { opacity: 1; pointer-events: auto; }
-.mv-menu.saute { transition: none; } /* casse (hors chaîne) : il saute — un état remplace l'autre sans passage */
-.mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne, le fondu nu aussi */
+.mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne — le cran expressif sur un menu */
 @media (prefers-reduced-motion: no-preference) {
-  .mv-menu { scale: 0.95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* menu : il grandit depuis presque sa taille, depuis le coin de son bouton */
+  .mv-menu { scale: 0.95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton */
   .mv-menu.ouvert { scale: 1; }
-  /* les mots refusés — chacun dit sa faute sur sa ligne */
-  .mv-menu.neant { scale: 0; } /* casse (hors chaîne) : il naît du néant — un objet réel ne part pas d'une taille nulle */
+  .mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out), scale var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne */
+  .mv-menu.neant { scale: 0; } /* casse (hors chaîne) : il naît du néant */
   .mv-menu.neant.ouvert { scale: 1; }
-  .mv-menu.rebond { transition: opacity var(--m-base) var(--e-out), scale var(--m-base) cubic-bezier(0.34, 1.56, 0.64, 1); } /* casse (hors chaîne) : il rebondit — une courbe qui dépasse sa cible, jamais sur de l'interface */
-  .mv-menu.traine { transition: opacity var(--m-expressive) var(--e-out), scale var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne — le cran expressif sur un menu, qui vit à 200 */
-  .mv-menu.milieu { transform-origin: 50% 50%; } /* casse (hors chaîne) : il s'ouvre du milieu — pas depuis le bouton qui l'a appelé */
+  .mv-menu.rebond { transition: opacity var(--m-base) var(--e-out), scale var(--m-base) cubic-bezier(0.34, 1.56, 0.64, 1); } /* casse (hors chaîne) : il rebondit — une courbe qui dépasse sa cible */
+  .mv-menu.milieu { transform-origin: 50% 50%; } /* casse (hors chaîne) : il s'ouvre du milieu */
 }
 .mv-menu-item { display: flex; align-items: center; min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
   border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
   transition: background-color var(--m-fast) var(--e-out); } /* survol */
 .mv-menu-item:hover { background: var(--surface-hover); }
 .mv-menu-item.danger { color: var(--danger); }
+.mv-ecran { position: relative; display: grid; gap: var(--gap-3-block); width: 100%; max-width: 20rem; min-height: 11rem; align-content: start; }
+.mv-ligne { display: block; height: var(--gap-3-block); border-radius: var(--r-pill); background: var(--surface-hover); width: 70%; } /* hors chaîne : une ligne de texte en filaire */
+.mv-ligne.large { width: 100%; } .mv-ligne.courte { width: 45%; }
+.mv-panneau { position: absolute; inset-inline: 0; bottom: 0; display: grid; gap: var(--gap-3-block);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2) var(--r-2) 0 0; padding: var(--pad-2-block) var(--pad-2-inline);
+  box-shadow: 0 -8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du panneau posé */
+  opacity: 0; transition: opacity var(--m-slow) var(--e-out); } /* panneau : le fondu s'écrit nu */
+.mv-panneau b { font-size: var(--font-size-body); }
+.mv-panneau > span { font-size: var(--font-size-small); color: var(--text-secondary); }
+.mv-panneau-actions { display: flex; gap: var(--gap-3-inline); }
+@media (prefers-reduced-motion: no-preference) {
+  .mv-panneau { translate: 0 var(--gap-1-block); transition: opacity var(--m-slow) var(--e-out), translate var(--m-slow) var(--e-out); } /* il monte depuis le bord */
+  .mv-panneau.ouvert { translate: 0 0; }
+}
+.mv-panneau.ouvert { opacity: 1; }
+.mv-section { display: grid; gap: var(--gap-3-block); width: 100%; max-width: 20rem; opacity: 0; transition: opacity var(--m-expressive) var(--e-out); } /* l'arrivée d'une section : le fondu s'écrit nu */
+.mv-section b { font-size: var(--font-size-h3); }
+@media (prefers-reduced-motion: no-preference) {
+  .mv-section { translate: 0 var(--gap-2-block); transition: opacity var(--m-expressive) var(--e-out), translate var(--m-expressive) var(--e-out); }
+  .mv-section.la { translate: 0 0; }
+}
+.mv-section.la { opacity: 1; }
+
+/* ── 03 · Le lexique en gestes, sur le blanc nu. Six tuiles, comme les rôles
+      d'espace de Rythme : les tuiles sont les seules surfaces. Dans chacune,
+      un bloc neutre joue le mot de la tuile, au ralenti (×3, dit dans la
+      légende), depuis un petit déclencheur. ── */
+.mv-lexique { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (max-width: 56em) { .mv-lexique { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 36em) { .mv-lexique { grid-template-columns: minmax(0, 1fr); } }
+.mv-lex { display: grid; gap: var(--gap-3-block); align-content: start; }
+.mv-lex h3 { margin: 0; font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: var(--gap-3-inline); }
+.mv-lex h3 .verdict.bon { color: var(--success); } .mv-lex h3 .verdict.ko { color: var(--danger); }
+.mv-lex-scene { position: relative; height: 9.5rem; background: var(--surface); border-radius: var(--r-2); overflow: hidden; }
+.mv-lex-decl { position: absolute; inset-inline-start: var(--pad-2-inline); top: var(--pad-2-block); width: 2.25rem; height: var(--gap-3-block); border-radius: var(--r-pill); background: var(--border-strong); } /* hors chaîne : le déclencheur, un bouton en filaire */
+.mv-lex-obj { position: absolute; inset-inline-start: var(--pad-2-inline); top: calc(var(--pad-2-block) + var(--gap-3-block) * 2); width: 9rem; height: 5.5rem; /* hors chaîne : le bloc joué, à sa taille */
+  border-radius: var(--r-2); background: var(--bg); border: 1px solid var(--border); box-shadow: 0 8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du bloc posé */
+  display: grid; gap: var(--gap-3-block); padding: var(--pad-3-block) var(--pad-3-inline); align-content: start; opacity: 0; transform-origin: 0 0;
+  transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti du lexique — le fondu s'écrit nu */
+.mv-lex-obj i { display: block; height: var(--gap-3-block); border-radius: var(--r-pill); background: var(--surface-hover); width: 70%; } /* hors chaîne : une ligne de texte en filaire */
+.mv-lex-obj i:first-child { width: 90%; } .mv-lex-obj i:last-child { width: 45%; }
+.mv-lex-obj.la { opacity: 1; }
+.mv-lex[data-mot="traine"] .mv-lex-obj { transition-duration: calc(var(--m-expressive) * var(--mv-ralenti, 1)); } /* casse (hors chaîne) : il traîne — le cran d'une section sur un objet qu'on ouvre ; chorégraphie : le ralenti */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-lex[data-mot="pose"] .mv-lex-obj { translate: 0 var(--gap-2-block); transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), translate calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti */
+  .mv-lex[data-mot="pose"] .mv-lex-obj.la { translate: 0 0; }
+  .mv-lex[data-mot="bouton"] .mv-lex-obj { scale: 0.8; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti */
+  .mv-lex[data-mot="bouton"] .mv-lex-obj.la { scale: 1; }
+  .mv-lex[data-mot="rebond"] .mv-lex-obj { scale: 0.8; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) cubic-bezier(0.34, 1.56, 0.64, 1); } /* casse (hors chaîne) : il rebondit — la courbe dépasse sa cible ; chorégraphie : le ralenti */
+  .mv-lex[data-mot="rebond"] .mv-lex-obj.la { scale: 1; }
+  .mv-lex[data-mot="neant"] .mv-lex-obj { scale: 0; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il naît du néant ; chorégraphie : le ralenti */
+  .mv-lex[data-mot="neant"] .mv-lex-obj.la { scale: 1; }
+  .mv-lex[data-mot="milieu"] .mv-lex-obj { scale: 0.8; transform-origin: 50% 50%; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il s'ouvre du milieu, pas depuis son déclencheur ; chorégraphie : le ralenti */
+  .mv-lex[data-mot="milieu"] .mv-lex-obj.la { scale: 1; }
+  .mv-lex[data-mot="traine"] .mv-lex-obj { translate: 0 var(--gap-2-block); transition: opacity calc(var(--m-expressive) * var(--mv-ralenti, 1)) var(--e-out), translate calc(var(--m-expressive) * var(--mv-ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il traîne ; chorégraphie : le ralenti */
+  .mv-lex[data-mot="traine"] .mv-lex-obj.la { translate: 0 0; }
+}
+.mv-lex-dit { margin: 0; color: var(--text-secondary); font-size: var(--font-size-small); line-height: 1.5; }
+.mv-lu { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--success); }
+.mv-lu.ko { color: var(--danger); }
+.mv-lex .bouton { justify-self: start; }
 
 /* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
       bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */

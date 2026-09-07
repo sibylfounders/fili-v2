@@ -14,13 +14,18 @@ import "./mouvement.css";
    produit. On ne peut pas le regarder, seulement l'attraper. Les trois
    preuves partent de là, et aucune ne reprend une preuve d'une autre page.
 
-   · LES PREUVES (01 à 03) — sans gabarit : LA MOLETTE QUI MENT (situation —
-     la jauge d'un témoin de Fili, à gauche elle suit le doigt, à droite
-     elle traîne, et le retard est MESURÉ) ; LE MÊME GESTE, QUATRE DURÉES
-     (variation — un verdict qui se pose, rejoué à chacun des quatre crans,
-     lus au moteur) ; DIRE CE QU'ON VOIT (vocabulaire — sept mots pour un
-     menu ; la page lit dans la feuille ce que chaque mot produit et rend
-     son verdict).
+   · LES PREUVES (01 à 03) — sans gabarit, versées de la pièce
+     kit-mouvement-nu.html jugée par l'Auteur le 7 septembre (« Mieux, pousse
+     sur le kit »). Trois scènes, trois tempéraments, et rien ne se joue
+     seul — on lit : LA MAIN INVISIBLE (situation, sur la marque — une main
+     dessinée règle la jauge du témoin par à-coups, d'abord avec la faute,
+     la barre traîne et l'écart se peint en rouge et se MESURE, puis comme
+     il faut ; un sous-titre par étape) ; QUATRE SITUATIONS (variation, la
+     mise en scène du film de Rythme — ce que vous faites, l'objet qui
+     répond, la durée et son pourquoi, puis une taille de trop) ; LE LEXIQUE
+     EN GESTES (vocabulaire, sur le blanc nu — six mots, six tuiles, le même
+     bloc qui joue son mot au ralenti, le verdict lu). Sous mouvement réduit,
+     les lectures s'avancent à la main, une étape par appui.
    · LES TROIS ÉTAGES (04 à 06) — au gabarit commun d'etages.tsx : quatre
      bandes en PAIRES, le juste et le faux côte à côte sans bouton (verdict
      d'Auteur du 7 septembre) — le survol qui suit, l'objet qui sort de son
@@ -101,111 +106,10 @@ function Regles({ ids }: { ids: string[] }) {
   );
 }
 
-/* ── 01 · La molette qui ment. Une seule fiche, une seule pile : la molette,
-   et juste dessous, sur la même largeur et le même bord, les deux barres —
-   à la valeur, et animée pendant qu'on la règle. Le bout de chaque barre
-   tombe sous le bouton du curseur : l'œil ne bouge pas (verdict d'Auteur,
-   7 septembre : « l'œil doit être à la fois sur le slider, la proposition
-   mauvaise et la bonne »). Le retard n'est pas décrété : la page lit la
-   largeur rendue des deux barres à chaque image tant qu'elles diffèrent. ── */
-function Molette() {
-  const [v, setV] = useState(72);
-  const juste = useRef<HTMLDivElement>(null), faux = useRef<HTMLDivElement>(null);
-  const [retard, setRetard] = useState(0);
-  const [pic, setPic] = useState(0);
-  useEffect(() => {
-    let vivant = true;
-    let max = 0;
-    const lire = () => {
-      if (!vivant || !juste.current || !faux.current) return;
-      const ecart = Math.abs(juste.current.getBoundingClientRect().width - faux.current.getBoundingClientRect().width);
-      max = Math.max(max, ecart);
-      setRetard(ecart);
-      if (ecart > 0.5) requestAnimationFrame(lire); else setPic(max);
-    };
-    requestAnimationFrame(lire);
-    return () => { vivant = false; };
-  }, [v]);
-  const ment = retard > 0.5;
-  const style = { "--mv-w": `${v}%` } as React.CSSProperties;
-  return (
-    <div className="mv-scene">
-      <div className="carte mv-temoin" style={style}>
-        <div className="mv-temoin-tete">
-          <span className="mv-avatar" aria-hidden="true">LF</span>
-          <span className="mv-temoin-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
-        </div>
-        <div className="mv-pile">
-          <label className="mv-pile-dit" htmlFor="mv-cred">Crédibilité <output htmlFor="mv-cred">{v} %</output></label>
-          <input className="mv-pile-molette" type="range" id="mv-cred" min={0} max={100} step={1} value={v} onChange={(e) => setV(+e.target.value)} />
-          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict bon" aria-hidden="true">✓</span><span>à la valeur</span></p>
-          <div className="mv-pile-barres"><div className="mv-jauge-piste"><div ref={juste} className="mv-jauge-barre" /></div></div>
-          <p className="mv-verdict-tete mv-pile-dit"><span className="verdict ko" aria-hidden="true">✗</span><span>animée</span></p>
-          <div className="mv-pile-barres" data-intent="statement"><div className="mv-jauge-piste"><div ref={faux} className="mv-jauge-barre ment" /></div></div>
-        </div>
-      </div>
-      {/* Le verdict se LIT : l'écart entre les deux barres, mesuré sur le rendu. */}
-      <span className={`badge ${ment ? "ko" : "bon"}`} aria-live="polite">
-        {ment
-          ? `la barre du bas est ${fmt(retard)} px derrière la molette`
-          : pic > 0.5
-            ? `les deux barres se sont rejointes — celle du bas a menti de ${fmt(pic)} px au plus`
-            : "les deux barres sont à la valeur — glissez la molette"}
-      </span>
-    </div>
-  );
-}
-
-/* ── 02 · Le même geste, nos quatre durées. Un verdict qui se pose, quatre
-   fois, et une seule chose change : la durée. Les crans et leurs emplois
-   sont lus au moteur ; la légende lit sur le rendu ce que chaque cadre
-   joue vraiment. ── */
-function QuatreDurees({ surMesure }: { surMesure: (m: number[]) => void }) {
-  const [joue, setJoue] = useState(false);
-  const cadres = useRef<HTMLDivElement>(null);
-  const rejouer = () => {
-    setJoue(false);
-    requestAnimationFrame(() => requestAnimationFrame(() => setJoue(true)));
-  };
-  useEffect(() => { const t = setTimeout(() => setJoue(true), 200); return () => clearTimeout(t); }, []);
-  useEffect(() => {
-    if (!cadres.current) return;
-    const lus = Array.from(cadres.current.querySelectorAll<HTMLElement>(".mv-pose")).map((e) => enMs(getComputedStyle(e).transitionDuration.split(",")[0]));
-    surMesure(lus);
-  }, [surMesure]);
-  return (
-    <div className="mv-scene">
-      <div className="mv-quatre" ref={cadres}>
-        {CRANS.map((c) => (
-          <div key={c} className={`mv-cadre${joue ? " joue" : ""}`} data-cran={c}>
-            <div className="mv-cadre-tete"><b>{ms(c)} ms</b><span>{emploi(c)}</span></div>
-            <div className="mv-verdict mv-pose">
-              <span className="badge">Verdict</span>
-              <span className="mv-verdict-mot">Recevable</span>
-              <span className="mv-verdict-dit">Témoignage de Léa Fontan</span>
-            </div>
-          </div>
-        ))}
-      </div>
-      <button type="button" className="bouton" onClick={rejouer}>Rejouer</button>
-    </div>
-  );
-}
-
 /* ── 03 · Dire ce qu'on voit. Sept mots pour un seul menu. Chaque mot
    donne au menu une autre façon d'arriver ; la page lit ensuite dans la
    feuille ce que le mot produit — durée, courbe, taille de départ, point
    d'origine — et rend son verdict. Rien n'est décrété par le bouton. ── */
-const MOTS: { cle: string; mot: string }[] = [
-  { cle: "pose", mot: "ça se pose" },
-  { cle: "bouton", mot: "ça sort de son bouton" },
-  { cle: "rebond", mot: "ça rebondit" },
-  { cle: "saute", mot: "ça saute" },
-  { cle: "neant", mot: "ça naît du néant" },
-  { cle: "traine", mot: "ça traîne" },
-  { cle: "milieu", mot: "ça s'ouvre du milieu" },
-];
-type Lu = { duree: number; depasse: boolean; depart: number | null; origine: string; proprietes: string };
 /* Lire un objet AU REPOS : pendant qu'une transition court, la valeur calculée
    est celle de l'image en cours, pas celle de la règle. On lit donc un jumeau
    posé un instant à côté, sans son état ouvert, puis retiré. */
@@ -216,61 +120,349 @@ function auRepos<T>(el: HTMLElement, lire: (cs: CSSStyleDeclaration) => T): T {
   el.parentElement?.appendChild(jumeau);
   try { return lire(getComputedStyle(jumeau)); } finally { jumeau.remove(); }
 }
-function lireMenu(el: HTMLElement): Lu {
-  return auRepos(el, (cs) => {
-    const durees = cs.transitionDuration.split(",").map((d) => enMs(d));
-    /* une courbe qui dépasse sa cible : un point de contrôle au-dessus de 1, sur n'importe quelle propriété */
-    const depasse = Array.from(cs.transitionTimingFunction.matchAll(/cubic-bezier\(([^)]*)\)/g))
-      .some((m) => { const n = m[1].split(",").map(Number); return n[1] > 1 || n[3] > 1; });
-    const s = cs.scale;
-    return { duree: Math.max(...durees), depasse, depart: s === "none" ? null : parseFloat(s), origine: cs.transformOrigin, proprietes: cs.transitionProperty };
-  });
-}
-/* Le verdict, déduit de ce qui est lu — jamais du mot cliqué. */
-function juger(lu: Lu, aucoin: boolean): { ok: boolean; dit: string } {
-  if (lu.duree === 0) return { ok: false, dit: "aucune durée : un état remplace l'autre, rien ne passe" };
-  if (lu.depart === 0) return { ok: false, dit: `part de 0 : un objet réel ne naît pas du néant — ${lu.duree} ms` };
-  if (lu.depasse) return { ok: false, dit: `la courbe dépasse sa cible et revient : ${lu.duree} ms, jamais sur de l'interface` };
-  if (lu.duree > ms("base")) return { ok: false, dit: `${lu.duree} ms sur un menu, qui vit à ${ms("base")} : il traîne` };
-  if (!aucoin) return { ok: false, dit: `${lu.duree} ms, mais depuis le milieu — pas depuis le bouton qui l'a appelé` };
-  return { ok: true, dit: `${lu.duree} ms · la courbe du kit${lu.depart !== null ? ` · part de ${dec(lu.depart)}` : ""} · depuis le bouton` };
-}
-function Mots() {
-  const [mot, setMot] = useState("pose");
-  const [ouvert, setOuvert] = useState(false);
-  const [verdict, setVerdict] = useState<{ ok: boolean; dit: string } | null>(null);
-  const menu = useRef<HTMLDivElement>(null);
-  const choisir = (cle: string) => {
-    setMot(cle); setOuvert(false);
-    requestAnimationFrame(() => requestAnimationFrame(() => setOuvert(true)));
-  };
+/* ── La lecture. Rien ne se joue seul : « Lire » joue la scène une fois, du
+   début à la fin, puis propose de la rejouer. Sous mouvement réduit, on
+   avance à la main, une étape par appui. Un onglet caché arrête la lecture.
+   Les tempos du récit — combien de temps une phrase reste — sont une
+   chorégraphie (verdict d'Auteur, 7 septembre) ; ce qui bouge à l'écran
+   prend les jetons du kit. ── */
+function useLibre() {
+  const [libre, setLibre] = useState(false);
   useEffect(() => {
-    if (!menu.current) return;
-    const lu = lireMenu(menu.current);
-    const origine = lu.origine.split(" ").map(parseFloat);
-    setVerdict(juger(lu, origine[0] === 0 && origine[1] === 0));
-  }, [mot]);
+    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    const lire = () => setLibre(mq.matches);
+    lire(); mq.addEventListener("change", lire);
+    return () => mq.removeEventListener("change", lire);
+  }, []);
+  return libre;
+}
+function useLecture(etapes: number[], surFin?: () => void) {
+  const libre = useLibre();
+  const [i, setI] = useState(-1);          /* -1 : au repos, avant la première lecture */
+  const [enCours, setEnCours] = useState(false);
+  const [fini, setFini] = useState(false);
+  useEffect(() => {
+    if (!enCours || i < 0) return;
+    if (i >= etapes.length) { setEnCours(false); setFini(true); surFin?.(); return; }
+    if (!libre) return;
+    const t = setTimeout(() => setI(i + 1), etapes[i]);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i, enCours, libre]);
+  useEffect(() => {
+    const cacher = () => { if (document.hidden && enCours) { setEnCours(false); setFini(true); surFin?.(); } };
+    document.addEventListener("visibilitychange", cacher);
+    return () => document.removeEventListener("visibilitychange", cacher);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enCours]);
+  const lire = () => { setFini(false); setEnCours(true); setI(0); };
+  const arreter = () => { setEnCours(false); setFini(true); surFin?.(); };
+  const suivant = () => { if (i + 1 >= etapes.length) { setEnCours(false); setFini(true); surFin?.(); } else setI(i + 1); };
+  return { i, libre, enCours, fini, lire, arreter, suivant };
+}
+/* La commande d'une lecture : Lire, puis Arrêter pendant, puis Rejouer ;
+   sous mouvement réduit, Lire puis Étape suivante. */
+function Commande({ l }: { l: ReturnType<typeof useLecture> }) {
+  if (!l.enCours) return <button type="button" className="bouton on mv-commande" onClick={l.lire}>{l.fini ? "Rejouer" : "Lire"}</button>;
+  return l.libre
+    ? <button type="button" className="bouton mv-commande" onClick={l.arreter}>Arrêter</button>
+    : <button type="button" className="bouton mv-commande" onClick={l.suivant}>Étape suivante</button>;
+}
+/* ── 01 · La main invisible. La fiche du témoin ; une main dessinée règle
+   la crédibilité par à-coups, deux fois : d'abord avec la faute (la barre
+   porte une transition et court après la main — l'écart se peint en rouge
+   et se mesure), puis comme il faut (la barre est sous la main, à l'image
+   près). Un sous-titre par étape. ── */
+const V0 = 22, V1 = 84; /* chorégraphie : le départ et l'arrivée de la main */
+const COUPS: [number, number, number][] = [[V0, 58, 240], [58, 46, 200], [46, V1, 280]]; /* chorégraphie : trois coups vifs [de, à, ms] */
+const PAUSE = 1700; /* chorégraphie : la pause entre deux coups */
+const GESTE = COUPS.reduce((t, c) => t + c[2], 0) + PAUSE * (COUPS.length - 1);
+function Main() {
   return (
-    <div className="mv-scene">
-      <div className="mv-mots" role="group" aria-label="Comment le menu arrive">
-        {MOTS.map((m) => (
-          <button key={m.cle} type="button" className={`bouton${mot === m.cle ? " on" : ""}`} aria-pressed={mot === m.cle}
-            onClick={() => choisir(m.cle)}>{m.mot}</button>
-        ))}
-      </div>
-      <div className="mv-scene-menu">
-        <button type="button" className="bouton" aria-expanded={ouvert} aria-controls="mv-menu-actions" onClick={() => setOuvert(!ouvert)}>Actions du témoin</button>
-        <div ref={menu} id="mv-menu-actions" className={`mv-menu ${mot === "pose" || mot === "bouton" ? "" : mot}${ouvert ? " ouvert" : ""}`}
-          role="menu" aria-hidden={!ouvert} data-mot={mot} data-intent={mot === "pose" || mot === "bouton" ? undefined : "statement"}>
-          <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span>
-          <span className="mv-menu-item" role="menuitem">Confronter à un autre témoin</span>
-          <span className="mv-menu-item" role="menuitem">Joindre une pièce</span>
-          <span className="mv-menu-item danger" role="menuitem">Récuser</span>
+    <svg className="mv-main" viewBox="0 0 24 32" aria-hidden="true">
+      <path d="M9 2.5c0-1.4 2.6-1.4 2.6 0V14l1.2-.4c.9-.3 1.7.1 2 .9l.3.8 1.1-.5c.9-.4 1.9 0 2.2.9l.2.6 1.3-.3c1-.2 1.9.5 1.9 1.5v6.2c0 3.6-2.9 6.3-6.5 6.3h-2.6c-2 0-3.9-.9-5.1-2.5L2.3 22c-.7-.9-.5-2.1.4-2.7.8-.6 1.9-.4 2.5.4L7 21.5V2.5z" />
+    </svg>
+  );
+}
+function Molette() {
+  const [st, setSt] = useState<React.ReactNode>("");
+  const l = useLecture([4200, GESTE + ms("slow") + 1200, 5200, 4200, GESTE + 1200, 5600], () => setSt(""));
+  const [v, setV] = useState(V0);
+  const [faute, setFaute] = useState(true);
+  const [saut, setSaut] = useState(true);
+  const [tenue, setTenue] = useState(false);
+  const barre = useRef<HTMLDivElement>(null), piste = useRef<HTMLDivElement>(null);
+  const [ecart, setEcart] = useState({ de: 0, l: 0, px: 0 });
+  const pic = useRef(0);
+  const glisseur = useRef<number>(0);
+  /* le mensonge, lu : tant que la barre n'est pas où est la main, on lit sa largeur à chaque image */
+  useEffect(() => {
+    let vivant = true;
+    const lire = () => {
+      if (!vivant || !barre.current || !piste.current) return;
+      const L = piste.current.getBoundingClientRect().width || 1, b = barre.current.getBoundingClientRect().width, cible = (v / 100) * L;
+      const e = Math.abs(cible - b); pic.current = Math.max(pic.current, e);
+      setEcart({ de: (Math.min(cible, b) / L) * 100, l: (e / L) * 100, px: e });
+      if (e > 0.5) requestAnimationFrame(lire);
+    };
+    requestAnimationFrame(lire);
+    return () => { vivant = false; };
+  }, [v]);
+  /* la main : trois coups vifs, deux pauses ; réduite, elle saute — un déplacement ne se joue pas */
+  const coups = () => {
+    if (!l.libre) { setV(V1); return; }
+    const coup = (n: number) => {
+      if (n >= COUPS.length) return;
+      const [de, a, duree] = COUPS[n], debut = performance.now();
+      const pas = (t: number) => {
+        const k = Math.min(1, (t - debut) / duree); setV(Math.round(de + (a - de) * k));
+        if (k < 1) glisseur.current = requestAnimationFrame(pas);
+        else glisseur.current = window.setTimeout(() => coup(n + 1), PAUSE);
+      };
+      pas(debut);
+    };
+    coup(0);
+  };
+  const revenir = () => { setSaut(true); pic.current = 0; setV(V0); setTenue(false); requestAnimationFrame(() => requestAnimationFrame(() => setSaut(false))); };
+  useEffect(() => {
+    cancelAnimationFrame(glisseur.current); clearTimeout(glisseur.current);
+    const i = l.i;
+    if (i === 0) { setFaute(true); revenir(); setSt(<><b>D&apos;abord la faute.</b> La barre porte une transition de {ms("slow")} ms. Une main va régler la crédibilité, par à-coups, de {V0} à {V1} %. Regardez la barre, pas la main.</>); }
+    if (i === 1) { setTenue(true); setSt("La main est déjà là. La barre court après."); coups(); }
+    if (i === 2) { setTenue(false); setSt(<>La barre a menti de <span className="ko">{fmt(pic.current)} px</span> au plus. Pendant qu&apos;elle rattrapait la main, vous regardiez l&apos;animation, pas le nombre.</>); }
+    if (i === 3) { setFaute(false); revenir(); setSt(<><b>Maintenant comme il faut.</b> La même barre, sans transition. La même main, les mêmes coups.</>); }
+    if (i === 4) { setTenue(true); setSt("La barre est sous la main, à l'image près. Il n'y a rien à regarder d'autre que le nombre."); coups(); }
+    if (i === 5) { setTenue(false); setSt(<><b>Une valeur qu&apos;on fait glisser ne s&apos;anime pas.</b> Ce qu&apos;on tient au doigt est à la valeur tout de suite.</>); }
+    return () => { cancelAnimationFrame(glisseur.current); clearTimeout(glisseur.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [l.i]);
+  const ment = ecart.px > 0.5;
+  const style = { "--mv-w": `${v}%`, "--mv-de": `${ecart.de}%`, "--mv-l": `${ecart.l}%` } as React.CSSProperties;
+  return (
+    <div className="mv-scene" style={style} data-etape={l.i}>
+      <div className="carte mv-fiche" role="img" aria-label={`Fiche du témoin Léa Fontan. Crédibilité ${v} pour cent. La barre ${faute ? "est animée" : "est à la valeur"}${ment ? `, ${fmt(ecart.px)} pixels derrière la main` : ""}.`}>
+        <div className="mv-fiche-tete">
+          <span className="mv-avatar" aria-hidden="true">LF</span>
+          <span className="mv-fiche-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+          <output className="mv-fiche-nombre">{v} %</output>
+        </div>
+        <div className="mv-pile">
+          <span className="mv-pile-dit">Crédibilité</span>
+          <div ref={piste} className={`mv-piste${tenue ? " tenue" : ""}`}>
+            <span className="mv-trace" />
+            <span className="mv-doigt"><Main /></span>
+          </div>
+          <p className="mv-pile-dit">
+            {faute ? <><span className="verdict ko" aria-hidden="true">✗</span><span>animée</span></> : <><span className="verdict bon" aria-hidden="true">✓</span><span>à la valeur</span></>}
+          </p>
+          <div className="mv-jauge-piste" data-intent={faute ? "statement" : undefined}>
+            <div ref={barre} className={`mv-jauge-barre${faute ? " ment" : ""}${saut ? " saut" : ""}`} />
+            <span className="mv-mensonge" hidden={!ment} />
+            <span className="mv-mensonge-cote" hidden={!ment}>{fmt(ecart.px)} px</span>
+          </div>
         </div>
       </div>
-      {verdict && (
-        <span className={`badge ${verdict.ok ? "bon" : "ko"}`} aria-live="polite" data-verdict={verdict.ok ? "bon" : "ko"}>{verdict.dit}</span>
-      )}
+      {/* le sous-titre : pendant la faute, il lit l'écart image par image */}
+      <p className={`mv-sous-titre${st ? " on" : ""}${l.i === 5 ? " regle" : ""}`} aria-live="polite">
+        {l.i === 1 && ment ? <>La main est déjà là. La barre court après — <span className="ko">{fmt(ecart.px)} px derrière</span>.</> : st}
+      </p>
+      <Commande l={l} />
+    </div>
+  );
+}
+
+/* ── 02 · Quatre situations — la mise en scène du film de Rythme (verdict
+   d'Auteur, 7 septembre). Un seul plateau : le panneau de marque décalé à
+   droite, la carte de l'objet qui mord dessus, le compteur, le lecteur sur
+   la page. Ce qui est dans le panneau change de slide en slide : ce que
+   vous faites, la durée et son emploi, le pourquoi. ── */
+type Cas = { cran: Cran; vous: React.ReactNode; obj: "bouton" | "menu" | "panneau" | "section"; pourquoi: string; faute?: boolean };
+const CAS: Cas[] = [
+  { cran: "fast", vous: <>Vous <em>survolez</em> un bouton</>, obj: "bouton",
+    pourquoi: "Un survol répond, il ne se regarde pas. Au-delà de 160 ms, la couleur poursuit le curseur. Vous ne l'avez pas vu : vous l'avez senti." },
+  { cran: "base", vous: <>Vous <em>ouvrez</em> un menu</>, obj: "menu",
+    pourquoi: "Un menu s'ouvre des dizaines de fois par jour. Assez long pour être vu, trop court pour être attendu." },
+  { cran: "slow", vous: <>Vous ouvrez un <em>panneau</em></>, obj: "panneau",
+    pourquoi: "Un panneau change l'écran. Il lui faut un passage, sinon l'état d'avant disparaît sans qu'on sache où il est allé." },
+  { cran: "expressive", vous: <>Une <em>section</em> arrive au défilement</>, obj: "section",
+    pourquoi: "Une découverte, pas une réponse : elle peut prendre son temps. Vous n'attendez rien d'elle." },
+  { cran: "expressive", vous: <>Vous ouvrez un menu… <em>à 700 ?</em></>, obj: "menu", faute: true,
+    pourquoi: "Le même menu, au cran d'une section. Cette fois vous l'attendez — et cent fois par jour, c'est long." },
+];
+const SLIDE_MS = 7000; /* chorégraphie : chaque situation reste sept secondes quand le film se joue */
+const LECTURE_MS = 2400; /* chorégraphie : le temps de lire la situation avant que l'objet réponde */
+function Curseur() {
+  return <svg className="mv-curseur" viewBox="0 0 16 22" aria-hidden="true"><path d="M1 1l6 16 2.2-6.2L15.5 9z" /></svg>;
+}
+function Objet({ cas, joue }: { cas: Cas; joue: boolean }) {
+  if (cas.obj === "bouton") return <><span className={`bouton mv-obj${joue ? " survole" : ""}`} data-joue>Enregistrer</span><Curseur /></>;
+  if (cas.obj === "menu") return (
+    <div className="mv-scene-menu">
+      <span className="bouton mv-obj">Actions du témoin</span>
+      <div className={`mv-menu${cas.faute ? " traine" : ""}${joue ? " ouvert" : ""}`} data-joue role="menu" aria-hidden={!joue}>
+        <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span><span className="mv-menu-item" role="menuitem">Confronter</span><span className="mv-menu-item danger" role="menuitem">Récuser</span>
+      </div>
+    </div>
+  );
+  if (cas.obj === "panneau") return (
+    <div className="mv-ecran">
+      <span className="mv-ligne large" /><span className="mv-ligne" /><span className="mv-ligne courte" />
+      <div className={`mv-panneau${joue ? " ouvert" : ""}`} data-joue aria-hidden={!joue}>
+        <b>Récuser le témoin ?</b><span>Le témoignage sera retiré du dossier.</span>
+        <span className="mv-panneau-actions"><span className="bouton on">Récuser</span><span className="bouton">Annuler</span></span>
+      </div>
+    </div>
+  );
+  return (
+    <div className={`mv-section${joue ? " la" : ""}`} data-joue aria-hidden={!joue}>
+      <b>Les témoins entendus</b><span className="mv-ligne large" /><span className="mv-ligne" /><span className="mv-ligne courte" />
+    </div>
+  );
+}
+function Situations({ surMesure }: { surMesure: (m: number[]) => void }) {
+  const libre = useLibre();
+  const [i, setI] = useState(0);
+  const [joue, setJoue] = useState(false);
+  const [enCours, setEnCours] = useState(false);
+  const [fini, setFini] = useState(false);
+  const [mots, setMots] = useState(true);
+  const carte = useRef<HTMLDivElement>(null), temps = useRef<HTMLElement>(null);
+  const lus = useRef<number[]>([]);
+  const cas = CAS[i];
+  /* poser une situation, puis l'objet répond — après qu'on a eu le temps de lire */
+  const repondre = () => {
+    const o = carte.current?.querySelector<HTMLElement>("[data-joue]"), cur = carte.current?.querySelector<HTMLElement>(".mv-curseur");
+    if (!o || !carte.current) return;
+    if (cur) {
+      const ro = o.getBoundingClientRect();
+      cur.style.left = "18%"; cur.style.top = "70%"; cur.classList.add("la");
+      requestAnimationFrame(() => requestAnimationFrame(() => { const rk = cur.getBoundingClientRect(); cur.style.translate = `${ro.left + ro.width * 0.55 - rk.left}px ${ro.top + ro.height * 0.55 - rk.top}px`; }));
+    }
+    setTimeout(() => setJoue(true), cur ? ms("slow") + 150 : 0);
+  };
+  /* la durée de l'objet est lue sur son rendu dès que la situation est posée — au repos, avant qu'il réponde */
+  const mesurer = () => {
+    const o = carte.current?.querySelector<HTMLElement>("[data-joue]");
+    if (!o) return;
+    const d = enMs(getComputedStyle(o).transitionDuration.split(",")[0]);
+    if (!lus.current.includes(d)) { lus.current = [...lus.current, d]; surMesure(lus.current); }
+  };
+  useEffect(() => {
+    setJoue(false); setMots(false); mesurer();
+    const t1 = setTimeout(() => setMots(true), ms("slow"));
+    const t2 = setTimeout(repondre, enCours ? LECTURE_MS : 1200);
+    let t3: number | undefined;
+    if (enCours) {
+      if (temps.current) { temps.current.style.transition = "none"; temps.current.style.scale = "0 1"; requestAnimationFrame(() => requestAnimationFrame(() => { if (temps.current) { temps.current.style.transition = `scale ${SLIDE_MS}ms linear`; temps.current.style.scale = "1 1"; } })); }
+      if (libre) t3 = window.setTimeout(() => { if (i + 1 < CAS.length) setI(i + 1); else { setEnCours(false); setFini(true); } }, SLIDE_MS);
+      else { setEnCours(false); setFini(true); }
+    }
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i, enCours]);
+  useEffect(() => {
+    const cacher = () => { if (document.hidden && enCours) setEnCours(false); };
+    document.addEventListener("visibilitychange", cacher);
+    return () => document.removeEventListener("visibilitychange", cacher);
+  }, [enCours]);
+  const lire = () => {
+    if (enCours) { setEnCours(false); if (temps.current) temps.current.style.transition = "none"; return; }
+    setFini(false); setEnCours(true); if (fini || i === CAS.length - 1) setI(0);
+  };
+  const aller = (n: number) => { setEnCours(false); setFini(false); setI(n); };
+  return (
+    <div className="mv-scena" data-slide={i}>
+      <p className="mv-scena-chap">Quatre situations, et une de trop</p>
+      <p className="mv-scena-cpt" aria-live="polite"><b>{i + 1}</b><span>sur {CAS.length}</span></p>
+      <div className="mv-scena-panneau">
+        <div className={`mv-scena-mots${mots ? "" : " off"}`}>
+          <p className="mv-scena-titre">{cas.vous}</p>
+          <p className={`mv-scena-duree${cas.faute ? " ko" : ""}`}><b>{ms(cas.cran)} ms</b><span>{cas.faute ? "il traîne" : emploi(cas.cran)}</span></p>
+          <p className="mv-scena-sous">{cas.pourquoi}</p>
+        </div>
+      </div>
+      <div className="mv-scena-scene">
+        <div ref={carte} className="mv-scena-carte" data-intent={cas.faute ? "statement" : undefined}><Objet cas={cas} joue={joue} /></div>
+      </div>
+      <div className="mv-player">
+        <button className="mv-rond" type="button" aria-label="Situation précédente" disabled={i === 0} onClick={() => aller(i - 1)}>←</button>
+        <button className={`mv-rond mv-lect${enCours ? " en-cours" : ""}${fini ? " fin" : ""}`} type="button" aria-label={enCours ? "Pause" : fini ? "Rejouer" : "Lire"} onClick={lire}>
+          <svg className="ic ic-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" /></svg>
+          <svg className="ic ic-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" /></svg>
+          <svg className="ic ic-re" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3a5 5 0 1 0 4.6 3h-1.7A3.4 3.4 0 1 1 8 4.6V7l3.5-3L8 1z" /></svg>
+        </button>
+        <button className="mv-rond" type="button" aria-label="Situation suivante" disabled={i === CAS.length - 1} onClick={() => aller(i + 1)}>→</button>
+        <span className="mv-cpt">{i + 1} / {CAS.length}</span>
+        <span className="mv-temps" aria-hidden="true"><i ref={temps} /></span>
+      </div>
+    </div>
+  );
+}
+
+/* ── 03 · Dire ce qu'on voit — le lexique en gestes (verdict d'Auteur,
+   7 septembre : « A »). Six tuiles, un mot chacune, ✓ ou ✗ ; dans chaque
+   tuile, le même bloc joue son mot au ralenti quand on le lance. Le verdict
+   de chaque tuile est déduit de ce que la feuille produit, ramené à la
+   vitesse réelle. ── */
+const RALENTI = 3; /* chorégraphie : chaque geste est joué trois fois plus lentement, pour qu'il se lise ; le verdict lu divise par trois */
+const LEXIQUE: { cle: string; mot: string; dit: string }[] = [
+  { cle: "pose", mot: "il se pose", dit: "Un fondu et un petit déplacement, sur la courbe du kit. C'est ainsi qu'une infobulle ou un dépliant entre." },
+  { cle: "bouton", mot: "il sort de son bouton", dit: "Il grandit depuis presque sa taille, depuis le coin qui touche son déclencheur. On sait d'où il vient." },
+  { cle: "rebond", mot: "il rebondit", dit: "Sa courbe dépasse la cible et revient : un ressort. Rien de réel ne rebondit en s'ouvrant." },
+  { cle: "neant", mot: "il naît du néant", dit: "Il part de zéro — il n'existait pas une image plus tôt. Un objet réel grandit depuis presque là où il sera." },
+  { cle: "milieu", mot: "il s'ouvre du milieu", dit: "Il grandit depuis son propre centre, pas depuis son déclencheur. Il n'appartient plus à ce qui l'a appelé." },
+  { cle: "traine", mot: "il traîne", dit: "Le cran d'une section, 700 ms, sur un objet qu'on ouvre cent fois par jour. On l'attend." },
+];
+function jugerObjet(el: HTMLElement): { ok: boolean; dit: string } {
+  const lu = auRepos(el, (cs) => {
+    const durees = cs.transitionDuration.split(",").map((d) => enMs(d) / RALENTI);
+    const depasse = Array.from(cs.transitionTimingFunction.matchAll(/cubic-bezier\(([^)]*)\)/g)).some((m) => { const n = m[1].split(",").map(Number); return n[1] > 1 || n[3] > 1; });
+    const o = cs.transformOrigin.split(" ").map(parseFloat), s = cs.scale;
+    return { duree: Math.max(...durees), depasse, depart: s === "none" ? null : parseFloat(s), aucoin: o[0] === 0 && o[1] === 0 };
+  });
+  if (lu.duree === 0) return { ok: false, dit: "aucune durée : un état remplace l'autre" };
+  if (lu.depart === 0) return { ok: false, dit: `part de 0 · ${lu.duree} ms` };
+  if (lu.depasse) return { ok: false, dit: `la courbe dépasse sa cible · ${lu.duree} ms` };
+  if (lu.duree > ms("base")) return { ok: false, dit: `${lu.duree} ms — un objet qu'on ouvre vit à ${ms("base")}` };
+  if (!lu.aucoin) return { ok: false, dit: `${lu.duree} ms, depuis le milieu — pas depuis son déclencheur` };
+  return { ok: true, dit: `${lu.duree} ms · la courbe du kit${lu.depart !== null ? ` · part de ${dec(lu.depart)}` : ""} · depuis son déclencheur` };
+}
+function Tuile({ mot, joue, surLire }: { mot: typeof LEXIQUE[number]; joue: boolean; surLire: () => void }) {
+  const obj = useRef<HTMLDivElement>(null);
+  const [v, setV] = useState<{ ok: boolean; dit: string } | null>(null);
+  useEffect(() => { if (obj.current) setV(jugerObjet(obj.current)); }, []);
+  return (
+    <div className="mv-lex" data-mot={mot.cle} data-intent={v && !v.ok ? "statement" : undefined}>
+      <h3><span>{mot.mot}</span>{v && <span className={`verdict ${v.ok ? "bon" : "ko"}`} aria-hidden="true">{v.ok ? "✓" : "✗"}</span>}</h3>
+      <div className="mv-lex-scene">
+        <span className="mv-lex-decl" aria-hidden="true" />
+        <div ref={obj} className={`mv-lex-obj${joue ? " la" : ""}`} aria-hidden="true"><i /><i /><i /></div>
+      </div>
+      {v && <span className={`mv-lu${v.ok ? "" : " ko"}`}>{v.dit}</span>}
+      <p className="mv-lex-dit">{mot.dit}</p>
+      <button type="button" className="bouton" onClick={surLire} aria-label={`Lire « ${mot.mot} »`}>{joue ? "Rejouer" : "Lire"}</button>
+    </div>
+  );
+}
+function Lexique() {
+  const [joues, setJoues] = useState<boolean[]>(LEXIQUE.map(() => false));
+  const timers = useRef<number[]>([]);
+  const jouer = (k: number) => {
+    setJoues((j) => j.map((x, n) => (n === k ? false : x)));
+    requestAnimationFrame(() => requestAnimationFrame(() => setJoues((j) => j.map((x, n) => (n === k ? true : x)))));
+  };
+  const tout = () => {
+    timers.current.forEach(clearTimeout); timers.current = [];
+    setJoues(LEXIQUE.map(() => false));
+    LEXIQUE.forEach((_, k) => { timers.current.push(window.setTimeout(() => jouer(k), 400 + k * 1900)); }); /* chorégraphie : un mot après l'autre, le temps de le voir */
+  };
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  return (
+    <div className="mv-scene">
+      <div className="mv-lexique" style={{ "--mv-ralenti": RALENTI } as React.CSSProperties}>
+        {LEXIQUE.map((m, k) => <Tuile key={m.cle} mot={m} joue={joues[k]} surLire={() => jouer(k)} />)}
+      </div>
+      <button type="button" className="bouton on mv-commande" onClick={tout}>Tout lire</button>
     </div>
   );
 }
@@ -454,8 +646,8 @@ const CODE: LigneCode[] = [
 ];
 
 const SOMMAIRE: Sommaire = [
-  ["molette", "01", "La molette qui ment"],
-  ["durees", "02", "Quatre durées"],
+  ["molette", "01", "La main invisible"],
+  ["durees", "02", "Quatre situations"],
   ["mots", "03", "Dire ce qu'on voit"],
   ["casser", "04", "Les règles qu'on peut casser"],
   ["invisibles", "05", "Les règles qu'on ne peut pas montrer"],
@@ -477,96 +669,89 @@ export default function Vue() {
             <p className="kicker">Le mouvement</p>
             <h1>Le mouvement n&apos;existe que pendant qu&apos;il se produit<span className="point" aria-hidden="true" /></h1>
             <p className="chapo">
-              On ne peut pas le regarder, seulement l&apos;attraper — et c&apos;est pour ça qu&apos;on le
-              règle si mal. Une durée de trop se sent sans se voir, une courbe héritée ne signe rien, et
-              une interface qui bouge partout finit par ne plus rien dire. Ici, quatre
-              durées, <b>une</b> courbe, et chacune sait où elle va. Ce que vous ne pouvez pas voir, la page le mesure pour vous.
+              On ne peut pas le regarder, seulement l&apos;attraper. C&apos;est pour ça qu&apos;on le règle
+              mal : une durée de trop se sent sans se voir, une courbe héritée ne signe rien. Ici, quatre
+              durées, <b>une</b> courbe, et chacune sait où elle va. Les trois scènes qui suivent se lisent
+              comme un film : ce que vous ne pouvez pas voir, la page le mesure.
             </p>
           </section>
 
-          {/* ══════════ 01 · situation ══════════ */}
+          {/* ══════════ 01 · situation — la main invisible ══════════ */}
           <section className="gdoc-sec pose" id="molette">
             <div className="gdoc-sec-tete">
-              <p className="kicker">01 · La molette qui ment</p>
+              <p className="kicker">01 · La main invisible</p>
               <h2>Une valeur qu&apos;on fait glisser ne s&apos;anime pas</h2>
               <p className="sourd">Une molette promet une chose simple : ce que vous voyez est la valeur
-              où est votre doigt. Dès que la scène porte une transition, elle traîne derrière — et vous
-              regardez l&apos;animation au lieu du nombre. La démonstration cesse de démontrer. Tenez la
-              molette et ne quittez pas son curseur des yeux : la barre du bas court après lui, et
-              l&apos;écart est mesuré à chaque image.</p>
+              où est votre doigt. Si la scène porte une transition, elle traîne derrière — et vous regardez
+              l&apos;animation au lieu du nombre. Ici, une main fait le geste à votre place, deux fois :
+              d&apos;abord avec la faute, puis comme il faut.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc voile">
+                <div className="banc primaire">
                   <Molette />
                 </div>
                 <figcaption className="gd-legende">
-                  une molette, deux barres sous son curseur · en haut aucune transition sur la largeur réglée · en bas {ms("slow")} ms
-                  sur la valeur qu&apos;on tient — le retard est lu sur le rendu, pas décrété
+                  une main, une barre, deux passages · d&apos;abord {ms("slow")} ms sur la valeur qu&apos;on tient, puis aucune transition —
+                  le rouge est l&apos;écart rendu entre la barre et la main, son chiffre est lu, pas décrété
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>Le jumeau du verdict du 2 septembre, « une molette ne repeint que sa scène » : là on
-                empêchait la page de bouger, ici on empêche la scène de mentir sur le nombre. La fiche
-                d&apos;Arrondis et le film de Rythme y obéissent depuis le 4 septembre.</p>
+                empêchait la page de bouger, ici on empêche la scène de mentir sur le nombre.</p>
                 <Regles ids={["m4", "m5"]} />
               </div></details>
             </div>
           </section>
 
-          {/* ══════════ 02 · variation ══════════ */}
+          {/* ══════════ 02 · variation — quatre situations ══════════ */}
           <section className="gdoc-sec pose" id="durees">
             <div className="gdoc-sec-tete">
-              <p className="kicker">02 · Quatre durées</p>
+              <p className="kicker">02 · Quatre situations</p>
               <h2>Une durée n&apos;est pas un goût, c&apos;est une taille</h2>
-              <p className="sourd">Le même verdict se pose quatre fois, et une seule chose change. À
-              cent millisecondes on ne le voit pas, on le sent : c&apos;est la taille d&apos;un bouton.
-              À sept cents, on l&apos;attend : c&apos;est la taille d&apos;une section qui arrive. Entre
-              les deux, le menu et le panneau. Rejouez-les autant de fois qu&apos;il faut pour que
-              l&apos;échelle vous entre dans l&apos;œil.</p>
+              <p className="sourd">À cent millisecondes, on ne voit rien : on sent. C&apos;est la taille
+              d&apos;un bouton. À sept cents, on attend : c&apos;est la taille d&apos;une section qui
+              arrive. Entre les deux, le menu et le panneau. Quatre situations, quatre tailles — et une
+              cinquième, où la taille n&apos;est pas la bonne.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc voile">
-                  <QuatreDurees surMesure={setMesures} />
-                </div>
+                <Situations surMesure={setMesures} />
                 <figcaption className="gd-legende">
                   {mesures.length
-                    ? `${mesures.map((m) => fmt(m)).join(" · ")} ms, lus sur le rendu · même objet, même courbe, même distance — seule la durée change`
-                    : "même objet, même courbe, même distance — seule la durée change"}
+                    ? `${mesures.map((m) => fmt(m)).join(" · ")} ms, lus sur le rendu · quatre objets, une courbe — chacun prend la durée de son emploi`
+                    : "quatre objets, une courbe — chacun prend la durée de son emploi"}
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>La durée se déduit de l&apos;objet et de la fréquence du geste, jamais de l&apos;humeur
                 de celui qui écrit la ligne. Le cran de {ms("expressive")} n&apos;est pas une réponse
-                d&apos;interface — c&apos;est une découverte au défilement, et le plafond de 300 ne le
-                vise pas.</p>
-                <Regles ids={["m3", "m2"]} />
+                d&apos;interface : c&apos;est une découverte au défilement.</p>
+                <Regles ids={["m3", "m10", "m2"]} />
               </div></details>
             </div>
           </section>
 
-          {/* ══════════ 03 · vocabulaire ══════════ */}
+          {/* ══════════ 03 · vocabulaire — le lexique en gestes ══════════ */}
           <section className="gdoc-sec pose" id="mots">
             <div className="gdoc-sec-tete">
               <p className="kicker">03 · Dire ce qu&apos;on voit</p>
               <h2>On ne gouverne pas ce qu&apos;on ne sait pas nommer</h2>
               <p className="sourd">« Ça fait bizarre » n&apos;est pas un verdict. Un mouvement se décrit
-              avec des mots précis — il se pose, il sort de son bouton, il rebondit, il saute — et
-              chaque mot est déjà une règle, tenue ou cassée. Choisissez un mot : le menu arrive comme
-              vous l&apos;avez dit, et la page lit dans la feuille ce que ce mot produit vraiment.</p>
+              avec des mots précis, et chaque mot est déjà une règle, tenue ou cassée. Voici le lexique :
+              six mots, et le même objet qui joue chacun d&apos;eux.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
-                <div className="banc voile">
-                  <Mots />
-                </div>
+                <Lexique />
                 <figcaption className="gd-legende">
-                  un seul menu, sept façons d&apos;arriver · deux sont justes · le verdict est déduit de la
-                  durée, de la courbe, de la taille de départ et du point d&apos;origine — lus sur le rendu
+                  six mots, six tuiles, le même objet · joué au ralenti ×{RALENTI} pour que le geste se lise · le verdict de chaque tuile est déduit
+                  de la durée, de la courbe, du départ et de l&apos;origine — lus sur le rendu, ramenés à la vitesse réelle
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Le septième mot, « il saute », n&apos;a rien à montrer : un état remplace l&apos;autre,
+                sans passage. Ce qu&apos;on sait nommer, on peut le corriger.</p>
                 <Regles ids={["m6", "m7", "m2", "m3"]} />
               </div></details>
             </div>
@@ -577,9 +762,9 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">04 · Les règles qu&apos;on peut casser</p>
               <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="sourd">Aucune de ces fautes ne déclenche d&apos;erreur nulle part. Elles se
-              sentent avant de se voir — c&apos;est ce qui les rend coûteuses. Alors le juste et le faux
-              jouent côte à côte, au même instant, et chaque colonne lit ce qu&apos;elle joue.</p>
+              <p className="sourd">Aucune de ces fautes ne déclenche d&apos;erreur. Elles se sentent
+              avant de se voir. Alors le juste et le faux jouent côte à côte, au même instant, et chaque
+              colonne lit ce qu&apos;elle joue.</p>
             </div>
             <div className="gdoc-corps">
               <Bandes>
