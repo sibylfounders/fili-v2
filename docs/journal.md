@@ -6088,3 +6088,39 @@ mesurée — aucun mot qui décrit l'écran ou raconte le geste, rien sous les
 titres, rien après l'évidence.
 
 Banc : onze vertes trois fois, puis la course complète — six pages vertes.
+
+## 8 septembre 2026 (nuit) — la densité d'un chapitre : le répertoire revient au gabarit
+
+**La consigne, revenue au bureau.** Les instructions ont changé une troisième
+fois dans la journée : une page Fondations doit avoir « la densité d'un
+chapitre et l'impact visuel d'une démonstration », se lire à deux vitesses,
+distinguer observation, règle et réglage, et suivre le gabarit des autres
+pages — les règles majeures, celles qu'on peut casser, celles qu'on ne peut
+pas montrer, le code. La version du soir (trois preuves nues, un « moteur »)
+était devenue une galerie : elle impressionnait, elle apprenait peu.
+
+**Ce qui revient.** Sous chaque titre, une phrase d'observation. Sous chaque
+preuve, une légende lue sur le rendu — la durée et la courbe de la carte qui
+glisse, le point de départ des deux menus, le compte des cartes qui s'animent
+de chaque côté — et un dépliant « Règles & sources » en trois temps :
+l'observation (ce que l'œil fait), la règle (ce que FILI en tire, avec ses
+nuances et son exception), le réglage (les durées du kit). Puis le répertoire
+au gabarit : quatre paires qu'on peut casser — le survol qui poursuit (100 /
+300), le menu qui traîne (200 / 700, nouvelle paire, parce que la durée n'est
+plus une preuve mais reste la règle la plus cassée), rien ne naît du néant
+(0,95 / 0), moins de mouvement mais pas aucun — chaque tête de côté lue sur le
+rendu ; huit règles en liste ; le registre en neuf lignes.
+
+**Ce qui ne revient pas.** Ni « Regardez », ni surtitres de démo, ni badges
+décrétés, ni légende qui explique après l'évidence, ni pied. Les trois
+scènes de l'après-midi restent telles quelles.
+
+**Au banc.** Douze épreuves : les paires reprennent leur épreuve du matin
+(le menu qui traîne remplace l'origine, déjà prouvée par 02) ; l'écriture
+d'Auteur est mesurée — une observation sous chaque titre et une seule, une
+légende par preuve qui porte une valeur lue, observation / règle / réglage
+sous chaque preuve, huit dépliants de sources, aucun mot qui décrit l'écran.
+En chemin : une courbe lue en coupant sur la virgule du `cubic-bezier` —
+lue sur la bonne virgule maintenant.
+
+Banc : douze vertes trois fois, puis la course complète — six pages vertes.
