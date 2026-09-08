@@ -315,6 +315,13 @@ function GazeDemo() {
 }
 
 /* ══ Les règles qu'on peut casser : le juste et le faux côte à côte, un seul geste joue les deux, la tête de chaque côté est lue sur le rendu. ══ */
+const RALENTI_PAIRES = 3; /* chorégraphie : chaque paire joue trois fois plus lentement, et le dit ; les verdicts lus divisent par trois */
+const Scene = ({ children }: { children: React.ReactNode }) => (
+  <div className="mv-scene" style={{ "--mv-ralenti": RALENTI_PAIRES } as React.CSSProperties}>
+    {children}
+    <span className="mv-ralenti" aria-hidden="true">ralenti ×{RALENTI_PAIRES}</span>
+  </div>
+);
 function Cote({ ok, dit, faux, children }: { ok: boolean; dit: string; faux?: boolean; children: React.ReactNode }) {
   return (
     <div className="mv-cote" data-intent={faux ? "statement" : undefined}>
@@ -328,18 +335,26 @@ function Cote({ ok, dit, faux, children }: { ok: boolean; dit: string; faux?: bo
 function BandeSurvol() {
   const scene = useRef<HTMLDivElement>(null);
   const [durees, setDurees] = useState<number[]>([]);
+  const [survole, setSurvole] = useState(false);
+  const minuteur = useRef<number>(0);
   useEffect(() => {
     if (!scene.current) return;
-    setDurees(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-rangee")).map((r) => enMs(getComputedStyle(r.querySelector(".bouton")!).transitionDuration.split(",")[0])));
+    setDurees(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-rangee")).map((r) => enMs(getComputedStyle(r.querySelector(".bouton")!).transitionDuration.split(",")[0]) / RALENTI_PAIRES));
+    return () => clearTimeout(minuteur.current);
   }, []);
+  /* un seul geste : le curseur passe sur les deux rangées au même instant, puis les quitte */
+  const survoler = () => { clearTimeout(minuteur.current); setSurvole(false); requestAnimationFrame(() => requestAnimationFrame(() => { setSurvole(true); minuteur.current = window.setTimeout(() => setSurvole(false), ms("slow") * RALENTI_PAIRES + 400); })); }; /* chorégraphie : le temps que la rangée lente arrive, puis on repart */
   const okDe = (d?: number) => d === undefined || d <= ms("fast");
   const dit = (d?: number) => d === undefined ? "" : okDe(d) ? `${d} ms — il suit le curseur` : `${d} ms — il poursuit le curseur`;
-  const Rangee = () => (<><button type="button" className="bouton">Entendre</button><button type="button" className="bouton">Confronter</button><button type="button" className="bouton">Récuser</button></>);
+  const Rangee = () => (<><span className={`bouton${survole ? " survole" : ""}`}>Entendre</span><span className={`bouton${survole ? " survole" : ""}`}>Confronter</span><span className={`bouton${survole ? " survole" : ""}`}>Récuser</span></>);
   return (
-    <div className="mv-duo" ref={scene}>
-      <Cote ok={okDe(durees[0])} dit={dit(durees[0])}><div className="mv-rangee"><Rangee /></div></Cote>
-      <Cote ok={okDe(durees[1])} faux dit={dit(durees[1])}><div className="mv-rangee lente"><Rangee /></div></Cote>
-    </div>
+    <Scene>
+      <div className="mv-duo" ref={scene}>
+        <Cote ok={okDe(durees[0])} dit={dit(durees[0])}><div className="mv-rangee" aria-hidden="true"><Rangee /></div></Cote>
+        <Cote ok={okDe(durees[1])} faux dit={dit(durees[1])}><div className="mv-rangee lente" aria-hidden="true"><Rangee /></div></Cote>
+      </div>
+      <button type="button" className="bouton" onClick={survoler}>Survoler</button>
+    </Scene>
   );
 }
 
@@ -350,7 +365,7 @@ function BandeTraine() {
   const [durees, setDurees] = useState<number[]>([]);
   useEffect(() => {
     if (!scene.current) return;
-    setDurees(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-menu")).map((m) => enMs(getComputedStyle(m).transitionDuration.split(",")[0])));
+    setDurees(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-menu")).map((m) => enMs(getComputedStyle(m).transitionDuration.split(",")[0]) / RALENTI_PAIRES));
   }, []);
   const okDe = (d?: number) => d === undefined || d <= ms("base");
   const dit = (d?: number) => d === undefined ? "" : okDe(d) ? `${d} ms — il est là quand on le veut` : `${d} ms — on l'attend`;
@@ -365,10 +380,12 @@ function BandeTraine() {
     </div>
   );
   return (
-    <div className="mv-duo" ref={scene}>
-      <Cote ok={okDe(durees[0])} dit={dit(durees[0])}><Menu /></Cote>
-      <Cote ok={okDe(durees[1])} faux dit={dit(durees[1])}><Menu traine /></Cote>
-    </div>
+    <Scene>
+      <div className="mv-duo" ref={scene}>
+        <Cote ok={okDe(durees[0])} dit={dit(durees[0])}><Menu /></Cote>
+        <Cote ok={okDe(durees[1])} faux dit={dit(durees[1])}><Menu traine /></Cote>
+      </div>
+    </Scene>
   );
 }
 
@@ -392,13 +409,13 @@ function BandeNeant() {
   const okDe = (d?: number | null) => d === undefined || d === null || d > 0;
   const dit = (d?: number | null) => d === undefined ? "" : d === null ? "elle apparaît à sa taille" : d > 0 ? `elle part de ${dec(d)} — presque sa taille` : "elle part de 0 — elle surgit du néant";
   return (
-    <div className="mv-scene">
+    <Scene>
       <div className="mv-duo" ref={scene}>
         <Cote ok={okDe(departs[0])} dit={dit(departs[0])}><div className="mv-scene-toast"><Toast la={la} /></div></Cote>
         <Cote ok={okDe(departs[1])} faux dit={dit(departs[1])}><div className="mv-scene-toast"><Toast classe="neant" la={la} /></div></Cote>
       </div>
       <button type="button" className="bouton" onClick={notifier}>Notifier</button>
-    </div>
+    </Scene>
   );
 }
 
@@ -412,18 +429,18 @@ function BandeReduit() {
   const [lus, setLus] = useState<{ props: string; duree: number }[]>([]);
   useEffect(() => {
     if (!scene.current) return;
-    setLus(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-toast")).map((t) => auRepos(t, (cs) => ({ props: cs.transitionProperty, duree: enMs(cs.transitionDuration.split(",")[0]) }))));
+    setLus(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-toast")).map((t) => auRepos(t, (cs) => ({ props: cs.transitionProperty, duree: enMs(cs.transitionDuration.split(",")[0]) / RALENTI_PAIRES }))));
   }, []);
   const notifier = () => { setLa(false); requestAnimationFrame(() => requestAnimationFrame(() => setLa(true))); };
   const dit = (l?: { props: string; duree: number }) => l === undefined ? "" : l.duree === 0 ? "tout coupé : elle surgit sans passage" : /translate|scale/.test(l.props) ? "elle monte et grandit en apparaissant" : `le fondu reste (${l.duree} ms), le déplacement est parti`;
   return (
-    <div className="mv-scene">
+    <Scene>
       <div className="mv-duo" ref={scene}>
         <Cote ok={lus[0] === undefined || lus[0].duree > 0} dit={dit(lus[0])}><div className="mv-scene-toast mv-reduit"><Toast la={la} /></div></Cote>
         <Cote ok={lus[1] === undefined || lus[1].duree > 0} faux dit={dit(lus[1])}><div className="mv-scene-toast mv-coupe"><Toast la={la} /></div></Cote>
       </div>
       <button type="button" className="bouton" onClick={notifier}>Notifier</button>
-    </div>
+    </Scene>
   );
 }
 

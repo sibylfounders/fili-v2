@@ -272,13 +272,13 @@
 .mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block)); min-width: 14rem; display: grid; gap: var(--gap-4-block);
   background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3-block) var(--pad-3-inline); z-index: 1;
   box-shadow: 0 8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du menu posé */
-  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
+  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* menu : le fondu s'écrit nu ; chorégraphie : le ralenti de la paire */
 .mv-menu.ouvert { opacity: 1; pointer-events: auto; }
-.mv-menu.traine { transition-duration: var(--m-expressive); } /* casse (hors chaîne) : un menu au cran d'une section — 700 là où un menu vit à 200 */
+.mv-menu.traine { transition-duration: calc(var(--m-expressive) * var(--mv-ralenti, 1)); } /* casse (hors chaîne) : un menu au cran d'une section — 700 là où un menu vit à 200 */
 @media (prefers-reduced-motion: no-preference) {
-  .mv-menu { scale: 0.95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton */
+  .mv-menu { scale: 0.95; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton ; chorégraphie : le ralenti */
   .mv-menu.ouvert { scale: 1; }
-  .mv-menu.traine { transition-duration: var(--m-expressive); } /* casse (hors chaîne) : il traîne */
+  .mv-menu.traine { transition-duration: calc(var(--m-expressive) * var(--mv-ralenti, 1)); } /* casse (hors chaîne) : il traîne ; chorégraphie : le ralenti */
 }
 .mv-menu-item { display: flex; align-items: center; min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
   border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
@@ -288,26 +288,30 @@
 
 /* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
       bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
-.mv-scene { display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
+.mv-scene { position: relative; display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
+.mv-scene > .bouton, .mv-scene-menu > .bouton, .mv-menu-item { --mv-ralenti: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
+.mv-ralenti { justify-self: end; font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
 .mv-rangee { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+.mv-rangee .bouton { transition: background-color calc(var(--m-fast) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire — le survol, au cran rapide */
+.mv-rangee .bouton.survole { background: var(--surface-hover); } /* le survol, joué par le geste : la même couleur que le vrai survol */
 .mv-scene-toast { display: grid; justify-items: start; min-height: calc(var(--control-height) + var(--gap-2-block)); }
 /* 1 · le survol qui poursuit : la même rangée, la durée du panneau au lieu de celle du survol */
-.mv-rangee.lente .bouton { transition-duration: var(--m-slow); } /* casse (hors chaîne) : le survol poursuit le curseur — 300 là où un survol vit à 100 */
+.mv-rangee.lente .bouton { transition-duration: calc(var(--m-slow) * var(--mv-ralenti, 1)); } /* casse (hors chaîne) : le survol poursuit le curseur — 300 là où un survol vit à 100 ; chorégraphie : le ralenti */
 
 /* 3 · la notification : elle arrive depuis presque sa taille ; cassée, depuis rien */
 .mv-toast { display: flex; align-items: center; gap: var(--gap-3-inline);
   background: var(--text-primary); color: var(--bg); border-radius: var(--r-2);
   padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: 600;
-  opacity: 0; transition: opacity var(--m-base) var(--e-out); } /* le fondu s'écrit nu */
+  opacity: 0; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* le fondu s'écrit nu ; chorégraphie : le ralenti de la paire */
 .mv-toast .point { width: var(--gap-3-inline); height: var(--gap-3-inline); border-radius: var(--r-pill); background: var(--success); flex: none; }
 @media (prefers-reduced-motion: no-preference) {
   .mv-toast { scale: 0.95; translate: 0 var(--gap-3-block);
-    transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out), translate var(--m-base) var(--e-out); }
+    transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out), translate calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire */
   .mv-toast.neant { scale: 0; } /* casse (hors chaîne) : elle naît du néant */
   .mv-toast.la { scale: 1; translate: 0 0; }
   /* 4 · moins de mouvement : ce que voit quelqu'un qui l'a demandé — le déplacement part, le fondu reste.
      Une simulation du réglage système, à l'échelle de la scène ; le site, lui, y obéit par ses portillons. */
-  .mv-reduit .mv-toast { scale: none; translate: none; transition: opacity var(--m-base) var(--e-out); }
+  .mv-reduit .mv-toast { scale: none; translate: none; transition: opacity calc(var(--m-base) * var(--mv-ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti */
   .mv-coupe .mv-toast { scale: none; translate: none; transition: none; } /* casse (hors chaîne) : l'ancienne règle — tout coupé, elle surgit sans passage */
 }
 .mv-coupe .mv-toast { transition: none; } /* casse (hors chaîne) : l'ancienne règle, nue aussi */

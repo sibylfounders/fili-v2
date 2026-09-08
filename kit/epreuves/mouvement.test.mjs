@@ -145,16 +145,20 @@ test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste
     assert.equal(await p.locator(`${bande(i)} .doc-casser`).count(), 0, `paire ${i} : pas de bouton casser`)
     assert.equal(await p.locator(`${bande(i)} details.prov`).count(), 1, `paire ${i} : ses règles et sources`)
   }
-  assert.equal(enMs(await calc(p, `${bande(1)} .mv-rangee:not(.lente) .bouton`, 'transitionDuration')), MOUVEMENT.durees.fast.ms)
-  assert.equal(enMs(await calc(p, `${bande(1)} .mv-rangee.lente .bouton`, 'transitionDuration')), MOUVEMENT.durees.slow.ms)
+  const R = 3 /* le ralenti des paires, écrit sur chaque scène */
+  assert.deepEqual(await textes(p, '#casser .mv-ralenti'), Array(4).fill(`ralenti ×${R}`), 'le ralenti est écrit sur les quatre scènes')
+  assert.equal(enMs(await calc(p, `${bande(1)} .mv-rangee:not(.lente) .bouton`, 'transitionDuration')), MOUVEMENT.durees.fast.ms * R)
+  assert.equal(enMs(await calc(p, `${bande(1)} .mv-rangee.lente .bouton`, 'transitionDuration')), MOUVEMENT.durees.slow.ms * R)
+  await p.locator(`${bande(1)} .bouton`, { hasText: 'Survoler' }).click(); await p.waitForTimeout(120)
+  assert.equal(await p.locator(`${bande(1)} .mv-rangee .bouton.survole`).count(), 6, 'un geste : le curseur passe sur les deux rangées au même instant')
   assert.match(await tete(1, 1), new RegExp(`${MOUVEMENT.durees.fast.ms} ms — il suit le curseur`)); assert.match(await tete(1, 2), new RegExp(`${MOUVEMENT.durees.slow.ms} ms — il poursuit le curseur`))
-  assert.equal(enMs(await calc(p, `${bande(2)} .mv-menu`, 'transitionDuration', 0)), MOUVEMENT.durees.base.ms, 'juste : le cran du menu')
-  assert.equal(enMs(await calc(p, `${bande(2)} .mv-menu`, 'transitionDuration', 1)), EXPRESSIF, 'fautif : le cran d\'une section')
+  assert.equal(enMs(await calc(p, `${bande(2)} .mv-menu`, 'transitionDuration', 0)), MOUVEMENT.durees.base.ms * R, 'juste : le cran du menu, au ralenti')
+  assert.equal(enMs(await calc(p, `${bande(2)} .mv-menu`, 'transitionDuration', 1)), EXPRESSIF * R, 'fautif : le cran d\'une section, au ralenti')
   assert.match(await tete(2, 1), new RegExp(`${MOUVEMENT.durees.base.ms} ms — il est là quand on le veut`)); assert.match(await tete(2, 2), new RegExp(`${EXPRESSIF} ms — on l'attend`))
-  await p.locator(`${bande(2)} .bouton`).first().click(); await p.waitForTimeout(MOUVEMENT.durees.base.ms + 60)
+  await p.locator(`${bande(2)} .bouton`).first().click(); await p.waitForTimeout(MOUVEMENT.durees.base.ms * R + 60)
   assert.equal(await p.locator(`${bande(2)} .mv-menu.ouvert`).count(), 2, 'un geste, deux menus ouverts')
   assert.match(await tete(3, 1), /part de 0,95 — presque sa taille/); assert.match(await tete(3, 2), /part de 0 — elle surgit du néant/)
-  await p.locator(`${bande(3)} .bouton`, { hasText: 'Notifier' }).click(); await p.waitForTimeout(MOUVEMENT.durees.base.ms + 60)
+  await p.locator(`${bande(3)} .bouton`, { hasText: 'Notifier' }).click(); await p.waitForTimeout(MOUVEMENT.durees.base.ms * R + 60)
   assert.equal(await p.locator(`${bande(3)} .mv-toast.la`).count(), 2, 'un geste, deux notifications')
   assert.equal(await calc(p, `${bande(4)} .mv-toast`, 'transitionProperty', 0), 'opacity', 'notre règle : le fondu seul')
   assert.equal(await calc(p, `${bande(4)} .mv-toast`, 'transitionDuration', 1), '0s', "l'ancienne règle : rien")
@@ -163,14 +167,15 @@ test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste
 })
 
 /* ── 4 · Tout ce qui bouge prend un cran et la courbe ── */
-test('4 · sur le rendu, chaque transition et chaque animation dure un cran du moteur et suit la courbe du kit — hors des ruptures déclarées', async () => {
+test('4 · sur le rendu, chaque transition et chaque animation dure un cran du moteur (au ralenti dit par la scène près) et suit la courbe du kit — hors des ruptures déclarées', async () => {
   const { p, fermer } = await pageLibre(URL())
   const fautes = await p.evaluate(([MS, courbe]) => {
     const f = []
     for (const el of document.querySelectorAll('main .motion-demo *, main .doc-bande *')) {
       if (el.closest('[data-intent="statement"]')) continue
       const cs = getComputedStyle(el)
-      const lire = (d) => { const v = parseFloat(d); return d.trim().endsWith('ms') ? v : v * 1000 }
+      const ralenti = parseFloat(cs.getPropertyValue('--mv-ralenti')) || 1 /* le ralenti est écrit sur la scène, lu ici */
+      const lire = (d) => { const v = parseFloat(d); return (d.trim().endsWith('ms') ? v : v * 1000) / ralenti }
       for (const ms of cs.transitionDuration.split(',').map(lire)) if (ms !== 0 && !MS.some((m) => Math.abs(m - ms) < 0.5)) f.push(`${el.className} : transition ${ms} ms n'est pas un cran`)
       if (cs.animationName !== 'none') for (const ms of cs.animationDuration.split(',').map(lire)) if (!MS.some((m) => Math.abs(m - ms) < 0.5)) f.push(`${el.className} : animation ${ms} ms n'est pas un cran`)
       const fns = [...cs.transitionTimingFunction.split(/,(?![^(]*\))/), ...(cs.animationName !== 'none' ? cs.animationTimingFunction.split(/,(?![^(]*\))/) : [])]
