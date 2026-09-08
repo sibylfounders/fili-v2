@@ -234,3 +234,28 @@ export async function fautesEnDur(p, W, base, { racine = 'main .gdoc-corps', exc
     return [...new Set(fautes)]
   }, [racine, ens, exclusions, TOL])
 }
+
+/* ── L'écriture d'une page (8 septembre 2026, instructions d'Auteur) ──
+   Le texte porte la connaissance ; l'interface rend le geste évident. Donc :
+   aucun mot qui commande le lecteur ou décrit l'écran ; pas d'histoire de
+   page devant le lecteur (« ce qui remplace l'extrait ») ; pas de pied qui
+   commente la page ; UN répertoire par page, sous un titre à elle — plus la
+   queue en trois sections aux titres copiés d'une page à l'autre ; et l'arbre
+   des titres ne saute jamais un niveau (la page Typo l'exige des autres). */
+export const TITRES_DE_LA_QUEUE = [
+  /Voyez ce qui se passe quand la règle saute/, /Elles se vérifient ailleurs/, /Le même système, dans votre stack/,
+]
+export async function fautesEcriture(p) {
+  const fautes = []
+  const corps = await texte(p, 'main')
+  const mots = /Regardez|Observez|Voyez|Essayez|Cliquez|Appuyez|Faites glisser|Tirez|Cassez|Tournez|Serrez|Posez|Pâlissez|Retirez|Divisez|Comme vous pouvez|Vous voyez|vous voyez|Cette démonstration|À gauche vous/g
+  for (const m of corps.match(mots) ?? []) fautes.push(`un mot qui commande ou décrit : « ${m} »`)
+  for (const m of corps.match(/Ce qui remplace l.extrait|Ce qui a quitté cette page/g) ?? []) fautes.push(`de l'histoire de page devant le lecteur : « ${m} »`)
+  if (await p.locator('main .gd-pied').count()) fautes.push('un pied qui commente la page')
+  const h2 = await textes(p, 'main .gdoc-sec h2')
+  for (const t of h2) for (const q of TITRES_DE_LA_QUEUE) if (q.test(t)) fautes.push(`un titre de la queue commune : « ${t} »`)
+  if (await p.locator('main #registre').count() !== 1) fautes.push('pas un répertoire — exactement un, #registre')
+  const niveaux = await p.$$eval('main h1, main h2, main h3, main h4, main h5, main h6', (es) => es.map((e) => +e.tagName[1]))
+  for (let i = 1; i < niveaux.length; i++) if (niveaux[i] > niveaux[i - 1] + 1) fautes.push(`un saut de niveau de titre : h${niveaux[i - 1]} → h${niveaux[i]} (titre nº ${i + 1})`)
+  return fautes
+}

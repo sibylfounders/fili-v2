@@ -21,7 +21,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { chaine, jetons, INTENTIONS, DENSITES, AXES, LARGEUR_MIN, LARGEUR_MAX } from '../derivation.mjs'
-import { KIT, LARGEURS, DENSITES_SITE, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, selecteursDeclares, selecteursEnEm, debord, rgb, encres } from './banc.mjs'
+import { KIT, LARGEURS, DENSITES_SITE, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, selecteursDeclares, selecteursEnEm, debord, rgb, encres , fautesEcriture } from './banc.mjs'
 
 const SOCLE = chaine(), J = jetons(SOCLE)
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
@@ -345,12 +345,12 @@ test('3 · les trois arcs de la profondeur valent les coins du registre, et la c
     .map((e) => { const d = e.getAttribute('d'); return parseFloat(d.slice(d.indexOf(' A ') + 3)) }))
   liste(await rayons(), [SOCLE.r[0], SOCLE.r[1], SOCLE.r[2]], 'les trois arcs, au vrai rayon', TOL)
   ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), attendu('r-3', W), 'la ligne, au repos')
-  await p.locator('#profondeur .bouton.casse').click()
+  await p.locator('#echelle .bouton.casse').click()
   await p.waitForTimeout(600)
   assert.equal(await p.getAttribute('#profondeur .ry-pf-ligne', 'data-intent'), 'statement')
   ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), 2 * attendu('r-2', W), 'cassée : deux fois le coin de sa carte')
   liste(await rayons(), [SOCLE.r[0], SOCLE.r[1], SOCLE.r[1] * 2], 'cassée : le troisième arc dépasse le deuxième', TOL)
-  await p.locator('#profondeur .bouton.casse').click()
+  await p.locator('#echelle .bouton.casse').click()
   await p.waitForTimeout(600)
   ok(await calcPx(p, '#profondeur .ry-pf-ligne', 'borderTopLeftRadius'), attendu('r-3', W), 'réparée')
   await fermer()
@@ -362,7 +362,7 @@ test('3 · les trois arcs de la profondeur valent les coins du registre, et la c
 test('4 · chaque titre de section appartient à ce qu’il ouvre : le silence au-dessus dépasse la tête au-dessous', async () => {
   for (const W of LARGEURS) {
     const { p, fermer } = await nav.page(URL(), { largeur: W })
-    const ids = ['echelle', 'densite', 'profondeur', 'bandes', 'liste', 'code']
+    const ids = ['echelle', 'densite', 'titres', 'registre']
     for (const id of ids) {
       const dessus = await calcPx(p, `#${id}.gdoc-sec`, 'paddingTop')
       const dessous = await calcPx(p, `#${id} .gdoc-corps`, 'marginTop')
@@ -426,4 +426,22 @@ test('6 · dans la vue, tout style posé en ligne est un jeton ou une valeur du 
     }
   })
   assert.deepEqual(fautes, [])
+})
+
+/* ── 8 · L'écriture et le répertoire (8 septembre 2026, soir) ──
+   La chaîne et la profondeur sont fondues en une preuve, la descente (#echelle
+   garde la tranche, #profondeur le schéma des trois étages, dans la même
+   section) ; la queue commune a disparu ; UN répertoire (#registre) range les
+   jetons et leur correspondance (#code), six bandes (#bandes, en h4) et la
+   liste (#liste). */
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la descente porte la tranche et les trois étages ; six bandes en h4, la liste, la correspondance', async () => {
+  const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
+  assert.deepEqual(await fautesEcriture(p), [])
+  assert.equal(await p.locator('main .gdoc-sec').count(), 5, 'quatre preuves et un répertoire')
+  assert.equal(await p.locator('#echelle .tranche').count() + await p.locator('#echelle #profondeur .ry-pf').count(), 2, 'la descente : la tranche et les trois étages, dans la même preuve')
+  assert.equal(await p.locator('#registre #bandes h4.doc-bande-nom').count(), 6, 'six bandes, en h4 sous leur sous-titre')
+  assert.ok(await p.locator('#registre #liste .doc-liste tbody tr').count() >= 1, 'la liste')
+  assert.ok(await p.locator('#registre #code .doc-code tbody tr').count() >= 1, 'les jetons')
+  assert.equal(await p.locator('#registre .doc-piece-tete h3').count(), 3, 'trois pièces')
+  await fermer()
 })

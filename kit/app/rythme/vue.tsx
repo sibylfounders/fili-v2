@@ -760,13 +760,10 @@ export function Hierarchie({ socle, ratio }: { socle: Socle; ratio: number }) {
 
 const SOMMAIRE: Sommaire = [
   ["moteur", "01", "Le moteur"],
-  ["echelle", "02", "La chaîne"],
+  ["echelle", "02", "La descente"],
   ["densite", "03", "La densité"],
-  ["profondeur", "04", "La profondeur"],
-  ["titres", "05", "L'intervalle des titres"],
-  ["bandes", "06", "Les règles qu'on peut casser"],
-  ["liste", "07", "Les règles qu'on ne peut pas montrer"],
-  ["code", "08", "Dans le code"],
+  ["titres", "04", "L'intervalle des titres"],
+  ["registre", "05", "Le registre"],
 ];
 export default function Vue() {
   const [casseProf, setCasseProf] = useState(false);
@@ -793,9 +790,9 @@ export default function Vue() {
             <p className="kicker">Le rythme (espacement)</p>
             <h1>Rien ici n&apos;a été espacé à l&apos;œil<span className="point" aria-hidden="true" /></h1>
             <p className="chapo">
-              Posez deux cards côte à côte. Si le texte de l&apos;une se retrouve plus près du bord de
-              l&apos;autre que du sien, votre œil le rattache à la mauvaise card — sans que vous sachiez
-              dire pourquoi la page vous gêne. C&apos;est tout le travail de l&apos;espace : dire qui va avec
+              Deux cards côte à côte : si le texte de l&apos;une se retrouve plus près du bord de
+              l&apos;autre que du sien, l&apos;œil le rattache à la mauvaise card — sans savoir
+              dire pourquoi la page gêne. C&apos;est tout le travail de l&apos;espace : dire qui va avec
               qui.
             </p>
           </section>
@@ -816,15 +813,22 @@ export default function Vue() {
             </div>
           </section>
 
+          {/* ── 02 · LA DESCENTE — la chaîne et la profondeur, fondues le
+              8 septembre 2026 : c'est le même phénomène. La marge et le coin
+              descendent ensemble du container à la card puis à la row ; la
+              tranche le montre sur une application réelle, le schéma des
+              trois étages le montre nu, et se casse. ── */}
           <section className="gdoc-sec pose" id="echelle">
             <div className="gdoc-sec-tete">
-              <p className="kicker">02 · La chaîne</p>
-              <h2>Tout descend d&apos;un seul réglage, du bord de l&apos;écran au moindre bouton</h2>
+              <p className="kicker">02 · La descente</p>
+              <h2>Du bord de l&apos;écran au moindre bouton, la marge et le coin descendent ensemble</h2>
               <p className="sourd">
                 Une équipe qui décide ses marges écran par écran finit par se contredire — pas par
                 négligence : personne ne se souvient de ce qui a été tranché trois mois plus tôt. Ici,
                 chaque espace descend de la même chaîne, du container à la card puis à la row, et glisse
-                avec la largeur de l&apos;écran.
+                avec la largeur de l&apos;écran. Le coin suit la marge à chaque étage — la marge divisée
+                par racine de deux, le coin par deux — parce qu&apos;une fenêtre, une card et une row sont
+                trois occasions de se contredire quand on les règle chacune dans son coin.
               </p>
             </div>
             <div className="gdoc-corps">
@@ -838,16 +842,33 @@ export default function Vue() {
                     à l'horizontale, dans l'encre de la page — pas une
                     colonne posée dans le banc (verdict d'Auteur, 31 août). */}
                 <Reglette />
-                {/* La légende parle aux humains : l'effet, pas la mécanique
-                    (retour d'Auteur, 24 août — même leçon que les badges de
-                    la page Couleur). */}
                 <figcaption className="gd-legende">
-                  Plus vous entrez profond dans la card, plus les marges et les coins se resserrent — sans que personne ait eu à le décider niveau par niveau. Et entre deux voisines, l&apos;espace vaut exactement leur marge.
+                  Plus on entre profond dans la card, plus les marges et les coins se resserrent — sans que personne ait eu à le décider niveau par niveau. Et entre deux voisines, l&apos;espace vaut exactement leur marge.
                 </figcaption>
+              </figure>
+              <div className="rang">
+                <button className={`bouton casse ${casseProf ? "on" : ""}`} onClick={() => setCasseProf(!casseProf)}>
+                  {casseProf ? "Réparer" : "Casser : l'enfant plus rond"}
+                </button>
+              </div>
+              <figure className="gd-figure" id="profondeur">
+                {/* La terre sombre, comme la gazette de Typo : un panneau se lit
+                      comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
+                      du papier. Variante déjà déclarée du banc. Le panneau garde
+                      son papier clair ; ce qui repose directement sur la terre — la
+                      colonne des cotes — se déclare en thème sombre (verdict
+                      d'Auteur, 7 septembre) : ses encres et le rouge de la faute
+                      viennent du système, pas d'un jeton propre à la terre de code. */}
+                <div className="banc sombre">
+                  <Profondeurs casse={casseProf} />
+                </div>
+                <figcaption className="gd-legende">{casseProf
+                  ? "la row est devenue plus ronde que la card qui la contient — l'emboîtement ne se lit plus"
+                  : "la marge se divise par racine de deux, le coin par deux — et les trois étages tiennent"}</figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>Quatre décisions entrent dans <b>le moteur</b> — la base, l&apos;intervalle, la racine des coins, l&apos;intervalle des titres — et toute la géométrie en sort, sur quatre axes : l&apos;horizontal, le vertical, le texte et la cible. Aucune valeur n&apos;est écrite à la main. La tranche, elle, emboîte ses fonds en cascade : le container, la card, la row, avec des marges et des coins qui se resserrent à chaque étage — l&apos;emboîtement est relevé sur une application en production.</p>
-                <Regles ids={["y8", "y9", "y3", "y7", "y17", "y4"]} />
+                <Regles ids={["y8", "y9", "y3", "y7", "y17", "y4", "y10", "y16", "y15"]} />
               </div></details>
             </div>
           </section>
@@ -855,7 +876,7 @@ export default function Vue() {
           <section className="gdoc-sec pose" id="densite">
             <div className="gdoc-sec-tete">
               <p className="kicker">03 · La densité</p>
-              <h2>Serrez la page : elle respire autrement, elle n&apos;invente rien</h2>
+              <h2>Serrée, la page respire autrement — elle n&apos;invente rien</h2>
               <p className="sourd">
                 On ne regarde pas de la même façon un tableau de bord qu&apos;on scrute toute la journée et
                 une fiche qu&apos;on ouvre trois secondes. D&apos;où deux réglages, et deux seulement. La
@@ -872,44 +893,6 @@ export default function Vue() {
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="profondeur">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">04 · La profondeur</p>
-              <h2>Regardez les coins : à chaque étage, ils se plient en deux</h2>
-              <p className="sourd">
-                Une fenêtre contient une card, qui contient une row : trois occasions de se contredire
-                si on les règle chacune dans son coin. La marge et le coin descendent donc ensemble — la
-                marge divisée par racine de deux, le coin par deux. Cassez la chaîne : l&apos;emboîtement cesse net de se lire.
-              </p>
-            </div>
-            <div className="gdoc-corps">
-              <div className="rang">
-                <button className={`bouton casse ${casseProf ? "on" : ""}`} onClick={() => setCasseProf(!casseProf)}>
-                  {casseProf ? "Réparer" : "Casser : l'enfant plus rond"}
-                </button>
-              </div>
-              <figure className="gd-figure">
-                {/* La terre sombre, comme la gazette de Typo : un panneau se lit
-                      comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
-                      du papier. Variante déjà déclarée du banc. Le panneau garde
-                      son papier clair ; ce qui repose directement sur la terre — la
-                      colonne des cotes — se déclare en thème sombre (verdict
-                      d'Auteur, 7 septembre) : ses encres et le rouge de la faute
-                      viennent du système, pas d'un jeton propre à la terre de code. */}
-                <div className="banc sombre">
-                  <Profondeurs casse={casseProf} />
-                </div>
-                <figcaption className="gd-legende">{casseProf
-                  ? "la row est devenue plus ronde que la card qui la contient — l'emboîtement ne se lit plus"
-                  : "la marge se divise par racine de deux, le coin par deux — et les trois étages tiennent"}</figcaption>
-              </figure>
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["y10", "y16", "y15"]} />
-              </div></details>
-            </div>
-          </section>
-
-          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
           {/* ── 05 · L'INTERVALLE DES TITRES ─────────────────────────────
               Le quatrième nombre du moteur, versé de la page d'essai. Il ne
               règle pas une taille mais un CONTRASTE — l'écart entre tous les
@@ -918,13 +901,13 @@ export default function Vue() {
               curseur y « ne fait que grossir le texte ». ── */}
           <section className="gdoc-sec pose" id="titres">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · L&apos;intervalle des titres</p>
+              <p className="kicker">04 · L&apos;intervalle des titres</p>
               <h2>Ce nombre ne règle pas une taille, il règle un contraste</h2>
               <p className="sourd">
                 C&apos;est la décision qu&apos;on oublie de compter, et pourtant elle est dans le moteur comme
                 les trois autres. Elle ne grossit pas un titre : elle écarte tous les niveaux d&apos;un seul
                 geste. Le corps, lui, ne bouge pas d&apos;un pixel — c&apos;est le point fixe autour duquel tout
-                se règle. Tournez le nombre jusqu&apos;aux deux bouts : la hiérarchie a deux façons de casser.
+                se règle. Aux deux bouts du nombre, la hiérarchie a deux façons de casser : trop plate, plus rien ne se distingue ; trop ouverte, le titre écrase son texte.
               </p>
             </div>
             <div className="gdoc-corps">
@@ -942,94 +925,94 @@ export default function Vue() {
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="bandes">
+          {/* ═══ LE RÉPERTOIRE — une seule section, au rythme (8 sept. 2026) :
+              la correspondance jeton par jeton d'abord — c'est ce qu'on vient
+              chercher sur cette page —, puis les six règles qui se cassent en
+              bandes (#bandes), puis celles qui se vérifient ailleurs (#liste). ═══ */}
+          <section className="gdoc-sec pose" id="registre">
             <div className="gdoc-sec-tete">
-              <p className="kicker">06 · Les règles qu&apos;on peut casser</p>
-              <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="sourd"> Le
-                bouton « Casser » ne dessine pas la faute, il la commet pour de vrai — puis la répare.
-                C&apos;est en voyant la version fausse qu&apos;on comprend à quoi sert la juste.
+              <p className="kicker">05 · Le registre</p>
+              <h2>Un seul registre, site compris</h2>
+              <p className="sourd">
+                Les valeurs que la chaîne produit, jeton par jeton ; six règles de proximité qui se
+                cassent sous les yeux ; et celles qui ne se photographient pas. Les lignes marquées
+                « décision d&apos;Auteur » sont des réglages du kit, pas des lois de la perception.
               </p>
             </div>
             <div className="gdoc-corps">
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-tete">
+                  <h3>Les jetons, et leur correspondance</h3>
+                  <p className="sourd">Chaque valeur est lue dans le registre du moment, jamais recopiée.
+                  Deux échelles, assumées : le CSS natif garde les décimales calculées ; Tailwind
+                  s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux.</p>
+                </div>
+                <PanneauRegistre lignes={CODE} />
+                <details className="prov"><summary>La correspondance, jeton par jeton</summary><div>
+                  <Correspondance />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="bandes">
+                <div className="doc-piece-tete">
+                  <h3>Six règles de proximité, et leur faute</h3>
+                  <p className="sourd">Chaque faute se commet pour de vrai sur sa scène, puis se
+                  répare. C&apos;est en voyant la version fausse qu&apos;on comprend à quoi sert la juste.</p>
+                </div>
               <Bandes>
-                <Bande nom="L&apos;espace entre deux sœurs vaut leur marge" cote="le même chiffre"
+                <Bande niveau={4} nom="L&apos;espace entre deux sœurs vaut leur marge" cote="le même chiffre"
                   dit="Le dedans et le dehors d&apos;une surface se règlent ensemble, pas chacun de son côté. Un texte plus proche du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine — et l&apos;œil s&apos;y laisse prendre à chaque fois."
                   casse={casseFre} surCasse={setCasseFre}
                   regles={<Regles ids={["y1", "y15"]} />}>
                   <Freres casse={casseFre} />
                 </Bande>
-                <Bande nom="Le libellé qui flotte" cote="autant d&apos;un côté que de l&apos;autre"
+                <Bande niveau={4} nom="Le libellé qui flotte" cote="autant d&apos;un côté que de l&apos;autre"
                   dit="Un libellé posé aussi loin de son champ que du paragraphe du dessus n&apos;appartient plus à personne. On croit lire l&apos;étiquette du champ suivant — c&apos;est la faute la plus courante des formulaires."
                   casse={casseLib} surCasse={setCasseLib}
                   regles={<Regles ids={["y1"]} />}>
                   <ProximiteLibelle casse={casseLib} />
                 </Bande>
-                <Bande nom="Le titre qui change de camp" cote="au-dessus &gt; au-dessous"
+                <Bande niveau={4} nom="Le titre qui change de camp" cote="au-dessus &gt; au-dessous"
                   dit="L&apos;espace au-dessus d&apos;un titre dépasse celui du dessous d&apos;au moins un cran. À égalité, le titre ferme le paragraphe précédent au lieu d&apos;ouvrir sa section — et le lecteur cherche un instant où commence la suite."
                   casse={casseTit} surCasse={setCasseTit}
                   regles={<Regles ids={["y2"]} />}>
                   <ProximiteTitre casse={casseTit} />
                 </Bande>
-                <Bande nom="Des rapports, jamais des soustractions" cote="÷ √2 à chaque pas"
-                  dit="Retirez le même nombre de pixels à chaque cran : vous obtenez des longueurs presque jumelles, que personne ne distingue. Divisez à chaque cran, et les mêmes longueurs se lisent d&apos;un coup d&apos;œil. L&apos;œil compare, il ne compte pas."
+                <Bande niveau={4} nom="Des rapports, jamais des soustractions" cote="÷ √2 à chaque pas"
+                  dit="Le même nombre de pixels retiré à chaque cran donne des longueurs presque jumelles, que personne ne distingue. Une division à chaque cran, et les mêmes longueurs se lisent d&apos;un coup d&apos;œil. L&apos;œil compare, il ne compte pas."
                   casse={casseRap} surCasse={setCasseRap}
                   regles={<Regles ids={["y12", "y3"]} />}>
                   <Rapports casse={casseRap} />
                 </Bande>
-                <Bande nom="La géométrie vit en rem" cote="la même card, deux marges"
+                <Bande niveau={4} nom="La géométrie vit en rem" cote="la même card, deux marges"
                   dit="Un lecteur agrandit le texte : les espaces autour doivent grandir avec lui. Une marge figée en pixels, elle, reste où elle est — et la page se referme sur son contenu au premier réglage d&apos;accessibilité."
                   casse={grandTexte} surCasse={setGrandTexte}
                   libelleCasse="Agrandir le texte" libelleRepare="Revenir"
                   regles={<Regles ids={["y9", "y8"]} />}>
                   <EnRem grand={grandTexte} />
                 </Bande>
-                <Bande nom="La cible au doigt a un plancher" cote="rien ne descend dessous"
+                <Bande niveau={4} nom="La cible au doigt a un plancher" cote="rien ne descend dessous"
                   dit="Un bouton, un champ, un sélecteur ont une hauteur de cible dérivée du registre. Une commande trop petite se rate au doigt, et aucune décision de mise en page ne passe avant ça."
                   casse={casseCib} surCasse={setCasseCib}
                   regles={<Regles ids={["y17"]} />}>
                   <Cible casse={casseCib} />
                 </Bande>
               </Bandes>
+              </div>
+
+              <div className="doc-piece" id="liste">
+                <div className="doc-piece-tete">
+                  <h3>Les règles qui ne se photographient pas</h3>
+                  <p className="sourd">Elles se vérifient dans le code, sur l&apos;écran allumé, ou
+                  nulle part — et alors elles s&apos;assument comme un choix, daté.</p>
+                </div>
+                <ListeRegles lignes={LISTE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["y3", "y13", "y8", "y9", "y7", "y4"]} />
+                </div></details>
+              </div>
             </div>
           </section>
-
-          <section className="gdoc-sec pose" id="liste">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">07 · Les règles qu&apos;on ne peut pas montrer</p>
-              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
-              <p className="sourd">
-                Certaines règles ne se photographient pas. Elles se vérifient dans le code, à l&apos;écran
-                allumé, ou nulle part.
-              </p>
-            </div>
-            <div className="gdoc-corps">
-              <ListeRegles lignes={LISTE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["y3", "y13", "y8", "y9", "y7", "y4"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="code">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">08 · Dans le code</p>
-              <h2>Le même système, dans votre stack</h2>
-            </div>
-            <div className="gdoc-corps">
-              <PanneauRegistre lignes={CODE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait un extrait prêt à coller, avec une bascule HTML / React / Angular. On l&apos;a retiré : un extrait vieillit, et le jour où le composant bouge il se met à mentir sans prévenir. Le jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la règle et le jeton</b> — pas le code.</p>
-                <p><b>Deux échelles, assumées.</b> Le CSS natif garde les décimales calculées ; Tailwind s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux — voici la correspondance, jeton par jeton, lue dans le moteur :</p>
-                <Correspondance />
-              </div></details>
-            </div>
-          </section>
-
-          <footer className="gd-pied">
-            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
-            <span>Un seul registre, site compris · aucune valeur hors chaîne</span>
-          </footer>
 
         </main>
       </div>

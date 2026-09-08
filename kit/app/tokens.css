@@ -152,6 +152,26 @@
   --tracking-label: 0.08em;
 }
 
+/* La graisse — un rôle, une graisse (T13) ; deux fonds, deux graisses : en thème sombre chaque rôle s'allège
+   de 20 (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */
+:root, [data-theme="light"] {
+  --weight-body: 400;
+  --weight-label: 500;
+  --weight-heading: 600;
+}
+[data-theme="dark"] {
+  --weight-body: 380;
+  --weight-label: 480;
+  --weight-heading: 580;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --weight-body: 380;
+    --weight-label: 480;
+    --weight-heading: 580;
+  }
+}
+
 /* Le châssis du site — navigation à gauche, réglages à droite — garde la densité
    confortable quel que soit le réglage : la densité règle le contenu, jamais les colonnes. */
 .navigation, .reglages {

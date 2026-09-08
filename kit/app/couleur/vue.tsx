@@ -865,13 +865,10 @@ const CODE: LigneCode[] = [
 ];
 
 const SOMMAIRE: Sommaire = [
-  ["palette", "01", "La palette"],
+  ["palette", "01", "La marque rare"],
   ["nuancier", "02", "Le nuancier"],
-  ["situation", "03", "En situation"],
-  ["moteur", "04", "Une seule décision"],
-  ["casser", "05", "Les règles qu'on peut casser"],
-  ["invisibles", "06", "Les règles qu'on ne peut pas montrer"],
-  ["code", "07", "Dans le code"],
+  ["moteur", "03", "Le moteur"],
+  ["registre", "04", "Le registre"],
 ];
 
 
@@ -918,43 +915,49 @@ export default function Vue() {
           <section className="gdoc-heros">
             <p className="kicker">La couleur</p>
             <h1>Une seule couleur pour les gouverner toutes<span className="point" aria-hidden="true" /></h1>
-            <p className="chapo">Ouvrez la palette d&apos;un produit un peu ancien : vous y trouverez trente
+            <p className="chapo">La palette d&apos;un produit un peu ancien compte trente
             bleus, et plus personne pour dire lequel sert à quoi. Ici il y en a <b>une</b>,
             saisie une fois — tout le reste en descend par le calcul : les gris, les fonds,
             les liens, le thème sombre. Et chaque rapport de contraste que vous lirez sur
             cette page est mesuré sur la page elle-même, jamais recopié d&apos;une table.</p>
           </section>
 
+          {/* ── 01 · LA MARQUE RARE — la palette et la situation, fondues le
+              8 septembre 2026 : c'était la même idée dite deux fois. Le tableau
+              de bord porte la preuve (la marque sur une card, un bouton, une
+              barre ; tout le reste neutre), la mosaïque de la charte et ses
+              proportions disent la répartition. Les gammes 50–950 sont au
+              répertoire. ── */}
           <section className="gdoc-sec pose" id="palette">
             <div className="gdoc-sec-tete">
-              <p className="kicker">01 · La palette</p>
+              <p className="kicker">01 · La marque rare</p>
               <h2>On reconnaît une marque au peu de place qu&apos;elle prend</h2>
               <p className="sourd">Une marque étalée sur tout l&apos;écran ne signe plus rien du tout —
               c&apos;est le paradoxe de la couleur d&apos;entreprise : plus on en met, moins on
-              la voit. Sur cette page, le blanc, l&apos;encre et les gris font tout le travail.
-              La marque garde ses cinq pour cent, et les couleurs d&apos;alerte ne viennent
-              jamais y puiser.</p>
+              la voit. Un tableau de bord tient debout parce que la marque y est rare : une
+              card, un bouton, une barre. Tout le reste est neutre, les états gardent leur
+              teinte à eux, et les couleurs d&apos;alerte ne viennent jamais puiser dans la marque.
+              Le texte posé sur la photo n&apos;est jamais nu — il repose sur un voile aux
+              couleurs du fond, dont l&apos;opacité est calculée sur le pixel le plus
+              défavorable et refaite à chaque largeur.</p>
             </div>
             <div className="gdoc-corps">
+              <figure className="gd-figure" id="situation" style={{ justifyItems: "stretch" }}>
+                <div className="banc voile">
+                  <Bento cle={cle} />
+                </div>
+                <figcaption className="gd-legende">
+                  la grille suit la marque et le thème, en direct — un seul geste de marque sur tout l&apos;écran
+                </figcaption>
+              </figure>
               <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
                 <Palette cle={cle} />
+                <figcaption className="gd-legende">
+                  la charte en mosaïque, puis en proportions : le blanc, l&apos;encre et les gris font tout le travail, la marque garde ses cinq pour cent
+                </figcaption>
               </figure>
-              <details className="prov"><summary>Les gammes 50–950 — la marque, les neutres, et les quatre familles sémantiques</summary>
-                <div className="gm-suite">
-                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
-                  <Gamme primaire={primaire} />
-                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>Les neutres — les mêmes clartés, teintées à la marque</span>
-                  <GammeNeutres primaire={primaire} />
-                  {FAMILLES_SEMANTIQUES.map(([titre, nom]) => (
-                    <React.Fragment key={nom}>
-                      <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>{titre}</span>
-                      <GammeFamille primaire={primaire} nom={nom} />
-                    </React.Fragment>
-                  ))}
-                </div>
-              </details>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["p01", "c1", "c4"]} />
+                <Regles ids={["p01", "c1", "c4", "m2", "m3", "c6", "c3"]} />
               </div></details>
             </div>
           </section>
@@ -966,8 +969,8 @@ export default function Vue() {
               <p className="sourd">Un nuancier de peintre montre des teintes. Celui-ci montre des
               métiers : à quoi sert cette couleur, et où elle n&apos;a rien à faire. Chaque
               languette naît en couple complet — le ton, son encre, son fond doux — ou ne naît
-              pas. Sa fiche lit les valeurs et le rapport sur la page rendue, dans le thème où
-              vous êtes.</p>
+              pas. Sa fiche lit les valeurs et le rapport sur la page rendue, dans le thème
+              du moment.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
@@ -979,42 +982,15 @@ export default function Vue() {
             </div>
           </section>
 
-          <section className="gdoc-sec pose" id="situation">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">03 · En situation</p>
-              <h2>La marque tient parce qu&apos;elle est rare</h2>
-              <p className="sourd">Un tableau de bord tient debout parce que la marque y est rare : une
-              card, un bouton, une barre. Tout le reste est neutre, et les états gardent leur
-              teinte à eux. Le texte posé sur la photo n&apos;est jamais nu — il repose sur un
-              voile aux couleurs du fond, dont l&apos;opacité est calculée sur le pixel le plus
-              défavorable et refaite à chaque largeur.</p>
-            </div>
-            <div className="gdoc-corps">
-              <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
-                <div className="banc voile">
-                  <Bento cle={cle} />
-                </div>
-                {/* Une légende tient en une ligne (règle du 2 septembre) : le détail
-                    du voile est déjà dit dans le chapô, et les rôles se lisent au survol. */}
-                <figcaption className="gd-legende">
-                  la grille suit la marque et le thème, en direct — un seul geste de marque sur tout l&apos;écran
-                </figcaption>
-              </figure>
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["m2", "m3", "c6", "c3"]} />
-              </div></details>
-            </div>
-          </section>
-
           <section className="gdoc-sec pose" id="moteur">
             <div className="gdoc-sec-tete">
-              <p className="kicker">04 · Le moteur</p>
+              <p className="kicker">03 · Le moteur</p>
               <h2>Une couleur entre, toute la famille sort</h2>
               <p className="sourd">Changer de marque ne devrait pas être un chantier de trois semaines.
               Une couleur entre, toute la famille sort — fonds, gris, liens, thème sombre — et
               ce qui deviendrait illisible se recale tout seul. Les couleurs d&apos;erreur et de
-              succès, elles, bougent à peine : un rouge doit rester un rouge. <b>Prenez une
-              marque</b> dans le rail, elle passe dans le moteur sans toucher au site.</p>
+              succès, elles, bougent à peine : un rouge doit rester un rouge. Une marque
+              choisie dans le rail passe dans le moteur sans toucher au site.</p>
             </div>
             <div className="gdoc-corps">
               {/* Le playground (maquette d'Auré, 24 août) : le rail des
@@ -1077,20 +1053,71 @@ export default function Vue() {
             </div>
           </section>
 
-          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
-          <section className="gdoc-sec pose" id="casser">
+          {/* ═══ LE RÉPERTOIRE — une seule section, à la couleur (8 sept. 2026) :
+              les valeurs d'abord — la table des rôles dans les deux thèmes et les
+              six gammes 50–950 (#gammes), c'est ce qu'on vient chercher —, puis
+              les cinq gestes qui cassent (#casser), puis les règles qui se
+              vérifient ailleurs (#invisibles). ═══ */}
+          <section className="gdoc-sec pose" id="registre">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · Les règles qu&apos;on peut casser</p>
-              <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="sourd">Cinq gestes ordinaires, et pas un seul ne déclenche
-              d&apos;erreur nulle part — c&apos;est ce qui les rend coûteux. Le bouton
-              « Casser » ne dessine pas la faute, il la commet pour de vrai sur la scène — puis
-              la répare.</p>
+              <p className="kicker">04 · Le registre</p>
+              <h2>Des rôles, jamais des valeurs — et chaque valeur, lue sur le rendu</h2>
+              <p className="sourd">Chaque rôle, sa valeur claire, sa valeur sombre, résolues sur la page
+              rendue et suivant la marque du moment ; les six gammes d&apos;où les rôles se
+              posent ; cinq gestes ordinaires qui cassent sans message d&apos;erreur ; et les règles
+              qui ne se photographient pas. Les lignes marquées « décision d&apos;Auteur » sont des
+              réglages du kit, pas des lois de la perception.</p>
             </div>
             <div className="gdoc-corps">
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-tete">
+                  <h3>Les rôles, dans les deux thèmes</h3>
+                  <p className="sourd">Ce qui fait foi, c&apos;est la règle et le jeton — pas l&apos;extrait
+                  de code, qui vieillit et finit par mentir. Un seul jeu de jetons produit les
+                  variables CSS natives et une sortie Tailwind jumelle ; les deux thèmes vivent
+                  dans le jeton, chaque consommateur en hérite sans rien coder.</p>
+                </div>
+                <PanneauRegistre lignes={CODE} />
+                <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
+                  <TableRoles cle={cle} />
+                </div></details>
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["c12", "c1"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="gammes">
+                <div className="doc-piece-tete">
+                  <h3>Les six gammes, et où chaque rôle se pose</h3>
+                  <p className="sourd">La couleur saisie se pose sur le cran de sa clarté, telle
+                  quelle ; les autres crans en descendent. Les neutres sont les marches fixes,
+                  teintées à la marque. Aucun rôle ne consomme un cran : il s&apos;y pose.</p>
+                </div>
+              <details className="prov" open><summary>Les six gammes — la marque, les neutres, et les quatre familles sémantiques</summary>
+                <div className="gm-suite">
+                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
+                  <Gamme primaire={primaire} />
+                  <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>Les neutres — les mêmes clartés, teintées à la marque</span>
+                  <GammeNeutres primaire={primaire} />
+                  {FAMILLES_SEMANTIQUES.map(([titre, nom]) => (
+                    <React.Fragment key={nom}>
+                      <span className="mono sourd gm-titre" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>{titre}</span>
+                      <GammeFamille primaire={primaire} nom={nom} />
+                    </React.Fragment>
+                  ))}
+                </div>
+              </details>
+              </div>
+
+              <div className="doc-piece" id="casser">
+                <div className="doc-piece-tete">
+                  <h3>Cinq gestes ordinaires, sans message d&apos;erreur</h3>
+                  <p className="sourd">Chacun se commet pour de vrai sur sa scène, puis se répare.
+                  C&apos;est ce qui les rend coûteux : rien ne les signale.</p>
+                </div>
               <Bandes>
-                <Bande nom="Le contraste se vérifie par paire" cote="4,5:1 pour le texte courant"
-                  dit="Une couleur toute seule ne veut rien dire : ce qui se mesure, c&apos;est un texte SUR son fond. Pâlissez l&apos;encre douce et regardez le verdict tomber — les rapports ci-dessous ne sont pas recopiés d&apos;une table, ils sont calculés sur ce que votre écran affiche."
+                <Bande niveau={4} nom="Le contraste se vérifie par paire" cote="4,5:1 pour le texte courant"
+                  dit="Une couleur toute seule ne veut rien dire : ce qui se mesure, c&apos;est un texte SUR son fond. Une encre douce qui pâlit fait tomber le verdict — les rapports ne sont pas recopiés d&apos;une table, ils sont calculés sur ce que l&apos;écran affiche."
                   casse={palie} surCasse={setPalie}
                   libelleCasse="Casser : pâlir l&apos;encre douce" libelleRepare="Rendre l&apos;encre du registre"
                   nue regles={<>
@@ -1101,7 +1128,7 @@ export default function Vue() {
                   <DuoThemes cle={cle} palie={palie} />
                 </Bande>
 
-                <Bande nom="Chacun son registre" cote="l&apos;erreur n&apos;est pas la marque"
+                <Bande niveau={4} nom="Chacun son registre" cote="l&apos;erreur n&apos;est pas la marque"
                   dit="Trois registres, étanches : la marque signe, la sémantique alerte, le neutre porte. Une erreur qui prend la couleur de la marque détruit le vocabulaire des deux — plus rien, à l&apos;écran, ne dit ce qui est grave et ce qui est de la maison."
                   casse={marque} surCasse={setMarque}
                   regles={<Regles ids={["c3", "c2"]} />}>
@@ -1111,8 +1138,8 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="Le survol est un jeton" cote="jamais un calcul"
-                  dit="Un survol produit par un filtre n&apos;existe dans aucun registre : aucune table ne peut le vérifier, et personne ne saura dire quelle couleur il fabrique. Survolez le bouton dans les deux états."
+                <Bande niveau={4} nom="Le survol est un jeton" cote="jamais un calcul"
+                  dit="Un survol produit par un filtre n&apos;existe dans aucun registre : aucune table ne peut le vérifier, et personne ne saura dire quelle couleur il fabrique. Le bouton répond au survol dans les deux états."
                   casse={filtre} surCasse={setFiltre}
                   regles={<Regles ids={["c10", "c8"]} />}>
                   <div className="cl-scene">
@@ -1121,8 +1148,8 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="En sombre, l&apos;action s&apos;éclaircit" cote="deux valeurs, un seul nom"
-                  dit="Le même jeton porte une valeur en clair et une en sombre. Forcez l&apos;action à garder sa valeur claire dans le thème sombre : elle s&apos;enfonce dans le fond, et le bouton cesse d&apos;être un bouton."
+                <Bande niveau={4} nom="En sombre, l&apos;action s&apos;éclaircit" cote="deux valeurs, un seul nom"
+                  dit="Le même jeton porte une valeur en clair et une en sombre. Une action forcée à garder sa valeur claire dans le thème sombre s&apos;enfonce dans le fond, et le bouton cesse d&apos;être un bouton."
                   casse={actionSombre} surCasse={setActionSombre}
                   regles={<Regles ids={["c12", "c14", "c13"]} />}>
                   <div className="cl-paire">
@@ -1138,62 +1165,29 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="Teinter ne coûte rien" cote="à luminance constante"
-                  dit="À luminance constante, la teinte bouge et le rapport ne bouge pas — c&apos;est ce qui permet des neutres teintés à la marque, sûrs par construction. Laissez filer la luminance en teintant : les trois gris se ressemblent toujours, et leurs rapports n&apos;ont plus rien à voir."
+                <Bande niveau={4} nom="Teinter ne coûte rien" cote="à luminance constante"
+                  dit="À luminance constante, la teinte bouge et le rapport ne bouge pas — c&apos;est ce qui permet des neutres teintés à la marque, sûrs par construction. Quand la luminance file avec la teinte, les trois gris se ressemblent toujours, et leurs rapports n&apos;ont plus rien à voir."
                   casse={teinteLibre} surCasse={setTeinteLibre}
                   libelleCasse="Casser : laisser filer la luminance"
                   regles={<Regles ids={["c15", "c17"]} />}>
                   <TeinteConstante casse={teinteLibre} />
                 </Bande>
               </Bandes>
+              </div>
+
+              <div className="doc-piece" id="invisibles">
+                <div className="doc-piece-tete">
+                  <h3>Les règles qui ne se photographient pas</h3>
+                  <p className="sourd">Elles se vérifient dans le code, sur l&apos;écran allumé, ou
+                  nulle part — et alors elles s&apos;assument comme un choix, daté.</p>
+                </div>
+                <ListeRegles lignes={LISTE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["c1", "c4", "c5", "c6", "c11", "c12", "c16", "c17"]} />
+                </div></details>
+              </div>
             </div>
           </section>
-
-          <section className="gdoc-sec pose" id="invisibles">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">06 · Les règles qu&apos;on ne peut pas montrer</p>
-              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
-              <p className="sourd">Certaines règles ne se photographient pas. Elles se
-              vérifient dans le code, à l&apos;écran allumé, ou nulle part du tout.</p>
-            </div>
-            <div className="gdoc-corps">
-              <ListeRegles lignes={LISTE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["c1", "c4", "c5", "c6", "c11", "c12", "c16", "c17"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="code">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">07 · Dans le code</p>
-              <h2>Le même système, dans votre stack</h2>
-            </div>
-            <div className="gdoc-corps">
-              <PanneauRegistre lignes={CODE} />
-              <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
-                <p>Le fonds complet : chaque rôle, sa valeur claire, sa valeur sombre. Rien
-                n&apos;est recopié — les deux colonnes sont résolues sur la page que vous lisez,
-                et suivent la marque du moment.</p>
-                <TableRoles cle={cle} />
-              </div></details>
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait une alerte prête à
-                coller, avec une bascule HTML / React / Angular. On l&apos;a retirée : un extrait
-                vieillit, et le jour où le composant bouge il se met à mentir sans prévenir. Le
-                jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la règle et le
-                jeton</b> — pas le code. Un seul jeu de jetons produit les variables CSS natives
-                et une sortie Tailwind jumelle ; les deux thèmes vivent dans le jeton, chaque
-                consommateur en hérite sans rien coder.</p>
-                <Regles ids={["c12", "c1"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <footer className="gd-pied">
-            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
-            <span>Chaque rapport de contraste est mesuré ici même</span>
-          </footer>
 
         </main>
       </div>

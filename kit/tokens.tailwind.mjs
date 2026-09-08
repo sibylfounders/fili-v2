@@ -82,6 +82,11 @@ export const typography = {
   },
   letterSpacing: {
     label: 'var(--tracking-label)'
+  },
+  fontWeight: {
+    body: 'var(--weight-body)',
+    label: 'var(--weight-label)',
+    heading: 'var(--weight-heading)'
   }
 };
 

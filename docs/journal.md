@@ -5849,6 +5849,57 @@ course complète sur la machine d'Auteur : cinq pages vertes, Composition
 enregistrée dans les pièces du banc. **La carte passe Composition à 🟢 — par le
 banc, pas par la main.**
 
+## 7 septembre 2026 (7) — l'accueil lit la liste des pages, et donne accès à tout sans scroller
+
+**Le constat d'Auteur.** L'accueil ne suivait pas : trois cartes de fondations
+écrites à la main (Arrondis et Composition absentes), un tableau d'état déjà
+périmé, et aucune sortie vers le reste de la doc avant de scroller jusqu'aux
+cartes — l'accueil n'a pas de rail, donc pas de bouton Menu. Le site portait en
+fait TROIS listes de pages : celle du menu (dans le rail), celle du tiroir de
+réglages, celle de l'accueil. Elles ne pouvaient que diverger, et elles
+divergeaient.
+
+**Une seule liste** (`kit/app/pages.ts`). Deux catégories, six familles dans
+l'ordre d'Auteur — Système : Méthode, Principes, Langages, Fondations ; Produit :
+Composants, Patterns — et sous chacune ses pages : nom, adresse si elle est
+ouverte, état, une phrase pour la carte, une phrase pour le pied du rail. Le
+menu, le rail, le tiroir et l'accueil la lisent. Créer une page = ajouter une
+ligne ; changer un état = changer un signe. La preuve est venue le jour même :
+`/mouvement` est entré au kit par un autre thread pendant le travail, et
+l'accueil l'a pris sans qu'on le lui dise — sixième carte, ligne de la carte,
+compte des fondations.
+
+**L'accès direct dans la couverture** (verdict d'Auteur : « ce header, ok »).
+Sous le chapo, avant tout scroll, la rangée Système · Produit avec leurs six
+familles — les catégories parlent mono, les familles parlent sans, la règle du
+menu. Fondations est un lien vers sa première page ouverte. Une famille sans
+page ouverte est un bouton, dit « à venir », qui ouvre la feuille du menu déjà
+posée sur son onglet : la famille sous les yeux, ses pages à venir barrées,
+rien de promis. Le jour où Méthode a une page, son nom y mène tout seul.
+Trois options avaient été posées ; l'Auteur a choisi celle-ci contre le gris
+mort et contre six pages d'entrée à écrire (autre périmètre).
+
+**Le bas de l'accueil suit.** Une carte par page ouverte, avec son état dans
+son kicker et son spécimen dessiné ici — trois nouveaux : l'arrondi en trois
+boîtes emboîtées (r-1, r-2, r-3), la composition en trois blocs et le tracé
+en F, le mouvement en une courbe à quatre repères. Une page sans spécimen le
+dirait à sa place. La carte du système devient une ligne par famille : ses
+pages ouvertes avec leur état, le nombre de pages qui attendent.
+
+**Les états.** L'Auteur a tranché : l'état est écrit dans la liste à chaque
+verdict, jamais lu au banc — le banc dit vert ou rouge, seul l'Auteur dit
+verrouillé. Les six pages ouvertes sont posées 🟡, comme la colonne « Statut »
+de la carte le dit aujourd'hui.
+
+**Le banc.** Moteur 29/29 — il a mordu une fois : deux mentions en petit mono
+tertiaire (« à venir », « spécimen à dessiner ») étaient en 500, C17 veut 600.
+Pages : 63/63 sur la machine d'Auteur (six pages, mouvement compris). La feuille
+du site est désormais exportée du rail avec un onglet de départ ; la page en
+cours ne s'y clique pas, Échap ferme et rend le focus au bouton d'où l'on
+venait, comme partout. Captures dans `_to_delete/captures-accueil/`.
+Rien n'est commité : cinq fichiers en attente (`pages.ts` nouveau ; `rail.tsx`,
+`accueil.tsx`, `tiroir.tsx`, `globals.css`).
+
 
 ## 7 septembre 2026 (8) — `/mouvement` : la page naît, le banc la verrouille, et le mouvement devient une fondation
 
@@ -5918,6 +5969,18 @@ pages vertes**. La carte passe Mouvement à 🟢 — par le banc, pas par la mai
 reçu de verdict distinct de la courbe ; elle reste sur les crans, à juger. Le
 menu, le rail, le tiroir et l'accueil lisent désormais Mouvement dans la liste
 unique des pages, versée par le fil de l'accueil le même jour.
+
+**Retour d'Auteur, le soir : « la règle de composition… pas toi ».** La rangée
+d'accès cassait quatre lois que /composition enseigne : écarts tous égaux (la
+mention « à venir » aussi loin de son mot que du frère suivant — rien ne se
+groupait), un habit un rôle (« à venir » en habit de repère), la rupture partout
+(cinq fois le même mot, un confetti), trois départs (deux lignes alignées par la
+chance de deux repères de sept lettres). Reposée en grille : une colonne de
+repère, une colonne de familles, alignées par construction ; deux catégories
+séparées du cran de groupe, deux familles du cran de frères ; plus aucune
+mention — la famille qui a une page est en encre pleine, celle qui n'en a pas
+est en encre seconde et ouvre le menu ; une seule légende, une seule ligne,
+écartée d'un cran de plus. Moteur 29/29, rendu vérifié sur capture.
 
 
 ## 7 septembre 2026 (9) — la molette qui ment : l'œil ne bouge plus
@@ -6000,6 +6063,25 @@ mesure — la suivante, douze vertes.
 Banc : douze vertes trois fois (dont une reprise après la reconstruction
 croisée), puis la course complète — six pages vertes.
 
+## 8 septembre 2026 (1) — la marque de la bande ramène à l'accueil
+
+**Le constat d'Auteur** : « Kit · un design system qui montre ses raisons »,
+en haut de toutes les pages, ne menait nulle part. Un lecteur pose l'œil
+dessus pour rentrer chez lui — la convention est plus vieille que le web.
+
+**Décision.** Les deux mots forment un seul lien vers l'accueil, par le
+routeur (la page change sans recharger, comme le menu depuis le 2 septembre).
+Sur l'accueil même, la marque est inerte : on ne propose pas d'aller là où
+l'on est déjà. Elle garde son habit — aucun soulignement, l'encre de la page —,
+la cible déborde les mots, le survol se dit par le fond et jamais par l'accent,
+et elle porte le halo de focus du kit. Vérifié sur le rendu : depuis /rythme,
+le clic arrive sur / ; sur /, ce n'est plus un lien.
+
+**Le banc.** Moteur 29/29. Pages : 62/63 — le rouge est sur `/mouvement`,
+« la règle, en dernier », un texte de la page qui ne dit plus ce que son
+épreuve attend ; c'est le chantier du thread Mouvement, pas celui-ci.
+Rien n'est commité : `marque.tsx` (nouveau), `layout.tsx`, `globals.css`.
+
 ## 8 septembre 2026 — la page qu'on ne lisait pas : la course, et le juste à côté du mot
 
 **Le verdict, sans détour.** « Je ne suis pas satisfait du tout. Les trois quarts
@@ -6051,6 +6133,68 @@ le focus au clavier se mesurait sous une souris restée sur une tuile — elle
 s'écarte d'abord.
 
 Banc : douze vertes trois fois, puis la course complète — six pages vertes.
+
+## 8 septembre 2026 (3) — /typo : la graisse a sa section, et deux fonds ont deux graisses
+
+**D'où ça vient.** L'Auteur a posé une vidéo (« The 80% of UI Design –
+Typography », Sajid) avec un constat : la page typo ne parlait ni des usages de
+la graisse, ni de valeurs différentes en clair et en sombre. Relevé complet
+dans la pièce de projet `fonds-video-sajid-graisse-et-modes-2026-09-08.md` ;
+verdicts dans `decision-graisse-et-sombre-typo-2026-09-08.md`.
+
+**Ce que la vidéo apportait, et ce qu'on lui a refusé.** Gardé : presque toute
+une interface tient sur UN corps, hiérarchisée par la graisse et l'encre — la
+taille est le levier qu'on attrape en premier, rarement celui qu'il faut.
+Refusé : le corps de base à 14 px (T10 tient sur un comportement de plateforme,
+pas sur un goût), la bascule « 100 − L » en HSL (aucun contraste garanti ; notre
+moteur dérive et vérifie les deux thèmes), et le « 60 % de clarté » du texte
+secondaire (le nombre d'un auteur sur son écran ; chez nous c'est un jeton
+vérifié). Ce que la vidéo ne disait pas et que le fonds Google disait depuis
+août : le blanc sur noir rayonne, il paraît plus gros — et aucun jeton de
+graisse du kit n'avait de valeur sombre.
+
+**Quatre verdicts d'Auteur.** Une petite section à part sur /typo, sous les
+trois preuves qui ne bougent pas ; « une seule taille suffit » en priorité ;
+oui, une graisse plus légère en sombre, l'écart posé à l'œil ; le gris du texte
+secondaire reste celui du moteur couleur.
+
+**Ce qui est fait.** Le moteur a une table de la graisse : trois rôles
+(courant 400, étiquette 500, titre 600) et un écart en sombre, 20, valeur de
+départ dite comme telle. `tokens.css` sert `--weight-body`, `--weight-label`,
+`--weight-heading` en clair et en sombre (thème déclaré et préférence système),
+Tailwind et Figma les portent. Deux règles entrent : **T13 — une seule taille
+peut porter une hiérarchie** (graisse + encre, jamais l'une seule) et **T14 —
+deux fonds, deux graisses** (la sombre jamais plus lourde ; l'écart est un
+arbitrage, dit sur la page). La section 05 · La graisse montre la liste au
+corps unique — « égaliser » ramène tout au courant et à l'encre première, la
+hiérarchie tombe — puis le même paragraphe sur un vrai thème clair et un vrai
+thème sombre, l'écart au curseur, le registre marqué sur la course. Les
+graisses affichées sont lues dans le moteur. Les étages passent à 06 · 07 · 08.
+
+**Ce qui n'est pas fait, et dit.** Le kit écrit encore ses graisses à la main
+(400 / 500 / 600) dans les feuilles ; les jetons existent maintenant, le
+passage des feuilles aux jetons est un autre périmètre. L'écart de 20 n'est pas
+un verdict : c'est la valeur qui attend l'œil de l'Auteur sur la page.
+
+**Banc.** Deux épreuves neuves (7) sur /typo : les graisses rendues sont celles
+du moteur, la casse égalise et se répare, le versant sombre porte le fond, les
+encres et la graisse du thème sombre, le curseur ne repeint que lui. Quatorze
+vertes sur la machine d'Auteur. Le test du moteur gagne une épreuve (graisse,
+trois sorties). Trois épreuves du moteur sont rouges sur `mouvement.css` — un
+chantier ouvert dans un autre thread, non touché ici.
+
+## 8 septembre 2026 (4) — /typo, la graisse : le texte se retire devant la démonstration
+
+**Verdict d'Auteur**, sur un extrait autonome de la section vu en déplacement :
+aligner la page sur les consignes d'écriture du jour. Le texte ne décrit plus
+l'écran ni l'interaction ; il nomme la règle et se tait. « Une seule taille
+suffit » devient **« La taille ne fait pas la hiérarchie — Même corps. Trois
+poids, deux encres. »** ; le second objet gagne son titre, **« Le blanc sur noir
+pèse plus »**, et une phrase. Les contrôles disent l'action, pas la faute :
+« Égaliser les poids », « Même poids sur les deux fonds », « Compensation
+sombre −20 ». La forme rouge en pointillé des commandes qui commettent une faute
+est conservée : c'est la convention du kit, le libellé seul change. Quatorze
+épreuves vertes après l'alignement.
 
 ## 8 septembre 2026 (soir) — la page reprise sur les règles d'écriture : montrer, nommer, expliquer seulement si ça manque
 
@@ -6146,3 +6290,66 @@ s'est déclarée hors chaîne (relevés par les épreuves du site).
 **Au banc.** Douze vertes trois fois. La course complète dit /mouvement vert ;
 d'autres pages y sont rouges ou vertes d'une course à l'autre, parce qu'un
 autre fil les retouche en même temps — ce n'est pas ce fil qui les juge.
+
+## 8 septembre 2026 (nuit, 2) — cinq pages perdent leur queue commune : un répertoire par famille
+
+**Le tour.** Après la relecture des instructions générales, un tour des six
+pages sur leur source du jour. Cinq sur six étaient six déclinaisons du même
+template : des sections numérotées, chacune « titre, amorce, démo, dépliant »,
+puis la même queue en trois sections aux titres copiés mot pour mot d'une page
+à l'autre — « Voyez ce qui se passe quand la règle saute », « Elles se vérifient
+ailleurs — et on vous dit où », « Le même système, dans votre stack ». Deux
+doublons d'idée : sur Couleur, la palette (01) et la situation (03) disaient
+toutes deux que la marque tient parce qu'elle est rare ; sur Rythme, la chaîne
+(02) et la profondeur (04) étaient le même phénomène, la marge et le coin qui
+descendent ensemble. Du ton de professeur — « Regardez les coins », « Posez
+deux cards », « Tournez la racine », « Serrez la page », « Cassez-le ». Et de
+l'histoire de page devant le lecteur : « Ce qui remplace l'extrait », recopié
+sur quatre pages, « Ce qui a quitté cette page » sur Arrondis, un pied qui
+commente la page. Ce qui tenait et n'a pas bougé : le gabarit documentaire, le
+moteur, le banc, les dépliants « Règles & sources » sous chaque preuve, la
+densité (700 à 1 350 mots par page), et `/mouvement` en entier, verrouillée le
+soir même.
+
+**Le verdict d'Auteur.** Périmètre et ordre validés ; **de trois à cinq preuves
+par page**, pas trois au plus — ce qui compte est qu'une preuve porte une idée
+et que le répertoire tienne le reste. Tout fait dans un seul fil.
+
+**Ce qui change, sur les cinq pages.** La queue disparaît. À sa place, UNE
+section, « Le registre », sous un titre à la page — « Ce que la typographie
+règle sans qu'on la voie », « Un seul registre, site compris », « Des rôles,
+jamais des valeurs — et chaque valeur, lue sur le rendu », « La composition n'a
+pas de matière à elle », « Un seul nombre, six coins — et six façons de les
+perdre » — qui range les pièces d'`etages.tsx` dans l'ordre que sa matière
+commande : Rythme et Couleur ouvrent sur les valeurs (c'est ce qu'on vient y
+chercher), Typo et Arrondis sur les dérives, Composition sur ses paires.
+Chaque pièce a son sous-titre (h3), et les bandes qu'elle abrite descendent
+en h4 — jamais un saut de niveau, la règle que Typo exige des autres. Sous
+chaque titre de registre, une phrase dit que les lignes « décision d'Auteur »
+sont des réglages du kit, pas des lois. Les mots qui commandent ou décrivent
+sont sortis, les paragraphes d'histoire aussi, et le pied.
+
+**Par page.** Typo garde ses cinq preuves. Rythme fond la chaîne et la
+profondeur en une preuve, la descente : la tranche en situation, puis le
+schéma des trois étages qui se casse, dans la même section — quatre preuves.
+Couleur fond la palette et la situation en une preuve, la marque rare : le
+tableau de bord porte la preuve, la mosaïque et ses proportions disent la
+répartition, les six gammes descendent au répertoire, ouvertes d'entrée —
+trois preuves. Composition réécrit ses quatre paires (la réserve du 7) : la loi
+en titre, en cote la seule chose qui change, et de chaque côté ce que l'œil
+fait — « un bord, l'œil descend droit » / « trois bords, l'œil zigzague ».
+Arrondis retire ses deux paragraphes d'histoire ; le titre de la fiche Navette,
+un décor, cesse d'être un h4 de la page.
+
+**Au banc.** Une épreuve commune, l'écriture (`fautesEcriture`, dans
+`banc.mjs`) : aucun mot qui commande ou décrit, pas d'histoire de page, pas de
+pied, exactement un `#registre`, aucun titre de la queue commune, aucun saut de
+niveau dans l'arbre des titres. Chaque page l'ajoute à ses épreuves avec le
+compte de ses pièces ; les épreuves qui nommaient la queue sont réécrites sur
+la page d'aujourd'hui, aucune relâchée. Elle a attrapé deux fautes en chemin :
+la section de l'intervalle des titres tombée dans la découpe de Rythme, et le
+h4 du décor Navette.
+
+**Reste à l'œil de l'Auteur.** `/mouvement`, verrouillée, garde deux titres de
+la queue commune (« Voyez ce qui se passe… », « Elles se vérifient ailleurs »)
+et sa queue en trois sections : on ne rouvre pas une page 🟢 sans décision.

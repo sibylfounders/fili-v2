@@ -15,6 +15,14 @@ a:hover { color: var(--primary-text-hover); }
   background: var(--bg); border-bottom: 1px solid var(--border);
 }
 .chrome b { letter-spacing: -0.02em; }
+/* La marque est un lien vers l'accueil : elle garde son habit (aucun soulignement,
+   l'encre de la page), la cible déborde les mots, et le survol se dit par le
+   fond comme dans l'index — jamais par l'accent. Sur l'accueil, elle est inerte. */
+.chrome-marque { display: inline-flex; align-items: baseline; gap: var(--gap-2-inline);
+  color: inherit; text-decoration: none; padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline-start: calc(-1 * var(--gap-3-inline)); border-radius: var(--r-3);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+a.chrome-marque:hover { background: var(--surface-hover); }
 .chrome nav { display: flex; gap: var(--gap-2-inline); margin-left: auto; }
 .page {
   max-width: 46rem; margin: 0 auto;
@@ -353,21 +361,21 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
   --halo-bande: var(--danger-subtle); --halo-trait: var(--focus-ring-danger); }
 /* le coin de l'objet, quand ce n'est pas celui du composant */
 .tuile { --halo-r: var(--r-1); } .bn-tuile { --halo-r: var(--r-2); }
-.navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee { --halo-r: var(--r-3); }
+.navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque { --halo-r: var(--r-3); }
 .ar-onglets button, .ar-inter, .ar-dial input[type=range] { --halo-r: var(--r-pill); }
 /* Les porteurs à deux calques (leurs pseudo-éléments sont libres) — un champ de saisie le reçoit par son enveloppe. */
-.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite { position: relative; }
-:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
-:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
+.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button, .champ-boite { position: relative; }
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
 .champ-boite:has(:focus-visible)::before, .champ-boite:has(:focus-visible)::after {
   content: ""; position: absolute; pointer-events: none; }
 /* le trait : au bord extérieur de la bordure (1 px, B3) + la bande */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button):focus-visible::before,
 .champ-boite:has(:focus-visible)::before {
   inset: calc(-1px - var(--focus-band) - var(--focus-line)); border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
   border: var(--focus-line) solid var(--halo-trait); }
 /* la bande : au bord extérieur de la bordure, creuse — son coin intérieur retombe sur celui de l'objet */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button):focus-visible::after,
 .champ-boite:has(:focus-visible)::after {
   inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
   border: var(--focus-band) solid var(--halo-bande); }
@@ -389,7 +397,7 @@ details.prov summary { --halo-r: var(--r-3); }
 :is(.cm-tuile, .cp-col):focus-visible::before { content: ""; position: absolute; pointer-events: none; inset: 0; border: var(--focus-line) solid var(--halo-trait); }
 :is(.cm-tuile, .cp-col):focus-visible::after { content: ""; position: absolute; pointer-events: none; inset: var(--focus-line); border: var(--focus-band) solid var(--halo-bande); }
 /* Le contour natif du navigateur se tait : le halo le remplace. */
-:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .bn-tuile[tabindex], .ar-onglets button, .champ-boite input, details.prov summary, .poignee, .ar-inter, .cm-tuile, .cp-col):focus { outline: none; }
+:is(.bouton, .tuile, .navigation a, .rail-lien, .rail-ouvre, .pastille, .index-lien, .mega-onglet, .mega-fermer, .feuille-accueil, .tiroir-poignee, .acc-acces-lien, .chrome-marque, .bn-tuile[tabindex], .ar-onglets button, .champ-boite input, details.prov summary, .poignee, .ar-inter, .cm-tuile, .cp-col):focus { outline: none; }
 details.prov summary:hover { color: var(--text-primary); }
 ::selection { background: var(--primary-subtle); color: var(--text-primary); }
 
@@ -695,6 +703,16 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
    page (zéro débord à la largeur minimale — invariant d'audit, attrapé par le
    crash-test de page le 26 août). */
 .gdoc-corps { margin-top: var(--doc-tete); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
+/* ── Le répertoire (8 septembre 2026) : une seule section par page, sous un
+   titre à elle, qui range plusieurs PIÈCES — les dérives en bandes, les
+   règles en liste, les jetons en panneau, une table de valeurs — chacune
+   sous son sous-titre. Le sous-titre est un h3 ; les bandes qu'il abrite
+   descendent en h4 (jamais un saut de niveau). ── */
+.doc-piece { display: grid; gap: var(--gap-1-block); }
+.doc-piece-tete { max-width: var(--measure); display: grid; gap: var(--gap-2-block); }
+.doc-piece-tete h3 { margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; text-wrap: balance; }
+.doc-piece-tete .sourd { line-height: 1.65; }
+.doc-piece + .doc-piece { padding-top: var(--pad-1-block); border-top: 1px solid var(--border); }
 .gd-pied {
   margin-top: var(--doc-silence); padding-top: var(--pad-2-block);
   border-top: 1px solid var(--border);
@@ -1202,6 +1220,40 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .acc-chapo b { color: var(--text-primary); font-weight: 600; }
 .acc-couv-pied { padding-bottom: 1.4rem; }
 
+/* L'accès direct au reste de la doc (verdict d'Auteur, 7 septembre) : sous le
+   chapo, avant tout scroll. Une GRILLE à deux colonnes — le repère, puis les
+   familles — alignée par construction, pas par la largeur des mots. Dehors
+   plus large que dedans, mesuré : deux catégories sont séparées du cran de
+   groupe (gap-2), deux familles d'une même ligne du cran de frères (gap-3).
+   Même règle que le menu — les repères parlent mono, les destinations parlent
+   sans. Aucune mention répétée : la famille qui a une page est en encre
+   pleine ; celle qui n'en a pas est en encre seconde, c'est un bouton qui
+   ouvre le menu sur sa catégorie. Une seule légende, une seule ligne.
+   (Première version relue contre /composition le 7 septembre : « à venir »
+   cinq fois, en habit de repère, à l'écart du frère — trois lois cassées.) */
+.acc-acces { margin-top: var(--acc-tete); display: grid;
+  grid-template-columns: max-content minmax(0, 1fr); align-items: baseline;
+  gap: var(--gap-2-block) var(--doc-gouttiere); }
+.acc-acces-cat { font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : le repère d'une catégorie */ }
+/* La cible déborde le mot (comme dans l'index) ; la liste se décale d'autant
+   pour que le premier mot reste sur la colonne de la grille. */
+.acc-acces-liste { display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline-start: calc(-1 * var(--gap-3-inline)); }
+.acc-acces-lien { appearance: none; background: none; border: 0; cursor: pointer;
+  font: 500 var(--font-size-small)/1.3 var(--font-sans); color: var(--text-primary);
+  text-decoration: none; padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-3);
+  transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+.acc-acces-lien:hover { background: var(--surface-hover); color: var(--text-primary); }
+button.acc-acces-lien { color: var(--text-secondary); }
+/* La légende est d'une autre nature que les lignes : elle s'écarte d'un cran
+   de plus, pour ne pas lire comme une troisième ligne de la grille. */
+.acc-acces-legende { grid-column: 1 / -1; margin: var(--gap-2-block) 0 0;
+  font-size: var(--font-size-small); color: var(--text-secondary); }
+
 /* Le dévoilement (rise-mask de la charte) — l'entrée en scène de l'accueil est une
    CHORÉGRAPHIE déclarée (verdict d'Auteur, 4 septembre) : ses durées ne sont pas des
    réponses d'interface, elles sont dites sur leur ligne. Les déplacements ne jouent
@@ -1273,6 +1325,28 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .acc-sp-couleur i { display: grid; grid-template-columns: 2.2rem 1fr; height: 1.5rem;
   border-radius: var(--r-2); overflow: hidden; border: 1px solid var(--border); }
 .acc-sp-couleur i b { display: block; }
+/* L'arrondi : trois boîtes emboîtées, le coin de chacune déduit de celui de
+   son parent — la cascade des rayons du kit, r-1 puis r-2 puis r-3. */
+.acc-sp-arrondis { display: grid; align-content: end; justify-content: start; }
+.acc-sp-arrondis > i { display: block; width: 7.5rem; height: 4.8rem; border-radius: var(--r-1);
+  border: 1px solid var(--border-strong); padding: var(--gap-3-block); }
+.acc-sp-arrondis > i > i { display: block; height: 100%; border-radius: var(--r-2);
+  border: 1px solid var(--border); background: var(--surface); padding: var(--gap-4-block); }
+.acc-sp-arrondis > i > i > i { display: block; height: 100%; border-radius: var(--r-3);
+  background: var(--primary-subtle); }
+/* La composition : trois blocs et le tracé en F que l'œil suit dessus. */
+.acc-sp-compo { position: relative; display: grid; align-content: space-between;
+  height: 5rem; color: var(--primary); }
+.acc-sp-compo-bloc { display: block; height: 0.9rem; border-radius: var(--r-3);
+  background: var(--surface-hover); border: 1px solid var(--border); }
+.acc-sp-compo-trace { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Le mouvement : la courbe du kit, un seul trait, quatre repères. */
+.acc-sp-mouvement { height: 5rem; color: var(--primary); }
+.acc-sp-mouvement svg { display: block; width: 100%; height: 100%; }
+/* Une page ouverte sans spécimen le dit, elle ne fait pas semblant. */
+.acc-sp-absent { font: 600 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : une mention d'attente */ }
 
 /* 03 · La carte du système */
 .acc-carte { border: 1px solid var(--border); border-radius: var(--r-1);
@@ -1288,6 +1362,8 @@ a.index-lien.on:hover { background: var(--text-primary); color: var(--bg); }
 .acc-carte td:first-child { font-weight: 600; white-space: nowrap; }
 .acc-carte td:first-child a { color: var(--primary-text); text-decoration: none; }
 .acc-carte td:last-child { color: var(--text-secondary); }
+.acc-carte-pages { display: flex; flex-wrap: wrap; gap: var(--gap-4-block) var(--gap-2-inline); }
+.acc-carte-pages a { color: var(--primary-text); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .acc-etat { white-space: nowrap; font-size: 0.8125rem; }
 .accueil details.prov { max-width: var(--measure); }
 

@@ -1,7 +1,10 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { derive, contraste, PRIMAIRE_DEFAUT } from "../derivation.mjs";
 import { usePrimaire } from "./primaire";
+import { FeuilleSite } from "./rail";
+import { CATEGORIES, FAMILLES, OUVERTES, cleDe, pagesDe, premiereDe, type Famille } from "./pages";
 
 /* ── LA PORTE (proposition HTML validée du 24 août, appliquée au kit).
    Deux terres d'emprunt, dites : la couverture de la charte (le
@@ -25,6 +28,93 @@ const ESSAIS: { hex: string; nom: string }[] = [
   { hex: "#BE38F3", nom: "Un violet moyen — le cas limite" },
 ];
 
+/* ── Les spécimens des fondations ouvertes — un par page, dessiné ICI, jamais
+   une vignette : la typographie montre son échelle, le rythme ses crans, la
+   couleur ses couples, l'arrondi sa profondeur, la composition le chemin de
+   l'œil, le mouvement sa courbe. Une page sans spécimen le dit à sa place
+   au lieu de faire semblant. Clé = le chemin de la page sans sa barre. ── */
+const SPECIMENS: Record<string, React.ReactNode> = {
+  typo: (
+    <div className="acc-sp-typo" aria-hidden="true">
+      <span style={{ fontSize: "3.4rem" }}>Aa</span>
+      <span style={{ fontSize: "2.3rem" }}>Aa</span>
+      <span style={{ fontSize: "1.55rem", color: "var(--text-secondary)" }}>Aa</span>
+      <span style={{ fontSize: "1.05rem", color: "var(--text-secondary)" }}>Aa</span>
+      <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Aa</span>
+    </div>
+  ),
+  rythme: (
+    <div className="acc-sp-rythme" aria-hidden="true">
+      <i style={{ width: "18%" }} /><i style={{ width: "30%" }} /><i style={{ width: "46%" }} /><i style={{ width: "68%" }} /><i style={{ width: "100%" }} />
+    </div>
+  ),
+  couleur: (
+    <div className="acc-sp-couleur" aria-hidden="true">
+      <i><b style={{ background: "var(--primary)" }} /><b style={{ background: "var(--primary-subtle)" }} /></i>
+      <i><b style={{ background: "var(--danger)" }} /><b style={{ background: "var(--danger-subtle)" }} /></i>
+      <i><b style={{ background: "var(--success)" }} /><b style={{ background: "var(--success-subtle)" }} /></i>
+    </div>
+  ),
+  /* Trois boîtes emboîtées : chaque coin intérieur se DÉDUIT du coin de son
+     parent moins la marge — personne ne le choisit. Les rayons sont ceux du
+     kit (r-1 → r-2 → r-3), la profondeur se lit dans la cascade des coins. */
+  arrondis: (
+    <div className="acc-sp-arrondis" aria-hidden="true">
+      <i><i><i /></i></i>
+    </div>
+  ),
+  /* Le chemin de l'œil sur une page : un titre, deux lignes, un bloc — et le
+     tracé en F qui les relie, dans l'ordre où l'œil les prend. */
+  composition: (
+    <div className="acc-sp-compo" aria-hidden="true">
+      <span className="acc-sp-compo-bloc" style={{ width: "62%" }} />
+      <span className="acc-sp-compo-bloc" style={{ width: "88%" }} />
+      <span className="acc-sp-compo-bloc" style={{ width: "40%" }} />
+      <svg className="acc-sp-compo-trace" viewBox="0 0 100 60" preserveAspectRatio="none">
+        <path d="M4 8 H62 M4 8 V52 M4 30 H88 M4 52 H40" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+        <circle cx="4" cy="8" r="3" fill="currentColor" />
+      </svg>
+    </div>
+  ),
+  /* La courbe du kit — la sortie qui freine — et ses quatre durées posées
+     dessus comme quatre repères : la matière du mouvement tient en un trait. */
+  mouvement: (
+    <div className="acc-sp-mouvement" aria-hidden="true">
+      <svg viewBox="0 0 100 60" preserveAspectRatio="none">
+        <path d="M2 58 C 20 2, 40 2, 98 2" fill="none" stroke="currentColor" strokeWidth="2"
+          strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        <circle cx="14" cy="34" r="2.5" fill="currentColor" />
+        <circle cx="27" cy="16" r="2.5" fill="currentColor" />
+        <circle cx="42" cy="7" r="2.5" fill="currentColor" />
+        <circle cx="98" cy="2" r="2.5" fill="currentColor" />
+      </svg>
+    </div>
+  ),
+};
+
+/* Une famille ouvre le menu sur SA catégorie quand aucune de ses pages n'est
+   ouverte : un lien qui n'a pas de destination n'est pas un lien. Fondations
+   mène à sa première page ouverte. Le jour où Méthode a une page, son nom y
+   mène tout seul — la liste décide, pas cette page. */
+function Acces({ famille, categorie, ouvrir }: {
+  famille: Famille; categorie: string;
+  ouvrir: (cle: string, depuis: HTMLElement) => void;
+}) {
+  const premiere = premiereDe(famille);
+  if (premiere) return <Link className="acc-acces-lien" href={premiere.chemin!}>{famille.nom}</Link>;
+  return (
+    <button className="acc-acces-lien" type="button" aria-haspopup="dialog"
+      title={`${famille.nom} — pas encore de page : ouvre le menu`}
+      onClick={(e) => ouvrir(categorie, e.currentTarget)}>
+      {famille.nom}
+    </button>
+  );
+}
+
+/* Le nombre de fondations ouvertes se dit en lettres — et se lit dans la liste. */
+const MOTS = ["aucune", "une", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze"];
+
 const fmt = (r: number) => (Math.round(r * 100) / 100).toFixed(2).replace(".", ",");
 
 export default function Accueil() {
@@ -37,6 +127,13 @@ export default function Accueil() {
      connue qu'après l'hydratation. */
   const [pret, setPret] = useState(false);
   useEffect(() => setPret(true), []);
+
+  /* La feuille du menu, ouverte depuis la couverture sur un onglet donné. */
+  const [feuille, setFeuille] = useState("");
+  const ancre = useRef<HTMLElement>(null!);
+  const ouvrirFeuille = (cle: string, depuis: HTMLElement) => { ancre.current = depuis; setFeuille(cle); };
+  const fermerFeuille = () => setFeuille("");
+  const categories = CATEGORIES.filter((c) => c.familles);
 
   const rAplat = contraste(pal.light["on-primary"], pal.light.primary) as number;
   const rPage = contraste(pal.light["text-primary"], pal.light.bg) as number;
@@ -51,7 +148,7 @@ export default function Accueil() {
           <b>FILI</b>
         </div>
         <div className="acc-couv-corps">
-          <p className="kicker acc-rise" style={{ ["--i" as string]: 1 }}><span>Le kit — trois fondations, un moteur</span></p>
+          <p className="kicker acc-rise" style={{ ["--i" as string]: 1 }}><span>Le kit — {MOTS[OUVERTES.length] ?? OUVERTES.length} fondations ouvertes, un moteur</span></p>
           <h1>
             <span className="acc-rise" style={{ ["--i" as string]: 2 }}><span>Ce kit ne se décrit pas.</span></span>
             <span className="acc-rise" style={{ ["--i" as string]: 3 }}><span>Il se prouve.</span></span>
@@ -60,8 +157,34 @@ export default function Accueil() {
           <p className="acc-chapo acc-fade" style={{ ["--i" as string]: 5 }}><b>Chaque affirmation de ce site est
           mesurée sur la page que vous lisez.</b> La typographie, le rythme, la couleur — et un
           moteur : une décision d&apos;entrée, tout le système sort.</p>
+          {/* L'accès direct au reste de la doc, sans scroller (verdict
+              d'Auteur, 7 septembre) : deux catégories, six familles, dans
+              l'ordre d'Auteur. UNE GRILLE, pas deux rangées : la colonne des
+              repères et la colonne des familles s'alignent par construction.
+              Les catégories parlent mono (des repères), les familles parlent
+              sans (des destinations) — la règle du menu. Aucune mention
+              répétée : une famille qui a une page est en encre pleine, une
+              famille sans page est en encre seconde et ouvre le menu — la
+              nature du signe dit le rôle, une seule légende le confirme
+              (relu contre les lois de /composition : écarts tous égaux, un
+              habit un rôle, la rupture partout, trois départs — 7 septembre). */}
+          <nav className="acc-acces acc-fade" style={{ ["--i" as string]: 6 }}
+            aria-label="Les grandes parties du kit">
+            {categories.map((c) => (
+              <Fragment key={c.cle}>
+                <span className="acc-acces-cat">{c.nom}</span>
+                <span className="acc-acces-liste">
+                  {c.familles!.map((f) => (
+                    <Acces key={f.nom} famille={f} categorie={c.cle} ouvrir={ouvrirFeuille} />
+                  ))}
+                </span>
+              </Fragment>
+            ))}
+            <p className="acc-acces-legende">Les familles en encre seconde n&apos;ont pas encore
+            de page : elles ouvrent le menu.</p>
+          </nav>
         </div>
-        <p className="acc-couv-pied kicker acc-fade" style={{ ["--i" as string]: 6 }}>Design ops &amp; code governance · corpus vivant</p>
+        <p className="acc-couv-pied kicker acc-fade" style={{ ["--i" as string]: 7 }}>Design ops &amp; code governance · corpus vivant</p>
       </header>
 
       <main>
@@ -124,53 +247,29 @@ export default function Accueil() {
 
         <section className="acc-sec acc-colonne" id="fondations">
           <div className="acc-sec-tete">
-            <p className="kicker">02 · Trois fondations</p>
+            <p className="kicker">02 · Les fondations ouvertes</p>
             <h2>Chacune parle sa langue</h2>
             <p className="sourd">Pas de vignettes : des spécimens. La typographie montre son
             échelle, le rythme ses crans, la couleur ses couples — trois secondes chacune,
-            puis la page complète.</p>
+            puis la page complète. Une carte par page ouverte : la liste des pages décide,
+            cette page suit.</p>
           </div>
           <div className="acc-sec-corps">
             <div className="acc-fonds">
-              <a className="acc-fond" href="/typo">
-                <p className="kicker">Fondation</p>
-                <h3>La typographie</h3>
-                <div className="acc-fond-specimen">
-                  <div className="acc-sp-typo" aria-hidden="true">
-                    <span style={{ fontSize: "3.4rem" }}>Aa</span>
-                    <span style={{ fontSize: "2.3rem" }}>Aa</span>
-                    <span style={{ fontSize: "1.55rem", color: "var(--text-secondary)" }}>Aa</span>
-                    <span style={{ fontSize: "1.05rem", color: "var(--text-secondary)" }}>Aa</span>
-                    <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Aa</span>
-                  </div>
-                </div>
-                <p>Deux voix, une échelle, une mesure — chaque lettre de la page sait pourquoi.</p>
-                <span className="acc-fond-lien">Lire la fondation →</span>
-              </a>
-              <a className="acc-fond" href="/rythme">
-                <p className="kicker">Fondation</p>
-                <h3>Le rythme</h3>
-                <div className="acc-fond-specimen">
-                  <div className="acc-sp-rythme" aria-hidden="true">
-                    <i style={{ width: "18%" }} /><i style={{ width: "30%" }} /><i style={{ width: "46%" }} /><i style={{ width: "68%" }} /><i style={{ width: "100%" }} />
-                  </div>
-                </div>
-                <p>Deux axes, des crans déclarés — chaque distance de la page a une raison.</p>
-                <span className="acc-fond-lien">Lire la fondation →</span>
-              </a>
-              <a className="acc-fond" href="/couleur">
-                <p className="kicker">Fondation</p>
-                <h3>La couleur</h3>
-                <div className="acc-fond-specimen">
-                  <div className="acc-sp-couleur" aria-hidden="true">
-                    <i><b style={{ background: "var(--primary)" }} /><b style={{ background: "var(--primary-subtle)" }} /></i>
-                    <i><b style={{ background: "var(--danger)" }} /><b style={{ background: "var(--danger-subtle)" }} /></i>
-                    <i><b style={{ background: "var(--success)" }} /><b style={{ background: "var(--success-subtle)" }} /></i>
-                  </div>
-                </div>
-                <p>Des rôles, jamais des valeurs — chaque rapport mesuré sur la page rendue.</p>
-                <span className="acc-fond-lien">Lire la fondation →</span>
-              </a>
+              {OUVERTES.map((pg) => {
+                const cle = cleDe(pg)!;
+                return (
+                  <Link key={cle} className="acc-fond" href={pg.chemin!}>
+                    <p className="kicker">Fondation{pg.etat ? ` · ${pg.etat}` : ""}</p>
+                    <h3>{pg.nom}</h3>
+                    <div className="acc-fond-specimen">
+                      {SPECIMENS[cle] ?? <span className="acc-sp-absent">spécimen à dessiner</span>}
+                    </div>
+                    <p>{pg.dit}</p>
+                    <span className="acc-fond-lien">Lire la fondation →</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -185,19 +284,34 @@ export default function Accueil() {
           <div className="acc-sec-corps">
             <div className="acc-carte">
               <table>
-                <thead><tr><th>Sujet</th><th>État</th><th>Ce qu&apos;on y trouve</th></tr></thead>
+                <thead><tr><th>Famille</th><th>Pages ouvertes</th><th>À venir</th></tr></thead>
                 <tbody>
-                  <tr><td><a href="/typo">Typographie</a></td><td className="acc-etat">🟢 verrouillé</td><td>deux voix, l&apos;échelle, la mesure, la gazette et son banc d&apos;essai</td></tr>
-                  <tr><td><a href="/rythme">Rythme</a></td><td className="acc-etat">🟢 verrouillé</td><td>deux axes, les crans responsives, le laboratoire des distances</td></tr>
-                  <tr><td><a href="/couleur">Couleur</a></td><td className="acc-etat">🟡 en cours</td><td>seize règles, deux thèmes, le moteur et ses garde-fous</td></tr>
-                  <tr><td><a href="/composition">Composition</a></td><td className="acc-etat">🟡 en cours</td><td>huit règles, le chemin de l&apos;œil, les axes mesurés sur le rendu</td></tr>
-                  <tr><td>En situation</td><td className="acc-etat">⚪ idée</td><td>les fondations au travail sur de vrais écrans</td></tr>
+                  {FAMILLES.map((f) => {
+                    const pages = pagesDe(f);
+                    const ouvertes = pages.filter((pg) => pg.chemin);
+                    const attendent = pages.length - ouvertes.length;
+                    return (
+                      <tr key={f.nom}>
+                        <td>{f.nom}</td>
+                        <td className="acc-carte-pages">
+                          {ouvertes.length
+                            ? ouvertes.map((pg) => (
+                                <Link key={pg.nom} href={pg.chemin!}>
+                                  <span className="acc-etat">{pg.etat ?? "⚪"}</span> {pg.nom}
+                                </Link>
+                              ))
+                            : <span className="sourd">— aucune encore</span>}
+                        </td>
+                        <td>{attendent ? `${attendent} page${attendent > 1 ? "s" : ""}` : "—"}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
-            <p className="sourd" style={{ fontSize: "0.8125rem" }}>Déjà écrites, en attente
-            d&apos;entrée : arrondis · tactile · bordures. Composants et patterns restent gelés
-            jusqu&apos;au verrou des fondations.</p>
+            <p className="sourd" style={{ fontSize: "0.8125rem" }}>Ce tableau est lu dans la
+            liste des pages du kit : il ne peut pas être en retard sur le menu. ⚪ idée ·
+            🟡 en cours · 🟢 verrouillé — l&apos;état est écrit à chaque verdict, jamais deviné.</p>
             <details className="prov"><summary>Règles &amp; sources</summary><div>
               <p>La couverture et son dévoilement reprennent la charte Fili (planche couverture,
               monogramme, rise-masks). L&apos;objet vivant reprend le principe du générateur
@@ -210,6 +324,9 @@ export default function Accueil() {
         </section>
 
       </main>
+
+      <FeuilleSite page="accueil" ouvert={feuille !== ""} fermer={fermerFeuille}
+        ancre={ancre} onglet={feuille || undefined} />
     </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import { Apercu } from "../apercu";
 import { Bandes, Bande, ListeRegles, PanneauRegistre } from "../etages";
 import type { LigneListe, LigneCode } from "../etages";
 import { RailDoc, useDocSections, type Sommaire } from "../rail";
-import { chaine, jetons, aLargeur, AXES, CHARTE, LARGEUR_MIN, LARGEUR_MAX } from "../../derivation.mjs";
+import { chaine, jetons, aLargeur, AXES, CHARTE, LARGEUR_MIN, LARGEUR_MAX, GRAISSE } from "../../derivation.mjs";
 
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE TYPOGRAPHIE — contenu natif (24 août 2026, reprise après verdict
@@ -20,10 +20,16 @@ import { chaine, jetons, aLargeur, AXES, CHARTE, LARGEUR_MIN, LARGEUR_MAX } from
      seule la largeur change, comptée sur la page rendue), LA GAZETTE
      (objet en situation, cassable d'un geste). Leur FORME est conservée ;
      seul leur texte est passé à la voix (verdict d'Auteur, 2 septembre).
-   · LES TROIS ÉTAGES (05 à 07) — au gabarit commun d'etages.tsx, comme
-     Rythme, la pièce de référence : les règles qu'on peut casser (six
-     bandes), celles qu'on ne peut pas montrer (la liste et sa colonne
-     « où ça se vérifie »), et le registre des jetons.
+   · LA GRAISSE (05) — section à part, décision d'Auteur du 8 septembre
+     2026 (d'après le relevé de la vidéo « The 80% of UI Design –
+     Typography ») : une seule taille suffit (la liste au corps unique,
+     cassable d'un geste), et deux fonds, deux graisses (le même paragraphe
+     sur clair et sur sombre, l'écart au curseur — le nombre est à poser à
+     l'œil par l'Auteur). Les trois preuves du dessus ne bougent pas.
+   · LE RÉPERTOIRE (06) — une seule section, au titre de la page (8 sept.
+     2026, plus de queue commune aux six pages) : les six dérives en bandes,
+     les treize règles en liste avec leur colonne « où ça se vérifie », les
+     jetons. Les pièces viennent d'etages.tsx ; l'assemblage est à la page.
 
    L'extrait prêt à coller et sa bascule HTML / React / Angular ont été
    retirés le 2 septembre : un extrait vieillit et se met à mentir dès que
@@ -144,6 +150,15 @@ const REGLES: { id: string; nom: string; titre: string; enonce: string; pourquoi
     pourquoi: "Le navigateur ajoute la moitié de l'interligne au-dessus et au-dessous de chaque ligne, et la font réserve déjà de la place pour les accents et les jambages. Un texte est donc centré au calcul et décentré à l'œil : la même valeur d'espace, posée des quatre côtés, n'en paraît jamais une.",
     div: "Aucune source ne dit à partir de quel écart le décalage devient une faute, et aucun grand système n'a tranché. Ce qui se vérifie ici n'est donc pas un montant : c'est la provenance du calage.",
     src: [{ t: "CSS Inline Layout 3 — text-box-trim", h: "https://drafts.csswg.org/css-inline-3/#text-box-trim" }, { t: "MDN — text-box-trim", h: "https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim" }, { t: "Chrome — CSS text-box-trim", h: "https://developer.chrome.com/blog/css-text-box-trim" }] },
+  { id: "t13", nom: "T13", titre: "Une seule taille peut porter une hiérarchie",
+    enonce: "Dans une liste, une carte, une ligne d'interface, le corps peut rester unique : la hiérarchie se fait par la graisse et par l'encre — jamais par la graisse seule, jamais par l'encre seule. On ne monte le corps qu'après avoir épuisé ces deux leviers.",
+    pourquoi: "Chaque taille ajoutée est un cran de plus à tenir, et une interface dense n'en supporte pas six. La graisse et l'encre séparent sans agrandir — et la taille reste disponible pour ce qui doit vraiment dominer.",
+    src: [{ t: "Sajid — The 80% of UI Design : Typography (2024)", h: "https://www.youtube.com/watch?v=9-oefwZ6Z74" }, { t: "IBM Carbon — Typography", h: "https://carbondesignsystem.com/elements/typography/overview/" }, { t: "Décision d'Auteur du 8 septembre 2026", h: "#" }] },
+  { id: "t14", nom: "T14", titre: "Deux fonds, deux graisses",
+    enonce: `Chaque jeton de graisse résout une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde que la claire. Aujourd'hui l'écart vaut ${GRAISSE.ecartSombre} pour tous les rôles : c'est une valeur de départ, à poser à l'œil.`,
+    pourquoi: "Le blanc sur noir rayonne dans l'œil : à graisse égale, il paraît plus gros et plus serré que le noir sur blanc. À l'impression c'est l'inverse — l'encre bave et le blanc s'amincit. Cette règle est écrite pour l'écran.",
+    div: "Aucune source ne chiffre l'écart : seule la direction est publiée. Le nombre est un arbitrage d'Auteur, et il est dit comme tel — sur cette page, au curseur.",
+    src: [{ t: "Google Fonts Knowledge — Glossaire", h: "https://fonts.google.com/knowledge/glossary" }, { t: "Décision d'Auteur du 8 septembre 2026", h: "#" }] },
 ];
 
 function Regles({ ids }: { ids: string[] }) {
@@ -291,7 +306,7 @@ function MesureEnCadre() {
         ))}
       </>}
       enfants={() => <LigneMesuree key={cas.cle} cas={cas.cle} maxW={cas.maxW} />}
-      pied={<span className="gd-legende">Le pointillé est la borne. Tirez la poignée :
+      pied={<span className="gd-legende">Le pointillé est la borne :
         la faute n&apos;apparaît qu&apos;en s&apos;élargissant.</span>}
     />
   );
@@ -359,6 +374,12 @@ const LISTE: LigneListe[] = [
   { nom: "On rogne par rôle, jamais par composant",
     dit: "Un rôle de texte est calé partout ou nulle part. Deux titres de même rôle, l'un calé l'autre non, c'est deux systèmes d'espacement dans le même écran — et plus aucun moyen de dire lequel fait foi.",
     ou: "dans le code" },
+  { nom: "Une seule taille peut porter une hiérarchie",
+    dit: "Le corps peut rester unique dans une liste ou une carte : la graisse et l'encre séparent les éléments sans les agrandir. On ne monte le corps qu'après avoir épuisé ces deux leviers.",
+    ou: "sur l'écran allumé", ton: "rendu" },
+  { nom: "Deux fonds, deux graisses",
+    dit: "Chaque jeton de graisse porte une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde. L'écart est le même pour tous les rôles ; il se lit dans le fichier des jetons.",
+    ou: "dans le code" },
   { nom: "La pile de secours est calée sur la font livrée",
     dit: "Tant que la font n'est pas arrivée, le texte se peint dans la police système. Si ses mesures diffèrent, tout saute à la bascule — et le calage se recalcule sur les mauvaises.",
     ou: "dans le code" },
@@ -391,9 +412,12 @@ const CODE: LigneCode[] = [
   { regle: "L'interlettrage de l'étiquette", repli: true,
     ecrit: <><span className="cs-kw">letter-spacing</span>: <span className="cs-var">var(--tracking-label)</span></>,
     produit: "les capitales respirent", note: "sans lui, la casse haute se serre et le mot perd sa silhouette" },
-  { regle: "Le demi-gras", repli: true,
-    ecrit: <><span className="cs-kw">font-weight</span>: <span className="cs-var">600</span></>,
-    produit: "réservé aux titres", note: "un paragraphe entier appuyé n'appuie plus rien" },
+  { regle: "La graisse du titre", repli: true,
+    ecrit: <><span className="cs-kw">font-weight</span>: <span className="cs-var">var(--weight-heading)</span></>,
+    produit: `${GRAISSE.roles.heading} en clair · ${GRAISSE.sombre("heading")} en sombre`, note: "réservée aux titres — un paragraphe entier appuyé n'appuie plus rien" },
+  { regle: "La graisse du courant", repli: true,
+    ecrit: <><span className="cs-kw">font-weight</span>: <span className="cs-var">var(--weight-body)</span></>,
+    produit: `${GRAISSE.roles.body} en clair · ${GRAISSE.sombre("body")} en sombre`, note: "le même écart pour chaque rôle — le blanc sur noir paraît plus gros" },
   { regle: "La font qui lit", repli: true,
     ecrit: <><span className="cs-kw">font-family</span>: <span className="cs-var">var(--font-sans)</span></>,
     produit: "Geist, livrée avec le kit", note: "le nom déclaré correspond à un fichier versé au dépôt" },
@@ -407,9 +431,8 @@ const SOMMAIRE: Sommaire = [
   ["gamme", "02", "L'échelle"],
   ["mesure", "03", "La mesure"],
   ["gazette", "04", "La gazette"],
-  ["casser", "05", "Les règles qu'on peut casser"],
-  ["invisibles", "06", "Les règles qu'on ne peut pas montrer"],
-  ["code", "07", "Dans le code"],
+  ["graisse", "05", "La graisse"],
+  ["registre", "06", "Le registre"],
 ];
 
 /* ── LE CALAGE — la même valeur d'espace, des quatre côtés ──────────────
@@ -466,6 +489,80 @@ function CarteCalee({ casse }: { casse: boolean }) {
   );
 }
 
+/* ── 05 · LA GRAISSE — section à part (décision d'Auteur, 8 septembre 2026).
+   Deux objets. La LISTE AU CORPS UNIQUE : nom, sous-titre, bouton, tout au
+   même corps ; la hiérarchie tient par la graisse et l'encre, et « égaliser »
+   la fait tomber sous les yeux. Les graisses sont LUES dans le moteur
+   (GRAISSE), jamais recopiées. Puis DEUX FONDS, DEUX GRAISSES : le même
+   paragraphe sur clair et sur sombre ; le versant sombre est un vrai thème
+   sombre (data-theme), et son jeton de graisse est allégé de l'écart du
+   registre — le curseur le fait varier pour que l'Auteur pose le nombre à
+   l'œil. « La même graisse » est la casse : le blanc sur noir pèse plus. ── */
+const ABOS = [
+  { nom: "L'atelier du samedi", sous: "3 nouvelles vidéos · cette semaine", suivi: true },
+  { nom: "Cartes & boussoles", sous: "en direct dans 2 h", suivi: false },
+  { nom: "Le marbre", sous: "dernière vidéo il y a 5 jours", suivi: false },
+];
+
+function ListeCorpsUnique({ egal }: { egal: boolean }) {
+  return (
+    <div className={`tp-abos ${egal ? "egal" : ""}`} data-intent={egal ? "statement" : undefined}>
+      {ABOS.map((a, i) => (
+        <div className="tp-abo" key={a.nom}>
+          <span className={`tp-abo-avatar a${i + 1}`} aria-hidden="true" />
+          <div className="tp-abo-qui">
+            <span className="tp-abo-nom">{a.nom}</span>
+            <span className="tp-abo-sous">{a.sous}</span>
+          </div>
+          {/* un bouton dessiné, pas réel : la liste est un spécimen, elle n'abonne personne */}
+          <span className={`tp-abo-bouton ${a.suivi ? "suivi" : ""}`} aria-hidden="true">{a.suivi ? "Abonné" : "S'abonner"}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const TEXTE_FONDS =
+  "Le même paragraphe, la même font, le même corps. Seul le fond change — et " +
+  "avec lui le poids que l'œil donne aux lettres. Le blanc sur noir rayonne : " +
+  "il paraît plus gros, plus serré, et la ligne semble appuyer. Le kit " +
+  "l'allège d'un écart, le même pour chaque rôle.";
+
+/* hors chaîne : la course du curseur — jusqu'où l'Auteur peut allonger l'écart pour juger, par pas de 10 sur l'axe de la font */
+const ECART_MAX = 120;
+const ECART_PAS = 10;
+
+function DeuxFonds({ identique, ecart, surEcart }: { identique: boolean; ecart: number; surEcart: (v: number) => void }) {
+  const clair = GRAISSE.roles.body;
+  const sombre = identique ? clair : clair - ecart;
+  return (
+    <div className="tp-fonds-scene">
+      <div className="tp-fonds">
+        {/* le versant clair est un VRAI thème clair, même quand la page est en sombre : deux fonds, pas un fond et la page */}
+        <div className="tp-fond clair" data-theme="light">
+          <p>{TEXTE_FONDS}</p>
+          <span className="mono sourd">fond clair · {clair}</span>
+        </div>
+        {/* le versant sombre est un VRAI thème sombre : ses encres, son fond, et son jeton de graisse.
+            Le curseur ne repeint que ce jeton, ici — le registre, lui, garde son écart. */}
+        <div className="tp-fond noir" data-theme="dark" data-intent={identique ? "statement" : undefined}
+          style={{ ["--weight-body" as string]: sombre } as CSSProperties}>
+          <p>{TEXTE_FONDS}</p>
+          {identique
+            ? <span className="badge ko">fond sombre · {sombre} — même poids qu&apos;en clair, il pèse plus</span>
+            : <span className="mono sourd">fond sombre · {sombre} ({clair} − {ecart})</span>}
+        </div>
+      </div>
+      <div className="tp-molette">
+        <label htmlFor="tp-ecart">Compensation sombre</label>
+        <input type="range" id="tp-ecart" min={0} max={ECART_MAX} step={ECART_PAS} value={ecart}
+          disabled={identique} onChange={(e) => surEcart(+e.target.value)} />
+        <output htmlFor="tp-ecart" className="mono">−{identique ? 0 : ecart}{ecart === GRAISSE.ecartSombre && !identique ? " · registre" : ""}</output>
+      </div>
+    </div>
+  );
+}
+
 export default function Vue() {
   /* preuves */
   const [mauvaisNom, setMauvaisNom] = useState(false);
@@ -479,6 +576,10 @@ export default function Vue() {
   const [tape, setTape] = useState(false);
   const [petit, setPetit] = useState(false);
   const [calage, setCalage] = useState(false);
+  /* la graisse (05) */
+  const [egal, setEgal] = useState(false);
+  const [identique, setIdentique] = useState(false);
+  const [ecart, setEcart] = useState<number>(GRAISSE.ecartSombre);
   const actifId = useDocSections("fonts");
   const largeurEcran = useLargeurEcran();
   const corps = largeurEcran > 0 ? corpsPx(largeurEcran, zoom, vwSeul) : CORPS;
@@ -510,8 +611,8 @@ export default function Vue() {
               des années, et personne n&apos;a jamais remercié un produit d&apos;en avoir six.
               Le kit en garde deux : une qui lit, une qui chiffre. Le titre, le texte
               courant, l&apos;étiquette, le code — chacun a son réglage, décidé une fois.
-              Essayez le bouton : déclarez une font qui n&apos;existe pas, et vous vous
-              retrouvez en font système sans qu&apos;une seule erreur ne s&apos;affiche.</p>
+              Une font déclarée sous un nom qui n&apos;existe pas ne lève aucune erreur :
+              le produit entier passe en font système, en silence.</p>
             </div>
             <div className="gdoc-corps">
               <div className="rang">
@@ -628,10 +729,9 @@ export default function Vue() {
             <div className="gdoc-sec-tete">
               <p className="kicker">03 · La mesure</p>
               <h2>Avant la taille, c&apos;est la largeur qui décide</h2>
-              <p className="sourd">Même texte, même corps, même interligne : vous ne changez que la largeur. Une seule des trois se lit sans effort — les
-              deux autres vous fatiguent en quelques lignes. Et le compteur ne fait pas
-              confiance à la déclaration : il mesure la ligne réelle, dans le cadre que vous
-              avez sous les yeux.</p>
+              <p className="sourd">Même texte, même corps, même interligne : seule la largeur change. Une seule des trois se lit sans effort — les
+              deux autres fatiguent en quelques lignes. Et le compteur ne fait pas
+              confiance à la déclaration : il mesure la ligne réelle, dans le cadre rendu.</p>
             </div>
             <div className="gdoc-corps">
               <MesureEnCadre />
@@ -649,7 +749,7 @@ export default function Vue() {
               <p className="sourd">Un spécimen de font, tout le monde peut en faire un joli. Le vrai
               test, c&apos;est un objet réel qui tient debout sans qu&apos;on aille régler
               chaque titre à la main. Cette gazette est composée par les règles, et rien
-              d&apos;autre. Cassez-en une, puis relisez : la page ment aussitôt.</p>
+              d&apos;autre. Une règle cassée, et la page ment aussitôt.</p>
             </div>
             <div className="gdoc-corps">
               <div className="rang">
@@ -709,18 +809,70 @@ export default function Vue() {
             </div>
           </section>
 
-          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
-          <section className="gdoc-sec pose" id="casser">
+          {/* ═══ 05 · LA GRAISSE — section à part (décision d'Auteur, 8 septembre 2026) ═══ */}
+          <section className="gdoc-sec pose" id="graisse">
             <div className="gdoc-sec-tete">
-              <p className="kicker">05 · Les règles qu&apos;on peut casser</p>
-              <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="sourd">Six dérives ordinaires, et pas une seule ne déclenche
-              d&apos;erreur nulle part — c&apos;est précisément ce qui les rend coûteuses. Le bouton « Casser » ne dessine pas la faute, il la commet pour de
-              vrai — puis la répare.</p>
+              <p className="kicker">05 · La graisse</p>
+              <h2>La taille ne fait pas la hiérarchie</h2>
+              <p className="sourd">Même corps. Trois poids, deux encres.</p>
             </div>
             <div className="gdoc-corps">
+              <div className="rang">
+                <button className={`bouton casse ${egal ? "on" : ""}`} onClick={() => setEgal(!egal)}>
+                  {egal ? "Rendre les poids" : "Égaliser les poids"}
+                </button>
+                {egal && <span className="badge ko">même poids, même encre — plus rien ne se distingue</span>}
+              </div>
+              <figure className="gd-figure" style={{ width: "100%" }}>
+                <ListeCorpsUnique egal={egal} />
+                <figcaption className="gd-legende">
+                  un seul corps · nom {GRAISSE.roles.heading} · sous-titre {GRAISSE.roles.body}, encre seconde · bouton {GRAISSE.roles.label}
+                </figcaption>
+              </figure>
+
+              <h3 className="tp-sous-titre">Le blanc sur noir pèse plus</h3>
+              <p className="sourd" style={{ maxWidth: "var(--measure)" }}>Même paragraphe, même corps. En sombre,
+              chaque poids est allégé du même écart.</p>
+              <div className="rang">
+                <button className={`bouton casse ${identique ? "on" : ""}`} onClick={() => setIdentique(!identique)}>
+                  {identique ? "Rendre la compensation" : "Même poids sur les deux fonds"}
+                </button>
+              </div>
+              <figure className="gd-figure" style={{ width: "100%" }}>
+                <DeuxFonds identique={identique} ecart={ecart} surEcart={setEcart} />
+                <figcaption className="gd-legende">
+                  le registre allège de {GRAISSE.ecartSombre} — valeur de départ, à poser à l&apos;œil
+                </figcaption>
+              </figure>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Regles ids={["t13", "t14", "t7"]} />
+              </div></details>
+            </div>
+          </section>
+
+          {/* ═══ LE RÉPERTOIRE — une seule section, à la typographie : les six
+              dérives en bandes (#casser), les règles qui se vérifient ailleurs
+              (#invisibles), les jetons (#code). Les pièces viennent d'etages.tsx ;
+              leur assemblage et leur titre sont ceux de cette page (8 sept. 2026). ═══ */}
+          <section className="gdoc-sec pose" id="registre">
+            <div className="gdoc-sec-tete">
+              <p className="kicker">06 · Le registre</p>
+              <h2>Ce que la typographie règle sans qu&apos;on la voie</h2>
+              <p className="sourd">Six dérives ordinaires qu&apos;aucun outil ne signale, treize
+              règles qui se vérifient dans le code ou à l&apos;écran allumé, et les jetons
+              qui les portent. Les lignes marquées « décision d&apos;Auteur » sont des
+              réglages du kit, pas des lois de la lecture.</p>
+            </div>
+            <div className="gdoc-corps">
+              <div className="doc-piece" id="casser">
+                <div className="doc-piece-tete">
+                  <h3>Six dérives sans message d&apos;erreur</h3>
+                  <p className="sourd">Chacune se commet pour de vrai sur la scène, puis se répare.
+                  Le coût n&apos;apparaît qu&apos;à l&apos;usage : au zoom, au lecteur d&apos;écran,
+                  au téléphone.</p>
+                </div>
               <Bandes>
-                <Bande nom="Le zoom du lecteur" cote="du rem dans chaque borne"
+                <Bande niveau={4} nom="Le zoom du lecteur" cote="du rem dans chaque borne"
                   dit="Un lecteur agrandit le texte : la fenêtre, elle, ne bouge pas. Une taille exprimée en part d&apos;écran seule ne grandit donc pas d&apos;un pixel. L&apos;échec est silencieux — invisible en test standard, bloquant pour qui dépend du zoom."
                   casse={vwSeul} surCasse={setVwSeul}
                   libelleCasse="Casser : la part d&apos;écran seule"
@@ -741,14 +893,14 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="Le saut de niveau" cote="un niveau à la fois"
+                <Bande niveau={4} nom="Le saut de niveau" cote="un niveau à la fois"
                   dit="Les niveaux de titre se suivent sans saut. Un h2 suivi directement d&apos;un h4 casse l&apos;arbre que le lecteur d&apos;écran parcourt : l&apos;utilisateur en conclut qu&apos;il manque du contenu. Aucun bénéfice en échange."
                   casse={saut} surCasse={setSaut}
                   regles={<Regles ids={["t1", "p01"]} />}>
                   <Arbre saut={saut} />
                 </Bande>
 
-                <Bande nom="La graisse" cote="les titres, jamais le texte long"
+                <Bande niveau={4} nom="La graisse" cote="les titres, jamais le texte long"
                   dit="Quand tout est important, plus rien ne l&apos;est. Un paragraphe entier en demi-gras n&apos;appuie plus rien du tout — et la graisse fine sous le corps courant dégrade le trait, même quand la couleur passe les seuils."
                   casse={gras} surCasse={setGras}
                   regles={<Regles ids={["t7"]} />}>
@@ -756,12 +908,12 @@ export default function Vue() {
                     <p data-intent={gras ? "statement" : undefined}
                       style={{ fontWeight: gras ? 600 : 400 }}>Un texte long en demi-gras
                     n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
-                    demi-gras appartient aux titres — ce paragraphe vient de vous le prouver.</p>
+                    demi-gras appartient aux titres.</p>
                     {gras && <span className="badge ko">tout le paragraphe en demi-gras — il n&apos;y a plus rien à mettre en avant</span>}
                   </div>
                 </Bande>
 
-                <Bande nom="Les capitales" cote="brèves, espacées, jamais tapées"
+                <Bande niveau={4} nom="Les capitales" cote="brèves, espacées, jamais tapées"
                   dit="Les capitales ont été dessinées pour ouvrir une phrase, pas pour en porter quatre. Sur du texte courant, elles effacent la silhouette des mots : l&apos;œil se met à épeler au lieu de lire."
                   casse={tape} surCasse={setTape}
                   regles={<Regles ids={["t8"]} />}>
@@ -775,7 +927,7 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="Les 16 px du champ" cote="jamais sous le plancher"
+                <Bande niveau={4} nom="Les 16 px du champ" cote="jamais sous le plancher"
                   dit="Sous seize pixels, Safari sur iPhone zoome la page entière dès qu&apos;on touche le champ. Ce n&apos;est pas une préférence esthétique, c&apos;est un comportement de plateforme — et il suffit d&apos;un champ pour l&apos;attraper."
                   casse={petit} surCasse={setPetit}
                   regles={<Regles ids={["t10"]} />}>
@@ -789,7 +941,7 @@ export default function Vue() {
                   </div>
                 </Bande>
 
-                <Bande nom="Le calage du texte" cote="calé sur les capitales et la ligne de base"
+                <Bande niveau={4} nom="Le calage du texte" cote="calé sur les capitales et la ligne de base"
                   dit="Le navigateur ajoute la moitié de l&apos;interligne au-dessus et au-dessous de chaque ligne, et la font réserve déjà de la place pour les accents et les jambages. Un texte est donc centré au calcul et décentré à l&apos;œil : la même valeur d&apos;espace, posée des quatre côtés, n&apos;en paraît jamais une."
                   casse={calage} surCasse={setCalage}
                   libelleCasse="Casser : laisser revenir l&apos;air"
@@ -797,46 +949,32 @@ export default function Vue() {
                   <CarteCalee casse={calage} />
                 </Bande>
               </Bandes>
+              </div>
+
+              <div className="doc-piece" id="invisibles">
+                <div className="doc-piece-tete">
+                  <h3>Treize règles, et où chacune se vérifie</h3>
+                  <p className="sourd">Certaines règles ne se photographient pas. Elles se
+                  vérifient dans le code, sur l&apos;écran allumé, ou nulle part — et alors
+                  elles s&apos;assument comme un choix, daté.</p>
+                </div>
+                <ListeRegles lignes={LISTE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["p01", "g1", "t11", "t2", "t4", "t5", "t6", "t9"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-tete">
+                  <h3>Les jetons</h3>
+                  <p className="sourd">Ce qui fait foi, c&apos;est la règle et le jeton — pas
+                  l&apos;extrait de code, qui vieillit et finit par mentir. Chaque valeur
+                  ci-dessous est lue dans le registre du moment.</p>
+                </div>
+                <PanneauRegistre lignes={CODE} />
+              </div>
             </div>
           </section>
-
-          <section className="gdoc-sec pose" id="invisibles">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">06 · Les règles qu&apos;on ne peut pas montrer</p>
-              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
-              <p className="sourd">Certaines règles ne se photographient pas. Elles se
-              vérifient dans le code, à l&apos;écran allumé, ou nulle part du tout.</p>
-            </div>
-            <div className="gdoc-corps">
-              <ListeRegles lignes={LISTE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["p01", "g1", "t11", "t2", "t4", "t5", "t6", "t9"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="code">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">07 · Dans le code</p>
-              <h2>Le même système, dans votre stack</h2>
-            </div>
-            <div className="gdoc-corps">
-              <PanneauRegistre lignes={CODE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait un article prêt à
-                coller, avec une bascule HTML / React / Angular. On l&apos;a retiré : un
-                extrait vieillit, et le jour où le composant bouge il se met à mentir sans
-                prévenir. Le jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la
-                règle et le jeton</b> — pas le code. React, Angular ou HTML n&apos;en sont
-                que des consommateurs.</p>
-              </div></details>
-            </div>
-          </section>
-
-          <footer className="gd-pied">
-            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
-            <span>Toutes les règles sont dépliables ci-dessus</span>
-          </footer>
 
         </main>
       </div>

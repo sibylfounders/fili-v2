@@ -18,7 +18,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { derive, contraste, gamme, gammeNeutres, gammeFamille, poserSurGamme, hexVersLch, PAIRES_DECLAREES, PRIMAIRE_DEFAUT, DENSITES, PLAFOND_ETATS } from '../derivation.mjs'
-import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, debord, rgb, encres } from './banc.mjs'
+import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, debord, rgb, encres , fautesEcriture } from './banc.mjs'
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const PAL = derive(PRIMAIRE_DEFAUT)
@@ -147,8 +147,8 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
     const lng = await p.evaluate(() => [...document.querySelectorAll('#nuancier .gd-lng')].map((l) => [getComputedStyle(l.querySelector('.gd-lng-doux')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-doux')).color, getComputedStyle(l.querySelector('.gd-lng-ton')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-ton')).color]))
     LANGUETTES.forEach(([jeton, ton, surTon, doux, surDoux], i) => assert.deepEqual(lng[i], [doux, surDoux, ton, surTon].map((n) => rgb(pal[n.slice(2)])), `${theme} — languette ${jeton} peinte`))
     /* les gammes 50–950 : la barre est la gamme du moteur ; les rôles posés sont ceux qu'il pose */
-    await p.locator('#palette details.prov').first().locator('summary').click()
-    const barres = await p.evaluate(() => [...document.querySelectorAll('#palette .gm')].map((g) => ({
+    /* depuis le 8 septembre (soir), les gammes vivent au répertoire, ouvertes d'entrée */
+    const barres = await p.evaluate(() => [...document.querySelectorAll('#registre #gammes .gm')].map((g) => ({
       hex: [...g.querySelectorAll('.gm-barre button')].map((b) => b.getAttribute('aria-label').split(' — ')[1]),
       crans: [...g.querySelectorAll('.gm-cran')].map((c) => ({ cran: c.firstElementChild.textContent, roles: [...c.querySelectorAll('.gm-role')].map((r) => r.textContent) })),
     })))
@@ -360,4 +360,23 @@ test('6 · dans la vue, toute couleur écrite en dur est une casse, une étude, 
     fautes.push(`vue.tsx:${i + 1} ${l.trim().slice(0, 90)}`)
   })
   assert.deepEqual(fautes, [])
+})
+
+/* ── 8 · L'écriture et le répertoire (8 septembre 2026, soir) ──
+   La palette et la situation sont fondues en une preuve, la marque rare
+   (#palette garde la mosaïque, #situation le tableau de bord, dans la même
+   section) ; la queue commune a disparu ; UN répertoire (#registre) range les
+   rôles (#code), les six gammes (#gammes, ouvertes), cinq bandes (#casser, en
+   h4) et la liste (#invisibles). */
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la marque rare porte le tableau de bord et la mosaïque ; quatre pièces au répertoire, les gammes ouvertes', async () => {
+  const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
+  assert.deepEqual(await fautesEcriture(p), [])
+  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
+  assert.equal(await p.locator('#palette #situation .bn-photo').count() + await p.locator('#palette .cm-tuile').count() > 1 ? 1 : 0, 1, 'la marque rare : le tableau de bord et la mosaïque, dans la même preuve')
+  assert.equal(await p.locator('#registre #casser h4.doc-bande-nom').count(), 5, 'cinq gestes, en h4 sous leur sous-titre')
+  assert.equal(await p.locator('#registre .doc-piece-tete h3').count(), 4, 'quatre pièces')
+  assert.equal(await p.locator('#registre #gammes .gm').count(), 6, 'six gammes, lisibles sans un clic')
+  assert.ok(await p.$eval('#registre #gammes details.prov', (d) => d.open), 'les gammes sont ouvertes d\'entrée')
+  assert.ok(await p.locator('#registre #invisibles .doc-liste tbody tr').count() >= 1, 'la liste')
+  await fermer()
 })

@@ -3,8 +3,10 @@ import { useId, useState } from "react";
 import type { ReactNode } from "react";
 
 /* ═══════════════════════════════════════════════════════════════════════
-   LES TROIS ÉTAGES DU DESSOUS — le gabarit commun à toutes les pages du
-   kit (verdict d'Auteur, 1er septembre 2026).
+   LES PIÈCES DU RÉPERTOIRE — les formes communes aux pages du kit
+   (verdict d'Auteur, 1er septembre 2026 ; depuis le 8 septembre, chaque page
+   les assemble sous UN SEUL titre à elle — le répertoire — dans l'ordre que
+   sa matière commande, et non plus en trois sections aux titres identiques).
 
    L'étage des PREUVES n'a pas de gabarit, et n'en aura pas : c'est la
    part de séduction et de plus-value, sa forme doit différer d'une page
@@ -32,8 +34,12 @@ export function Bandes({ children }: { children: ReactNode }) {
 /* Une variante DÉCLARÉE, pas une liberté : « nue » — la scène apporte
    déjà sa propre coque, le cadre s'efface pour ne pas poser une surface
    sur une surface (CG4). */
-export function Bande({ nom, cote, dit, nue, casse, surCasse, libelleCasse, libelleRepare, regles, children }: {
+export function Bande({ nom, cote, dit, nue, casse, surCasse, libelleCasse, libelleRepare, regles, niveau = 3, children }: {
   nom: string; cote?: ReactNode; dit: ReactNode; nue?: boolean;
+  /* Le niveau du titre de la bande suit sa place dans l'arbre : h3 sous une
+     section, h4 quand la bande vit sous un sous-titre du répertoire — jamais
+     un saut de niveau (T1). */
+  niveau?: 3 | 4;
   casse?: boolean; surCasse?: (v: boolean) => void;
   /* Exception déclarée : une bande dont la commande n'est pas une faute mais
      un GESTE de l'utilisateur (agrandir le texte) nomme ses deux états. */
@@ -43,7 +49,9 @@ export function Bande({ nom, cote, dit, nue, casse, surCasse, libelleCasse, libe
   return (
     <div className="doc-bande">
       <div className="doc-bande-dire">
-        <h3 className="doc-bande-nom">{nom}</h3>
+        {niveau === 4
+          ? <h4 className="doc-bande-nom">{nom}</h4>
+          : <h3 className="doc-bande-nom">{nom}</h3>}
         {cote && <span className="doc-bande-cote mono">{cote}</span>}
         <p className="doc-bande-dit">{dit}</p>
         {surCasse && (

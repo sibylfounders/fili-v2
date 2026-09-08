@@ -18,7 +18,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { chaine, INTENTIONS, CHARTE, BORNES, DENSITES, HORS_CHAINE } from '../derivation.mjs'
-import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, lignesAvecSelecteur, debord, rgb, encres } from './banc.mjs'
+import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, lignesAvecSelecteur, debord, rgb, encres , fautesEcriture } from './banc.mjs'
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const liste = (a, b, msg, tol = 0.051) => { assert.equal(a.length, b.length, `${msg} : ${a.length} nombres, ${b.length} attendus (${a} / ${b})`); a.forEach((v, i) => ok(v, b[i], `${msg} [${i}]`, tol)) }
@@ -252,4 +252,18 @@ test('6 · dans la feuille, chaque couleur écrite en dur est dite — sur sa li
     fautes.push(`arrondis.css:${i + 1} ${l.trim().slice(0, 80)}`)
   })
   assert.deepEqual(fautes, [])
+})
+
+/* ── 8 · L'écriture et le répertoire (8 septembre 2026, soir) ──
+   La queue commune a disparu ; UN répertoire (#registre) range les six coins
+   (#code), les six pièges (#casser, en h4) et la liste (#invisibles) ; les
+   deux paragraphes d'histoire de page sont sortis. */
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; six pièges en h4, trois pièces', async () => {
+  const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
+  assert.deepEqual(await fautesEcriture(p), [])
+  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
+  assert.equal(await p.locator('#registre #casser h4.doc-bande-nom').count(), 6, 'six pièges, en h4 sous leur sous-titre')
+  assert.equal(await p.locator('#registre .doc-piece-tete h3').count(), 3, 'trois pièces')
+  assert.ok(await p.locator('#registre #code .doc-code tbody tr').count() >= 6, 'les six coins')
+  await fermer()
 })

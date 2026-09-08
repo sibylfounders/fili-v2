@@ -578,6 +578,23 @@
       }
     }
   },
+  "fontWeight": {
+    "body": {
+      "$type": "fontWeight",
+      "$value": 400,
+      "$description": "Thème sombre : 380 — le même écart pour chaque rôle (T14, valeur de départ)."
+    },
+    "label": {
+      "$type": "fontWeight",
+      "$value": 500,
+      "$description": "Thème sombre : 480 — le même écart pour chaque rôle (T14, valeur de départ)."
+    },
+    "heading": {
+      "$type": "fontWeight",
+      "$value": 600,
+      "$description": "Thème sombre : 580 — le même écart pour chaque rôle (T14, valeur de départ)."
+    }
+  },
   "motion": {
     "fast": {
       "$type": "duration",

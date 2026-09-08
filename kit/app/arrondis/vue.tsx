@@ -17,10 +17,10 @@ import "./arrondis.css";
      fiche d'arrêt de Navette branchée sur la racine), LE COIN (variation
      — le labo du coin intérieur), LA PILULE (vocabulaire — la liste
      fermée). Leur FORME est conservée ; seul leur texte a été repris.
-   · LES TROIS ÉTAGES (04 à 06) — au gabarit commun d'etages.tsx, comme
-     Rythme, Typo et Couleur : les six pièges deviennent six bandes qui
-     montrent le juste au repos et commettent la faute au clic ; la liste
-     des règles qu'aucune image ne prouve ; le registre des six coins.
+   · LE RÉPERTOIRE (04) — une seule section au titre de la page (8 sept.
+     2026, plus de queue commune) : le registre des six coins, les six
+     pièges en bandes (le juste au repos, la faute au curseur), la liste
+     des règles qu'aucune image ne prouve. Pièces d'etages.tsx.
 
    Ce qui a quitté la page le 2 septembre : le sélecteur de six types de
    produit et sa table. Il réglait la même chose que les trois densités de
@@ -80,7 +80,8 @@ function FicheNavette({ racine }: { racine: number }) {
         <div className="ar-panneau">
           <div className="poignee" aria-hidden="true" />
           <div>
-            <h4>Place des Tilleuls</h4>
+            {/* un décor, pas un titre de la page : l'arbre des titres reste h1 → h2 → h3 → h4 (T1) */}
+            <div className="ar-titre-fiche">Place des Tilleuls</div>
             <div className="sous">Arrêt · direction Hôpital Nord</div>
           </div>
           <div className="ar-carte">
@@ -432,19 +433,19 @@ function PiegeArc() {
 
 const PIEGES: { cle: string; nom: string; cote: string; dit: string; regles: string[]; scene: React.ReactNode }[] = [
   { cle: "dur", nom: "La valeur en dur", cote: "la racine bouge, elle non",
-    dit: "Un coin qui n'est pas un cran ne bouge pas quand la racine bouge. Il a l'air juste aujourd'hui, et il est déjà faux demain — le jour où le produit change de racine, lui seul restera en arrière. Tournez la racine et regardez-les se séparer.",
+    dit: "Un coin qui n'est pas un cran ne bouge pas quand la racine bouge. Il a l'air juste aujourd'hui, et il est déjà faux demain — le jour où le produit change de racine, lui seul restera en arrière. Dès que la racine bouge, les deux se séparent.",
     regles: ["a2", "a8"], scene: <PiegeDur /> },
   { cle: "pct", nom: "Le pourcentage", cote: "la faute dort jusqu'au contenu",
-    dit: "Un coin dérivé de la hauteur ne se voit pas tant que le texte est court. Allongez-le : la forme se met à fondre toute seule, et personne n'aura vu venir la gélule.",
+    dit: "Un coin dérivé de la hauteur ne se voit pas tant que le texte est court. Le texte s'allonge, et la forme se met à fondre toute seule — personne n'aura vu venir la gélule.",
     regles: ["a3"], scene: <PiegePct /> },
   { cle: "vois", nom: "Les voisins dépareillés", cote: "deux crans dans une rangée",
     dit: "Un champ et un bouton de même taille, côte à côte, avec deux coins différents. L'œil lit deux systèmes dans la même rangée, et personne ne sait dire lequel est le bon.",
     regles: ["a4", "a10"], scene: <PiegeVoisins /> },
   { cle: "etat", nom: "Le survol qui arrondit", cote: "le coin dit l'identité",
-    dit: "La couleur, l'ombre et l'anneau sont là pour dire l'état. Le coin, lui, dit ce que l'objet EST — s'il change sous la main, l'objet change d'identité en cours de route. Passez la souris sur les deux boutons.",
+    dit: "La couleur, l'ombre et l'anneau sont là pour dire l'état. Le coin, lui, dit ce que l'objet EST — s'il change sous la main, l'objet change d'identité en cours de route. Les deux boutons répondent au survol ; un seul reste lui-même.",
     regles: ["a1"], scene: <PiegeEtat /> },
   { cle: "sat", nom: "Le coin saturé", cote: "un seuil, pas une pente",
-    dit: "Au-delà de la moitié du petit côté, le coin s'écrase et la surface devient une pilule sans l'avoir demandé. Réduisez la hauteur : vous verrez le moment exact où ça bascule.",
+    dit: "Au-delà de la moitié du petit côté, le coin s'écrase et la surface devient une pilule sans l'avoir demandé. La hauteur descend, et il y a un moment exact où ça bascule.",
     regles: ["saturation", "a7"], scene: <PiegeSature /> },
   { cle: "arc", nom: "Le contenu dans l'arc", cote: "marge ≥ trois dixièmes du coin",
     dit: "La marge intérieure vaut au moins trois dixièmes du coin, sinon le texte entre dans la courbe. C'est la seule raison légitime de gonfler une marge à cause d'un arrondi.",
@@ -513,9 +514,7 @@ const SOMMAIRE: Sommaire = [
   ["profondeur", "01", "La profondeur"],
   ["coin", "02", "Le coin"],
   ["pilule", "03", "La pilule"],
-  ["casser", "04", "Les règles qu'on peut casser"],
-  ["invisibles", "05", "Les règles qu'on ne peut pas montrer"],
-  ["code", "06", "Dans le code"],
+  ["registre", "04", "Le registre"],
 ];
 
 export default function Vue() {
@@ -537,8 +536,8 @@ export default function Vue() {
             <p className="kicker">Les arrondis</p>
             <h1>Un seul nombre dessine tous les coins de cette page<span className="point" aria-hidden="true" /></h1>
             <p className="chapo">
-              Demandez à trois personnes d&apos;arrondir le même bouton : vous aurez
-              trois valeurs, et aucune ne saura dire pourquoi la sienne. Le coin n&apos;est pourtant
+              Trois personnes qui arrondissent le même bouton donnent trois valeurs,
+              et aucune ne sait dire pourquoi la sienne. Le coin n&apos;est pourtant
               pas une affaire de goût — il dit ce qu&apos;un objet <b>est</b> et où il vit. Un
               container prend le coin de sa profondeur, un composant celui de la row, et la pilule
               est une forme réservée à quelques objets nommés. Tout ça descend d&apos;un seul
@@ -552,11 +551,10 @@ export default function Vue() {
               <p className="kicker">01 · La profondeur</p>
               <h2>La profondeur choisit le coin, personne d&apos;autre</h2>
               <p className="sourd">Quand chaque écran choisit ses coins, deux cards voisines finissent
-              par ne plus se ressembler — et personne ne sait à quel moment ça a dérapé. Tournez la
-              racine : le container, la card, la row et la marque suivent d&apos;un bloc, leurs marges
-              avec eux, et les boutons prennent le coin de la row. Poussez-la au bout, et vous verrez
-              la marge du container monter avec elle : c&apos;est exactement pour ça qu&apos;elle a
-              une borne.</p>
+              par ne plus se ressembler — et personne ne sait à quel moment ça a dérapé. Quand la
+              racine bouge, le container, la card, la row et la marque suivent d&apos;un bloc, leurs marges
+              avec eux, et les boutons prennent le coin de la row. Au bout de sa course, la marge du
+              container monte avec elle : c&apos;est exactement pour ça qu&apos;elle a une borne.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -588,10 +586,10 @@ export default function Vue() {
               <p className="kicker">02 · Le coin</p>
               <h2>Un coin intérieur épouse celui qui le contient</h2>
               <p className="sourd">Deux arrondis identiques séparés par un espace ne sont jamais
-              parallèles : dans l&apos;angle, l&apos;écart se creuse de moitié. Vous l&apos;avez
+              parallèles : dans l&apos;angle, l&apos;écart se creuse de moitié. Tout le monde l&apos;a
               déjà vu sans savoir le nommer — c&apos;est cette petite oreille disgracieuse au coin
               des fenêtres. Ici, le contenu et l&apos;écart ne bougent pas : seul le coin extérieur
-              change, et vous voyez le moment où l&apos;intérieur redevient parallèle.</p>
+              change, jusqu&apos;au moment où l&apos;intérieur redevient parallèle.</p>
             </div>
             <div className="gdoc-corps">
               <figure className="gd-figure">
@@ -614,8 +612,8 @@ export default function Vue() {
                   </div>
                 </div>
                 <figcaption className="gd-legende">
-                  intérieur {ri} · écart {ecart} — à gauche, extérieur {ri} : l&apos;écart dans la diagonale monte
-                  à {fmt(dL)}{ecart > 0 ? ` (+${pct} %)` : ""} · à droite, extérieur {ri + ecart} : il reste {ecart} partout
+                  intérieur {ri} · écart {ecart} — extérieur égal, {ri} : l&apos;écart dans la diagonale monte
+                  à {fmt(dL)}{ecart > 0 ? ` (+${pct} %)` : ""} · extérieur {ri + ecart} : il reste {ecart} partout
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -656,73 +654,65 @@ export default function Vue() {
             </div>
           </section>
 
-          {/* ══════════ 04 · répertoire ══════════ */}
-          {/* ── Les trois étages du dessous, au gabarit commun (etages.tsx) ── */}
-          <section className="gdoc-sec pose" id="casser">
+          {/* ═══ LE RÉPERTOIRE — une seule section, aux arrondis (8 sept. 2026) :
+              les six coins du registre d'abord (#code — un seul nombre, six
+              valeurs), puis les six pièges au curseur (#casser, en h4 : ici rien
+              ne se casse d'un clic, une faute d'arrondi ne se voit qu'en mouvement),
+              puis les règles qui se vérifient ailleurs (#invisibles). ═══ */}
+          <section className="gdoc-sec pose" id="registre">
             <div className="gdoc-sec-tete">
-              <p className="kicker">04 · Les règles qu&apos;on peut casser</p>
-              <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="sourd">Six pièges ordinaires, et pas un seul ne déclenche d&apos;erreur
-              nulle part — c&apos;est ce qui les rend coûteux. Ici, rien ne se
-              casse d&apos;un clic : une faute d&apos;arrondi ne se voit jamais sur un objet seul et
-              immobile. Ce sont les curseurs qui la révèlent — tournez la racine, allongez le texte,
-              baissez la hauteur, et regardez les deux objets se séparer.</p>
+              <p className="kicker">04 · Le registre</p>
+              <h2>Un seul nombre, six coins — et six façons de les perdre</h2>
+              <p className="sourd">Les six coins que la racine engendre, lus dans le registre ; six
+              pièges ordinaires qu&apos;aucun outil ne signale, révélés par leur curseur ; et les
+              règles qui ne se photographient pas. Les lignes marquées « décision d&apos;Auteur »
+              sont des réglages du kit, pas des lois de la forme.</p>
             </div>
             <div className="gdoc-corps">
-              <Bandes>
-                {PIEGES.map((p) => (
-                  <Bande key={p.cle} nom={p.nom} cote={p.cote} dit={p.dit}
-                    regles={<Regles ids={p.regles} />}>
-                    {p.scene}
-                  </Bande>
-                ))}
-              </Bandes>
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-tete">
+                  <h3>Les six coins</h3>
+                  <p className="sourd">Chaque valeur est lue dans le registre calculé à la charte,
+                  jamais recopiée : si la racine bouge, la table bouge. La sortie Tailwind pointe
+                  sur les mêmes variables, et shadcn lit une seule racine, à qui on donne le coin
+                  du composant.</p>
+                </div>
+                <PanneauRegistre lignes={CODE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["a2", "a8"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="casser">
+                <div className="doc-piece-tete">
+                  <h3>Six pièges, révélés par leur curseur</h3>
+                  <p className="sourd">Une faute d&apos;arrondi ne se voit jamais sur un objet seul et
+                  immobile. Elle apparaît quand la racine tourne, quand le texte s&apos;allonge,
+                  quand la hauteur baisse — et les deux objets se séparent.</p>
+                </div>
+                <Bandes>
+                  {PIEGES.map((p) => (
+                    <Bande key={p.cle} niveau={4} nom={p.nom} cote={p.cote} dit={p.dit}
+                      regles={<Regles ids={p.regles} />}>
+                      {p.scene}
+                    </Bande>
+                  ))}
+                </Bandes>
+              </div>
+
+              <div className="doc-piece" id="invisibles">
+                <div className="doc-piece-tete">
+                  <h3>Les règles qui ne se photographient pas</h3>
+                  <p className="sourd">Elles se vérifient dans le code, sur l&apos;écran allumé, ou
+                  nulle part — et alors elles s&apos;assument comme un choix, daté.</p>
+                </div>
+                <ListeRegles lignes={LISTE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Regles ids={["a10", "a2", "a8", "a9", "pente", "a6"]} />
+                </div></details>
+              </div>
             </div>
           </section>
-
-          <section className="gdoc-sec pose" id="invisibles">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">05 · Les règles qu&apos;on ne peut pas montrer</p>
-              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
-              <p className="sourd">Certaines règles ne se photographient pas. Elles se vérifient
-              dans le code, à l&apos;écran allumé, ou nulle part du tout.</p>
-            </div>
-            <div className="gdoc-corps">
-              <ListeRegles lignes={LISTE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Regles ids={["a10", "a2", "a8", "a9", "pente", "a6"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <section className="gdoc-sec pose" id="code">
-            <div className="gdoc-sec-tete">
-              <p className="kicker">06 · Dans le code</p>
-              <h2>Le même système, dans votre stack</h2>
-            </div>
-            <div className="gdoc-corps">
-              <PanneauRegistre lignes={CODE} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <p><b>Ce qui remplace l&apos;extrait.</b> La page proposait un composant prêt à
-                coller, avec une bascule HTML / React / Angular. On l&apos;a retiré : un extrait
-                vieillit, et le jour où le composant bouge il se met à mentir sans prévenir. Le
-                jeton, lui, reste vrai. Ce qui fait foi ici, c&apos;est <b>la règle et le
-                jeton</b> — pas le code. La sortie Tailwind pointe sur les mêmes variables, et
-                shadcn lit une seule racine, à qui on donne le coin du composant.</p>
-                <p><b>Ce qui a quitté cette page.</b> Un sélecteur proposait de rejouer toute la
-                chaîne selon six types de produit. Il réglait la même chose que les trois
-                densités de la page Rythme — la base — et deux boutons qui règlent la même chose
-                à deux endroits différents perdent le lecteur. Le sujet « on peut régler le
-                système pour un autre produit » appartient au moteur, pas aux arrondis.</p>
-                <Regles ids={["a2", "a8"]} />
-              </div></details>
-            </div>
-          </section>
-
-          <footer className="gd-pied">
-            <span>Cette page obéit aux règles qu&apos;elle raconte</span>
-            <span>Un seul nombre, six coins · Navette est une application fictive</span>
-          </footer>
 
         </main>
       </div>

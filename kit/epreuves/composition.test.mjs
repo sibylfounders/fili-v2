@@ -23,7 +23,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { DENSITES } from '../derivation.mjs'
-import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, debord, rgb, encres } from './banc.mjs'
+import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, selecteursEnEm, debord, rgb, encres , fautesEcriture } from './banc.mjs'
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const CSS = () => fs.readFileSync(path.join(KIT, 'app/composition/composition.css'), 'utf8')
@@ -276,5 +276,21 @@ test('6 · les quinze lois sont toutes là, une seule fois : cinq sur l’écran
   assert.deepEqual(await textes(p, '#liste .doc-liste .l-nom'), ['Hiérarchie par combinaison', 'Mesure de lecture', 'Dedans plus serré que dehors', 'Rôles d\'espace nommés'])
   assert.equal(await p.locator('#parcours').count() + await p.locator('#blanc').count(), 2, 'le chemin de l\'œil et l\'espace blanc')
   assert.equal(await p.locator('#fonds').count(), 0, 'la table des quinze lois a disparu')
+  await fermer()
+})
+
+/* ── 8 · L'écriture et le répertoire (8 septembre 2026, soir) ──
+   La queue commune a disparu ; UN répertoire (#registre) range les quatre
+   paires (#bandes, en h4, leurs textes réécrits : la loi en titre, la seule
+   chose qui change en cote, ce que l'œil fait de chaque côté), la liste
+   (#liste) et l'écran écrit proprement (#adaptation). */
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; quatre paires en h4 dont la cote nomme la seule chose qui change ; trois pièces', async () => {
+  const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
+  assert.deepEqual(await fautesEcriture(p), [])
+  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
+  assert.equal(await p.locator('#registre #bandes h4.doc-bande-nom').count(), 4, 'quatre paires, en h4 sous leur sous-titre')
+  for (const c of await textes(p, '#registre #bandes .doc-bande-cote')) assert.match(c, /^une seule chose change : /, `la cote nomme la seule chose qui change : « ${c} »`)
+  assert.equal(await p.locator('#registre .doc-piece-tete h3').count(), 3, 'trois pièces')
+  const cadres = await textes(p, '#registre #adaptation .bouton'); for (const f of ['HTML', 'React', 'Angular']) assert.ok(cadres.includes(f), `l'écran s'écrit en ${f}`)
   await fermer()
 })

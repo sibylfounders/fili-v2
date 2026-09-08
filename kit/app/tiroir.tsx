@@ -5,6 +5,7 @@ import { Primaire } from "./primaire";
 import { Theme } from "./theme";
 import { Densite } from "./densite";
 import { Adaptation } from "./adaptation";
+import { OUVERTES } from "./pages";
 
 /* Le tiroir de réglages — l'ancien panneau « Theming & playground »,
    replié derrière une poignée (gabarit documentaire nu, 24 août : un
@@ -13,7 +14,9 @@ import { Adaptation } from "./adaptation";
    mémorisés) ; seule la présence à l'écran change.
    Ne s'affiche pour l'instant que sur la page Rythme — Typographie et
    Couleur le recevront à leur passe, une page à la fois. */
-const PAGES = ["/", "/rythme", "/typo", "/couleur", "/composition", "/arrondis"];
+/* Les pages du kit viennent de la liste unique (pages.ts, 7 septembre) :
+   le tiroir n'a plus sa propre liste à tenir à jour. */
+const PAGES = ["/", ...OUVERTES.map((pg) => pg.chemin!)];
 
 export function Tiroir() {
   const chemin = usePathname();

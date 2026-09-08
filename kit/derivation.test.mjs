@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chaine, jetons, fluide, aLargeur, facteur, AXES, CHARTE, BORNES, DENSITES, HORS_CHAINE,
-  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, derive, versCss, verifier, contraste, hexVersLch, lchVersHex, gamme, gammeFamille, gammeNeutres, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS, MOUVEMENT,
+  versCssRythme, versFigma, versTailwind, REGISTRE, INTENTIONS, GRAISSE, derive, versCss, verifier, contraste, hexVersLch, lchVersHex, gamme, gammeFamille, gammeNeutres, PRIMAIRE_DEFAUT, ACCENT_AUTEUR, PAIRES_DECLAREES, LARGEUR_GEL, PART_ETATS, PLAFOND_ETATS, MOUVEMENT,
 } from './derivation.mjs'
 
 const ICI = path.dirname(fileURLToPath(import.meta.url))
@@ -176,8 +176,10 @@ test('rythme — les jetons de la coque valent ceux du tokens.css d’avant, au 
 test('couleur — la famille dérivée est celle du tokens.css d’avant, au bit près (74 valeurs, deux thèmes), et les paires tiennent', () => {
   const css = fs.readFileSync(path.join(ICI, 'app/tokens.css'), 'utf8')
   const pal = derive(PRIMAIRE_DEFAUT)
+  /* la couleur est le second bloc à thèmes du fichier — la graisse (8 septembre) a le sien avant ; on lit après son en-tête */
+  const depuis = css.indexOf('GÉNÉRÉ par kit/derivation.mjs depuis primary')
   const bloc = (marqueur) => {
-    const i = css.indexOf(marqueur); const fin = css.indexOf('}', i)
+    const i = css.indexOf(marqueur, depuis); const fin = css.indexOf('}', i)
     return Object.fromEntries([...css.slice(i, fin).matchAll(/--([a-z-]+): (#[0-9A-F]{6});/g)].map((m) => [m[1], m[2]]))
   }
   const clair = bloc(':root, [data-theme="light"]'), sombre = bloc('[data-theme="dark"]')
@@ -375,6 +377,22 @@ test('mouvement — quatre durées (100 · 200 · 300 · 700), chacune avec son 
   assert.ok(css.includes(`--e-out: ${MOUVEMENT.courbe};`))
   assert.equal(tw.transitionTimingFunction.out, 'var(--e-out)')
   assert.deepEqual(fg.motion['ease-out'].$value, [0.23, 1, 0.32, 1])
+})
+test('graisse — trois rôles (400 · 500 · 600) ; en sombre chaque rôle s’allège du même écart, jamais plus lourd ; les trois sorties portent les deux valeurs', () => {
+  assert.deepEqual(GRAISSE.roles, { body: 400, label: 500, heading: 600 })
+  assert.ok(GRAISSE.ecartSombre >= 0, 'la sombre n’est jamais plus lourde que la claire (T14)')
+  for (const n of Object.keys(GRAISSE.roles)) assert.equal(GRAISSE.roles[n] - GRAISSE.sombre(n), GRAISSE.ecartSombre, `${n} : le même écart pour chaque rôle`)
+  const css = versCssRythme(), tw = versTailwind(), fg = versFigma()
+  const clair = css.slice(css.indexOf('--weight-body'), css.indexOf('[data-theme="dark"]', css.indexOf('--weight-body')))
+  const sombre = css.slice(css.indexOf('[data-theme="dark"]', css.indexOf('--weight-body')))
+  for (const [n, v] of Object.entries(GRAISSE.roles)) {
+    assert.ok(clair.includes(`--weight-${n}: ${v};`), `css clair ${n}`)
+    assert.ok(sombre.includes(`--weight-${n}: ${GRAISSE.sombre(n)};`), `css sombre ${n}`)
+    assert.equal(tw.fontWeight[n], `var(--weight-${n})`)
+    assert.equal(fg.fontWeight[n].$value, v)
+  }
+  /* la préférence système du sombre est servie comme le thème déclaré */
+  assert.ok(/prefers-color-scheme: dark\) \{\s*:root:not\(\[data-theme="light"\]\) \{[^}]*--weight-body/.test(sombre), 'le sombre par préférence système porte aussi la graisse')
 })
 test('site — aucune durée ni courbe écrite à la main dans les feuilles : une transition ou une animation prend un jeton de mouvement, ou dit « chorégraphie » sur sa ligne', () => {
   const fautes = []

@@ -19,13 +19,28 @@
    la légende de l'échelle tient en une ligne, le détail est au dépliant ; et
    une sixième bande, le calage (4 septembre), mesure ses deux bords sur la font
    livrée. Aucune épreuve n'a été relâchée pour passer : la mesure gagne le
-   verdict lu et le calage.                                                    */
+   verdict lu et le calage.
+
+   Remise à niveau du 8 septembre 2026 : la page a une section à part, la
+   graisse (#graisse, décision d'Auteur) — la liste au corps unique, où seules
+   la graisse et l'encre font la hiérarchie, et les deux fonds, où le versant
+   sombre est un vrai thème sombre allégé de l'écart du registre. Épreuve 7 :
+   les graisses rendues sont celles du moteur, la casse égalise et se répare,
+   le curseur ne repeint que la carte sombre.
+
+   Rééquilibrage du 8 septembre 2026 (soir, instructions d'Auteur) : la queue
+   en trois sections communes aux pages a disparu ; la page porte UN répertoire
+   (#registre) sous un titre à elle, qui range les six dérives (#casser, en h4
+   sous un sous-titre), la liste (#invisibles) et les jetons (#code). Épreuve 8 :
+   l'écriture — aucun mot qui commande ou décrit, pas d'histoire de page, pas de
+   pied, un seul répertoire, aucun saut de niveau de titre ; et le compte des
+   pièces.                                                                     */
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
-import { chaine, jetons, aLargeur, AXES, CHARTE, DENSITES, LARGEUR_MIN, LARGEUR_MAX, REGISTRE } from '../derivation.mjs'
-import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, debord, rgb, encres } from './banc.mjs'
+import { chaine, jetons, aLargeur, AXES, CHARTE, DENSITES, LARGEUR_MIN, LARGEUR_MAX, REGISTRE, GRAISSE } from '../derivation.mjs'
+import { KIT, LARGEURS, TOL, ouvrirSite, ouvrirNavigateur, attendu, proche, nombres, calcPx, calc, texte, textes, fautesC17, fautesEnDur, fautesTailles, selecteursDeclares, debord, rgb, encres, fautesEcriture } from './banc.mjs'
 
 const J = jetons(chaine())
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && proche(a, b, tol), `${msg} : ${a} attendu ${b}`)
@@ -262,6 +277,63 @@ test('3 · nom orphelin, justifier, étouffer, saut de niveau, graisse, capitale
   await fermer()
 })
 
+/* ── 7 · La graisse (8 septembre) : une seule taille, et deux fonds ── */
+test('7 · la liste au corps unique : un seul corps, les graisses du moteur (titre · courant · étiquette), l’encre seconde au sous-titre ; « égaliser » ramène tout au courant et à l’encre première, puis se répare', async () => {
+  const W = 1440
+  const { p, fermer } = await nav.page(URL(), { largeur: W })
+  const corpsAttendu = attendu('font-size-body', W)
+  for (const sel of ['.tp-abo-nom', '.tp-abo-sous', '.tp-abo-bouton']) ok(await calcPx(p, `#graisse ${sel}`, 'fontSize'), corpsAttendu, `${sel} au corps`)
+  ok(await calcPx(p, '#graisse .tp-abo-nom', 'fontWeight'), GRAISSE.roles.heading, 'le nom porte la graisse du titre')
+  ok(await calcPx(p, '#graisse .tp-abo-sous', 'fontWeight'), GRAISSE.roles.body, 'le sous-titre porte la graisse du courant')
+  ok(await calcPx(p, '#graisse .tp-abo-bouton', 'fontWeight'), GRAISSE.roles.label, 'le bouton porte la graisse de l’étiquette')
+  assert.equal(await calc(p, '#graisse .tp-abo-sous', 'color'), rgb(encres('light')['text-secondary']), 'le sous-titre est en encre seconde')
+  /* la légende dit les trois graisses du moteur */
+  const legende = await texte(p, '#graisse .gd-legende')
+  for (const v of Object.values(GRAISSE.roles)) assert.ok(legende.includes(String(v)), `légende : ${v}`)
+  /* égaliser : la casse est déclarée, tout tombe au courant et à l'encre première */
+  await p.locator('#graisse .bouton.casse').nth(0).click()
+  assert.equal(await p.getAttribute('#graisse .tp-abos', 'data-intent'), 'statement')
+  ok(await calcPx(p, '#graisse .tp-abo-nom', 'fontWeight'), GRAISSE.roles.body, 'égalisé : le nom au courant')
+  ok(await calcPx(p, '#graisse .tp-abo-bouton', 'fontWeight'), GRAISSE.roles.body, 'égalisé : le bouton au courant')
+  assert.equal(await calc(p, '#graisse .tp-abo-sous', 'color'), rgb(encres('light')['text-primary']), 'égalisé : le sous-titre en encre première')
+  assert.match(await texte(p, '#graisse .badge.ko'), /plus rien ne se distingue/)
+  await p.locator('#graisse .bouton.casse').nth(0).click()
+  assert.equal(await p.getAttribute('#graisse .tp-abos', 'data-intent'), null)
+  ok(await calcPx(p, '#graisse .tp-abo-nom', 'fontWeight'), GRAISSE.roles.heading, 'réparé')
+  await fermer()
+})
+
+test('7 · deux fonds, deux graisses : le versant sombre est un vrai thème sombre, allégé de l’écart du registre ; le curseur ne repeint que lui ; « la même graisse » est la casse, et se répare', async () => {
+  const W = 1440
+  const { p, fermer } = await nav.page(URL(), { largeur: W })
+  const clair = '#graisse .tp-fond.clair > p', noir = '#graisse .tp-fond.noir > p'
+  ok(await calcPx(p, clair, 'fontWeight'), GRAISSE.roles.body, 'clair : la graisse du courant')
+  ok(await calcPx(p, noir, 'fontWeight'), GRAISSE.sombre('body'), 'sombre : allégé de l’écart du registre')
+  /* le versant sombre porte les encres du thème sombre, pas une couleur de scène */
+  assert.equal(await calc(p, '#graisse .tp-fond.noir', 'backgroundColor'), rgb(encres('dark')['bg']))
+  assert.equal(await calc(p, noir, 'color'), rgb(encres('dark')['text-primary']))
+  assert.equal(await calc(p, '#graisse .tp-fond.clair', 'backgroundColor'), rgb(encres('light')['bg']))
+  /* le jeton lui-même, dans les deux thèmes, tel que tokens.css le sert */
+  const jeton = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--weight-body').trim())
+  assert.equal(jeton, String(GRAISSE.roles.body), 'la page claire sert la graisse claire')
+  /* le curseur : l'écart affiché est celui du registre, et il repeint la carte sombre seule */
+  assert.match(await texte(p, '#graisse .tp-molette output'), new RegExp(`−${GRAISSE.ecartSombre}`))
+  await p.locator('#tp-ecart').fill('60')
+  ok(await calcPx(p, noir, 'fontWeight'), GRAISSE.roles.body - 60, 'curseur à 60 : le sombre suit')
+  ok(await calcPx(p, clair, 'fontWeight'), GRAISSE.roles.body, 'curseur à 60 : le clair ne bouge pas')
+  assert.match(await texte(p, '#graisse .tp-fond.noir .mono'), /60/)
+  /* la casse : la même graisse sur les deux fonds */
+  await p.locator('#graisse .bouton.casse').nth(1).click()
+  assert.equal(await p.getAttribute('#graisse .tp-fond.noir', 'data-intent'), 'statement')
+  ok(await calcPx(p, noir, 'fontWeight'), GRAISSE.roles.body, 'cassé : la même graisse')
+  assert.match(await texte(p, '#graisse .tp-fond.noir .badge.ko'), /pèse plus/)
+  assert.ok(await p.locator('#tp-ecart').isDisabled(), 'cassé : l’écart ne se règle pas')
+  await p.locator('#graisse .bouton.casse').nth(1).click()
+  assert.equal(await p.getAttribute('#graisse .tp-fond.noir', 'data-intent'), null)
+  ok(await calcPx(p, noir, 'fontWeight'), GRAISSE.roles.body - 60, 'réparé : l’écart du curseur revient')
+  await fermer()
+})
+
 /* ── 4 · La densité ne touche pas au texte ; les titres glissent ── */
 test('4 · la densité change les marges des coques, jamais un corps ; l’affiche et les sections glissent avec l’écran', async () => {
   const W = 1440
@@ -317,4 +389,16 @@ test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée 
     assert.equal(await debord(p), 0, `${W} px : la page déborde de l'écran`)
     await fermer()
   }
+})
+
+/* ── 8 · L'écriture et le répertoire ── */
+test('8 · l’écriture : aucun mot qui commande ou décrit l’écran, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; six dérives en h4, treize règles, douze jetons', async () => {
+  const { p, fermer } = await nav.page(URL(), { largeur: 1440 })
+  assert.deepEqual(await fautesEcriture(p), [])
+  assert.equal(await p.locator('#registre #casser h4.doc-bande-nom').count(), 6, 'six dérives, chacune sous le sous-titre en h4')
+  assert.equal(await p.locator('#registre #invisibles .doc-liste tbody tr').count(), 13, 'treize règles en liste')
+  assert.equal(await p.locator('#registre #code .doc-code tbody tr').count(), 12, 'douze jetons')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'cinq preuves et un répertoire')
+  assert.equal(await p.locator('#registre .doc-piece-tete h3').count(), 3, 'trois pièces, chacune sous son sous-titre')
+  await fermer()
 })

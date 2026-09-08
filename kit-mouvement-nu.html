@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit — Le mouvement (proposition, pièce à juger)</title>
+<meta name="description" content="Proposition : la page Mouvement du kit, en pièce à part — trois preuves qui se jouent seules, sous-titrées, sur trois scènes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   KIT — PAGE MOUVEMENT, PROPOSITION À PART (7 septembre 2026)
+   Pièce libre, à juger sur pièce. Écrite contre les consignes d'Auteur du
+   jour (claude/mouvement-consignes-d-auteur-2026-09-07.md) :
+   · trois scènes, trois tempéraments — la marque, la nuit, le blanc nu ;
+   · tout se joue seul, lentement, et chaque étape a son sous-titre ;
+   · l'œil reste au même endroit ; le juste et le faux sous le même geste ;
+   · le verdict est lu sur le rendu, jamais décrété ;
+   · les durées et la courbe sont celles du moteur ; un déplacement ne
+     s'écrit que sous son portillon, un fondu s'écrit nu ; les tempos du
+     RÉCIT (quand le sous-titre change) sont une chorégraphie, dite.
+   Toutes les valeurs viennent des jetons du kit (tokens.css du 7 sept.).
+   ========================================================================= */
+:root {
+  --bg: #FFFFFF; --surface: #F3F4F6; --surface-hover: #E6E7EB;
+  --text-primary: #151725; --text-secondary: #505362; --text-tertiary: #8A8C9B;
+  --border: #E6E7EB; --border-strong: #6E717F;
+  --primary: #4F46E5; --on-primary: #F9FAFF; --primary-text: #4F46E5; --primary-subtle: #E2E6FF;
+  --accent: #75E242;
+  --danger: #B91C1C; --danger-subtle: #FEE2E2; --success: #15803D; --success-subtle: #DCFCE7;
+  --code-bg: #1A1C4C; --code-text: #C9D1FE; --code-com: #9FA2AF;
+  /* la scène de nuit : le versant sombre du kit */
+  --nuit-bg: #050611; --nuit-surface: #151726; --nuit-hover: #252736; --nuit-text: #FFFFFF;
+  --nuit-secondary: #9FA2AF; --nuit-border: #252736; --nuit-strong: #9FA2AF;
+  --nuit-primary: #808BFC; --nuit-danger: #F87171; --nuit-success: #4ADE80;
+
+  --m-fast: 100ms; --m-base: 200ms; --m-slow: 300ms; --m-expressive: 700ms;
+  --e-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --fs-label: clamp(0.7155rem, 0.6644rem + 0.1124vw, 0.7656rem);
+  --fs-small: clamp(0.8rem, 0.7429rem + 0.1257vw, 0.856rem);
+  --fs-body: clamp(1rem, 0.9286rem + 0.1571vw, 1.07rem);
+  --fs-h3: clamp(1.25rem, 1.1607rem + 0.1964vw, 1.3375rem);
+  --fs-h2: clamp(1.5625rem, 1.4509rem + 0.2455vw, 1.6719rem);
+  --fs-h1: clamp(1.9531rem, 1.8136rem + 0.3069vw, 2.0898rem);
+  --t-cover: clamp(2.6rem, 6vw, 5rem);
+  --t-section: clamp(1.9rem, 3.4vw, 2.9rem);
+  --measure: 65ch;
+
+  --r-1: 0.75rem; --r-2: 0.5rem; --r-3: 0.375rem; --r-pill: 9999px;
+  --pad-1: 1.5rem; --pad-2: 1rem; --pad-3: 0.625rem;
+  --gap-1: 1.5rem; --gap-2: 1rem; --gap-3: 0.5rem; --gap-4: 0.25rem;
+  --control: 2.25rem;
+  --v-rail: 15rem; --v-margin: clamp(1.25rem, 5vw, 5rem);
+  --v-block: clamp(7rem, 13vw, 11rem); --v-head: clamp(2.5rem, 5vw, 4rem);
+  --v-scene: clamp(1.5rem, 4vw, 4rem);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text-primary); font-family: var(--font-sans);
+  font-size: var(--fs-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, figure { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-3); }
+.skip { position: absolute; left: var(--gap-2); top: var(--gap-2); background: var(--text-primary); color: #fff;
+  padding: var(--gap-3) var(--gap-2); border-radius: var(--r-2); translate: 0 -300%; z-index: 200; }
+.skip:focus-visible { translate: 0 0; }
+[hidden] { display: none !important; }
+
+/* ── barre, grille, rail — le gabarit documentaire nu ── */
+.bar { display: flex; align-items: baseline; gap: var(--gap-2); padding: 14px var(--v-margin);
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+.bar-brand { font-weight: 600; letter-spacing: -.02em; }
+.bar-claim { color: var(--text-secondary); font-size: var(--fs-small); }
+.bar-note { margin-left: auto; font: 600 var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.shell { display: grid; grid-template-columns: var(--v-rail) minmax(0, 1fr); gap: clamp(2rem, 4vw, 4rem);
+  padding: 0 var(--v-margin); max-width: 90rem; margin: 0 auto; }
+.rail { display: none; }
+@media (width >= 1100px) { .rail { display: block; } }
+@media (width < 1100px) { .shell { grid-template-columns: minmax(0, 1fr); } }
+.rail-sticky { position: sticky; top: 5.5rem; padding: 2.5rem 0; display: flex; flex-direction: column; gap: var(--gap-1);
+  max-height: calc(100vh - 5.5rem); }
+.rail-title { font: 600 var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.rail-list { display: flex; flex-direction: column; }
+.rail-link { display: grid; grid-template-columns: 2rem 1fr auto; align-items: baseline; gap: var(--gap-3);
+  padding: 9px 0; text-decoration: none; color: var(--text-secondary); font-size: .9375rem; line-height: 1.35;
+  transition: color var(--m-fast) var(--e-out); }
+.rail-index { font: 600 var(--fs-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
+.rail-marker { align-self: center; width: 1.25rem; height: 1px; background: var(--text-primary); scale: 0 1; transform-origin: left; }
+@media (prefers-reduced-motion: no-preference) { .rail-marker { transition: scale var(--m-base) var(--e-out); } }
+.rail-link:hover, .rail-link.is-active { color: var(--text-primary); }
+.rail-link.is-active .rail-index { color: var(--text-primary); }
+.rail-link.is-active .rail-marker { scale: 1 1; }
+.rail-foot { margin-top: auto; padding-top: 2.5rem; font: 600 var(--fs-label)/1.6 var(--font-mono); color: var(--text-tertiary); }
+
+/* ── contenu ── */
+.content { min-width: 0; padding-bottom: var(--v-block); }
+.eyebrow { font: 600 var(--fs-label)/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
+.hero { padding: var(--v-block) 0 0; }
+.hero h1 { margin-top: var(--gap-1); font-size: var(--t-cover); line-height: 1.04; font-weight: 500; letter-spacing: -.035em; max-width: 18ch; text-wrap: balance; }
+.hero h1 .point { display: inline-block; width: .38em; height: .38em; border-radius: var(--r-pill); background: var(--primary); margin-left: .08em; }
+.hero .chapo { margin-top: var(--v-head); font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.65; color: var(--text-secondary); max-width: var(--measure); }
+.hero .chapo b { color: var(--text-primary); font-weight: 600; }
+.sec { padding-top: var(--v-block); }
+.sec-head { max-width: var(--measure); }
+.sec-head h2 { margin-top: var(--gap-2); font-size: var(--t-section); line-height: 1.1; font-weight: 500; letter-spacing: -.03em; text-wrap: balance; }
+.sec-head .lead { margin-top: var(--gap-1); color: var(--text-secondary); line-height: 1.65; }
+
+/* ── la scène ── */
+.stage { margin-top: var(--v-head); border-radius: var(--r-1); padding: var(--v-scene);
+  display: flex; flex-direction: column; align-items: center; gap: var(--gap-1); }
+.stage.marque { background: var(--primary); color: var(--on-primary); }
+.stage.nuit { background: var(--nuit-bg); color: var(--nuit-text); }
+.stage.nu { padding: 0; background: transparent; align-items: stretch; }
+.legende { margin-top: var(--gap-2); font: 600 var(--fs-label)/1.6 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-tertiary); max-width: var(--measure); }
+
+/* le sous-titre : la voix de la scène. Une phrase à la fois, qui reste le temps d'être lue. */
+.soustitre { min-height: 3.2em; max-width: 40rem; text-align: center; text-wrap: balance;
+  font: 500 var(--fs-h3)/1.3 var(--font-sans); opacity: 0; transition: opacity var(--m-base) var(--e-out); }
+.soustitre.on { opacity: 1; }
+.soustitre b { font-weight: 700; }
+.soustitre .ko { color: var(--danger); font-weight: 700; }
+.stage.marque .soustitre .ko { color: #FFD3D3; } /* hors chaîne : le rouge de la faute lisible sur la marque — un rose-blanc, pas un rouge sur indigo */
+.stage.nuit .soustitre .ko { color: var(--nuit-danger); }
+
+/* les commandes d'une scène : rejouer, pause — et « étape suivante » sous mouvement réduit */
+.cmd { display: flex; gap: var(--gap-3); flex-wrap: wrap; justify-content: center; }
+.bouton { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control); padding: 0 var(--pad-3);
+  border: 1px solid var(--border); border-radius: var(--r-ctl, var(--r-3)); background: var(--bg); color: var(--text-primary);
+  font: 600 var(--fs-small)/1 var(--font-sans); cursor: pointer;
+  transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); }
+.bouton:hover { background: var(--surface-hover); }
+.bouton.on { background: var(--text-primary); border-color: var(--text-primary); color: var(--bg); }
+.stage.marque .bouton { background: transparent; color: var(--on-primary); border-color: rgba(249, 250, 255, .45); } /* hors chaîne : un trait de blanc sur la marque */
+.stage.marque .bouton:hover { background: rgba(249, 250, 255, .14); }
+.stage.nuit .bouton { background: var(--nuit-surface); color: var(--nuit-text); border-color: var(--nuit-border); }
+.stage.nuit .bouton:hover { background: var(--nuit-hover); }
+@media (prefers-reduced-motion: no-preference) {
+  .bouton:active { scale: .97; transition: scale var(--m-fast) var(--e-out); } /* l'appui répond */
+}
+
+/* ══════════ 01 · la main invisible — sur la marque ══════════ */
+.fiche { width: min(100%, 44rem); background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
+  padding: var(--pad-1); display: grid; gap: var(--gap-2); text-align: left; }
+.fiche-tete { display: flex; align-items: center; gap: var(--gap-3); }
+.avatar { width: var(--control); height: var(--control); border-radius: var(--r-pill); background: var(--primary-subtle); color: var(--primary-text);
+  display: grid; place-items: center; font: 700 var(--fs-label)/1 var(--font-mono); flex: none; }
+.fiche-nom { display: grid; gap: var(--gap-4); }
+.fiche-nom b { font-size: var(--fs-body); }
+.fiche-nom span { font-size: var(--fs-small); color: var(--text-secondary); }
+.fiche-nombre { margin-left: auto; font: 700 var(--fs-h1)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.pile { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--gap-2) var(--gap-2); align-items: center; }
+@media (width < 640px) { .pile { grid-template-columns: minmax(0, 1fr); } }
+.pile-dit { margin: 0; display: flex; align-items: center; gap: var(--gap-3); font: 700 var(--fs-label)/1.2 var(--font-mono);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--text-secondary); }
+.pile-dit .ok { color: var(--success); } .pile-dit .ko { color: var(--danger); }
+.piste { position: relative; height: var(--control); }
+.trace { position: absolute; inset-inline: 0; top: 50%; height: 4px; translate: 0 -50%; border-radius: var(--r-pill); background: var(--surface-hover); } /* hors chaîne : l'épaisseur de la piste */
+.trace::before { content: ""; position: absolute; inset-block: 0; left: 0; width: var(--w, 0%); border-radius: var(--r-pill); background: var(--text-primary); }
+.doigt { position: absolute; top: 50%; left: var(--w, 0%); width: 1.25rem; height: 1.25rem; translate: -50% -50%; border-radius: var(--r-pill);
+  background: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,.35); } /* hors chaîne : le bouton du curseur et son relief */
+.main { position: absolute; left: 50%; top: 40%; width: 1.9rem; height: 2.5rem; translate: -35% 0; /* hors chaîne : la main dessinée, le doigt sur le bouton */
+  fill: var(--bg); stroke: var(--text-primary); stroke-width: 1.4; stroke-linejoin: round; opacity: 0; transition: opacity var(--m-base) var(--e-out); }
+.piste.tenue .main { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .main { transition: opacity var(--m-base) var(--e-out), translate var(--m-fast) var(--e-out); }
+  .piste.tenue .main { translate: -35% -10%; } /* la main appuie */
+}
+.barre-piste { position: relative; height: var(--gap-3); border-radius: var(--r-pill); background: var(--surface-hover); }
+.barre { height: 100%; border-radius: var(--r-pill); background: var(--primary); width: var(--w, 0%); }
+.barre.ment { transition: width var(--m-slow) var(--e-out); } /* casse (hors chaîne) : une valeur qu'on fait glisser s'anime — la barre traîne derrière la main */
+.barre.ment.saut { transition: none; } /* le retour au départ ne se joue pas */
+.mensonge { position: absolute; top: 0; bottom: 0; left: var(--de, 0%); width: var(--l, 0%); border-radius: var(--r-pill); background: var(--danger); }
+.mensonge-cote { position: absolute; bottom: 100%; left: calc(var(--de, 0%) + var(--l, 0%)); translate: -100% 0; margin-bottom: var(--gap-4);
+  font: 700 var(--fs-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--danger); white-space: nowrap; }
+
+/* ══════════ 02 · quatre situations — la mise en scène du film de Rythme ══════════
+   Un seul plateau : le panneau de marque décalé vers la droite, la carte de
+   l'objet qui mord dessus par la gauche, le compteur qui déborde par le coin
+   haut droit, et le lecteur sur la page. Ce qui est DANS le panneau est ce qui
+   change de slide en slide : la situation, la durée, le pourquoi. */
+.scena { --sc-large: 24rem; --sc-mord: 1.5rem; --sc-marge: 3.5rem; --sc-h: 32rem; --sc-retrait: 2.5rem; /* hors chaîne : les cotes de la mise en scène, celles du film de Rythme (Auteur, 2 septembre) */
+  margin-top: var(--v-head); position: relative; min-height: var(--sc-h);
+  display: grid; grid-template-columns: minmax(0.5rem, 2.5rem) calc(var(--sc-large) - var(--sc-mord)) var(--sc-mord) minmax(0, 1fr) 2.5rem;
+  grid-template-rows: auto minmax(0, 1fr) auto; align-items: start; }
+.scena-chap { grid-column: 1 / 4; grid-row: 1; z-index: 3; align-self: start; padding-top: .5rem;
+  font: 700 var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.scena-cpt { grid-column: 4 / -1; grid-row: 1; z-index: 3; justify-self: end; padding-top: .25rem; display: grid; justify-items: end; gap: var(--gap-4); text-align: right; }
+.scena-cpt b { font-size: var(--fs-h1); font-weight: 700; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.scena-cpt span { font: 700 var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.scena-panneau { grid-column: 3 / 5; grid-row: 1 / -1; align-self: stretch; z-index: 0; margin-block: var(--sc-retrait);
+  background: var(--primary); color: var(--on-primary); border-radius: var(--r-1); padding: var(--sc-marge); padding-left: calc(var(--sc-marge) + var(--sc-mord));
+  display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.scena-mots { display: grid; gap: var(--gap-2); transition: opacity var(--m-slow) var(--e-out); }
+.scena-mots.off { opacity: 0; }
+.scena-titre { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -.03em; line-height: 1.2; text-wrap: balance; max-width: var(--measure); }
+.scena-titre em { font-style: normal; box-shadow: inset 0 -.28em 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+.scena-duree { display: flex; align-items: baseline; gap: var(--gap-3); color: var(--accent); }
+.scena-duree b { font: 700 var(--fs-h1)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.scena-duree span { font: 600 var(--fs-small)/1.2 var(--font-sans); color: var(--on-primary); opacity: .86; }
+.scena-duree.ko { color: #FFD3D3; } /* hors chaîne : le rouge de la faute lisible sur la marque */
+.scena-sous { font-size: var(--fs-body); line-height: 1.6; opacity: .86; max-width: 34ch; }
+.scena-scene { grid-column: 2 / -1; grid-row: 1 / -1; z-index: 2; align-self: stretch; margin-block: var(--sc-retrait);
+  position: relative; display: flex; align-items: center; pointer-events: none; }
+.scena-scene > * { pointer-events: auto; }
+.scena-carte { position: relative; width: min(100%, var(--sc-large)); min-height: 17rem; overflow: hidden;
+  background: var(--surface); border-radius: var(--r-2); padding: var(--pad-1);
+  display: grid; justify-items: center; align-content: center;
+  box-shadow: 0 24px 48px -24px rgba(21, 23, 37, .35); } /* hors chaîne : l'ombre de la carte posée sur le panneau, comme la fiche du film */
+.player { grid-column: 1 / 5; grid-row: 3; z-index: 3; align-self: end; display: flex; align-items: center; gap: var(--gap-3); flex-wrap: wrap; }
+.rond { display: grid; place-items: center; flex: none; cursor: pointer; position: relative; width: var(--control); height: var(--control);
+  border-radius: var(--r-pill); border: 1px solid var(--border); background: var(--bg); color: var(--text-primary); font: 600 var(--fs-small)/1 inherit;
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.rond:hover:not(:disabled) { background: var(--surface-hover); }
+.rond:disabled { opacity: .35; cursor: default; }
+.lect { border-color: var(--text-primary); }
+.lect .ic { width: 1rem; height: 1rem; fill: var(--text-primary); position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.lect .ic-pause, .lect .ic-re { display: none; }
+.lect.en-cours .ic-play { display: none; } .lect.en-cours .ic-pause { display: block; }
+.lect.fin .ic-play, .lect.fin .ic-pause { display: none; } .lect.fin .ic-re { display: block; }
+.cpt { color: var(--text-tertiary); font-weight: 600; font-variant-numeric: tabular-nums; font-size: var(--fs-small); }
+.temps { flex: 1; max-width: 9rem; height: 2px; border-radius: var(--r-pill); background: var(--border); overflow: hidden; } /* hors chaîne : le trait du temps */
+.temps i { display: block; height: 100%; background: var(--text-primary); transform-origin: 0 50%; scale: 0 1; }
+@media (width < 62rem) {
+  .scena { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto auto; min-height: 0; gap: var(--gap-2); }
+  .scena-chap { grid-column: 1; grid-row: 1; } .scena-cpt { grid-column: 1; grid-row: 2; justify-self: start; justify-items: start; text-align: left; }
+  .scena-scene { grid-column: 1; grid-row: 3; margin-block: 0; display: block; }
+  .scena-carte { width: 100%; }
+  .scena-panneau { grid-column: 1; grid-row: 4; margin-block: 0; padding: var(--pad-1); }
+  .player { grid-column: 1; grid-row: 5; }
+}
+/* les objets, sur la carte claire */
+.obj-bouton { display: inline-flex; align-items: center; min-height: var(--control); padding: 0 var(--pad-2); border-radius: var(--r-3);
+  background: var(--bg); color: var(--text-primary); border: 1px solid var(--border); font: 600 var(--fs-small)/1 var(--font-sans);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.obj-bouton.survole { background: var(--surface-hover); }
+.curseur { position: absolute; width: 1.1rem; height: 1.5rem; fill: var(--text-primary); stroke: var(--bg); stroke-width: 1; opacity: 0; /* hors chaîne : le curseur de souris, dessiné */
+  transition: opacity var(--m-base) var(--e-out); }
+@media (prefers-reduced-motion: no-preference) { .curseur { transition: opacity var(--m-base) var(--e-out), translate var(--m-slow) var(--e-out); } }
+.curseur.la { opacity: 1; }
+.menu-scene { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3); width: max-content; min-height: 12rem; }
+.menu-scene > .obj-bouton { align-self: start; }
+.menu { position: absolute; left: 0; top: calc(var(--control) + var(--gap-3)); min-width: 14rem; display: grid; gap: var(--gap-4);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3); z-index: 1;
+  box-shadow: 0 8px 24px -12px rgba(21, 23, 37, .25); /* hors chaîne : l'ombre du menu posé */
+  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
+.menu.ouvert { opacity: 1; pointer-events: auto; }
+.menu.traine { transition: opacity var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne — le cran expressif sur un menu */
+@media (prefers-reduced-motion: no-preference) {
+  .menu { scale: .95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton */
+  .menu.ouvert { scale: 1; }
+  .menu.traine { transition: opacity var(--m-expressive) var(--e-out), scale var(--m-expressive) var(--e-out); } /* casse (hors chaîne) : il traîne */
+}
+.menu-item { display: flex; align-items: center; min-height: calc(var(--control) - var(--gap-3)); padding: 0 var(--pad-3); border-radius: var(--r-3);
+  font-size: var(--fs-small); transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.menu-item:hover { background: var(--surface-hover); }
+.menu-item.danger { color: var(--danger); }
+.ecran { position: relative; display: grid; gap: var(--gap-3); width: 100%; max-width: 20rem; min-height: 11rem; align-content: start; }
+.ligne { display: block; height: var(--gap-3); border-radius: var(--r-pill); background: var(--surface-hover); width: 70%; }
+.ligne.large { width: 100%; } .ligne.courte { width: 45%; }
+.panneau { position: absolute; inset-inline: 0; bottom: 0; display: grid; gap: var(--gap-3); background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-2) var(--r-2) 0 0; padding: var(--pad-2); box-shadow: 0 -8px 24px -12px rgba(21, 23, 37, .25); /* hors chaîne : l'ombre du panneau posé */
+  opacity: 0; transition: opacity var(--m-slow) var(--e-out); } /* panneau : le fondu s'écrit nu */
+.panneau b { font-size: var(--fs-body); } .panneau > span { font-size: var(--fs-small); color: var(--text-secondary); }
+.panneau-actions { display: flex; gap: var(--gap-3); }
+@media (prefers-reduced-motion: no-preference) {
+  .panneau { translate: 0 var(--gap-1); transition: opacity var(--m-slow) var(--e-out), translate var(--m-slow) var(--e-out); } /* il monte depuis le bord */
+  .panneau.ouvert { translate: 0 0; }
+}
+.panneau.ouvert { opacity: 1; }
+.section-arrive { display: grid; gap: var(--gap-3); width: 100%; max-width: 20rem; opacity: 0; transition: opacity var(--m-expressive) var(--e-out); } /* l'arrivée d'une section : nue */
+.section-arrive b { font-size: var(--fs-h3); }
+@media (prefers-reduced-motion: no-preference) {
+  .section-arrive { translate: 0 var(--gap-2); transition: opacity var(--m-expressive) var(--e-out), translate var(--m-expressive) var(--e-out); }
+  .section-arrive.la { translate: 0 0; }
+}
+.section-arrive.la { opacity: 1; }
+
+/* ══════════ 03 · le lexique en gestes — le blanc nu ══════════
+   Six tuiles, comme les rôles d'espace de Rythme : les tuiles sont les seules
+   surfaces. Dans chacune, un objet neutre — un bloc — joue le mot de la tuile,
+   au ralenti (×3, dit dans la légende), depuis un petit déclencheur. */
+.lexique { margin-top: var(--gap-1); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-1); }
+@media (width < 900px) { .lexique { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (width < 560px) { .lexique { grid-template-columns: minmax(0, 1fr); } }
+.lex { display: grid; gap: var(--gap-3); align-content: start; }
+.lex h3 { font-size: var(--fs-h3); font-weight: 600; letter-spacing: -.01em; display: flex; align-items: baseline; gap: var(--gap-3); }
+.lex h3 .ok { color: var(--success); } .lex h3 .ko { color: var(--danger); }
+.lex-scene { position: relative; height: 9.5rem; background: var(--surface); border-radius: var(--r-2); overflow: hidden; }
+.lex-decl { position: absolute; left: var(--pad-2); top: var(--pad-2); width: 2.25rem; height: var(--gap-3); border-radius: var(--r-pill); background: var(--border-strong); } /* le déclencheur : le bouton, en filaire */
+.lex-obj { position: absolute; left: var(--pad-2); top: calc(var(--pad-2) + var(--gap-3) + var(--gap-3)); width: 9rem; height: 5.5rem; border-radius: var(--r-2);
+  background: var(--bg); border: 1px solid var(--border); box-shadow: 0 8px 24px -12px rgba(21, 23, 37, .25); /* hors chaîne : l'ombre du bloc posé */
+  display: grid; gap: var(--gap-3); padding: var(--pad-3); align-content: start; opacity: 0; transform-origin: 0 0; }
+.lex-obj i { display: block; height: var(--gap-3); border-radius: var(--r-pill); background: var(--surface-hover); width: 70%; }
+.lex-obj i:first-child { width: 90%; } .lex-obj i:last-child { width: 45%; }
+/* le fondu s'écrit nu, et prend le ralenti de la tuile ; le déplacement vit sous son portillon */
+.lex-obj { transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti du lexique */
+.lex-obj.la { opacity: 1; }
+.lex[data-mot="traine"] .lex-obj { transition-duration: calc(var(--m-expressive) * var(--ralenti, 1)); } /* casse (hors chaîne) : il traîne — le cran d'une section sur un objet qu'on ouvre */
+@media (prefers-reduced-motion: no-preference) {
+  .lex[data-mot="pose"] .lex-obj { translate: 0 var(--gap-2); transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out), translate calc(var(--m-base) * var(--ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti */
+  .lex[data-mot="pose"] .lex-obj.la { translate: 0 0; }
+  .lex[data-mot="bouton"] .lex-obj { scale: .8; transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--ralenti, 1)) var(--e-out); } /* chorégraphie : le ralenti */
+  .lex[data-mot="bouton"] .lex-obj.la { scale: 1; }
+  .lex[data-mot="rebond"] .lex-obj { scale: .8; transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--ralenti, 1)) cubic-bezier(0.34, 1.56, 0.64, 1); } /* casse (hors chaîne) : il rebondit — la courbe dépasse sa cible */
+  .lex[data-mot="rebond"] .lex-obj.la { scale: 1; }
+  .lex[data-mot="neant"] .lex-obj { scale: 0; transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il naît du néant */
+  .lex[data-mot="neant"] .lex-obj.la { scale: 1; }
+  .lex[data-mot="milieu"] .lex-obj { scale: .8; transform-origin: 50% 50%; transition: opacity calc(var(--m-base) * var(--ralenti, 1)) var(--e-out), scale calc(var(--m-base) * var(--ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il s'ouvre du milieu, pas depuis son déclencheur */
+  .lex[data-mot="milieu"] .lex-obj.la { scale: 1; }
+  .lex[data-mot="traine"] .lex-obj { translate: 0 var(--gap-2); transition: opacity calc(var(--m-expressive) * var(--ralenti, 1)) var(--e-out), translate calc(var(--m-expressive) * var(--ralenti, 1)) var(--e-out); } /* casse (hors chaîne) : il traîne */
+  .lex[data-mot="traine"] .lex-obj.la { translate: 0 0; }
+}
+.lex-dit { color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.5; }
+.lu { font: 600 var(--fs-label)/1.5 var(--font-mono); color: var(--success); }
+.lu.ko { color: var(--danger); }
+.lex .bouton { justify-self: start; }
+.stage.nu .cmd { align-self: center; }
+
+/* ── dépliant, pied ── */
+details.regles { margin-top: var(--gap-1); max-width: var(--measure); }
+details.regles summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: var(--gap-3);
+  font-size: var(--fs-small); color: var(--text-secondary); padding: var(--gap-3) 0; transition: color var(--m-fast) var(--e-out); }
+details.regles summary:hover { color: var(--text-primary); }
+details.regles summary::-webkit-details-marker { display: none; }
+details.regles summary::before { content: "›"; display: inline-block; color: var(--text-tertiary); }
+@media (prefers-reduced-motion: no-preference) { details.regles summary::before { transition: rotate var(--m-base) var(--e-out); } }
+details.regles[open] summary::before { rotate: 90deg; }
+details.regles .body { padding: var(--gap-2) 0 0 var(--gap-1); color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; display: grid; gap: var(--gap-3); }
+details.regles .id { font: 600 var(--fs-label)/1 var(--font-mono); color: var(--text-primary); }
+.foot { margin-top: var(--v-block); padding-top: var(--gap-1); border-top: 1px solid var(--border);
+  font: 600 var(--fs-label)/1.6 var(--font-mono); color: var(--text-tertiary); display: flex; justify-content: space-between; gap: var(--gap-2); flex-wrap: wrap; }
+@media (prefers-reduced-motion: no-preference) {
+  .reveal { opacity: 0; translate: 0 14px; transition: opacity var(--m-expressive) var(--e-out), translate var(--m-expressive) var(--e-out); } /* l'arrivée d'une section */
+  .reveal.is-in { opacity: 1; translate: 0 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="bar">
+  <span class="bar-brand">Kit</span>
+  <span class="bar-claim">un design system qui montre ses raisons</span>
+  <span class="bar-note">Proposition · pièce à juger</span>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Sommaire">
+    <div class="rail-sticky">
+      <div class="rail-title">Fondation · Mouvement</div>
+      <ul class="rail-list">
+        <li><a class="rail-link is-active" href="#main"><span class="rail-index">01</span><span>La main invisible</span><span class="rail-marker"></span></a></li>
+        <li><a class="rail-link" href="#situations"><span class="rail-index">02</span><span>Quatre situations</span><span class="rail-marker"></span></a></li>
+        <li><a class="rail-link" href="#mots"><span class="rail-index">03</span><span>Dire ce qu'on voit</span><span class="rail-marker"></span></a></li>
+      </ul>
+      <div class="rail-foot">Ce que vous ne voyez pas, vous le sentez quand même.</div>
+    </div>
+  </nav>
+
+  <main class="content" id="contenu">
+
+    <section class="hero">
+      <p class="eyebrow">Fondation · Le mouvement</p>
+      <h1>Le mouvement n'existe que pendant qu'il se produit<span class="point" aria-hidden="true"></span></h1>
+      <p class="chapo">On ne peut pas le regarder, seulement l'attraper — et c'est pour ça qu'on le règle si mal.
+        Une durée de trop se sent sans se voir, une courbe héritée ne signe rien, et une interface qui bouge
+        partout finit par ne plus rien dire. Ici, quatre durées, <b>une</b> courbe, et chacune sait où elle va.
+        Les trois scènes qui suivent se jouent toutes seules ; ce que vous ne pouvez pas voir, la page le mesure
+        pour vous.</p>
+    </section>
+
+    <!-- ══════════ 01 · situation ══════════ -->
+    <section class="sec reveal" id="main">
+      <div class="sec-head">
+        <p class="eyebrow">01 · La main invisible</p>
+        <h2>Une valeur qu'on fait glisser ne s'anime pas</h2>
+        <p class="lead">Une molette promet une chose simple : ce que vous voyez est la valeur où est votre doigt.
+          Dès que la scène porte une transition, elle traîne derrière — et vous regardez l'animation au lieu du
+          nombre. La démonstration cesse de démontrer. Ici, une main fait le geste à votre place, sur la fiche
+          d'un témoin de Fili — deux fois : d'abord avec la faute, puis comme il faut.</p>
+      </div>
+
+      <figure class="stage marque" id="sc-main">
+        <div class="fiche" role="img" aria-label="Fiche du témoin Léa Fontan : la crédibilité, réglée par une main, et la barre qui la montre — d'abord animée, puis à la valeur">
+          <div class="fiche-tete">
+            <span class="avatar" aria-hidden="true">LF</span>
+            <span class="fiche-nom"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+            <output class="fiche-nombre" id="main-nombre">22 %</output>
+          </div>
+          <div class="pile">
+            <span class="pile-dit">Crédibilité</span>
+            <div class="piste" id="main-piste">
+              <span class="trace"></span>
+              <span class="doigt"><svg class="main" viewBox="0 0 24 32" aria-hidden="true"><path d="M9 2.5c0-1.4 2.6-1.4 2.6 0V14l1.2-.4c.9-.3 1.7.1 2 .9l.3.8 1.1-.5c.9-.4 1.9 0 2.2.9l.2.6 1.3-.3c1-.2 1.9.5 1.9 1.5v6.2c0 3.6-2.9 6.3-6.5 6.3h-2.6c-2 0-3.9-.9-5.1-2.5L2.3 22c-.7-.9-.5-2.1.4-2.7.8-.6 1.9-.4 2.5.4L7 21.5V2.5z"/></svg></span>
+            </div>
+            <p class="pile-dit" id="main-etiquette"><span class="ko" aria-hidden="true">✗</span><span>animée</span></p>
+            <div class="barre-piste" id="main-piste-barre" data-intent="statement">
+              <div class="barre ment saut" id="main-barre"></div>
+              <span class="mensonge" id="main-rouge" hidden></span>
+              <span class="mensonge-cote" id="main-cote" hidden></span>
+            </div>
+          </div>
+        </div>
+        <p class="soustitre" id="main-st" aria-live="polite"></p>
+        <div class="cmd" id="main-cmd"></div>
+      </figure>
+      <p class="explication"><b>Une valeur qu'on fait glisser ne s'anime pas.</b> La première fois, la barre porte 300 ms sur la largeur qu'on règle —
+        le cran d'un panneau, sur une valeur qu'on tient au doigt : le temps qu'elle rattrape la main, on regarde l'animation, pas le nombre, et la
+        démonstration cesse de démontrer. La seconde fois, aucune transition : la barre est à la valeur, à l'image près. C'est la seule qui dit vrai.</p>
+      <figcaption class="legende">une main, une barre, deux passages · d'abord 300 ms sur la valeur qu'on tient, puis aucune transition —
+        le rouge est l'écart rendu entre la barre et la main, son chiffre est lu sur la page, pas décrété</figcaption>
+
+      <details class="regles">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">Règle 4</span> — Une valeur qu'on fait glisser ne s'anime pas. Pendant qu'une molette est tenue,
+            les objets qu'elle règle n'ont aucune transition sur la propriété réglée : ils sont à la valeur, à l'image près.
+            Sinon la scène traîne derrière le doigt et le lecteur regarde l'animation au lieu du nombre.</p>
+          <p><span class="id">Règle 5</span> — Deux propriétés animables, pas trois : le déplacement et la transparence. Jamais une
+            largeur, une hauteur ni une marge — elles recalculent la page à chaque image.</p>
+          <p>Sources : verdict d'Auteur du 2 septembre 2026 (« une molette ne repeint que sa scène ») · décisions du 3 septembre,
+            les trois lois du mouvement · Emil Kowalski, <i>Great Animations</i>.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════ 02 · variation ══════════ -->
+    <section class="sec reveal" id="situations">
+      <div class="sec-head">
+        <p class="eyebrow">02 · Quatre situations</p>
+        <h2>Une durée n'est pas un goût, c'est une taille</h2>
+        <p class="lead">À cent millisecondes on ne le voit pas, on le sent : c'est la taille d'un bouton. À sept cents, on
+          l'attend : c'est la taille d'une section qui arrive. Entre les deux, le menu et le panneau. Quatre situations
+          que vous vivez cent fois par jour, quatre tailles — et une cinquième, où la taille n'est pas la bonne.</p>
+      </div>
+
+      <div class="scena" id="sc-cas">
+        <p class="scena-chap">Quatre situations, et une de trop</p>
+        <p class="scena-cpt" aria-live="polite"><b id="cas-num">1</b><span>sur 5</span></p>
+        <div class="scena-panneau">
+          <div class="scena-mots" id="cas-mots">
+            <p class="scena-titre" id="cas-vous"></p>
+            <p class="scena-duree" id="cas-duree"><b id="cas-ms"></b><span id="cas-emploi"></span></p>
+            <p class="scena-sous" id="cas-pourquoi"></p>
+          </div>
+        </div>
+        <div class="scena-scene">
+          <div class="scena-carte" id="cas-cadre"></div>
+        </div>
+        <div class="player" id="cas-player">
+          <button class="rond" type="button" id="cas-prec" aria-label="Situation précédente">←</button>
+          <button class="rond lect" type="button" id="cas-lect" aria-label="Lire">
+            <svg class="ic ic-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+            <svg class="ic ic-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/></svg>
+            <svg class="ic ic-re" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3a5 5 0 1 0 4.6 3h-1.7A3.4 3.4 0 1 1 8 4.6V7l3.5-3L8 1z"/></svg>
+          </button>
+          <button class="rond" type="button" id="cas-suiv" aria-label="Situation suivante">→</button>
+          <span class="cpt" id="cas-cpt">1 / 5</span>
+          <span class="temps" aria-hidden="true"><i id="cas-temps"></i></span>
+        </div>
+      </div>
+      <p class="explication"><b>Chaque durée sait où elle va.</b> Un survol répond en 100 ms, un menu s'ouvre en 200, un panneau en 300, une section
+        arrive en 700 — quatre crans, chacun avec son emploi écrit, et pas un de plus. Une durée employée hors de sa table n'est pas un goût : c'est une
+        faute, ou une chorégraphie déclarée sur sa ligne.</p>
+      <figcaption class="legende" id="cas-legende">quatre objets, une courbe — chacun prend la durée de son emploi ; les durées jouées sont lues sur le rendu</figcaption>
+
+      <details class="regles">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">Règle 3</span> — Chaque durée sait où elle va. Quatre durées, chacune avec son emploi écrit :
+            100 bouton, survol, appui · 200 menu, infobulle, dépliant · 300 tiroir, fenêtre, panneau · 700 arrivée d'une section
+            au défilement. Une durée employée hors de sa table est une faute, ou une chorégraphie déclarée sur sa ligne.</p>
+          <p><span class="id">Règle 10</span> — La fréquence décide, pas le goût. Ce qu'on fait cent fois par jour ne s'anime pas ;
+            trois motifs seulement justifient un mouvement — expliquer, répondre, réjouir.</p>
+          <p>Sources : décisions du 3 septembre 2026 · Emil Kowalski, <i>7 Practical Animation Tips</i> et <i>You Don't Need
+            Animations</i> · le plafond de 300 ms vise les réponses d'interface, pas les découvertes au défilement.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════ 03 · vocabulaire ══════════ -->
+    <section class="sec reveal" id="mots">
+      <div class="sec-head">
+        <p class="eyebrow">03 · Dire ce qu'on voit</p>
+        <h2>On ne gouverne pas ce qu'on ne sait pas nommer</h2>
+        <p class="lead">« Ça fait bizarre » n'est pas un verdict. Un mouvement se décrit avec des mots précis — il se pose, il
+          rebondit, il naît du néant, il s'ouvre du milieu — et chaque mot est déjà une règle, tenue ou cassée. Voici le lexique :
+          six mots, et le même objet qui joue chacun d'eux. Lancez-les un par un, ou tous.</p>
+      </div>
+
+      <div class="stage nu" id="sc-mots">
+        <div class="lexique" id="lexique" data-ralenti="3"></div>
+        <div class="cmd" id="mots-cmd"></div>
+      </div>
+      <p class="explication"><b>Six mots, et chacun est déjà un verdict.</b> Un objet se pose ou sort de son bouton : la règle est tenue. Il rebondit,
+        il naît du néant, il s'ouvre du milieu, il traîne : la règle est cassée — et on sait laquelle. Le septième mot, « il saute », n'a rien à
+        montrer : un état remplace l'autre, sans passage. Ce qu'on sait nommer, on peut le corriger.</p>
+      <figcaption class="legende">six mots, six tuiles, le même objet · joué au ralenti ×3 pour que le geste se lise · le verdict de chaque tuile est déduit de la durée,
+        de la courbe, de la taille de départ et du point d'origine — lus sur la page, ramenés à la vitesse réelle</figcaption>
+
+      <details class="regles">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">Règle 2</span> — La courbe du kit est la sienne. Ce qui entre et ce qui sort décélère, sur une courbe
+            choisie — jamais une courbe livrée d'origine, jamais une accélération finale sur de l'interface.</p>
+          <p><span class="id">Règle 6</span> — Un objet s'ouvre depuis son déclencheur : le point d'origine d'un menu est le bouton
+            qui l'a appelé, jamais le centre.</p>
+          <p><span class="id">Règle 7</span> — Rien ne naît du néant. Un objet qui entre part de presque sa taille (0,95) avec un
+            fondu — un objet réel ne surgit pas, il grandit depuis presque là où il sera.</p>
+          <p>Sources : décisions du 3 septembre 2026 (la courbe validée à l'œil le 7) · Emil Kowalski, <i>Great Animations</i> ·
+            dépôt emilkowalski/skills, le vocabulaire à l'envers.</p>
+        </div>
+      </details>
+    </section>
+
+    <footer class="foot">
+      <span>Proposition « mouvement » — pièce à part, à juger, 7 septembre 2026</span>
+      <span>Quatre durées, une courbe · Léa Fontan est un témoin fictif</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   LE RÉCIT. Trois scènes qui se jouent seules. Le mouvement montré prend
+   les jetons du kit (en CSS) ; le TEMPO du récit — quand une phrase tombe,
+   combien de temps elle reste — est une chorégraphie, écrite ici et dite :
+   une étape reste le temps d'être lue (trois secondes au moins).
+   Sous mouvement réduit, rien ne se joue seul : chaque scène se lit à la
+   main, une étape par appui. Une scène en pause ne consomme rien ; une
+   scène hors de l'écran ou dans un onglet caché s'arrête.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  var LIBRE = matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  var MS = { fast: 100, base: 200, slow: 300, expressive: 700 }; /* les crans du moteur, pour les textes */
+  var fmt = function (v) { return String(Math.round(v * 10) / 10).replace('.', ','); };
+  var enMs = function (s) { var v = parseFloat(s); return /ms\s*$/.test(s.trim()) ? v : v * 1000; };
+  var raf2 = function (fn) { requestAnimationFrame(function () { requestAnimationFrame(fn); }); };
+
+  /* Une lecture : des étapes, chacune avec sa durée. Rien ne se joue seul —
+     « Lire » joue la scène une fois, du début à la fin, puis propose de la
+     rejouer. Sous mouvement réduit, on avance à la main, une étape par appui.
+     Un onglet caché arrête la lecture en cours. */
+  function lecture(etapes, surEtape, cmd, surFin) {
+    var i = -1, timer = null, enCours = false;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'bouton';
+    var bLire = document.createElement('button'); bLire.type = 'button'; bLire.className = 'bouton on'; bLire.textContent = 'Lire';
+    function fin() { enCours = false; bLire.textContent = 'Rejouer'; bLire.hidden = false; b.hidden = true; if (surFin) surFin(); }
+    function aller(n) {
+      clearTimeout(timer); i = n;
+      if (i >= etapes.length) { fin(); return; }
+      var attente = surEtape(i) || etapes[i];
+      if (LIBRE) timer = setTimeout(function () { aller(i + 1); }, attente);
+    }
+    if (LIBRE) { b.textContent = 'Arrêter'; b.hidden = true; }
+    else { b.textContent = 'Étape suivante'; b.hidden = true; }
+    cmd.appendChild(bLire); cmd.appendChild(b);
+    bLire.addEventListener('click', function () {
+      enCours = true; bLire.hidden = LIBRE; b.hidden = false; if (!LIBRE) bLire.hidden = true;
+      aller(0);
+    });
+    b.addEventListener('click', function () {
+      if (!LIBRE) { aller(i + 1); return; }
+      clearTimeout(timer); fin();
+    });
+    document.addEventListener('visibilitychange', function () { if (document.hidden && enCours && LIBRE) { clearTimeout(timer); fin(); } });
+    return { aller: aller, arreter: function () { clearTimeout(timer); if (enCours) fin(); } };
+  }
+  function dire(el, html) { el.classList.remove('on'); setTimeout(function () { el.innerHTML = html; el.classList.add('on'); }, MS.base); }
+
+  /* ── 01 · la main invisible : d'abord avec la faute, puis comme il faut ── */
+  (function () {
+    var V0 = 22, V1 = 84; /* chorégraphie : le départ et l'arrivée de la main */
+    /* une vraie main ne glisse pas régulièrement : elle fait des à-coups. Trois coups vifs, deux pauses —
+       avec la faute, la barre reste loin derrière à chaque coup et rattrape pendant la pause. */
+    var COUPS = [[V0, 58, 240], [58, 46, 200], [46, V1, 280]], PAUSE = 1700, GESTE = 240 + PAUSE + 200 + PAUSE + 280; /* chorégraphie */
+    var sc = document.getElementById('sc-main'), st = document.getElementById('main-st'), piste = document.getElementById('main-piste');
+    var barre = document.getElementById('main-barre'), pisteBarre = document.getElementById('main-piste-barre'), rouge = document.getElementById('main-rouge'), cote = document.getElementById('main-cote');
+    var etiquette = document.getElementById('main-etiquette'), nombre = document.getElementById('main-nombre');
+    var v = V0, pic = 0, ecart = 0, vivant = false, glisseur = 0, etape = 0;
+    function poser(val) { v = Math.round(val); sc.style.setProperty('--w', v + '%'); nombre.textContent = v + ' %'; lire(); }
+    /* le mensonge, lu : tant que la barre n'est pas où est la main, on lit sa largeur à chaque image */
+    function lire() {
+      if (vivant) return; vivant = true;
+      (function pas() {
+        var L = piste.getBoundingClientRect().width || 1, b = barre.getBoundingClientRect().width, cible = v / 100 * L;
+        ecart = Math.abs(cible - b); pic = Math.max(pic, ecart);
+        sc.style.setProperty('--de', Math.min(cible, b) / L * 100 + '%'); sc.style.setProperty('--l', ecart / L * 100 + '%');
+        var ment = ecart > 0.5;
+        rouge.hidden = !ment; cote.hidden = !ment; cote.textContent = fmt(ecart) + ' px';
+        if (ment) { if (etape === 1) st.innerHTML = 'La main est déjà là. La barre court après — <span class="ko">' + fmt(ecart) + ' px derrière</span>.'; requestAnimationFrame(pas); }
+        else vivant = false;
+      })();
+    }
+    function coups(fin) {
+      if (!LIBRE) { poser(V1); return; }
+      (function coup(n) {
+        if (n >= COUPS.length) { if (fin) fin(); return; }
+        var de = COUPS[n][0], a = COUPS[n][1], duree = COUPS[n][2], debut = performance.now();
+        (function pas(t) {
+          var k = Math.min(1, (t - debut) / duree); poser(de + (a - de) * k);
+          if (k < 1) glisseur = requestAnimationFrame(pas); else glisseur = setTimeout(function () { coup(n + 1); }, PAUSE);
+        })(debut);
+      })(0);
+    }
+    function habiller(faute) {
+      barre.classList.toggle('ment', faute);
+      pisteBarre.toggleAttribute('data-intent', faute); if (faute) pisteBarre.setAttribute('data-intent', 'statement');
+      etiquette.innerHTML = faute ? '<span class="ko" aria-hidden="true">✗</span><span>animée</span>' : '<span class="ok" aria-hidden="true">✓</span><span>à la valeur</span>';
+    }
+    function revenir() { barre.classList.add('saut'); pic = 0; poser(V0); piste.classList.remove('tenue'); raf2(function () { barre.classList.remove('saut'); }); }
+    var b = lecture([4200, GESTE + MS.slow + 1200, 5200, 4200, GESTE + 1200, 5600], function (i) { /* chorégraphie : chaque phrase reste le temps d'être lue */
+      etape = i; cancelAnimationFrame(glisseur); clearTimeout(glisseur);
+      if (i === 0) { habiller(true); revenir(); dire(st, '<b>D’abord la faute.</b> La barre porte une transition de 300 ms. Une main va régler la crédibilité par à-coups, de <b>' + V0 + '</b> à <b>' + V1 + ' %</b> — regardez la barre, pas la main.'); }
+      if (i === 1) { piste.classList.add('tenue'); dire(st, 'La main est déjà là. La barre court après.'); coups(); }
+      if (i === 2) { piste.classList.remove('tenue'); dire(st, 'La barre a menti de <span class="ko">' + fmt(pic) + ' px</span> au plus. Pendant qu’elle rattrapait la main, vous regardiez l’animation — pas le nombre.'); }
+      if (i === 3) { habiller(false); revenir(); dire(st, '<b>Maintenant comme il faut.</b> La même barre, sans aucune transition. La même main, les mêmes coups.'); }
+      if (i === 4) { piste.classList.add('tenue'); dire(st, 'La barre est sous la main, à l’image près. Il n’y a rien à regarder d’autre que le nombre.'); coups(); }
+      if (i === 5) { piste.classList.remove('tenue'); dire(st, '<b>Une valeur qu’on fait glisser ne s’anime pas.</b> Ce qu’on tient au doigt est à la valeur, tout de suite — c’est la seule barre qui dit vrai.'); }
+    }, document.getElementById('main-cmd'), function () { st.classList.remove('on'); });
+    habiller(true); poser(V0);
+  })();
+
+  /* ── 02 · quatre situations : le lecteur du film ── */
+  (function () {
+    var CAS = [
+      { cran: 'fast', vous: 'Vous <em>survolez</em> un bouton', emploi: 'bouton, survol, appui', obj: 'bouton',
+        pourquoi: 'Un survol répond, il ne se regarde pas. Au-delà de 160 ms, la couleur poursuit le curseur au lieu de le suivre. Vous ne l’avez pas vu : vous l’avez senti.' },
+      { cran: 'base', vous: 'Vous <em>ouvrez</em> un menu', emploi: 'menu, infobulle, dépliant', obj: 'menu',
+        pourquoi: 'Un menu s’ouvre des dizaines de fois par jour : assez long pour être vu, trop court pour être attendu. Juste le temps de voir d’où il vient.' },
+      { cran: 'slow', vous: 'Vous ouvrez un <em>panneau</em>', emploi: 'tiroir, fenêtre, panneau', obj: 'panneau',
+        pourquoi: 'Un panneau change l’écran. Il a besoin d’un passage, sinon l’état d’avant disparaît sans qu’on sache où il est allé. L’écran d’avant est encore là, dessous.' },
+      { cran: 'expressive', vous: 'Une <em>section</em> arrive au défilement', emploi: 'arrivée d’une section', obj: 'section',
+        pourquoi: 'Une découverte, pas une réponse : elle peut prendre son temps. Vous n’attendez rien d’elle, vous la découvrez.' },
+      { cran: 'expressive', vous: 'Vous ouvrez un menu… <em>à 700 ?</em>', emploi: 'il traîne', obj: 'menu', faute: true,
+        pourquoi: 'Le même menu, au cran d’une section. Cette fois vous l’attendez — et cent fois par jour, ça fait long.' }
+    ];
+    var DUREE = 7000; /* chorégraphie : chaque situation reste sept secondes quand le film se joue */
+    var mots = document.getElementById('cas-mots'), cadre = document.getElementById('cas-cadre'), legende = document.getElementById('cas-legende');
+    var num = document.getElementById('cas-num'), cpt = document.getElementById('cas-cpt'), temps = document.getElementById('cas-temps');
+    var bPrec = document.getElementById('cas-prec'), bLect = document.getElementById('cas-lect'), bSuiv = document.getElementById('cas-suiv');
+    var i = 0, enCours = false, timer = null, minuteur = null, lus = [], objetTimers = [];
+    function objet(c) {
+      if (c.obj === 'bouton') return '<span class="obj-bouton" data-joue>Enregistrer</span><svg class="curseur" id="cas-curseur" viewBox="0 0 16 22" aria-hidden="true"><path d="M1 1l6 16 2.2-6.2L15.5 9z"/></svg>';
+      if (c.obj === 'menu') return '<div class="menu-scene"><span class="obj-bouton">Actions du témoin</span><div class="menu' + (c.faute ? ' traine' : '') + '" data-joue role="menu"><span class="menu-item" role="menuitem">Entendre à nouveau</span><span class="menu-item" role="menuitem">Confronter</span><span class="menu-item danger" role="menuitem">Récuser</span></div></div>';
+      if (c.obj === 'panneau') return '<div class="ecran"><span class="ligne large"></span><span class="ligne"></span><span class="ligne courte"></span><div class="panneau" data-joue><b>Récuser le témoin ?</b><span>Le témoignage sera retiré du dossier.</span><span class="panneau-actions"><span class="obj-bouton">Récuser</span><span class="obj-bouton">Annuler</span></span></div></div>';
+      return '<div class="section-arrive" data-joue><b>Les témoins entendus</b><span class="ligne large"></span><span class="ligne"></span><span class="ligne courte"></span></div>';
+    }
+    /* poser une situation : les mots dans le panneau, l'objet sur la carte — au repos, sans qu'il ait répondu */
+    function poser(n) {
+      i = n; var c = CAS[i];
+      objetTimers.forEach(clearTimeout); objetTimers = [];
+      mots.classList.add('off');
+      setTimeout(function () {
+        document.getElementById('cas-vous').innerHTML = c.vous;
+        document.getElementById('cas-ms').textContent = MS[c.cran] + ' ms';
+        document.getElementById('cas-emploi').textContent = c.emploi;
+        document.getElementById('cas-duree').classList.toggle('ko', !!c.faute);
+        document.getElementById('cas-pourquoi').textContent = c.pourquoi;
+        mots.classList.remove('off');
+      }, MS.slow);
+      cadre.innerHTML = objet(c); cadre.toggleAttribute('data-intent', !!c.faute); if (c.faute) cadre.setAttribute('data-intent', 'statement');
+      num.textContent = i + 1; cpt.textContent = (i + 1) + ' / ' + CAS.length;
+      bPrec.disabled = i === 0; bSuiv.disabled = i === CAS.length - 1;
+    }
+    /* l'objet répond — et ce qu'il joue est lu sur le rendu */
+    function repondre() {
+      var c = CAS[i], o = cadre.querySelector('[data-joue]'), cur = document.getElementById('cas-curseur');
+      if (!o) return;
+      if (cur) {
+        var ro = o.getBoundingClientRect();
+        cur.style.left = '18%'; cur.style.top = '70%'; cur.classList.add('la');
+        raf2(function () { var rk = cur.getBoundingClientRect(); cur.style.translate = (ro.left + ro.width * 0.55 - rk.left) + 'px ' + (ro.top + ro.height * 0.55 - rk.top) + 'px'; });
+        objetTimers.push(setTimeout(function () { o.classList.add('survole'); }, MS.slow + 150));
+      } else raf2(function () { o.classList.add(c.obj === 'section' ? 'la' : 'ouvert'); });
+      var d = enMs(getComputedStyle(o).transitionDuration.split(',')[0]);
+      if (lus.indexOf(d) < 0) { lus.push(d); legende.textContent = lus.join(' · ') + ' ms, lus sur le rendu · quatre objets, une courbe — chacun prend la durée de son emploi'; }
+    }
+    /* le film : une situation se pose, on la lit, l'objet répond, on regarde — puis la suivante */
+    function jouerSlide(n) {
+      poser(n);
+      objetTimers.push(setTimeout(repondre, 2400)); /* chorégraphie : le temps de lire la situation avant que l'objet réponde */
+      temps.style.transition = 'none'; temps.style.scale = '0 1';
+      raf2(function () { temps.style.transition = 'scale ' + DUREE + 'ms linear'; temps.style.scale = '1 1'; }); /* chorégraphie : le trait du temps */
+      clearTimeout(timer);
+      if (LIBRE) timer = setTimeout(function () { if (n + 1 < CAS.length) jouerSlide(n + 1); else fin(); }, DUREE);
+      else fin();
+    }
+    function fin() { enCours = false; bLect.classList.remove('en-cours'); bLect.classList.add('fin'); bLect.setAttribute('aria-label', 'Rejouer'); }
+    function lire() {
+      if (enCours) { clearTimeout(timer); enCours = false; bLect.classList.remove('en-cours'); bLect.setAttribute('aria-label', 'Lire'); temps.style.transition = 'none'; return; }
+      enCours = true; bLect.classList.add('en-cours'); bLect.classList.remove('fin'); bLect.setAttribute('aria-label', 'Pause');
+      jouerSlide(bLect.classList.contains('fin') || i === CAS.length - 1 ? 0 : i);
+    }
+    bLect.addEventListener('click', lire);
+    bPrec.addEventListener('click', function () { clearTimeout(timer); enCours = false; bLect.classList.remove('en-cours', 'fin'); poser(i - 1); objetTimers.push(setTimeout(repondre, 1200)); });
+    bSuiv.addEventListener('click', function () { clearTimeout(timer); enCours = false; bLect.classList.remove('en-cours', 'fin'); poser(i + 1); objetTimers.push(setTimeout(repondre, 1200)); });
+    document.addEventListener('visibilitychange', function () { if (document.hidden && enCours) lire(); });
+    poser(0);
+  })();
+
+  /* ── 03 · le lexique en gestes ── */
+  (function () {
+    var MOTS = [
+      { cle: 'pose', mot: 'il se pose', dit: 'Un fondu et un petit déplacement, sur la courbe du kit : il arrive, il s’installe. La façon dont une infobulle ou un dépliant entre.' },
+      { cle: 'bouton', mot: 'il sort de son bouton', dit: 'Il grandit depuis presque sa taille, depuis le coin qui touche son déclencheur : on sait d’où il vient. La façon dont un menu s’ouvre.' },
+      { cle: 'rebond', mot: 'il rebondit', dit: 'Sa courbe dépasse la cible et revient — un ressort. Sur de l’interface, jamais : rien de réel ne rebondit en s’ouvrant.' },
+      { cle: 'neant', mot: 'il naît du néant', dit: 'Il part de zéro — un objet qui n’existait pas une image plus tôt. Un objet réel grandit depuis presque là où il sera.' },
+      { cle: 'milieu', mot: 'il s’ouvre du milieu', dit: 'Il grandit depuis son propre centre, pas depuis son déclencheur : il n’appartient plus à ce qui l’a appelé.' },
+      { cle: 'traine', mot: 'il traîne', dit: 'Le cran d’une section — 700 ms — sur un objet qu’on ouvre cent fois par jour. On l’attend.' }
+    ];
+    var RALENTI = 3; /* chorégraphie : chaque geste est joué trois fois plus lentement, pour qu'il se lise ; le verdict lu divise par trois */
+    var grille = document.getElementById('lexique'); grille.style.setProperty('--ralenti', RALENTI);
+    function auRepos(el) {
+      var j = el.cloneNode(false); j.classList.remove('la'); j.style.visibility = 'hidden'; el.parentElement.appendChild(j);
+      var cs = getComputedStyle(j), durees = cs.transitionDuration.split(',').map(function (d) { return enMs(d) / RALENTI; });
+      var depasse = (cs.transitionTimingFunction.match(/cubic-bezier\(([^)]*)\)/g) || []).some(function (m) { var n = m.slice(m.indexOf('(') + 1, -1).split(',').map(Number); return n[1] > 1 || n[3] > 1; });
+      var o = cs.transformOrigin.split(' ').map(parseFloat), sc = cs.scale;
+      var r = { duree: Math.max.apply(null, durees), depasse: depasse, depart: sc === 'none' ? null : parseFloat(sc), aucoin: o[0] === 0 && o[1] === 0 };
+      j.remove(); return r;
+    }
+    function juger(l) {
+      if (l.duree === 0) return { ok: false, dit: 'aucune durée : un état remplace l’autre' };
+      if (l.depart === 0) return { ok: false, dit: 'part de 0 · ' + l.duree + ' ms' };
+      if (l.depasse) return { ok: false, dit: 'la courbe dépasse sa cible · ' + l.duree + ' ms' };
+      if (l.duree > MS.base) return { ok: false, dit: l.duree + ' ms — un objet qu’on ouvre vit à ' + MS.base };
+      if (!l.aucoin) return { ok: false, dit: l.duree + ' ms, depuis le milieu — pas depuis son déclencheur' };
+      return { ok: true, dit: l.duree + ' ms · la courbe du kit' + (l.depart !== null ? ' · part de ' + String(l.depart).replace('.', ',') : '') + ' · depuis son déclencheur' };
+    }
+    var tuiles = [];
+    MOTS.forEach(function (m) {
+      var t = document.createElement('div'); t.className = 'lex'; t.setAttribute('data-mot', m.cle);
+      var sc = document.createElement('div'); sc.className = 'lex-scene';
+      var decl = document.createElement('span'); decl.className = 'lex-decl'; sc.appendChild(decl);
+      var obj = document.createElement('div'); obj.className = 'lex-obj'; obj.setAttribute('aria-hidden', 'true');
+      for (var k = 0; k < 3; k++) obj.appendChild(document.createElement('i'));
+      sc.appendChild(obj);
+      var h = document.createElement('h3'); var lu = document.createElement('span'); lu.className = 'lu';
+      t.appendChild(h); t.appendChild(sc); grille.appendChild(t); /* la tuile est dans la page avant qu'on la lise : on ne lit pas un objet détaché */
+      var v = juger(auRepos(obj));
+      h.innerHTML = '<span>' + m.mot + '</span><span class="' + (v.ok ? 'ok' : 'ko') + '" aria-hidden="true">' + (v.ok ? '✓' : '✗') + '</span>';
+      if (!v.ok) t.setAttribute('data-intent', 'statement');
+      lu.textContent = v.dit; lu.classList.toggle('ko', !v.ok);
+      var dit = document.createElement('p'); dit.className = 'lex-dit'; dit.textContent = m.dit;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'bouton'; b.textContent = 'Lire';
+      function jouer() { obj.classList.remove('la'); raf2(function () { obj.classList.add('la'); }); b.textContent = 'Rejouer'; }
+      b.addEventListener('click', jouer);
+      t.appendChild(lu); t.appendChild(dit); t.appendChild(b);
+      tuiles.push({ jouer: jouer, obj: obj });
+    });
+    var tout = document.createElement('button'); tout.type = 'button'; tout.className = 'bouton on'; tout.textContent = 'Tout lire';
+    var timers = [];
+    tout.addEventListener('click', function () {
+      timers.forEach(clearTimeout); timers = [];
+      tuiles.forEach(function (t) { t.obj.classList.remove('la'); });
+      tuiles.forEach(function (t, i) { timers.push(setTimeout(t.jouer, 400 + i * 1900)); }); /* chorégraphie : un mot après l'autre, le temps de le voir */
+      tout.textContent = 'Tout relire';
+    });
+    document.getElementById('mots-cmd').appendChild(tout);
+  })();
+
+  /* ── entrée en scène + sommaire actif ── */
+  var sections = [].slice.call(document.querySelectorAll('.sec'));
+  if (LIBRE && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -12% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  } else sections.forEach(function (s) { s.classList.add('is-in'); });
+  var links = [].slice.call(document.querySelectorAll('.rail-link'));
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting) return; links.forEach(function (l) { l.classList.toggle('is-active', l.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-40% 0px -50% 0px' });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

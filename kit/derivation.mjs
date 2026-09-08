@@ -665,6 +665,20 @@ export const MOUVEMENT = {
   courbe: 'cubic-bezier(0.23, 1, 0.32, 1)',
 }
 
+/* LA GRAISSE (décisions d'Auteur du 8 septembre 2026, d'après le relevé de la
+   vidéo « The 80% of UI Design – Typography ») — un rôle, une graisse : le
+   courant, l'étiquette, le titre ; et deux fonds, deux graisses : en thème
+   sombre chaque rôle s'allège du MÊME écart, parce que le blanc sur noir
+   paraît plus gros que le noir sur blanc (T14). L'écart est une valeur de
+   DÉPART : l'Auteur la pose à l'œil sur /typo. La sombre n'est jamais plus
+   lourde que la claire. Geist est variable : l'écart est un nombre d'axe,
+   pas un fichier de plus. */
+export const GRAISSE = {
+  roles: { body: 400, label: 500, heading: 600 },
+  ecartSombre: 20,
+  sombre(role) { return this.roles[role] - this.ecartSombre },
+}
+
 const r4 = (v) => Math.round(v * 10000) / 10000
 
 /* LE SOCLE. Les entrées entrent, tout le registre sort — en px, à une seule
@@ -866,6 +880,20 @@ export function versCssRythme(entrees = {}) {
     ...Object.entries(REGISTRE.texte).map(([n, v]) => ligne(n, v)),
     `}`,
     ``,
+    `/* La graisse — un rôle, une graisse (T13) ; deux fonds, deux graisses : en thème sombre chaque rôle s'allège`,
+    `   de ${GRAISSE.ecartSombre} (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */`,
+    `:root, [data-theme="light"] {`,
+    ...Object.entries(GRAISSE.roles).map(([n, v]) => ligne(`weight-${n}`, v)),
+    `}`,
+    `[data-theme="dark"] {`,
+    ...Object.keys(GRAISSE.roles).map((n) => ligne(`weight-${n}`, GRAISSE.sombre(n))),
+    `}`,
+    `@media (prefers-color-scheme: dark) {`,
+    `  :root:not([data-theme="light"]) {`,
+    ...Object.keys(GRAISSE.roles).map((n) => `  ${ligne(`weight-${n}`, GRAISSE.sombre(n))}`),
+    `  }`,
+    `}`,
+    ``,
     `/* Le châssis du site — navigation à gauche, réglages à droite — garde la densité`,
     `   confortable quel que soit le réglage : la densité règle le contenu, jamais les colonnes. */`,
     `.navigation, .reglages {`,
@@ -938,6 +966,7 @@ export function versFigma(entrees = {}, primaire = PRIMAIRE_DEFAUT) {
     control: groupe(/^(control-height|target-min)$/),
     focus: { band: { $type: 'dimension', $value: `${HORS_CHAINE.focus.bande}px`, $description: 'Le halo de focus : la bande collée à l’objet, en px.' }, line: { $type: 'dimension', $value: `${HORS_CHAINE.focus.trait}px`, $description: 'Le halo de focus : le trait qui ferme la bande, en px.' } },
     color: { light: couleurs(pal.light), dark: couleurs(pal.dark) },
+    fontWeight: Object.fromEntries(Object.entries(GRAISSE.roles).map(([n, v]) => [n, { $type: 'fontWeight', $value: v, $description: `Thème sombre : ${GRAISSE.sombre(n)} — le même écart pour chaque rôle (T14, valeur de départ).` }])),
     motion: {
       ...Object.fromEntries(Object.entries(MOUVEMENT.durees).map(([n, d]) => [n, { $type: 'duration', $value: `${d.ms}ms`, $description: `Emploi : ${d.emploi}.` }])),
       'ease-out': { $type: 'cubicBezier', $value: MOUVEMENT.courbe.match(/[\d.]+/g).map(Number), $description: 'La courbe du kit : ce qui entre décélère — départ vif, pose franche.' },
@@ -955,7 +984,8 @@ export function versTailwind(entrees = {}) {
   const fontSize = Object.fromEntries(Object.keys(socle.texte).map((n) => [n, v(`font-size-${n}`)]))
   const literal = Object.fromEntries(Object.entries(j).filter(([n]) => /^(pad|gap|edge|page)-/.test(n)).map(([n, t]) => [n, { min: `${Math.round(t.bas / 4) * 4}px`, max: `${Math.round(t.haut / 4) * 4}px` }]))
   const transitionDuration = Object.fromEntries(Object.keys(MOUVEMENT.durees).map((n) => [n, v(`m-${n}`)]))
-  return { spacing, borderRadius, fontSize, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${HORS_CHAINE.seuilMiseEnPage}em` }, transitionDuration, transitionTimingFunction: { out: v('e-out') }, literal }
+  const fontWeight = Object.fromEntries(Object.keys(GRAISSE.roles).map((n) => [n, v(`weight-${n}`)]))
+  return { spacing, borderRadius, fontSize, fontWeight, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${HORS_CHAINE.seuilMiseEnPage}em` }, transitionDuration, transitionTimingFunction: { out: v('e-out') }, literal }
 }
 
 /* ── tokens.tailwind.mjs ENTIER — les mêmes exports qu'avant (rhythm,
@@ -982,7 +1012,7 @@ export function versTailwindFichier(entrees = {}) {
 export const rhythm = ${q({ spacing: tw.spacing, borderRadius: tw.borderRadius, height: tw.height, minHeight: tw.minHeight, screens: tw.screens })};
 
 /* Sortie jumelle — typographie : le corps borné et les crans dérivés (décision 5). */
-export const typography = ${q({ fontFamily: { sans: 'var(--font-sans)', mono: 'var(--font-mono)', serif: 'var(--font-serif)' }, fontSize: tw.fontSize, lineHeight: { body: 'var(--leading-body)', heading: 'var(--leading-heading)' }, maxWidth: { measure: 'var(--measure)' }, letterSpacing: { label: 'var(--tracking-label)' } })};
+export const typography = ${q({ fontFamily: { sans: 'var(--font-sans)', mono: 'var(--font-mono)', serif: 'var(--font-serif)' }, fontSize: tw.fontSize, lineHeight: { body: 'var(--leading-body)', heading: 'var(--leading-heading)' }, maxWidth: { measure: 'var(--measure)' }, letterSpacing: { label: 'var(--tracking-label)' }, fontWeight: tw.fontWeight })};
 
 /* Sortie jumelle — couleur (COLOR-UX.md 2.0.0). Les utilitaires pointent
    sur les variables : le thème (clair/sombre) se résout au rendu, jamais

@@ -168,3 +168,58 @@
    ligne de base — sans chasse, il ne déplace rien et n'agrandit pas la
    ligne (la hauteur des capitales est sous l'ascendante). */
 .tp-temoin { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
+
+/* ── 05 · La graisse (section à part, décision d'Auteur du 8 septembre 2026) ──
+      LA LISTE AU CORPS UNIQUE : trois lignes, une seule taille — le corps.
+      Ce qui sépare le nom, le sous-titre et le bouton, c'est la graisse
+      (les jetons --weight-*, lus au registre) et l'encre (première,
+      seconde). « Égaliser » ramène tout à la graisse du courant et à
+      l'encre première : c'est la casse, et elle est dite. Chaque ligne est
+      une ligne : sa marge, son espace intérieur, le coin de la ligne. ── */
+.tp-abos { display: flex; flex-direction: column; width: 100%; max-width: var(--measure); border: 1px solid var(--border); border-radius: var(--r-2); background: var(--bg); overflow: hidden; }
+.tp-abo {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-3-inline);
+  font-size: var(--font-size-body); line-height: var(--leading-body);
+}
+.tp-abo + .tp-abo { border-top: 1px solid var(--border); }
+.tp-abo-avatar { display: block; width: var(--control-height-compact); height: var(--control-height-compact); border-radius: var(--r-pill); background: var(--primary-subtle); }
+.tp-abo-avatar.a2 { background: var(--success-subtle); }
+.tp-abo-avatar.a3 { background: var(--warning-subtle); }
+.tp-abo-qui { display: grid; min-width: 0; }
+.tp-abo-nom { font-weight: var(--weight-heading); color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tp-abo-sous { font-weight: var(--weight-body); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tp-abo-bouton {
+  font-weight: var(--weight-label); color: var(--text-primary);
+  border: 1px solid var(--border-strong); border-radius: var(--r-ctl);
+  padding: var(--gap-4-block) var(--pad-3-inline); white-space: nowrap;
+}
+.tp-abo-bouton.suivi { color: var(--text-secondary); border-color: var(--border); }
+/* casse : tout à la graisse du courant et à l'encre première — la hiérarchie tombe */
+.tp-abos.egal .tp-abo-nom, .tp-abos.egal .tp-abo-bouton { font-weight: var(--weight-body); } /* casse */
+.tp-abos.egal .tp-abo-sous, .tp-abos.egal .tp-abo-bouton.suivi { color: var(--text-primary); } /* casse */
+.tp-abos.egal .tp-abo-bouton { border-color: var(--border-strong); } /* casse */
+
+/* le titre du second objet de la section : un cran sous le titre de section, la graisse du titre */
+.tp-sous-titre { margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; max-width: var(--measure); } /* la graisse : celle des intertitres du site (globals) */
+
+/* DEUX FONDS, DEUX GRAISSES : deux cartes côte à côte, le même paragraphe.
+   Le versant sombre porte data-theme="dark" : il prend le fond, les encres
+   ET le jeton de graisse du thème sombre — rien n'est peint ici. Le curseur
+   ne repeint que --weight-body sur cette carte (dans la vue), jamais le
+   registre. Le paragraphe consomme le jeton : c'est lui qui change. */
+.tp-fonds-scene { display: grid; gap: var(--gap-2-block); width: 100%; }
+.tp-fonds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-inline); width: 100%; }
+@media (max-width: 48rem) { .tp-fonds { grid-template-columns: 1fr; } }
+.tp-fond {
+  display: grid; gap: var(--gap-3-block); align-content: start;
+  padding: var(--pad-2-block) var(--pad-2-inline); border-radius: var(--r-1);
+  background: var(--bg); color: var(--text-primary); border: 1px solid var(--border);
+}
+.tp-fond > p { margin: 0; font-size: var(--font-size-body); line-height: var(--leading-body); font-weight: var(--weight-body); }
+/* le curseur de l'écart : une commande, rangée sous les deux cartes, sur la largeur de la scène */
+.tp-molette { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline); max-width: var(--measure); }
+.tp-molette label { color: var(--text-secondary); font-size: var(--font-size-small); white-space: nowrap; }
+.tp-molette input[type="range"] { width: 100%; accent-color: var(--primary); }
+.tp-molette input[type="range"]:disabled { opacity: 0.5; } /* casse : pendant « la même graisse », l'écart ne se règle pas */
+.tp-molette output { white-space: nowrap; }
