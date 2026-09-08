@@ -253,3 +253,68 @@
   .motion-panel-head > span:first-child { max-width: 55%; }
   .gaze-grid { grid-template-columns: minmax(0, 1fr); min-height: 55rem; }
 }
+
+/* ── Une scène à deux côtés : le juste et le faux côte à côte, en même
+      temps (la forme de /composition). L'écart entre les colonnes est la
+      marge de coque, le verdict en tête de colonne. ── */
+.mv-duo { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
+@media (min-width: 40em) { .mv-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mv-cote { display: grid; gap: var(--gap-3-block); align-content: start; }
+.mv-verdict-tete { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
+  font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
+.mv-verdict-tete .verdict.bon { color: var(--success); font-weight: 700; }
+.mv-verdict-tete .verdict.ko { color: var(--danger); font-weight: 700; }
+
+
+/* ── Le menu des paires ── */
+.mv-scene-menu { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3-block); width: max-content; min-height: 12rem; }
+.mv-scene-menu > .bouton { align-self: start; }
+.mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block)); min-width: 14rem; display: grid; gap: var(--gap-4-block);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3-block) var(--pad-3-inline); z-index: 1;
+  box-shadow: 0 8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du menu posé */
+  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity var(--m-base) var(--e-out); } /* menu : le fondu s'écrit nu */
+.mv-menu.ouvert { opacity: 1; pointer-events: auto; }
+.mv-menu.traine { transition-duration: var(--m-expressive); } /* casse (hors chaîne) : un menu au cran d'une section — 700 là où un menu vit à 200 */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-menu { scale: 0.95; transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton */
+  .mv-menu.ouvert { scale: 1; }
+  .mv-menu.traine { transition-duration: var(--m-expressive); } /* casse (hors chaîne) : il traîne */
+}
+.mv-menu-item { display: flex; align-items: center; min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.mv-menu-item:hover { background: var(--surface-hover); }
+.mv-menu-item.danger { color: var(--danger); }
+
+/* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
+      bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
+.mv-scene { display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
+.mv-rangee { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+.mv-scene-toast { display: grid; justify-items: start; min-height: calc(var(--control-height) + var(--gap-2-block)); }
+/* 1 · le survol qui poursuit : la même rangée, la durée du panneau au lieu de celle du survol */
+.mv-rangee.lente .bouton { transition-duration: var(--m-slow); } /* casse (hors chaîne) : le survol poursuit le curseur — 300 là où un survol vit à 100 */
+
+/* 3 · la notification : elle arrive depuis presque sa taille ; cassée, depuis rien */
+.mv-toast { display: flex; align-items: center; gap: var(--gap-3-inline);
+  background: var(--text-primary); color: var(--bg); border-radius: var(--r-2);
+  padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: 600;
+  opacity: 0; transition: opacity var(--m-base) var(--e-out); } /* le fondu s'écrit nu */
+.mv-toast .point { width: var(--gap-3-inline); height: var(--gap-3-inline); border-radius: var(--r-pill); background: var(--success); flex: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .mv-toast { scale: 0.95; translate: 0 var(--gap-3-block);
+    transition: opacity var(--m-base) var(--e-out), scale var(--m-base) var(--e-out), translate var(--m-base) var(--e-out); }
+  .mv-toast.neant { scale: 0; } /* casse (hors chaîne) : elle naît du néant */
+  .mv-toast.la { scale: 1; translate: 0 0; }
+  /* 4 · moins de mouvement : ce que voit quelqu'un qui l'a demandé — le déplacement part, le fondu reste.
+     Une simulation du réglage système, à l'échelle de la scène ; le site, lui, y obéit par ses portillons. */
+  .mv-reduit .mv-toast { scale: none; translate: none; transition: opacity var(--m-base) var(--e-out); }
+  .mv-coupe .mv-toast { scale: none; translate: none; transition: none; } /* casse (hors chaîne) : l'ancienne règle — tout coupé, elle surgit sans passage */
+}
+.mv-coupe .mv-toast { transition: none; } /* casse (hors chaîne) : l'ancienne règle, nue aussi */
+.mv-toast.la { opacity: 1; }
+
+/* ── Les règles et leurs sources, sous chaque preuve (dans le dépliant) ── */
+.mv-regles { display: grid; gap: var(--gap-1-block); }
+.mv-regle { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
+.mv-regle > b { color: var(--text-primary); }
+.mv-regle-src { font-size: var(--font-size-small); }
