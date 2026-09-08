@@ -6051,3 +6051,40 @@ le focus au clavier se mesurait sous une souris restée sur une tuile — elle
 s'écarte d'abord.
 
 Banc : douze vertes trois fois, puis la course complète — six pages vertes.
+
+## 8 septembre 2026 (soir) — la page reprise sur les règles d'écriture : montrer, nommer, expliquer seulement si ça manque
+
+**Deux pages dans le même dossier.** L'après-midi, un autre fil a remplacé
+`/mouvement` par une page à trois règles — la trace, la cause, le regard —
+chacune en comparaison simultanée, le mauvais et le bon côte à côte, un seul
+bouton pour les deux, sur des objets crédibles (une carte de tâche, un menu de
+projet, un tableau de bord). Auteur a tranché : c'est celle-là qu'on garde, et
+on la revoit sur ses nouvelles règles d'écriture. La course et le juste à côté
+du mot (matin) restent dans l'histoire du dépôt, pas dans la page.
+
+**Ce que les règles ont retiré.** « Regardez la différence » ; les trois
+phrases sous les titres, qui répétaient le titre ; les surtitres de démo ; les
+badges « Continuité / Rupture », « lié / arbitraire », « 1 signal / 8
+signaux », décrétés et redondants avec la tête de chaque côté ; les légendes
+qui expliquaient après l'évidence ; le pied de page. Par démo, il reste un
+titre qui nomme la situation et un bouton qui dit son action ; par côté, une
+phrase. Test de suppression appliqué à chaque ligne.
+
+**Ce que le système a rendu.** La rupture est déclarée sur chaque côté fautif.
+Un répertoire — « 04 · Le moteur » — remet les quatre durées, la courbe, le
+mouvement réduit, le fondu, l'appui et la chorégraphie en neuf lignes lues au
+registre, et six règles en liste : la page porte de nouveau la fondation que la
+carte dit verrouillée. Les valeurs hors du moteur se déclarent sur leur ligne ;
+les décalages du côté faute se disent chorégraphie ; l'étiquette « Mis à jour »
+reste posée quand l'animation finit — avant, elle disparaissait.
+
+**Au banc.** Onze épreuves écrites avec la page : un seul bouton pour les deux
+côtés ; la bonne carte glisse au cran expressif sur la courbe du kit, la
+mauvaise saute en image-clé déclarée ; le bon menu grandit depuis le coin de
+son bouton, le mauvais depuis son centre et loin ; huit cartes s'animent d'un
+côté, une seule de l'autre ; sous mouvement réduit plus un déplacement, les
+fondus restent et la carte est quand même à l'arrivée ; et l'écriture d'Auteur
+mesurée — aucun mot qui décrit l'écran ou raconte le geste, rien sous les
+titres, rien après l'évidence.
+
+Banc : onze vertes trois fois, puis la course complète — six pages vertes.
