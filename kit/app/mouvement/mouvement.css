@@ -46,7 +46,7 @@
 }
 .trace-column > span {
   display: block; font: 700 var(--font-size-label)/1 var(--font-mono);
-  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : l'étiquette d'une colonne, 700 */
 }
 .trace-column > i {
   display: block; height: 4.4rem; margin-top: var(--gap-2-block); /* hors chaîne : l'emplacement vide, à la hauteur de la carte */
@@ -136,7 +136,7 @@
   border-radius: var(--r-2); background: var(--bg); box-shadow: 0 24px 50px -28px rgba(5, 6, 17, .8); /* hors chaîne : l'ombre du menu posé */
   opacity: 0; pointer-events: none; transition: opacity var(--m-slow) var(--e-out); } /* le fondu du menu s'écrit nu : il reste sous mouvement réduit */
 .origin-menu-title {
-  padding: var(--gap-3-block) var(--pad-3-inline); color: var(--text-tertiary);
+  padding: var(--gap-3-block) var(--pad-3-inline); color: var(--text-tertiary); /* tertiaire : le titre du menu, 700 */
   font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase;
 }
 .origin-menu > span[role="menuitem"] {
@@ -146,7 +146,7 @@
 .origin-menu > span[role="menuitem"].danger { color: var(--danger); }
 .origin-icon { position: relative; width: .9rem; height: .9rem; display: inline-block; border: 1px solid currentColor; border-radius: 2px; opacity: .72; } /* hors chaîne : une icône dessinée */
 .origin-icon.duplicate::after { content: ""; position: absolute; inset: 2px -4px -4px 2px; border: 1px solid currentColor; border-radius: 2px; } /* hors chaîne : une icône dessinée */
-.origin-icon.trash { border-radius: 1px 1px 3px 3px; border-top: 0; scale: .75 .85; }
+.origin-icon.trash { border-radius: 1px 1px 3px 3px; border-top: 0; scale: .75 .85; } /* hors chaîne : une icône dessinée */
 .origin-ray {
   position: absolute; z-index: 1; left: calc(var(--pad-2-inline) + 1.1rem); /* hors chaîne : le fil qui relie le bouton au menu */
   top: calc(var(--pad-2-block) + 3rem); width: 1px; height: calc(var(--gap-3-block) + 2.1rem);
