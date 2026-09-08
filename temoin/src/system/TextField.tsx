@@ -14,62 +14,62 @@ import { useId } from 'react'
 
 export function TextField({
   label,
-  valeur,
-  surSaisie,
-  aide,
-  multiligne = false,
-  invalide = false,
-  desactive = false,
+  value,
+  onInput,
+  help,
+  multiline = false,
+  invalid = false,
+  disabled = false,
 }: {
   label: string
-  valeur: string
-  surSaisie: (v: string) => void
-  aide?: string
-  multiligne?: boolean
-  invalide?: boolean
-  desactive?: boolean
+  value: string
+  onInput: (v: string) => void
+  help?: string
+  multiline?: boolean
+  invalid?: boolean
+  disabled?: boolean
 }) {
   const id = useId()
-  const idAide = `${id}-aide`
-  const allure = `w-full rounded-controle border-systeme bg-papier px-inline-carte py-block-detail text-corps text-encre placeholder:text-encre-eteinte disabled:cursor-not-allowed disabled:text-encre-eteinte ${
-    invalide ? 'border-erreur-plein' : 'border-trait-net'
+  const idHelp = `${id}-help`
+  const look = `w-full rounded-control border-system bg-paper px-inline-card py-block-detail text-body text-ink placeholder:text-ink-off disabled:cursor-not-allowed disabled:text-ink-off ${
+    invalid ? 'border-error-full' : 'border-stroke-net'
   }`
 
   return (
-    <div className="flex flex-col gap-y-block-carte">
-      <label className="text-fin font-moyenne text-encre" htmlFor={id}>
+    <div className="flex flex-col gap-y-block-card">
+      <label className="text-end font-mean text-ink" htmlFor={id}>
         {label}
       </label>
-      {multiligne ? (
+      {multiline ? (
         <textarea
           id={id}
           rows={4}
-          value={valeur}
-          disabled={desactive}
-          aria-describedby={aide === undefined ? undefined : idAide}
-          aria-invalid={invalide}
+          value={value}
+          disabled={disabled}
+          aria-describedby={help === undefined ? undefined : idHelp}
+          aria-invalid={invalid}
           onChange={(e) => {
-            surSaisie(e.target.value)
+            onInput(e.target.value)
           }}
-          className={allure}
+          className={look}
         />
       ) : (
         <input
           id={id}
           type="text"
-          value={valeur}
-          disabled={desactive}
-          aria-describedby={aide === undefined ? undefined : idAide}
-          aria-invalid={invalide}
+          value={value}
+          disabled={disabled}
+          aria-describedby={help === undefined ? undefined : idHelp}
+          aria-invalid={invalid}
           onChange={(e) => {
-            surSaisie(e.target.value)
+            onInput(e.target.value)
           }}
-          className={allure}
+          className={look}
         />
       )}
-      {aide === undefined ? null : (
-        <p className="text-fin text-encre-douce" id={idAide}>
-          {aide}
+      {help === undefined ? null : (
+        <p className="text-end text-ink-soft" id={idHelp}>
+          {help}
         </p>
       )}
     </div>

@@ -1,11 +1,11 @@
-import { Section, Titre, Texte } from '../design-system/index.ts'
+import { Section, Heading, Text } from '../design-system/index.ts'
 
 export function PageKOS58() {
   return (
     <main>
-      <Section densite="ample"><Section tete><Titre niveau={1}>Tête à l'étage en dessous</Titre></Section></Section>
-      <Section densite="compact"><Titre niveau={2}>Section 2</Titre><Texte>Corps 2</Texte></Section>
-      <Section densite="normal"><Titre niveau={2}>Section 3</Titre><Texte>Corps 3</Texte></Section>
+      <Section density="ample"><Section head><Heading level={1}>Tête à l'étage en dessous</Heading></Section></Section>
+      <Section density="compact"><Heading level={2}>Section 2</Heading><Text>Corps 2</Text></Section>
+      <Section density="normal"><Heading level={2}>Section 3</Heading><Text>Corps 3</Text></Section>
     </main>
   )
 }

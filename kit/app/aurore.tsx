@@ -24,13 +24,13 @@ import { AURORE_HTML } from "./aurore-boreale";
    Posée une seule fois par page (ses identifiants internes sont fixes).
    ═══════════════════════════════════════════════════════════════════════ */
 
-const CIEL = { viewBox: "40 40 944 1150", ratio: "xMidYMin meet" };
+const SKY = { viewBox: "40 40 944 1150", ratio: "xMidYMin meet" };
 
-export function Aurore({ className, cadrage = "plein" }: { className?: string; cadrage?: "plein" | "ciel" }) {
-  const html = cadrage === "ciel"
+export function Aurore({ className, framing = "full" }: { className?: string; framing?: "full" | "sky" }) {
+  const html = framing === "sky"
     ? AURORE_HTML
-        .replace(/(<svg class="aurore aur-couche[^>]*?)viewBox="[^"]+" preserveAspectRatio="[^"]+"/g, `$1viewBox="${CIEL.viewBox}" preserveAspectRatio="${CIEL.ratio}"`)
-        .replace('class="aurore-cadre"', 'class="aurore-cadre aurore-ciel"')
+        .replace(/(<svg class="aurore aur-layer[^>]*?)viewBox="[^"]+" preserveAspectRatio="[^"]+"/g, `$1viewBox="${SKY.viewBox}" preserveAspectRatio="${SKY.ratio}"`)
+        .replace('class="aurore-frame"', 'class="aurore-frame aurore-sky"')
     : AURORE_HTML;
   return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
 }

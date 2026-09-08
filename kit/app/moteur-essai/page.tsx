@@ -1,5 +1,5 @@
-import Vue from "./vue";
-import "../rythme/rythme.css";
-import "./moteur-essai.css";
+import View from "./view";
+import "../rythme/rhythm.css";
+import "./engine-trial.css";
 export const metadata = { title: "Kit — Essai : le moteur" };
-export default function Page() { return <Vue />; }
+export default function Page() { return <View />; }

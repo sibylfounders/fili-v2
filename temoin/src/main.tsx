@@ -10,28 +10,28 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import type { Gabarit } from './App.tsx'
-import { installerSource, installerMutation } from './system/index.ts'
+import type { Template } from './App.tsx'
+import { installSource, installMutation } from './system/index.ts'
 
-type Etat = Record<string, { donnees: unknown; chargement: boolean; erreur: string | null }>
+type State = Record<string, { data: unknown; loading: boolean; error: string | null }>
 
-const racine = document.getElementById('root')
-if (!racine) throw new Error("L'élément racine #root est introuvable dans index.html.")
+const root = document.getElementById('root')
+if (!root) throw new Error("L'élément racine #root est introuvable dans index.html.")
 
-const HACHE: Record<string, Gabarit> = {
-  '#constat': 'constat',
-  '#temoins': 'famille',
+const HASH: Record<string, Template> = {
+  '#finding': 'finding',
+  '#witnesses': 'family',
   '#jugement': 'faceAFace',
-  '#carte': 'carte',
+  '#card': 'card',
   '#journal': 'journal',
-  '#acte': 'acte',
+  '#act': 'act',
 }
-const gabarit: Gabarit = HACHE[window.location.hash.split('/')[0]] ?? 'verdict'
+const template: Template = HASH[window.location.hash.split('/')[0]] ?? 'verdict'
 
-function rendre() {
-  createRoot(racine as HTMLElement).render(
+function toRender() {
+  createRoot(root as HTMLElement).render(
     <StrictMode>
-      <App gabarit={gabarit} />
+      <App template={template} />
     </StrictMode>,
   )
 }
@@ -39,25 +39,25 @@ function rendre() {
 /* Tant que l'état n'est pas lu, les sources sont en chargement : c'est leur
    état par défaut, et il est vrai. Rien n'est affiché comme vide avant d'avoir
    été lu. */
-rendre()
+toRender()
 
-fetch('./etat.json')
+fetch('./state.json')
   .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`lecture refusée (${String(r.status)})`))))
-  .then((etat: Etat) => {
-    for (const [chemin, instantane] of Object.entries(etat))
-      installerSource(chemin, instantane)
-    for (const acte of ['/runs', '/verdicts', '/brouillons'])
-      installerMutation(acte, {
-        lancer: () => undefined,
-        enAttente: false,
-        erreur: null,
-        succes: false,
+  .then((state: State) => {
+    for (const [path, snapshot] of Object.entries(state))
+      installSource(path, snapshot)
+    for (const act of ['/runs', '/verdicts', '/brouillons'])
+      installMutation(act, {
+        launch: () => undefined,
+        inWaiting: false,
+        error: null,
+        success: false,
       })
-    rendre()
+    toRender()
   })
   .catch((e: unknown) => {
-    const raison = e instanceof Error ? e.message : 'source illisible'
-    for (const chemin of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons', '/acte'])
-      installerSource(chemin, { donnees: null, chargement: false, erreur: raison })
-    rendre()
+    const reason = e instanceof Error ? e.message : 'source illisible'
+    for (const path of ['/integrite', '/batterie', '/progression', '/constats', '/runs', '/constat', '/occurrences', '/temoins', '/faceAFace', '/verdicts', '/carte', '/journal', '/brouillons', '/acte'])
+      installSource(path, { data: null, loading: false, error: reason })
+    toRender()
   })

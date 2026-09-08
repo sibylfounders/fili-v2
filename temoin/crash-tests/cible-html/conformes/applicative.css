@@ -1,3 +1,0 @@
-.entete { padding-bottom: var(--e5); }
-.carte  { padding: var(--e4); }
-.pile   { display: flex; flex-direction: column; gap: var(--e5); }

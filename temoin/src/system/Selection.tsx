@@ -12,67 +12,67 @@
  */
 import { useId } from 'react'
 
-export type Option = { valeur: string; libelle: string; groupe?: string; indisponible?: boolean }
+export type Option = { value: string; label: string; group?: string; unavailable?: boolean }
 
 export function Selection({
   label,
-  valeur,
+  value,
   options,
-  surChoix,
-  aide,
-  desactive = false,
+  onChoice,
+  help,
+  disabled = false,
 }: {
   label: string
-  valeur: string
+  value: string
   options: Option[]
-  surChoix: (v: string) => void
-  aide?: string
-  desactive?: boolean
+  onChoice: (v: string) => void
+  help?: string
+  disabled?: boolean
 }) {
   const id = useId()
-  const idAide = `${id}-aide`
-  const groupes = [...new Set(options.map((o) => o.groupe ?? ''))]
+  const idHelp = `${id}-help`
+  const groups = [...new Set(options.map((o) => o.group ?? ''))]
 
   return (
-    <div className="flex flex-col gap-y-block-carte">
-      <label className="text-fin font-moyenne text-encre" htmlFor={id}>
+    <div className="flex flex-col gap-y-block-card">
+      <label className="text-end font-mean text-ink" htmlFor={id}>
         {label}
       </label>
       <select
         id={id}
-        value={valeur}
-        disabled={desactive}
-        aria-describedby={aide === undefined ? undefined : idAide}
+        value={value}
+        disabled={disabled}
+        aria-describedby={help === undefined ? undefined : idHelp}
         onChange={(e) => {
-          surChoix(e.target.value)
+          onChoice(e.target.value)
         }}
-        className="w-full rounded-controle border-systeme border-trait-net bg-papier px-inline-carte py-block-detail text-corps text-encre disabled:cursor-not-allowed disabled:text-encre-eteinte"
+        className="w-full rounded-control border-system border-stroke-net bg-paper px-inline-card py-block-detail text-body text-ink disabled:cursor-not-allowed disabled:text-ink-off"
       >
-        {groupes.map((g) =>
+        {groups.map((g) =>
           g === '' ? (
             options
-              .filter((o) => (o.groupe ?? '') === '')
+              .filter((o) => (o.group ?? '') === '')
               .map((o) => (
-                <option disabled={o.indisponible} key={o.valeur} value={o.valeur}>
-                  {o.libelle}
+                <option disabled={o.unavailable} key={o.value} value={o.value}>
+                  {o.label}
                 </option>
               ))
           ) : (
             <optgroup key={g} label={g}>
               {options
-                .filter((o) => o.groupe === g)
+                .filter((o) => o.group === g)
                 .map((o) => (
-                  <option disabled={o.indisponible} key={o.valeur} value={o.valeur}>
-                    {o.libelle}
+                  <option disabled={o.unavailable} key={o.value} value={o.value}>
+                    {o.label}
                   </option>
                 ))}
             </optgroup>
           ),
         )}
       </select>
-      {aide === undefined ? null : (
-        <p className="text-fin text-encre-douce" id={idAide}>
-          {aide}
+      {help === undefined ? null : (
+        <p className="text-end text-ink-soft" id={idHelp}>
+          {help}
         </p>
       )}
     </div>

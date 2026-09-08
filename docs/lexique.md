@@ -89,8 +89,16 @@ Les entrées passées du journal sont scellées : elles gardent leurs mots
 d'époque (« jeton », « tiroir »). Un mot d'époque dans une entrée datée n'est
 pas une faute, c'est de l'histoire.
 
+Les routes du site (`/rythme`, `/couleur`, `/mouvement`…) et les clés de page
+qui en dérivent restent en français : ce sont des adresses lues par des
+humains, pas des identifiants. Les dossiers `kit/` et `temoin/` à la racine,
+les pages nues `kit-*-nu.html` et les noms des fixtures OK-/KO- (des titres)
+ne bougent pas non plus. Les préfixes opaques de classes (`ry-`, `mo-`,
+`acc-`, `gd-`…) sont des abréviations, pas des mots : ils restent.
+
 ## Journal du lexique
 
 - **2026-09-08** — ouverture. La règle en quatre lignes, V0 et V11 tranchés,
   quatre francisés relevés dans le kit (jeton, squelette, tiroir, paquet-npm)
-  et la migration du code vers l'anglais décidée.
+  et la migration du code vers l'anglais décidée, puis exécutée le jour même
+  sur le kit et le témoin (`#134`, `docs/migration-code-en.json`).

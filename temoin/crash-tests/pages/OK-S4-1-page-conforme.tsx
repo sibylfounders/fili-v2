@@ -1,13 +1,13 @@
-import { Section, Titre, Texte } from '../design-system/index.ts'
+import { Section, Heading, Text } from '../design-system/index.ts'
 
 export function PageOK1() {
   return (
     <main>
-      <Section tete densite="ample"><Titre niveau={1}>Une page qui respire</Titre></Section>
-      <Section densite="compact"><Titre niveau={2}>Deux</Titre></Section>
-      <Section densite="compact"><Titre niveau={2}>Trois</Titre><Titre niveau={3}>Sous-titre</Titre></Section>
-      <Section densite="normal"><Texte>Quatre</Texte></Section>
-      <Section densite="ample"><Titre niveau={2}>Cinq</Titre></Section>
+      <Section head density="ample"><Heading level={1}>Une page qui respire</Heading></Section>
+      <Section density="compact"><Heading level={2}>Deux</Heading></Section>
+      <Section density="compact"><Heading level={2}>Trois</Heading><Heading level={3}>Sous-titre</Heading></Section>
+      <Section density="normal"><Text>Quatre</Text></Section>
+      <Section density="ample"><Heading level={2}>Cinq</Heading></Section>
     </main>
   )
 }

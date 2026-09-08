@@ -33,7 +33,7 @@ kit/tsconfig.tsbuildinfo
 
 # Le banc — la dernière course est une mesure locale, faite sur une machine, à
 # une heure. Elle ne se verse pas : ce qui fait foi au dépôt, c'est la carte.
-kit/epreuves/derniere-course.json
-kit/epreuves/derniere-course.log
-kit/epreuves/banc-de-nuit.launchd.log
+kit/tests/last-run.json
+kit/tests/last-run.log
+kit/tests/banc-de-nuit.launchd.log
 docs/banc-du-jour.md

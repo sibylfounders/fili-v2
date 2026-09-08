@@ -19,11 +19,11 @@ export default [
       'fili/no-fake-interactive': 'error',
       'fili/registry-only-components': 'error',
       'fili/no-escape-hatch': 'error',
-      'fili/etat-declare': 'error',
-      'fili/squelette-annonce': 'error',
+      'fili/state-declared': 'error',
+      'fili/skeleton-announces': 'error',
       'fili/discipline-spatiale': 'error',
-      'fili/rythme-composition': 'error',
-      'fili/arbitrage-lecture': 'error'
+      'fili/rhythm-composition': 'error',
+      'fili/ruling-reading': 'error'
     }
   }
 ]

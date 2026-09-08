@@ -43,16 +43,16 @@ const CODE_EXT = new Set(['.ts', '.tsx', '.js', '.jsx'])
  *  Corrigé le 2026-08-11 (journal #060). Ce test rougissait depuis la migration
  *  parce qu'il comparait des noms à une liste de nombres, et le garde-fou a
  *  bloqué tous les enregistrements pendant quatre jours. */
-const REGISTRE = JSON.parse(readFileSync(join(ROOT, 'fili/registry.json'), 'utf8'))
-const ECHELLE = REGISTRE?.espacement?.echelle
-if (!Array.isArray(ECHELLE) || !ECHELLE.length) {
+const REGISTRY = JSON.parse(readFileSync(join(ROOT, 'fili/registry.json'), 'utf8'))
+const SCALE = REGISTRY?.spacing?.scale
+if (!Array.isArray(SCALE) || !SCALE.length) {
   console.error("\n  🔴 REFUS DE STATUER — l'échelle d'espacement est absente de fili/registry.json\n")
   process.exit(2)
 }
 /** Les seules valeurs hors échelle admises : le zéro, le pixel de trait, et les
  *  deux mots-clés qui ne sont pas des espaces mais des comportements. */
-const HORS_ECHELLE_ADMIS = ['0', 'px', 'auto', 'full']
-const SPACING_SCALE = new Set([...ECHELLE, ...HORS_ECHELLE_ADMIS])
+const OFF_SCALE_ALLOWED = ['0', 'px', 'auto', 'full']
+const SPACING_SCALE = new Set([...SCALE, ...OFF_SCALE_ALLOWED])
 
 /** Tailles typographiques Tailwind — sert à distinguer text-lg de text-ink. */
 const TYPE_SCALE = new Set([
@@ -207,60 +207,60 @@ test('S2-T7', 'Aucun token orphelin ni fantôme', () => {
  *  Portée déclarée : on lit le contenu DIRECT d'une pile — ce qu'elle distribue
  *  elle-même. Ce qui tombe dans une pile ou une grille imbriquée appartient à
  *  cette dernière, et sera jugé sur sa propre déclaration. */
-const GEO = JSON.parse(readFileSync(join(ROOT, 'fili/geometrie.json'), 'utf8'))
-const PROFONDEURS_ORDRE = GEO.profondeurs ?? []
-const MINI_CIBLES = GEO.profondeurMiniCibles
+const GEO = JSON.parse(readFileSync(join(ROOT, 'fili/geometry.json'), 'utf8'))
+const DEPTHS_ORDER = GEO.depths ?? []
+const MINI_TARGETS = GEO.depthMiniTargets
 /** Les composants que le doigt doit pouvoir distinguer l'un de l'autre. */
-const CIBLES = ['Button', 'TextField', 'Selection']
+const TARGETS = ['Button', 'TextField', 'Selection']
 
 /** Contenu direct d'une pile : son corps, moins celui de ses piles imbriquées. */
-function corpsDirect(body, depart) {
-  let i = depart
-  let niveau = 1
-  let sortie = ''
-  let profondeurImbriquee = 0
-  while (i < body.length && niveau > 0) {
-    const ouvre = /^<(Pile|Grille)[\s>]/.exec(body.slice(i))
-    const ferme = /^<\/(Pile|Grille)>/.exec(body.slice(i))
-    if (ouvre) {
-      if (niveau === 1 && profondeurImbriquee === 0) profondeurImbriquee = 1
-      else if (profondeurImbriquee > 0) profondeurImbriquee++
-      else niveau++
-      i += ouvre[0].length
+function bodyDirect(body, begin) {
+  let i = begin
+  let level = 1
+  let output = ''
+  let depthNested = 0
+  while (i < body.length && level > 0) {
+    const opens = /^<(Pile|Grille)[\s>]/.exec(body.slice(i))
+    const closed = /^<\/(Pile|Grille)>/.exec(body.slice(i))
+    if (opens) {
+      if (level === 1 && depthNested === 0) depthNested = 1
+      else if (depthNested > 0) depthNested++
+      else level++
+      i += opens[0].length
       continue
     }
-    if (ferme) {
-      if (profondeurImbriquee > 0) profondeurImbriquee--
-      else niveau--
-      i += ferme[0].length
+    if (closed) {
+      if (depthNested > 0) depthNested--
+      else level--
+      i += closed[0].length
       continue
     }
-    if (profondeurImbriquee === 0) sortie += body[i]
+    if (depthNested === 0) output += body[i]
     i++
   }
-  return sortie
+  return output
 }
 
-test('S2-T10', `Aucune pile de cibles sous « ${MINI_CIBLES} »`, () => {
-  if (!MINI_CIBLES || !PROFONDEURS_ORDRE.length)
+test('S2-T10', `Aucune pile de cibles sous « ${MINI_TARGETS} »`, () => {
+  if (!MINI_TARGETS || !DEPTHS_ORDER.length)
     return { blocked: 'la géométrie ne déclare pas de profondeur minimale pour les cibles' }
-  const rangMini = PROFONDEURS_ORDRE.indexOf(MINI_CIBLES)
+  const rankMini = DEPTHS_ORDER.indexOf(MINI_TARGETS)
   const hits = []
   for (const { path, body } of files) {
     const re = /<(Pile|Grille)([^>]*)>/g
     let m
     while ((m = re.exec(body))) {
-      const espace = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
-      const rang = PROFONDEURS_ORDRE.indexOf(espace)
-      if (rang < 0 || rang <= rangMini) continue
-      const direct = corpsDirect(body, m.index + m[0].length)
+      const space = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
+      const rank = DEPTHS_ORDER.indexOf(space)
+      if (rank < 0 || rank <= rankMini) continue
+      const direct = bodyDirect(body, m.index + m[0].length)
       /* On compte les CIBLES, pas leurs types : deux boutons sont deux cibles. */
-      const trouve = CIBLES.flatMap((c) => direct.match(new RegExp(`<${c}[\\s/>]`, "g")) ?? [])
-      if (trouve.length < 2) continue
-      const ligne = body.slice(0, m.index).split('\n').length
+      const found = TARGETS.flatMap((c) => direct.match(new RegExp(`<${c}[\\s/>]`, "g")) ?? [])
+      if (found.length < 2) continue
+      const line = body.slice(0, m.index).split('\n').length
       hits.push({
-        path: `${path}:${ligne}`,
-        detail: `<${m[1]} espace="${espace}"> distribue ${trouve.length} cibles — trop fin`,
+        path: `${path}:${line}`,
+        detail: `<${m[1]} espace="${space}"> distribue ${found.length} cibles — trop fin`,
       })
     }
   }
@@ -284,16 +284,16 @@ test('S2-T10', `Aucune pile de cibles sous « ${MINI_CIBLES} »`, () => {
  *  Une seule pièce est exemptée, et elle est nommée : la section, qui EST le
  *  fond sur lequel les autres se posent, et qui ne se pose sur rien.
  */
-const SURFACE_SANS_CONTOUR_ADMISE = ['src/system/Section.tsx']
+const SURFACE_WITHOUT_OUTLINE_ALLOWED = ['src/system/Section.tsx']
 
 test('S2-T11', 'Toute surface de papier déclare un contour', () => {
   const hits = []
   for (const { path, body } of files) {
-    if (SURFACE_SANS_CONTOUR_ADMISE.includes(path)) continue
+    if (SURFACE_WITHOUT_OUTLINE_ALLOWED.includes(path)) continue
     body.split('\n').forEach((line, i) => {
       const trimmed = line.trim()
       if (trimmed.startsWith('*') || trimmed.startsWith('//') || trimmed.startsWith('/*')) return
-      if (!/bg-papier(?![\w-])/.test(line)) return
+      if (!/bg-paper(?![\w-])/.test(line)) return
       if (/border-/.test(line)) return
       hits.push({ path: `${path}:${i + 1}`, detail: 'du papier sans contour — invisible sur du papier' })
     })
@@ -314,26 +314,26 @@ test('S2-T11', 'Toute surface de papier déclare un contour', () => {
  *  source, et lui est gardé ailleurs — le moteur refuse de produire une géométrie
  *  dont la profondeur de prose passe sous son plancher. Deux protections, deux
  *  portées, toutes deux écrites. */
-const PROSE_PROFONDEUR = GEO.prose?.profondeur
+const PROSE_DEPTH = GEO.prose?.depth
 
-test('S2-T12', `Aucun texte suivi sous « ${PROSE_PROFONDEUR ?? '?'} »`, () => {
-  if (!PROSE_PROFONDEUR) return { blocked: 'la géométrie ne déclare pas de profondeur pour le texte suivi' }
-  const rangProse = PROFONDEURS_ORDRE.indexOf(PROSE_PROFONDEUR)
+test('S2-T12', `Aucun texte suivi sous « ${PROSE_DEPTH ?? '?'} »`, () => {
+  if (!PROSE_DEPTH) return { blocked: 'la géométrie ne déclare pas de profondeur pour le texte suivi' }
+  const rankProse = DEPTHS_ORDER.indexOf(PROSE_DEPTH)
   const hits = []
   for (const { path, body } of files) {
     const re = /<(Pile|Grille)([^>]*)>/g
     let m
     while ((m = re.exec(body))) {
-      const espace = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
-      const rang = PROFONDEURS_ORDRE.indexOf(espace)
-      if (rang < 0 || rang <= rangProse) continue
-      const direct = corpsDirect(body, m.index + m[0].length)
-      const corps = direct.match(/<Texte[^>]*variante=["']corps["']/g) ?? []
-      if (corps.length < 2) continue
-      const ligne = body.slice(0, m.index).split('\n').length
+      const space = /espace=["']([a-z]+)["']/.exec(m[2])?.[1] ?? 'page'
+      const rank = DEPTHS_ORDER.indexOf(space)
+      if (rank < 0 || rank <= rankProse) continue
+      const direct = bodyDirect(body, m.index + m[0].length)
+      const body = direct.match(/<Texte[^>]*variante=["']corps["']/g) ?? []
+      if (body.length < 2) continue
+      const line = body.slice(0, m.index).split('\n').length
       hits.push({
-        path: `${path}:${ligne}`,
-        detail: `<${m[1]} espace="${espace}"> distribue ${corps.length} paragraphes — trop serré pour du texte suivi`,
+        path: `${path}:${line}`,
+        detail: `<${m[1]} espace="${space}"> distribue ${body.length} paragraphes — trop serré pour du texte suivi`,
       })
     }
   }
@@ -362,40 +362,40 @@ test('S2-T12', `Aucun texte suivi sous « ${PROSE_PROFONDEUR ?? '?'} »`, () => 
  *  Un nom inventé hors de cette liste lui échappe — mais il ne compile pas non
  *  plus, la première mesure s'en charge. Les deux se tiennent. */
 const PALETTE = JSON.parse(readFileSync(join(ROOT, 'fili/palette.json'), 'utf8'))
-const enKebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())
-const CRANS_ETAT = ['surface', 'sur', 'plein', 'sur-plein', 'trait']
-const COULEURS_DU_SYSTEME = [
-  ...Object.keys(PALETTE.neutres ?? {}).map(enKebab),
-  ...Object.keys(PALETTE.etats ?? {}).flatMap((n) => CRANS_ETAT.map((c) => `${enKebab(n)}-${c}`)),
+const inKebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase())
+const STEPS_STATE = ['surface', 'on', 'full', 'on-full', 'stroke']
+const COLORS_OF_SYSTEM = [
+  ...Object.keys(PALETTE.neutrals ?? {}).map(inKebab),
+  ...Object.keys(PALETTE.states ?? {}).flatMap((n) => STEPS_STATE.map((c) => `${inKebab(n)}-${c}`)),
 ]
 
 /** Les familles livrées par défaut avec l'outil. Aucune n'appartient au système. */
-const FAMILLES_ETRANGERES = [
+const FAMILIES_FOREIGN = [
   'slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'amber', 'yellow',
-  'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet',
+  'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'purple',
   'purple', 'fuchsia', 'pink', 'rose', 'white', 'black',
 ]
 /** Tout ce qui peut porter une couleur. */
-const PORTEURS_DE_COULEUR = [
+const CARRIERS_OF_COLOR = [
   'bg', 'text', 'border', 'ring', 'fill', 'stroke', 'divide', 'outline',
   'from', 'via', 'to', 'placeholder', 'caret', 'decoration', 'shadow',
 ]
-const COULEUR_ETRANGERE = new RegExp(
-  `\\b(${PORTEURS_DE_COULEUR.join('|')})-(${FAMILLES_ETRANGERES.join('|')})(-\\d{2,3})?\\b`,
+const COLOR_FOREIGN = new RegExp(
+  `\\b(${CARRIERS_OF_COLOR.join('|')})-(${FAMILIES_FOREIGN.join('|')})(-\\d{2,3})?\\b`,
 )
 
-test('S2-T13', `Aucune couleur hors des ${COULEURS_DU_SYSTEME.length} du système`, () => {
-  if (!COULEURS_DU_SYSTEME.length)
+test('S2-T13', `Aucune couleur hors des ${COLORS_OF_SYSTEM.length} du système`, () => {
+  if (!COLORS_OF_SYSTEM.length)
     return { blocked: 'la palette calculée est absente de fili/palette.json' }
   const hits = []
 
   /* 1. La palette remplace, elle n'ajoute pas. */
   const conf = readFileSync(join(ROOT, 'tailwind.config.js'), 'utf8')
-  const posCouleurs = conf.indexOf('colors:')
+  const posColors = conf.indexOf('colors:')
   const posExtension = conf.indexOf('extend:')
-  if (posCouleurs < 0)
+  if (posColors < 0)
     hits.push({ path: 'tailwind.config.js', detail: 'aucune palette déclarée — tout est permis' })
-  else if (posExtension >= 0 && posCouleurs > posExtension)
+  else if (posExtension >= 0 && posColors > posExtension)
     hits.push({
       path: 'tailwind.config.js',
       detail: 'la palette est déclarée en addition — les couleurs livrées par défaut restent écrivables',
@@ -404,7 +404,7 @@ test('S2-T13', `Aucune couleur hors des ${COULEURS_DU_SYSTEME.length} du systèm
   /* 2. Personne n'écrit le nom d'une couleur étrangère. */
   for (const { path, body } of files) {
     body.split('\n').forEach((line, i) => {
-      const m = COULEUR_ETRANGERE.exec(line)
+      const m = COLOR_FOREIGN.exec(line)
       if (!m) return
       hits.push({
         path: `${path}:${i + 1}`,
@@ -430,13 +430,13 @@ test('S2-T13', `Aucune couleur hors des ${COULEURS_DU_SYSTEME.length} du systèm
  *  Le mouvement peut aussi s'écrire à la main, hors du périmètre habituel : la
  *  feuille de style est donc lue en plus, et une image-clé qui fait un tour
  *  complet est refusée là aussi. */
-const ANIMATIONS_ADMISES = ['animate-pulse']
+const ANIMATIONS_ALLOWEDALL = ['animate-pulse']
 
 test('S2-T14', 'Rien ne tourne dans le vide', () => {
   const hits = []
   for (const { path, cls } of classNames()) {
     if (!cls.startsWith('animate-')) continue
-    if (ANIMATIONS_ADMISES.includes(cls)) continue
+    if (ANIMATIONS_ALLOWEDALL.includes(cls)) continue
     hits.push({
       path,
       detail: `« ${cls} » — la seule animation admise est la respiration du squelette ; ` +
@@ -444,8 +444,8 @@ test('S2-T14', 'Rien ne tourne dans le vide', () => {
     })
   }
   /* Le mouvement écrit à la main, hors du périmètre des composants. */
-  const feuille = readFileSync(join(ROOT, 'src/index.css'), 'utf8')
-  for (const m of feuille.matchAll(/@keyframes\s+([\w-]+)\s*\{([^}]*\{[^}]*\}[^}]*)*\}/g)) {
+  const sheet = readFileSync(join(ROOT, 'src/index.css'), 'utf8')
+  for (const m of sheet.matchAll(/@keyframes\s+([\w-]+)\s*\{([^}]*\{[^}]*\}[^}]*)*\}/g)) {
     if (/rotate\s*\(\s*(360deg|1turn)\s*\)/.test(m[0]))
       hits.push({ path: 'src/index.css', detail: `l'image-clé « ${m[1]} » fait un tour complet — un rond qui tourne` })
   }
@@ -467,18 +467,18 @@ test('S2-T14', 'Rien ne tourne dans le vide', () => {
  *  répètent aussi, et ce test ne les voit pas. Ils sont rares — on ne recopie
  *  pas trois fois la même ligne — et ils se voient à la relecture, là où une
  *  boucle ne se voit jamais. */
-const PORTEURS_DE_SIGNAL = ['Jeton']
+const CARRIERS_OF_SIGNAL = ['Chip']
 
 /** Positions du corps qui tombent dans le rappel d'une boucle. */
-function dansUneBoucle(body) {
-  const pile = []
+function insideOneLoop(body) {
+  const stack = []
   const zones = []
   for (let i = 0; i < body.length; i++) {
     if (body[i] === '(') {
-      pile.push({ boucle: body.slice(Math.max(0, i - 4), i) === '.map', debut: i })
+      stack.push({ loop: body.slice(Math.max(0, i - 4), i) === '.map', start: i })
     } else if (body[i] === ')') {
-      const ouvert = pile.pop()
-      if (ouvert && ouvert.boucle) zones.push([ouvert.debut, i])
+      const open = stack.pop()
+      if (open && open.loop) zones.push([open.start, i])
     }
   }
   return (pos) => zones.some(([a, b]) => pos > a && pos < b)
@@ -487,17 +487,17 @@ function dansUneBoucle(body) {
 test('S2-T15', 'Aucun signal sur ce qui se répète', () => {
   const hits = []
   for (const { path, body } of files) {
-    const dedans = dansUneBoucle(body)
-    for (const nom of PORTEURS_DE_SIGNAL) {
-      const re = new RegExp(`<${nom}([^>]*)>`, 'g')
+    const inside = insideOneLoop(body)
+    for (const name of CARRIERS_OF_SIGNAL) {
+      const re = new RegExp(`<${name}([^>]*)>`, 'g')
       let m
       while ((m = re.exec(body))) {
-        if (/\brepete\b/.test(m[1])) continue
-        if (!dedans(m.index)) continue
-        const ligne = body.slice(0, m.index).split('\n').length
+        if (/\brepeats\b/.test(m[1])) continue
+        if (!inside(m.index)) continue
+        const line = body.slice(0, m.index).split('\n').length
         hits.push({
-          path: `${path}:${ligne}`,
-          detail: `<${nom}> dans une boucle sans déclarer qu'il se répète — sa forme deviendra du grain`,
+          path: `${path}:${line}`,
+          detail: `<${name}> dans une boucle sans déclarer qu'il se répète — sa forme deviendra du grain`,
         })
       }
     }
@@ -515,25 +515,25 @@ test('S2-T15', 'Aucun signal sur ce qui se répète', () => {
  *
  *  Les deux se complètent : T12 dit « pas trop serré », T16 dit « pas au
  *  hasard ». Aucun ne remplace l'autre. */
-const CONTENEURS_DE_TEXTE = ['Pile', 'Grille', 'Prose']
+const CONTAINERS_OF_TEXT = ['Stack', 'Grid', 'Prose']
 
 /** Positions du corps qui tombent hors de tout conteneur de texte. */
-function horsConteneur(body) {
-  const bornes = []
-  const re = new RegExp(`<(/?)(${CONTENEURS_DE_TEXTE.join('|')})([^>]*)>`, 'g')
+function offContainer(body) {
+  const bounds = []
+  const re = new RegExp(`<(/?)(${CONTAINERS_OF_TEXT.join('|')})([^>]*)>`, 'g')
   let m
-  let niveau = 0
+  let level = 0
   const zones = []
   while ((m = re.exec(body))) {
-    const fermant = m[1] === '/'
-    const autoferme = m[3].trimEnd().endsWith('/')
-    if (autoferme) continue
-    if (fermant) {
-      niveau = Math.max(0, niveau - 1)
-      if (niveau === 0) zones.push([bornes.pop(), m.index + m[0].length])
+    const closing = m[1] === '/'
+    const autoclose = m[3].trimEnd().endsWith('/')
+    if (autoclose) continue
+    if (closing) {
+      level = Math.max(0, level - 1)
+      if (level === 0) zones.push([bounds.pop(), m.index + m[0].length])
     } else {
-      if (niveau === 0) bornes.push(m.index)
-      niveau += 1
+      if (level === 0) bounds.push(m.index)
+      level += 1
     }
   }
   return (pos) => !zones.some(([a, b]) => pos > a && pos < b)
@@ -542,16 +542,16 @@ function horsConteneur(body) {
 test('S2-T16', 'Aucun texte suivi hors d’une pile', () => {
   const hits = []
   for (const { path, body } of files) {
-    const dehors = horsConteneur(body)
-    const orphelins = []
+    const outside = offContainer(body)
+    const orphans = []
     for (const m of body.matchAll(/<Texte[^>]*variante=["']corps["']/g)) {
-      if (!dehors(m.index)) continue
-      orphelins.push(body.slice(0, m.index).split('\n').length)
+      if (!outside(m.index)) continue
+      orphans.push(body.slice(0, m.index).split('\n').length)
     }
-    if (orphelins.length < 2) continue
+    if (orphans.length < 2) continue
     hits.push({
-      path: `${path}:${orphelins[0]}`,
-      detail: `${orphelins.length} paragraphes hors de toute pile — leur écart n'est déclaré nulle part`,
+      path: `${path}:${orphans[0]}`,
+      detail: `${orphans.length} paragraphes hors de toute pile — leur écart n'est déclaré nulle part`,
     })
   }
   return hits
@@ -579,15 +579,15 @@ test('S2-T16', 'Aucun texte suivi hors d’une pile', () => {
    l'amorçage qui lit l'état une fois au démarrage puis installe les sources.
    L'amorçage n'affiche rien — il ne peut donc pas oublier un état — mais il
    devrait vivre dans la couche : dette nommée à la carte le 2026-08-12. */
-const PORTES_DES_DONNEES = ['src/system/donnees/', 'src/main.tsx']
-const VERBES_DU_DEHORS = ['fetch', 'XMLHttpRequest', 'axios', 'useSWR', 'useQuery', 'EventSource', 'WebSocket']
+const DOORS_OF_DATA = ['src/system/donnees/', 'src/main.tsx']
+const VERBS_OF_OUTSIDE = ['fetch', 'XMLHttpRequest', 'axios', 'useSWR', 'useQuery', 'EventSource', 'WebSocket']
 
 test('S2-T17', 'Une seule porte pour ce qui vient d’ailleurs', () => {
-  const re = new RegExp(`\\b(${VERBES_DU_DEHORS.join('|')})\\s*[({.]`)
+  const re = new RegExp(`\\b(${VERBS_OF_OUTSIDE.join('|')})\\s*[({.]`)
   const hits = []
   for (const { path, body } of files) {
-    const chemin = path.split('\\').join('/')
-    if (PORTES_DES_DONNEES.some((porte) => chemin.startsWith(porte))) continue
+    const normalized = path.split('\\').join('/')
+    if (DOORS_OF_DATA.some((door) => normalized.startsWith(door))) continue
     body.split('\n').forEach((line, i) => {
       const t = line.trim()
       if (t.startsWith('*') || t.startsWith('//') || t.startsWith('/*')) return
@@ -655,33 +655,33 @@ if (process.argv.includes('--mutate')) {
      mutation a alors cessé de pouvoir injecter quoi que ce soit, et il l'a dit
      à chaque appel sans que personne ne le lance. Découvert le 2026-08-12.
      Il choisit désormais sa cible dans le périmètre réel. */
-  const porteur = files.find((f) => f.body.includes('className="'))
+  const carrier = files.find((f) => f.body.includes('className="'))
 
-  if (!porteur) {
+  if (!carrier) {
     console.error('S2-T9  FAIL   aucun fichier du périmètre ne porte de classe — mutation impossible')
     process.exit(1)
   }
 
-  const cible = join(ROOT, porteur.path)
-  const original = readFileSync(cible, 'utf8')
+  const target = join(ROOT, carrier.path)
+  const original = readFileSync(target, 'utf8')
   const mutated = original.replace('className="', 'style={{ color: "#3B82F6" }} className="')
 
   if (mutated === original) {
-    console.error(`S2-T9  FAIL   la mutation n’a pas pu être injectée dans ${porteur.path}`)
+    console.error(`S2-T9  FAIL   la mutation n’a pas pu être injectée dans ${carrier.path}`)
     process.exit(1)
   }
 
   let detected = false
   try {
-    writeFileSync(cible, mutated)
-    detected = /#[0-9a-fA-F]{3,8}\b/.test(readFileSync(cible, 'utf8'))
+    writeFileSync(target, mutated)
+    detected = /#[0-9a-fA-F]{3,8}\b/.test(readFileSync(target, 'utf8'))
   } finally {
-    writeFileSync(cible, original) // restauration systématique, même en cas d'erreur
+    writeFileSync(target, original) // restauration systématique, même en cas d'erreur
   }
 
   console.log(
     detected
-      ? `S2-T9  PASS   la mutation #3B82F6 injectée dans ${porteur.path} est bien détectée par S2-T1`
+      ? `S2-T9  PASS   la mutation #3B82F6 injectée dans ${carrier.path} est bien détectée par S2-T1`
       : `S2-T9  FAIL   la mutation est passée inaperçue — S2-T1 ne prouve rien`,
   )
   process.exit(detected ? 0 : 1)

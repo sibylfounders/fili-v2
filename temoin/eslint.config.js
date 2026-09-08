@@ -24,7 +24,7 @@ export default tseslint.config(
        kit/ est une archive versionnée : le code de la page atelier (V1),
        versé au dépôt le 2026-08-13 sur décision d'Auteur. Il vit sous ses
        propres règles, pas sous celles de fili-v2. */
-    ignores: ['dist', 'node_modules', 'crash-tests', 'archive/k1-pieces', 'temoins', 'fili-v2', 'kit'],
+    ignores: ['dist', 'node_modules', 'crash-tests', 'archive/k1-pieces', 'witnesses', 'fili-v2', 'kit'],
   },
   {
     files: ['**/*.{ts,tsx}'],

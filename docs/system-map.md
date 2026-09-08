@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#133` — 84 entrées scellées
+> **Dernière décision au journal** : `#134` — 84 entrées scellées
 
 **Légende des statuts**
 
@@ -21,7 +21,7 @@
 | 💤 | **En sommeil** — arrêté volontairement. Rien n'est supprimé ; se rouvre par une entrée de journal. |
 
 > **Convention de lecture machine.** Les tableaux des sections **1 à 5** sont
-> lus par `tools/fili/carte/produire.mjs`, qui en dérive la pièce que l'écran
+> lus par `tools/fili/map/produce.mjs`, qui en dérive la pièce que l'écran
 > É5 affiche. L'ordre des colonnes de ces cinq tableaux fait partie du contrat :
 > le producteur **refuse de statuer** si un tableau attendu est absent ou si son
 > en-tête a changé. Il ne devine jamais. Le markdown reste le document humain ;
@@ -123,6 +123,12 @@ nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
 (`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
 de page, titres du site à un cran et demi au-dessus de l'affiche.
 
+**Le lexique et la langue du code** (8 septembre, `#134`) — 🟢 `docs/lexique.md`
+fait foi : prose française, code anglais. Tout identifiant du kit et du témoin
+est en anglais ; le dictionnaire `docs/migration-code-en.json` dit comment
+chaque mot s'écrit et un mot nouveau y entre d'abord. Le banc vit dans
+`kit/tests/`, le sceau du journal dans `docs/journal.fingerprints.json`.
+
 **La marque de la bande** (8 septembre) — 🟢 « Kit » et sa devise sont un
 seul lien vers l'accueil, par le routeur ; inerte sur l'accueil.
 
@@ -163,7 +169,7 @@ famille depuis le 7 septembre, verrouillée par le banc ; le mouvement est une
 **fondation**, sous Geste. Reste à l'œil de l'Auteur : la cascade du nuancier de
 `/couleur`, ramenée sur les crans (300, pas de 100), sans verdict distinct.
 
-**Le banc des crash-tests de page** (`kit/epreuves/`, `npm run test:pages`,
+**Le banc des crash-tests de page** (`kit/tests/`, `npm run test:pages`,
 `#125`) — 🟢, repassé vert le 7 septembre (course complète sur la machine
 d'Auteur : moteur 29/29, pages 12 · 12 · 9 · 8 · 10 · 12 — Composition puis Mouvement ont rejoint le banc le 7 septembre). Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
 dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
@@ -184,13 +190,13 @@ la page (zéro débord à 320, règle 15).
 **Le banc s'accroche au travail** (1er septembre, décision d'Auteur). Le
 décrochage de fin août n'était pas une panne : on oubliait de lancer
 l'instrument. Deux pièces retirent l'oubli, sans jamais bloquer la main.
-`kit/epreuves/etat-du-banc.mjs` tourne à chaque enregistrement, dans le
+`kit/tests/bench-state.mjs` tourne à chaque enregistrement, dans le
 garde-fou déjà en place : il compare la date de la dernière écriture d'une page
 à celle de son dernier passage au vert, et **rabat lui-même le 🟢 de cette table
 à 🟡** quand le vert ne tient plus. Il ne fait jamais l'inverse — reverrouiller
 reste une décision d'Auteur, écrite au journal (garde-fou 2).
-`kit/epreuves/course-de-nuit.mjs` lance le banc chaque nuit à 3 h 30
-(`npm run banc:nuit`), écrit son verdict en clair dans `docs/banc-du-jour.md` et
+`kit/tests/night-run.mjs` lance le banc chaque nuit à 3 h 30
+(`npm run bench:night`), écrit son verdict en clair dans `docs/banc-du-jour.md` et
 remet cette table au vrai. Une nuit où le site ne se construit pas ne rabat
 rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au commit
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
@@ -217,7 +223,7 @@ tient 3:1, sous contrat), au clic le trait pâle (`…-soft`, cran 200 / 800,
 hors contrat, dit) ; forme posée une fois (`--focus-band` 3 px, `--focus-line`
 1 px = le coin du composant, le coin du halo suit la chaîne), deux calques
 creux, jamais une ombre ; les champs le portent par leur enveloppe
-`.champ-boite`. `kit/app/tokens.css` est **généré** — une valeur retouchée
+`.field-box`. `kit/app/tokens.css` est **généré** — une valeur retouchée
 à la main serait une valeur sans provenance. Sa **gamme 50–950** pose la
 couleur saisie sur le cran de sa clarté, telle quelle, et déduit les autres
 crans d'elle ; les neutres restent les marches fixes ; la page dit sur quel
@@ -271,7 +277,7 @@ trois (`#124`).
 | Le décompte des sabotages est invalidé | 🔴 | `#083` | La carte annonçait 46 sur 46 alors que le test de mutation ne pouvait plus rien injecter depuis un temps inconnu. À remesurer avant toute lecture de ce chiffre. |
 | Les démos du kit n'emploient pas le registre | 🔴 | `#112` | Boutons et champs des démonstrations sont dessinés dans la page, pas tirés du registre du kit. Se ferme quand les composants entrent (phase 4). |
 | Le wording des pages du kit | 🟢 | `#112` → 8 septembre 2026 | Fermée : les cinq pages passées aux règles d'écriture d'Auteur (aucun mot qui commande ou décrit, pas d'histoire de page, un répertoire au titre de la page), éprouvé au banc. Reste à l'œil. |
-| Les seuils de mise en page du site | 🔴 | 25 août 2026 | Le site en porte neuf (80 · 69 · 62 · 56 · 48 · 44 · 40 rem, 900 · 560 px) là où la décision 7 en veut un seul par régime. Déclaré dans le moteur (`seuilRail`), à arbitrer dans un thread à part. |
+| Les seuils de mise en page du site | 🔴 | 25 août 2026 | Le site en porte neuf (80 · 69 · 62 · 56 · 48 · 44 · 40 rem, 900 · 560 px) là où la décision 7 en veut un seul par régime. Déclaré dans le moteur (`thresholdRail`), à arbitrer dans un thread à part. |
 | La page Composition hors chaîne | 🟢 | 25 août → 7 septembre 2026 | Fermée : ses treize valeurs sont arbitrées — quatre appartiennent au kit (la scène de preuve, les écarts d'un banc, la légende) et descendent de la chaîne ; neuf appartiennent aux objets imités (l'interface, le journal, l'affiche, le magazine) et n'y entrent pas, dit sur chaque ligne (« réduction déclarée ») et exclu par son nom au banc. Au passage : le marqueur de dette exemptait tout ce qui le suivait dans la feuille — vingt-six autres valeurs de la page n'étaient pas lues ; elles le sont, et la dette de l'accueil est bornée (« FIN DE LA DETTE »). |
 | La page Accueil hors chaîne | 🔴 | 25 août 2026 | Ses anciens jetons sont rabattus sur la chaîne pour que la page tienne ; ses valeurs propres (`--acc-*`) restent posées en dur, bloc marqué « dette déclarée » et borné dans globals.css. À dériver quand la page sera reprise. |
 | Le journal en retard de onze entrées | 🟢 | 25 → 26 août 2026 | Fermée : les huit décisions et les trois entrées du thread « Le kit passe sur la chaîne » sont versées (`#114` → `#124`) et scellées (75 entrées). |
@@ -289,16 +295,16 @@ trois (`#124`).
 | `claude/sauvetage-journal-001-012-verbatim.md` | projet | Les entrées `#001` à `#012`, revenues à l'identique. Pièce close (`#057`). |
 | `claude/archive/` | projet | Les documents de la run 1, clos. |
 | `fili.expression.json` | dépôt | La planche des registres — source, pas valeurs. |
-| `fili.libelles.json` | dépôt | Le catalogue de libellés. |
+| `fili.labels.json` | dépôt | Le catalogue de libellés. |
 | `fili.registry.json` | dépôt | Ce que le Gardien lit pour statuer. |
-| `fili.geometrie.json` | dépôt | La géométrie dérivée de l'Échelle — pièce générée, jamais éditée. |
-| `src/geometrie.genere.css` | dépôt | Les vingt-trois jetons fluides — pièce générée, jamais éditée. |
-| `temoins/avant-apres-2026-08-11.html` | dépôt | Les sept gabarits dans leurs deux états, côte à côte, pour la séance. |
+| `fili.geometry.json` | dépôt | La géométrie dérivée de l'Échelle — pièce générée, jamais éditée. |
+| `src/geometry.generated.css` | dépôt | Les vingt-trois jetons fluides — pièce générée, jamais éditée. |
+| `witnesses/before-after-2026-08-11.html` | dépôt | Les sept gabarits dans leurs deux états, côte à côte, pour la séance. |
 | `claude/migration-echelle-correspondance.md` | projet | La table de correspondance ligne à ligne de la migration. |
 | `fili.assertions.json` | dépôt | Le manifeste des assertions déclarées. |
-| `fili/geometrie.json` | dépôt | La géométrie, dérivée de l'Échelle. **Vérifiée contre la source** (`#060`), deux écarts déclarés. |
-| `fili/lexique.json` | dépôt | La correspondance avec l'outil de l'Auteur. Refuse de statuer si un jeton cité manque. |
-| `public/systeme/index.html` | dépôt | **Le système au complet, sur une page** — cartographie des dénominateurs, espaces, couleurs, texte, composants, règles, lexique. Générée. |
+| `fili/geometry.json` | dépôt | La géométrie, dérivée de l'Échelle. **Vérifiée contre la source** (`#060`), deux écarts déclarés. |
+| `fili/lexicon.json` | dépôt | La correspondance avec l'outil de l'Auteur. Refuse de statuer si un jeton cité manque. |
+| `public/system/index.html` | dépôt | **Le système au complet, sur une page** — cartographie des dénominateurs, espaces, couleurs, texte, composants, règles, lexique. Générée. |
 
 ---
 

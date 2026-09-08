@@ -5,29 +5,29 @@ import path from 'node:path'
 import { ESLint } from 'eslint'
 import { fileURLToPath } from 'node:url'
 
-const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const CIBLE = path.join(RACINE, 'crash-tests/epreuve-c/SoigneNonInforme.tsx')
-const eslint = new ESLint({ cwd: RACINE, cache: false,
-  overrideConfigFile: path.join(RACINE, 'tools/fili/eslint.crash.js') })
+const ROOT = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
+const TARGET = path.join(ROOT, 'crash-tests/test-c/PolishedNotInformed.tsx')
+const eslint = new ESLint({ cwd: ROOT, cache: false,
+  overrideConfigFile: path.join(ROOT, 'tools/fili/eslint.crash.js') })
 
-const original = fs.readFileSync(CIBLE, 'utf8')
-const ORIGINES = [
+const original = fs.readFileSync(TARGET, 'utf8')
+const ORIGINS = [
   '/* Origine declaree : ecrit a la main par un humain. */\n',
   "/* Origine declaree : genere par un assistant, modele de derniere generation, a partir d'un prompt. */\n"
 ]
 
 const verdicts = []
 try {
-  for (const entete of ORIGINES) {
-    fs.writeFileSync(CIBLE, entete + original)
-    const [r] = await eslint.lintFiles([CIBLE])
+  for (const header of ORIGINS) {
+    fs.writeFileSync(TARGET, header + original)
+    const [r] = await eslint.lintFiles([TARGET])
     verdicts.push(r.messages.map((m) => `${m.ruleId}:${m.line - 1}`).sort().join('|'))
   }
-} finally { fs.writeFileSync(CIBLE, original) }
+} finally { fs.writeFileSync(TARGET, original) }
 
-const identiques = verdicts[0] === verdicts[1]
+const identical = verdicts[0] === verdicts[1]
 console.log('\nC1 — INVARIANCE AU PRODUCTEUR\n')
 console.log(`  origine « ecrit a la main »          : ${verdicts[0].split('|').length} constats`)
 console.log(`  origine « genere par un assistant »  : ${verdicts[1].split('|').length} constats`)
-console.log(`\n  ${identiques ? '✅ verdicts strictement identiques' : '❌ les verdicts diffèrent'}\n`)
-process.exit(identiques ? 0 : 1)
+console.log(`\n  ${identical ? '✅ verdicts strictement identiques' : '❌ les verdicts diffèrent'}\n`)
+process.exit(identical ? 0 : 1)

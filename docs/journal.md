@@ -49,6 +49,60 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #134 — Le code de Fili est écrit en anglais ; le lexique est ouvert
+
+*2026-09-08 · Statut : 🟢 décidé et exécuté · Révise : la note du 1er septembre qui gardait les classes CSS en français (`claude/vocabulaire-container-card-row-2026-09-01.md` § 2) · Thread « lexique »*
+
+**Contexte** — Le kit et le témoin étaient écrits en français jusque dans le
+code : `jeton`, `squelette`, `tiroir`, `coque`, `épreuves/`, `.tiroir-poignee`.
+L'Auteur a relevé les francisés (« jeton = token ») et demandé un tour de
+l'usage en France. Le relevé (`claude/lexique-conventions-france-2026-09-08.md`)
+montre que même le Système de Design de l'État écrit *design tokens*,
+*fallback*, *overrides*, et que les composants ne se traduisent que quand le
+mot français existe déjà (modale, infobulle, carte — jamais toast, drawer,
+skeleton, chip). Il montre aussi que l'usage sépare deux registres : prose
+française, identifiant anglais.
+
+**Décision** — Quatre lignes, dans `docs/lexique.md` : un terme de métier
+reste en anglais ; un concept perceptif s'écrit en français ; un composant
+se nomme en français seulement si le mot est déjà installé ; **la prose est
+française, le code est anglais** — tout identifiant, fichier, classe,
+variable CSS, clé JSON et attribut `data-*`. V0 (la règle de nommage vaut
+pour tout Fili) et V11 (*kit* = le site du kit, *package* = un workspace npm,
+*plugin* = le plugin Cowork ; « paquet » garde son sens de lot) sont tranchés.
+Verdicts d'Auteur : la règle, oui ; les identifiants en anglais, « toujours » ;
+périmètre : kit **et** témoin ; l'état de la nuit commité d'abord comme point
+de retour (`275926f`).
+
+**Exécution** — Un dictionnaire mot à mot (`docs/migration-code-en.json`,
+~1 160 mots) et un codemod sur l'arbre syntaxique (`docs/migration-code-en.mjs`,
+puis `.post.sh`) : identifiants, classes et variables CSS, clés JSON, chaînes
+qui sont des sélecteurs ou des classes, balisage et code embarqués, chemins,
+noms de fichiers — jamais les commentaires, les textes d'interface ni les
+titres d'épreuves. 171 fichiers renommés (`vue.tsx` → `view.tsx`,
+`kit/epreuves/` → `kit/tests/`, `Jeton.tsx` → `Chip.tsx`, `tiroir.tsx` →
+`drawer.tsx`…), ~19 000 identifiants et ~1 000 chaînes traduits. Gardés :
+les routes du site, les dossiers `kit/` et `temoin/`, les noms de fixtures
+OK-/KO- (ce sont des titres), les pages nues à la racine, les entrées passées
+du journal, les préfixes opaques (`ry-`, `mo-`, `acc-`…). Les mots propres à
+Fili prennent un nom anglais en code (coque → container, socle → foundation,
+cran → step, chaîne → chain, banc → bench, épreuve → test, paquet → batch).
+
+**Vérification** — Kit : typecheck vert, 30 épreuves du moteur vertes,
+banc des six pages passé sur la machine d'Auteur. Témoin : typecheck et lint
+verts, batterie 100 %, 46/46 mutations détectées, intégrité 30/30,
+générateurs rejoués, S2 15/15 (T8 hors build). Deux choses vues au passage,
+hors périmètre : `fili:catalog` échouait déjà avant (`rayons.doux` absent de
+`expression.json`) ; le sceau du journal signale `#112` et `#050` réécrits
+depuis la nuit du 8 — à regarder dans leur thread.
+
+**Conséquences** — Le sceau du journal devient `docs/journal.fingerprints.json`.
+Le dictionnaire reste au dépôt : un mot nouveau y entre avant d'entrer dans
+le code. `docs/lexique.md` fait foi pour la prose, le dictionnaire pour le
+code.
+
+---
+
 ## #133 — Le focus est un halo : la famille de l'objet, deux régimes, et la forme posée une fois
 *2026-08-31 · Statut : 🟢 décidé sur pièce · Révise : la forme de C18 (`#131` n'est pas rouvert : le focus reste hors de l'accent) · Thread « l'anneau de focus — la forme et les familles »*
 

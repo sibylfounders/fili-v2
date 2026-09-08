@@ -1,0 +1,11 @@
+{
+  "html": {
+    "classesSystem": [
+      "fili-button",
+      "fili-button--main",
+      "fili-field",
+      "fili-link",
+      "fili-section"
+    ]
+  }
+}

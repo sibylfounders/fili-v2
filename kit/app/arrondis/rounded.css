@@ -1,0 +1,252 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE ARRONDIS — styles propres (préfixe ar-). Le squelette du gabarit
+   documentaire nu (gdoc, banc, gd-figure, prov…) vit dans globals.css et
+   n'est pas touché. Le chrome de la page consomme le registre (tokens.css,
+   généré par derivation.mjs) ; les objets de démo portent leur géométrie
+   en variables --ar-* posées par la vue depuis la chaîne du moteur
+   (chaine({ racine })) — mêmes lois, une racine qui tourne.
+   Ce qui reste en pixels est dit : « hors chaîne » (décor, dessin, cible)
+   ou « casse » (une faute montrée pour être reconnue, data-intent="statement").
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ar-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* La scène pâle — troisième scène de la page : la surface du kit. */
+.bench.pale { background: var(--surface); color: var(--text-primary); }
+
+/* ── Un réglage de scène : un curseur, une valeur — piste et bouton
+      dessinés, lisibles sur les deux scènes (retour d'Auteur, 25 août).
+      La tête d'outil prend la cible des commandes secondaires. ── */
+.ar-dials { display: flex; flex-wrap: wrap; justify-content: center; align-items: start;
+  gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+/* La tête d'outil a une géométrie FIXE : le mot au-dessus de sa piste, le
+   nombre dans sa colonne à droite. En rangée souple, c'est la longueur du
+   mot qui décidait du repli — « Coin intérieur » gardait son nombre sur la
+   ligne, « Écart » le renvoyait dessous, et deux outils côte à côte ne
+   s'alignaient plus. Une grille : le mot ne décide plus de rien. */
+.ar-dial { display: grid; grid-template-columns: minmax(8rem, 16rem) 2.5ch;
+  gap: var(--gap-3-block) var(--gap-3-inline); align-items: center; }
+.ar-dial label { grid-area: 1 / 1; justify-self: center;
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.ar-dial output { grid-area: 2 / 2;
+  font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.ar-dial input[type=range] {
+  grid-area: 2 / 1; width: 100%; min-width: 0; /* la longueur de la piste est celle de sa colonne */
+  appearance: none; -webkit-appearance: none;
+  background: transparent; height: var(--control-height-compact); margin: 0; cursor: pointer;
+  --ar-track: rgba(17, 24, 39, 0.35); --ar-cursor: var(--on-primary); /* hors chaîne : la piste du curseur, un voile d'encre sur la scène de marque */
+}
+.bench.black .ar-dial input[type=range] { --ar-track: var(--border-strong); --ar-cursor: var(--text-primary); } /* la piste et le curseur sur la scène de nuit : le bord fort et l'encre du versant sombre */
+.ar-dial input[type=range]::-webkit-slider-runnable-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--ar-track); }
+.ar-dial input[type=range]::-moz-range-track { height: 4px; /* hors chaîne : l'épaisseur de la piste */ border-radius: var(--r-pill); background: var(--ar-track); }
+.ar-dial input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 1.25rem; height: 1.25rem; margin-top: -0.5rem; /* hors chaîne : le bouton du curseur, centré sur la piste */
+  border-radius: var(--r-pill); background: var(--ar-cursor); border: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */
+}
+.ar-dial input[type=range]::-moz-range-thumb {
+  width: 1.25rem; height: 1.25rem; /* hors chaîne : le bouton du curseur */
+  border-radius: var(--r-pill); background: var(--ar-cursor); border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); /* hors chaîne : le relief du bouton de curseur */
+}
+/* le focus du curseur : le halo commun (globals.css), bande en ombre et trait en outline sur une pilule */
+
+/* ── 01 · La fiche d'arrêt de Navette — la chaîne en situation.
+      --ar-r1..r4 (coins), --ar-rctl (composant = coin de la ligne),
+      --ar-p1..p3 (marges) et --ar-g1..g4 (espaces) sont posés par la vue
+      depuis chaine({ racine }). Le téléphone et l'écran d'arrière-plan sont
+      un décor de scène, hors chaîne. ── */
+.ar-phone {
+  width: min(100%, 20rem); /* hors chaîne : la largeur du téléphone */
+  background: #1C1C1E; border-radius: 36px; padding: 8px; /* hors chaîne : le boîtier du téléphone, décor */
+  color: #111827; text-align: left;
+}
+.ar-screen {
+  background: #E5E7EB; border-radius: 30px; height: 36rem; /* hors chaîne : l'écran du téléphone, décor */
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.ar-background { position: absolute; inset: 0; padding: 40px 16px 0; gap: 8px; /* hors chaîne : le squelette de l'écran derrière le voile */ display: flex; flex-direction: column; }
+.ar-background .bar { height: 8px; /* hors chaîne : barre de squelette */ border-radius: var(--ar-r4); background: #9CA3AF; width: 60%; opacity: 0.5; }
+.ar-background .bar.c { width: 38%; }
+.ar-background .plan { margin-top: 12px; height: 88px; /* hors chaîne : le plan, squelette */ background: #FFFFFF; border-radius: var(--ar-r2); opacity: 0.5; }
+.ar-veil { position: absolute; inset: 0; background: rgba(17, 24, 39, 0.32); }
+/* Une valeur qu'on fait glisser ne s'anime pas (loi du 3 septembre) : la fiche est
+   pilotée par les molettes de la racine et de la marge — aucune transition sur ce
+   qu'elles règlent, sinon la fiche traîne derrière le doigt et le lecteur regarde
+   l'animation au lieu du nombre. */
+/* Le panneau est le container : la racine, sa marge, l'espace entre ses cards. */
+.ar-panel {
+  position: relative; background: #FFFFFF;
+  border-radius: var(--ar-r1) var(--ar-r1) 0 0; padding: var(--ar-p1);
+  display: flex; flex-direction: column; gap: var(--ar-g1);
+}
+.ar-panel .handle { width: 36px; height: 4px; margin-top: -12px; /* hors chaîne : la poignée du panneau, décor */ border-radius: var(--ar-r4); background: #E5E7EB; align-self: center; }
+.ar-panel .ar-heading-record { margin: 0; font-size: var(--font-size-body); font-weight: 600; letter-spacing: -0.01em; line-height: var(--leading-heading); }
+.ar-panel .sub { font-size: var(--font-size-small); color: #4B5563; margin-top: var(--ar-g4); }
+/* La card : un cran plus bas, la marge de la card, l'espace entre ses lignes. */
+.ar-card {
+  background: #F3F4F6; border-radius: var(--ar-r2); padding: var(--ar-p2);
+  display: flex; flex-direction: column; gap: var(--ar-g2);
+}
+.ar-card .heading { font: 600 var(--font-size-label)/1.4 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: #4B5563; }
+/* La ligne : encore un cran, la marge de la ligne, l'espace dans la ligne. */
+.ar-line {
+  background: #FFFFFF; border-radius: var(--ar-r3); padding: var(--ar-p3);
+  display: flex; align-items: center; gap: var(--ar-g3); font-size: var(--font-size-small);
+}
+.ar-brand { width: 18px; height: 18px; /* hors chaîne : la taille de la marque */ border-radius: var(--ar-r4); background: #111827; flex: none; display: grid; place-items: center; }
+.ar-brand svg { width: 12px; height: 12px; /* hors chaîne : le pictogramme */ fill: none; stroke: #fff; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.ar-line .dest { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ar-line .t { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; flex: none; }
+/* Deux boutons côte à côte : leur marge est celle de la ligne, leur espace aussi. */
+.ar-actions { display: flex; gap: var(--ar-g2); }
+/* Les boutons sont des composants : le coin de la ligne (racine ÷ 4), la marge de la ligne, la cible au doigt. */
+.ar-btn { border-radius: var(--ar-rctl); flex: 1; height: auto; min-height: var(--control-height); padding: var(--ar-p3); background: #F3F4F6; color: #111827; }
+.ar-btn.first { background: #111827; color: #FFFFFF; }
+
+/* ── 02 · Le labo du coin — deux coins côte à côte sur la scène de nuit ── */
+.ar-lab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--page-2-inline); width: min(100%, 52rem); /* hors chaîne : la mesure du labo */ }
+@media (max-width: 40em) { .ar-lab { grid-template-columns: 1fr; } }
+.ar-corner { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.ar-corner .heading { font: 600 var(--font-size-label)/1.4 var(--font-mono); display: flex; gap: var(--gap-3-inline); align-items: baseline; }
+.ar-corner .verdict.ko { color: var(--danger); } /* la scène est en thème sombre : le rouge du versant sombre */
+.ar-corner .verdict.good { color: var(--success); }
+.ar-corner svg { width: 100%; height: auto; display: block; border-radius: var(--r-1); }
+
+/* ── 03 · La liste fermée de la pilule — planche de cards sur la scène pâle.
+      Une colonne sous le seuil de mise en page, deux au-dessus, trois quand le rail est là. ── */
+.ar-board { display: grid; grid-template-columns: 1fr; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (min-width: 40em) { .ar-board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 69em) { .ar-board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ar-member {
+  background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline); min-height: 8.5rem; /* hors chaîne : la hauteur commune des cards de la planche */
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--gap-2-block); text-align: left;
+}
+.ar-member .object { display: flex; align-items: center; gap: var(--gap-3-inline); min-height: var(--control-height); }
+.ar-member .name { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : le nom d’une intention */
+.ar-member.refused .name { color: var(--danger); }
+.ar-member.refused .name::before { content: "✗ "; }
+/* La pastille : un badge — la pilule, l'espace le plus serré autour du texte, jamais sous le plancher de cible. */
+.ar-dot {
+  display: inline-grid; place-items: center; min-width: var(--target-min); min-height: var(--target-min); padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-pill); background: var(--primary); color: var(--on-primary);
+  font: 600 var(--font-size-label)/1 var(--font-mono);
+}
+/* Un peu de couleur sur la planche (demande d'Auteur, 25 août) : la
+   marque et ses rôles, jamais des teintes nouvelles. */
+.ar-dot.seven { background: var(--warning); color: var(--on-warning); }
+/* L'avatar : un rond de la taille d'une cible au doigt. */
+.ar-avatar {
+  width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill); flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--primary-subtle); color: var(--on-primary-subtle); font: 600 var(--font-size-small)/1 var(--font-sans);
+}
+/* La piste de l'interrupteur : une pilule sur le plancher de cible ; le bouton qui glisse est hors chaîne. */
+.ar-inter {
+  appearance: none; border: 0; padding: 0; font: inherit; /* la commande hérite la voix du kit, pas celle du navigateur (crash-test de page, 26 août) */
+  width: 40px; /* hors chaîne : la longueur de la piste */ height: var(--target-min); border-radius: var(--r-pill);
+  background: var(--surface-hover); position: relative; cursor: pointer; transition: background-color var(--m-fast) var(--e-out); flex: none; /* appui */
+}
+.ar-inter::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; /* hors chaîne : le bouton de l'interrupteur dans sa piste */ border-radius: var(--r-pill);
+  background: var(--bg); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.25); /* hors chaîne : le relief du bouton dans sa piste */
+}
+@media (prefers-reduced-motion: no-preference) { .ar-inter::after { transition: translate var(--m-fast) var(--e-out); } } /* appui : le bouton glisse */
+.ar-inter[aria-checked="true"] { background: var(--success); }
+.ar-inter[aria-checked="true"]::after { translate: 16px 0; /* hors chaîne : la course du bouton */ }
+/* le focus de l'interrupteur : le halo commun (globals.css), un calque — ::after est le bouton */
+.ar-interlab { font-size: var(--font-size-small); }
+/* La piste des onglets : une pilule, l'espace le plus serré autour d'onglets-pilules à la cible compacte. */
+.ar-tabs { display: inline-flex; padding: var(--gap-4-block); gap: var(--gap-4-inline); border-radius: var(--r-pill); background: var(--surface); }
+.ar-tabs button {
+  appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);
+  min-height: var(--control-height-compact); padding: var(--gap-4-block) var(--pad-3-inline); border-radius: var(--r-pill);
+  background: transparent; color: var(--text-secondary); cursor: pointer;
+}
+.ar-tabs button[aria-selected="true"] { background: var(--bg); color: var(--primary-text); box-shadow: 0 1px 2px rgba(17, 24, 39, 0.12); /* hors chaîne : le relief de l'onglet choisi */ }
+/* le focus des onglets : le halo commun (globals.css) */
+/* Les deux recalés — fautes déclarées (data-intent="statement"), montrées pour être reconnues. */
+/* La paire du bouton : deux fois le même mot, seul le fond change. */
+.ar-member .ar-trial { display: inline-flex; align-items: center; gap: var(--gap-3-inline); }
+.ar-member .verdict.ko { color: var(--danger); }
+.ar-member .verdict.good { color: var(--success); }
+/* La mise en garde n'est pas un refus : le jaune de l'avertissement, sa
+   couleur de famille. Le signe double la phrase qui suit — il l'annonce,
+   il ne la porte pas seul. */
+.ar-member .verdict.attention { color: var(--warning); }
+.ar-member.pair .object { flex-wrap: wrap; gap: var(--gap-2-inline); }
+.ar-btn-pill {
+  appearance: none; border: 0; font: 600 var(--font-size-small)/1.3 var(--font-sans);
+  min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
+  border-radius: var(--r-pill);
+  background: var(--primary); color: var(--on-primary); white-space: nowrap;
+}
+/* La faute nommée par Material 3 : sans fond plein, le bouton passe pour
+   une puce — surtout court, et surtout à côté d'éléments qui lui
+   ressemblent. */
+.ar-btn-pill.soft { background: var(--primary-subtle); color: var(--primary-text); }
+.ar-capsule {
+  display: inline-block; max-width: 10rem; /* casse : la mesure est serrée pour forcer le passage à la ligne */
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-pill); /* casse : la pilule sur un contenu qui passe à la ligne — une gélule */
+  background: var(--info-subtle); color: var(--on-info-subtle); font-size: var(--font-size-small); line-height: 1.35;
+}
+
+/* ── 04 · Le répertoire ── */
+/* Les blocs et la table du répertoire (.ar-bloc, .ar-table, .ar-ex) sont
+   retirés le 2 septembre 2026 : leur seul consommateur était la table « la
+   chaîne selon l'intention », qui a quitté la page. Un style sans
+   consommateur ne reste pas. */
+
+/* ══════════════════════════════════════════════════════════════════════
+   LES SIX PIÈGES — le juste et le faux côte à côte (2 septembre 2026).
+   Les objets de démonstration ont un traitement à eux : le fond de page et
+   un filet. Sur la scène grise d'une bande, un objet sans contour est un
+   fantôme — et ici la FORME est le sujet, il lui faut un bord.
+   ══════════════════════════════════════════════════════════════════════ */
+.ar-scene { display: grid; gap: var(--gap-1-block); justify-items: center; width: 100%; }
+.ar-duo {
+  width: 100%; display: grid; gap: var(--gap-1-inline);
+  grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start;
+}
+@media (max-width: 30rem) { .ar-duo { grid-template-columns: 1fr; } }
+.ar-duo-one { display: grid; gap: var(--gap-3-block); justify-items: center; min-height: 6rem; /* hors chaîne : la hauteur commune des deux colonnes */ align-content: center; }
+.ar-duo-says { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: 600; text-align: center; } /* tertiaire : ce que dit l'objet de lui-même — au cran étiquette, un cran de graisse au-dessus (C17) */
+.ar-duo-says.ko { color: var(--danger); }
+
+/* Le traitement commun des objets : le fond de page et un filet. */
+.ar-obj {
+  background: var(--bg); color: var(--text-primary);
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--r-ctl);
+}
+.ar-obj-box { width: 5.5rem; height: 3.5rem; /* hors chaîne : la silhouette de l'objet de démonstration */ }
+.ar-obj-label {
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  font-size: var(--font-size-small); white-space: nowrap;
+}
+.ar-row { display: flex; align-items: center; gap: var(--gap-3-inline); }
+.ar-obj-field {
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  font-size: var(--font-size-label); color: var(--text-secondary);
+  min-height: var(--control-height-compact);
+}
+.ar-obj-button {
+  padding: 0 var(--pad-3-inline); min-height: var(--control-height-compact);
+  font: 600 var(--font-size-label)/1 inherit; cursor: pointer;
+}
+/* casse : le coin qui change à l'état — c'est le sujet de la bande 4 */
+.ar-obj-soft { transition: border-radius var(--m-fast) var(--e-out); } /* survol */
+.ar-obj-soft:hover, .ar-obj-soft:focus-visible { border-radius: var(--r-pill); }
+.ar-obj-arc {
+  width: 5rem; height: 3rem; /* hors chaîne : la silhouette de l'objet de démonstration */
+  border-radius: var(--r-2);
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  align-items: flex-start; justify-content: flex-start;
+  font: 600 var(--font-size-label)/1 var(--font-mono);
+}
+/* casse : une marge d'un pixel pour un coin de douze — le texte entre dans l'arc */
+.ar-obj-tight { padding: 1px; }

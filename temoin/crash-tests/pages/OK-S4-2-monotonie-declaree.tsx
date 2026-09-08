@@ -1,16 +1,16 @@
-import { Section, Titre } from '../design-system/index.ts'
+import { Section, Heading } from '../design-system/index.ts'
 
 export function PageOK2() {
   return (
     <main>
-      <Section tete densite="ample"><Titre niveau={1}>Manifeste</Titre></Section>
-      <Section densite="ample"><Titre niveau={2}>Deux</Titre></Section>
+      <Section head density="ample"><Heading level={1}>Manifeste</Heading></Section>
+      <Section density="ample"><Heading level={2}>Deux</Heading></Section>
       <Section
-        densite="ample"
+        density="ample"
         data-intent="statement"
         data-intent-reason="respiration voulue : la page manifeste avance au même souffle du début à la fin"
       >
-        <Titre niveau={2}>Trois</Titre>
+        <Heading level={2}>Trois</Heading>
       </Section>
     </main>
   )

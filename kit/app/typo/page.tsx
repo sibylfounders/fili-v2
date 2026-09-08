@@ -1,4 +1,4 @@
-import Vue from "./vue";
+import View from "./view";
 import "./typo.css";
 export const metadata = { title: "Kit — Typographie" };
-export default function Page() { return <Vue />; }
+export default function Page() { return <View />; }

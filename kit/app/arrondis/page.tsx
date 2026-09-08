@@ -1,3 +1,3 @@
-import Vue from "./vue";
+import View from "./view";
 export const metadata = { title: "Kit — Les arrondis" };
-export default function Page() { return <Vue />; }
+export default function Page() { return <View />; }

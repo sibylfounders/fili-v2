@@ -10,21 +10,21 @@
 
 /* ── 01 · Les fonts : deux fonts face à face, à taille d'affiche.
       Deux containers côte à côte : l'espace entre cards, le coin du container. ── */
-.gd-voix { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
-@media (max-width: 48rem) { .gd-voix { grid-template-columns: 1fr; } }
-.gd-vbloc {
+.gd-voice { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-block) var(--gap-1-inline); width: 100%; }
+@media (max-width: 48rem) { .gd-voice { grid-template-columns: 1fr; } }
+.gd-vblock {
   border-radius: var(--r-1); padding: var(--pad-1-block) var(--pad-1-inline);
   min-height: clamp(13rem, 8rem + 18vw, 20rem); /* hors chaîne : la hauteur du spécimen, une scène, pas un espace */
   display: flex; flex-direction: column; justify-content: space-between;
   gap: var(--gap-1-block);
 }
-.gd-vbloc.primaire { background: var(--primary); color: var(--on-primary); }
-.gd-vbloc.sombre { background: var(--code-bg); color: var(--code-text); }
-.gd-vglyphe { font-size: clamp(5.5rem, 3rem + 9vw, 10rem); line-height: 1; font-weight: 500; letter-spacing: -0.04em; } /* hors chaîne : le glyphe est un spécimen, il suit le cadre, pas l'échelle de texte */
-.gd-vbloc.sombre .gd-vglyphe { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
-.gd-vqui { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-3-inline); }
-.gd-vqui b { font-weight: 600; }
-.gd-vqui span { font: 600 var(--font-size-label)/1 var(--font-mono); opacity: 0.75; }
+.gd-vblock.primary { background: var(--primary); color: var(--on-primary); }
+.gd-vblock.dark { background: var(--code-bg); color: var(--code-text); }
+.gd-vglyph { font-size: clamp(5.5rem, 3rem + 9vw, 10rem); line-height: 1; font-weight: 500; letter-spacing: -0.04em; } /* hors chaîne : le glyphe est un spécimen, il suit le cadre, pas l'échelle de texte */
+.gd-vblock.dark .gd-vglyph { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+.gd-vwho { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-3-inline); }
+.gd-vwho b { font-weight: 600; }
+.gd-vwho span { font: 600 var(--font-size-label)/1 var(--font-mono); opacity: 0.75; }
 
 /* les quatre costumes : un rôle = un costume, portés par les filets ;
    chaque costume est une ligne — sa marge, son espace intérieur */
@@ -38,27 +38,27 @@
 @media (max-width: 40rem) { .gd-costume { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
 .gd-costume .role { color: var(--text-secondary); font-size: var(--font-size-small); }
 .gd-costume .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.gd-costume .spec.titre { font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; }
-.gd-costume .spec.etiquette { font-size: var(--font-size-label); font-weight: 500; text-transform: uppercase; letter-spacing: var(--tracking-label); } /* T8 : espacées, par le style */
+.gd-costume .spec.heading { font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; }
+.gd-costume .spec.label { font-size: var(--font-size-label); font-weight: 500; text-transform: uppercase; letter-spacing: var(--tracking-label); } /* T8 : espacées, par le style */
 .gd-costume .spec.code { font-family: var(--font-mono); font-size: var(--font-size-label); }
-.gd-costume .fiche { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
+.gd-costume .record { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
 
 /* ── 02 · L'échelle (répertoire) : les huit crans du registre, montrés en
       vrai — chaque rangée est rendue PAR son jeton ; les bornes affichées
       sont calculées par le moteur, jamais une seconde source. ── */
-.gd-gamme { display: grid; gap: var(--gap-1-block); width: 100%; }
-.gd-gcran { display: grid; grid-template-columns: 15rem minmax(0, 1fr); align-items: baseline; gap: var(--gap-3-inline); } /* hors chaîne : la colonne des fiches, une mesure */
-@media (max-width: 48rem) { .gd-gcran { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
-.gd-gcran .fiche { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: normal; } /* tertiaire : la fiche d’un cran de la gamme — en petit, un cran de graisse au-dessus (C17) */
-.gd-gcran .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; /* la graisse des titres du site */ letter-spacing: -0.02em; line-height: var(--leading-heading); }
-.gd-gcran .spec.courant { white-space: normal; overflow: visible; font-weight: 400; letter-spacing: 0; line-height: var(--leading-body); max-width: var(--measure); }
-.gd-gcran .spec.etiquette { font-weight: 500; letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: var(--leading-body); } /* T8 : le petit cran porte l'étiquette */
+.gd-range { display: grid; gap: var(--gap-1-block); width: 100%; }
+.gd-gstep { display: grid; grid-template-columns: 15rem minmax(0, 1fr); align-items: baseline; gap: var(--gap-3-inline); } /* hors chaîne : la colonne des fiches, une mesure */
+@media (max-width: 48rem) { .gd-gstep { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
+.gd-gstep .record { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: normal; } /* tertiaire : la fiche d’un cran de la gamme — en petit, un cran de graisse au-dessus (C17) */
+.gd-gstep .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; /* la graisse des titres du site */ letter-spacing: -0.02em; line-height: var(--leading-heading); }
+.gd-gstep .spec.current { white-space: normal; overflow: visible; font-weight: 400; letter-spacing: 0; line-height: var(--leading-body); max-width: var(--measure); }
+.gd-gstep .spec.label { font-weight: 500; letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: var(--leading-body); } /* T8 : le petit cran porte l'étiquette */
 
 /* ── 03 · La mesure : même texte, seule la largeur change — trois figures,
       séparées par le cran de page ── */
-.gd-mesure { display: grid; gap: var(--gap-3-block); justify-items: start; text-align: left; }
-.gd-mesure p { position: relative; line-height: var(--leading-body); font-size: var(--font-size-body); }
-.gd-mesure.sourdine p { color: var(--text-secondary); opacity: 0.55; }
+.gd-measure { display: grid; gap: var(--gap-3-block); justify-items: start; text-align: left; }
+.gd-measure p { position: relative; line-height: var(--leading-body); font-size: var(--font-size-body); }
+.gd-measure.mute p { color: var(--text-secondary); opacity: 0.55; }
 /* le « faux » s'efface (décision d'Auteur, 24 août) — par voile, pas par
    un jeton pâle : le registre n'a pas de text-muted, à dessein */
 
@@ -91,29 +91,29 @@
 }
 .gz-note { margin-top: var(--gap-1-block); padding-top: var(--gap-3-block); border-top: 1px solid var(--border); font-size: var(--font-size-small); color: var(--text-secondary); }
 /* les casses : lire la page mentir */
-.gazette.j-cassee .gz-cols p { text-align: justify; }  /* casse : T9 rouge — les rivières */
-.gazette.i-cassee .gz-cols p { line-height: 1.15; }    /* casse : T6 rouge — le texte étouffe, sous le plancher de 1,5 */
+.gazette.j-broken .gz-cols p { text-align: justify; }  /* casse : T9 rouge — les rivières */
+.gazette.i-broken .gz-cols p { line-height: 1.15; }    /* casse : T6 rouge — le texte étouffe, sous le plancher de 1,5 */
 
 
 /* l'arbre des titres : une pile de lignes ; un niveau = la marge d'une
    card, par imbrication — jamais un multiplicateur */
-.gd-arbre { width: 100%; display: grid; gap: var(--gap-3-block); text-align: left; }
-.gd-arbre-niveau { padding-inline-start: var(--pad-2-inline); }
-.gd-arbre-rang {
+.gd-tree { width: 100%; display: grid; gap: var(--gap-3-block); text-align: left; }
+.gd-tree-level { padding-inline-start: var(--pad-2-inline); }
+.gd-tree-rank {
   font: 600 var(--font-size-label)/1.5 var(--font-mono);
   padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-3);
   background: var(--surface-hover); color: var(--text-primary);
 }
-.gd-arbre-rang.ko { background: var(--danger-subtle); color: var(--danger); }
-.gd-arbre-note { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--danger); }
+.gd-tree-rank.ko { background: var(--danger-subtle); color: var(--danger); }
+.gd-tree-note { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--danger); }
 
 /* Une bascule de libellé qui ne change pas la largeur de son bouton : les
    deux mots occupent la même case, le plus long fixe la mesure. Sans ça, la
    rangée se replie dans un état et pas dans l'autre, et les commandes
    sautent sur la ligne du titre au moment du clic. */
-.tp-bascule { display: grid; place-items: center; }
-.tp-bascule > * { grid-area: 1 / 1; white-space: nowrap; }
-.tp-bascule > .tp-tu { visibility: hidden; }
+.tp-toggle { display: grid; place-items: center; }
+.tp-toggle > * { grid-area: 1 / 1; white-space: nowrap; }
+.tp-toggle > .tp-you { visibility: hidden; }
 
 /* La scène d'une bande : une pile simple, l'air pris dans la chaîne. Les
    bandes de l'étage « à casser » n'ont pas de mise en page à elles — elles
@@ -128,14 +128,14 @@
    n'a plus rien à dire, et collé au bord il mentirait. Il garde sa place
    pour rester mesurable : c'est sa largeur qui dit si la borne est dans le
    cadre ou dehors. */
-.gd-mesure-piste { position: relative; width: 100%; }
-.gd-mesure-borne {
+.gd-measure-track { position: relative; width: 100%; }
+.gd-measure-bound {
   position: absolute; inset-block: 0; left: 0;
   width: var(--measure); max-width: 100%;
   border-right: 1px dashed var(--border-strong); pointer-events: none; /* un trait n'est pas une encre : le bord fort, 3:1 */
 }
-.gd-mesure-borne.hors { visibility: hidden; }
-.gd-mesure-borne b {
+.gd-measure-bound.off { visibility: hidden; }
+.gd-measure-bound b {
   position: absolute; top: 100%; right: 0; padding-top: var(--gap-4-block);
   font: 600 var(--font-size-label)/1.5 var(--font-mono);
   color: var(--text-tertiary); white-space: nowrap; /* tertiaire : la cote de la borne */
@@ -144,7 +144,7 @@
 /* Le verdict et sa mesure sur la même ligne : la pastille juge en deux mots,
    le compte mesure à côté, en sourdine. Il ne juge pas — ch mesure la chasse
    du « 0 », pas la moyenne (divergence T5). */
-.gd-mesure-dit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-inline); }
+.gd-measure-says { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-inline); }
 
 /* ── 05 · Le calage : la même valeur d'espace, des quatre côtés ─────────
       La carte prend UNE seule valeur, posée des quatre côtés — c'est le
@@ -154,20 +154,20 @@
       SES DEUX BORDS nommés (T12) : la forme courte active le rognage en
       ne disant rien, et une déclaration dont le sens tient à ce piège
       n'est pas relisible. ── */
-.tp-calage {
+.tp-alignment {
   padding: var(--pad-1-inline); /* la même valeur des quatre côtés : le sujet de la démo, pas un espace de page */
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-1);
   max-width: 34ch; /* hors chaîne : la largeur du spécimen, une mesure de lecture */
 }
-.tp-calage > p {
+.tp-alignment > p {
   margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading);
   text-box: trim-both cap alphabetic;
 }
-.tp-calage.casse > p { text-box: normal; }
+.tp-alignment.broken > p { text-box: normal; }
 /* le témoin : la hauteur des capitales de la font livrée, posée sur la
    ligne de base — sans chasse, il ne déplace rien et n'agrandit pas la
    ligne (la hauteur des capitales est sous l'ascendante). */
-.tp-temoin { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
+.tp-witness { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
 
 /* ── 05 · La graisse (section à part, décision d'Auteur du 8 septembre 2026) ──
       LA LISTE AU CORPS UNIQUE : trois lignes, une seule taille — le corps.
@@ -176,50 +176,50 @@
       seconde). « Égaliser » ramène tout à la graisse du courant et à
       l'encre première : c'est la casse, et elle est dite. Chaque ligne est
       une ligne : sa marge, son espace intérieur, le coin de la ligne. ── */
-.tp-abos { display: flex; flex-direction: column; width: 100%; max-width: var(--measure); border: 1px solid var(--border); border-radius: var(--r-2); background: var(--bg); overflow: hidden; }
-.tp-abo {
+.tp-subs { display: flex; flex-direction: column; width: 100%; max-width: var(--measure); border: 1px solid var(--border); border-radius: var(--r-2); background: var(--bg); overflow: hidden; }
+.tp-sub {
   display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
   gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-3-inline);
   font-size: var(--font-size-body); line-height: var(--leading-body);
 }
-.tp-abo + .tp-abo { border-top: 1px solid var(--border); }
-.tp-abo-avatar { display: block; width: var(--control-height-compact); height: var(--control-height-compact); border-radius: var(--r-pill); background: var(--primary-subtle); }
-.tp-abo-avatar.a2 { background: var(--success-subtle); }
-.tp-abo-avatar.a3 { background: var(--warning-subtle); }
-.tp-abo-qui { display: grid; min-width: 0; }
-.tp-abo-nom { font-weight: var(--weight-heading); color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tp-abo-sous { font-weight: var(--weight-body); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tp-abo-bouton {
+.tp-sub + .tp-sub { border-top: 1px solid var(--border); }
+.tp-sub-avatar { display: block; width: var(--control-height-compact); height: var(--control-height-compact); border-radius: var(--r-pill); background: var(--primary-subtle); }
+.tp-sub-avatar.a2 { background: var(--success-subtle); }
+.tp-sub-avatar.a3 { background: var(--warning-subtle); }
+.tp-sub-who { display: grid; min-width: 0; }
+.tp-sub-name { font-weight: var(--weight-heading); color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tp-sub-sub { font-weight: var(--weight-body); color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tp-sub-button {
   font-weight: var(--weight-label); color: var(--text-primary);
   border: 1px solid var(--border-strong); border-radius: var(--r-ctl);
   padding: var(--gap-4-block) var(--pad-3-inline); white-space: nowrap;
 }
-.tp-abo-bouton.suivi { color: var(--text-secondary); border-color: var(--border); }
+.tp-sub-button.tracking { color: var(--text-secondary); border-color: var(--border); }
 /* casse : tout à la graisse du courant et à l'encre première — la hiérarchie tombe */
-.tp-abos.egal .tp-abo-nom, .tp-abos.egal .tp-abo-bouton { font-weight: var(--weight-body); } /* casse */
-.tp-abos.egal .tp-abo-sous, .tp-abos.egal .tp-abo-bouton.suivi { color: var(--text-primary); } /* casse */
-.tp-abos.egal .tp-abo-bouton { border-color: var(--border-strong); } /* casse */
+.tp-subs.equal .tp-sub-name, .tp-subs.equal .tp-sub-button { font-weight: var(--weight-body); } /* casse */
+.tp-subs.equal .tp-sub-sub, .tp-subs.equal .tp-sub-button.tracking { color: var(--text-primary); } /* casse */
+.tp-subs.equal .tp-sub-button { border-color: var(--border-strong); } /* casse */
 
 /* le titre du second objet de la section : un cran sous le titre de section, la graisse du titre */
-.tp-sous-titre { margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; max-width: var(--measure); } /* la graisse : celle des intertitres du site (globals) */
+.tp-sub-heading { margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; max-width: var(--measure); } /* la graisse : celle des intertitres du site (globals) */
 
 /* DEUX FONDS, DEUX GRAISSES : deux cartes côte à côte, le même paragraphe.
    Le versant sombre porte data-theme="dark" : il prend le fond, les encres
    ET le jeton de graisse du thème sombre — rien n'est peint ici. Le curseur
    ne repeint que --weight-body sur cette carte (dans la vue), jamais le
    registre. Le paragraphe consomme le jeton : c'est lui qui change. */
-.tp-fonds-scene { display: grid; gap: var(--gap-2-block); width: 100%; }
-.tp-fonds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-inline); width: 100%; }
-@media (max-width: 48rem) { .tp-fonds { grid-template-columns: 1fr; } }
-.tp-fond {
+.tp-backgrounds-scene { display: grid; gap: var(--gap-2-block); width: 100%; }
+.tp-backgrounds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-inline); width: 100%; }
+@media (max-width: 48rem) { .tp-backgrounds { grid-template-columns: 1fr; } }
+.tp-background {
   display: grid; gap: var(--gap-3-block); align-content: start;
   padding: var(--pad-2-block) var(--pad-2-inline); border-radius: var(--r-1);
   background: var(--bg); color: var(--text-primary); border: 1px solid var(--border);
 }
-.tp-fond > p { margin: 0; font-size: var(--font-size-body); line-height: var(--leading-body); font-weight: var(--weight-body); }
+.tp-background > p { margin: 0; font-size: var(--font-size-body); line-height: var(--leading-body); font-weight: var(--weight-body); }
 /* le curseur de l'écart : une commande, rangée sous les deux cartes, sur la largeur de la scène */
-.tp-molette { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline); max-width: var(--measure); }
-.tp-molette label { color: var(--text-secondary); font-size: var(--font-size-small); white-space: nowrap; }
-.tp-molette input[type="range"] { width: 100%; accent-color: var(--primary); }
-.tp-molette input[type="range"]:disabled { opacity: 0.5; } /* casse : pendant « la même graisse », l'écart ne se règle pas */
-.tp-molette output { white-space: nowrap; }
+.tp-wheel { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline); max-width: var(--measure); }
+.tp-wheel label { color: var(--text-secondary); font-size: var(--font-size-small); white-space: nowrap; }
+.tp-wheel input[type="range"] { width: 100%; accent-color: var(--primary); }
+.tp-wheel input[type="range"]:disabled { opacity: 0.5; } /* casse : pendant « la même graisse », l'écart ne se règle pas */
+.tp-wheel output { white-space: nowrap; }

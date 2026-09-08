@@ -1,15 +1,15 @@
-import { Section, Titre, Texte } from '../design-system/index.ts'
+import { Section, Heading, Text } from '../design-system/index.ts'
 
 export function PageOKS51() {
   return (
     <main>
-      <Section densite="ample" tete><Titre niveau={1}>Section une</Titre></Section>
-      <Section densite="compact"><Titre niveau={2}>Section 2</Titre><Texte>Corps 2</Texte></Section>
-      <Section densite="normal"><Titre niveau={2}>Section 3</Titre><Texte>Corps 3</Texte></Section>
-      <Section densite="normal"><Titre niveau={2}>Section 4</Titre><Texte>Corps 4</Texte></Section>
-      <Section densite="ample"><Titre niveau={2}>Section 5</Titre><Texte>Corps 5</Texte></Section>
-      <Section densite="compact"><Titre niveau={2}>Section 6</Titre><Texte>Corps 6</Texte></Section>
-      <Section densite="normal"><Titre niveau={2}>Section 7</Titre><Texte>Corps 7</Texte></Section>
+      <Section density="ample" head><Heading level={1}>Section une</Heading></Section>
+      <Section density="compact"><Heading level={2}>Section 2</Heading><Text>Corps 2</Text></Section>
+      <Section density="normal"><Heading level={2}>Section 3</Heading><Text>Corps 3</Text></Section>
+      <Section density="normal"><Heading level={2}>Section 4</Heading><Text>Corps 4</Text></Section>
+      <Section density="ample"><Heading level={2}>Section 5</Heading><Text>Corps 5</Text></Section>
+      <Section density="compact"><Heading level={2}>Section 6</Heading><Text>Corps 6</Text></Section>
+      <Section density="normal"><Heading level={2}>Section 7</Heading><Text>Corps 7</Text></Section>
     </main>
   )
 }

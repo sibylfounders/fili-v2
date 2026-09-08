@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./tokens.css";
-import "./fontes.css";
+import "./fonts.css";
 import "./globals.css";
-import { Tiroir } from "./tiroir";
-import { Marque } from "./marque";
+import { Drawer } from "./drawer";
+import { Brand } from "./brand";
 
 export const metadata: Metadata = {
   title: "Kit",
@@ -25,10 +25,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           `try{var d=localStorage.getItem("kit-density");if(d==="compact"||d==="airy")document.documentElement.dataset.density=d;var a=localStorage.getItem("kit-adaptation");if(a==="shadcn"||a==="html")document.documentElement.dataset.adaptation=a;var t=localStorage.getItem("kit-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;var p=localStorage.getItem("kit-primary"),pc=localStorage.getItem("kit-primary-css");if(p&&pc){var s=document.createElement("style");s.id="kit-primaire";s.textContent=pc;document.head.appendChild(s);document.documentElement.dataset.primary=p}}catch(e){}` }} />
         <header className="chrome">
           {/* La marque mène à l'accueil (8 septembre 2026). */}
-          <Marque />
+          <Brand />
           {/* Le tiroir de réglages du gabarit documentaire nu — ne rend
               rien sur les pages qui gardent leur panneau permanent. */}
-          <Tiroir />
+          <Drawer />
         </header>
         {children}
       </body>

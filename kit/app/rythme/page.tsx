@@ -1,6 +1,6 @@
-import Vue from "./vue";
-import "./rythme.css";
+import View from "./view";
+import "./rhythm.css";
 
-export default function Rythme() {
-  return <Vue />;
+export default function Rhythm() {
+  return <View />;
 }

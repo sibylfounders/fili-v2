@@ -169,122 +169,122 @@ export const rhythmLiteral = {
     'pad-1-inline': {
       min: '20px',
       max: '28px',
-      calcule: '19.2 → 28.8 px'
+      computed: '19.2 → 28.8 px'
     },
     'pad-2-inline': {
       min: '12px',
       max: '20px',
-      calcule: '13.6 → 20.4 px'
+      computed: '13.6 → 20.4 px'
     },
     'pad-3-inline': {
       min: '8px',
       max: '16px',
-      calcule: '9.6 → 14.4 px'
+      computed: '9.6 → 14.4 px'
     },
     'gap-1-inline': {
       min: '12px',
       max: '20px',
-      calcule: '13.6 → 20.4 px'
+      computed: '13.6 → 20.4 px'
     },
     'gap-2-inline': {
       min: '8px',
       max: '16px',
-      calcule: '9.6 → 14.4 px'
+      computed: '9.6 → 14.4 px'
     },
     'gap-3-inline': {
       min: '8px',
       max: '12px',
-      calcule: '6.8 → 10.2 px'
+      computed: '6.8 → 10.2 px'
     },
     'gap-4-inline': {
       min: '4px',
       max: '8px',
-      calcule: '4.8 → 7.2 px'
+      computed: '4.8 → 7.2 px'
     },
     'edge-inline': {
       min: '20px',
       max: '28px',
-      calcule: '19.2 → 28.8 px'
+      computed: '19.2 → 28.8 px'
     },
     'page-2-inline': {
       min: '40px',
       max: '56px',
-      calcule: '38.4 → 57.6 px'
+      computed: '38.4 → 57.6 px'
     },
     'page-3-inline': {
       min: '56px',
       max: '80px',
-      calcule: '54.3 → 81.5 px'
+      computed: '54.3 → 81.5 px'
     },
     'page-4-inline': {
       min: '76px',
       max: '116px',
-      calcule: '76.8 → 115.2 px'
+      computed: '76.8 → 115.2 px'
     },
     'page-6-inline': {
       min: '152px',
       max: '232px',
-      calcule: '153.6 → 230.4 px'
+      computed: '153.6 → 230.4 px'
     },
     'pad-1-block': {
       min: '20px',
       max: '28px',
-      calcule: '21.6 → 27.8 px'
+      computed: '21.6 → 27.8 px'
     },
     'pad-2-block': {
       min: '16px',
       max: '20px',
-      calcule: '15.3 → 19.7 px'
+      computed: '15.3 → 19.7 px'
     },
     'pad-3-block': {
       min: '12px',
       max: '12px',
-      calcule: '10.8 → 13.9 px'
+      computed: '10.8 → 13.9 px'
     },
     'gap-1-block': {
       min: '16px',
       max: '20px',
-      calcule: '15.3 → 19.7 px'
+      computed: '15.3 → 19.7 px'
     },
     'gap-2-block': {
       min: '12px',
       max: '12px',
-      calcule: '10.8 → 13.9 px'
+      computed: '10.8 → 13.9 px'
     },
     'gap-3-block': {
       min: '8px',
       max: '8px',
-      calcule: '7.6 → 9.8 px'
+      computed: '7.6 → 9.8 px'
     },
     'gap-4-block': {
       min: '4px',
       max: '8px',
-      calcule: '5.4 → 7 px'
+      computed: '5.4 → 7 px'
     },
     'edge-block': {
       min: '20px',
       max: '28px',
-      calcule: '21.6 → 27.8 px'
+      computed: '21.6 → 27.8 px'
     },
     'page-2-block': {
       min: '44px',
       max: '56px',
-      calcule: '43.2 → 55.7 px'
+      computed: '43.2 → 55.7 px'
     },
     'page-3-block': {
       min: '60px',
       max: '80px',
-      calcule: '61.1 → 78.7 px'
+      computed: '61.1 → 78.7 px'
     },
     'page-4-block': {
       min: '88px',
       max: '112px',
-      calcule: '86.4 → 111.4 px'
+      computed: '86.4 → 111.4 px'
     },
     'page-6-block': {
       min: '172px',
       max: '224px',
-      calcule: '172.8 → 222.7 px'
+      computed: '172.8 → 222.7 px'
     }
   }
 };

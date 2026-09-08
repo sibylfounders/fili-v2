@@ -1,10 +1,10 @@
-import { Section, Titre } from '../design-system/index.ts'
+import { Section, Heading } from '../design-system/index.ts'
 
 export function PageKO5() {
   return (
     <main>
-      <Section tete densite="ample"><Titre niveau={1}>Un</Titre></Section>
-      <Section densite="compact"><Titre niveau={3}>Trois</Titre></Section>
+      <Section head density="ample"><Heading level={1}>Un</Heading></Section>
+      <Section density="compact"><Heading level={3}>Trois</Heading></Section>
     </main>
   )
 }

@@ -9,20 +9,20 @@
  * interpréter serait mettre en forme, et mettre en forme une décision passée
  * reviendrait à la retoucher (règle 3 du journal).
  */
-import { Pile } from './Pile.tsx'
-import { Texte } from './Texte.tsx'
+import { Stack } from './Stack.tsx'
+import { Text } from './Text.tsx'
 
-export function Prose({ texte }: { texte: string }) {
-  const blocs = texte.split(/\n{2,}/).map((b) => b.trim()).filter((b) => b !== '')
+export function Prose({ text }: { text: string }) {
+  const blocks = text.split(/\n{2,}/).map((b) => b.trim()).filter((b) => b !== '')
   return (
     /* Le niveau vient de la geometrie : c est le seul dont l ecart tient
        entre une et une fois et demie le corps, a toutes les largeurs. */
-    <Pile espace="page">
-      {blocs.map((b, i) => (
-        <Texte variante="corps" key={`${String(i)}-${b.slice(0, 24)}`}>
+    <Stack space="page">
+      {blocks.map((b, i) => (
+        <Text variant="body" key={`${String(i)}-${b.slice(0, 24)}`}>
           {b.replace(/\n/g, ' ')}
-        </Texte>
+        </Text>
       ))}
-    </Pile>
+    </Stack>
   )
 }

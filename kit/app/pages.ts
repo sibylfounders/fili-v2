@@ -20,64 +20,64 @@
    existe au corpus, pas encore dans le kit : elle se pose, elle ne se
    clique pas. ── */
 
-export type Etat = "⚪" | "🟡" | "🟢";
+export type State = "⚪" | "🟡" | "🟢";
 
 export type Page = {
-  nom: string;
+  name: string;
   /* L'adresse dans le kit. Absente : la page est à venir. */
-  chemin?: string;
-  etat?: Etat;
+  path?: string;
+  state?: State;
   /* Une phrase pour la carte de l'accueil : ce que la page prouve. */
-  dit?: string;
+  says?: string;
   /* La phrase du pied du rail : la page a le droit d'avoir de l'esprit
      dans sa marge (verdict d'Auteur, 2 septembre). */
-  pied?: string;
+  foot?: string;
 };
-export type Paquet = { nom: string; pages: Page[] };
-export type Famille = { nom: string; colonnes: Paquet[][] };
-export type Categorie = { cle: string; nom: string; familles?: Famille[]; dit?: string };
+export type Batch = { name: string; pages: Page[] };
+export type Family = { name: string; columns: Batch[][] };
+export type Category = { key: string; name: string; families?: Family[]; says?: string };
 
-const p = (nom: string, reste: Omit<Page, "nom"> = {}): Page => ({ nom, ...reste });
+const p = (name: string, rest: Omit<Page, "name"> = {}): Page => ({ name, ...rest });
 
-export const CATEGORIES: Categorie[] = [
-  { cle: "systeme", nom: "Système", familles: [
-    { nom: "Méthode", colonnes: [[{ nom: "Méthode", pages: [
+export const CATEGORIES: Category[] = [
+  { key: "system", name: "Système", families: [
+    { name: "Méthode", columns: [[{ name: "Méthode", pages: [
       p("Pourquoi ce projet"), p("Process"), p("Vérification"), p("Audit du corpus"),
     ] }]] },
-    { nom: "Principes", colonnes: [[{ nom: "Principes", pages: [
+    { name: "Principes", columns: [[{ name: "Principes", pages: [
       p("Accessibilité"), p("Adaptatif"), p("Charge cognitive"), p("Lois UX"),
       p("Performance perçue"), p("Validation et récupération"),
     ] }]] },
-    { nom: "Langages", colonnes: [[{ nom: "Langages", pages: [
+    { name: "Langages", columns: [[{ name: "Langages", pages: [
       p("E-motion"), p("Gestes"), p("Interaction"), p("Voix & ton"),
     ] }]] },
     /* Signe et Geste tiennent dans la même colonne : quatre paquets sur
        quatre colonnes obligeaient Fondations à passer à la ligne, et une
        famille sur deux lignes casse la rangée (verdict du 2 septembre). */
-    { nom: "Fondations", colonnes: [
-      [{ nom: "Espace", pages: [
-        p("Rythme", { chemin: "/rythme", etat: "🟡",
-          dit: "Deux axes, des crans déclarés — chaque distance de la page a une raison.",
-          pied: "Aucune valeur n'a été tapée à la main. Aucune." }),
+    { name: "Fondations", columns: [
+      [{ name: "Espace", pages: [
+        p("Rythme", { path: "/rythme", state: "🟡",
+          says: "Deux axes, des crans déclarés — chaque distance de la page a une raison.",
+          foot: "Aucune valeur n'a été tapée à la main. Aucune." }),
         p("Espacement"), p("Grille"),
-        p("Composition", { chemin: "/composition", etat: "🟡",
-          dit: "Le chemin de l'œil, l'écran qu'on casse, le bon et le mauvais côte à côte.",
-          pied: "Votre œil suit un chemin. On l'a tracé avant lui." }),
+        p("Composition", { path: "/composition", state: "🟡",
+          says: "Le chemin de l'œil, l'écran qu'on casse, le bon et le mauvais côte à côte.",
+          foot: "Votre œil suit un chemin. On l'a tracé avant lui." }),
       ] }],
-      [{ nom: "Matière", pages: [
-        p("Couleur", { chemin: "/couleur", etat: "🟡",
-          dit: "Des rôles, jamais des valeurs — chaque rapport mesuré sur la page rendue.",
-          pied: "Une couleur décide, les autres suivent." }),
+      [{ name: "Matière", pages: [
+        p("Couleur", { path: "/couleur", state: "🟡",
+          says: "Des rôles, jamais des valeurs — chaque rapport mesuré sur la page rendue.",
+          foot: "Une couleur décide, les autres suivent." }),
         p("Surfaces"), p("Bordures"),
-        p("Arrondis", { chemin: "/arrondis", etat: "🟡",
-          dit: "Un coin ne se choisit pas, il se déduit — un seul nombre engendre la chaîne.",
-          pied: "Un coin faux se voit de l'autre bout de la pièce." }),
+        p("Arrondis", { path: "/arrondis", state: "🟡",
+          says: "Un coin ne se choisit pas, il se déduit — un seul nombre engendre la chaîne.",
+          foot: "Un coin faux se voit de l'autre bout de la pièce." }),
         p("Élévation"),
       ] }],
-      [{ nom: "Signe", pages: [
-        p("Typographie", { chemin: "/typo", etat: "🟡",
-          dit: "Deux voix, une échelle, une mesure — chaque lettre de la page sait pourquoi.",
-          pied: "Deux fontes seulement. C'est déjà une opinion." }),
+      [{ name: "Signe", pages: [
+        p("Typographie", { path: "/typo", state: "🟡",
+          says: "Deux voix, une échelle, une mesure — chaque lettre de la page sait pourquoi.",
+          foot: "Deux fontes seulement. C'est déjà une opinion." }),
         p("Iconographie"),
       ] },
       /* Le mouvement a quitté les langages le 7 septembre 2026 (arbitrage
@@ -85,59 +85,59 @@ export const CATEGORIES: Categorie[] = [
          quatre durées, une courbe, consommées par toutes les pages — c'est
          une fondation, sous Geste. Un langage dit comment le produit parle ;
          une fondation, de quoi il est fait. */
-      { nom: "Geste", pages: [
-        p("Mouvement", { chemin: "/mouvement", etat: "🟡",
-          dit: "Quatre durées, une courbe — et chacune sait où elle va.",
-          pied: "Ce que vous ne voyez pas, vous le sentez quand même." }),
+      { name: "Geste", pages: [
+        p("Mouvement", { path: "/mouvement", state: "🟡",
+          says: "Quatre durées, une courbe — et chacune sait où elle va.",
+          foot: "Ce que vous ne voyez pas, vous le sentez quand même." }),
         p("Tactile"), p("Superpositions"),
       ] }],
     ] },
   ] },
-  { cle: "produit", nom: "Produit", familles: [
-    { nom: "Composants", colonnes: [
-      [{ nom: "Commandes", pages: [p("Bouton"), p("Champ"), p("Case à cocher"), p("Interrupteur"), p("Sélecteur")] }],
-      [{ nom: "Navigation", pages: [p("Onglets"), p("Fil d'Ariane"), p("Pagination")] }],
-      [{ nom: "Affichage", pages: [p("Table"), p("Card"), p("Étiquette"), p("Avatar")] }],
-      [{ nom: "Retours", pages: [p("Dialogue"), p("Infobulle"), p("Bandeau"), p("Barre de progression")] }],
+  { key: "product", name: "Produit", families: [
+    { name: "Composants", columns: [
+      [{ name: "Commandes", pages: [p("Bouton"), p("Champ"), p("Case à cocher"), p("Interrupteur"), p("Sélecteur")] }],
+      [{ name: "Navigation", pages: [p("Onglets"), p("Fil d'Ariane"), p("Pagination")] }],
+      [{ name: "Affichage", pages: [p("Table"), p("Card"), p("Étiquette"), p("Avatar")] }],
+      [{ name: "Retours", pages: [p("Dialogue"), p("Infobulle"), p("Bandeau"), p("Barre de progression")] }],
     ] },
-    { nom: "Patterns", colonnes: [
-      [{ nom: "Écrans", pages: [p("Tableau de bord"), p("Formulaire long"), p("Liste filtrable"),
+    { name: "Patterns", columns: [
+      [{ name: "Écrans", pages: [p("Tableau de bord"), p("Formulaire long"), p("Liste filtrable"),
         p("Assistant pas à pas"), p("Recherche")] }],
-      [{ nom: "États", pages: [p("Page vide"), p("Page d'erreur"), p("Chargement")] }],
+      [{ name: "États", pages: [p("Page vide"), p("Page d'erreur"), p("Chargement")] }],
     ] },
   ] },
-  { cle: "contact", nom: "Contact",
-    dit: "À venir — par où joindre l'équipe du kit, et par où proposer une règle, une correction ou une pièce." },
-  { cle: "telechargements", nom: "Téléchargements",
-    dit: "À venir — les jetons pour le code et pour Figma, le paquet du kit, et la charte à lire hors ligne." },
+  { key: "contact", name: "Contact",
+    says: "À venir — par où joindre l'équipe du kit, et par où proposer une règle, une correction ou une pièce." },
+  { key: "telechargements", name: "Téléchargements",
+    says: "À venir — les jetons pour le code et pour Figma, le paquet du kit, et la charte à lire hors ligne." },
 ];
 
 /* ── Ce qu'on lit dans la liste ── */
 
 /* La clé d'une page ouverte est son chemin sans la barre : "/typo" → "typo".
    C'est le nom que les pages donnent au rail. */
-export const cleDe = (page: Page) => page.chemin?.replace(/^\//, "") ?? null;
+export const keyOf = (page: Page) => page.path?.replace(/^\//, "") ?? null;
 
 /* Les pages d'une famille, dans l'ordre de lecture (colonne par colonne). */
-export const pagesDe = (f: Famille): Page[] =>
-  f.colonnes.flatMap((col) => col.flatMap((paquet) => paquet.pages));
+export const pagesOf = (f: Family): Page[] =>
+  f.columns.flatMap((col) => col.flatMap((batch) => batch.pages));
 
 /* Toutes les familles, toutes catégories confondues, dans l'ordre. */
-export const FAMILLES: Famille[] = CATEGORIES.flatMap((c) => c.familles ?? []);
+export const FAMILIES: Family[] = CATEGORIES.flatMap((c) => c.families ?? []);
 
 /* Toutes les pages ouvertes du kit, dans l'ordre des familles. */
-export const OUVERTES: Page[] = FAMILLES.flatMap(pagesDe).filter((pg) => pg.chemin);
+export const OPEN: Page[] = FAMILIES.flatMap(pagesOf).filter((pg) => pg.path);
 
 /* La première page ouverte d'une famille — là où mène son nom. */
-export const premiereDe = (f: Famille): Page | undefined => pagesDe(f).find((pg) => pg.chemin);
+export const firstOneOf = (f: Family): Page | undefined => pagesOf(f).find((pg) => pg.path);
 
 /* Le chemin inverse : de la clé d'une page vers sa famille et sa catégorie. */
-export function familleDe(cle: string): { categorie: Categorie; famille: Famille } | null {
-  for (const categorie of CATEGORIES) {
-    for (const famille of categorie.familles ?? []) {
-      if (pagesDe(famille).some((pg) => cleDe(pg) === cle)) return { categorie, famille };
+export function familyOf(key: string): { category: Category; family: Family } | null {
+  for (const category of CATEGORIES) {
+    for (const family of category.families ?? []) {
+      if (pagesOf(family).some((pg) => keyOf(pg) === key)) return { category, family };
     }
   }
   return null;
 }
-export const pageDe = (cle: string): Page | undefined => OUVERTES.find((pg) => cleDe(pg) === cle);
+export const pageOf = (key: string): Page | undefined => OPEN.find((pg) => keyOf(pg) === key);

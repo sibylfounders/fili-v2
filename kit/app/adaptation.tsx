@@ -11,26 +11,26 @@ import { useSyncExternalStore } from "react";
    l'hydratation : le réglage affiché ne repasse jamais par sa valeur
    par défaut au chargement. */
 
-const CLE = "kit-adaptation";
+const KEY = "kit-adaptation";
 export type Adapt = "tailwind" | "shadcn" | "html";
 
-const lire = (): Adapt => {
+const read = (): Adapt => {
   const a = document.documentElement.dataset.adaptation;
   return a === "shadcn" || a === "html" ? a : "tailwind";
 };
 
-const abonner = (cb: () => void) => {
+const subscribe = (cb: () => void) => {
   const mo = new MutationObserver(cb);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-adaptation"] });
   return () => mo.disconnect();
 };
 
 export function useAdaptation() {
-  const adaptation = useSyncExternalStore(abonner, lire, () => "tailwind" as Adapt);
+  const adaptation = useSyncExternalStore(subscribe, read, () => "tailwind" as Adapt);
   const changer = (a: Adapt) => {
     if (a === "tailwind") delete document.documentElement.dataset.adaptation;
     else document.documentElement.dataset.adaptation = a;
-    try { localStorage.setItem(CLE, a); } catch {}
+    try { localStorage.setItem(KEY, a); } catch {}
   };
   const styl = adaptation === "shadcn" ? "shadcn" : adaptation === "html" ? "HTML natif" : "Tailwind";
   const tw = adaptation !== "html"; /* shadcn vit sur Tailwind : mêmes accrochages 4-16 */
@@ -39,14 +39,14 @@ export function useAdaptation() {
 
 export function Adaptation() {
   const { changer } = useAdaptation();
-  const CHOIX: [Adapt, string][] = [["tailwind", "Tailwind"], ["shadcn", "shadcn"], ["html", "HTML natif"]];
+  const CHOICE: [Adapt, string][] = [["tailwind", "Tailwind"], ["shadcn", "shadcn"], ["html", "HTML natif"]];
   return (
-    <div className="bloc">
-      <span className="mono sourd">Adaptation — tout le site</span>
-      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
-        {CHOIX.map(([a, nom]) => (
+    <div className="block">
+      <span className="mono muted">Adaptation — tout le site</span>
+      <div className="rank" style={{ gap: "var(--gap-3-inline)" }}>
+        {CHOICE.map(([a, name]) => (
           /* bouton actif dessiné en CSS depuis <html data-adaptation> */
-          <button key={a} data-choix-adaptation={a} className="bouton" onClick={() => changer(a)}>{nom}</button>
+          <button key={a} data-choice-adaptation={a} className="button" onClick={() => changer(a)}>{name}</button>
         ))}
       </div>
     </div>

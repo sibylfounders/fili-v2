@@ -1,11 +1,11 @@
-import { Section, Titre } from '../design-system/index.ts'
+import { Section, Heading } from '../design-system/index.ts'
 
 export function PageKO3() {
   return (
     <main>
-      <Section tete densite="normal"><Titre niveau={1}>Un</Titre></Section>
-      <Section densite="normal"><Titre niveau={2}>Deux</Titre></Section>
-      <Section densite="normal"><Titre niveau={2}>Trois</Titre></Section>
+      <Section head density="normal"><Heading level={1}>Un</Heading></Section>
+      <Section density="normal"><Heading level={2}>Deux</Heading></Section>
+      <Section density="normal"><Heading level={2}>Trois</Heading></Section>
     </main>
   )
 }

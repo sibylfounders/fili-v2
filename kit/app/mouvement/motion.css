@@ -1,0 +1,324 @@
+/* ── Mouvement : trois règles, trois comparaisons — le mauvais et le bon
+      côte à côte, un seul bouton joue les deux (page reprise le 8 septembre
+      2026 sur les règles d'écriture d'Auteur : montrer, nommer, expliquer
+      seulement si ça manque). Les valeurs hors du moteur se déclarent
+      « hors chaîne » sur leur ligne ; les décalages d'une chorégraphie se
+      disent. ─────────────────────────────────────────────────────────── */
+.motion-page .motion-hero h1 { max-width: 12ch; }
+.motion-page .motion-hero .lede { max-width: 35rem; font-size: var(--font-size-h3); }
+
+.motion-demo {
+  margin: 0; overflow: hidden; width: 100%;
+  border: 1px solid var(--border); border-radius: var(--r-1);
+  background: var(--surface);
+}
+.motion-demo-head {
+  min-height: calc(var(--control-height) + 2 * var(--pad-2-block));
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--gap-1-inline); padding: var(--pad-2-block) var(--pad-1-inline);
+  border-bottom: 1px solid var(--border); background: var(--bg);
+}
+.motion-demo-head b { font-size: var(--font-size-body); font-weight: 650; }
+.motion-replay { display: inline-flex; align-items: center; gap: var(--gap-3-inline); flex: none; }
+.motion-replay svg { width: 0.9rem; height: 0.9rem; } /* hors chaîne : l'icône du bouton */
+.motion-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px; background: var(--border); } /* hors chaîne : le filet entre les deux côtés */
+.motion-panel { min-width: 0; background: var(--surface); }
+.motion-panel-head {
+  min-height: var(--control-height); display: flex; align-items: center; justify-content: space-between;
+  gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-2-inline);
+  border-bottom: 1px solid var(--border); color: var(--text-secondary);
+  font-size: var(--font-size-small); font-weight: 600;
+}
+.motion-panel.is-bad .motion-panel-head { color: var(--danger); }
+.motion-panel.is-good .motion-panel-head { color: var(--success); }
+
+/* 01 · La trace ------------------------------------------------------ */
+.trace-board {
+  position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-2-inline); min-height: 14rem; padding: var(--pad-2-block) var(--pad-2-inline); /* hors chaîne : la scène, juste assez haute pour la carte et sa place */
+  overflow: hidden;
+}
+.trace-column {
+  min-width: 0; border: 1px solid var(--border); border-radius: var(--r-2);
+  background: color-mix(in srgb, var(--bg) 68%, transparent); padding: var(--pad-3-block) var(--pad-3-inline);
+}
+.trace-column > span {
+  display: block; font: 700 var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : l'étiquette d'une colonne, 700 */
+}
+.trace-column > i {
+  display: block; height: 4.4rem; margin-top: var(--gap-2-block); /* hors chaîne : l'emplacement vide, à la hauteur de la carte */
+  border: 1px dashed var(--border-strong); border-radius: var(--r-2); opacity: .28; }
+.trace-card {
+  height: 4.4rem; display: flex; align-items: center; gap: var(--gap-3-inline); /* hors chaîne : la hauteur de la carte de tâche */
+  padding: var(--pad-3-block) var(--pad-3-inline); border: 1px solid var(--border-strong);
+  border-radius: var(--r-2); background: var(--bg);
+  box-shadow: 0 14px 30px -22px rgba(5, 6, 17, .7); } /* hors chaîne : l'ombre de la carte soulevée */
+.trace-avatar {
+  width: 2rem; height: 2rem; display: grid; place-items: center; flex: none; /* hors chaîne : l'avatar */
+  border-radius: var(--r-pill); background: var(--primary-subtle); color: var(--primary-text);
+  font: 700 var(--font-size-label)/1 var(--font-mono); }
+.trace-copy { min-width: 0; display: grid; gap: var(--gap-4-block); }
+.trace-copy b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--font-size-small); }
+.trace-copy i { display: flex; gap: .22rem; } /* hors chaîne : les étiquettes en filaire */
+.trace-copy i span { width: 1.1rem; height: .22rem; border-radius: var(--r-pill); background: var(--border); } /* hors chaîne : une étiquette en filaire */
+.trace-copy i span:nth-child(2) { width: .72rem; } /* hors chaîne */
+.trace-copy i span:nth-child(3) { width: .4rem; background: var(--primary); } /* hors chaîne */
+.trace-handle { margin-inline-start: auto; color: var(--text-tertiary); letter-spacing: .1em; rotate: 90deg; font-weight: 700; } /* tertiaire : la poignée */
+.trace-moving {
+  position: absolute; z-index: 2; top: calc(var(--pad-2-block) + var(--font-size-label) + var(--gap-2-block));
+  left: var(--pad-2-inline); width: calc((100% - 2 * var(--pad-2-inline) - var(--gap-2-inline)) / 2);
+}
+.trace-route {
+  position: absolute; z-index: 1; top: calc(var(--pad-2-block) + var(--font-size-label) + var(--gap-2-block) + 2.2rem);
+  left: calc(var(--pad-2-inline) + (100% - 2 * var(--pad-2-inline) - var(--gap-2-inline)) / 4);
+  width: calc(50% + var(--gap-2-inline)); height: 1px;
+}
+.trace-route::before, .trace-route::after {
+  content: ""; position: absolute; top: 50%; width: .42rem; height: .42rem; /* hors chaîne : les deux points du trajet */
+  border-radius: var(--r-pill); background: var(--primary); translate: 0 -50%; }
+.trace-route::before { left: 0; }
+.trace-route::after { right: 0; }
+.trace-route span { display: block; width: 100%; border-top: 1px dashed var(--primary); opacity: .55; }
+.trace-panel.is-bad .trace-route { display: none; }
+.trace-teleport.to-right { translate: calc(100% + var(--gap-2-inline)); }
+.trace-teleport.to-left { translate: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .trace-panel.is-good .trace-moving { transition: translate var(--m-expressive) var(--e-out); }
+  .trace-panel.is-good .trace-moving.at-right { translate: calc(100% + var(--gap-2-inline)); }
+  .trace-teleport.to-right { animation: trace-bad-right var(--m-expressive) linear; }
+  .trace-teleport.to-left { animation: trace-bad-left var(--m-expressive) linear; }
+  .trace-panel.is-good .trace-card { transition: box-shadow var(--m-base) var(--e-out), border-color var(--m-base) var(--e-out); }
+  .trace-panel.is-good:has(.trace-moving.at-right) .trace-card { border-color: var(--primary); box-shadow: 0 18px 34px -20px color-mix(in srgb, var(--primary) 65%, transparent); }
+}
+@keyframes trace-bad-right {
+  0%, 42% { translate: 0; opacity: 1; }
+  49% { translate: 0; opacity: 0; }
+  50% { translate: calc(100% + var(--gap-2-inline)); opacity: 0; }
+  58%, 100% { translate: calc(100% + var(--gap-2-inline)); opacity: 1; }
+}
+@keyframes trace-bad-left {
+  0%, 42% { translate: calc(100% + var(--gap-2-inline)); opacity: 1; }
+  49% { translate: calc(100% + var(--gap-2-inline)); opacity: 0; }
+  50% { translate: 0; opacity: 0; }
+  58%, 100% { translate: 0; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trace-moving.at-right { translate: calc(100% + var(--gap-2-inline)); }
+}
+
+/* 02 · La cause ------------------------------------------------------ */
+.origin-stage { position: relative; min-height: 25rem; padding: var(--pad-2-block) var(--pad-2-inline); overflow: hidden; }
+.origin-trigger {
+  position: absolute; z-index: 3; left: var(--pad-2-inline); top: var(--pad-2-block);
+  width: calc(100% - 2 * var(--pad-2-inline)); min-height: 3.8rem; /* hors chaîne : la hauteur de la ligne de projet */
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
+  gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-3-inline);
+  appearance: none; border: 1px solid var(--border); border-radius: var(--r-2);
+  background: var(--bg); color: var(--text-primary); font: inherit; font-size: var(--font-size-small); text-align: left; cursor: pointer;
+}
+.origin-trigger:hover { border-color: var(--border-strong); }
+.origin-trigger > span:nth-child(2) { display: grid; gap: var(--gap-4-block); }
+.origin-trigger b { font-size: var(--font-size-small); }
+.origin-trigger small { color: var(--text-secondary); font-size: var(--font-size-label); }
+.origin-thumb {
+  width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--r-2); /* hors chaîne : la vignette du projet */
+  background: var(--primary); color: var(--on-primary); font: 700 var(--font-size-small)/1 var(--font-mono);
+}
+.origin-dots { color: var(--text-secondary); letter-spacing: .15em; }
+.origin-menu {
+  position: absolute; z-index: 2; top: calc(var(--pad-2-block) + 3.8rem + var(--gap-3-block)); /* hors chaîne : sous la ligne de projet */
+  left: var(--pad-2-inline); width: min(16rem, calc(100% - 2 * var(--pad-2-inline)));
+  display: grid; padding: var(--pad-3-block) var(--pad-3-inline); border: 1px solid var(--border-strong);
+  border-radius: var(--r-2); background: var(--bg); box-shadow: 0 24px 50px -28px rgba(5, 6, 17, .8); /* hors chaîne : l'ombre du menu posé */
+  opacity: 0; pointer-events: none; transition: opacity var(--m-slow) var(--e-out); } /* le fondu du menu s'écrit nu : il reste sous mouvement réduit */
+.origin-menu-title {
+  padding: var(--gap-3-block) var(--pad-3-inline); color: var(--text-tertiary); /* tertiaire : le titre du menu, 700 */
+  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase;
+}
+.origin-menu > span[role="menuitem"] {
+  min-height: var(--control-height-compact); display: flex; align-items: center; gap: var(--gap-3-inline);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
+}
+.origin-menu > span[role="menuitem"].danger { color: var(--danger); }
+.origin-icon { position: relative; width: .9rem; height: .9rem; display: inline-block; border: 1px solid currentColor; border-radius: 2px; opacity: .72; } /* hors chaîne : une icône dessinée */
+.origin-icon.duplicate::after { content: ""; position: absolute; inset: 2px -4px -4px 2px; border: 1px solid currentColor; border-radius: 2px; } /* hors chaîne : une icône dessinée */
+.origin-icon.trash { border-radius: 1px 1px 3px 3px; border-top: 0; scale: .75 .85; } /* hors chaîne : une icône dessinée */
+.origin-ray {
+  position: absolute; z-index: 1; left: calc(var(--pad-2-inline) + 1.1rem); /* hors chaîne : le fil qui relie le bouton au menu */
+  top: calc(var(--pad-2-block) + 3rem); width: 1px; height: calc(var(--gap-3-block) + 2.1rem);
+  border-left: 1px dashed var(--primary); scale: 1 0; transform-origin: top;
+}
+.origin-ghost { display: none; }
+.origin-panel.is-bad .origin-ghost {
+  position: absolute; display: block; right: 12%; bottom: 12%; width: 3.5rem; height: 3.5rem; /* hors chaîne : la cible dessinée, nulle part */
+  border: 1px dashed var(--danger); border-radius: var(--r-pill); opacity: .55;
+}
+.origin-ghost::before, .origin-ghost::after { content: ""; position: absolute; inset: 50% 20% auto; border-top: 1px solid var(--danger); }
+.origin-ghost::after { rotate: 90deg; }
+.origin-ghost span { position: absolute; right: calc(100% + var(--gap-3-inline)); top: 50%; width: 4rem; border-top: 1px dashed var(--danger); rotate: -28deg; transform-origin: right; } /* hors chaîne : la cible dessinée */
+.origin-ghost i { position: absolute; right: calc(100% + 4.25rem); top: -.25rem; font: 700 var(--font-size-label)/1 var(--font-mono); color: var(--danger); } /* hors chaîne : la cible dessinée */
+.origin-panel.is-open .origin-menu { opacity: 1; pointer-events: auto; }
+.origin-panel.is-open .origin-ray { scale: 1 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .origin-menu { scale: .92; transition: opacity var(--m-slow) var(--e-out), scale var(--m-slow) var(--e-out), translate var(--m-slow) var(--e-out); } /* il grandit depuis presque sa taille */
+  .origin-panel.is-good .origin-menu { transform-origin: top left; translate: 0 calc(-1 * var(--gap-2-block)); }
+  .origin-panel.is-bad .origin-menu { transform-origin: center; translate: 7rem 8rem; } /* casse (hors chaîne) : depuis nulle part — le centre, et loin de son bouton */
+  .origin-panel.is-open .origin-menu { scale: 1; translate: 0 0; }
+  .origin-ray { transition: scale var(--m-slow) var(--e-out); }
+  .origin-trigger { transition: border-color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); }
+}
+
+/* 03 · Le regard ----------------------------------------------------- */
+.gaze-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap-2-inline); min-height: 32rem; padding: var(--pad-2-block) var(--pad-2-inline);
+}
+.gaze-card {
+  position: relative; min-width: 0; min-height: 7rem; overflow: hidden;
+  display: grid; align-content: start; gap: var(--gap-3-block);
+  padding: var(--pad-3-block) var(--pad-3-inline); border: 1px solid var(--border);
+  border-radius: var(--r-2); background: var(--bg);
+}
+.gaze-card > span:first-child { color: var(--text-secondary); font-size: var(--font-size-label); }
+.gaze-card > b { font-size: var(--font-size-h3); line-height: 1; white-space: nowrap; }
+.gaze-card > em {
+  position: absolute; right: var(--pad-3-inline); top: var(--pad-3-block);
+  display: inline-flex; align-items: center; gap: .25rem; color: var(--success); /* hors chaîne : l'étiquette « mis à jour » */
+  font: normal 700 var(--font-size-label)/1 var(--font-mono); opacity: 0; }
+.gaze-card > em svg { width: .7rem; height: .7rem; } /* hors chaîne : la coche */
+.mini-bars, .mini-spark { height: 1.4rem; display: flex; align-items: flex-end; gap: .2rem; } /* hors chaîne : un graphique en filaire */
+.mini-bars i, .mini-spark i { width: .32rem; border-radius: 2px 2px 0 0; background: var(--primary); } /* hors chaîne : un graphique en filaire */
+.mini-bars i:nth-child(1), .mini-spark i:nth-child(4) { height: 40%; }
+.mini-bars i:nth-child(2), .mini-spark i:nth-child(1) { height: 72%; }
+.mini-bars i:nth-child(3), .mini-spark i:nth-child(5) { height: 55%; }
+.mini-bars i:nth-child(4), .mini-spark i:nth-child(2) { height: 100%; }
+.mini-spark i:nth-child(3) { height: 82%; }
+.mini-line { width: 5rem; height: 1.5rem; overflow: visible; }
+.mini-line path { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mini-people { display: flex; }
+.mini-people i {
+  width: 1.35rem; height: 1.35rem; display: grid; place-items: center; margin-right: -.25rem; /* hors chaîne : les avatars empilés */
+  border: 2px solid var(--bg); border-radius: var(--r-pill); background: var(--primary-subtle); color: var(--primary-text);
+  font: normal 700 var(--font-size-label)/1 var(--font-mono); }
+.mini-stock { display: flex; gap: .2rem; } /* hors chaîne : un graphique en filaire */
+.mini-stock i { width: 1.4rem; height: .32rem; border-radius: var(--r-pill); background: var(--warning); } /* hors chaîne : un graphique en filaire */
+.mini-stock i:last-child { opacity: .28; }
+.mini-message { display: grid; gap: .22rem; width: 4rem; } /* hors chaîne : deux lignes de texte en filaire */
+.mini-message i { height: .28rem; border-radius: var(--r-pill); background: var(--border-strong); } /* hors chaîne : une ligne en filaire */
+.mini-message i:last-child { width: 60%; }
+.mini-campaign { display: block; width: 4rem; height: .4rem; border-radius: var(--r-pill); background: var(--surface-hover); overflow: hidden; } /* hors chaîne : une jauge en filaire */
+.mini-campaign i { display: block; width: 70%; height: 100%; border-radius: inherit; background: var(--success); }
+.mini-delta { justify-self: start; padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-3); background: var(--success-subtle); color: var(--success); font: 700 var(--font-size-label)/1 var(--font-mono); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(1) { animation: gaze-rise var(--m-expressive) var(--e-out); }
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(2) { animation: gaze-pulse var(--m-expressive) var(--e-out) .04s; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(3) { animation: gaze-tilt var(--m-expressive) var(--e-out) .08s; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(4) { animation: gaze-rise var(--m-expressive) var(--e-out) .12s reverse; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(5) { animation: gaze-pulse var(--m-expressive) var(--e-out) .16s; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(6) { animation: gaze-tilt var(--m-expressive) var(--e-out) .2s reverse; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(7) { animation: gaze-rise var(--m-expressive) var(--e-out) .24s; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(8) { animation: gaze-pulse var(--m-expressive) var(--e-out) .28s; } /* chorégraphie : les huit cartes bougent l'une après l'autre — c'est la faute */
+  .gaze-panel.is-bad .gaze-grid.is-running .gaze-card > :not(span:first-child) { animation: gaze-flicker var(--m-expressive) linear; }
+  .gaze-panel.is-good .gaze-grid.is-running .gaze-card.is-target { animation: gaze-focus var(--m-expressive) var(--e-out) forwards; }
+  .gaze-panel.is-good .gaze-grid.is-running .gaze-card.is-target > em { animation: gaze-label var(--m-expressive) var(--e-out) forwards; } /* l'étiquette reste : la carte est à jour */
+}
+@keyframes gaze-rise { 0% { translate: 0 .75rem; opacity: .55; } 45% { translate: 0 -.25rem; } 100% { translate: 0; opacity: 1; } }
+@keyframes gaze-pulse { 0%, 100% { scale: 1; } 45% { scale: 1.045; border-color: var(--primary); } }
+@keyframes gaze-tilt { 0%, 100% { rotate: 0deg; } 45% { rotate: 1.5deg; border-color: var(--warning); } }
+@keyframes gaze-flicker { 0%, 28% { opacity: .25; } 55%, 100% { opacity: 1; } }
+@keyframes gaze-focus { 0% { translate: 0 .5rem; border-color: var(--border); } 42%, 100% { translate: 0; border-color: var(--success); box-shadow: 0 16px 30px -24px var(--success); } }
+@keyframes gaze-label { 0%, 32% { opacity: 0; translate: 0 .35rem; } 60%, 100% { opacity: 1; translate: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .gaze-grid.is-running .gaze-card.is-target { border-color: var(--success); }
+  .gaze-grid.is-running .gaze-card.is-target > em { opacity: 1; }
+}
+
+@media (max-width: 54rem) {
+  .motion-compare { grid-template-columns: minmax(0, 1fr); }
+  .trace-board { min-height: 14rem; }
+  .origin-stage { min-height: 22rem; }
+  .gaze-grid { min-height: 28rem; }
+}
+@media (max-width: 34rem) {
+  .motion-demo-head { align-items: flex-start; }
+  .motion-demo-head > div { max-width: 55%; }
+  .motion-replay { padding-inline: var(--gap-3-inline); }
+  .trace-board { min-height: 13rem; }
+  .trace-copy b { max-width: 8ch; }
+  .motion-panel-head > span:first-child { max-width: 55%; }
+  .gaze-grid { grid-template-columns: minmax(0, 1fr); min-height: 55rem; }
+}
+
+/* ── Une scène à deux côtés : le juste et le faux côte à côte, en même
+      temps (la forme de /composition). L'écart entre les colonnes est la
+      marge de coque, le verdict en tête de colonne. ── */
+.mv-duo { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
+@media (min-width: 40em) { .mv-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mv-side { display: grid; gap: var(--gap-3-block); align-content: start; }
+.mv-verdict-head { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
+  font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
+.mv-verdict-head .verdict.good { color: var(--success); font-weight: 700; }
+.mv-verdict-head .verdict.ko { color: var(--danger); font-weight: 700; }
+
+
+/* ── Le menu des paires ── */
+.mv-scene-menu { position: relative; display: grid; justify-items: start; align-content: start; gap: var(--gap-3-block); width: max-content; min-height: 12rem; }
+.mv-scene-menu > .button { align-self: start; }
+.mv-menu { position: absolute; inset-inline-start: 0; top: calc(var(--control-height) + var(--gap-3-block)); min-width: 14rem; display: grid; gap: var(--gap-4-block);
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3-block) var(--pad-3-inline); z-index: 1;
+  box-shadow: 0 8px 24px -12px rgba(21, 23, 37, 0.25); /* hors chaîne : l'ombre du menu posé */
+  opacity: 0; pointer-events: none; transform-origin: 0 0; transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* menu : le fondu s'écrit nu ; chorégraphie : le ralenti de la paire */
+.mv-menu.open { opacity: 1; pointer-events: auto; }
+.mv-menu.drags { transition-duration: calc(var(--m-expressive) * var(--mv-slowed, 1)); } /* casse (hors chaîne) : un menu au cran d'une section — 700 là où un menu vit à 200 */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-menu { scale: 0.95; transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* il grandit depuis presque sa taille, depuis le coin de son bouton ; chorégraphie : le ralenti */
+  .mv-menu.open { scale: 1; }
+  .mv-menu.drags { transition-duration: calc(var(--m-expressive) * var(--mv-slowed, 1)); } /* casse (hors chaîne) : il traîne ; chorégraphie : le ralenti */
+}
+.mv-menu-item { display: flex; align-items: center; min-height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-3); font-size: var(--font-size-small); color: var(--text-primary);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.mv-menu-item:hover { background: var(--surface-hover); }
+.mv-menu-item.danger { color: var(--danger); }
+
+/* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
+      bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
+.mv-scene { position: relative; display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
+.mv-scene > .button, .mv-scene-menu > .button, .mv-menu-item { --mv-slowed: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
+.mv-slowed { justify-self: end; font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
+.mv-row { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+.mv-row .button { transition: background-color calc(var(--m-fast) * var(--mv-slowed, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire — le survol, au cran rapide */
+.mv-row .button.hovered { background: var(--surface-hover); } /* le survol, joué par le geste : la même couleur que le vrai survol */
+.mv-scene-toast { display: grid; justify-items: start; min-height: calc(var(--control-height) + var(--gap-2-block)); }
+/* 1 · le survol qui poursuit : la même rangée, la durée du panneau au lieu de celle du survol */
+.mv-row.slow .button { transition-duration: calc(var(--m-slow) * var(--mv-slowed, 1)); } /* casse (hors chaîne) : le survol poursuit le curseur — 300 là où un survol vit à 100 ; chorégraphie : le ralenti */
+
+/* 3 · la notification : elle arrive depuis presque sa taille ; cassée, depuis rien */
+.mv-toast { display: flex; align-items: center; gap: var(--gap-3-inline);
+  background: var(--text-primary); color: var(--bg); border-radius: var(--r-2);
+  padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: 600;
+  opacity: 0; transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* le fondu s'écrit nu ; chorégraphie : le ralenti de la paire */
+.mv-toast .point { width: var(--gap-3-inline); height: var(--gap-3-inline); border-radius: var(--r-pill); background: var(--success); flex: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .mv-toast { scale: 0.95; translate: 0 var(--gap-3-block);
+    transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out), scale calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out), translate calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire */
+  .mv-toast.nothing { scale: 0; } /* casse (hors chaîne) : elle naît du néant */
+  .mv-toast.there { scale: 1; translate: 0 0; }
+  /* 4 · moins de mouvement : ce que voit quelqu'un qui l'a demandé — le déplacement part, le fondu reste.
+     Une simulation du réglage système, à l'échelle de la scène ; le site, lui, y obéit par ses portillons. */
+  .mv-reduced .mv-toast { scale: none; translate: none; transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* chorégraphie : le ralenti */
+  .mv-cut .mv-toast { scale: none; translate: none; transition: none; } /* casse (hors chaîne) : l'ancienne règle — tout coupé, elle surgit sans passage */
+}
+.mv-cut .mv-toast { transition: none; } /* casse (hors chaîne) : l'ancienne règle, nue aussi */
+.mv-toast.there { opacity: 1; }
+
+/* ── Les règles et leurs sources, sous chaque preuve (dans le dépliant) ── */
+.mv-rules { display: grid; gap: var(--gap-1-block); }
+.mv-rule { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
+.mv-rule > b { color: var(--text-primary); }
+.mv-rule-src { font-size: var(--font-size-small); }

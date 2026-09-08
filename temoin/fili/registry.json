@@ -12,23 +12,23 @@
     "exports": [
       "Button",
       "TextField",
-      "EtatAsync",
+      "StateAsync",
       "Section",
-      "Titre",
-      "Texte",
-      "Pile",
-      "Grille",
-      "Jeton",
-      "Alerte",
-      "Vide",
-      "Squelette",
-      "Rendu",
+      "Heading",
+      "Text",
+      "Stack",
+      "Grid",
+      "Chip",
+      "Alert",
+      "Empty",
+      "Skeleton",
+      "Render",
       "Prose",
       "Selection"
     ]
   },
   "zones": {
-    "horsPerimetre": [
+    "offScope": [
       "**/*.test.tsx",
       "**/*.stories.tsx",
       "tools/**",
@@ -38,7 +38,7 @@
       "crash-tests/hors-perimetre/**",
       "crash-tests/lib/**"
     ],
-    "systeme": [
+    "system": [
       "src/main.tsx",
       "src/system/**",
       "crash-tests/design-system/**"
@@ -55,14 +55,14 @@
       "crash-tests/epreuve-c/**"
     ]
   },
-  "espacement": {
-    "$loi": "Échelle Semantic Rhythm — décision d'Auteur du 2026-08-11. Une valeur d'espace ne se choisit pas : elle descend de la profondeur d'emboîtement. Les nombres vivent dans fili.geometrie.json, pièce générée par tools/fili/geometrie.",
+  "spacing": {
+    "$law": "Échelle Semantic Rhythm — décision d'Auteur du 2026-08-11. Une valeur d'espace ne se choisit pas : elle descend de la profondeur d'emboîtement. Les nombres vivent dans fili.geometrie.json, pièce générée par tools/fili/geometry.",
     "$axes": "Deux axes qui ne bougent pas ensemble. Le nom du jeton porte son axe : un jeton horizontal posé sur une propriété verticale n'appartient pas à l'échelle de cette propriété, et R3.1 le voit. Une propriété qui porte les deux axes à la fois — p-…, gap-… — n'a aucun jeton valide : elle mélangerait les deux.",
-    "profondeurs": [
-      "large",
+    "depths": [
+      "wide",
       "page",
-      "coque",
-      "carte",
+      "container",
+      "card",
       "detail"
     ],
     "axes": {
@@ -87,95 +87,95 @@
         "space-y"
       ]
     },
-    "echelle": [
-      "inline-large",
+    "scale": [
+      "inline-wide",
       "inline-page",
-      "inline-coque",
-      "inline-carte",
+      "inline-container",
+      "inline-card",
       "inline-detail",
-      "block-large",
+      "block-wide",
       "block-page",
-      "block-coque",
-      "block-carte",
+      "block-container",
+      "block-card",
       "block-detail"
     ],
     "exceptions": [
       "mx-auto"
     ],
-    "proximite": {
+    "proximity": {
       "$source": "Le facteur suivait un seuil posé de l'extérieur (3). Il suit désormais le ratio de l'Échelle : deux profondeurs voisines en sont séparées par construction, et 3 n'était atteignable sous aucun réglage — le ratio est borné à 2,2.",
-      "facteur": 1.4142135623730951,
+      "factor": 1.4142135623730951,
       "tolerance": 0.01,
-      "propEspace": "espace",
-      "conteneurs": [
-        "Pile",
-        "Grille"
+      "propSpace": "space",
+      "containers": [
+        "Stack",
+        "Grid"
       ]
     },
     "pixels": {
       "$comment": "Valeurs de socle, hors multiplicateur responsive : le multiplicateur est commun à tous les jetons d'un même axe, donc le rapport que R3.7 juge est le même à toutes les largeurs.",
-      "marges": {
-        "large": 48,
+      "margins": {
+        "wide": 48,
         "page": 33.9411,
-        "coque": 24,
-        "carte": 16.9706,
+        "container": 24,
+        "card": 16.9706,
         "detail": 12
       },
-      "ecarts": {
-        "large": 24,
+      "gaps": {
+        "wide": 24,
         "page": 16.9706,
-        "coque": 12,
-        "carte": 8.4853,
+        "container": 12,
+        "card": 8.4853,
         "detail": 6
       }
     }
   },
   "async": {
-    "lectures": [
-      "useRequete"
+    "readings": [
+      "useRequest"
     ],
     "mutations": [
       "useMutation"
     ],
-    "conteneurs": [
-      "EtatAsync"
+    "containers": [
+      "StateAsync"
     ],
     "slots": [
-      "chargement",
-      "erreur",
-      "vide",
-      "enfants"
+      "loading",
+      "error",
+      "empty",
+      "children"
     ],
     "slotsRupture": [
-      "vide",
-      "succes"
+      "empty",
+      "success"
     ],
-    "champAttente": "enAttente",
-    "champsIssue": [
-      "erreur",
-      "succes"
+    "fieldWaiting": "inWaiting",
+    "fieldsIssue": [
+      "error",
+      "success"
     ]
   },
-  "rythme": {
+  "rhythm": {
     "section": "Section",
-    "propDensite": "densite",
-    "densites": [
+    "propDensity": "density",
+    "densities": [
       "compact",
       "normal",
       "ample"
     ],
-    "seuilAlternance": 2
+    "thresholdAlternation": 2
   },
-  "lecture": {
-    "propTete": "tete",
-    "seuilRang": 1
+  "reading": {
+    "propHead": "head",
+    "thresholdRank": 1
   },
   "html": {
-    "classesSysteme": [
-      "fili-bouton",
-      "fili-bouton--principal",
-      "fili-champ",
-      "fili-lien",
+    "classesSystem": [
+      "fili-button",
+      "fili-button--main",
+      "fili-field",
+      "fili-link",
       "fili-section"
     ]
   }

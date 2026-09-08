@@ -174,7 +174,7 @@
 
 /* Le châssis du site — navigation à gauche, réglages à droite — garde la densité
    confortable quel que soit le réglage : la densité règle le contenu, jamais les colonnes. */
-.navigation, .reglages {
+.navigation, .settings {
   --pad-1-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
   --pad-2-inline: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
   --pad-3-inline: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
@@ -219,17 +219,17 @@
   --doc-cover: clamp(var(--font-size-section), 6vw, var(--font-size-cover-max));
   --doc-section: clamp(var(--font-size-h1), 3.4vw, var(--font-size-section));
   --doc-silence: var(--page-4-block);
-  --doc-tete: var(--page-2-block);
+  --doc-head: var(--page-2-block);
   --doc-scene-inline: var(--pad-1-inline);
   --doc-scene-block: var(--pad-1-block);
   /* les colonnes : la chaîne à la base de la charte, sans suivre la densité */
-  --doc-gouttiere: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --doc-gutter: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
   --doc-rail: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
-  --doc-marge: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --doc-margin: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
 }
 @media (min-width: 69rem) {
   :root {
-    --doc-marge: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
+    --doc-margin: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
   }
 }
 

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FILI · Écran Témoin</title>
+<style>
+/* Source de vérité unique des valeurs. Zone système. */
+:root{
+  /* Échelle d'espacement — S3 */
+  --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:24px; --e6:32px;
+  --e7:48px; --e8:64px; --e9:96px; --e10:128px;
+  /* Densités de section — S4 */
+  --d-compact:var(--e6); --d-normal:var(--e8); --d-ample:var(--e10);
+  /* Échelle typographique — la taille découle du niveau, jamais du lieu */
+  --t-display:clamp(2.4rem,7vw,4.2rem);
+  --t1:clamp(1.75rem,4vw,2.6rem);
+  --t2:clamp(1.375rem,3vw,1.875rem);
+  --t3:1.0625rem;
+  --t-body:17px; --t-end:.875rem; --t-menu:.75rem;
+  /* Couleurs */
+  --paper:#FBFAF8; --paper-hollow:#F3F1ED; --ink:#17181A; --ink-soft:#585C63;
+  --stroke:#DCD8D1; --signal:#9E4526; --lock:#2E6A4F; --waiting:#B0862A;
+  --wide:1120px; --reading:66ch;
+}
+
+/* Feuille du système. Toute valeur d'espacement vient de l'échelle — S3. */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:var(--t-body); line-height:1.6; letter-spacing:-.006em; -webkit-font-smoothing:antialiased;
+}
+@media (max-width:520px){ body{font-size:16px} }
+
+/* ── Sections et densités ────────────────────────────────────────────── */
+.section{ position:relative }
+.section + .section{ border-top:1px solid var(--stroke) }
+.hollow{ background:var(--paper-hollow) }
+.density-compact{ padding-block:var(--d-compact) }
+.density-normal { padding-block:var(--d-normal) }
+.density-ample  { padding-block:var(--d-ample) }
+@media (max-width:640px){
+  .density-compact{padding-block:var(--e5)}
+  .density-normal {padding-block:var(--e7)}
+  .density-ample  {padding-block:var(--e8)}
+}
+.content{ width:100%; max-width:var(--wide); margin-inline:auto; padding-inline:clamp(20px,5vw,var(--e8)) }
+
+/* ── Conteneurs : l'espace se distribue par le haut ──────────────────── */
+.stack{ display:flex; flex-direction:column; min-width:0 }
+.grid{ display:grid; min-width:0 }
+.grid > *{ min-width:0 }
+.e1{gap:var(--e1)} .e2{gap:var(--e2)} .e3{gap:var(--e3)}
+.e4{gap:var(--e4)} .e5{gap:var(--e5)} .e6{gap:var(--e6)} .e7{gap:var(--e7)}
+@media (min-width:560px){ .col-2{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:880px){ .col-3{grid-template-columns:repeat(3,1fr)}
+                          .col-4{grid-template-columns:repeat(4,1fr)} }
+
+/* ── Titres : la taille découle du niveau ────────────────────────────── */
+.t1,.t2,.t3{ margin:0; font-weight:600; line-height:1.08; letter-spacing:-.03em; text-wrap:balance }
+.t1{ font-size:var(--t1); letter-spacing:-.04em }
+.t2{ font-size:var(--t2) }
+.t3{ font-size:var(--t3); letter-spacing:-.01em; line-height:1.35 }
+
+/* ── Texte ───────────────────────────────────────────────────────────── */
+.txt{ margin:0 }
+.txt-lede{ font-size:clamp(1.0625rem,2.2vw,1.3125rem); color:var(--ink-soft); line-height:1.5; max-width:var(--reading) }
+.txt-end{ font-size:var(--t-end); color:var(--ink-soft); max-width:52ch }
+.txt-menu{ font-size:var(--t-menu); letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); font-weight:600 }
+.txt-body{ max-width:var(--reading) }
+
+/* ── Jeton : la pastille est hors du flux, bord gauche commun ────────── */
+.token{ display:block; position:relative; padding-left:var(--e5);
+  font-size:.8125rem; font-weight:600; color:var(--ink-soft) }
+.dot{ position:absolute; left:0; top:.42em; width:9px; height:9px; border-radius:50%; background:var(--stroke) }
+.dot-lock{background:var(--lock)} .dot-waiting{background:var(--waiting)}
+.stack > .token + .txt{ padding-left:var(--e5) }
+
+/* ── États non nominaux ──────────────────────────────────────────────── */
+.alert{ border:1px solid #E3C8BE; background:#FDF4F1; border-left:3px solid var(--signal);
+  border-radius:8px; padding:var(--e5); display:flex; flex-direction:column; gap:var(--e2) }
+.alert-heading{ color:var(--signal) }
+.alert-body .txt{ color:#6E4A3E }
+.empty{ border:1px dashed var(--stroke); border-radius:8px; padding:var(--e5);
+  display:flex; flex-direction:column; gap:var(--e2) }
+.skeleton{ display:flex; flex-direction:column; gap:var(--e3);
+  border:1px solid var(--stroke); border-radius:8px; padding:var(--e5); background:var(--paper) }
+.skeleton-line{ height:var(--e4); border-radius:4px; background:#E2DDD4 }
+.skeleton-line:first-child{ width:45%; background:#D6D0C5 }
+.skeleton-line:last-child{ width:70% }
+
+/* ── Contrôles ───────────────────────────────────────────────────────── */
+.btn{ font:inherit; font-weight:600; font-size:.9375rem; border-radius:8px; cursor:pointer;
+  padding:var(--e3) var(--e5); border:1px solid var(--ink); background:var(--ink); color:var(--paper);
+  min-height:44px; text-align:center }
+.btn-discret{ background:transparent; color:var(--ink); border-color:var(--stroke) }
+.btn:hover{ opacity:.9 }
+.btn:focus-visible{ outline:2px solid var(--signal); outline-offset:2px }
+.field{ display:flex; flex-direction:column; gap:var(--e2) }
+.field label{ font-size:var(--t-end); font-weight:600; color:var(--ink-soft) }
+.field input{ font:inherit; font-size:.9375rem; border:1px solid var(--stroke); border-radius:8px;
+  padding:var(--e3) var(--e4); background:#fff; color:var(--ink); min-height:44px }
+.field input:focus-visible{ outline:2px solid var(--signal); outline-offset:1px; border-color:var(--ink-soft) }
+
+/* ── Rupture déclarée ────────────────────────────────────────────────── */
+.display{ margin:0; font-size:var(--t-display); line-height:1.02; letter-spacing:-.045em;
+  font-weight:600; text-wrap:balance; max-width:18ch }
+[data-intent="statement"]{ position:relative }
+
+</style>
+</head>
+<body>
+<main><section class="section density-ample" data-density="ample" data-head="oui"><div class="content"><div class="stack e6"><p class="txt txt-menu">FILI · Écran Témoin · version du 6 août 2026</p><h1 class="t1">Une décision approuvée une fois devient un invariant vérifiable.</h1><p class="txt txt-lede">Cette page est écrite à la main sous les contrats S1 et S2, et elle passe sous le Leviathan. Ce que vous regardez n'est pas une maquette : c'est ce que la doctrine autorise, et rien d'autre.</p></div></div></section><section class="section density-compact hollow" data-density="compact"><div class="content"><div class="stack e5"><h2 class="t2">Où en est le système</h2><div class="grid col-4 e5"><div class="stack e1"><span class="token token-lock"><span class="dot dot-lock" aria-hidden="true"></span>S1 · Composants typés</span><p class="txt txt-end">Six règles, verrouillé.</p></div><div class="stack e1"><span class="token token-lock"><span class="dot dot-lock" aria-hidden="true"></span>S2 · Contrat d'état</span><p class="txt txt-end">Six règles, verrouillé.</p></div><div class="stack e1"><span class="token token-waiting"><span class="dot dot-waiting" aria-hidden="true"></span>S3 · Discipline spatiale</span><p class="txt txt-end">Fermé jusqu'à votre verdict sur cette page.</p></div><div class="stack e1"><span class="token token-neutral"><span class="dot dot-neutral" aria-hidden="true"></span>S4 · Rythme de composition</span><p class="txt txt-end">Fermé.</p></div></div></div></div></section><section class="section density-normal" data-density="normal"><div class="content"><div class="stack e6"><div class="stack e3"><h2 class="t2">Les composants du registre</h2><p class="txt txt-lede">Une donnée distante ne s'affiche jamais nue : elle passe par un conteneur qui oblige à traiter les quatre cas.</p></div><div class="grid col-3 e6"><div class="stack e2"><h3 class="t3">Button</h3><p class="txt txt-end">principal · discret · en attente</p></div><div class="stack e2"><h3 class="t3">TextField</h3><p class="txt txt-end">normal · erreur · lecture seule</p></div><div class="stack e2"><h3 class="t3">EtatAsync</h3><p class="txt txt-end">chargement · erreur · vide · contenu</p></div></div><div class="grid col-2 e6"><div class="stack e2"><div class="field"><label for="search">Rechercher un composant</label><input id="search" type="text" /></div><button type="button" class="btn btn-main">Vérification en cours…</button></div><div class="stack e2"><div class="field"><label for="registry">Chemin du registre</label><input id="registry" type="text" /></div><button type="button" class="btn btn-discret">Ouvrir le registre</button></div></div></div></div></section><section class="section density-normal hollow" data-density="normal"><div class="content"><div class="stack e6"><div class="stack e3"><h2 class="t2">Ce qu'il se passe quand ça ne va pas</h2><p class="txt txt-lede">Trois états non nominaux, rendus par le même conteneur.</p></div><div class="grid col-3 e4"><div class="alert" role="status"><h3 class="t3 alert-heading">La télémétrie est indisponible</h3><div class="alert-body"><p class="txt txt-end">Le service ne répond pas. Les mesures d'aujourd'hui manqueront au rapport. Réessayer.</p></div></div><div class="empty"><h3 class="t3">Aucune décision aujourd'hui</h3><div class="empty-body"><p class="txt txt-end">Le journal se remplit à chaque arbitrage. Rien n'a été tranché depuis hier.</p></div></div><div class="skeleton" aria-busy="true" aria-live="polite"><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div></div></div></section><section class="section density-ample" data-density="ample" data-intent="statement" data-intent-reason="page manifeste : le contraste d'échelle fait partie du propos, il n'est pas un accident de mise en page"><div class="content"><div class="stack e5"><p class="txt txt-menu">Rupture déclarée</p><p class="display">Ceci n'est pas une erreur. C'est une intention signée.</p><p class="txt txt-end">Cette section sort de l'échelle typographique. Elle passe parce qu'elle porte son intention et son motif, à l'endroit exact où elle s'exerce. Sans motif écrit, elle serait bloquée comme une négligence.</p></div></div></section><section class="section density-compact hollow" data-density="compact"><div class="content"><div class="stack e4"><h2 class="t2">Ce que cette page ne prouve pas</h2><div class="grid col-3 e4"><p class="txt txt-end">Qu'elle est belle. Elle prouve que la doctrine ne l'empêche pas de l'être.</p><p class="txt txt-end">Ce que l'IA en ferait. Elle est écrite à la main sous contrainte : c'est le plafond, pas le comportement d'un modèle.</p><p class="txt txt-end">Qu'elle est accessible. Le contraste et le clavier tiennent ; l'audit reste à faire.</p></div></div></div></section></main>
+</body>
+</html>

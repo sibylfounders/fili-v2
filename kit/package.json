@@ -8,11 +8,11 @@
     "build": "next build",
     "start": "next start -p 3001",
     "typecheck": "tsc --noEmit",
-    "tokens": "node tokens.ecrire.mjs",
+    "tokens": "node tokens.write.mjs",
     "test": "node --test derivation.test.mjs",
-    "test:pages": "KIT_DIST=.next-epreuves next build && KIT_DIST=.next-epreuves node --test 'epreuves/*.test.mjs'",
-    "banc:etat": "node epreuves/etat-du-banc.mjs",
-    "banc:nuit": "node epreuves/course-de-nuit.mjs"
+    "test:pages": "KIT_DIST=.next-tests next build && KIT_DIST=.next-tests node --test 'tests/*.test.mjs'",
+    "bench:state": "node tests/bench-state.mjs",
+    "bench:night": "node tests/night-run.mjs"
   },
   "dependencies": {
     "next": "^14.2.15",

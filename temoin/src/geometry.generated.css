@@ -1,0 +1,40 @@
+/* PIÈCE GÉNÉRÉE — ne pas éditer à la main.
+   Produite par tools/fili/geometrie/produire.mjs depuis l'Échelle Semantic Rhythm.
+   Base 24 · ratio 1.4142135623730951 · arrondi de départ 24.
+   TOUT EN REM, sauf la cible au doigt : la taille de texte de l'utilisateur commande.
+   Chaque jeton est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
+   l'horizontal va de 0.8 à 1.2, le vertical de 0.9 à 1.16,
+   le texte de 0.96 à 1.07, les rayons de 0.86 à 1.12,
+   les contrôles de 1 à 1.06. */
+:root {
+  --rr-inline-margin-wide: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
+  --rr-inline-gap-wide: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --rr-inline-margin-page: clamp(1.6971rem, 1.4546rem + 1.2122vw, 2.5456rem);
+  --rr-inline-gap-page: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --rr-inline-margin-container: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --rr-inline-gap-container: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --rr-inline-margin-card: clamp(0.8485rem, 0.7273rem + 0.6061vw, 1.2728rem);
+  --rr-inline-gap-card: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
+  --rr-inline-margin-detail: clamp(0.6rem, 0.5143rem + 0.4286vw, 0.9rem);
+  --rr-inline-gap-detail: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
+  --rr-block-margin-wide: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
+  --rr-block-gap-wide: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --rr-block-margin-page: clamp(1.9092rem, 1.7516rem + 0.7879vw, 2.4607rem);
+  --rr-block-gap-page: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --rr-block-margin-container: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --rr-block-gap-container: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --rr-block-margin-card: clamp(0.9546rem, 0.8758rem + 0.394vw, 1.2304rem);
+  --rr-block-gap-card: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
+  --rr-block-margin-detail: clamp(0.675rem, 0.6193rem + 0.2786vw, 0.87rem);
+  --rr-block-gap-detail: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
+  --rr-radius-container: clamp(0.645rem, 0.5893rem + 0.2786vw, 0.84rem);
+  --rr-radius-card: clamp(0.3225rem, 0.2946rem + 0.1393vw, 0.42rem);
+  --rr-radius-detail: clamp(0.1613rem, 0.1473rem + 0.0696vw, 0.21rem);
+  --rr-radius-control: clamp(0.43rem, 0.3929rem + 0.1857vw, 0.56rem);
+  --rr-inline-edge: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --rr-block-edge: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --rr-type-body: clamp(0.96rem, 0.9286rem + 0.1571vw, 1.07rem);
+  --rr-type-heading2: clamp(1.2rem, 1.1607rem + 0.1964vw, 1.3375rem);
+  --rr-type-heading1: clamp(1.5rem, 1.4509rem + 0.2455vw, 1.6719rem);
+  --rr-control-target: clamp(44px, 43.2457px + 0.2357vw, 46.64px);
+}

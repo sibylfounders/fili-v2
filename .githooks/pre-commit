@@ -47,9 +47,9 @@ fi
 RACINE_FILI="$(git rev-parse --show-toplevel)"
 if git diff --quiet -- docs/system-map.md 2>/dev/null \
    && git diff --cached --quiet -- docs/system-map.md 2>/dev/null; then
-  node "$RACINE_FILI/kit/epreuves/etat-du-banc.mjs" --ecrire || true
+  node "$RACINE_FILI/kit/tests/bench-state.mjs" --ecrire || true
 else
-  node "$RACINE_FILI/kit/epreuves/etat-du-banc.mjs" || true
+  node "$RACINE_FILI/kit/tests/bench-state.mjs" || true
 fi
 
 echo "── OK ───────────────────────────────────────────────────────"

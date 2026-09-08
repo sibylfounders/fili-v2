@@ -69,19 +69,19 @@
      zone hors flux n'ont pas de jeton, et les seules valeurs employées ici sont
      celles que le fichier de règles tolère — 0, 50 %, 100 %. La mesure, elle,
      vient du jeton. */
-  .atteinte-confort {
+  .reached-comfort {
     position: relative;
   }
 
-  .atteinte-confort::after {
+  .reached-comfort::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     width: 100%;
     height: 100%;
-    min-width: var(--rr-control-cible);
-    min-height: var(--rr-control-cible);
+    min-width: var(--rr-control-target);
+    min-height: var(--rr-control-target);
     transform: translate(-50%, -50%);
   }
 }

@@ -5,28 +5,28 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { hexVersLch, lchVersHex, contraste, contrastante, laPlusDouce, partenaire } from './couleur.mjs'
+import { hexToLch, lchToHex, contrast, contrasting, therePlusSoft, partner } from './color.mjs'
 
-const RACINE = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
-const P = JSON.parse(fs.readFileSync(path.join(RACINE, 'fili/expression.json'), 'utf8'))
+const ROOT = path.resolve(fileURLToPath(new URL('../../../', import.meta.url)))
+const P = JSON.parse(fs.readFileSync(path.join(ROOT, 'fili/expression.json'), 'utf8'))
 const G = P.$generation
 
-const [, , TEINTE] = hexVersLch(P.$primaire.valeur)
-const CN = G.neutres.chroma
-const CIBLE = G.couples.texte
-const CIBLE_UI = G.couples.interface
+const [, , HUE] = hexToLch(P.$primary.value)
+const CN = G.neutrals.chroma
+const TARGET = G.pairs.text
+const TARGET_UI = G.pairs.interface
 /* Le plafond de confort : au-delà, un texte ne gagne plus en lisibilité, il
    gagne en dureté. C'est un seuil déclaré comme les autres, pas un goût. */
-const CONFORT = G.couples.confort
+const COMFORT = G.pairs.comfort
 /* Le cran du milieu : ni la donnee, ni la reformulation. */
-const CADRAGE = G.couples.cadrage
+const FRAMING = G.pairs.framing
 
 /* ── Les surfaces neutres : une échelle de gris à la teinte de la primaire ── */
-const PALIERS = {
-  papier: 1.0, papierCreux: 0.968, papierSurvol: 0.928, papierSelection: 0.892, scene: 0.245,
+const TIERS = {
+  paper: 1.0, paperHollow: 0.968, paperHover: 0.928, paperSelection: 0.892, scene: 0.245,
 }
 const surfaces = Object.fromEntries(
-  Object.entries(PALIERS).map(([n, L]) => [n, lchVersHex([L, n === 'papier' ? 0 : CN, TEINTE])])
+  Object.entries(TIERS).map(([n, L]) => [n, lchToHex([L, n === 'paper' ? 0 : CN, HUE])])
 )
 
 /* ── Les encres : chacune est la partenaire d'une surface, pas un choix ───── */
@@ -35,61 +35,61 @@ const surfaces = Object.fromEntries(
    du confort, très au-dessus du plancher, et non l'extrême que la famille
    permet. Celle qui accompagne, elle, ne vise que le plancher : c'est ce qui
    distingue un texte qui porte d'un texte qui accompagne. */
-const encre = laPlusDouce(surfaces.papier, [CN, TEINTE], CONFORT)
-const encreDouce = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CADRAGE)
+const ink = therePlusSoft(surfaces.paper, [CN, HUE], COMFORT)
+const inkSoft = therePlusSoft(surfaces.paperSelection, [CN, HUE], FRAMING)
 /* Le troisieme cran : la reformulation. La plus legere qui tienne encore le
    plancher — en dessous, un texte cesse d'etre lisible, et un role de plus ne
    vaut jamais une ligne illisible. */
-const encreLegere = laPlusDouce(surfaces.papierSelection, [CN, TEINTE], CIBLE)
+const inkLight = therePlusSoft(surfaces.paperSelection, [CN, HUE], TARGET)
 /* Sur la scène, la symétrie exacte : la moins claire qui tienne le confort. */
-const encreInverse = partenaire(surfaces.scene, [CN, TEINTE], CONFORT, { versLeBas: false })
+const inkInverse = partner(surfaces.scene, [CN, HUE], COMFORT, { toTheBottom: false })
 /* Un contrôle désactivé est hors seuil par exception WCAG 1.4.3 : sa clarté est
    posée, pas calculée, et l'exception est déclarée à la planche. */
-const encreEteinte = lchVersHex([0.72, CN, TEINTE])
+const inkOff = lchToHex([0.72, CN, HUE])
 /* Un filet décoratif ne porte aucun sens seul : lui non plus n'a pas de seuil. */
-const trait = lchVersHex([0.9, CN, TEINTE])
-const traitNet = laPlusDouce(surfaces.papierCreux, [CN, TEINTE], CIBLE_UI)
+const stroke = lchToHex([0.9, CN, HUE])
+const strokeNet = therePlusSoft(surfaces.paperHollow, [CN, HUE], TARGET_UI)
 
 /* ── Les états : teinte conventionnelle, tirée vers la primaire, bornée ───── */
-const ecartCourt = (de, vers) => (((vers - de + 180) % 360) - 180)
-const harmoniser = (ancre) => {
-  const d = ecartCourt(ancre, TEINTE) * G.harmonisation.attraction
-  const borne = G.harmonisation.bande
-  return (ancre + Math.max(-borne, Math.min(borne, d)) + 360) % 360
+const gapShort = (of, to) => (((to - of + 180) % 360) - 180)
+const harmonize = (anchor) => {
+  const d = gapShort(anchor, HUE) * G.harmonization.attraction
+  const bound = G.harmonization.band
+  return (anchor + Math.max(-bound, Math.min(bound, d)) + 360) % 360
 }
 
-const etats = {}
-for (const [nom, ancre] of Object.entries(G.harmonisation.ancres)) {
-  const H = ancre === 'primaire' ? TEINTE : harmoniser(ancre)
-  const surface = lchVersHex([0.955, 0.04, H])
-  const plein = lchVersHex([0.45, 0.16, H])
-  etats[nom] = {
-    teinte: Number(H.toFixed(1)),
-    ancre: ancre === 'primaire' ? Number(TEINTE.toFixed(1)) : ancre,
+const states = {}
+for (const [name, anchor] of Object.entries(G.harmonization.anchors)) {
+  const H = anchor === 'primary' ? HUE : harmonize(anchor)
+  const surface = lchToHex([0.955, 0.04, H])
+  const full = lchToHex([0.45, 0.16, H])
+  states[name] = {
+    hue: Number(H.toFixed(1)),
+    anchor: anchor === 'primary' ? Number(HUE.toFixed(1)) : anchor,
     surface,
     /* La plus douce qui tienne 7:1 : au-delà l'encre vire au noir et la teinte
        de l'état — la seule chose qu'elle avait à dire — disparaît. */
-    sur: laPlusDouce(surface, [0.13, H], 7),
-    plein,
-    surPlein: contrastante(plein, [0.02, H], CIBLE, 'clair'),
-    trait: laPlusDouce(surfaces.papier, [0.1, H], CIBLE_UI),
+    on: therePlusSoft(surface, [0.13, H], 7),
+    full,
+    onFull: contrasting(full, [0.02, H], TARGET, 'light'),
+    stroke: therePlusSoft(surfaces.paper, [0.1, H], TARGET_UI),
   }
 }
 
 const palette = {
-  $genere: 'GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili/expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.',
-  $primaire: P.$primaire.valeur,
-  $teinte: Number(TEINTE.toFixed(1)),
-  $espace: G.espace,
-  neutres: { ...surfaces, encre, encreDouce, encreLegere, encreEteinte, encreInverse, trait, traitNet, accent: P.$primaire.valeur },
-  etats,
+  $generated: 'GÉNÉRÉ par tools/fili/expression/palette.mjs depuis fili/expression.json. Ne pas éditer à la main : la prochaine génération écraserait la retouche, et une valeur retouchée serait une valeur sans provenance.',
+  $primary: P.$primary.value,
+  $hue: Number(HUE.toFixed(1)),
+  $space: G.space,
+  neutrals: { ...surfaces, ink, inkSoft, inkLight, inkOff, inkInverse, stroke, strokeNet, accent: P.$primary.value },
+  states,
 }
-fs.writeFileSync(path.join(RACINE, 'fili/palette.json'), JSON.stringify(palette, null, 2) + '\n')
+fs.writeFileSync(path.join(ROOT, 'fili/palette.json'), JSON.stringify(palette, null, 2) + '\n')
 
-console.log(`\nPALETTE CALCULÉE — primaire ${P.$primaire.valeur}, teinte ${TEINTE.toFixed(1)}°, chroma des neutres ${String(CN)}\n`)
+console.log(`\nPALETTE CALCULÉE — primaire ${P.$primary.value}, teinte ${HUE.toFixed(1)}°, chroma des neutres ${String(CN)}\n`)
 console.log('  Surfaces et encres')
-for (const [n, v] of Object.entries(palette.neutres)) console.log(`    ${n.padEnd(16)} ${v}`)
+for (const [n, v] of Object.entries(palette.neutrals)) console.log(`    ${n.padEnd(16)} ${v}`)
 console.log('\n  États — ancre → teinte harmonisée')
-for (const [n, v] of Object.entries(etats))
-  console.log(`    ${n.padEnd(12)} ${String(v.ancre).padStart(5)}° → ${String(v.teinte).padStart(5)}°   surface ${v.surface} · sur ${v.sur} (${contraste(v.sur, v.surface).toFixed(2)}:1) · plein ${v.plein} · dessus ${v.surPlein} (${contraste(v.surPlein, v.plein).toFixed(2)}:1)`)
+for (const [n, v] of Object.entries(states))
+  console.log(`    ${n.padEnd(12)} ${String(v.anchor).padStart(5)}° → ${String(v.hue).padStart(5)}°   surface ${v.surface} · sur ${v.on} (${contrast(v.on, v.surface).toFixed(2)}:1) · plein ${v.full} · dessus ${v.onFull} (${contrast(v.onFull, v.full).toFixed(2)}:1)`)
 console.log('\n  → fili/palette.json\n')

@@ -1,24 +1,24 @@
-import { executerBatterie, RACINE } from './battery.mjs'
-import { verifierIntegrite } from './integrite.mjs'
+import { runBattery, ROOT } from './battery.mjs'
+import { verifyIntegrity } from './integrity.mjs'
 
-const integrite = await verifierIntegrite(RACINE)
-if (integrite.manques.length > 0) {
+const integrity = await verifyIntegrity(ROOT)
+if (integrity.lacks.length > 0) {
   console.log('\nREFUS DE STATUER — le gardien n\'est pas entier\n')
-  integrite.manques.forEach((m) => console.log('  🔴 ' + m))
+  integrity.lacks.forEach((m) => console.log('  🔴 ' + m))
   console.log('\n  La batterie ne rend pas de verdict sur un juge incomplet.\n')
   process.exit(2)
 }
-console.log(`\n🛡  Intégrité du gardien : ${integrite.total}/${integrite.total} assertions portées et actives.`)
+console.log(`\n🛡  Intégrité du gardien : ${integrity.total}/${integrity.total} assertions portées et actives.`)
 
-const r = await executerBatterie()
-const ligne = (x) => `  ${x.conforme ? '✅' : '❌'} ${x.id.padEnd(6)} ${x.attendu.padEnd(7)} → ${x.obtenu.padEnd(7)} ${x.quoi}`
+const r = await runBattery()
+const line = (x) => `  ${x.compliant ? '✅' : '❌'} ${x.id.padEnd(6)} ${x.expected.padEnd(7)} → ${x.obtained.padEnd(7)} ${x.what}`
 
 console.log('\nBATTERIE DE CRASH-TESTS — les cinq contrats S1 → S5\n')
 console.log('  Fixtures piégées (doivent BLOQUER)')
-r.filter((x) => x.attendu === 'BLOQUE').forEach((x) => console.log(ligne(x)))
+r.filter((x) => x.expected === 'BLOQUE').forEach((x) => console.log(line(x)))
 console.log('\n  Fixtures conformes (doivent PASSER)')
-r.filter((x) => x.attendu === 'PASSE').forEach((x) => console.log(ligne(x)))
+r.filter((x) => x.expected === 'PASSE').forEach((x) => console.log(line(x)))
 
-const echecs = r.filter((x) => !x.conforme)
-console.log(`\n  VERDICT : ${echecs.length === 0 ? '🟢 100 % — les cinq Sujets tiennent' : `🔴 ${echecs.length} écart(s)`}\n`)
-process.exit(echecs.length === 0 ? 0 : 1)
+const failures = r.filter((x) => !x.compliant)
+console.log(`\n  VERDICT : ${failures.length === 0 ? '🟢 100 % — les cinq Sujets tiennent' : `🔴 ${failures.length} écart(s)`}\n`)
+process.exit(failures.length === 0 ? 0 : 1)

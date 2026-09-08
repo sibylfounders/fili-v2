@@ -13,55 +13,55 @@ import { useEffect, useState, useSyncExternalStore } from "react";
    dessus PENDANT l'hydratation — le réglage affiché ne repasse jamais
    par sa valeur par défaut au chargement (le « flash » du 23 août). */
 
-const CLE = "kit-theme";
+const KEY = "kit-theme";
 export type Thème = "light" | "system" | "dark";
 
-const lire = (): Thème => {
+const read = (): Thème => {
   const t = document.documentElement.dataset.theme;
   return t === "light" || t === "dark" ? t : "system";
 };
 
-const abonner = (cb: () => void) => {
+const subscribe = (cb: () => void) => {
   const mo = new MutationObserver(cb);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   return () => mo.disconnect();
 };
 
 export function useTheme() {
-  const theme = useSyncExternalStore(abonner, lire, () => "system" as Thème);
+  const theme = useSyncExternalStore(subscribe, read, () => "system" as Thème);
   const changer = (t: Thème) => {
     if (t === "system") delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = t;
-    try { localStorage.setItem(CLE, t); } catch {}
+    try { localStorage.setItem(KEY, t); } catch {}
   };
   return { theme, changer };
 }
 
 /* La préférence du système, écoutée en direct — pour savoir quel thème
    « Système » résout réellement (et re-mesurer les paires au changement). */
-export function useSchemeSysteme() {
-  const [sombre, setSombre] = useState(false);
+export function useSchemeSystem() {
+  const [dark, setDark] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setSombre(mq.matches);
-    const suivre = (e: MediaQueryListEvent) => setSombre(e.matches);
-    mq.addEventListener("change", suivre);
-    return () => mq.removeEventListener("change", suivre);
+    setDark(mq.matches);
+    const follow = (e: MediaQueryListEvent) => setDark(e.matches);
+    mq.addEventListener("change", follow);
+    return () => mq.removeEventListener("change", follow);
   }, []);
-  return sombre;
+  return dark;
 }
 
 export function Theme() {
   const { changer } = useTheme();
-  const CHOIX: [Thème, string][] = [["light", "Clair"], ["system", "Système"], ["dark", "Sombre"]];
+  const CHOICE: [Thème, string][] = [["light", "Clair"], ["system", "Système"], ["dark", "Sombre"]];
   return (
-    <div className="bloc">
-      <span className="mono sourd">Thème — tout le site</span>
-      <div className="rang" style={{ gap: "var(--gap-3-inline)" }}>
-        {CHOIX.map(([t, nom]) => (
+    <div className="block">
+      <span className="mono muted">Thème — tout le site</span>
+      <div className="rank" style={{ gap: "var(--gap-3-inline)" }}>
+        {CHOICE.map(([t, name]) => (
           /* le bouton actif est dessiné en CSS depuis <html data-theme> —
              juste dès la première peinture, sans attendre l'hydratation */
-          <button key={t} data-choix-theme={t} className="bouton" onClick={() => changer(t)}>{nom}</button>
+          <button key={t} data-choice-theme={t} className="button" onClick={() => changer(t)}>{name}</button>
         ))}
       </div>
     </div>

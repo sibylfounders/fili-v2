@@ -16,52 +16,52 @@
    large de la scène, plus large que tout écart à l'intérieur d'une
    colonne (dedans plus serré que dehors ; faute relevée par l'Auteur sur
    la paire des photos, corrigée le jour même). */
-.cb-paire { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
-@media (min-width: 40em) { .cb-paire { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.cb-cote { display: grid; gap: var(--gap-3-block); align-content: start; }
-.cb-objet { display: grid; align-content: start; }
+.cb-pair { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
+@media (min-width: 40em) { .cb-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cb-side { display: grid; gap: var(--gap-3-block); align-content: start; }
+.cb-object { display: grid; align-content: start; }
 .cb-verdict { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
   font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
-.cb-verdict .verdict.bon { color: var(--success); font-weight: 700; }
+.cb-verdict .verdict.good { color: var(--success); font-weight: 700; }
 .cb-verdict .verdict.ko { color: var(--danger); font-weight: 700; }
 
 /* ── 1 · un habit, un rôle ── */
-.cb-ligne { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.cb-line { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
 
 /* ── 2 · le trait relie plus fort que l'espace ── */
 .cb-photos { display: grid; gap: var(--gap-4-block); }
-.cb-photos > .cb-legende + .cb-photo { margin-block-start: var(--gap-2-block); } /* plus d'air avant la photo suivante que sous la sienne */
+.cb-photos > .cb-caption + .cb-photo { margin-block-start: var(--gap-2-block); } /* plus d'air avant la photo suivante que sous la sienne */
 /* Un emplacement d'image vide, avec son icône (verdict d'Auteur : un bloc
    gris nu ne se lit pas comme une image). L'icône est décorative. */
 .cb-photo { height: 4.5rem; border-radius: var(--r-3); background: var(--surface-hover);
   display: grid; place-items: center; color: var(--border-strong); } /* l'icône est un trait, pas un texte : l'encre des filets, jamais le tertiaire (C17 ne parle que du texte) */
 .cb-photo svg { width: 1.75rem; height: 1.75rem; }
-.cb-legende { margin: 0; font-size: var(--font-size-label); color: var(--text-secondary); }
+.cb-caption { margin: 0; font-size: var(--font-size-label); color: var(--text-secondary); }
 /* casse : un filet entre chaque photo et sa légende, et la légende collée à la photo d'après — l'œil suit le trait */
-.cb-photos.coupees > .cb-legende { border-block-start: 2px solid var(--text-secondary); padding-block-start: var(--gap-2-block); margin-block-start: var(--gap-3-block); } /* casse */
-.cb-photos.coupees > .cb-legende + .cb-photo { margin-block-start: 0; }
+.cb-photos.cut > .cb-caption { border-block-start: 2px solid var(--text-secondary); padding-block-start: var(--gap-2-block); margin-block-start: var(--gap-3-block); } /* casse */
+.cb-photos.cut > .cb-caption + .cb-photo { margin-block-start: 0; }
 
 /* ── 3 · le simple gagne ── */
-.cb-carte { gap: var(--gap-4-block); }
-.cb-carte-titre { margin: 0; font-weight: 600; }
-.cb-carte-texte { margin: 0; font-size: var(--font-size-small); color: var(--text-secondary); }
+.cb-card { gap: var(--gap-4-block); }
+.cb-card-heading { margin: 0; font-weight: 600; }
+.cb-card-text { margin: 0; font-size: var(--font-size-small); color: var(--text-secondary); }
 /* casse : une seule chose change — un cadre double épais à la place du filet fin */
-.cb-carte.lourde { border: 4px double var(--text-secondary); } /* casse */
+.cb-card.heavy { border: 4px double var(--text-secondary); } /* casse */
 
 /* ── 4 · un bord commun ── */
-.cb-colonne { display: grid; gap: var(--gap-3-block);
+.cb-column { display: grid; gap: var(--gap-3-block);
   padding-inline-start: var(--pad-3-inline); border-inline-start: 1px dashed var(--border-strong); }
-.cb-bloc { margin: 0; }
-.cb-bloc.titre { font-weight: 600; }
-.cb-bloc.texte { font-size: var(--font-size-small); color: var(--text-secondary); }
-.cb-bloc.pave { display: grid; gap: var(--gap-4-block);
+.cb-block { margin: 0; }
+.cb-block.heading { font-weight: 600; }
+.cb-block.text { font-size: var(--font-size-small); color: var(--text-secondary); }
+.cb-block.slab { display: grid; gap: var(--gap-4-block);
   background: var(--surface-hover); border-radius: var(--r-3);
   padding: var(--pad-3-block) var(--pad-3-inline); }
-.cb-bloc.pave i { display: block; height: 0.5rem; border-radius: var(--r-4); background: var(--border-strong); }
-.cb-bloc.pave i:nth-child(2) { width: 70%; }
-.cb-bloc.pave i:nth-child(3) { width: 45%; }
+.cb-block.slab i { display: block; height: 0.5rem; border-radius: var(--r-4); background: var(--border-strong); }
+.cb-block.slab i:nth-child(2) { width: 70%; }
+.cb-block.slab i:nth-child(3) { width: 45%; }
 /* casse : trois départs, aucun commun — la colonne n'existe plus ; les trois retraits sont la faute, pas des crans */
-.cb-colonne.defaite { border-inline-start-color: transparent; }
-.cb-colonne.defaite .cb-bloc.titre { margin-inline-start: 3.5rem; } /* casse */
-.cb-colonne.defaite .cb-bloc.texte { margin-inline-start: 0; margin-inline-end: 2.5rem; } /* casse */
-.cb-colonne.defaite .cb-bloc.pave { margin-inline-start: 1.75rem; margin-inline-end: 0.75rem; } /* casse */
+.cb-column.defeat { border-inline-start-color: transparent; }
+.cb-column.defeat .cb-block.heading { margin-inline-start: 3.5rem; } /* casse */
+.cb-column.defeat .cb-block.text { margin-inline-start: 0; margin-inline-end: 2.5rem; } /* casse */
+.cb-column.defeat .cb-block.slab { margin-inline-start: 1.75rem; margin-inline-end: 0.75rem; } /* casse */

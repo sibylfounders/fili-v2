@@ -13,32 +13,32 @@
    — et il est ici prolongé par la même raison géométrique, vers le haut. */
 import type { ReactNode } from 'react'
 
-type Densite = 'compact' | 'normal' | 'ample'
+type Density = 'compact' | 'normal' | 'ample'
 
-const RESPIRATION: Record<Densite, string> = {
-  compact: 'py-block-coque',
+const BREATHING: Record<Density, string> = {
+  compact: 'py-block-container',
   normal: 'py-block-page',
-  ample: 'py-block-large',
+  ample: 'py-block-wide',
 }
 
 export function Section({
-  densite,
-  tete = false,
-  porte = false,
+  density,
+  head = false,
+  door = false,
   children,
-  ...reste
+  ...rest
 }: {
-  densite: Densite
-  tete?: boolean
-  porte?: boolean
+  density: Density
+  head?: boolean
+  door?: boolean
   children: ReactNode
 } & Record<string, unknown>) {
   return (
     <section
-      className={`${RESPIRATION[densite]} px-inline-coque mobile:px-inline-page ${porte ? 'bg-papier' : ''}`}
-      data-densite={densite}
-      data-tete={tete ? 'oui' : undefined}
-      {...reste}
+      className={`${BREATHING[density]} px-inline-container mobile:px-inline-page ${door ? 'bg-paper' : ''}`}
+      data-density={density}
+      data-head={head ? 'oui' : undefined}
+      {...rest}
     >
       <div className="mx-auto max-w-page">{children}</div>
     </section>

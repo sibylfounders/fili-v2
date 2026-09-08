@@ -10,42 +10,42 @@
    la courbe mange déjà les bords, le texte s'y colle. */
 import type { ReactNode } from 'react'
 
-type Variante = 'principal' | 'discret'
+type Variant = 'main' | 'discret'
 
 /* L'air. Le serré ne se choisit pas pour gagner de la place : il se déclare
    parce que le bouton est dans l'un des deux cas nommés. */
-type Air = 'large' | 'serre'
+type Air = 'wide' | 'tight'
 
 const AIR: Record<Air, string> = {
-  large: 'px-inline-coque',
-  serre: 'px-inline-carte',
+  wide: 'px-inline-container',
+  tight: 'px-inline-card',
 }
 
-const ALLURE: Record<Variante, string> = {
-  principal:
-    'bg-encre text-encre-inverse border-encre hover:bg-scene hover:border-scene disabled:bg-trait-net disabled:border-trait-net',
-  discret: 'bg-papier text-encre border-trait-net hover:border-encre disabled:text-encre-eteinte',
+const LOOK: Record<Variant, string> = {
+  main:
+    'bg-ink text-ink-inverse border-ink hover:bg-scene hover:border-scene disabled:bg-stroke-net disabled:border-stroke-net',
+  discret: 'bg-paper text-ink border-stroke-net hover:border-ink disabled:text-ink-off',
 }
 
 export function Button({
   children,
   onPress,
-  variante = 'principal',
-  desactive = false,
-  air = 'large',
+  variant = 'main',
+  disabled = false,
+  air = 'wide',
 }: {
   children: ReactNode
   onPress?: () => void
-  variante?: Variante
-  desactive?: boolean
+  variant?: Variant
+  disabled?: boolean
   air?: Air
 }) {
   return (
     <button
       type="button"
       onClick={onPress}
-      disabled={desactive}
-      className={`inline-flex w-fit items-center justify-center rounded-controle border-systeme ${AIR[air]} py-block-detail text-fin font-moyenne transition-colors duration-base ease-standard disabled:cursor-not-allowed ${ALLURE[variante]}`}
+      disabled={disabled}
+      className={`inline-flex w-fit items-center justify-center rounded-control border-system ${AIR[air]} py-block-detail text-end font-mean transition-colors duration-base ease-standard disabled:cursor-not-allowed ${LOOK[variant]}`}
     >
       {children}
     </button>

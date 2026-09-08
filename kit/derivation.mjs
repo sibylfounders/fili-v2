@@ -7,7 +7,7 @@
      « LE MOTEUR DU RYTHME ». Les huit décisions du 25 août 2026 y sont les
      lois ; le crash-test kit/derivation.test.mjs les rejoue une à une.
 
-   Régénérer les jetons : node kit/tokens.ecrire.mjs   (tokens.css · Tailwind · Figma)
+   Régénérer les jetons : node kit/tokens.write.mjs   (tokens.css · Tailwind · Figma)
                           --css, --tailwind, --figma, --rythme : la même chose, à l'écran
 
    ───────────────────────────────────────────────────────────────────────
@@ -68,19 +68,19 @@
    Régénérer les jetons : node kit/derivation.mjs --css > (bloc tokens.css)
    Vérifier une primaire :  node kit/derivation.mjs "#0E7C5B"            */
 
-const versLineaire = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
-const versSrgb = (c) => (c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055)
+const toLinear = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+const toSrgb = (c) => (c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055)
 
-export function hexVersRgb(hex) {
+export function hexToRgb(hex) {
   const n = hex.replace('#', '')
   return [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255)
 }
-export function rgbVersHex([r, g, b]) {
+export function rgbToHex([r, g, b]) {
   const q = (v) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, '0')
   return `#${q(r)}${q(g)}${q(b)}`.toUpperCase()
 }
-export function rgbVersOklab([R, G, B]) {
-  const r = versLineaire(R), g = versLineaire(G), b = versLineaire(B)
+export function rgbToOklab([R, G, B]) {
+  const r = toLinear(R), g = toLinear(G), b = toLinear(B)
   const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b)
   const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b)
   const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b)
@@ -90,38 +90,38 @@ export function rgbVersOklab([R, G, B]) {
     0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s,
   ]
 }
-export function oklabVersRgb([L, A, B]) {
+export function oklabToRgb([L, A, B]) {
   const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3
   const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3
   const s = (L - 0.0894841775 * A - 1.2914855480 * B) ** 3
   return [
-    versSrgb(+4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
-    versSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
-    versSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s),
+    toSrgb(+4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    toSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    toSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s),
   ]
 }
-export const oklabVersLch = ([L, a, b]) => [L, Math.hypot(a, b), ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360]
-export const lchVersOklab = ([L, C, H]) => [L, C * Math.cos((H * Math.PI) / 180), C * Math.sin((H * Math.PI) / 180)]
-export const hexVersLch = (hex) => oklabVersLch(rgbVersOklab(hexVersRgb(hex)))
+export const oklabToLch = ([L, a, b]) => [L, Math.hypot(a, b), ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360]
+export const lchToOklab = ([L, C, H]) => [L, C * Math.cos((H * Math.PI) / 180), C * Math.sin((H * Math.PI) / 180)]
+export const hexToLch = (hex) => oklabToLch(rgbToOklab(hexToRgb(hex)))
 
 /* Hors gamut, on réduit la chroma jusqu'à rentrer : la clarté et la teinte
    sont ce qu'on a décidé, la saturation est ce qu'on peut se permettre. */
-export function lchVersHex([L, C, H]) {
+export function lchToHex([L, C, H]) {
   let c = C
   for (let i = 0; i < 64; i++) {
-    const rgb = oklabVersRgb(lchVersOklab([L, c, H]))
-    if (rgb.every((v) => v >= -0.001 && v <= 1.001)) return rgbVersHex(rgb)
+    const rgb = oklabToRgb(lchToOklab([L, c, H]))
+    if (rgb.every((v) => v >= -0.001 && v <= 1.001)) return rgbToHex(rgb)
     c *= 0.96
   }
-  return rgbVersHex(oklabVersRgb(lchVersOklab([L, 0, H])))
+  return rgbToHex(oklabToRgb(lchToOklab([L, 0, H])))
 }
 
-const canal = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+const channel = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
 export function luminance(hex) {
-  const [r, g, b] = hexVersRgb(hex).map(canal)
+  const [r, g, b] = hexToRgb(hex).map(channel)
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
-export function contraste(a, b) {
+export function contrast(a, b) {
   const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p)
   return (x + 0.05) / (y + 0.05)
 }
@@ -129,21 +129,21 @@ export function contraste(a, b) {
 /* La partenaire : on fait varier la clarté, à teinte et chroma constantes,
    jusqu'au seuil. Une paire n'est pas deux couleurs choisies puis mesurées :
    c'est une couleur choisie et sa partenaire calculée pour elle. */
-export function partenaire(fond, [C, H], cible, { versLeBas = true } = {}) {
-  let lo = 0, hi = 1, meilleur = versLeBas ? '#000000' : '#FFFFFF'
+export function partner(background, [C, H], target, { toTheBottom = true } = {}) {
+  let lo = 0, hi = 1, best = toTheBottom ? '#000000' : '#FFFFFF'
   for (let i = 0; i < 40; i++) {
     const L = (lo + hi) / 2
-    const hex = lchVersHex([L, C, H])
-    if (contraste(hex, fond) >= cible) { meilleur = hex; if (versLeBas) lo = L; else hi = L }
-    else if (versLeBas) hi = L; else lo = L
+    const hex = lchToHex([L, C, H])
+    if (contrast(hex, background) >= target) { best = hex; if (toTheBottom) lo = L; else hi = L }
+    else if (toTheBottom) hi = L; else lo = L
   }
-  return meilleur
+  return best
 }
 /* Le côté le plus lisible : teinté d'abord, pur ensuite, l'autre côté enfin. */
-function surCouleur(fond, [C, H], cible, prefere = 'clair') {
-  const clairs = [lchVersHex([0.985, Math.min(C, 0.02), H]), '#FFFFFF']
-  const sombres = [lchVersHex([0.145, Math.min(C, 0.03), H]), '#000000']
-  const ordre = prefere === 'clair' ? [...clairs, ...sombres] : [...sombres, ...clairs]
+function onColor(background, [C, H], target, preferred = 'light') {
+  const light = [lchToHex([0.985, Math.min(C, 0.02), H]), '#FFFFFF']
+  const dark = [lchToHex([0.145, Math.min(C, 0.03), H]), '#000000']
+  const order = preferred === 'light' ? [...light, ...dark] : [...dark, ...light]
   /* Une encre teintée n'est retenue que si elle tient la cible AVEC de la
      marge. Au milieu de clarté (cas limite d'Auré, 24 août : ocre, canard,
      olive…), tout passe de justesse — et une encre teintée de la même
@@ -151,44 +151,44 @@ function surCouleur(fond, [C, H], cible, prefere = 'clair') {
      devient PURE : le noir ou le blanc franc, le côté qui contraste le
      plus. Le contrat 4,5:1 reste tenu — le pur contraste toujours au moins
      autant que le teinté de son côté. */
-  const marge = 1.3
-  for (const hex of ordre) if (contraste(hex, fond) >= cible * marge) return hex
-  return contraste('#000000', fond) >= contraste('#FFFFFF', fond) ? '#000000' : '#FFFFFF'
+  const margin = 1.3
+  for (const hex of order) if (contrast(hex, background) >= target * margin) return hex
+  return contrast('#000000', background) >= contrast('#FFFFFF', background) ? '#000000' : '#FFFFFF'
 }
 /* Une valeur ancrée, recalée si une de ses paires ne tient pas son seuil —
    contre TOUS ses fonds : la contrainte la plus dure gagne. */
-function cale(hex, fonds, cible, [C, H], { versLeBas = true } = {}) {
-  let retenu = hex
-  for (let passe = 0; passe < 2; passe++)
-    for (const f of fonds)
-      if (contraste(retenu, f) < cible) retenu = partenaire(f, [C, H], cible, { versLeBas })
-  return retenu
+function aligned(hex, backgrounds, target, [C, H], { toTheBottom = true } = {}) {
+  let kept = hex
+  for (let pass = 0; pass < 2; pass++)
+    for (const f of backgrounds)
+      if (contrast(kept, f) < target) kept = partner(f, [C, H], target, { toTheBottom })
+  return kept
 }
 
-export const PRIMAIRE_DEFAUT = '#4F46E5'
+export const PRIMARY_DEFAULTS = '#4F46E5'
 /* L'accent d'auteur de la charte — choisi à la main (décision d'Auteur,
    2026-08-30, journal #131). Une valeur souveraine : le moteur ne la
    retouche jamais. */
-export const ACCENT_AUTEUR = '#75E242'
+export const ACCENT_AUTHOR = '#75E242'
 /* Les états et le déplacement de la marque — décision du 27 août 2026,
    révisée sur pièce le 30 août (COLOR-UX 2.8.0) : l'adaptation est légère. */
-export const PART_ETATS = 0.25
-export const PLAFOND_ETATS = 12
-const H0 = hexVersLch(PRIMAIRE_DEFAUT)[2] /* la teinte de la charte : l'origine du calibrage */
+export const PART_STATES = 0.25
+export const CEILING_STATES = 12
+const H0 = hexToLch(PRIMARY_DEFAULTS)[2] /* la teinte de la charte : l'origine du calibrage */
 /* L'arc le plus court, replié sur [−180, +180[. Corrigé le 27 août 2026 :
    en JavaScript le reste d'un nombre négatif reste négatif, et l'écriture
    d'avant (`((vers - de + 180) % 360) - 180`) rendait −229° au lieu de +131°
    pour toute marque de teinte inférieure à 97° — rouges, oranges, jaunes :
    le déplacement des états partait du mauvais côté. */
-const ecartCourt = (de, vers) => ((((vers - de + 180) % 360) + 360) % 360) - 180
+const gapShort = (of, to) => ((((to - of + 180) % 360) + 360) % 360) - 180
 
 /* Deux décisions d'entrée : primary, et (optionnel) l'accent d'auteur.
    À la primaire de la charte, l'accent d'auteur s'applique par défaut ;
    passer null force le repli calculé. */
-export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
-  const saisiePrimaire = rgbVersHex(hexVersRgb(primaire))
-  if (accent === undefined && saisiePrimaire === PRIMAIRE_DEFAUT) accent = ACCENT_AUTEUR
-  const [Lp, Cp, H] = hexVersLch(primaire)
+export function derived(primary = PRIMARY_DEFAULTS, accent = undefined) {
+  const inputPrimary = rgbToHex(hexToRgb(primary))
+  if (accent === undefined && inputPrimary === PRIMARY_DEFAULTS) accent = ACCENT_AUTHOR
+  const [Lp, Cp, H] = hexToLch(primary)
   /* CAS LIMITE (question d'Auré, 24 août) : une primaire achromatique —
      noir, blanc, gris — n'a PAS de teinte. Son angle OKLCH retombe sur
      0° (côté rose) par accident d'atan2 : sans garde-fou, les neutres
@@ -197,14 +197,14 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
      nulle sous le gris, pleine dès que la couleur est franche — les
      chromas d'emprunt et le déplacement s'y proportionnent. */
   const presence = Math.min(1, Cp / 0.02)
-  const teinte = (c) => c * presence /* un chroma emprunté à la marque */
+  const hue = (c) => c * presence /* un chroma emprunté à la marque */
   /* Les états suivent le DÉPLACEMENT de la primaire : un quart, borné ±12°
      (27 août : moitié / 30° ; révisé le 30 août sur pièce — l'adaptation
      est légère, ou le vocabulaire se déplace).
      À la primaire de la charte, l'écart est nul — reproduction exacte. */
-  const suit = (hCharte) => {
-    const tire = Math.max(-PLAFOND_ETATS, Math.min(PLAFOND_ETATS, ecartCourt(H0, H) * PART_ETATS)) * presence
-    return (hCharte + tire + 360) % 360
+  const follows = (hCharter) => {
+    const pulls = Math.max(-CEILING_STATES, Math.min(CEILING_STATES, gapShort(H0, H) * PART_STATES)) * presence
+    return (hCharter + pulls + 360) % 360
   }
 
   const light = {}
@@ -212,26 +212,26 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
 
   /* ── Neutres — teintés à la marque, clartés de la charte ── */
   light.bg = '#FFFFFF'
-  light.surface = lchVersHex([0.967, teinte(0.003), H])
-  light['surface-hover'] = lchVersHex([0.928, teinte(0.006), H])
+  light.surface = lchToHex([0.967, hue(0.003), H])
+  light['surface-hover'] = lchToHex([0.928, hue(0.006), H])
   light.border = light['surface-hover']
-  light['text-primary'] = lchVersHex([0.210, teinte(0.028), H])
-  light['text-secondary'] = cale(lchVersHex([0.446, teinte(0.024), H]), [light.bg, light.surface], 4.5, [teinte(0.024), H])
-  light['border-strong'] = cale(lchVersHex([0.551, teinte(0.022), H]), [light.bg, light.surface], 3, [teinte(0.022), H])
+  light['text-primary'] = lchToHex([0.210, hue(0.028), H])
+  light['text-secondary'] = aligned(lchToHex([0.446, hue(0.024), H]), [light.bg, light.surface], 4.5, [hue(0.024), H])
+  light['border-strong'] = aligned(lchToHex([0.551, hue(0.022), H]), [light.bg, light.surface], 3, [hue(0.022), H])
   /* text-tertiary — les petits textes indicatifs (kicker, fiches, légendes, pieds) : le gris le plus
      clair qui tienne encore 3:1 sur le fond le plus dur (le gris posé), cherché au seuil.
      EXCEPTION DÉCLARÉE (Arbitrage d'Auteur, 25 août : « limite côté lisibilité, mais ce sont des
      objets secondaires ») : jamais pour du texte lu, jamais sous le cran label. */
-  light['text-tertiary'] = partenaire(light.surface, [teinte(0.022), H], 3, { versLeBas: true })
+  light['text-tertiary'] = partner(light.surface, [hue(0.022), H], 3, { toTheBottom: true })
 
-  dark.bg = lchVersHex([0.130, teinte(0.025), H])
-  dark.surface = lchVersHex([0.210, teinte(0.030), H])
-  dark['surface-hover'] = lchVersHex([0.278, teinte(0.028), H])
+  dark.bg = lchToHex([0.130, hue(0.025), H])
+  dark.surface = lchToHex([0.210, hue(0.030), H])
+  dark['surface-hover'] = lchToHex([0.278, hue(0.028), H])
   dark.border = dark['surface-hover']
   dark['text-primary'] = '#FFFFFF'
-  dark['text-secondary'] = cale(lchVersHex([0.714, teinte(0.019), H]), [dark.bg, dark.surface], 4.5, [teinte(0.019), H], { versLeBas: false })
-  dark['border-strong'] = cale(lchVersHex([0.714, teinte(0.019), H]), [dark.bg, dark.surface], 3, [teinte(0.019), H], { versLeBas: false })
-  dark['text-tertiary'] = partenaire(dark.surface, [teinte(0.019), H], 3, { versLeBas: false })
+  dark['text-secondary'] = aligned(lchToHex([0.714, hue(0.019), H]), [dark.bg, dark.surface], 4.5, [hue(0.019), H], { toTheBottom: false })
+  dark['border-strong'] = aligned(lchToHex([0.714, hue(0.019), H]), [dark.bg, dark.surface], 3, [hue(0.019), H], { toTheBottom: false })
+  dark['text-tertiary'] = partner(dark.surface, [hue(0.019), H], 3, { toTheBottom: false })
 
   /* ── Marque — la décision reste entière tant qu'elle porte son encre.
      ZONE MÉDIANE (Arbitrage d'Auteur, 24 août — tranché sur le nuancier
@@ -242,18 +242,18 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
      luminosité seule — « assombries d'un cran ou deux ; aucune n'a
      changé de famille », la règle de la charte rendue mécanique — et
      l'ajustement est dit (meta.aplatAjuste), jamais tu. ── */
-  const saisie = rgbVersHex(hexVersRgb(primaire))
-  const coteOeil = (hex) => (hexVersLch(hex)[0] >= 0.67 ? 'sombre' : 'clair') /* le côté que l'œil attend */
-  const glisse = (hex, encreCote, cible = 4.5 * 1.12) => {
-    const pur = encreCote === 'clair' ? '#FFFFFF' : '#000000'
-    let retenu = hex
-    let [La, Ca, Hc] = hexVersLch(hex)
-    const pas = encreCote === 'clair' ? -0.008 : 0.008
-    for (let i = 0; i < 80 && contraste(pur, retenu) < cible; i++) {
-      La += pas
-      retenu = lchVersHex([La, Ca, Hc])
+  const input = rgbToHex(hexToRgb(primary))
+  const sideEye = (hex) => (hexToLch(hex)[0] >= 0.67 ? 'dark' : 'light') /* le côté que l'œil attend */
+  const slides = (hex, inkSide, target = 4.5 * 1.12) => {
+    const pure = inkSide === 'light' ? '#FFFFFF' : '#000000'
+    let kept = hex
+    let [There, Ca, Hc] = hexToLch(hex)
+    const increment = inkSide === 'light' ? -0.008 : 0.008
+    for (let i = 0; i < 80 && contrast(pure, kept) < target; i++) {
+      There += increment
+      kept = lchToHex([There, Ca, Hc])
     }
-    return retenu
+    return kept
   }
 
   /* Le fond doux reste DOUX face à l'aplat : toujours nettement plus clair
@@ -263,7 +263,7 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   let Ls = Math.max(0.930, Math.min(0.975, Lp + 0.419))
   let Cs = Math.min(0.033, Cp)
   if (Lp > 0.86) { Ls = 0.978; Cs = Math.min(0.016, Cp * 0.3) }
-  light['primary-subtle'] = lchVersHex([Ls, Cs, H])
+  light['primary-subtle'] = lchToHex([Ls, Cs, H])
   /* Côté de l'encre sur l'aplat clair (Arbitrage d'Auteur, 24 août :
      « sur tous les cas limites le blanc fonctionne mieux ») : le blanc
      d'abord. Le noir n'est retenu que s'il est CONFORTABLE (≥ 7,4:1 —
@@ -271,42 +271,42 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
      les marques réellement claires : ambre, orange vif, vert Spotify).
      Toute la zone médiane prend l'encre blanche, et l'aplat glisse
      jusqu'à la porter. */
-  const coteAplat = (hex) =>
-    contraste('#FFFFFF', hex) >= 4.5 * 1.12 ? 'clair'
-    : contraste('#000000', hex) >= 7.4 ? 'sombre'
-    : 'clair'
-  light.primary = glisse(saisie, coteAplat(saisie)) /* l'aplat : la saisie, glissée si l'encre ne tient pas */
-  const La = hexVersLch(light.primary)[0]
-  light['primary-hover'] = lchVersHex([La - 0.054, Cp, H])
-  light['on-primary'] = surCouleur(light.primary, [teinte(0.02), H], 4.5, coteAplat(light.primary))
-  light['primary-text'] = cale(saisie, [light.bg, light.surface, light['primary-subtle']], 4.5, [Cp, H])
-  const Lt = hexVersLch(light['primary-text'])[0]
-  light['primary-text-hover'] = cale(lchVersHex([Lt - 0.05, Cp, H]), [light.bg, light.surface], 4.5, [Cp, H])
-  light['on-primary-subtle'] = cale(lchVersHex([0.398, Math.min(0.177, Cp), H]), [light['primary-subtle']], 4.5, [Math.min(0.177, Cp), H])
+  const sideFlat = (hex) =>
+    contrast('#FFFFFF', hex) >= 4.5 * 1.12 ? 'light'
+    : contrast('#000000', hex) >= 7.4 ? 'dark'
+    : 'light'
+  light.primary = slides(input, sideFlat(input)) /* l'aplat : la saisie, glissée si l'encre ne tient pas */
+  const There = hexToLch(light.primary)[0]
+  light['primary-hover'] = lchToHex([There - 0.054, Cp, H])
+  light['on-primary'] = onColor(light.primary, [hue(0.02), H], 4.5, sideFlat(light.primary))
+  light['primary-text'] = aligned(input, [light.bg, light.surface, light['primary-subtle']], 4.5, [Cp, H])
+  const Lt = hexToLch(light['primary-text'])[0]
+  light['primary-text-hover'] = aligned(lchToHex([Lt - 0.05, Cp, H]), [light.bg, light.surface], 4.5, [Cp, H])
+  light['on-primary-subtle'] = aligned(lchToHex([0.398, Math.min(0.177, Cp), H]), [light['primary-subtle']], 4.5, [Math.min(0.177, Cp), H])
 
-  dark['primary-subtle'] = lchVersHex([0.257, Math.min(0.086, Cp), H])
-  dark.primary = Lp >= 0.62 ? saisie : lchVersHex([0.680, Cp, H]) /* une marque claire vit telle quelle en sombre */
-  dark.primary = glisse(dark.primary, coteOeil(dark.primary))
-  const Lb = hexVersLch(dark.primary)[0]
-  dark['primary-hover'] = lchVersHex([Math.min(Lb + 0.08, 0.92), Cp * 0.66, H])
-  dark['on-primary'] = surCouleur(dark.primary, [teinte(0.03), H], 4.5, coteOeil(dark.primary))
-  dark['primary-text'] = cale(dark.primary, [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { versLeBas: false })
-  const Ltd = hexVersLch(dark['primary-text'])[0]
-  dark['primary-text-hover'] = cale(lchVersHex([Math.min(Ltd + 0.05, 0.95), Cp * 0.66, H]), [dark.bg, dark.surface], 4.5, [Cp * 0.66, H], { versLeBas: false })
-  dark['on-primary-subtle'] = cale(lchVersHex([0.870, Math.min(0.062, Cp), H]), [dark['primary-subtle']], 4.5, [Math.min(0.062, Cp), H], { versLeBas: false })
+  dark['primary-subtle'] = lchToHex([0.257, Math.min(0.086, Cp), H])
+  dark.primary = Lp >= 0.62 ? input : lchToHex([0.680, Cp, H]) /* une marque claire vit telle quelle en sombre */
+  dark.primary = slides(dark.primary, sideEye(dark.primary))
+  const Lb = hexToLch(dark.primary)[0]
+  dark['primary-hover'] = lchToHex([Math.min(Lb + 0.08, 0.92), Cp * 0.66, H])
+  dark['on-primary'] = onColor(dark.primary, [hue(0.03), H], 4.5, sideEye(dark.primary))
+  dark['primary-text'] = aligned(dark.primary, [dark.bg, dark.surface, dark['primary-subtle']], 4.5, [Cp, H], { toTheBottom: false })
+  const Ltd = hexToLch(dark['primary-text'])[0]
+  dark['primary-text-hover'] = aligned(lchToHex([Math.min(Ltd + 0.05, 0.95), Cp * 0.66, H]), [dark.bg, dark.surface], 4.5, [Cp * 0.66, H], { toTheBottom: false })
+  dark['on-primary-subtle'] = aligned(lchToHex([0.870, Math.min(0.062, Cp), H]), [dark['primary-subtle']], 4.5, [Math.min(0.062, Cp), H], { toTheBottom: false })
 
   /* ── Accent — l'anneau de focus : l'écart de la charte, conservé ── */
   /* L'anneau de focus emprunte l'écart de teinte de la charte — mais une
      marque sans teinte n'a rien à prêter : l'anneau devient gris franc. */
   if (accent) {
     /* le choix d'auteur, tel quel — marketing, hors contrat fonctionnel */
-    const va = rgbVersHex(hexVersRgb(accent))
+    const va = rgbToHex(hexToRgb(accent))
     light.accent = va
     dark.accent = va
   } else {
     const Ha = (H - 55.3 + 360) % 360
-    light.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [light.bg, light.surface], 3, [teinte(0.111), Ha])
-    dark.accent = cale(lchVersHex([0.609, teinte(0.111), Ha]), [dark.bg, dark.surface], 3, [teinte(0.111), Ha], { versLeBas: false })
+    light.accent = aligned(lchToHex([0.609, hue(0.111), Ha]), [light.bg, light.surface], 3, [hue(0.111), Ha])
+    dark.accent = aligned(lchToHex([0.609, hue(0.111), Ha]), [dark.bg, dark.surface], 3, [hue(0.111), Ha], { toTheBottom: false })
   }
 
   /* (le focus se calcule après la sémantique : le halo rouge a besoin de danger) */
@@ -314,26 +314,26 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   /* ── Sémantique — ancres de la charte, tirées par le déplacement ── */
   /* Chaque facette garde SA teinte de charte (le doux du warning est jaune,
      son ton est brun) — toutes tirées par le même déplacement. */
-  const ETATS = {
-    danger:  { ton: [0.505, 0.190, 27.5],  doux: [0.936, 0.031, 17.7],  dTon: [0.711, 0.166, 22.2], dDoux: [0.258, 0.089, 26.0] },
-    success: { ton: [0.527, 0.137, 150.1], doux: [0.962, 0.043, 156.7], dTon: [0.800, 0.182, 151.7], dDoux: [0.266, 0.063, 152.9] },
-    warning: { ton: [0.473, 0.125, 46.2],  doux: [0.962, 0.058, 95.6],  dTon: [0.837, 0.164, 84.4], dDoux: [0.279, 0.074, 45.6] },
-    info:    { ton: [0.488, 0.217, 264.4], doux: [0.932, 0.032, 255.6], dTon: [0.714, 0.143, 254.6], dDoux: [0.282, 0.087, 267.9] },
+  const STATES = {
+    danger:  { tone: [0.505, 0.190, 27.5],  soft: [0.936, 0.031, 17.7],  dTone: [0.711, 0.166, 22.2], dSoft: [0.258, 0.089, 26.0] },
+    success: { tone: [0.527, 0.137, 150.1], soft: [0.962, 0.043, 156.7], dTone: [0.800, 0.182, 151.7], dSoft: [0.266, 0.063, 152.9] },
+    warning: { tone: [0.473, 0.125, 46.2],  soft: [0.962, 0.058, 95.6],  dTone: [0.837, 0.164, 84.4], dSoft: [0.279, 0.074, 45.6] },
+    info:    { tone: [0.488, 0.217, 264.4], soft: [0.932, 0.032, 255.6], dTone: [0.714, 0.143, 254.6], dSoft: [0.282, 0.087, 267.9] },
   }
-  const pose = ([L, C, Hc]) => [L, C, suit(Hc)]
-  for (const [nom, e] of Object.entries(ETATS)) {
-    const ton = pose(e.ton), doux = pose(e.doux), dTon = pose(e.dTon), dDoux = pose(e.dDoux)
-    light[`${nom}-subtle`] = lchVersHex(doux)
-    light[nom] = cale(lchVersHex(ton), [light.bg, light[`${nom}-subtle`]], 4.5, [ton[1], ton[2]])
-    light[`on-${nom}`] = surCouleur(light[nom], [0.02, ton[2]], 4.5, 'clair')
-    dark[`${nom}-subtle`] = lchVersHex(dDoux)
-    dark[nom] = cale(lchVersHex(dTon), [dark.surface, dark[`${nom}-subtle`]], 4.5, [dTon[1], dTon[2]], { versLeBas: false })
-    dark[`on-${nom}`] = surCouleur(dark[nom], [0.03, dTon[2]], 4.5, 'sombre')
+  const set = ([L, C, Hc]) => [L, C, follows(Hc)]
+  for (const [name, e] of Object.entries(STATES)) {
+    const tone = set(e.tone), soft = set(e.soft), dTone = set(e.dTone), dSoft = set(e.dSoft)
+    light[`${name}-subtle`] = lchToHex(soft)
+    light[name] = aligned(lchToHex(tone), [light.bg, light[`${name}-subtle`]], 4.5, [tone[1], tone[2]])
+    light[`on-${name}`] = onColor(light[name], [0.02, tone[2]], 4.5, 'light')
+    dark[`${name}-subtle`] = lchToHex(dSoft)
+    dark[name] = aligned(lchToHex(dTone), [dark.surface, dark[`${name}-subtle`]], 4.5, [dTone[1], dTone[2]], { toTheBottom: false })
+    dark[`on-${name}`] = onColor(dark[name], [0.03, dTone[2]], 4.5, 'dark')
     /* l'encre sur le fond doux — même convention que on-primary-subtle.
        Pour une famille mono-tonale elle vaut le ton calé ; warning,
        bi-tonal, la redéfinit juste dessous. */
-    light[`on-${nom}-subtle`] = light[nom]
-    dark[`on-${nom}-subtle`] = dark[nom]
+    light[`on-${name}-subtle`] = light[name]
+    dark[`on-${name}-subtle`] = dark[name]
   }
 
   /* ── EXCEPTION DÉCLARÉE (Arbitrage d'Auteur, 24 août) : warning est
@@ -345,11 +345,11 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
      · on-warning-subtle : l'encre brune calée qui ÉCRIT l'avertissement,
        sur le fond doux comme sur le blanc. */
   {
-    const e = ETATS.warning
-    const jaune = pose(e.dTon), brun = pose(e.ton)
-    light['on-warning-subtle'] = cale(lchVersHex(brun), [light.bg, light['warning-subtle']], 4.5, [brun[1], brun[2]])
-    light.warning = lchVersHex(jaune)
-    light['on-warning'] = surCouleur(light.warning, [0.03, jaune[2]], 4.5, 'sombre')
+    const e = STATES.warning
+    const yellow = set(e.dTone), brown = set(e.tone)
+    light['on-warning-subtle'] = aligned(lchToHex(brown), [light.bg, light['warning-subtle']], 4.5, [brown[1], brown[2]])
+    light.warning = lchToHex(yellow)
+    light['on-warning'] = onColor(light.warning, [0.03, yellow[2]], 4.5, 'dark')
     dark['on-warning-subtle'] = dark.warning /* en sombre, le jaune tient déjà comme encre */
   }
 
@@ -358,21 +358,21 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
   /* Le trait au clavier : le cran le moins soutenu de la famille qui tient
      3:1 sur bg ET surface — cherché en clarté, teinte et chroma de la
      couleur de départ. C'est l'indicateur de focus au sens de la norme. */
-  const traitClavier = (depart, fonds, versLeClair) => {
-    const [, C, Hd] = hexVersLch(depart)
-    let lo = 0, hi = 1, meilleur = depart
+  const strokeKeyboard = (begin, backgrounds, toTheLight) => {
+    const [, C, Hd] = hexToLch(begin)
+    let lo = 0, hi = 1, best = begin
     for (let i = 0; i < 40; i++) {
       const L = (lo + hi) / 2
-      const hex = lchVersHex([L, C, Hd])
-      if (fonds.every((fd) => contraste(hex, fd) >= 3)) { meilleur = hex; if (versLeClair) lo = L; else hi = L }
-      else if (versLeClair) hi = L; else lo = L
+      const hex = lchToHex([L, C, Hd])
+      if (backgrounds.every((fd) => contrast(hex, fd) >= 3)) { best = hex; if (toTheLight) lo = L; else hi = L }
+      else if (toTheLight) hi = L; else lo = L
     }
-    return meilleur
+    return best
   }
-  light['focus-ring'] = traitClavier(light.primary, [light.bg, light.surface], true)
-  dark['focus-ring'] = traitClavier(dark.primary, [dark.bg, dark.surface], false)
-  light['focus-ring-danger'] = traitClavier(light.danger, [light.bg, light.surface], true)
-  dark['focus-ring-danger'] = traitClavier(dark.danger, [dark.bg, dark.surface], false)
+  light['focus-ring'] = strokeKeyboard(light.primary, [light.bg, light.surface], true)
+  dark['focus-ring'] = strokeKeyboard(dark.primary, [dark.bg, dark.surface], false)
+  light['focus-ring-danger'] = strokeKeyboard(light.danger, [light.bg, light.surface], true)
+  dark['focus-ring-danger'] = strokeKeyboard(dark.danger, [dark.bg, dark.surface], false)
   light['focus-ring-neutral'] = light['border-strong']
   dark['focus-ring-neutral'] = dark['border-strong']
   /* ── Le panneau de code — jamais inversé (C12). Le fond n'est plus un
@@ -381,18 +381,18 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
      de syntaxe — commentaire neutre, chaîne (vert de la charte, tiré par
      le déplacement), mot-clé (cran 300), balise (ambre de la charte) —
      toutes calées à 4,5:1 sur ce fond. ── */
-  const codeBg = lchVersHex([0.257, Math.min(0.086, Cp), H])
-  const codeSur = (depart, Cx, Hx) => cale(depart, [codeBg], 4.5, [Cx, Hx], { versLeBas: false })
+  const codeBg = lchToHex([0.257, Math.min(0.086, Cp), H])
+  const codeOn = (begin, Cx, Hx) => aligned(begin, [codeBg], 4.5, [Cx, Hx], { toTheBottom: false })
   light['code-bg'] = dark['code-bg'] = codeBg
-  light['code-text'] = dark['code-text'] = codeSur(lchVersHex([0.870, Math.min(0.062, Cp), H]), Math.min(0.062, Cp), H)
-  light['code-com'] = dark['code-com'] = codeSur(lchVersHex([0.714, teinte(0.019), H]), teinte(0.019), H)
-  light['code-kw'] = dark['code-kw'] = codeSur(lchVersHex([0.785, Math.min(0.104, Cp), H]), Math.min(0.104, Cp), H)
-  light['code-str'] = dark['code-str'] = codeSur(lchVersHex(pose([0.800, 0.182, 151.7])), 0.182, suit(151.7))
-  light['code-tag'] = dark['code-tag'] = codeSur(lchVersHex(pose([0.837, 0.164, 84.4])), 0.164, suit(84.4))
+  light['code-text'] = dark['code-text'] = codeOn(lchToHex([0.870, Math.min(0.062, Cp), H]), Math.min(0.062, Cp), H)
+  light['code-com'] = dark['code-com'] = codeOn(lchToHex([0.714, hue(0.019), H]), hue(0.019), H)
+  light['code-kw'] = dark['code-kw'] = codeOn(lchToHex([0.785, Math.min(0.104, Cp), H]), Math.min(0.104, Cp), H)
+  light['code-str'] = dark['code-str'] = codeOn(lchToHex(set([0.800, 0.182, 151.7])), 0.182, follows(151.7))
+  light['code-tag'] = dark['code-tag'] = codeOn(lchToHex(set([0.837, 0.164, 84.4])), 0.164, follows(84.4))
 
   /* La décision d'entrée, et ce que le calage en a fait — dit, jamais tu.
      L'aplat glisse en zone médiane (aplatAjuste), le lien se cale (lienAjuste). */
-  const meta = { saisie, aplat: light.primary, aplatAjuste: saisie !== light.primary, lien: light['primary-text'], lienAjuste: saisie !== light['primary-text'], accentAuteur: Boolean(accent) }
+  const meta = { input, flat: light.primary, flatAdjusted: input !== light.primary, link: light['primary-text'], linkAdjusted: input !== light['primary-text'], accentAuthor: Boolean(accent) }
   return { light, dark, meta }
 }
 
@@ -410,48 +410,48 @@ export function derive(primaire = PRIMAIRE_DEFAUT, accent = undefined) {
    l'indigo de la charte, la gamme est celle du registre au code près.
    Une gamme d'ILLUSTRATION : les rôles ne consomment jamais une
    primitive — la page dit seulement sur quel cran chacun se pose. ── */
-const GAMME_ANCRES = [
+const RANGE_ANCHORS = [
   [50, 0.962, 0.018], [100, 0.930, 0.033], [200, 0.870, 0.062],
   [300, 0.785, 0.104], [400, 0.680, 0.158], [500, 0.585, 0.204],
   [600, 0.511, 0.230], [700, 0.457, 0.215], [800, 0.398, 0.177],
   [900, 0.359, 0.135], [950, 0.257, 0.086],
 ]
-export const CRANS = GAMME_ANCRES.map(([cran]) => cran)
+export const STEPS = RANGE_ANCHORS.map(([step]) => step)
 /* Le chroma le plus fort affichable à cette clarté et cette teinte. */
 function chromaMax(L, H) {
   let lo = 0, hi = 0.5
   for (let i = 0; i < 40; i++) {
     const c = (lo + hi) / 2
-    const rgb = oklabVersRgb(lchVersOklab([L, c, H]))
+    const rgb = oklabToRgb(lchToOklab([L, c, H]))
     if (rgb.every((v) => v >= -0.001 && v <= 1.001)) lo = c; else hi = c
   }
   return lo
 }
-const indexDuCran = (hex) => {
-  const [Lp] = hexVersLch(hex)
+const indexOfStep = (hex) => {
+  const [Lp] = hexToLch(hex)
   let k = 0
-  GAMME_ANCRES.forEach(([, L], i) => { if (Math.abs(L - Lp) < Math.abs(GAMME_ANCRES[k][1] - Lp)) k = i })
+  RANGE_ANCHORS.forEach(([, L], i) => { if (Math.abs(L - Lp) < Math.abs(RANGE_ANCHORS[k][1] - Lp)) k = i })
   return k
 }
 /* Le cran d'accueil d'une couleur : 50 si elle est très claire, 950 si
    elle est très sombre, 500 au milieu. */
-export const cranDe = (hex) => GAMME_ANCRES[indexDuCran(hex)][0]
+export const stepOf = (hex) => RANGE_ANCHORS[indexOfStep(hex)][0]
 
-export function gamme(primaire = PRIMAIRE_DEFAUT) {
-  const [, Cp, H] = hexVersLch(primaire)
-  const saisie = rgbVersHex(hexVersRgb(primaire))
-  const k = indexDuCran(saisie)
-  const ratio = Cp / GAMME_ANCRES[k][2] /* le chroma de la saisie, rapporté à celui de sa marche */
-  return GAMME_ANCRES.map(([cran, L, C], i) =>
-    [cran, i === k ? saisie : lchVersHex([L, Math.min(C * ratio, chromaMax(L, H)), H])])
+export function range(primary = PRIMARY_DEFAULTS) {
+  const [, Cp, H] = hexToLch(primary)
+  const input = rgbToHex(hexToRgb(primary))
+  const k = indexOfStep(input)
+  const ratio = Cp / RANGE_ANCHORS[k][2] /* le chroma de la saisie, rapporté à celui de sa marche */
+  return RANGE_ANCHORS.map(([step, L, C], i) =>
+    [step, i === k ? input : lchToHex([L, Math.min(C * ratio, chromaMax(L, H)), H])])
 }
 
 /* Les neutres : les marches elles-mêmes, à peine teintées à la marque —
    elles ne bougent pas avec la couleur saisie : c'est l'échelle qui rend
    un « 300 de marque » et un « 300 neutre » frères (C15). */
-export function gammeNeutres(primaire = PRIMAIRE_DEFAUT) {
-  const [, Cp, H] = hexVersLch(primaire)
-  return GAMME_ANCRES.map(([cran, L]) => [cran, lchVersHex([L, Math.min(0.012, Cp), H])])
+export function rangeNeutrals(primary = PRIMARY_DEFAULTS) {
+  const [, Cp, H] = hexToLch(primary)
+  return RANGE_ANCHORS.map(([step, L]) => [step, lchToHex([L, Math.min(0.012, Cp), H])])
 }
 
 /* Une famille sémantique a DEUX ancres de charte : son ton et son fond
@@ -459,40 +459,40 @@ export function gammeNeutres(primaire = PRIMAIRE_DEFAUT) {
    l'avertissement est jaune, son ton est brun). Le doux tient le cran 50,
    le ton se pose sur son cran, et entre les deux la teinte glisse par
    l'arc le plus court ; au-delà du ton, la famille est celle du ton. */
-export function gammeFamille(ton, doux) {
-  const base = gamme(ton)
-  const k = indexDuCran(ton)
-  const [, Cd, Hd] = hexVersLch(doux)
-  const [, , Ht] = hexVersLch(ton)
+export function rangeFamily(tone, soft) {
+  const base = range(tone)
+  const k = indexOfStep(tone)
+  const [, Cd, Hd] = hexToLch(soft)
+  const [, , Ht] = hexToLch(tone)
   const arc = (a, b, t) => { const d = ((b - a + 540) % 360) - 180; return (a + d * t + 360) % 360 }
-  const [, C0] = hexVersLch(base[0][1])
+  const [, C0] = hexToLch(base[0][1])
   const boost = C0 > 0 ? Cd / C0 : 1
-  return base.map(([cran, hex], i) => {
-    if (i >= k) return [cran, hex]
-    const [L, C] = hexVersLch(hex)
+  return base.map(([step, hex], i) => {
+    if (i >= k) return [step, hex]
+    const [L, C] = hexToLch(hex)
     const t = i / k
     const Hc = arc(Hd, Ht, t)
-    return [cran, lchVersHex([L, Math.min(C * (boost * (1 - t) + t), chromaMax(L, Hc)), Hc])]
+    return [step, lchToHex([L, Math.min(C * (boost * (1 - t) + t), chromaMax(L, Hc)), Hc])]
   })
 }
 
 /* Sur quel cran chaque rôle se pose — par la clarté la plus proche. Un rôle
    dont la valeur EST un cran (la saisie sur le sien) y est posé au code
    près ; les autres s'y lisent comme voisins, jamais comme consommateurs. */
-export function poserSurGamme(gammeHex, roles) {
-  const poses = {}
-  for (const [nom, hex] of Object.entries(roles)) {
-    const [L] = hexVersLch(hex)
+export function setOnRange(rangeHex, roles) {
+  const setAll = {}
+  for (const [name, hex] of Object.entries(roles)) {
+    const [L] = hexToLch(hex)
     let k = 0
-    gammeHex.forEach(([, h], i) => { if (Math.abs(hexVersLch(h)[0] - L) < Math.abs(hexVersLch(gammeHex[k][1])[0] - L)) k = i })
-    const cran = gammeHex[k][0]
-    ;(poses[cran] ??= []).push({ role: nom, exact: hex.toUpperCase() === gammeHex[k][1].toUpperCase() })
+    rangeHex.forEach(([, h], i) => { if (Math.abs(hexToLch(h)[0] - L) < Math.abs(hexToLch(rangeHex[k][1])[0] - L)) k = i })
+    const step = rangeHex[k][0]
+    ;(setAll[step] ??= []).push({ role: name, exact: hex.toUpperCase() === rangeHex[k][1].toUpperCase() })
   }
-  return poses
+  return setAll
 }
 
 /* Les paires déclarées (C7) — celles que la page mesure. */
-export const PAIRES_DECLAREES = [
+export const PAIRS_DECLAREDALL = [
   ['text-primary', 'bg', 4.5], ['text-primary', 'surface', 4.5],
   ['text-secondary', 'bg', 4.5], ['text-secondary', 'surface', 4.5],
   ['text-tertiary', 'bg', 3], ['text-tertiary', 'surface', 3], /* exception déclarée : objets secondaires, jamais du texte lu */
@@ -508,21 +508,21 @@ export const PAIRES_DECLAREES = [
   ['code-text', 'code-bg', 4.5], ['code-com', 'code-bg', 4.5],
   ['code-str', 'code-bg', 4.5], ['code-kw', 'code-bg', 4.5], ['code-tag', 'code-bg', 4.5],
 ]
-export function verifier(pal) {
-  const fautes = []
+export function verify(pal) {
+  const faults = []
   for (const theme of ['light', 'dark']) {
-    for (const [t, f, seuil] of PAIRES_DECLAREES) {
-      const r = contraste(pal[theme][t], pal[theme][f])
-      if (r < seuil) fautes.push({ theme, texte: t, fond: f, seuil, rapport: Number(r.toFixed(2)) })
+    for (const [t, f, threshold] of PAIRS_DECLAREDALL) {
+      const r = contrast(pal[theme][t], pal[theme][f])
+      if (r < threshold) faults.push({ theme, text: t, background: f, threshold, ratio: Number(r.toFixed(2)) })
     }
   }
-  return fautes
+  return faults
 }
 
 /* Sortie CSS — le bloc de tokens.css, prêt à coller. */
-export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
-  const ligne = (o, n) => `  --${n}: ${o[n]};`
-  const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'text-tertiary', 'border', 'border-strong',
+export function toCss(pal, primary = PRIMARY_DEFAULTS) {
+  const line = (o, n) => `  --${n}: ${o[n]};`
+  const NAMES = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'text-tertiary', 'border', 'border-strong',
     'primary', 'primary-hover', 'on-primary', 'primary-text', 'primary-text-hover', 'primary-subtle', 'on-primary-subtle', 'accent',
     'focus-ring', 'focus-ring-danger', 'focus-ring-neutral',
     'danger', 'danger-subtle', 'on-danger', 'on-danger-subtle',
@@ -530,15 +530,15 @@ export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
     'warning', 'warning-subtle', 'on-warning', 'on-warning-subtle',
     'info', 'info-subtle', 'on-info', 'on-info-subtle',
     'code-bg', 'code-text', 'code-com', 'code-str', 'code-kw', 'code-tag']
-  const bloc = (o) => NOMS.map((n) => ligne(o, n)).join('\n')
+  const block = (o) => NAMES.map((n) => line(o, n)).join('\n')
   return [
-    `/* GÉNÉRÉ par kit/derivation.mjs depuis primary ${primaire} — ne pas éditer`,
+    `/* GÉNÉRÉ par kit/derivation.mjs depuis primary ${primary} — ne pas éditer`,
     `   à la main : une valeur retouchée serait une valeur sans provenance.`,
     `   Régénérer : node kit/derivation.mjs --css */`,
-    `:root, [data-theme="light"] {`, `  color-scheme: light;`, bloc(pal.light), `}`,
-    ``, `[data-theme="dark"] {`, `  color-scheme: dark;`, bloc(pal.dark), `}`,
+    `:root, [data-theme="light"] {`, `  color-scheme: light;`, block(pal.light), `}`,
+    ``, `[data-theme="dark"] {`, `  color-scheme: dark;`, block(pal.dark), `}`,
     ``, `@media (prefers-color-scheme: dark) {`, `  :root:not([data-theme="light"]) {`,
-    `    color-scheme: dark;`, bloc(pal.dark).replace(/^ {2}/gm, '    '), `  }`, `}`,
+    `    color-scheme: dark;`, block(pal.dark).replace(/^ {2}/gm, '    '), `  }`, `}`,
   ].join('\n')
 }
 
@@ -572,30 +572,30 @@ export function versCss(pal, primaire = PRIMAIRE_DEFAUT) {
    verdict d'Auteur (« 16 ; 20 et 24 sont très bien aussi »).
    ═══════════════════════════════════════════════════════════════════════ */
 
-export const CHARTE = {
+export const CHARTER = {
   base: 24,                 /* la marge de la coque, en px */
-  intervalle: Math.SQRT2,   /* le pas entre deux profondeurs */
-  racine: 16,               /* le coin de la coque, en px */
-  intervalleTitres: 1.25,   /* le pas entre deux crans de texte */
+  interval: Math.SQRT2,   /* le pas entre deux profondeurs */
+  root: 16,               /* le coin de la coque, en px */
+  intervalHeadings: 1.25,   /* le pas entre deux crans de texte */
 }
-export const BORNES = {
-  racine: [0, 38],          /* décision 2 : au-delà, la marge qui suit le coin change l'écran */
+export const BOUNDS = {
+  root: [0, 38],          /* décision 2 : au-delà, la marge qui suit le coin change l'écran */
   base: [16, 32],           /* décision 4 : les trois densités, 16 · 24 · 32 */
-  intervalle: [1.2, 2.2],
-  intervalleTitres: [1.1, 1.5],
+  interval: [1.2, 2.2],
+  intervalHeadings: [1.1, 1.5],
 }
 /* Les six intentions de la pièce d'Auteur — les préréglages du générateur. Une seule
    table, lue par les pages Rythme et Arrondis (deux copies vivaient dans deux fichiers).
    « Ludique » portait une racine de 44 : ramenée à la borne 38 (décision 2). */
-export const INTENTIONS = [
-  { nom: 'Outil expert', base: 20, intervalle: 4 / 3, racine: 8, note: '4:3' },
-  { nom: 'Produit SaaS', base: 24, intervalle: Math.SQRT2, racine: 24, note: '√2' },
-  { nom: 'Grand public', base: 24, intervalle: 1.5, racine: 32, note: '3:2' },
-  { nom: 'Ludique', base: 28, intervalle: 1.618, racine: 38, note: 'φ · racine à la borne' },
-  { nom: 'Éditorial · luxe', base: 32, intervalle: 1.618, racine: 4, note: 'φ' },
-  { nom: 'Technique', base: 16, intervalle: 1.25, racine: 0, note: '5:4' },
+export const INTENTS = [
+  { name: 'Outil expert', base: 20, interval: 4 / 3, root: 8, note: '4:3' },
+  { name: 'Produit SaaS', base: 24, interval: Math.SQRT2, root: 24, note: '√2' },
+  { name: 'Grand public', base: 24, interval: 1.5, root: 32, note: '3:2' },
+  { name: 'Ludique', base: 28, interval: 1.618, root: 38, note: 'φ · racine à la borne' },
+  { name: 'Éditorial · luxe', base: 32, interval: 1.618, root: 4, note: 'φ' },
+  { name: 'Technique', base: 16, interval: 1.25, root: 0, note: '5:4' },
 ]
-export const DENSITES = { compact: 16, comfortable: 24, airy: 32 }
+export const DENSITIES = { compact: 16, comfortable: 24, airy: 32 }
 
 /* Les axes de la pièce d'Auteur, relevés le 11 août — quatre : l'axe radius
    est retiré (décisions 2 et 7 : les coins suivent la racine, pas l'écran).
@@ -606,28 +606,28 @@ export const AXES = {
   type: { min: 0.96, max: 1.07 },
   control: { min: 1.00, max: 1.06 },
 }
-export const LARGEUR_MIN = 320
-export const LARGEUR_MAX = 1440
-export const LARGEUR_GEL = 768 /* décision 7 : la valeur de gel pour Figma — juste à 768, fausse ailleurs */
-export const RACINE_NAVIGATEUR = 16
-const adouci = (x) => x * x * (3 - 2 * x)
-export function facteur(axe, largeur) {
-  const a = AXES[axe]
-  if (!a) throw new Error(`refus de statuer — axe inconnu : ${axe}`)
-  const t = Math.min(1, Math.max(0, (largeur - LARGEUR_MIN) / (LARGEUR_MAX - LARGEUR_MIN)))
-  return a.min + (a.max - a.min) * adouci(t)
+export const WIDTH_MIN = 320
+export const WIDTH_MAX = 1440
+export const WIDTH_FREEZE = 768 /* décision 7 : la valeur de gel pour Figma — juste à 768, fausse ailleurs */
+export const ROOT_BROWSER = 16
+const softened = (x) => x * x * (3 - 2 * x)
+export function factor(axis, width) {
+  const a = AXES[axis]
+  if (!a) throw new Error(`refus de statuer — axe inconnu : ${axis}`)
+  const t = Math.min(1, Math.max(0, (width - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN)))
+  return a.min + (a.max - a.min) * softened(t)
 }
 
 /* Ce qui ne descend pas de la chaîne — déclaré, pas subi. */
-export const HORS_CHAINE = {
-  corps: 16,                /* décision 5 : le plancher T10, en px CSS (1 rem) */
-  cible: 44,                /* décision 6 : 2,75 rem à 100 % */
-  cibleMin: 24,             /* décision 6 : le plancher WCAG 2.5.8, seule valeur en px avec les traits */
-  pilule: 9999,
-  seuilMiseEnPage: 40,      /* décision 7 : le seuil des deux régimes, en em (640 px à 16) — valeur de registre */
-  seuilRail: 69,            /* le palier du gabarit documentaire : sous 69 em le rail cède la colonne (globals.css) — un second seuil, dette dite */
-  crans: 6,                 /* décision 8 : l'échelle continuée au-dessus de la coque, six crans de page calculés… */
-  cransConsommes: [2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de jeton sans consommateur) */
+export const OFF_CHAIN = {
+  body: 16,                /* décision 5 : le plancher T10, en px CSS (1 rem) */
+  target: 44,                /* décision 6 : 2,75 rem à 100 % */
+  targetMin: 24,             /* décision 6 : le plancher WCAG 2.5.8, seule valeur en px avec les traits */
+  pill: 9999,
+  thresholdSetupInPage: 40,      /* décision 7 : le seuil des deux régimes, en em (640 px à 16) — valeur de registre */
+  thresholdRail: 69,            /* le palier du gabarit documentaire : sous 69 em le rail cède la colonne (globals.css) — un second seuil, dette dite */
+  steps: 6,                 /* décision 8 : l'échelle continuée au-dessus de la coque, six crans de page calculés… */
+  stepsConsumed: [2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de jeton sans consommateur) */
   maxPage: '90rem',         /* la largeur maximale du gabarit — une mesure, comme --measure */
   /* LE GABARIT DOCUMENTAIRE, dérivé (décision 8, verdict d'Auteur du 25 août sur la planche
      du gabarit) : le silence entre sections = 4ᵉ cran de page (96 ; compact 64 · aéré 128) ;
@@ -640,12 +640,12 @@ export const HORS_CHAINE = {
      sections (4,5) à sept crans au-dessus du corps ; section : du cran h1 (3) au cran des
      sections (4,5) — seule la PENTE entre les bornes est la sienne (6 % et 3,4 % de la largeur de
      l'écran, les pentes du gabarit nu). Une règle rompue, dite, la même pour les deux titres. */
-  titresSite: { coverHaut: 7, section: 4.5, coverPente: '6vw', sectionPente: '3.4vw' },
+  headingsSite: { coverTop: 7, section: 4.5, coverSlope: '6vw', sectionSlope: '3.4vw' },
   /* LE HALO DE FOCUS (décision d'Auteur du 31 août 2026, sur pièce Figma puis anneau-halo.html) :
      une bande de 3 px collée à l'objet, fermée par un trait de 1 px — 4 px en tout, l'épaisseur du
      coin du composant (r-ctl à la charte) : le coin extérieur du halo tombe donc sur le cran
      au-dessus (r-2). En px, comme les traits (B3). Deux calques creux, jamais une ombre. */
-  focus: { bande: 3, trait: 1 },
+  focus: { band: 3, stroke: 1 },
 }
 
 /* LE MOUVEMENT (décisions d'Auteur du 3 septembre 2026, sur pièce — les trois lois) :
@@ -655,14 +655,14 @@ export const HORS_CHAINE = {
    chorégraphie déclarée sur sa ligne (le film de /rythme, l'entrée de l'accueil,
    la boucle de /composition). La courbe est celle du kit, plus celle de Material :
    départ vif, pose franche — valeur proposée, à valider à l'œil. */
-export const MOUVEMENT = {
-  durees: {
-    fast: { ms: 100, emploi: 'bouton, survol, appui' },
-    base: { ms: 200, emploi: 'menu, infobulle, dépliant' },
-    slow: { ms: 300, emploi: 'tiroir, fenêtre, panneau' },
-    expressive: { ms: 700, emploi: "arrivée d'une section au défilement" },
+export const MOTION = {
+  durations: {
+    fast: { ms: 100, use: 'bouton, survol, appui' },
+    base: { ms: 200, use: 'menu, infobulle, dépliant' },
+    slow: { ms: 300, use: 'tiroir, fenêtre, panneau' },
+    expressive: { ms: 700, use: "arrivée d'une section au défilement" },
   },
-  courbe: 'cubic-bezier(0.23, 1, 0.32, 1)',
+  curve: 'cubic-bezier(0.23, 1, 0.32, 1)',
 }
 
 /* LA GRAISSE (décisions d'Auteur du 8 septembre 2026, d'après le relevé de la
@@ -673,10 +673,10 @@ export const MOUVEMENT = {
    DÉPART : l'Auteur la pose à l'œil sur /typo. La sombre n'est jamais plus
    lourde que la claire. Geist est variable : l'écart est un nombre d'axe,
    pas un fichier de plus. */
-export const GRAISSE = {
+export const WEIGHT = {
   roles: { body: 400, label: 500, heading: 600 },
-  ecartSombre: 20,
-  sombre(role) { return this.roles[role] - this.ecartSombre },
+  gapDark: 20,
+  dark(role) { return this.roles[role] - this.gapDark },
 }
 
 const r4 = (v) => Math.round(v * 10000) / 10000
@@ -684,22 +684,22 @@ const r4 = (v) => Math.round(v * 10000) / 10000
 /* LE SOCLE. Les entrées entrent, tout le registre sort — en px, à une seule
    largeur d'écran (les axes viennent après). Hors plage, on refuse de
    statuer plutôt que de rendre une valeur bricolée. */
-export function chaine(entrees = {}) {
-  const e = { ...CHARTE, ...entrees }
-  const dans = (v, [lo, hi]) => v >= lo && v <= hi
-  if (!dans(e.racine, BORNES.racine)) throw new Error(`refus de statuer — racine ${e.racine} hors borne 0 → 38 (décision 2)`)
-  if (!dans(e.base, BORNES.base)) throw new Error(`refus de statuer — base ${e.base} hors plage 16 → 32 (décision 4)`)
-  if (!dans(e.intervalle, BORNES.intervalle)) throw new Error(`refus de statuer — intervalle ${e.intervalle} hors plage`)
-  if (!dans(e.intervalleTitres, BORNES.intervalleTitres)) throw new Error(`refus de statuer — intervalle des titres ${e.intervalleTitres} hors plage`)
-  const I = e.intervalle
+export function chain(entries = {}) {
+  const e = { ...CHARTER, ...entries }
+  const inside = (v, [lo, hi]) => v >= lo && v <= hi
+  if (!inside(e.root, BOUNDS.root)) throw new Error(`refus de statuer — racine ${e.root} hors borne 0 → 38 (décision 2)`)
+  if (!inside(e.base, BOUNDS.base)) throw new Error(`refus de statuer — base ${e.base} hors plage 16 → 32 (décision 4)`)
+  if (!inside(e.interval, BOUNDS.interval)) throw new Error(`refus de statuer — intervalle ${e.interval} hors plage`)
+  if (!inside(e.intervalHeadings, BOUNDS.intervalHeadings)) throw new Error(`refus de statuer — intervalle des titres ${e.intervalHeadings} hors plage`)
+  const I = e.interval
 
   /* 2 · les coins : la coque porte la racine, ÷ 2 à chaque niveau ; 3 · le bouton = la ligne */
-  const r = [1, 2, 4, 8].map((d) => r4(e.racine / d))
+  const r = [1, 2, 4, 8].map((d) => r4(e.root / d))
   const rCtl = r[2]
 
   /* 1 · les marges : base, ÷ I, ÷ I² — et la marge ne descend jamais sous le coin (2) */
-  const padNu = [e.base, e.base / I, e.base / (I * I)]
-  const pad = padNu.map((m, i) => r4(Math.max(m, r[i])))
+  const padBare = [e.base, e.base / I, e.base / (I * I)]
+  const pad = padBare.map((m, i) => r4(Math.max(m, r[i])))
   /* 1 · l'espace d'une profondeur = la marge de ses enfants : entre deux cartes
      (dans la coque) 17, entre deux lignes (dans la carte) 12, et dans la ligne
      la chaîne continuée d'un cran (8,5) — un cran de plus que les trois marges,
@@ -711,33 +711,33 @@ export function chaine(entrees = {}) {
   const edge = pad[0]
 
   /* 8 · les crans de page : la chaîne continuée au-dessus de la coque (× I, × I² …) */
-  const page = Array.from({ length: HORS_CHAINE.crans }, (_, k) => r4(e.base * Math.pow(I, k + 1)))
+  const page = Array.from({ length: OFF_CHAIN.steps }, (_, k) => r4(e.base * Math.pow(I, k + 1)))
 
   /* 5 · le texte : corps borné, crans × l'intervalle des titres ; 8 · continué pour le site */
-  const T = e.intervalleTitres
-  const corps = HORS_CHAINE.corps
-  const texte = {
+  const T = e.intervalHeadings
+  const body = OFF_CHAIN.body
+  const text = {
     /* label : les étiquettes mono (kicker, fiches, légendes) — un cran et demi sous le corps (11,5 → 12,3),
        la même logique de demi-cran que les titres du site ; retour d'Auteur du 25 août : à 12,8 l'interlettre
        des étiquettes ne tenait plus. small (12,8) reste le petit texte lu : notes, sous-titres, cellules. */
-    label: r4(corps / Math.pow(T, 1.5)),
-    small: r4(corps / T), body: corps,
-    h3: r4(corps * T), h2: r4(corps * T ** 2), h1: r4(corps * T ** 3), display: r4(corps * T ** 4),
-    'cover-max': r4(corps * T ** HORS_CHAINE.titresSite.coverHaut),
-    section: r4(corps * T ** HORS_CHAINE.titresSite.section),
+    label: r4(body / Math.pow(T, 1.5)),
+    small: r4(body / T), body: body,
+    h3: r4(body * T), h2: r4(body * T ** 2), h1: r4(body * T ** 3), display: r4(body * T ** 4),
+    'cover-max': r4(body * T ** OFF_CHAIN.headingsSite.coverTop),
+    section: r4(body * T ** OFF_CHAIN.headingsSite.section),
   }
 
   return {
-    entrees: e,
-    r, rCtl, pad, gap, edge, page, texte,
-    control: HORS_CHAINE.cible,
+    entries: e,
+    r, rCtl, pad, gap, edge, page, text,
+    control: OFF_CHAIN.target,
     /* la cible des commandes secondaires (tiroir, têtes d'outils) : la cible ÷ √2 = 31, au-dessus du plancher de 24 */
-    controlCompact: r4(HORS_CHAINE.cible / Math.SQRT2),
+    controlCompact: r4(OFF_CHAIN.target / Math.SQRT2),
     /* la garantie, vérifiée : aucun enfant plus rond que son parent, aucune marge sous son coin */
-    garanties: {
-      enfantMoinsRond: r.every((v, i) => i === 0 || v <= r[i - 1]) && rCtl <= r[2],
-      margeAuDessusDuCoin: pad.every((m, i) => m >= r[i]),
-      margeRelevee: padNu.map((m, i) => m < r[i]), /* où la règle a joué */
+    guarantees: {
+      childLessCircle: r.every((v, i) => i === 0 || v <= r[i - 1]) && rCtl <= r[2],
+      marginAtAboveOfCorner: pad.every((m, i) => m >= r[i]),
+      marginSurveyed: padBare.map((m, i) => m < r[i]), /* où la règle a joué */
     },
   }
 }
@@ -745,50 +745,50 @@ export function chaine(entrees = {}) {
 /* LE RYTHME. Une valeur de socle et un axe → un jeton fluide : la droite qui
    joint les deux bornes, en rem. L'axe type porte le plancher du corps : la
    borne basse de clamp() ne descend jamais sous le corps (décision 5). */
-export function fluide(valeur, axe, { plancher = 0, unite = 'rem' } = {}) {
-  const a = AXES[axe]
-  const bas = Math.max(valeur * a.min, plancher)
-  const haut = Math.max(valeur * a.max, plancher)
-  const b0 = valeur * a.min, h0 = valeur * a.max
-  const pente = ((h0 - b0) / (LARGEUR_MAX - LARGEUR_MIN)) * 100
-  const origine = b0 - (LARGEUR_MIN * (h0 - b0)) / (LARGEUR_MAX - LARGEUR_MIN)
+export function fluid(value, axis, { floor = 0, unit = 'rem' } = {}) {
+  const a = AXES[axis]
+  const bottom = Math.max(value * a.min, floor)
+  const top = Math.max(value * a.max, floor)
+  const b0 = value * a.min, h0 = value * a.max
+  const slope = ((h0 - b0) / (WIDTH_MAX - WIDTH_MIN)) * 100
+  const origin = b0 - (WIDTH_MIN * (h0 - b0)) / (WIDTH_MAX - WIDTH_MIN)
   const n = (v) => String(Math.round(v * 10000) / 10000)
-  const u = unite === 'px' ? (v) => `${n(v)}px` : (v) => `${n(v / RACINE_NAVIGATEUR)}rem`
-  return { bas: r4(bas), haut: r4(haut), gel: r4(Math.max(valeur * facteur(axe, LARGEUR_GEL), plancher)), css: `clamp(${u(bas)}, ${u(origine)} + ${n(pente)}vw, ${u(haut)})` }
+  const u = unit === 'px' ? (v) => `${n(v)}px` : (v) => `${n(v / ROOT_BROWSER)}rem`
+  return { bottom: r4(bottom), top: r4(top), freeze: r4(Math.max(value * factor(axis, WIDTH_FREEZE), floor)), css: `clamp(${u(bottom)}, ${u(origin)} + ${n(slope)}vw, ${u(top)})` }
 }
 /* La valeur d'un jeton fluide à une largeur donnée, sur la courbe adoucie
    (ce que la pièce d'Auteur affiche) — pour les pages et le crash-test. */
-export function aLargeur(valeur, axe, largeur, plancher = 0) {
-  return r4(Math.max(valeur * facteur(axe, largeur), plancher))
+export function aWidth(value, axis, width, floor = 0) {
+  return r4(Math.max(value * factor(axis, width), floor))
 }
 
 /* LES JETONS. Le registre complet, nom par nom, pour une base donnée.
    Deux axes d'espacement (G7 : ils ne se mélangent jamais) ; les coins et le
    bouton sans axe (décisions 2, 7) ; le texte sur l'axe type, borné ; la
    cible sur l'axe control. */
-export function jetons(socle) {
+export function tokens(foundation) {
   const j = {}
-  const rem = (v) => `${r4(v / RACINE_NAVIGATEUR)}rem`
-  for (const axe of ['inline', 'block']) {
-    socle.pad.forEach((v, i) => { j[`pad-${i + 1}-${axe}`] = { axe, base: v, ...fluide(v, axe) } })
-    socle.gap.forEach((v, i) => { j[`gap-${i + 1}-${axe}`] = { axe, base: v, ...fluide(v, axe) } })
-    j[`edge-${axe}`] = { axe, base: socle.edge, ...fluide(socle.edge, axe) }
-    socle.page.forEach((v, i) => { if (HORS_CHAINE.cransConsommes.includes(i + 1)) j[`page-${i + 1}-${axe}`] = { axe, base: v, ...fluide(v, axe) } })
+  const rem = (v) => `${r4(v / ROOT_BROWSER)}rem`
+  for (const axis of ['inline', 'block']) {
+    foundation.pad.forEach((v, i) => { j[`pad-${i + 1}-${axis}`] = { axis, base: v, ...fluid(v, axis) } })
+    foundation.gap.forEach((v, i) => { j[`gap-${i + 1}-${axis}`] = { axis, base: v, ...fluid(v, axis) } })
+    j[`edge-${axis}`] = { axis, base: foundation.edge, ...fluid(foundation.edge, axis) }
+    foundation.page.forEach((v, i) => { if (OFF_CHAIN.stepsConsumed.includes(i + 1)) j[`page-${i + 1}-${axis}`] = { axis, base: v, ...fluid(v, axis) } })
   }
-  socle.r.forEach((v, i) => { j[`r-${i + 1}`] = { axe: null, base: v, css: rem(v) } })
-  j['r-ctl'] = { axe: null, base: socle.rCtl, css: 'var(--r-3)' }
-  j['r-pill'] = { axe: null, base: HORS_CHAINE.pilule, css: `${HORS_CHAINE.pilule}px` }
+  foundation.r.forEach((v, i) => { j[`r-${i + 1}`] = { axis: null, base: v, css: rem(v) } })
+  j['r-ctl'] = { axis: null, base: foundation.rCtl, css: 'var(--r-3)' }
+  j['r-pill'] = { axis: null, base: OFF_CHAIN.pill, css: `${OFF_CHAIN.pill}px` }
   /* Décision 5 : le corps = max(16, 16 × axe), et chaque cran est le corps
      BORNÉ × l'intervalle — donc chaque cran est son propre plancher : à 320,
      l'échelle vaut 12,8 · 16 · 20 · 25 · 31 · 39 ; elle ne monte qu'au-dessus
      de 700 px environ. Le petit texte (12,8) est un cran d'étiquette, jamais
      de texte courant (T10). */
-  for (const [nom, v] of Object.entries(socle.texte)) {
-    j[`font-size-${nom}`] = { axe: 'type', base: v, ...fluide(v, 'type', { plancher: v }) }
+  for (const [name, v] of Object.entries(foundation.text)) {
+    j[`font-size-${name}`] = { axis: 'type', base: v, ...fluid(v, 'type', { floor: v }) }
   }
-  j['control-height'] = { axe: 'control', base: socle.control, ...fluide(socle.control, 'control') }
-  j['control-height-compact'] = { axe: 'control', base: socle.controlCompact, ...fluide(socle.controlCompact, 'control') }
-  j['target-min'] = { axe: null, base: HORS_CHAINE.cibleMin, css: `${HORS_CHAINE.cibleMin}px` }
+  j['control-height'] = { axis: 'control', base: foundation.control, ...fluid(foundation.control, 'control') }
+  j['control-height-compact'] = { axis: 'control', base: foundation.controlCompact, ...fluid(foundation.controlCompact, 'control') }
+  j['target-min'] = { axis: null, base: OFF_CHAIN.targetMin, css: `${OFF_CHAIN.targetMin}px` }
   return j
 }
 
@@ -796,113 +796,113 @@ export function jetons(socle) {
    de caractères, l'interligne, la mesure, l'espacement des capitales, et
    l'adaptation shadcn (géométrie seule). Tout est ici pour que tokens.css
    soit GÉNÉRÉ en entier : plus une ligne écrite à la main. */
-export const REGISTRE = {
-  fontes: {
+export const REGISTRY = {
+  fonts: {
     'font-sans': '"Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif',
     'font-mono': '"JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Menlo, monospace',
     'font-serif': 'Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Times New Roman", ui-serif, serif',
   },
-  texte: { 'leading-body': '1.6', 'leading-heading': '1.2', measure: '65ch', 'tracking-label': '0.08em' },
+  text: { 'leading-body': '1.6', 'leading-heading': '1.2', measure: '65ch', 'tracking-label': '0.08em' },
   shadcn: { 'r-1': '0.75rem', 'r-2': '0.5rem', 'r-3': '0.375rem', 'r-4': '0.375rem', 'control-height': '2.25rem' },
   /* LE GABARIT DOCUMENTAIRE — chaque cran est un ALIAS d'un jeton de la chaîne (décision 8).
      La marge de page suit le régime de mise en page : le bord sur mobile, le 3ᵉ cran de page
      quand le rail est là. La scène est une coque : sa marge, sur chaque axe. */
   doc: {
     /* l'affiche de page : bornes dérivées, pente d'auteur (déclarée — voir HORS_CHAINE.titresSite) */
-    'doc-cover': `clamp(var(--font-size-section), ${HORS_CHAINE.titresSite.coverPente}, var(--font-size-cover-max))`,
-    'doc-section': `clamp(var(--font-size-h1), ${HORS_CHAINE.titresSite.sectionPente}, var(--font-size-section))`,
-    'doc-silence': 'var(--page-4-block)', 'doc-tete': 'var(--page-2-block)',
+    'doc-cover': `clamp(var(--font-size-section), ${OFF_CHAIN.headingsSite.coverSlope}, var(--font-size-cover-max))`,
+    'doc-section': `clamp(var(--font-size-h1), ${OFF_CHAIN.headingsSite.sectionSlope}, var(--font-size-section))`,
+    'doc-silence': 'var(--page-4-block)', 'doc-head': 'var(--page-2-block)',
     'doc-scene-inline': 'var(--pad-1-inline)', 'doc-scene-block': 'var(--pad-1-block)',
   },
   /* Les COLONNES du gabarit — rail, gouttière, marge de page — descendent de la chaîne à la
      base de la charte et n'y suivent PAS la densité : la densité règle le contenu, jamais les
      colonnes (retour d'Auteur du 25 août : en aéré, la page se resserrait). Le moteur écrit
      leur valeur de la chaîne confortable, pas un alias. */
-  docColonnes: { 'doc-gouttiere': 'page-2-inline', 'doc-rail': 'page-6-inline', 'doc-marge': 'edge-inline' },
-  docColonnesBureau: { 'doc-marge': 'page-3-inline' },
+  docColumns: { 'doc-gutter': 'page-2-inline', 'doc-rail': 'page-6-inline', 'doc-margin': 'edge-inline' },
+  docColumnsDesktop: { 'doc-margin': 'page-3-inline' },
 }
 
 
 /* ── SORTIE CSS — tokens.css entier, prêt à écrire ── */
-export function versCssRythme(entrees = {}) {
-  const socle = chaine(entrees)
-  const j = jetons(socle)
-  const ligne = (n, v) => `  --${n}: ${v};`
-  const bloc = (noms) => noms.map((n) => ligne(n, j[n].css)).join('\n')
-  const espace = (js) => Object.keys(js).filter((n) => /^(pad|gap|edge|page)-/.test(n))
-  const densite = (nom) => {
-    const s = chaine({ ...entrees, base: DENSITES[nom] })
-    const jj = jetons(s)
-    return `[data-density="${nom}"] {\n${espace(jj).map((n) => ligne(n, jj[n].css)).join('\n')}\n}`
+export function toCssRhythm(entries = {}) {
+  const foundation = chain(entries)
+  const j = tokens(foundation)
+  const line = (n, v) => `  --${n}: ${v};`
+  const block = (names) => names.map((n) => line(n, j[n].css)).join('\n')
+  const space = (js) => Object.keys(js).filter((n) => /^(pad|gap|edge|page)-/.test(n))
+  const density = (name) => {
+    const s = chain({ ...entries, base: DENSITIES[name] })
+    const dd = tokens(s)
+    return `[data-density="${name}"] {\n${space(dd).map((n) => line(n, dd[n].css)).join('\n')}\n}`
   }
   const px = (v) => String(Math.round(v * 10) / 10).replace('.', ',')
-  const e = socle.entrees
+  const e = foundation.entries
   return [
     `/* ═══════════════════════════════════════════════════════════════════════`,
     `   LES JETONS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer`,
-    `   Décisions d'entrée : base ${e.base} · intervalle ${e.intervalle === Math.SQRT2 ? '√2' : e.intervalle} · racine ${e.racine} (bornée à ${BORNES.racine[1]})`,
-    `   · intervalle des titres ${e.intervalleTitres}. Les huit décisions du 25 août 2026 sont les lois.`,
-    `   À la charte : marges ${socle.pad.map(px).join(' · ')} — espaces ${socle.gap.map(px).join(' · ')} — coins ${socle.r.map(px).join(' · ')}`,
-    `   — bouton ${px(socle.rCtl)} — crans de page ${socle.page.map(px).join(' · ')}`,
-    `   — texte ${Object.values(socle.texte).slice(0, 6).map(px).join(' · ')}.`,
-    `   Tout en rem ; le rythme glisse de ${LARGEUR_MIN} à ${LARGEUR_MAX} px sans palier (inline ${AXES.inline.min}–${AXES.inline.max},`,
+    `   Décisions d'entrée : base ${e.base} · intervalle ${e.interval === Math.SQRT2 ? '√2' : e.interval} · racine ${e.root} (bornée à ${BOUNDS.root[1]})`,
+    `   · intervalle des titres ${e.intervalHeadings}. Les huit décisions du 25 août 2026 sont les lois.`,
+    `   À la charte : marges ${foundation.pad.map(px).join(' · ')} — espaces ${foundation.gap.map(px).join(' · ')} — coins ${foundation.r.map(px).join(' · ')}`,
+    `   — bouton ${px(foundation.rCtl)} — crans de page ${foundation.page.map(px).join(' · ')}`,
+    `   — texte ${Object.values(foundation.text).slice(0, 6).map(px).join(' · ')}.`,
+    `   Tout en rem ; le rythme glisse de ${WIDTH_MIN} à ${WIDTH_MAX} px sans palier (inline ${AXES.inline.min}–${AXES.inline.max},`,
     `   block ${AXES.block.min}–${AXES.block.max}, type ${AXES.type.min}–${AXES.type.max}, control ${AXES.control.min}–${AXES.control.max}) ; les coins ne glissent pas.`,
     `   Les deux axes ne se mélangent jamais (G7). Régénérer : node kit/derivation.mjs --css`,
     `   ═══════════════════════════════════════════════════════════════════════ */`,
     `:root {`,
     `  /* profondeurs — la marge d'un niveau, sur chaque axe (1 coque · 2 carte · 3 ligne) */`,
-    bloc(Object.keys(j).filter((n) => /^pad-/.test(n))),
+    block(Object.keys(j).filter((n) => /^pad-/.test(n))),
     `  /* l'espace entre deux frères : celui de leurs enfants (1 entre cartes · 2 entre lignes · 3 dans la ligne · 4 au plus serré, dans un badge ou une cellule) */`,
-    bloc(Object.keys(j).filter((n) => /^gap-/.test(n))),
+    block(Object.keys(j).filter((n) => /^gap-/.test(n))),
     `  /* le bord de page = la marge de la coque */`,
-    bloc(['edge-inline', 'edge-block']),
+    block(['edge-inline', 'edge-block']),
     `  /* les crans de page — la chaîne continuée au-dessus de la coque (× √2 à chaque cran) ; seuls les crans consommés sont émis */`,
-    bloc(Object.keys(j).filter((n) => /^page-/.test(n))),
+    block(Object.keys(j).filter((n) => /^page-/.test(n))),
     `  /* les coins — la racine sur la coque, ÷ 2 par niveau ; le composant prend le coin de la ligne */`,
-    bloc(['r-1', 'r-2', 'r-3', 'r-4', 'r-ctl', 'r-pill']),
-    `  /* le texte — corps borné à 1rem, crans × ${e.intervalleTitres} ; label = l'étiquette mono (un cran et demi sous le corps), small = le petit texte lu ; section et cover-max sont les crans des titres du site */`,
-    bloc(Object.keys(j).filter((n) => /^font-size-/.test(n))),
+    block(['r-1', 'r-2', 'r-3', 'r-4', 'r-ctl', 'r-pill']),
+    `  /* le texte — corps borné à 1rem, crans × ${e.intervalHeadings} ; label = l'étiquette mono (un cran et demi sous le corps), small = le petit texte lu ; section et cover-max sont les crans des titres du site */`,
+    block(Object.keys(j).filter((n) => /^font-size-/.test(n))),
     `  /* la cible au doigt — 2,75 rem × axe control ; la cible des commandes secondaires = cible ÷ √2 ; le plancher WCAG en px, seule valeur fixe */`,
-    bloc(['control-height', 'control-height-compact', 'target-min']),
+    block(['control-height', 'control-height-compact', 'target-min']),
     `}`,
     ``,
     `/* La densité change la base (décision 4) : la chaîne se recalcule, coins et composants ne bougent pas. */`,
-    densite('compact'),
-    densite('airy'),
+    density('compact'),
+    density('airy'),
     /* Le confortable est la chaîne de :root ; on l'émet quand même, pour qu'une
        scène puisse déclarer sa densité EN ENTIER — sinon, posée dans un site en
        compact, une démonstration étiquetée « confortable » rendrait du compact. */
-    densite('comfortable'),
+    density('comfortable'),
     ``,
     `/* Hors chaîne — déclaré au registre, jamais dérivé : familles, interligne, mesure, capitales. */`,
     `:root {`,
-    ...Object.entries(REGISTRE.fontes).map(([n, v]) => ligne(n, v)),
-    ...Object.entries(REGISTRE.texte).map(([n, v]) => ligne(n, v)),
+    ...Object.entries(REGISTRY.fonts).map(([n, v]) => line(n, v)),
+    ...Object.entries(REGISTRY.text).map(([n, v]) => line(n, v)),
     `}`,
     ``,
     `/* La graisse — un rôle, une graisse (T13) ; deux fonds, deux graisses : en thème sombre chaque rôle s'allège`,
-    `   de ${GRAISSE.ecartSombre} (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */`,
+    `   de ${WEIGHT.gapDark} (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */`,
     `:root, [data-theme="light"] {`,
-    ...Object.entries(GRAISSE.roles).map(([n, v]) => ligne(`weight-${n}`, v)),
+    ...Object.entries(WEIGHT.roles).map(([n, v]) => line(`weight-${n}`, v)),
     `}`,
     `[data-theme="dark"] {`,
-    ...Object.keys(GRAISSE.roles).map((n) => ligne(`weight-${n}`, GRAISSE.sombre(n))),
+    ...Object.keys(WEIGHT.roles).map((n) => line(`weight-${n}`, WEIGHT.dark(n))),
     `}`,
     `@media (prefers-color-scheme: dark) {`,
     `  :root:not([data-theme="light"]) {`,
-    ...Object.keys(GRAISSE.roles).map((n) => `  ${ligne(`weight-${n}`, GRAISSE.sombre(n))}`),
+    ...Object.keys(WEIGHT.roles).map((n) => `  ${line(`weight-${n}`, WEIGHT.dark(n))}`),
     `  }`,
     `}`,
     ``,
     `/* Le châssis du site — navigation à gauche, réglages à droite — garde la densité`,
     `   confortable quel que soit le réglage : la densité règle le contenu, jamais les colonnes. */`,
-    `.navigation, .reglages {`,
-    bloc(espace(j)),
+    `.navigation, .settings {`,
+    block(space(j)),
     `}`,
     ``,
     `/* Adaptation shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */`,
     `[data-adaptation="shadcn"] {`,
-    ...Object.entries(REGISTRE.shadcn).map(([n, v]) => ligne(n, v)),
+    ...Object.entries(REGISTRY.shadcn).map(([n, v]) => line(n, v)),
     `}`,
     ``,
     `/* Le gabarit documentaire — chaque cran est un alias d'un jeton de la chaîne (décision 8 ; verdict du 25 août :`,
@@ -911,13 +911,13 @@ export function versCssRythme(entrees = {}) {
     `   bornes dérivées (affiche : section → sept crans ; section : h1 → section), pentes du gabarit nu`,
     `   (6 vw, 3,4 vw) — la seule règle rompue, dite. */`,
     `:root {`,
-    ...Object.entries(REGISTRE.doc).map(([n, v]) => ligne(n, v)),
+    ...Object.entries(REGISTRY.doc).map(([n, v]) => line(n, v)),
     `  /* les colonnes : la chaîne à la base de la charte, sans suivre la densité */`,
-    ...Object.entries(REGISTRE.docColonnes).map(([n, v]) => ligne(n, jetons(chaine()).hasOwnProperty(v) ? jetons(chaine())[v].css : `var(--${v})`)),
+    ...Object.entries(REGISTRY.docColumns).map(([n, v]) => line(n, tokens(chain()).hasOwnProperty(v) ? tokens(chain())[v].css : `var(--${v})`)),
     `}`,
-    `@media (min-width: ${HORS_CHAINE.seuilRail}rem) {`,
+    `@media (min-width: ${OFF_CHAIN.thresholdRail}rem) {`,
     `  :root {`,
-    ...Object.entries(REGISTRE.docColonnesBureau).map(([n, v]) => `  ${ligne(n, jetons(chaine())[v].css)}`),
+    ...Object.entries(REGISTRY.docColumnsDesktop).map(([n, v]) => `  ${line(n, tokens(chain())[v].css)}`),
     `  }`,
     `}`,
     ``,
@@ -925,80 +925,80 @@ export function versCssRythme(entrees = {}) {
     `   l'objet, un trait qui la ferme, en px comme les traits ; 4 px en tout = le coin du composant, donc le`,
     `   coin extérieur du halo tombe sur le cran au-dessus. Chaque calque prend le coin de l'objet + son retrait. */`,
     `:root {`,
-    `  --focus-band: ${HORS_CHAINE.focus.bande}px;`,
-    `  --focus-line: ${HORS_CHAINE.focus.trait}px;`,
+    `  --focus-band: ${OFF_CHAIN.focus.band}px;`,
+    `  --focus-line: ${OFF_CHAIN.focus.stroke}px;`,
     `}`,
     ``,
     `/* Le mouvement (décisions d'Auteur du 3 septembre 2026) — quatre durées, chacune avec son emploi, et la`,
     `   courbe du kit. Une durée écrite à la main dans une page est une faute, ou une chorégraphie dite sur sa ligne.`,
     `   Sous mouvement réduit, les déplacements partent et les fondus restent (globals.css). */`,
     `:root {`,
-    ...Object.entries(MOUVEMENT.durees).map(([n, d]) => `  --m-${n}: ${d.ms}ms; /* ${d.emploi} */`),
-    `  --e-out: ${MOUVEMENT.courbe}; /* ce qui entre décélère — départ vif, pose franche */`,
+    ...Object.entries(MOTION.durations).map(([n, d]) => `  --m-${n}: ${d.ms}ms; /* ${d.use} */`),
+    `  --e-out: ${MOTION.curve}; /* ce qui entre décélère — départ vif, pose franche */`,
     `}`,
     ``,
   ].join('\n')
 }
 
 /* ── tokens.css ENTIER : le rythme, puis la couleur ── */
-export function versTokensCss(entrees = {}, primaire = PRIMAIRE_DEFAUT) {
-  return versCssRythme(entrees) + '\n\n' + versCss(derive(primaire), primaire) + '\n'
+export function toTokensCss(entries = {}, primary = PRIMARY_DEFAULTS) {
+  return toCssRhythm(entries) + '\n\n' + toCss(derived(primary), primary) + '\n'
 }
 
 /* ── SORTIE FIGMA — jetons gelés à 768 (décision 7), bornes en description ── */
-export function versFigma(entrees = {}, primaire = PRIMAIRE_DEFAUT) {
-  const socle = chaine(entrees)
-  const j = jetons(socle)
-  const pal = derive(primaire)
+export function toFigma(entries = {}, primary = PRIMARY_DEFAULTS) {
+  const foundation = chain(entries)
+  const j = tokens(foundation)
+  const pal = derived(primary)
   const px = (v) => Math.round(v * 100) / 100
-  const dim = (t, nom) => ({
-    $type: 'dimension', $value: `${px(t.gel ?? t.base)}px`,
-    $description: t.axe ? `Fluide de ${px(t.bas)} à ${px(t.haut)} px (${LARGEUR_MIN} → ${LARGEUR_MAX}), gelé à ${LARGEUR_GEL} px. Axe ${t.axe}.` : `Fixe — ne suit pas l'écran.`,
+  const dim = (t, name) => ({
+    $type: 'dimension', $value: `${px(t.freeze ?? t.base)}px`,
+    $description: t.axis ? `Fluide de ${px(t.bottom)} à ${px(t.top)} px (${WIDTH_MIN} → ${WIDTH_MAX}), gelé à ${WIDTH_FREEZE} px. Axe ${t.axis}.` : `Fixe — ne suit pas l'écran.`,
   })
-  const groupe = (re) => Object.fromEntries(Object.entries(j).filter(([n]) => re.test(n)).map(([n, t]) => [n, dim(t, n)]))
-  const couleurs = (o) => Object.fromEntries(Object.entries(o).map(([n, v]) => [n, { $type: 'color', $value: v }]))
+  const group = (re) => Object.fromEntries(Object.entries(j).filter(([n]) => re.test(n)).map(([n, t]) => [n, dim(t, n)]))
+  const colors = (o) => Object.fromEntries(Object.entries(o).map(([n, v]) => [n, { $type: 'color', $value: v }]))
   return {
-    $description: `Jetons du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base ${socle.entrees.base} · √2 · racine ${socle.entrees.racine} · titres × ${socle.entrees.intervalleTitres} · primary ${primaire}. Les jetons fluides sont gelés à ${LARGEUR_GEL} px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.`,
-    spacing: { ...groupe(/^(pad|gap|edge)-/), density: Object.fromEntries(Object.entries(DENSITES).map(([nom, base]) => [nom, { $type: 'dimension', $value: `${base}px`, $description: 'La densité change la base ; la chaîne se recalcule.' }])) },
-    page: groupe(/^page-/),
-    radius: { ...groupe(/^r-/), 'r-ctl': { $type: 'dimension', $value: `${px(socle.rCtl)}px`, $description: 'Le composant prend le coin de la ligne (r-3).' } },
-    fontSize: groupe(/^font-size-/),
-    control: groupe(/^(control-height|target-min)$/),
-    focus: { band: { $type: 'dimension', $value: `${HORS_CHAINE.focus.bande}px`, $description: 'Le halo de focus : la bande collée à l’objet, en px.' }, line: { $type: 'dimension', $value: `${HORS_CHAINE.focus.trait}px`, $description: 'Le halo de focus : le trait qui ferme la bande, en px.' } },
-    color: { light: couleurs(pal.light), dark: couleurs(pal.dark) },
-    fontWeight: Object.fromEntries(Object.entries(GRAISSE.roles).map(([n, v]) => [n, { $type: 'fontWeight', $value: v, $description: `Thème sombre : ${GRAISSE.sombre(n)} — le même écart pour chaque rôle (T14, valeur de départ).` }])),
+    $description: `Jetons du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base ${foundation.entries.base} · √2 · racine ${foundation.entries.root} · titres × ${foundation.entries.intervalHeadings} · primary ${primary}. Les jetons fluides sont gelés à ${WIDTH_FREEZE} px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.`,
+    spacing: { ...group(/^(pad|gap|edge)-/), density: Object.fromEntries(Object.entries(DENSITIES).map(([name, base]) => [name, { $type: 'dimension', $value: `${base}px`, $description: 'La densité change la base ; la chaîne se recalcule.' }])) },
+    page: group(/^page-/),
+    radius: { ...group(/^r-/), 'r-ctl': { $type: 'dimension', $value: `${px(foundation.rCtl)}px`, $description: 'Le composant prend le coin de la ligne (r-3).' } },
+    fontSize: group(/^font-size-/),
+    control: group(/^(control-height|target-min)$/),
+    focus: { band: { $type: 'dimension', $value: `${OFF_CHAIN.focus.band}px`, $description: 'Le halo de focus : la bande collée à l’objet, en px.' }, line: { $type: 'dimension', $value: `${OFF_CHAIN.focus.stroke}px`, $description: 'Le halo de focus : le trait qui ferme la bande, en px.' } },
+    color: { light: colors(pal.light), dark: colors(pal.dark) },
+    fontWeight: Object.fromEntries(Object.entries(WEIGHT.roles).map(([n, v]) => [n, { $type: 'fontWeight', $value: v, $description: `Thème sombre : ${WEIGHT.dark(n)} — le même écart pour chaque rôle (T14, valeur de départ).` }])),
     motion: {
-      ...Object.fromEntries(Object.entries(MOUVEMENT.durees).map(([n, d]) => [n, { $type: 'duration', $value: `${d.ms}ms`, $description: `Emploi : ${d.emploi}.` }])),
-      'ease-out': { $type: 'cubicBezier', $value: MOUVEMENT.courbe.match(/[\d.]+/g).map(Number), $description: 'La courbe du kit : ce qui entre décélère — départ vif, pose franche.' },
+      ...Object.fromEntries(Object.entries(MOTION.durations).map(([n, d]) => [n, { $type: 'duration', $value: `${d.ms}ms`, $description: `Emploi : ${d.use}.` }])),
+      'ease-out': { $type: 'cubicBezier', $value: MOTION.curve.match(/[\d.]+/g).map(Number), $description: 'La courbe du kit : ce qui entre décélère — départ vif, pose franche.' },
     },
   }
 }
 
 /* ── SORTIE TAILWIND — les utilitaires pointent sur les variables ── */
-export function versTailwind(entrees = {}) {
-  const socle = chaine(entrees)
-  const j = jetons(socle)
+export function toTailwind(entries = {}) {
+  const foundation = chain(entries)
+  const j = tokens(foundation)
   const v = (n) => `var(--${n})`
   const spacing = Object.fromEntries(Object.keys(j).filter((n) => /^(pad|gap|edge|page)-/.test(n)).map((n) => [n, v(n)]))
   const borderRadius = { 1: v('r-1'), 2: v('r-2'), 3: v('r-3'), 4: v('r-4'), ctl: v('r-ctl'), pill: v('r-pill') }
-  const fontSize = Object.fromEntries(Object.keys(socle.texte).map((n) => [n, v(`font-size-${n}`)]))
-  const literal = Object.fromEntries(Object.entries(j).filter(([n]) => /^(pad|gap|edge|page)-/.test(n)).map(([n, t]) => [n, { min: `${Math.round(t.bas / 4) * 4}px`, max: `${Math.round(t.haut / 4) * 4}px` }]))
-  const transitionDuration = Object.fromEntries(Object.keys(MOUVEMENT.durees).map((n) => [n, v(`m-${n}`)]))
-  const fontWeight = Object.fromEntries(Object.keys(GRAISSE.roles).map((n) => [n, v(`weight-${n}`)]))
-  return { spacing, borderRadius, fontSize, fontWeight, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${HORS_CHAINE.seuilMiseEnPage}em` }, transitionDuration, transitionTimingFunction: { out: v('e-out') }, literal }
+  const fontSize = Object.fromEntries(Object.keys(foundation.text).map((n) => [n, v(`font-size-${n}`)]))
+  const literal = Object.fromEntries(Object.entries(j).filter(([n]) => /^(pad|gap|edge|page)-/.test(n)).map(([n, t]) => [n, { min: `${Math.round(t.bottom / 4) * 4}px`, max: `${Math.round(t.top / 4) * 4}px` }]))
+  const transitionDuration = Object.fromEntries(Object.keys(MOTION.durations).map((n) => [n, v(`m-${n}`)]))
+  const fontWeight = Object.fromEntries(Object.keys(WEIGHT.roles).map((n) => [n, v(`weight-${n}`)]))
+  return { spacing, borderRadius, fontSize, fontWeight, height: { control: v('control-height'), 'control-compact': v('control-height-compact') }, minHeight: { target: v('target-min') }, screens: { desktop: `${OFF_CHAIN.thresholdSetupInPage}em` }, transitionDuration, transitionTimingFunction: { out: v('e-out') }, literal }
 }
 
 /* ── tokens.tailwind.mjs ENTIER — les mêmes exports qu'avant (rhythm,
    typography, color, rhythmLiteral), générés. Les utilitaires pointent sur
    les variables ; le thème littéral arrondit à la grille de 4 (note
    d'Auteur du 23 août : jamais de décimales dans un thème Tailwind). ── */
-export function versTailwindFichier(entrees = {}) {
-  const tw = versTailwind(entrees)
-  const socle = chaine(entrees)
-  const j = jetons(socle)
+export function toTailwindFile(entries = {}) {
+  const tw = toTailwind(entries)
+  const foundation = chain(entries)
+  const j = tokens(foundation)
   const q = (o) => JSON.stringify(o, null, 2).replace(/"([a-zA-Z0-9-]+)":/g, (m, k) => (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k) ? `${k}:` : `'${k}':`)).replace(/"/g, "'")
-  const literal = Object.fromEntries(Object.entries(tw.literal).map(([n, v]) => [n, { ...v, calcule: `${Math.round(j[n].bas * 10) / 10} → ${Math.round(j[n].haut * 10) / 10} px` }]))
-  const NOMS = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'border', 'border-strong']
+  const literal = Object.fromEntries(Object.entries(tw.literal).map(([n, v]) => [n, { ...v, computed: `${Math.round(j[n].bottom * 10) / 10} → ${Math.round(j[n].top * 10) / 10} px` }]))
+  const NAMES = ['bg', 'surface', 'surface-hover', 'text-primary', 'text-secondary', 'border', 'border-strong']
   return `/**
  * SORTIE JUMELLE TAILWIND — GÉNÉRÉE par kit/derivation.mjs, ne pas éditer.
  * Même source que app/tokens.css, autre cible : les utilitaires pointent sur
@@ -1048,30 +1048,30 @@ export const motion = ${q({ transitionDuration: tw.transitionDuration, transitio
 }
 
 /* ── Ligne de commande ── */
-const estCli = typeof process !== 'undefined' && process.argv?.[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())
-if (estCli) {
+const isCli = typeof process !== 'undefined' && process.argv?.[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())
+if (isCli) {
   const args = process.argv.slice(2)
-  const hex = args.find((a) => a.startsWith('#')) ?? PRIMAIRE_DEFAUT
-  const pal = derive(hex)
+  const hex = args.find((a) => a.startsWith('#')) ?? PRIMARY_DEFAULTS
+  const pal = derived(hex)
   if (args.includes('--css')) {
-    process.stdout.write(versTokensCss({}, hex))
+    process.stdout.write(toTokensCss({}, hex))
   } else if (args.includes('--figma')) {
-    console.log(JSON.stringify(versFigma({}, hex), null, 2))
+    console.log(JSON.stringify(toFigma({}, hex), null, 2))
   } else if (args.includes('--tailwind')) {
-    process.stdout.write(versTailwindFichier())
-  } else if (args.includes('--rythme')) {
-    const s = chaine()
-    console.log(`\nLA CHAÎNE — base ${s.entrees.base} · √2 · racine ${s.entrees.racine} · titres × ${s.entrees.intervalleTitres}\n`)
-    for (const [n, t] of Object.entries(jetons(s))) console.log(`  ${n.padEnd(22)} ${String(t.base).padStart(8)} px   ${t.css}`)
+    process.stdout.write(toTailwindFile())
+  } else if (args.includes('--rhythm')) {
+    const s = chain()
+    console.log(`\nLA CHAÎNE — base ${s.entries.base} · √2 · racine ${s.entries.root} · titres × ${s.entries.intervalHeadings}\n`)
+    for (const [n, t] of Object.entries(tokens(s))) console.log(`  ${n.padEnd(22)} ${String(t.base).padStart(8)} px   ${t.css}`)
   } else {
-    console.log(`\nFAMILLE DÉRIVÉE — primary ${hex} (teinte ${hexVersLch(hex)[2].toFixed(1)}°)\n`)
+    console.log(`\nFAMILLE DÉRIVÉE — primary ${hex} (teinte ${hexToLch(hex)[2].toFixed(1)}°)\n`)
     for (const theme of ['light', 'dark']) {
       console.log(`  ${theme}`)
       for (const [n, v] of Object.entries(pal[theme])) console.log(`    ${n.padEnd(18)} ${v}`)
     }
-    const fautes = verifier(pal)
-    console.log(fautes.length === 0
-      ? `\n  ${PAIRES_DECLAREES.length * 2} paires · 2 thèmes — toutes au seuil ✓\n`
-      : `\n  ⚠ ${fautes.length} paire(s) sous le seuil :\n` + fautes.map((f) => `    [${f.theme}] ${f.texte} sur ${f.fond} : ${f.rapport}:1 < ${f.seuil}:1`).join('\n') + '\n')
+    const faults = verify(pal)
+    console.log(faults.length === 0
+      ? `\n  ${PAIRS_DECLAREDALL.length * 2} paires · 2 thèmes — toutes au seuil ✓\n`
+      : `\n  ⚠ ${faults.length} paire(s) sous le seuil :\n` + faults.map((f) => `    [${f.theme}] ${f.text} sur ${f.background} : ${f.ratio}:1 < ${f.threshold}:1`).join('\n') + '\n')
   }
 }

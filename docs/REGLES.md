@@ -1,8 +1,8 @@
 # Règles à lire avant d'écrire une interface
 
 > **Fichier généré.** Ne pas le modifier à la main : il est produit depuis les
-> pièces du dépôt par `tools/fili/regles/produire.mjs`. Pour le mettre à jour :
-> `npm run fili:regles`.
+> pièces du dépôt par `tools/fili/rules/produce.mjs`. Pour le mettre à jour :
+> `npm run fili:rules`.
 
 Tu écris une interface dans ce dépôt. Ces règles ne sont pas des conseils : un
 robot les vérifie avant que le code parte, et il bloque. Lis-les en entier
@@ -152,9 +152,9 @@ Un élément ne pousse pas son voisin. C'est le conteneur qui distribue.
 
 Tu ne choisis pas une taille. Tu dis de quel niveau il s'agit, et la taille suit.
 
-Tailles : `text-menu` · `text-fin` · `text-corps` · `text-chapeau` · `text-niveau3` · `text-niveau2` · `text-niveau1`
-Graisses : `font-normale` · `font-moyenne` · `font-appuyee`
-Polices : `font-courante` · `font-mecanique` · `font-etiquette`
+Tailles : `text-menu` · `text-end` · `text-body` · `text-lede` · `text-level3` · `text-level2` · `text-level1`
+Graisses : `font-normal` · `font-mean` · `font-pressed`
+Polices : `font-current` · `font-mechanical` · `font-label`
 
 Le corps vaut **16 px**, c'est la base commune partout. Un titre de
 niveau 2 est à un pas de l'intervalle (1,25), un titre de
@@ -165,7 +165,7 @@ hiérarchie mal posée.
 
 ## 3 · Les couleurs — huit fonds et encres, quatre états
 
-Fonds et encres : `papier` · `papierCreux` · `papierSurvol` · `papierSelection` · `scene` · `encre` · `encreDouce` · `encreLegere` · `encreEteinte` · `encreInverse` · `trait` · `traitNet` · `accent`
+Fonds et encres : `papier` · `paperHollow` · `paperHover` · `paperSelection` · `scene` · `encre` · `inkSoft` · `inkLight` · `inkOff` · `inkInverse` · `trait` · `strokeNet` · `accent`
 États : `erreur` · `alerte` · `succes` · `information`
 
 Une seule couleur est choisie dans tout le système (`#4F46E5`) ; toutes
@@ -192,7 +192,7 @@ C'est le composant qui le tient, tu n'as qu'à déclarer que tu es dans une suit
 
 ### Les rayons
 
-`rounded-net` · `rounded-coque` · `rounded-carte` · `rounded-detail` · `rounded-controle` · `rounded-pastille`
+`rounded-net` · `rounded-container` · `rounded-card` · `rounded-detail` · `rounded-control` · `rounded-dot`
 
 **La marge commande l'arrondi.** **Aucun arrondi ne dépasse la marge qui le
 porte** — ni au départ, ni à aucun niveau. En dessous, c'est un choix : on
@@ -205,13 +205,13 @@ il ne rabat pas la valeur en silence.
 `rounded-net` pour ce qui se lit — une section, un tableau.
 
 **Un composant** — bouton, champ, liste de choix, jeton — ne suit pas la profondeur.
-Il prend `rounded-controle`, et ce rayon ne change ni avec l'endroit où il tombe,
+Il prend `rounded-control`, et ce rayon ne change ni avec l'endroit où il tombe,
 ni avec le thème : un bouton doit se reconnaître partout. Il est plus petit que le
 rayon de sa carte par construction, parce qu'un arrondi se lit par rapport à la
 taille de l'objet.
 
-**L'air horizontal d'un composant est large** — `px-inline-coque`, un peu plus de
-la moitié de sa hauteur. Le serré, `px-inline-carte`, n'est pas une taille mais un
+**L'air horizontal d'un composant est large** — `px-inline-container`, un peu plus de
+la moitié de sa hauteur. Le serré, `px-inline-card`, n'est pas une taille mais un
 rôle : un bouton sans texte, ou des boutons groupés. Deux cas, pas un de plus, et
 jamais sur une pastille.
 
@@ -225,7 +225,7 @@ moitié de sa hauteur, donc il grandit avec elle. **Au-delà de
 tient plus le coin.** Une pastille plus haute que ça n'est plus une pastille :
 c'est une surface, et elle prend un rayon de surface.
 
-**`rounded-pastille` est une forme, pas un arrondi** — et c'est une promesse :
+**`rounded-dot` est une forme, pas un arrondi** — et c'est une promesse :
 ce composant tient sur une ligne. Sur deux lignes, le texte entre dans la courbe.
 Un composant dont le libellé peut se replier ne devient jamais une pastille.
 
@@ -239,12 +239,12 @@ Deux cibles voisines gardent **8px** entre elles.
 Quand la composition demande un objet plus court que la cible — un bouton posé
 dans une tête de carte à côté d'un logo, une action rangée près d'un titre — le
 contour rétrécit et la zone qui réagit reste à la cible : la classe
-`atteinte-confort` l'étend tout autour, sans rien dessiner et sans pousser les
+`reached-comfort` l'étend tout autour, sans rien dessiner et sans pousser les
 voisins. **Rétrécir un composant sans elle est une faute, pas un choix.** Elle ne
 dispense pas de l'écart minimal : deux atteintes qui se recouvrent rendent le
 clic imprévisible.
 
-Largeurs : `max-w-lecture` · `max-w-page` · `max-w-rail` · `max-w-plancher` — un bloc de texte suivi ne dépasse jamais `max-w-lecture`.
+Largeurs : `max-w-reading` · `max-w-page` · `max-w-rail` · `max-w-floor` — un bloc de texte suivi ne dépasse jamais `max-w-reading`.
 
 Bascules d'écran : `mobile:` · `tablette:` · `bureau:` — et rien d'autre. Aucune largeur écrite à la main
 dans une requête média.
@@ -290,7 +290,7 @@ Tu as le droit de sortir des règles de forme, à une condition : **le déclarer
 écrire pourquoi**, au point exact où tu le fais.
 
 ```jsx
-<section data-intent="statement" data-motif="affiche pleine page — rupture voulue">
+<section data-intent="statement" data-reason="affiche pleine page — rupture voulue">
 ```
 
 Sans motif, c'est refusé. Et **une intention déclarée ne lève jamais une règle
