@@ -6425,3 +6425,20 @@ règles en liste. Quatre sections au lieu de six.
 **Au banc.** L'épreuve de l'écriture commune aux six pages s'ajoute à celles
 de la page ; les comptes de sections sont réécrits. Course complète : 71
 vertes.
+
+## 8 septembre 2026 (nuit, 4) — l'ordre des pièces du répertoire est une convention
+
+**Le constat d'Auteur.** « Sur certaines pages l'ordre des sections est
+différent — le code parfois au milieu ou en bas. » Le rééquilibrage avait
+laissé chaque page ranger son répertoire « dans l'ordre que sa matière
+commande » : Rythme, Couleur, Arrondis et Mouvement ouvraient sur les valeurs,
+Typo et Composition sur ce qui se casse.
+
+**La décision.** L'ordre des pièces est une convention documentaire, pas une
+matière (la cohérence vient des conventions communes ; la personnalité vient
+du sujet). Un seul ordre pour les six pages, celui de la hiérarchie du kit :
+ce qui se casse, puis les règles en liste, puis les valeurs et le code. Le
+lecteur finit sur ce qu'il réutilise.
+
+**Au banc.** L'épreuve de l'écriture vérifie l'ordre des pièces sur les six
+pages. Course complète : 71 vertes.

@@ -655,34 +655,21 @@ export default function View() {
           </section>
 
           {/* ═══ LE RÉPERTOIRE — une seule section, aux arrondis (8 sept. 2026) :
-              les six coins du registre d'abord (#code — un seul nombre, six
-              valeurs), puis les six pièges au curseur (#casser, en h4 : ici rien
-              ne se casse d'un clic, une faute d'arrondi ne se voit qu'en mouvement),
-              puis les règles qui se vérifient ailleurs (#invisibles). ═══ */}
+              dans l'ordre commun aux six pages (verdict d'Auteur, 8 sept.) : les six
+              pièges au curseur (#wreck, en h4 : ici rien ne se casse d'un clic, une
+              faute d'arrondi ne se voit qu'en mouvement), les règles qui se vérifient
+              ailleurs (#invisibles), puis les six coins du registre (#code — un seul
+              nombre, six valeurs). ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">04 · Le registre</p>
               <h2>Un seul nombre, six coins — et six façons de les perdre</h2>
-              <p className="muted">Les six coins que la racine engendre, lus dans le registre ; six
-              pièges ordinaires qu&apos;aucun outil ne signale, révélés par leur curseur ; et les
-              règles qui ne se photographient pas. Les lignes marquées « décision d&apos;Auteur »
-              sont des réglages du kit, pas des lois de la forme.</p>
+              <p className="muted">Six pièges ordinaires qu&apos;aucun outil ne signale, révélés par leur
+              curseur ; les règles qui ne se photographient pas ; et les six coins que la racine
+              engendre, lus dans le registre. Les lignes marquées « décision d&apos;Auteur » sont des
+              réglages du kit, pas des lois de la forme.</p>
             </div>
             <div className="gdoc-body">
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les six coins</h3>
-                  <p className="muted">Chaque valeur est lue dans le registre calculé à la charte,
-                  jamais recopiée : si la racine bouge, la table bouge. La sortie Tailwind pointe
-                  sur les mêmes variables, et shadcn lit une seule racine, à qui on donne le coin
-                  du composant.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-                <details className="prov"><summary>Règles &amp; sources</summary><div>
-                  <Rules ids={["a2", "a8"]} />
-                </div></details>
-              </div>
-
               <div className="doc-piece" id="wreck">
                 <div className="doc-piece-head">
                   <h3>Six pièges, révélés par leur curseur</h3>
@@ -709,6 +696,20 @@ export default function View() {
                 <ListRules lines={LIST} />
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
                   <Rules ids={["a10", "a2", "a8", "a9", "slope", "a6"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-head">
+                  <h3>Les six coins</h3>
+                  <p className="muted">Chaque valeur est lue dans le registre calculé à la charte,
+                  jamais recopiée : si la racine bouge, la table bouge. La sortie Tailwind pointe
+                  sur les mêmes variables, et shadcn lit une seule racine, à qui on donne le coin
+                  du composant.</p>
+                </div>
+                <PanelRegistry lines={CODE} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Rules ids={["a2", "a8"]} />
                 </div></details>
               </div>
             </div>

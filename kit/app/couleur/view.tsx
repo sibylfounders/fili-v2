@@ -1054,61 +1054,21 @@ export default function View() {
           </section>
 
           {/* ═══ LE RÉPERTOIRE — une seule section, à la couleur (8 sept. 2026) :
-              les valeurs d'abord — la table des rôles dans les deux thèmes et les
-              six gammes 50–950 (#gammes), c'est ce qu'on vient chercher —, puis
-              les cinq gestes qui cassent (#casser), puis les règles qui se
-              vérifient ailleurs (#invisibles). ═══ */}
+              dans l'ordre commun aux six pages (verdict d'Auteur, 8 sept.) : les cinq
+              gestes qui cassent (#wreck), les règles qui se vérifient ailleurs
+              (#invisibles), puis les valeurs — les six gammes (#gammes) et la table
+              des rôles dans les deux thèmes (#code). ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">04 · Le registre</p>
               <h2>Des rôles, jamais des valeurs — et chaque valeur, lue sur le rendu</h2>
-              <p className="muted">Chaque rôle, sa valeur claire, sa valeur sombre, résolues sur la page
-              rendue et suivant la marque du moment ; les six gammes d&apos;où les rôles se
-              posent ; cinq gestes ordinaires qui cassent sans message d&apos;erreur ; et les règles
-              qui ne se photographient pas. Les lignes marquées « décision d&apos;Auteur » sont des
-              réglages du kit, pas des lois de la perception.</p>
+              <p className="muted">Cinq gestes ordinaires qui cassent sans message d&apos;erreur ; les
+              règles qui ne se photographient pas ; les six gammes d&apos;où les rôles se posent ; et
+              chaque rôle, sa valeur claire, sa valeur sombre, résolues sur la page rendue et suivant
+              la marque du moment. Les lignes marquées « décision d&apos;Auteur » sont des réglages du
+              kit, pas des lois de la perception.</p>
             </div>
             <div className="gdoc-body">
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les rôles, dans les deux thèmes</h3>
-                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le jeton — pas l&apos;extrait
-                  de code, qui vieillit et finit par mentir. Un seul jeu de jetons produit les
-                  variables CSS natives et une sortie Tailwind jumelle ; les deux thèmes vivent
-                  dans le jeton, chaque consommateur en hérite sans rien coder.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-                <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
-                  <TableRoles key={key} />
-                </div></details>
-                <details className="prov"><summary>Règles &amp; sources</summary><div>
-                  <Rules ids={["c12", "c1"]} />
-                </div></details>
-              </div>
-
-              <div className="doc-piece" id="gammes">
-                <div className="doc-piece-head">
-                  <h3>Les six gammes, et où chaque rôle se pose</h3>
-                  <p className="muted">La couleur saisie se pose sur le cran de sa clarté, telle
-                  quelle ; les autres crans en descendent. Les neutres sont les marches fixes,
-                  teintées à la marque. Aucun rôle ne consomme un cran : il s&apos;y pose.</p>
-                </div>
-              <details className="prov" open><summary>Les six gammes — la marque, les neutres, et les quatre familles sémantiques</summary>
-                <div className="gm-next">
-                  <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
-                  <Range primary={primary} />
-                  <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>Les neutres — les mêmes clartés, teintées à la marque</span>
-                  <RangeNeutrals primary={primary} />
-                  {FAMILIES_SEMANTIC.map(([heading, name]) => (
-                    <React.Fragment key={name}>
-                      <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>{heading}</span>
-                      <RangeFamily primary={primary} name={name} />
-                    </React.Fragment>
-                  ))}
-                </div>
-              </details>
-              </div>
-
               <div className="doc-piece" id="wreck">
                 <div className="doc-piece-head">
                   <h3>Cinq gestes ordinaires, sans message d&apos;erreur</h3>
@@ -1184,6 +1144,46 @@ export default function View() {
                 <ListRules lines={LIST} />
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
                   <Rules ids={["c1", "c4", "c5", "c6", "c11", "c12", "c16", "c17"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="gammes">
+                <div className="doc-piece-head">
+                  <h3>Les six gammes, et où chaque rôle se pose</h3>
+                  <p className="muted">La couleur saisie se pose sur le cran de sa clarté, telle
+                  quelle ; les autres crans en descendent. Les neutres sont les marches fixes,
+                  teintées à la marque. Aucun rôle ne consomme un cran : il s&apos;y pose.</p>
+                </div>
+              <details className="prov" open><summary>Les six gammes — la marque, les neutres, et les quatre familles sémantiques</summary>
+                <div className="gm-next">
+                  <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
+                  <Range primary={primary} />
+                  <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>Les neutres — les mêmes clartés, teintées à la marque</span>
+                  <RangeNeutrals primary={primary} />
+                  {FAMILIES_SEMANTIC.map(([heading, name]) => (
+                    <React.Fragment key={name}>
+                      <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>{heading}</span>
+                      <RangeFamily primary={primary} name={name} />
+                    </React.Fragment>
+                  ))}
+                </div>
+              </details>
+              </div>
+
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-head">
+                  <h3>Les rôles, dans les deux thèmes</h3>
+                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le jeton — pas l&apos;extrait
+                  de code, qui vieillit et finit par mentir. Un seul jeu de jetons produit les
+                  variables CSS natives et une sortie Tailwind jumelle ; les deux thèmes vivent
+                  dans le jeton, chaque consommateur en hérite sans rien coder.</p>
+                </div>
+                <PanelRegistry lines={CODE} />
+                <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
+                  <TableRoles key={key} />
+                </div></details>
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Rules ids={["c12", "c1"]} />
                 </div></details>
               </div>
             </div>

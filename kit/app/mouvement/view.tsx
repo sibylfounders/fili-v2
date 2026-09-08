@@ -593,30 +593,21 @@ export default function View() {
           </section>
 
           {/* ═══ LE RÉPERTOIRE — une seule section, au mouvement (8 sept. 2026,
-              aligné sur les cinq autres pages) : le moteur d'abord — quatre durées,
-              une courbe, lues au registre (#code) —, puis les quatre paires qui se
-              cassent (#wreck, en h4), puis les règles qui se vérifient ailleurs
-              (#invisibles). ═══ */}
+              aligné sur les cinq autres pages, dans l'ordre commun) : les quatre
+              paires qui se cassent (#wreck, en h4), les règles qui se vérifient
+              ailleurs (#invisibles), puis le moteur — quatre durées, une courbe,
+              lues au registre (#code). ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">04 · Le registre</p>
               <h2>Quatre durées, une courbe — et tout ce qui les fait tenir</h2>
-              <p className="muted">Les valeurs du moteur, lues au registre ; quatre fautes qui ne
-              déclenchent aucune erreur et se sentent avant de se voir, le juste et le faux côte à
-              côte ; et les règles qui ne se photographient pas — le mouvement moins que les autres.
-              Les lignes marquées « décision d&apos;Auteur » sont des réglages du kit, pas des lois de
-              la perception.</p>
+              <p className="muted">Quatre fautes qui ne déclenchent aucune erreur et se sentent avant de
+              se voir, le juste et le faux côte à côte ; les règles qui ne se photographient pas — le
+              mouvement moins que les autres ; et les valeurs du moteur, lues au registre. Les lignes
+              marquées « décision d&apos;Auteur » sont des réglages du kit, pas des lois de la
+              perception.</p>
             </div>
             <div className="gdoc-body">
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Le moteur</h3>
-                  <p className="muted">Chaque valeur est lue au moteur, jamais recopiée. Une durée qui
-                  n&apos;est pas dans cette table est une faute — ou une chorégraphie, qui se déclare.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-              </div>
-
               <div className="doc-piece" id="wreck">
                 <div className="doc-piece-head">
                   <h3>Quatre fautes, le juste et le faux au même instant</h3>
@@ -657,6 +648,15 @@ export default function View() {
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
                   <Rules ids={["m5", "m8", "m4", "m9", "m10"]} />
                 </div></details>
+              </div>
+
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-head">
+                  <h3>Le moteur</h3>
+                  <p className="muted">Chaque valeur est lue au moteur, jamais recopiée. Une durée qui
+                  n&apos;est pas dans cette table est une faute — ou une chorégraphie, qui se déclare.</p>
+                </div>
+                <PanelRegistry lines={CODE} />
               </div>
             </div>
           </section>

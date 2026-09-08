@@ -255,6 +255,13 @@ export async function faultsWriting(p) {
   const h2 = await texts(p, 'main .gdoc-sec h2')
   for (const t of h2) for (const q of HEADINGS_OF_THERE_TAIL) if (q.test(t)) faults.push(`un titre de la queue commune : « ${t} »`)
   if (await p.locator('main #registry').count() !== 1) faults.push('pas un répertoire — exactement un, #registry')
+  /* L'ordre des pièces est une convention commune aux six pages (verdict d'Auteur,
+     8 septembre) : ce qui se casse, puis les règles en liste, puis les valeurs et le
+     code — jamais le code au milieu. */
+  const pieces = await p.$$eval('main #registry .doc-piece', (es) => es.map((e) => e.id))
+  const rank = (id) => (/^(wreck|bands)$/.test(id) ? 0 : /^(invisibles|list)$/.test(id) ? 1 : 2)
+  for (let i = 1; i < pieces.length; i++) if (rank(pieces[i]) < rank(pieces[i - 1])) faults.push(`les pièces du répertoire dans le désordre : ${pieces.join(' → ')}`)
+  if (pieces.length && rank(pieces[pieces.length - 1]) !== 2) faults.push(`le répertoire ne finit pas sur les valeurs et le code : ${pieces.join(' → ')}`)
   const levels = await p.$$eval('main h1, main h2, main h3, main h4, main h5, main h6', (es) => es.map((e) => +e.tagName[1]))
   for (let i = 1; i < levels.length; i++) if (levels[i] > levels[i - 1] + 1) faults.push(`un saut de niveau de titre : h${levels[i - 1]} → h${levels[i]} (titre nº ${i + 1})`)
   return faults

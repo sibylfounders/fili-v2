@@ -926,33 +926,20 @@ export default function View() {
           </section>
 
           {/* ═══ LE RÉPERTOIRE — une seule section, au rythme (8 sept. 2026) :
-              la correspondance jeton par jeton d'abord — c'est ce qu'on vient
-              chercher sur cette page —, puis les six règles qui se cassent en
-              bandes (#bandes), puis celles qui se vérifient ailleurs (#liste). ═══ */}
+              dans l'ordre commun aux six pages (verdict d'Auteur, 8 sept.) : ce qui
+              se casse (#bands), les règles en liste (#list), les valeurs et le code
+              (#code, avec la correspondance jeton par jeton). ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">05 · Le registre</p>
               <h2>Un seul registre, site compris</h2>
               <p className="muted">
-                Les valeurs que la chaîne produit, jeton par jeton ; six règles de proximité qui se
-                cassent sous les yeux ; et celles qui ne se photographient pas. Les lignes marquées
-                « décision d&apos;Auteur » sont des réglages du kit, pas des lois de la perception.
+                Six règles de proximité qui se cassent sous les yeux ; celles qui ne se
+                photographient pas ; et les valeurs que la chaîne produit, jeton par jeton. Les lignes
+                marquées « décision d&apos;Auteur » sont des réglages du kit, pas des lois de la perception.
               </p>
             </div>
             <div className="gdoc-body">
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les jetons, et leur correspondance</h3>
-                  <p className="muted">Chaque valeur est lue dans le registre du moment, jamais recopiée.
-                  Deux échelles, assumées : le CSS natif garde les décimales calculées ; Tailwind
-                  s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-                <details className="prov"><summary>La correspondance, jeton par jeton</summary><div>
-                  <Mapping />
-                </div></details>
-              </div>
-
               <div className="doc-piece" id="bands">
                 <div className="doc-piece-head">
                   <h3>Six règles de proximité, et leur faute</h3>
@@ -1009,6 +996,19 @@ export default function View() {
                 <ListRules lines={LIST} />
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
                   <Rules ids={["y3", "y13", "y8", "y9", "y7", "y4"]} />
+                </div></details>
+              </div>
+
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-head">
+                  <h3>Les jetons, et leur correspondance</h3>
+                  <p className="muted">Chaque valeur est lue dans le registre du moment, jamais recopiée.
+                  Deux échelles, assumées : le CSS natif garde les décimales calculées ; Tailwind
+                  s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux.</p>
+                </div>
+                <PanelRegistry lines={CODE} />
+                <details className="prov"><summary>La correspondance, jeton par jeton</summary><div>
+                  <Mapping />
                 </div></details>
               </div>
             </div>
