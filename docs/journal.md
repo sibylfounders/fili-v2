@@ -6407,3 +6407,21 @@ h4 du décor Navette.
 **Reste à l'œil de l'Auteur.** `/mouvement`, verrouillée, garde deux titres de
 la queue commune (« Voyez ce qui se passe… », « Elles se vérifient ailleurs »)
 et sa queue en trois sections : on ne rouvre pas une page 🟢 sans décision.
+
+## 8 septembre 2026 (nuit, 3) — /mouvement rejoint le répertoire
+
+**La décision.** « Aligne » — verdict d'Auteur sur la réserve laissée au
+rééquilibrage des cinq pages : `/mouvement`, verrouillée le soir même, gardait
+seule la queue en trois sections et deux titres copiés (« Voyez ce qui se
+passe… », « Elles se vérifient ailleurs »). Une page 🟢 ne se rouvre que par
+décision ; la voici.
+
+**Ce qui change.** Les trois preuves ne bougent pas. La queue devient un
+répertoire, « Quatre durées, une courbe — et tout ce qui les fait tenir » :
+le moteur d'abord (les neuf lignes lues au registre — c'est ce qu'on vient y
+chercher), puis les quatre paires en h4 sous leur sous-titre, puis les huit
+règles en liste. Quatre sections au lieu de six.
+
+**Au banc.** L'épreuve de l'écriture commune aux six pages s'ajoute à celles
+de la page ; les comptes de sections sont réécrits. Course complète : 71
+vertes.

@@ -31,7 +31,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { DENSITIES, MOTION } from '../derivation.mjs'
-import { KIT, WIDTHS, TOL, openSite, openBrowser, expected, near, calcPx, calc, text, texts, faultsC17, faultsInHard, faultsSizes, selectorsDeclaredAll, selectorsInEm, linesAlongSelector, overflow } from './bench.mjs'
+import { KIT, WIDTHS, TOL, openSite, openBrowser, expected, near, calcPx, calc, text, texts, faultsC17, faultsInHard, faultsSizes, selectorsDeclaredAll, selectorsInEm, linesAlongSelector, overflow , faultsWriting } from './bench.mjs'
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && near(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const CSS = () => fs.readFileSync(path.join(KIT, 'app/mouvement/motion.css'), 'utf8')
@@ -225,7 +225,7 @@ test('6 · l’écriture d’Auteur : aucun mot qui décrit l’écran ou racont
   const body = await text(p, 'main')
   assert.doesNotMatch(body, /Regardez|Observez|Vous pouvez voir|Comme vous pouvez|Cliquez|Appuyez|Faites glisser|Essayez|À gauche|à droite|Cette démonstration/i, 'le texte ne décrit ni l\'écran ni le geste')
   assert.equal(await p.locator('main .gd-foot, main .motion-demo-index, main .motion-verdict').count(), 0, 'pas de pied, pas de surtitre, pas de badge décrété')
-  assert.equal(await p.locator('main .gdoc-sec-head .muted').count(), 6, 'une phrase d\'observation sous chaque titre — une seule')
+  assert.equal(await p.locator('main .gdoc-sec-head .muted').count(), 4, 'une phrase d\'observation sous chaque titre — une seule')
   assert.equal(await p.locator('main .gd-caption').count(), 3, 'une légende par preuve, et elle porte une valeur lue')
   assert.equal(await p.locator('main details.prov').count(), 8, 'les règles et sources sous chaque preuve, chaque paire, et la liste')
   for (const d of await p.locator('main details.prov summary').all()) await d.click()
@@ -296,17 +296,28 @@ test('7 · marges, espaces, coins, tailles : chaque valeur calculée est une val
     await close()
   }
 })
-test('7 · le mouvement est une fondation : le rail le range avec ses sœurs ; six sections, trois preuves, quatre paires, huit lignes en liste, neuf lignes de code lues au moteur', async () => {
+test('7 · le mouvement est une fondation : le rail le range avec ses sœurs ; quatre sections, trois preuves, quatre paires, huit lignes en liste, neuf lignes de code lues au moteur', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   const sisters = await texts(p, '.gdoc-rail .rail-block:first-of-type .rail-link')
   assert.ok(sisters.includes('Mouvement') && sisters.includes('Rythme'), `le rail : ${sisters.join(', ')}`)
   assert.equal(await text(p, '.gdoc-rail .rail-block:first-of-type .rail-heading'), 'Fondations')
-  assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'six sections')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
   assert.equal(await p.locator('main .motion-demo').count(), 3, 'trois preuves')
   assert.equal(await p.locator('#wreck .doc-band').count(), 4, 'quatre paires')
   assert.equal(await p.locator('#invisibles .doc-list tbody tr').count(), 8, 'huit lignes en liste')
   assert.equal(await p.locator('#code .doc-code tbody tr').count(), 9, 'neuf lignes de code')
   const code = await texts(p, '#code .doc-code .cs-val')
   assert.deepEqual(code.slice(0, 4), MS.map((m) => `${m} ms`), 'le registre dit les quatre crans, lus au moteur')
+  await close()
+})
+
+/* ── 8 · Le répertoire, aligné sur les cinq autres pages (8 septembre 2026, nuit) ──
+   La queue en trois sections a disparu ; UN répertoire (#registry) range le
+   moteur (#code), les quatre paires (#wreck, en h4) et la liste (#invisibles). */
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; quatre paires en h4, trois pièces', async () => {
+  const { p, close } = await nav.page(URL(), { width: 1440 })
+  assert.deepEqual(await faultsWriting(p), [])
+  assert.equal(await p.locator('#registry #wreck h4.doc-band-name').count(), 4, 'quatre paires, en h4 sous leur sous-titre')
+  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces')
   await close()
 })

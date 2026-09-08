@@ -20,9 +20,7 @@ const TOC: Toc = [
   ["trace", "01", "La trace"],
   ["cause", "02", "La cause"],
   ["gaze", "03", "Le regard"],
-  ["wreck", "04", "Les règles qu'on peut casser"],
-  ["invisibles", "05", "Les règles qu'on ne peut pas montrer"],
-  ["code", "06", "Dans le code"],
+  ["registry", "04", "Le registre"],
 ];
 type Step = keyof typeof MOTION.durations;
 const ms = (c: Step) => MOTION.durations[c].ms;
@@ -594,67 +592,72 @@ export default function View() {
             </div>
           </section>
 
-          {/* ══════════ 04 · les règles qu'on peut casser ══════════ */}
-          <section className="gdoc-sec set" id="wreck">
+          {/* ═══ LE RÉPERTOIRE — une seule section, au mouvement (8 sept. 2026,
+              aligné sur les cinq autres pages) : le moteur d'abord — quatre durées,
+              une courbe, lues au registre (#code) —, puis les quatre paires qui se
+              cassent (#wreck, en h4), puis les règles qui se vérifient ailleurs
+              (#invisibles). ═══ */}
+          <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
-              <p className="kicker">04 · Les règles qu&apos;on peut casser</p>
-              <h2>Voyez ce qui se passe quand la règle saute</h2>
-              <p className="muted">Aucune de ces fautes ne déclenche d&apos;erreur. Elles se sentent avant de se
-              voir. Alors le juste et le faux jouent côte à côte, au même instant, et chaque côté lit ce
-              qu&apos;il joue.</p>
+              <p className="kicker">04 · Le registre</p>
+              <h2>Quatre durées, une courbe — et tout ce qui les fait tenir</h2>
+              <p className="muted">Les valeurs du moteur, lues au registre ; quatre fautes qui ne
+              déclenchent aucune erreur et se sentent avant de se voir, le juste et le faux côte à
+              côte ; et les règles qui ne se photographient pas — le mouvement moins que les autres.
+              Les lignes marquées « décision d&apos;Auteur » sont des réglages du kit, pas des lois de
+              la perception.</p>
             </div>
             <div className="gdoc-body">
+              <div className="doc-piece" id="code">
+                <div className="doc-piece-head">
+                  <h3>Le moteur</h3>
+                  <p className="muted">Chaque valeur est lue au moteur, jamais recopiée. Une durée qui
+                  n&apos;est pas dans cette table est une faute — ou une chorégraphie, qui se déclare.</p>
+                </div>
+                <PanelRegistry lines={CODE} />
+              </div>
+
+              <div className="doc-piece" id="wreck">
+                <div className="doc-piece-head">
+                  <h3>Quatre fautes, le juste et le faux au même instant</h3>
+                  <p className="muted">Aucune ne déclenche d&apos;erreur. Un seul geste joue les deux
+                  côtés, et chaque côté lit ce qu&apos;il joue.</p>
+                </div>
               <Bands>
-                <Band name="Le survol suit le curseur" side={`${ms("fast")} ms`} bare
+                <Band level={4} name="Le survol suit le curseur" side={`${ms("fast")} ms`} bare
                   says="Un retour au survol se joue en cent millisecondes. Au-delà, la couleur poursuit le curseur au lieu de le suivre — et la page a l'air de réfléchir à chaque geste."
                   rules={<Rules ids={["m3", "m9"]} />}>
                   <BandHover />
                 </Band>
-                <Band name="Un menu vit à 200" side={`${ms("base")} ms`} bare
+                <Band level={4} name="Un menu vit à 200" side={`${ms("base")} ms`} bare
                   says="Ce qu'on ouvre des dizaines de fois par jour ne se fait pas attendre. Le même menu au cran d'une section, 700 ms, est à peine plus beau — et cent fois plus long."
                   rules={<Rules ids={["m3", "m10"]} />}>
                   <BandDrags />
                 </Band>
-                <Band name="Rien ne naît du néant" side={`de ${dec(0.95)} à 1`} bare
+                <Band level={4} name="Rien ne naît du néant" side={`de ${dec(0.95)} à 1`} bare
                   says="Une notification qui arrive part de presque sa taille, avec un fondu. Partie de zéro, elle surgit comme un objet qui n'existait pas une image plus tôt."
                   rules={<Rules ids={["m7"]} />}>
                   <BandNothing />
                 </Band>
-                <Band name="Moins de mouvement, pas aucun" side="les fondus restent" bare
+                <Band level={4} name="Moins de mouvement, pas aucun" side="les fondus restent" bare
                   says="Quelqu'un qui a demandé moins de mouvement à son système ne veut pas d'objets qui se déplacent. Il a toujours besoin de savoir qu'une chose est arrivée : le fondu reste. Notre ancienne règle coupait tout."
                   rules={<Rules ids={["m1"]} />}>
                   <BandReduced />
                 </Band>
               </Bands>
-            </div>
-          </section>
+              </div>
 
-          {/* ══════════ 05 · les règles qu'on ne peut pas montrer ══════════ */}
-          <section className="gdoc-sec set" id="invisibles">
-            <div className="gdoc-sec-head">
-              <p className="kicker">05 · Les règles qu&apos;on ne peut pas montrer</p>
-              <h2>Elles se vérifient ailleurs — et on vous dit où</h2>
-              <p className="muted">Certaines règles ne se photographient pas — le mouvement moins que les
-              autres. Elles se vérifient dans le code, à l&apos;écran allumé, ou nulle part du tout.</p>
-            </div>
-            <div className="gdoc-body">
-              <ListRules lines={LIST} />
-              <details className="prov"><summary>Règles &amp; sources</summary><div>
-                <Rules ids={["m5", "m8", "m4", "m9", "m10"]} />
-              </div></details>
-            </div>
-          </section>
-
-          {/* ══════════ 06 · dans le code ══════════ */}
-          <section className="gdoc-sec set" id="code">
-            <div className="gdoc-sec-head">
-              <p className="kicker">06 · Dans le code</p>
-              <h2>Quatre durées, une courbe</h2>
-              <p className="muted">Chaque valeur ci-dessous est lue au moteur, jamais recopiée. Une durée qui
-              n&apos;est pas dans cette table est une faute — ou une chorégraphie, qui se déclare.</p>
-            </div>
-            <div className="gdoc-body">
-              <PanelRegistry lines={CODE} />
+              <div className="doc-piece" id="invisibles">
+                <div className="doc-piece-head">
+                  <h3>Les règles qui ne se photographient pas</h3>
+                  <p className="muted">Elles se vérifient dans le code, sur l&apos;écran allumé, ou
+                  nulle part — et alors elles s&apos;assument comme un choix, daté.</p>
+                </div>
+                <ListRules lines={LIST} />
+                <details className="prov"><summary>Règles &amp; sources</summary><div>
+                  <Rules ids={["m5", "m8", "m4", "m9", "m10"]} />
+                </div></details>
+              </div>
             </div>
           </section>
         </main>
