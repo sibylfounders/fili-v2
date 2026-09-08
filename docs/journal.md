@@ -5999,3 +5999,55 @@ mesure — la suivante, douze vertes.
 
 Banc : douze vertes trois fois (dont une reprise après la reconstruction
 croisée), puis la course complète — six pages vertes.
+
+## 8 septembre 2026 — la page qu'on ne lisait pas : la course, et le juste à côté du mot
+
+**Le verdict, sans détour.** « Je ne suis pas satisfait du tout. Les trois quarts
+des exemples ne sont pas compréhensibles à l'œil humain — faire la différence
+entre 100 ms et 300 ms en deux clics, ça ne marche pas. Même moi je n'ai pas
+compris certaines règles. » Et la consigne : aller voir comment les autres font,
+s'en inspirer, ne plus y passer de temps. Le matin, trois retouches avaient déjà
+été demandées et faites — plus de compteur en haut à droite, un clic sur le
+bouton de la scène qui rejoue la démo, une lecture qui laisse le temps de lire ;
+puis le lexique au survol, sans « Tout lire », et le rebond qu'on ne voyait pas.
+Ce n'étaient pas des retouches qu'il fallait.
+
+**Ce que disent les références.** Material (M1 et M3), Carbon, Fluent,
+Atlassian, designsystems.one, Emil Kowalski, Rauno Freiberg, Josh Comeau,
+Zajno, NN/g. Cinq dispositifs reviennent partout pour qu'une durée se voie :
+le même objet, le même déclencheur, le même instant — on compare en course
+parallèle, jamais l'un après l'autre ; ralentir, et l'écrire à l'écran ; un
+grand objet, une grande course ; le bon et le mauvais étiquetés, le mauvais
+exagéré ; rejouer à la main, le chiffre en direct. Notre 02 faisait exactement
+l'inverse : cinq situations l'une après l'autre, à vitesse réelle, sans rien
+à comparer. Notre 03 jouait chaque faute seule, sans le juste à côté.
+
+**02 · La course.** Le même menu quatre fois côte à côte, un seul « Ouvrir »,
+le même instant, au ralenti ×5 dit à l'écran (et « vitesse réelle » d'un
+clic). Chaque colonne prend sa durée par une seule variable ; sous chaque menu,
+une piste se remplit en ligne droite pendant la durée — c'est le temps qu'on
+voit — et le rang d'arrivée s'écrit quand la transition finit, jamais avant.
+Le chiffre et l'emploi sont lus sur le rendu et ramenés à la vitesse réelle.
+Puis le même menu à trois vitesses : 50, 200, 700 — « trop vite », « juste »,
+« trop lent », déduits de la durée lue, les deux fautes déclarées.
+
+**03 · Le juste à côté du mot.** Sur chaque tuile, deux menus jouent au même
+instant au survol : à gauche « il se pose », le juste ; à droite le mot. La
+faute se lit par contraste, et elle est exagérée jusqu'à être évidente — le
+rebond part de 0,4 et dépasse largement, le milieu aussi, le néant part de
+rien, la traîne dure 700. Le ralenti ×3 est écrit dans la scène. Une tuile à la
+fois ; la quitter la remet au repos ; au clavier, le focus fait pareil.
+
+**Les textes.** Réécrits en français simple sur toute la page : l'accroche, les
+trois chapeaux, les sous-titres de la main, les six mots et leurs verdicts lus
+(« 200 ms · dépasse, puis revient », « 700 ms · trop long pour un menu (200) »).
+
+**Au banc.** Douze épreuves réécrites : la course (durées ×5 sur le rendu,
+rangs dans l'ordre des crans, vitesse réelle, la faute à trois vitesses), les
+paires du lexique (le juste sur la courbe du kit, le mot à sa faute, le survol
+puis le focus), le ralenti lu sur la propriété de la scène. En chemin : un
+décor de bouton héritait du ralenti et se lisait à 20 ms — il ne bouge plus ;
+le focus au clavier se mesurait sous une souris restée sur une tuile — elle
+s'écarte d'abord.
+
+Banc : douze vertes trois fois, puis la course complète — six pages vertes.
