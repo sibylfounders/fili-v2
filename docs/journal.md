@@ -6124,3 +6124,25 @@ En chemin : une courbe lue en coupant sur la virgule du `cubic-bezier` —
 lue sur la bonne virgule maintenant.
 
 Banc : douze vertes trois fois, puis la course complète — six pages vertes.
+
+## 8 septembre 2026 (nuit, suite) — les paires se lisent : un seul geste, le même instant, le ralenti écrit
+
+**Le verdict, sur capture.** « Les démos sont devenues incompréhensibles — là
+j'ai deux fois la même chose, je ne sais même plus ce qu'on est censé voir. »
+Deux causes. La première était un serveur de développement qui servait une
+feuille de style périmée : deux colonnes en pile, menus nus, « 0 ms » des deux
+côtés — relancé. La seconde était la vraie : la paire du survol demandait de
+comparer 100 et 300 ms en passant sur deux rangées l'une après l'autre —
+exactement ce que le matin avait déjà condamné. Aucun œil ne le voit.
+
+**Ce qui change.** Chaque paire joue ses deux côtés au même instant, sur un
+seul geste : « Survoler » passe le curseur sur les deux rangées ensemble,
+« Ouvrir » ouvre les deux menus, « Notifier » les deux notifications. Et chaque
+scène joue au ralenti ×3, écrit dessus — comme la course du matin ; les vraies
+commandes d'une scène ralentie gardent leur vitesse, les verdicts lus ramènent à
+la vitesse réelle. Deux tertiaires ont dit leur intention, une icône dessinée
+s'est déclarée hors chaîne (relevés par les épreuves du site).
+
+**Au banc.** Douze vertes trois fois. La course complète dit /mouvement vert ;
+d'autres pages y sont rouges ou vertes d'une course à l'autre, parce qu'un
+autre fil les retouche en même temps — ce n'est pas ce fil qui les juge.
