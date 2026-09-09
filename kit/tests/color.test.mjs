@@ -111,7 +111,7 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
     assert.deepEqual(groups.map((g) => [g.heading, g.lines]), GROUPS_SWATCHES, `${theme} — les deux groupes du nuancier`)
     const records = await texts(p, '#swatches .gd-lng-record')
     assert.equal(records.length, 6, `${theme} — six lignes signées`)
-    TABS.forEach(([token, tone, , soft, onSoft], i) => assert.equal(records[i], `${token} · ${pal[tone.slice(2)]} · doux ${pal[soft.slice(2)]} · ${fmt(ratio(pal, onSoft, soft))}`, `${theme} — languette ${token}`))
+    TABS.forEach(([token, tone, , soft, onSoft], i) => assert.equal(records[i], `${token} · ${pal[tone.slice(2)]} · doux ${pal[soft.slice(2)]} · ${fmt(ratio(pal, onSoft, soft))}`, `${theme} — le métier ${token}`))
     /* le panneau du contraste par paire : UN seul, dans le thème du lecteur (2 septembre) — trois rapports, lus */
     const badges = await p.evaluate(() => [...document.querySelectorAll('#wreck .gd-pan .badge')].map((b) => b.textContent))
     assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface'], ['--on-primary', '--primary']].map(([a, b]) => fmt(ratio(pal, a, b))), `panneau ${theme}`)
@@ -145,7 +145,7 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
     const painted = await p.evaluate(() => [...document.querySelectorAll('#charte .cm-tile')].map((t) => [getComputedStyle(t).backgroundColor, getComputedStyle(t).color]))
     TILES.forEach(([role, on], i) => { assert.equal(painted[i][0], rgb(pal[role]), `${theme} — tuile ${role} peinte`); assert.equal(painted[i][1], rgb(pal[on.slice(2)]), `${theme} — tuile ${role} encre`) })
     const lng = await p.evaluate(() => [...document.querySelectorAll('#swatches .gd-lng')].map((l) => [getComputedStyle(l.querySelector('.gd-lng-soft')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-soft')).color, getComputedStyle(l.querySelector('.gd-lng-tone')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-tone')).color]))
-    TABS.forEach(([token, tone, onTone, soft, onSoft], i) => assert.deepEqual(lng[i], [soft, onSoft, tone, onTone].map((n) => rgb(pal[n.slice(2)])), `${theme} — languette ${token} peinte`))
+    TABS.forEach(([token, tone, onTone, soft, onSoft], i) => assert.deepEqual(lng[i], [soft, onSoft, tone, onTone].map((n) => rgb(pal[n.slice(2)])), `${theme} — le métier ${token}, peint par son couple`))
     /* les gammes 50–950 : la barre est la gamme du moteur ; les rôles posés sont ceux qu'il pose */
     /* depuis le 8 septembre (soir), les gammes vivent au répertoire, ouvertes d'entrée */
     const bars = await p.evaluate(() => [...document.querySelectorAll('#registry #gammes .gm')].map((g) => ({
@@ -323,19 +323,13 @@ test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une val
     await p.waitForTimeout(120)
     const f = await faultsInHard(p, W, DENSITIES.comfortable, { exclusions: inEm })
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
-    /* Le fond doux du nuancier sort du balayage parce qu'il DÉCLARE la place qu'il
-       réserve à la lane du ton. On la mesure donc nommément, et plus durement que le
-       balayage ne le ferait : la place réservée vaut exactement la lane, plus la marge
-       de ligne — et tout le reste de la ligne est bien sur la chaîne. */
-    const lng = await p.evaluate(() => {
-      const d = document.querySelector('#swatches .gd-lng-soft'), t = document.querySelector('#swatches .gd-lng-tone')
-      const cd = getComputedStyle(d)
-      return { top: parseFloat(cd.paddingTop), left: parseFloat(cd.paddingLeft), right: parseFloat(cd.paddingRight), space: parseFloat(cd.rowGap), lane: t.getBoundingClientRect().width }
-    })
-    ok(lng.top, expected('pad-3-block', W), `${W} — le fond doux : marge de ligne`)
-    ok(lng.left, expected('pad-3-inline', W), `${W} — le fond doux : marge de ligne`)
-    ok(lng.space, expected('gap-4-block', W), `${W} — le fond doux : au plus serré`)
-    ok(lng.right, lng.lane + expected('pad-3-inline', W), `${W} — la place réservée = la lane du ton + la marge`, 0.5)
+    /* Le nuancier des métiers (9 septembre) : chaque métier est une ligne au cran de la ligne,
+       ses objets s'écartent au cran de la ligne, la bannière porte la marge de ligne. */
+    ok(await calcPx(p, '#swatches .gd-lng', 'rowGap'), expected('gap-3-block', W), `${W} — un métier : ses trois lignes au cran de la ligne`)
+    ok(await calcPx(p, '#swatches .gd-lng-scene', 'columnGap'), expected('gap-3-inline', W), `${W} — les objets d'un métier s'écartent au cran de la ligne`)
+    ok(await calcPx(p, '#swatches .gd-obj-banner', 'paddingTop'), expected('pad-3-block', W), `${W} — la bannière : marge de ligne`)
+    ok(await calcPx(p, '#swatches .gd-obj-banner', 'paddingLeft'), expected('pad-3-inline', W), `${W} — la bannière : marge de ligne`)
+    ok(await calcPx(p, '#swatches .gd-obj-button', 'minHeight'), expected('control-height', W), `${W} — le bouton du métier a la cible du kit`)
     const t = await faultsSizes(p, W, { exclusions })
     assert.deepEqual(t, [], `${W} px : ${t.length} taille(s) hors moteur`)
     assert.deepEqual(errors, [], 'la page ne jette aucune erreur')

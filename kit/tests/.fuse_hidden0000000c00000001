@@ -194,11 +194,11 @@ test('2 · la gazette est fer à gauche, corps ≥ 16, interligne ≥ 1,5, capit
     ok(await calcPx(p, '#gazette .gz-mast', 'fontSize'), expected('font-size-display', W), `${W} — manchette en affiche`)
     ok(await calcPx(p, '#gazette .gazette', 'paddingTop'), expected('pad-1-block', W), `${W} — la feuille est une coque`); ok(await calcPx(p, '#gazette .gazette', 'borderTopLeftRadius'), expected('r-1', W), `${W} — coin de coque`)
     ok(await calcPx(p, '#wreck .gd-tree-level', 'paddingInlineStart'), expected('pad-2-inline', W), `${W} — un niveau = la marge de carte`)
-    ok(await calcPx(p, '#wreck .demo-side.good .tp-scene.field input', 'fontSize'), expected('font-size-body', W), `${W} — le champ au corps`)
+    ok(await calcPx(p, '#wreck .tp-scene.field input', 'fontSize'), expected('font-size-body', W), `${W} — le champ au corps`)
     ok(await calcPx(p, '#fonts .gd-vblock', 'paddingTop'), expected('pad-1-block', W), `${W} — la voix est une coque`)
     /* la carte calée (4 septembre) : une seule valeur d'espace, des quatre côtés — celle de la coque */
-    ok(await calcPx(p, '#wreck .demo-side.good .tp-alignment', 'paddingTop'), expected('pad-1-inline', W), `${W} — la carte calée, une valeur des quatre côtés`)
-    ok(await calcPx(p, '#wreck .demo-side.good .tp-alignment', 'paddingLeft'), expected('pad-1-inline', W), `${W} — la carte calée, le côté`)
+    ok(await calcPx(p, '#wreck .tp-alignment', 'paddingTop'), expected('pad-1-inline', W), `${W} — la carte calée, une valeur des quatre côtés`)
+    ok(await calcPx(p, '#wreck .tp-alignment', 'paddingLeft'), expected('pad-1-inline', W), `${W} — la carte calée, le côté`)
     await close()
   }
 })

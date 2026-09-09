@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import { Preview } from "../preview";
-import { Bands, Band, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { chain, tokens, aWidth, AXES, CHARTER, WIDTH_MIN, WIDTH_MAX, WEIGHT } from "../../derivation.mjs";
@@ -570,19 +570,16 @@ export default function View() {
   const [tight, setTight] = useState(false);
   /* répertoire */
   const [zoom, setZoom] = useState(2); /* le zoom est ALLUMÉ d'entrée : la démo montre ce qui doit tenir sous zoom, pas l'état de repos (verdict d'Auteur, 31 août) */
-  const [vwSingle, setVwSingle] = useState(false);
-  const [jump, setJump] = useState(false);
-  const [bold, setBold] = useState(false);
-  const [types, setTypes] = useState(false);
-  const [small, setSmall] = useState(false);
-  const [alignment, setAlignment] = useState(false);
+  /* l'action du cadre REJOUE le zoom : les deux côtés repartent de ×1 au même instant, puis passent à ×2 */
+  const replayZoom = () => { setZoom(1); requestAnimationFrame(() => requestAnimationFrame(() => setZoom(2))); };
   /* la graisse (05) */
   const [equal, setEqual] = useState(false);
   const [identical, setIdentical] = useState(false);
   const [gap, setGap] = useState<number>(WEIGHT.gapDark);
   const activeId = useDocSections("fonts");
   const widthScreen = useWidthScreen();
-  const body = widthScreen > 0 ? bodyPx(widthScreen, zoom, vwSingle) : BODY;
+  const body = widthScreen > 0 ? bodyPx(widthScreen, zoom, false) : BODY;
+  const bodyVw = widthScreen > 0 ? bodyPx(widthScreen, zoom, true) : BODY; /* casse : tout en vw, le zoom ne mord plus */
 
   return (
     <div className="gdoc-background">
@@ -872,81 +869,130 @@ export default function View() {
                   au téléphone.</p>
                 </div>
               <Bands>
-                <Band level={4} name="Le zoom du lecteur" side="du rem dans chaque borne"
+                <Band level={4} name="Le zoom du lecteur" side="du rem dans chaque borne" bare
                   says="Un lecteur agrandit le texte : la fenêtre, elle, ne bouge pas. Une taille exprimée en part d&apos;écran seule ne grandit donc pas d&apos;un pixel. L&apos;échec est silencieux — invisible en test standard, bloquant pour qui dépend du zoom."
-                  broken={vwSingle} onBroken={setVwSingle}
-                  labelBroken="Casser : la part d&apos;écran seule"
                   rules={<Rules ids={["t3"]} />}>
-                  <div className="tp-scene">
-                    <button type="button" className={`button ${zoom === 2 ? "on" : ""}`}
-                      aria-pressed={zoom === 2} onClick={() => setZoom(zoom === 2 ? 1 : 2)}>
-                      Zoom ×2
-                    </button>
-                    {/* le corps calculé par le moteur à la largeur réelle de l'écran — le nombre est vrai, pas posé */}
-                    <span data-intent={vwSingle ? "statement" : undefined}
-                      style={{ fontSize: `${body}px`, lineHeight: "var(--leading-body)" }}>
-                      Portez ce vieux whisky au juge blond qui fume
-                    </span>
-                    {vwSingle && zoom > 1
-                      ? <span className="badge ko">zoom ×{zoom} — et pas un pixel gagné</span>
-                      : <span className="mono muted">corps = {fr(body)} px</span>}
-                  </div>
+                  <Demo situation="Un lecteur règle son navigateur à 200 %"
+                    action={{ label: "Agrandir le texte", onClick: replayZoom }}
+                    caption={`corps du moteur à ${fr(widthScreen)} px de large : ${fr(bodyPx(widthScreen, 1, false))} px au repos, ${fr(body)} px sous zoom — lus sur le rendu`}>
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="La part d'écran seule ne gagne pas un pixel">
+                        <div className="tp-scene">
+                          {/* casse : tout en vw, le zoom ne mord plus — le corps calculé à la largeur réelle, sans le zoom */}
+                          <span className="tp-zoom-text" style={{ fontSize: `${bodyVw}px`, lineHeight: "var(--leading-body)" }}>
+                            Portez ce vieux whisky au juge blond qui fume
+                          </span>
+                          <span className="badge ko">zoom ×{zoom} — et pas un pixel gagné</span>
+                        </div>
+                      </DemoSide>
+                      <DemoSide ok verdict="Le rem suit le zoom : le corps double">
+                        <div className="tp-scene">
+                          {/* le corps calculé par le moteur à la largeur réelle de l'écran, sous le zoom — le nombre est vrai, pas posé */}
+                          <span className="tp-zoom-text" style={{ fontSize: `${body}px`, lineHeight: "var(--leading-body)" }}>
+                            Portez ce vieux whisky au juge blond qui fume
+                          </span>
+                          <span className="mono muted">corps = {fr(body)} px</span>
+                        </div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Le saut de niveau" side="un niveau à la fois"
+                <Band level={4} name="Le saut de niveau" side="un niveau à la fois" bare
                   says="Les niveaux de titre se suivent sans saut. Un h2 suivi directement d&apos;un h4 casse l&apos;arbre que le lecteur d&apos;écran parcourt : l&apos;utilisateur en conclut qu&apos;il manque du contenu. Aucun bénéfice en échange."
-                  broken={jump} onBroken={setJump}
                   rules={<Rules ids={["t1", "p01"]} />}>
-                  <Tree jump={jump} />
+                  <Demo situation="Le plan d'un dossier, lu par un lecteur d'écran">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="h2 puis h4 : un niveau manque"><Tree jump /></DemoSide>
+                      <DemoSide ok verdict="h2, h3, h4 : chaque niveau à sa place"><Tree jump={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="La graisse" side="les titres, jamais le texte long"
+                <Band level={4} name="La graisse" side="les titres, jamais le texte long" bare
                   says="Quand tout est important, plus rien ne l&apos;est. Un paragraphe entier en demi-gras n&apos;appuie plus rien du tout — et la graisse fine sous le corps courant dégrade le trait, même quand la couleur passe les seuils."
-                  broken={bold} onBroken={setBold}
                   rules={<Rules ids={["t7"]} />}>
-                  <div className="tp-scene">
-                    <p data-intent={bold ? "statement" : undefined}
-                      style={{ fontWeight: bold ? 600 : 400 }}>Un texte long en demi-gras
-                    n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
-                    demi-gras appartient aux titres.</p>
-                    {bold && <span className="badge ko">tout le paragraphe en demi-gras — il n&apos;y a plus rien à mettre en avant</span>}
-                  </div>
+                  <Demo situation="Un paragraphe de texte courant">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="Tout en demi-gras : plus rien ne ressort">
+                        <div className="tp-scene">
+                          <p style={{ fontWeight: 600 }}>Un texte long en demi-gras
+                          n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
+                          demi-gras appartient aux titres.</p>
+                          <span className="badge ko">tout le paragraphe en demi-gras — il n&apos;y a plus rien à mettre en avant</span>
+                        </div>
+                      </DemoSide>
+                      <DemoSide ok verdict="Le corps courant à 400, la graisse aux titres">
+                        <div className="tp-scene">
+                          <p style={{ fontWeight: 400 }}>Un texte long en demi-gras
+                          n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
+                          demi-gras appartient aux titres.</p>
+                        </div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Les capitales" side="brèves, espacées, jamais tapées"
+                <Band level={4} name="Les capitales" side="brèves, espacées, jamais tapées" bare
                   says="Les capitales ont été dessinées pour ouvrir une phrase, pas pour en porter quatre. Sur du texte courant, elles effacent la silhouette des mots : l&apos;œil se met à épeler au lieu de lire."
-                  broken={types} onBroken={setTypes}
                   rules={<Rules ids={["t8"]} />}>
-                  <div className="tp-scene">
-                    <p data-intent={types ? "statement" : undefined}
-                      style={types ? { textTransform: "uppercase" } : undefined}>Les capitales sur
-                    du texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu
-                    de lire. Ici elles restent aux étiquettes brèves, espacées, posées par le
-                    style.</p>
-                    {types && <span className="badge ko">capitales sur du texte courant — la silhouette des mots a disparu</span>}
-                  </div>
+                  <Demo situation="Le même paragraphe, tapé en capitales ou non">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="En capitales, la silhouette des mots a disparu">
+                        <div className="tp-scene">
+                          <p style={{ textTransform: "uppercase" }}>Les capitales sur
+                          du texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu
+                          de lire. Ici elles restent aux étiquettes brèves, espacées, posées par le
+                          style.</p>
+                          <span className="badge ko">capitales sur du texte courant — l&apos;œil épelle</span>
+                        </div>
+                      </DemoSide>
+                      <DemoSide ok verdict="En bas de casse, l'œil lit des formes">
+                        <div className="tp-scene">
+                          <p>Les capitales sur
+                          du texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu
+                          de lire. Ici elles restent aux étiquettes brèves, espacées, posées par le
+                          style.</p>
+                        </div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Les 16 px du champ" side="jamais sous le plancher"
+                <Band level={4} name="Les 16 px du champ" side="jamais sous le plancher" bare
                   says="Sous seize pixels, Safari sur iPhone zoome la page entière dès qu&apos;on touche le champ. Ce n&apos;est pas une préférence esthétique, c&apos;est un comportement de plateforme — et il suffit d&apos;un champ pour l&apos;attraper."
-                  broken={small} onBroken={setSmall}
                   rules={<Rules ids={["t10"]} />}>
-                  <div className="tp-scene field">
-                    {/* casse : un champ sous 16 px — 14 px en dur, à dessein ; Safari iOS zoome la page au focus */}
-                    <span className="field-box">{/* l'enveloppe porte le halo de focus : un champ natif n'a pas de pseudo-éléments */}
-                      <input readOnly value="prenom@exemple.fr" data-intent={small ? "statement" : undefined}
-                        style={{ fontSize: small ? "0.875rem" : "var(--font-size-body)" }} />
-                    </span>
-                    {small && <span className="badge ko">14 px — Safari iOS zoomera la page au focus</span>}
-                  </div>
+                  <Demo situation="Un champ de formulaire, touché sur un iPhone">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="À 14 px, Safari zoome la page entière au focus">
+                        <div className="tp-scene field">
+                          <span className="field-box">
+                            {/* casse : un champ sous 16 px — 14 px en dur, à dessein ; Safari iOS zoome la page au focus */}
+                            <input readOnly value="prenom@exemple.fr" style={{ fontSize: "0.875rem" }} />
+                          </span>
+                          <span className="badge ko">14 px — Safari iOS zoomera la page au focus</span>
+                        </div>
+                      </DemoSide>
+                      <DemoSide ok verdict="Au corps du kit, 16 px et plus : rien ne bouge">
+                        <div className="tp-scene field">
+                          <span className="field-box">{/* l'enveloppe porte le halo de focus : un champ natif n'a pas de pseudo-éléments */}
+                            <input readOnly value="prenom@exemple.fr" style={{ fontSize: "var(--font-size-body)" }} />
+                          </span>
+                        </div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Le calage du texte" side="calé sur les capitales et la ligne de base"
+                <Band level={4} name="Le calage du texte" side="calé sur les capitales et la ligne de base" bare
                   says="Le navigateur ajoute la moitié de l&apos;interligne au-dessus et au-dessous de chaque ligne, et la font réserve déjà de la place pour les accents et les jambages. Un texte est donc centré au calcul et décentré à l&apos;œil : la même valeur d&apos;espace, posée des quatre côtés, n&apos;en paraît jamais une."
-                  broken={alignment} onBroken={setAlignment}
-                  labelBroken="Casser : laisser revenir l&apos;air"
                   rules={<Rules ids={["t12"]} />}>
-                  <CardAligned broken={alignment} />
+                  <Demo situation="Une carte, son titre posé à la même distance des quatre bords">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="L'air de la ligne revient : le haut n'est plus celui qu'on voit"><CardAligned broken /></DemoSide>
+                      <DemoSide ok verdict="Calé sur les capitales : le haut vaut les côtés"><CardAligned broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
               </Bands>
               </div>

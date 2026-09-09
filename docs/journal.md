@@ -49,6 +49,51 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #135 — Le cadre des démonstrations : la situation en tête, une action, deux côtés
+
+*2026-09-09 · Statut : 🟢 décidé sur pièce, appliqué à Typo · Révise : la forme des bandes « ce qui se casse » (`#116` et suivantes) · Thread « le cadre des démonstrations »*
+
+**Contexte** — Les bandes des cinq pages portaient un bouton en pointillé
+« Casser : … » posé dans la colonne de parole, qui basculait une scène
+unique. Sur Mouvement, les trois preuves avaient trouvé une autre forme : une
+tête qui dit la situation (« Une carte passe de À faire à Terminé ») et porte
+une seule action, puis deux côtés sous une ligne de verdict chacun. L'Auteur :
+« on devrait passer à ce format pour Casser et autres actions de démo — le
+header est une très bonne idée, explication / problématique → action ». Trois
+essais HTML sur une même bande de Couleur, quatre retours d'Auteur, un verdict :
+la forme A.
+
+**Décision** — Un cadre commun, `Demo`, posé dans la scène de toute bande.
+La colonne de parole ne change pas (nom, cote, pourquoi, sources) ; le cadre
+dit ce qui se passe. **La tête** : la situation en une phrase, et l'action à
+droite — une seule, sombre, avec le ▸, qui porte le **verbe** de la situation
+(« Agrandir le texte », « Pâlir l'encre »), jamais « Casser : … ». **Deux
+côtés** quand les deux états vivent ensemble : au repos, chaque côté montre ce
+que son verdict dit — un titre ne ment jamais sur la scène qu'il coiffe — et
+l'action **rejoue** depuis l'état commun, autant de fois qu'on veut ; une
+comparaison sans geste garde la tête sans bouton. **Une scène** quand la casse
+remplace l'état : un verdict au-dessus qui bascule, l'action bascule et se
+retourne en « ↺ Réparer », secondaire. Le bouton en pointillé disparaît.
+
+**Ce que les retours ont fixé** — les deux verdicts partagent une rangée et
+les deux scènes la suivante : une ligne qui replie ne décale jamais sa
+scène ; les colonnes sont exactement égales, et le cadre décide seul quand
+elles s'empilent, d'après sa propre largeur ; le bouton garde la largeur de
+son libellé le plus long, centre son contenu, et passe d'un habit à l'autre
+au cran rapide (100 ms), coupé sous « mouvement réduit » ; le verbe de
+l'action reste dans la tête du cadre, pas dans celle du côté qui casse (A′
+écarté : deux emplacements pour une même action).
+
+**Exécution** — `Demo`, `DemoSides`, `DemoSide`, `DemoScene` dans
+`kit/app/levels.tsx`, la feuille dans `globals.css`. Typo migrée : six
+bandes à deux côtés, le faux déclaré (`data-intent="statement"`), le juste
+non ; le zoom rejoue de ×1 à ×2 au cran d'une section. Épreuves réécrites
+sur la forme (typo 15/15), banc 71/71. Mouvement reste la référence ;
+Couleur, Rythme, Composition, Arrondis suivent, page par page, après l'œil
+d'Auteur sur Typo.
+
+---
+
 ## #134 — Le code de Fili est écrit en anglais ; le lexique est ouvert
 
 *2026-09-08 · Statut : 🟢 décidé et exécuté · Révise : la note du 1er septembre qui gardait les classes CSS en français (`claude/vocabulaire-container-card-row-2026-09-01.md` § 2) · Thread « lexique »*

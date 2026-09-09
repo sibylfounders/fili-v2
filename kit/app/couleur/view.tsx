@@ -426,20 +426,32 @@ function TablePairs({ key }: { key: string }) {
    proportions identiques (verdicts d'Auré, 24 août). Chaque languette est
    un couple complet — le ton, son encre, son fond doux — et sa fiche lit
    les valeurs et le rapport sur la page rendue. ── */
-type Tab = { art: string; word: string; name: string; tone: string; onTone: string; soft: string; onSoft: string; token: string; sentenceTone: string; sentenceSoft: string };
-const TABS: Tab[] = [
-  { art: "La", word: "brand", name: "La marque", tone: "--primary", onTone: "--on-primary", soft: "--primary-subtle", onSoft: "--on-primary-subtle", token: "primary",
-    sentenceTone: "Elle signe. Un seul grand geste par écran.", sentenceSoft: "La marque murmurée." },
-  { art: "Le", word: "danger", name: "Le danger", tone: "--danger", onTone: "--on-danger", soft: "--danger-subtle", onSoft: "--on-danger-subtle", token: "danger",
-    sentenceTone: "Il arrête. Jamais dépensé pour décorer.", sentenceSoft: "La faute expliquée posément." },
-  { art: "Le", word: "succès", name: "Le succès", tone: "--success", onTone: "--on-success", soft: "--success-subtle", onSoft: "--on-success-subtle", token: "success",
-    sentenceTone: "Il confirme, puis se retire.", sentenceSoft: "La conformité tranquille." },
-  { art: "Le", word: "neutral", name: "Le neutre", tone: "--text-primary", onTone: "--bg", soft: "--surface", onSoft: "--text-secondary", token: "neutral",
-    sentenceTone: "Il se tait. C'est lui qui fait la page.", sentenceSoft: "Fonds, filets, encres." },
-  { art: "L’", word: "information", name: "L’information", tone: "--info", onTone: "--on-info", soft: "--info-subtle", onSoft: "--on-info-subtle", token: "info",
-    sentenceTone: "Elle renseigne — avec son propre bleu, jamais celui d’une marque.", sentenceSoft: "La note en passant." },
-  { art: "L’", word: "avertissement", name: "L’avertissement", tone: "--warning", onTone: "--on-warning", soft: "--warning-subtle", onSoft: "--on-warning-subtle", token: "warning",
-    sentenceTone: "Il prévient sans crier.", sentenceSoft: "Le doute encore réparable." },
+/* ── LE NUANCIER DES MÉTIERS (9 septembre 2026, verdict d'Auteur : les six
+   languettes peintes deux fois — fond doux et bloc plein, collées — pesaient
+   trop). Chaque couple joue maintenant SON MÉTIER, nu sur le blanc de la
+   page : un bouton, une étiquette, une bannière, un message sous un champ.
+   Le ton et le fond doux sont toujours là, mais à la place qu'ils ont dans
+   un produit. Sous chaque métier, sa fiche, lue sur le rendu. ── */
+type Job = {
+  art: string; word: string; name: string; token: string;
+  tone: string; onTone: string; soft: string; onSoft: string;
+  /* l'objet peint par le ton, et l'objet peint par le fond doux : le métier */
+  toneObject: { kind: "button" | "tag" | "count"; text: string };
+  softObject: { kind: "tag" | "banner" | "field"; text: string };
+};
+const TABS: Job[] = [
+  { art: "La", word: "brand", name: "La marque", token: "primary", tone: "--primary", onTone: "--on-primary", soft: "--primary-subtle", onSoft: "--on-primary-subtle",
+    toneObject: { kind: "button", text: "Continuer" }, softObject: { kind: "tag", text: "Recommandé" } },
+  { art: "Le", word: "danger", name: "Le danger", token: "danger", tone: "--danger", onTone: "--on-danger", soft: "--danger-subtle", onSoft: "--on-danger-subtle",
+    toneObject: { kind: "button", text: "Supprimer" }, softObject: { kind: "field", text: "Adresse introuvable" } },
+  { art: "Le", word: "succès", name: "Le succès", token: "success", tone: "--success", onTone: "--on-success", soft: "--success-subtle", onSoft: "--on-success-subtle",
+    toneObject: { kind: "tag", text: "Livré" }, softObject: { kind: "tag", text: "Payé" } },
+  { art: "Le", word: "neutral", name: "Le neutre", token: "neutral", tone: "--text-primary", onTone: "--bg", soft: "--surface", onSoft: "--text-secondary",
+    toneObject: { kind: "button", text: "Enregistrer" }, softObject: { kind: "tag", text: "Brouillon" } },
+  { art: "L’", word: "information", name: "L’information", token: "info", tone: "--info", onTone: "--on-info", soft: "--info-subtle", onSoft: "--on-info-subtle",
+    toneObject: { kind: "count", text: "3" }, softObject: { kind: "banner", text: "Sauvegardé automatiquement" } },
+  { art: "L’", word: "avertissement", name: "L’avertissement", token: "warning", tone: "--warning", onTone: "--on-warning", soft: "--warning-subtle", onSoft: "--on-warning-subtle",
+    toneObject: { kind: "tag", text: "2 places" }, softObject: { kind: "banner", text: "Places limitées" } },
 ];
 
 /* Deux groupes, et la coupure est celle du JUGEMENT : trois familles ne
@@ -452,18 +464,6 @@ const GROUPS: { heading: string; tokens: string[] }[] = [
   { heading: "Les trois verdicts", tokens: ["danger", "success", "warning"] },
 ];
 
-/* Les six signes — tracés d’une seule main : même grille de 24, même
-   trait, mêmes bouts ronds. Chacun dit ce que sa famille FAIT, pas ce
-   qu’elle est : la plume signe, la barre arrête, la coche confirme, la
-   trame se tait, le i renseigne, le triangle prévient. */
-const SIGNS: Record<string, ReactNode> = {
-  primary: <><path d="M4.6 19.4l1.6-4.6L15 6a2.1 2.1 0 013 3l-8.8 8.8z" /><path d="M13.4 7.6l3 3" /></>,
-  danger: <><circle cx="12" cy="12" r="8.4" /><path d="M8 12h8" /></>,
-  success: <><circle cx="12" cy="12" r="8.4" /><path d="M8.2 12.4l2.6 2.6 5-5.4" /></>,
-  neutral: <><path d="M4.6 7h14.8" /><path d="M4.6 12h14.8" /><path d="M4.6 17h9.4" /></>,
-  info: <><circle cx="12" cy="12" r="8.4" /><path d="M12 11.2v5.2" /><path d="M12 7.8v.01" /></>,
-  warning: <><path d="M12 4.4l8.2 14.9H3.8z" /><path d="M12 10.2v4" /><path d="M12 16.9v.01" /></>,
-};
 function Swatches({ key }: { key: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [records, setRecords] = useState<Record<string, string>>({});
@@ -476,11 +476,6 @@ function Swatches({ key }: { key: string }) {
     });
     setRecords(v);
   });
-  /* Six lignes en deux groupes : le fond doux parle, le ton signe. Au
-     survol — ou au clavier, la phrase du ton doit être atteignable
-     autrement qu'à la souris — le ton prend la majorité de la ligne et dit
-     sa phrase. Le rang court sur les six : l'ouverture est un seul geste,
-     pas deux cascades qui partent en même temps. */
   const byToken = new Map(TABS.map((l) => [l.token, l]));
   let rank = 0;
   return (
@@ -492,22 +487,20 @@ function Swatches({ key }: { key: string }) {
             {g.tokens.map((j) => {
               const l = byToken.get(j)!;
               const i = rank++;
+              /* les objets sont dessinés, pas réels : un spécimen de métier n'agit sur rien */
               return (
-                <div key={l.token} className="gd-lng" role="listitem" tabIndex={0}
-                  style={{ ["--rank" as string]: i }}
-                  aria-label={`${l.name}. ${l.sentenceSoft} ${l.sentenceTone} ${records[l.token] ?? ""}`}>
-                  <div className="gd-lng-soft" style={{ background: `var(${l.soft})`, color: `var(${l.onSoft})` }}>
-                    <p className="gd-lng-heading" aria-hidden="true"><span>{l.art}</span><b>{l.word}</b></p>
-                    <span className="gd-lng-says" aria-hidden="true">{l.sentenceSoft}</span>
-                    <div className="gd-lng-record" aria-hidden="true">{records[l.token] ?? "…"}</div>
+                <div key={l.token} className="gd-lng" role="listitem" style={{ ["--rank" as string]: i }}
+                  aria-label={`${l.name}. ${records[l.token] ?? ""}`}>
+                  <p className="gd-lng-heading" aria-hidden="true"><span>{l.art}</span><b>{l.word}</b></p>
+                  <div className="gd-lng-scene" aria-hidden="true">
+                    <span className={`gd-lng-soft gd-obj-${l.softObject.kind}`} style={{ background: `var(${l.soft})`, color: `var(${l.onSoft})` }}>
+                      {l.softObject.text}
+                    </span>
+                    <span className={`gd-lng-tone gd-obj-${l.toneObject.kind}`} style={{ background: `var(${l.tone})`, color: `var(${l.onTone})` }}>
+                      {l.toneObject.text}
+                    </span>
                   </div>
-                  <div className="gd-lng-tone" style={{ background: `var(${l.tone})`, color: `var(${l.onTone})` }}>
-                    <svg className="gd-lng-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      {SIGNS[l.token]}
-                    </svg>
-                    <span className="gd-lng-tonesays" aria-hidden="true">{l.sentenceTone}</span>
-                  </div>
+                  <div className="gd-lng-record" aria-hidden="true">{records[l.token] ?? "…"}</div>
                 </div>
               );
             })}
@@ -962,10 +955,10 @@ export default function View() {
               <p className="kicker">02 · Le nuancier</p>
               <h2>Ce nuancier montre des métiers, pas des teintes</h2>
               <p className="muted">Un nuancier de peintre montre des teintes. Celui-ci montre des
-              métiers : à quoi sert cette couleur, et où elle n&apos;a rien à faire. Chaque
-              languette naît en couple complet — le ton, son encre, son fond doux — ou ne naît
-              pas. Sa fiche lit les valeurs et le rapport sur la page rendue, dans le thème
-              du moment.</p>
+              métiers : un bouton, une étiquette, une bannière, un message sous un champ — la
+              place exacte que chaque couleur prend dans un produit, et nulle part ailleurs.
+              Chaque couple naît complet — le ton, son encre, son fond doux — ou ne naît pas ;
+              sa fiche lit les valeurs et le rapport sur la page rendue.</p>
             </div>
             <div className="gdoc-body">
               <figure className="gd-figure" style={{ justifyItems: "stretch" }}>

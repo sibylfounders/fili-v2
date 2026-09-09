@@ -75,6 +75,73 @@ export function Band({ name, side, says, bare, broken, onBroken, labelBroken, la
   );
 }
 
+/* ── Le cadre d'une démonstration (verdict d'Auteur, 9 septembre) ──
+   La tête dit la situation en une phrase et porte l'action — une seule, à
+   droite, avec le verbe de la situation. Deux côtés quand les deux états
+   vivent ensemble : au repos, chaque côté montre ce que son verdict dit, et
+   l'action REJOUE depuis l'état commun. Une scène quand la casse remplace
+   l'état : un verdict au-dessus, l'action bascule et se retourne (« Réparer »,
+   secondaire, avec l'icône du retour). La colonne de parole de la bande garde
+   le pourquoi ; le cadre dit ce qui se passe. */
+export function Demo({ situation, action, caption, children }: {
+  situation: ReactNode;
+  /* `active` + `back` : l'action bascule (forme B). Sans eux, elle rejoue (forme A). */
+  action?: { label: string; onClick: () => void; back?: string; active?: boolean };
+  caption?: ReactNode;
+  children: ReactNode;
+}) {
+  const back = !!action?.back && !!action.active;
+  return (
+    <div className="demo-wrap">
+      <div className="demo">
+        <div className="demo-head">
+          <b>{situation}</b>
+          {action && (
+            <button type="button" className={`button ${back ? "" : "on"} demo-go ${back ? "back" : ""}`}
+              aria-pressed={action.back ? !!action.active : undefined} onClick={action.onClick}>
+              <span className="demo-icons" aria-hidden="true">
+                <svg className="demo-ic-play" viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z" /></svg>
+                {action.back && <svg className="demo-ic-back" viewBox="0 0 12 12"><path d="M4.5 2.5 2 5l2.5 2.5M2 5h5a3 3 0 0 1 0 6H5" /></svg>}
+              </span>
+              {/* les deux libellés partagent une case : la largeur ne bouge jamais */}
+              <span className="demo-labels">
+                <span className="demo-l-go">{action.label}</span>
+                {action.back && <span className="demo-l-back">{action.back}</span>}
+              </span>
+            </button>
+          )}
+        </div>
+        {children}
+      </div>
+      {caption && <p className="demo-caption mono muted">{caption}</p>}
+    </div>
+  );
+}
+
+/* Deux côtés : les verdicts partagent une rangée, les scènes la suivante —
+   un verdict qui replie ne décale jamais sa scène ; les colonnes sont égales. */
+export function DemoSides({ children }: { children: ReactNode }) {
+  return <div className="demo-compare">{children}</div>;
+}
+export function DemoSide({ ok, verdict, children }: { ok: boolean; verdict: ReactNode; children: ReactNode }) {
+  return (
+    <div className={`demo-side ${ok ? "good" : "bad"}`} data-intent={ok ? undefined : "statement"}>
+      <p className="demo-verdict"><span aria-hidden="true">{ok ? "✓" : "✗"}</span><span>{verdict}</span></p>
+      <div className="demo-stage">{children}</div>
+    </div>
+  );
+}
+/* Une scène : le verdict au-dessus bascule avec l'action. */
+export function DemoScene({ ok, verdict, children }: { ok: boolean | null; verdict: ReactNode; children: ReactNode }) {
+  const tone = ok === null ? "neutral" : ok ? "good" : "bad";
+  return (
+    <div className={`demo-single ${tone}`} data-intent={ok === false ? "statement" : undefined}>
+      <p className="demo-verdict"><span aria-hidden="true">{ok === null ? "·" : ok ? "✓" : "✗"}</span><span>{verdict}</span></p>
+      <div className="demo-stage">{children}</div>
+    </div>
+  );
+}
+
 /* ── Étage 3 · en liste ─────────────────────────────────────────────── */
 
 /* « où elle se vérifie » a trois tons : dans le code (le Gardien la

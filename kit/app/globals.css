@@ -920,92 +920,52 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
   .cp-col { min-height: 3.5rem; flex-basis: auto !important; }
 }
 
-/* Le nuancier en SIX LIGNES (31 août 2026) : le fond doux et le ton
-   côte à côte, plus l'un sous l'autre. C'est la même couleur à deux
-   régimes — celui qui parle bas et celui qui signe — et les voir sur la
-   même ligne est ce qui le rend évident. Le bloc de ton porte le signe de
-   sa famille ; au survol il prend la majorité de la ligne et dit sa
-   phrase, sans que le fond doux disparaisse : les deux régimes restent
-   comparables au même instant. */
+/* ── Le nuancier des métiers (9 septembre 2026). Six couples, deux groupes,
+   et plus une languette : chaque couple joue son métier, nu sur le blanc de
+   la page — un bouton, une étiquette, une bannière, un message sous un
+   champ. Le ton et le fond doux sont là, à la place qu'ils ont dans un
+   produit. Les objets sont dessinés (des span), pas des commandes. ── */
 /* Deux groupes côte à côte dès qu'il y a la place pour deux colonnes
    lisibles, empilés sinon — aucun palier écrit à la main : c'est la
-   largeur d'une colonne lisible qui décide. Alignés en haut : le groupe
-   de deux n'a pas à s'étirer pour ressembler au groupe de quatre. */
+   largeur d'une colonne lisible qui décide. */
 .gd-swatches { display: grid; width: 100%; align-items: start;
   gap: var(--gap-1-block) var(--gap-1-inline);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
 .gd-nfam { display: grid; gap: var(--gap-3-block); min-width: 0; }
 .gd-nfam-heading { letter-spacing: 0.05em; text-transform: uppercase; }
-.gd-nfam-lines { display: grid; grid-template-columns: 1fr;
-  border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
-/* La lane du ton a une largeur à elle : ce n'est pas une distance du kit,
-   c'est la mesure d'un objet de scène — le signe et sa phrase repliée.
-   Nommée une fois ici, elle sert des deux côtés : la lane la prend, le
-   fond doux lui réserve la place. */
-.gd-lng { --gd-lane: 5.5rem; /* hors chaîne : la largeur de la lane du ton, une mesure d'objet */
-  position: relative; display: flex; min-height: 6.5rem; }
-/* EXCEPTION DÉCLARÉE au halo de focus : le halo se dessine à l'EXTÉRIEUR
-   de l'objet, or les lignes sont bord à bord dans un cadre qui rogne —
-   il serait coupé. Le focus est donc un trait calé à l'intérieur, même
-   token de couleur, même épaisseur : l'indicateur reste sous contrat. */
-.gd-lng:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
-.gd-lng-soft { flex: 1 1 auto; min-width: 0;
-  padding: var(--pad-3-block) var(--pad-3-inline);
-  padding-inline-end: calc(var(--gd-lane) + var(--pad-3-inline)); /* hors chaîne : la place que le fond doux réserve à la lane du ton */
-  display: flex; flex-direction: column; gap: var(--gap-4-block); }
-.gd-lng-heading { display: flex; flex-direction: column; }
-.gd-lng-heading > span { font-size: var(--font-size-small); opacity: 0.75; }
-.gd-lng-heading b { font-size: var(--font-size-body); letter-spacing: -0.01em;
-  text-transform: capitalize; }
-.gd-lng-says { font-size: var(--font-size-small); }
-.gd-lng-record { margin-top: auto; padding-top: var(--gap-3-block);
-  font: 600 var(--font-size-label)/1.4 var(--font-mono); opacity: 0.85; }
-/* Le bloc de ton : une lane au signe seul, muette au repos ; majoritaire
-   et bavarde au survol. La phrase est POSÉE HORS DU FLUX tant qu'elle se
-   tait — dans une lane étroite, un texte au fil du flux se casse mot par
-   mot et fait grandir la ligne de moitié. Seule la largeur s'anime. */
-/* Le bloc de ton est POSÉ SUR la ligne, pas dedans : en grandissant il
-   recouvre le fond doux au lieu de le comprimer. Sans cela, le texte de
-   gauche se replie et toute la liste bouge sous le curseur. */
-.gd-lng-tone { position: absolute; inset-block: 0; inset-inline-end: 0;
-  width: var(--gd-lane); overflow: hidden;
-  padding: var(--pad-3-block) var(--pad-3-inline);
-  display: flex; align-items: center; justify-content: center;
-  font-size: var(--font-size-small); line-height: 1.5; }
-.gd-lng-sign { width: 1.75rem; height: 1.75rem; flex: none; }
-.gd-lng-tonesays { position: absolute; top: 50%; transform: translateY(-50%);
-  inset-inline: calc(var(--pad-3-inline) + var(--gd-lane) / 2) var(--pad-3-inline);
-  opacity: 0; }
-@media (hover: hover) {
-  .gd-lng-tone { transition: width var(--m-base) var(--e-out); } /* le ton se déplie au survol : le cran du dépliant */
-  .gd-lng-tonesays { transition: opacity var(--m-base) var(--e-out); }
-  .gd-lng:hover .gd-lng-tone, .gd-lng:focus-within .gd-lng-tone {
-    width: 62%; justify-content: flex-start; }
-  .gd-lng:hover .gd-lng-tonesays, .gd-lng:focus-within .gd-lng-tonesays {
-    opacity: 1; transition-delay: var(--m-fast); }
-}
-/* Sans survol possible (doigt), la phrase du ton est là d'emblée : rien
-   d'essentiel ne se cache derrière un geste qui n'existe pas. */
-@media (hover: none) {
-  .gd-lng { flex-direction: column; }
-  .gd-lng-soft { padding-inline-end: var(--pad-3-inline); }
-  .gd-lng-tone { position: static; width: auto; justify-content: flex-start;
-    gap: var(--gap-2-inline); }
-  .gd-lng-tonesays { position: static; transform: none; opacity: 1; }
-}
-/* L'ouverture : le fond doux se pose, puis le ton arrive par la droite —
-   le geste dit la règle, le fond s'installe et le ton se dépense en
-   dernier. Accroché au dévoilement de section déjà en place. */
+.gd-nfam-lines { display: grid; grid-template-columns: 1fr; }
+/* Un métier par ligne, séparé du suivant par un filet : le cran de la
+   ligne pour ses marges et ses écarts — ce sont de petits objets. */
+.gd-lng { display: grid; gap: var(--gap-3-block); padding-block: var(--pad-2-block); border-top: 1px solid var(--border); }
+.gd-lng:first-child { border-top: 0; padding-top: 0; }
+.gd-lng:last-child { padding-bottom: 0; }
+.gd-lng-heading { margin: 0; display: flex; gap: var(--gap-4-inline); align-items: baseline; }
+.gd-lng-heading > span { font-size: var(--font-size-small); color: var(--text-secondary); }
+.gd-lng-heading b { font-size: var(--font-size-body); font-weight: 600; letter-spacing: -0.01em; text-transform: capitalize; }
+.gd-lng-scene { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-block) var(--gap-3-inline); }
+.gd-lng-record { font: 600 var(--font-size-label)/1.4 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : la fiche d'un métier */
+/* Les objets : un bouton (la cible et le coin du composant), une étiquette
+   (le cran de la ligne), une bannière (une ligne pleine largeur au cran de
+   la ligne), un message sous un champ (une bannière avec son filet), un
+   compteur (une pastille à la hauteur compacte). */
+.gd-obj-button { display: inline-flex; align-items: center; min-height: var(--control-height);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-ctl); font-weight: 500; font-size: var(--font-size-body); }
+.gd-obj-tag { display: inline-flex; align-items: center; min-height: var(--control-height-compact);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-pill); font-weight: 600; font-size: var(--font-size-small); }
+.gd-obj-banner, .gd-obj-field { flex: 1 1 100%; padding: var(--pad-3-block) var(--pad-3-inline);
+  border-radius: var(--r-3); font-size: var(--font-size-small); }
+.gd-obj-field { border-inline-start: var(--focus-band) solid currentColor; } /* le message d'un champ : un trait à la couleur de l'encre, l'épaisseur de la bande de focus */
+.gd-obj-count { display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--control-height-compact); height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-pill); font: 600 var(--font-size-small)/1 var(--font-mono); }
+/* L'ouverture : chaque métier se pose, en cascade d'un cran rapide.
+   Accroché au dévoilement de section déjà en place. */
 @keyframes gd-lng-set { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
-@keyframes gd-lng-tone-set { from { transform: translateX(100%); } to { transform: none; } }
 @media (prefers-reduced-motion: no-preference) {
   .gdoc .set .gd-lng { opacity: 0; }
   .gdoc .set.set .gd-lng {
     animation: gd-lng-set var(--m-slow) var(--e-out) both; /* chaque ligne se pose au cran du panneau, en cascade d'un cran rapide */
     animation-delay: calc(var(--rank, 0) * var(--m-fast)); }
-  .gdoc .set.set .gd-lng-tone {
-    animation: gd-lng-tone-set var(--m-slow) var(--e-out) both;
-    animation-delay: calc(var(--rank, 0) * var(--m-fast) + var(--m-fast)); }
 }
 
 /* ═══════════ Le bento — l'objet en situation de la page Couleur (25 août 2026) ═══════════
@@ -1654,6 +1614,49 @@ button.acc-access-link { color: var(--text-secondary); }
   transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); } /* survol */
 .doc-wreck:hover { background: var(--danger-subtle); }
 .doc-wreck[aria-pressed="true"] { background: var(--danger-subtle); border-style: solid; }
+
+/* ── Le cadre d'une démonstration (9 septembre) : la tête dit la situation
+   et porte l'action ; deux côtés ou une scène. ── */
+.demo-wrap { display: grid; gap: var(--gap-3-block); }
+.demo { border: 1px solid var(--border); border-radius: var(--r-2); overflow: hidden; background: var(--bg);
+  container-type: inline-size; }
+.demo-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-2-inline);
+  padding: var(--pad-2-block) var(--pad-2-inline); border-bottom: 1px solid var(--border); }
+.demo-head b { font-size: var(--font-size-body); font-weight: 650; letter-spacing: -0.01em; line-height: var(--leading-heading); text-wrap: balance; }
+/* l'action : le ▸ et le fond plein pour agir ; le retour est secondaire, avec ↺ */
+.demo-go { flex: none; gap: var(--gap-3-inline); }
+.demo-go.back { border-color: var(--border-strong); }
+.demo-icons { display: grid; width: 0.85rem; height: 0.85rem; } /* hors chaîne : l'icône du bouton */
+.demo-icons svg { grid-area: 1 / 1; width: 100%; height: 100%; transition: opacity var(--m-fast) var(--e-out); }
+.demo-ic-play { fill: currentColor; }
+.demo-ic-back { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: 0; } /* hors chaîne : le trait de l'icône */
+.demo-go.back .demo-ic-play { opacity: 0; } .demo-go.back .demo-ic-back { opacity: 1; }
+.demo-labels { display: grid; justify-items: center; }
+.demo-labels span { grid-area: 1 / 1; white-space: nowrap; transition: opacity var(--m-fast) var(--e-out); }
+.demo-l-back { opacity: 0; } .demo-go.back .demo-l-go { opacity: 0; } .demo-go.back .demo-l-back { opacity: 1; }
+/* deux côtés : verdicts sur une rangée, scènes sur la suivante, colonnes égales */
+.demo-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr; }
+.demo-side { display: contents; }
+.demo-compare .demo-verdict { grid-row: 1; }
+.demo-compare .demo-stage { grid-row: 2; }
+.demo-side.good .demo-verdict, .demo-side.good .demo-stage { border-left: 1px solid var(--border); }
+.demo-verdict { margin: 0; padding: var(--pad-3-block) var(--pad-2-inline); border-bottom: 1px solid var(--border);
+  font-size: var(--font-size-small); font-weight: 600; display: flex; gap: var(--gap-3-inline); align-items: baseline; }
+.demo-side.bad .demo-verdict, .demo-single.bad .demo-verdict { color: var(--danger); }
+.demo-side.good .demo-verdict, .demo-single.good .demo-verdict { color: var(--success); }
+.demo-single.neutral .demo-verdict { color: var(--text-secondary); }
+.demo-stage { padding: var(--pad-2-block) var(--pad-2-inline); background: var(--surface);
+  display: grid; align-content: center; justify-items: center; gap: var(--gap-2-block); }
+.demo-caption { margin: 0; max-width: var(--measure); }
+/* sous 36 rem de cadre, les deux côtés se suivent : verdict, scène, verdict, scène */
+@container (max-width: 36rem) { /* hors chaîne : le point de bascule du cadre */
+  .demo-compare { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .demo-compare .demo-verdict, .demo-compare .demo-stage { grid-row: auto; }
+  .demo-side.good .demo-verdict, .demo-side.good .demo-stage { border-left: 0; }
+  .demo-side.good .demo-verdict { border-top: 1px solid var(--border); }
+  .demo-head { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { .demo-icons svg, .demo-labels span { transition: none; } }
 
 /* ── Étage « en liste » — ce qu'aucune image ne prouve ── */
 .doc-list { width: 100%; border-collapse: collapse; }

@@ -8,7 +8,7 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#134` — 84 entrées scellées
+> **Dernière décision au journal** : `#135` — 84 entrées scellées
 
 **Légende des statuts**
 
@@ -122,6 +122,13 @@ rejoue les huit pages de décision et vérifie le site lui-même : aucun ancien
 nom, aucun token orphelin, aucun nombre posé hors des lignes qui le disent
 (`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
 de page, titres du site à un cran et demi au-dessus de l'affiche.
+
+**Le cadre des démonstrations** (9 septembre, `#135`) — 🟡 `Demo` dans
+`kit/app/levels.tsx` : la situation en tête et une seule action qui porte le
+verbe ; deux côtés (au repos chaque côté montre son verdict, l'action rejoue)
+ou une scène (le verdict bascule, « ↺ Réparer »). Posé sur Typo, en attente de
+l'œil d'Auteur ; Couleur, Rythme, Composition, Arrondis à suivre ; Mouvement
+est la référence.
 
 **Le lexique et la langue du code** (8 septembre, `#134`) — 🟢 `docs/lexique.md`
 fait foi : prose française, code anglais. Tout identifiant du kit et du témoin

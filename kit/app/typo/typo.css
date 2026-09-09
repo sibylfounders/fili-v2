@@ -223,3 +223,6 @@
 .tp-wheel input[type="range"] { width: 100%; accent-color: var(--primary); }
 .tp-wheel input[type="range"]:disabled { opacity: 0.5; } /* casse : pendant « la même graisse », l'écart ne se règle pas */
 .tp-wheel output { white-space: nowrap; }
+
+/* Le zoom rejoué : le corps passe de ×1 à ×2 au cran d'une section — c'est un mouvement de découverte, pas une réponse */
+.tp-zoom-text { transition: font-size var(--m-expressive) var(--e-out); }
