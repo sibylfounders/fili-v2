@@ -105,6 +105,7 @@
   background: var(--surface-hover); color: var(--text-primary);
 }
 .gd-tree-rank.ko { background: var(--danger-subtle); color: var(--danger); }
+.gd-tree-note { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--danger); }
 
 /* Une bascule de libellé qui ne change pas la largeur de son bouton : les
    deux mots occupent la même case, le plus long fixe la mesure. Sans ça, la

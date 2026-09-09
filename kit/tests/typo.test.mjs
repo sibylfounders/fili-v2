@@ -96,7 +96,7 @@ test('1 · le zoom, deux côtés : au repos la droite rend le corps du moteur au
     ok(await render(good), body(W, 2), `${W} — droite : ×2 rendu`); ok(await read(), rounded(body(W, 2)), `${W} — ×2 affiché`)
     ok(await render(bad), body(W), `${W} — gauche : vw seul au zoom ×2, le corps de ×1`)
     assert.equal(await p.getAttribute(bad, 'data-intent'), 'statement')
-    assert.match(await text(p, `${bad} .badge.ko`), /pas un pixel/)
+    assert.match(await text(p, `${bad} .mono.muted`), /zoom ×2/)
     /* l'action rejoue : les deux repartent de ×1, la droite remonte à ×2, la gauche ne bouge pas */
     await p.locator(`${card} .demo-go`).click()
     await p.waitForTimeout(900)
@@ -243,7 +243,7 @@ test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés 
   }
   /* le saut de niveau */
   assert.deepEqual(await texts(p, `${bad(2)} .gd-tree-rank`), ['h1 · Le dossier', 'h2 · Première partie', 'h4 · Un détail', 'h2 · Deuxième partie'])
-  assert.ok((await p.locator(`${bad(2)} .gd-tree-rank.ko`).count()) === 1 && /h3 manquant/.test(await text(p, `${bad(2)} .gd-tree-note`)))
+  assert.equal(await p.locator(`${bad(2)} .gd-tree-rank.ko`).count(), 1)
   assert.equal(await p.locator(`${good(2)} .gd-tree-rank.ko`).count(), 0)
   /* la graisse — la scène d'une bande : son paragraphe, pas la parole de gauche */
   ok(await calcPx(p, `${bad(3)} .tp-scene p`, 'fontWeight'), 600, 'graisse cassée')
@@ -252,7 +252,7 @@ test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés 
   assert.equal(await calc(p, `${bad(4)} .tp-scene p`, 'textTransform'), 'uppercase')
   assert.equal(await calc(p, `${good(4)} .tp-scene p`, 'textTransform'), 'none')
   /* le champ */
-  ok(await calcPx(p, `${bad(5)} input`, 'fontSize'), 14, 'champ à 14'); assert.match(await text(p, `${bad(5)} .badge.ko`), /14 px/)
+  ok(await calcPx(p, `${bad(5)} input`, 'fontSize'), 14, 'champ à 14')
   ok(await calcPx(p, `${good(5)} input`, 'fontSize'), expected('font-size-body', W), 'champ au corps')
   /* le calage (4 septembre) : à droite, le haut mesuré sur la font livrée vaut les côtés ; à gauche, l'air de
      la ligne revient et le haut dépasse — les deux nombres sont MESURÉS sur la page, jamais déclarés.
@@ -265,7 +265,7 @@ test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés 
     const rest = await alignment(`${good(6)} .tp-alignment`); ok(rest.top, rest.side, 'calé : le haut vaut les côtés', 1)
     assert.ok(numbers(rest.says).length >= 2 && Math.abs(numbers(rest.says)[0] - numbers(rest.says)[1]) <= 1, `calé, la page le dit : ${rest.says}`)
     const broken = await alignment(`${bad(6)} .tp-alignment`); assert.ok(broken.top > broken.side + 2, `cassé : l'air revient au-dessus (${broken.top} > ${broken.side})`)
-    assert.match(await text(p, `${bad(6)} .badge.ko`), /n’est plus celle qu’on voit|n'est plus celle qu'on voit/)
+    assert.ok(numbers(broken.says).length >= 2, `cassé, la page lit les deux nombres : ${broken.says}`)
   } else assert.match(await text(p, `${good(6)} .badge`), /ne sait pas encore caler/)
   await close()
 })

@@ -327,11 +327,6 @@ function Tree({ jump }: { jump: boolean }) {
     : [["h1 · Le dossier", 0, false], ["h2 · Première partie", 1, false], ["h3 · Sous-partie", 2, false], ["h2 · Deuxième partie", 1, false]];
   return (
     <div className="gd-tree">
-      {jump && (
-        <Indent levels={2}>
-          <div className="gd-tree-note">h3 manquant — le lecteur d&apos;écran conclut à du contenu disparu</div>
-        </Indent>
-      )}
       {ranks.map(([txt, depth, ko]) => (
         <Indent key={txt} levels={depth}>
           <div className={`gd-tree-rank ${ko ? "ko" : ""}`}>{txt}</div>
@@ -482,9 +477,7 @@ function CardAligned({ broken }: { broken: boolean }) {
       </div>
       {!onCard
         ? <span className="badge">votre navigateur ne sait pas encore caler le texte — la démo ne peut rien montrer ici</span>
-        : broken
-          ? <span className="badge ko">le haut mesure {fr(top)} px là où les côtés en font {fr(side)} — la valeur écrite n&apos;est plus celle qu&apos;on voit</span>
-          : <span className="mono muted">haut {fr(top)} px · côtés {fr(side)} px — une seule valeur, des quatre côtés</span>}
+        : <span className="mono muted">haut {fr(top)} px · côtés {fr(side)} px</span>}
     </div>
   );
 }
@@ -882,7 +875,7 @@ export default function View() {
                           <span className="tp-zoom-text" style={{ fontSize: `${bodyVw}px`, lineHeight: "var(--leading-body)" }}>
                             Portez ce vieux whisky au juge blond qui fume
                           </span>
-                          <span className="badge ko">zoom ×{zoom} — et pas un pixel gagné</span>
+                          <span className="mono muted">corps = {fr(bodyVw)} px · zoom ×{zoom}</span>
                         </div>
                       </DemoSide>
                       <DemoSide ok verdict="Le rem suit le zoom : le corps double">
@@ -919,7 +912,6 @@ export default function View() {
                           <p style={{ fontWeight: 600 }}>Un texte long en demi-gras
                           n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
                           demi-gras appartient aux titres.</p>
-                          <span className="badge ko">tout le paragraphe en demi-gras — il n&apos;y a plus rien à mettre en avant</span>
                         </div>
                       </DemoSide>
                       <DemoSide ok verdict="Le corps courant à 400, la graisse aux titres">
@@ -944,7 +936,6 @@ export default function View() {
                           du texte courant effacent la silhouette des mots — l&apos;œil épelle au lieu
                           de lire. Ici elles restent aux étiquettes brèves, espacées, posées par le
                           style.</p>
-                          <span className="badge ko">capitales sur du texte courant — l&apos;œil épelle</span>
                         </div>
                       </DemoSide>
                       <DemoSide ok verdict="En bas de casse, l'œil lit des formes">
@@ -970,7 +961,6 @@ export default function View() {
                             {/* casse : un champ sous 16 px — 14 px en dur, à dessein ; Safari iOS zoome la page au focus */}
                             <input readOnly value="prenom@exemple.fr" style={{ fontSize: "0.875rem" }} />
                           </span>
-                          <span className="badge ko">14 px — Safari iOS zoomera la page au focus</span>
                         </div>
                       </DemoSide>
                       <DemoSide ok verdict="Au corps du kit, 16 px et plus : rien ne bouge">
