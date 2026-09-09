@@ -229,24 +229,24 @@ const svgSingle = `<svg class="aurore" xmlns="http://www.w3.org/2000/svg" xmlns:
     <!-- LE DESSIN LISSE — avant flou, glissement et lamelles -->
     <g id="aur-drawing">
       <!-- halo doux derrière tout -->
-      <g filter="url(#aur-blur-doux)" opacity="0.55">
-        <ellipse cx="640" cy="330" rx="260" ry="240" fill="url(#aur-g-pilier-violet)"/>
-        <ellipse cx="230" cy="760" rx="220" ry="200" fill="url(#aur-g-pilier-gauche)"/>
+      <g filter="url(#aur-blur-soft)" opacity="0.55">
+        <ellipse cx="640" cy="330" rx="260" ry="240" fill="url(#aur-g-pillar-purple)"/>
+        <ellipse cx="230" cy="760" rx="220" ry="200" fill="url(#aur-g-pillar-left)"/>
       </g>
       <!-- piliers -->
-      <rect x="470" y="80"  width="120" height="560" fill="url(#aur-g-pilier-teal)"/>
-      <rect x="690" y="80"  width="200" height="450" fill="url(#aur-g-pilier-violet)"/>
-      <rect x="80"  y="560" width="230" height="400" fill="url(#aur-g-pilier-gauche)"/>
-      <rect x="690" y="820" width="200" height="360" fill="url(#aur-g-pilier-bas)"/>
+      <rect x="470" y="80"  width="120" height="560" fill="url(#aur-g-pillar-teal)"/>
+      <rect x="690" y="80"  width="200" height="450" fill="url(#aur-g-pillar-purple)"/>
+      <rect x="80"  y="560" width="230" height="400" fill="url(#aur-g-pillar-left)"/>
+      <rect x="690" y="820" width="200" height="360" fill="url(#aur-g-pillar-bottom)"/>
       <!-- la bande haute : de la droite vers le bas-gauche -->
       <path d="M 790 130 C 730 380, 580 540, 390 620 C 250 680, 150 760, 140 850"
-            fill="none" stroke="url(#aur-g-haut)" stroke-width="290" stroke-linecap="round"/>
+            fill="none" stroke="url(#aur-g-top)" stroke-width="290" stroke-linecap="round"/>
       <!-- la bande basse : de la gauche vers le bas-droite -->
       <path d="M 135 800 C 180 910, 360 950, 540 930 C 700 912, 800 980, 850 1100"
-            fill="none" stroke="url(#aur-g-bas)" stroke-width="230" stroke-linecap="round"/>
+            fill="none" stroke="url(#aur-g-bottom)" stroke-width="230" stroke-linecap="round"/>
     </g>
     <!-- le cœur clair, sur la courbe intérieure du S — à part : il pulse seul -->
-    <g id="aur-core" filter="url(#aur-blur-coeur)"><path class="aur-core-stroke" d="M 610 330 C 550 560, 430 680, 340 770 C 400 860, 570 905, 700 980 C 770 1020, 815 1060, 840 1105"
+    <g id="aur-core" filter="url(#aur-blur-core)"><path class="aur-core-stroke" d="M 610 330 C 550 560, 430 680, 340 770 C 400 860, 570 905, 700 980 C 770 1020, 815 1060, 840 1105"
             fill="none" stroke="var(--aur-core)" stroke-width="70" stroke-linecap="round"/></g>
 
     <!-- LES MONTAGNES — facettes plates, arête claire -->
@@ -272,12 +272,12 @@ const svgSingle = `<svg class="aurore" xmlns="http://www.w3.org/2000/svg" xmlns:
   </defs>
 
   <!-- ══ L'AURORE : dessin → flou + glissement par lamelle → masque des lamelles ══ -->
-  <g class="aur-body" mask="url(#aur-mask-lamelles)">
-    <g filter="url(#aur-slats-slid)"><use href="#aur-drawing"/><use href="#aur-coeur"/></g>
+  <g class="aur-body" mask="url(#aur-mask-slats)">
+    <g filter="url(#aur-slats-slid)"><use href="#aur-drawing"/><use href="#aur-core"/></g>
   </g>
 
   <!-- ══ LES MONTAGNES, puis la brume à leur pied ══ -->
-  <use href="#aur-montagnes"/>
+  <use href="#aur-mountains"/>
   <rect x="0" y="1170" width="${W}" height="130" fill="url(#aur-g-haze)"/>
 </svg>
 `
@@ -474,24 +474,24 @@ const fragment = `<div class="aurore-frame" aria-hidden="true">
     <!-- LE DESSIN LISSE — avant flou, glissement et lamelles -->
     <g id="aur-drawing">
       <!-- halo doux derrière tout -->
-      <g filter="url(#aur-blur-doux)" opacity="0.55">
-        <ellipse cx="640" cy="330" rx="260" ry="240" fill="url(#aur-g-pilier-violet)"/>
-        <ellipse cx="230" cy="760" rx="220" ry="200" fill="url(#aur-g-pilier-gauche)"/>
+      <g filter="url(#aur-blur-soft)" opacity="0.55">
+        <ellipse cx="640" cy="330" rx="260" ry="240" fill="url(#aur-g-pillar-purple)"/>
+        <ellipse cx="230" cy="760" rx="220" ry="200" fill="url(#aur-g-pillar-left)"/>
       </g>
       <!-- piliers -->
-      <rect x="470" y="80"  width="120" height="560" fill="url(#aur-g-pilier-teal)"/>
-      <rect x="690" y="80"  width="200" height="450" fill="url(#aur-g-pilier-violet)"/>
-      <rect x="80"  y="560" width="230" height="400" fill="url(#aur-g-pilier-gauche)"/>
-      <rect x="690" y="820" width="200" height="360" fill="url(#aur-g-pilier-bas)"/>
+      <rect x="470" y="80"  width="120" height="560" fill="url(#aur-g-pillar-teal)"/>
+      <rect x="690" y="80"  width="200" height="450" fill="url(#aur-g-pillar-purple)"/>
+      <rect x="80"  y="560" width="230" height="400" fill="url(#aur-g-pillar-left)"/>
+      <rect x="690" y="820" width="200" height="360" fill="url(#aur-g-pillar-bottom)"/>
       <!-- la bande haute : de la droite vers le bas-gauche -->
       <path d="M 790 130 C 730 380, 580 540, 390 620 C 250 680, 150 760, 140 850"
-            fill="none" stroke="url(#aur-g-haut)" stroke-width="290" stroke-linecap="round"/>
+            fill="none" stroke="url(#aur-g-top)" stroke-width="290" stroke-linecap="round"/>
       <!-- la bande basse : de la gauche vers le bas-droite -->
       <path d="M 135 800 C 180 910, 360 950, 540 930 C 700 912, 800 980, 850 1100"
-            fill="none" stroke="url(#aur-g-bas)" stroke-width="230" stroke-linecap="round"/>
+            fill="none" stroke="url(#aur-g-bottom)" stroke-width="230" stroke-linecap="round"/>
     </g>
     <!-- le cœur clair, sur la courbe intérieure du S — à part : il pulse seul -->
-    <g id="aur-core" filter="url(#aur-blur-coeur)"><path class="aur-core-stroke" d="M 610 330 C 550 560, 430 680, 340 770 C 400 860, 570 905, 700 980 C 770 1020, 815 1060, 840 1105"
+    <g id="aur-core" filter="url(#aur-blur-core)"><path class="aur-core-stroke" d="M 610 330 C 550 560, 430 680, 340 770 C 400 860, 570 905, 700 980 C 770 1020, 815 1060, 840 1105"
             fill="none" stroke="var(--aur-core)" stroke-width="70" stroke-linecap="round"/></g>
 
     <!-- LES MONTAGNES — facettes plates, arête claire -->
@@ -519,8 +519,8 @@ const fragment = `<div class="aurore-frame" aria-hidden="true">
 ${layer('aur-layer-1', `<g class="aur-body" mask="url(#aur-mask-lam-1)"><use href="#aur-drawing" filter="url(#aur-slats-slid)"/></g>`)}
 ${layer('aur-layer-2', `<g class="aur-body" mask="url(#aur-mask-lam-2)"><use href="#aur-drawing" filter="url(#aur-slats-slid)"/></g>`)}
 ${layer('aur-layer-3', `<g class="aur-body" mask="url(#aur-mask-lam-3)"><use href="#aur-drawing" filter="url(#aur-slats-slid)"/></g>`)}
-${layer('aur-layer-core', `<g class="aur-body" mask="url(#aur-mask-lamelles)"><use href="#aur-coeur" filter="url(#aur-slats-slid)"/></g>`)}
-${layer('aur-layer-mountains', `<use href="#aur-montagnes"/><rect x="0" y="1170" width="${W}" height="130" fill="url(#aur-g-haze)"/>`)}
+${layer('aur-layer-core', `<g class="aur-body" mask="url(#aur-mask-slats)"><use href="#aur-core" filter="url(#aur-slats-slid)"/></g>`)}
+${layer('aur-layer-mountains', `<use href="#aur-mountains"/><rect x="0" y="1170" width="${W}" height="130" fill="url(#aur-g-haze)"/>`)}
 </div>
 `
 import('node:fs').then(async ({ writeFileSync, mkdirSync }) => {
