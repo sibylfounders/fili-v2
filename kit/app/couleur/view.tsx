@@ -932,14 +932,9 @@ export default function View() {
             <div className="gdoc-sec-head">
               <p className="kicker">01 · La marque rare</p>
               <h2>On reconnaît une marque au peu de place qu&apos;elle prend</h2>
-              <p className="muted">Une marque étalée sur tout l&apos;écran ne signe plus rien du tout —
-              c&apos;est le paradoxe de la couleur d&apos;entreprise : plus on en met, moins on
-              la voit. Un tableau de bord tient debout parce que la marque y est rare : une
-              card, un bouton, une barre. Tout le reste est neutre, les états gardent leur
-              teinte à eux, et les couleurs d&apos;alerte ne viennent jamais puiser dans la marque.
-              Le texte posé sur la photo n&apos;est jamais nu — il repose sur un voile aux
-              couleurs du fond, dont l&apos;opacité est calculée sur le pixel le plus
-              défavorable et refaite à chaque largeur.</p>
+              <p className="muted">Plus on en met, moins on la voit — c&apos;est le paradoxe de la
+              couleur d&apos;entreprise. Un tableau de bord tient debout parce que la marque y est
+              rare : une card, un bouton, une barre ; tout le reste est neutre.</p>
             </div>
             <div className="gdoc-body">
               <figure className="gd-figure" id="situation" style={{ justifyItems: "stretch" }}>
@@ -957,6 +952,10 @@ export default function View() {
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Les états gardent leur teinte à eux, et les couleurs d&apos;alerte ne viennent
+                jamais puiser dans la marque. Le texte posé sur la photo n&apos;est jamais nu : il
+                repose sur un voile aux couleurs du fond, dont l&apos;opacité est calculée sur le
+                pixel le plus défavorable et refaite à chaque largeur.</p>
                 <Rules ids={["p01", "c1", "c4", "m2", "m3", "c6", "c3"]} />
               </div></details>
             </div>
