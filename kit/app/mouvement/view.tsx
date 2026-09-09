@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
@@ -474,6 +474,135 @@ const LIST: LineList[] = [
     or: "nulle part — décision d'Auteur", tone: "author" },
 ];
 
+/* ══ L'OUVERTURE (verdict d'Auteur, 9 septembre : « A sans hésiter ») : une
+   interface qui vit toute seule, en boucle, sans une légende ni un verdict.
+   Une carte change de colonne, un menu sort de son bouton, une notification
+   monte, une seule donnée change, un tiroir entre puis sort. Chaque objet à son
+   cran, tout juste : les trois règles tiennent avant d'être nommées. Un seul
+   bouton l'arrête (WCAG 2.2.2) ; elle s'arrête d'elle-même hors de l'écran.
+   Sous mouvement réduit, les déplacements partent et les fondus restent. ══ */
+const STAGE_NAV = ["Projets", "Tâches", "Équipe", "Rapports", "Réglages"];
+const STAGE_COLUMNS: [string, [string, string][]][] = [
+  ["À faire", [["Contrastes du sombre", "LM"], ["Épreuve du menu", "SB"], ["Jetons Figma", "—"]]],
+  ["En cours", [["Accueil refondu", "LM"], ["Courbe de sortie", "AN"]]],
+  ["Terminé", [["Graisse aux rôles", "AN"], ["Lexique", "SB"]]],
+];
+const STAGE_MOVER: [string, string] = ["Charte typo", "AN"];
+type StageState = { at: number; menu: boolean; hot: boolean; toast: boolean; drawer: boolean; press: number; done: number; pace: number; fresh: "done" | "pace" | null };
+const STAGE_START: StageState = { at: 0, menu: false, hot: false, toast: false, drawer: false, press: 0, done: 17, pace: 21, fresh: null };
+/* La chorégraphie : ce qui se passe, puis combien de temps on le laisse vivre.
+   Les durées des objets viennent du moteur ; ces temps de pose ne sont que le
+   souffle entre deux gestes. */
+const STAGE_STEPS: [(s: StageState) => Partial<StageState>, number][] = [
+  [(s) => ({ at: (s.at + 1) % 3, fresh: null }), 1600],
+  [(s) => ({ press: s.press + 1, menu: true }), 700],
+  [() => ({ hot: true }), 500],
+  [() => ({ hot: false, menu: false, toast: true }), 1400],
+  [() => ({ toast: false }), 500],
+  [(s) => ({ done: 15 + ((s.done + 2) % 6), fresh: "done" }), 1500],
+  [() => ({ drawer: true }), 1800],
+  [() => ({ drawer: false, fresh: null }), 700],
+  [(s) => ({ pace: 19 + ((s.pace + 1) % 5), fresh: "pace" }), 1200],
+];
+function StageCard({ title, who }: { title: string; who: string }) {
+  return (
+    <div className="trace-card">
+      <span className="trace-avatar">{who}</span>
+      <span className="trace-copy"><b>{title}</b><i><span /> <span /> <span /></i></span>
+      <span className="trace-handle">••</span>
+    </div>
+  );
+}
+function Stage() {
+  const [playing, setPlaying] = useState(true);
+  const [seen, setSeen] = useState(false);
+  const [step, setStep] = useState(0);
+  const [s, setS] = useState<StageState>(STAGE_START);
+  const root = useRef<HTMLDivElement>(null);
+  const mover = useRef<HTMLDivElement>(null);
+  const last = useRef<DOMRect | null>(null);
+  /* Elle ne joue que sous les yeux : hors de l'écran, elle attend. */
+  useEffect(() => {
+    if (!root.current) return;
+    const io = new IntersectionObserver(([e]) => setSeen(e.isIntersecting), { threshold: 0.35 });
+    io.observe(root.current);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!playing || !seen) return;
+    const [act, hold] = STAGE_STEPS[step];
+    setS((v) => ({ ...v, ...act(v) }));
+    const t = setTimeout(() => setStep((i) => (i + 1) % STAGE_STEPS.length), hold);
+    return () => clearTimeout(t);
+  }, [step, playing, seen]);
+  /* La carte reste la même carte : d'où elle était à où elle est, en une transition
+     au cran d'une section — le déplacement est écrit dans la feuille, sous son
+     portillon ; ici on ne pose que le point de départ. */
+  useLayoutEffect(() => {
+    const el = mover.current; if (!el) return;
+    const now = el.getBoundingClientRect();
+    const was = last.current; last.current = now;
+    if (!was || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    el.style.transition = "none"; el.style.translate = `${was.left - now.left}px ${was.top - now.top}px`;
+    el.classList.add("is-lifted");
+    el.getBoundingClientRect();
+    el.style.transition = ""; el.style.translate = "0px 0px";
+    const t = setTimeout(() => el.classList.remove("is-lifted"), ms("expressive"));
+    return () => clearTimeout(t);
+  }, [s.at]);
+  return (
+    <div className="mv-stage-wrap" ref={root}>
+      <div className="mv-stage" aria-hidden="true">
+        <nav className="mv-stage-nav">
+          <span className="mv-stage-brand"><i />Fili</span>
+          {STAGE_NAV.map((n, i) => <span key={n} className={i === 0 ? "is-on" : ""}>{n}</span>)}
+        </nav>
+        <div className="mv-stage-main">
+          <div className="mv-stage-bar">
+            <b>Projet Atlas</b>
+            <div className="mv-scene-menu">
+              <span key={s.press} className={`button on${s.press ? " pressed" : ""}`}>Actions</span>
+              <div className={`mv-menu${s.menu ? " open" : ""}`}>
+                <span className="mv-menu-item">Dupliquer</span>
+                <span className={`mv-menu-item${s.hot ? " hot" : ""}`}>Exporter le rapport</span>
+                <span className="mv-menu-item">Archiver</span>
+              </div>
+            </div>
+          </div>
+          <div className="mv-stage-kpis">
+            {([["Tâches", 42, null], ["Terminées", s.done, "done"], ["En retard", 3, null], ["Vélocité", s.pace, "pace"]] as const).map(([name, value, key]) => (
+              <div key={name} className="card mv-stage-kpi">
+                <small>{name}</small>
+                <strong key={key && s.fresh === key ? `${key}-${value}` : "still"} className={key && s.fresh === key ? "is-fresh" : ""}>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="mv-stage-board">
+            {STAGE_COLUMNS.map(([name, items], col) => (
+              <div key={name} className="card mv-stage-column">
+                <small>{name}<span>{items.length + (col === s.at ? 1 : 0)}</span></small>
+                {col === s.at && <div className="mv-stage-move" ref={mover}><StageCard title={STAGE_MOVER[0]} who={STAGE_MOVER[1]} /></div>}
+                {items.map(([t, w]) => <StageCard key={t} title={t} who={w} />)}
+              </div>
+            ))}
+          </div>
+        </div>
+        <aside className={`mv-stage-drawer${s.drawer ? " is-in" : ""}`}>
+          <b>Relire la charte typographique</b>
+          <p className="muted">Passer les six sujets typo au banc avant le dépôt.</p>
+          <span><em>Responsable</em>Aurélien</span>
+          <span><em>Échéance</em>demain</span>
+          <span><em>Priorité</em>haute</span>
+        </aside>
+        <div className="mv-stage-toast"><div className={`mv-toast${s.toast ? " there" : ""}`}><span className="point" />Rapport exporté</div></div>
+      </div>
+      <button type="button" className="button demo-go mv-stage-stop" aria-pressed={!playing} onClick={() => setPlaying((v) => !v)}>
+        {playing ? "Arrêter" : "Lire"}
+      </button>
+    </div>
+  );
+}
+
 export default function View() {
   const activeId = useDocSections("trace");
 
@@ -491,6 +620,7 @@ export default function View() {
               comprendre ce qui vient de changer — ou il dérange. Trois règles font la différence, et
               quatre durées, <b>une</b> courbe, les font tenir.
             </p>
+            <Stage />
           </section>
 
           {/* ══════════ 01 · la trace ══════════ */}

@@ -280,3 +280,72 @@
 .mv-rule { display: grid; gap: var(--gap-3-block); max-width: var(--measure); }
 .mv-rule > b { color: var(--text-primary); }
 .mv-rule-src { font-size: var(--font-size-small); }
+
+/* ── L'OUVERTURE (verdict d'Auteur, 9 septembre) : une interface qui vit toute
+      seule sous l'accroche, sans légende. Chaque objet prend son cran au moteur :
+      la carte au cran d'une section, le menu et la notification au cran du menu,
+      le tiroir au cran du panneau, l'appui au cran rapide. Les déplacements
+      vivent sous leur portillon ; les fondus s'écrivent nus. ── */
+.mv-stage-wrap { position: relative; margin-top: var(--doc-head); display: grid; gap: var(--gap-2-block); justify-items: end; }
+.mv-stage {
+  position: relative; width: 100%; min-height: 32rem; /* hors chaîne : la scène, assez haute pour trois colonnes de tâches */
+  display: grid; grid-template-columns: 11rem minmax(0, 1fr); /* hors chaîne : la colonne de navigation */
+  overflow: hidden; border: 1px solid var(--border); border-radius: var(--r-1); background: var(--surface);
+}
+.mv-stage-nav { display: grid; align-content: start; gap: var(--gap-4-block); padding: var(--pad-2-block) var(--pad-3-inline); background: var(--bg); border-right: 1px solid var(--border); }
+.mv-stage-nav > span { padding: var(--gap-3-block) var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); font-size: var(--font-size-small); }
+.mv-stage-nav > span.is-on { background: var(--primary-subtle); color: var(--on-primary-subtle); font-weight: var(--weight-label); }
+.mv-stage-brand { display: flex; align-items: center; gap: var(--gap-3-inline); margin-bottom: var(--gap-2-block); color: var(--text-primary) !important; font-weight: var(--weight-heading) !important; }
+.mv-stage-brand i { width: var(--gap-3-inline); height: var(--gap-3-inline); background: var(--primary); border-radius: var(--r-4); rotate: 30deg; } /* la marque, à 30° */
+.mv-stage-main { display: grid; align-content: start; gap: var(--gap-1-block); padding: var(--pad-2-block) var(--pad-2-inline); min-width: 0; }
+.mv-stage-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-2-inline); }
+.mv-stage-bar > b { font-size: var(--font-size-h3); font-weight: var(--weight-heading); letter-spacing: -0.01em; }
+.mv-stage-bar .mv-scene-menu { min-height: 0; z-index: 3; }
+.mv-stage-bar .mv-menu { inset-inline-start: auto; inset-inline-end: 0; transform-origin: 100% 0; } /* le menu grandit depuis le coin qui touche son bouton */
+.mv-stage-bar .button { min-height: var(--control-height-compact); cursor: default; }
+.mv-stage .mv-menu-item.hot { background: var(--surface-hover); }
+.mv-stage-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap-2-inline); }
+.mv-stage-kpi { gap: var(--gap-4-block); }
+.mv-stage-kpi small, .mv-stage-column small {
+  display: flex; justify-content: space-between; font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : l'étiquette d'une tuile, d'une colonne */
+.mv-stage-kpi strong { position: relative; font-size: var(--font-size-h3); font-weight: var(--weight-heading); letter-spacing: -0.02em; line-height: 1.2; width: max-content; }
+.mv-stage-kpi strong.is-fresh { animation: stage-fresh var(--m-expressive) var(--e-out); } /* une seule donnée change : elle seule prend la lumière */
+.mv-stage-kpi strong.is-fresh::after { content: ""; position: absolute; inset: calc(-1 * var(--gap-4-block)) calc(-1 * var(--gap-3-inline)); z-index: -1; border-radius: var(--r-3); background: var(--success-subtle); animation: stage-halo var(--m-expressive) var(--e-out) forwards; }
+@keyframes stage-fresh { from { opacity: .35; } to { opacity: 1; } }
+@keyframes stage-halo { from { opacity: 1; } to { opacity: 0; } }
+.mv-stage-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-2-inline); align-items: start; }
+.mv-stage-column { gap: var(--gap-3-block); padding: var(--pad-3-block) var(--pad-3-inline); min-height: 17rem; align-content: start; } /* hors chaîne : la colonne, à la hauteur de quatre cartes */
+.mv-stage-column .trace-card { box-shadow: none; border-color: var(--border); background: var(--surface); }
+.mv-stage-move { position: relative; z-index: 2; }
+.mv-stage-move.is-lifted .trace-card { border-color: var(--border-strong); background: var(--bg); box-shadow: 0 14px 30px -22px rgba(5, 6, 17, .7); transition: box-shadow var(--m-base) var(--e-out), border-color var(--m-base) var(--e-out); } /* hors chaîne : l'ombre de la carte soulevée */
+.mv-stage-drawer {
+  position: absolute; z-index: 4; top: 0; right: 0; bottom: 0; width: min(20rem, 60%); /* hors chaîne : le tiroir */
+  display: grid; align-content: start; gap: var(--gap-3-block); padding: var(--pad-2-block) var(--pad-2-inline);
+  background: var(--bg); border-left: 1px solid var(--border); box-shadow: -16px 0 40px -24px rgba(5, 6, 17, .5); /* hors chaîne : l'ombre du tiroir */
+  opacity: 0; pointer-events: none; transition: opacity var(--m-slow) var(--e-out); } /* le fondu du tiroir s'écrit nu */
+.mv-stage-drawer.is-in { opacity: 1; }
+.mv-stage-drawer > b { font-size: var(--font-size-body); font-weight: var(--weight-heading); }
+.mv-stage-drawer > p { font-size: var(--font-size-small); margin-bottom: var(--gap-2-block); }
+.mv-stage-drawer > span { display: flex; justify-content: space-between; padding: var(--gap-3-block) 0; border-top: 1px solid var(--border); font-size: var(--font-size-small); font-weight: var(--weight-label); }
+.mv-stage-drawer > span em { font-style: normal; font-weight: var(--weight-body); color: var(--text-secondary); }
+.mv-stage-toast { position: absolute; z-index: 5; left: 50%; bottom: var(--pad-2-block); translate: -50% 0; }
+.mv-stage-stop { min-width: 6rem; } /* hors chaîne : « Arrêter » et « Lire » ont la même largeur, le bouton ne saute pas */
+@media (prefers-reduced-motion: no-preference) {
+  .mv-stage-move { transition: translate var(--m-expressive) var(--e-out); } /* la même carte, d'une colonne à l'autre : le cran d'une section */
+  .mv-stage-drawer { translate: 100% 0; transition: opacity var(--m-slow) var(--e-out), translate var(--m-slow) var(--e-out); } /* le tiroir entre depuis son bord : le cran du panneau */
+  .mv-stage-drawer.is-in { translate: 0 0; }
+  .mv-stage-kpi strong.is-fresh { animation-name: stage-fresh-rise; }
+  @keyframes stage-fresh-rise { from { opacity: .35; translate: 0 var(--gap-3-block); } to { opacity: 1; translate: 0 0; } }
+  .mv-stage .button.pressed { animation: press var(--m-fast) var(--e-out) 2 alternate; } /* l'appui répond, au cran rapide — et se relâche */
+}
+@media (max-width: 54rem) {
+  .mv-stage { grid-template-columns: minmax(0, 1fr); }
+  .mv-stage-nav { display: none; }
+  .mv-stage-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 34rem) {
+  .mv-stage-board { grid-template-columns: minmax(0, 1fr); }
+  .mv-stage-column { min-height: 0; }
+  .mv-stage { min-height: 0; }
+}

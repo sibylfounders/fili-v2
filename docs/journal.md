@@ -49,6 +49,48 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #137 — /mouvement s'ouvre sur une interface qui vit : en mettre plein la vue avant d'expliquer
+
+*2026-09-09 · Statut : 🟢 décidé sur pièce (témoin à trois ouvertures), porté dans le kit, banc 13/13 · Complète : `#135` (le cadre des démonstrations) · Thread « la page Mouvement »*
+
+**Contexte** — La page portait sept paires faute / juste à la suite : trois
+règles en comparaison, puis quatre paires « qu'on peut casser ». L'Auteur :
+« ça fait beaucoup de do/don't ; il manque au moins une section en haut de
+page qui n'essaye pas d'expliquer mais juste d'en mettre plein la vue ». Trois
+ouvertures ont été jouées sur une pièce à part
+(`claude/livrables/temoin-ouverture-mouvement-2026-09-09.html`) : une
+interface Fili qui vit en boucle, la page qui s'assemble sur elle-même à ses
+quatre durées, vingt-quatre points qui partent ensemble et arrivent en quatre
+vagues. Verdict : « A sans hésiter ».
+
+**Décision** — Sous l'accroche, avant la première preuve, une interface
+complète se joue toute seule : une carte de tâche change de colonne (700, le
+cran d'une section), un menu sort du coin de son bouton (200), une
+notification monte (200), une seule donnée du tableau de bord change (700),
+un tiroir entre depuis son bord (300), l'appui répond (100). Pas une légende,
+pas un verdict, pas une faute : les trois règles tiennent avant d'être
+nommées. Un seul bouton l'arrête (WCAG 2.2.2) ; elle attend hors de l'écran ;
+sous mouvement réduit les déplacements partent et les fondus restent. Elle
+n'est pas une preuve — elle vit dans le hero, pas dans une section, et le
+rail ne la compte pas.
+
+**Sens produit / UX** — Une page qui ne montre que des fautes corrigées
+apprend à juger, pas à désirer. L'ouverture donne au lecteur ce que la
+famille promet — tout bouge, rien ne gêne, l'œil sait toujours où aller — et
+le reste de la page lui donne de quoi le décortiquer.
+
+**Alternatives écartées** — La page qui s'assemble sur elle-même (fort comme
+statement, mais passé en une seconde, et ça ressemble à une intro de site) ;
+les quatre vagues (spectaculaire mais abstrait : une pluie de valeurs, pas
+une situation).
+
+**Conséquences** — La réduction des quatre paires à une seule scène par
+faute (le faux joué au survol) reste ouverte, à décider sur pièce.
+`kit/app/mouvement/view.tsx`, `motion.css`. Banc `tests/motion.test.mjs`
+13/13 sur la machine d'Auteur.
+
+---
+
 ## #136 — La voix du kit : une voix, deux réglages
 
 *2026-09-09 · Statut : 🟢 décidé et appliqué aux six pages · Révise : `claude/voix-et-phrase-2026-09-01.md` et `claude/test-de-voix-2026-09-01.md` (la grille du 1er septembre demandait un « vous » par section) · Thread « le cadre des démonstrations »*
