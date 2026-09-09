@@ -287,10 +287,10 @@ test('6 · les quinze lois sont toutes là, une seule fois : cinq sur l’écran
 test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; quatre paires en h4 dont la cote nomme la seule chose qui change ; trois pièces', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
-  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 5, 'trois preuves, un répertoire, le code')
   assert.equal(await p.locator('#registry #bands h4.doc-band-name').count(), 4, 'quatre paires, en h4 sous leur sous-titre')
   for (const c of await texts(p, '#registry #bands .doc-band-side')) assert.match(c, /^une seule chose change : /, `la cote nomme la seule chose qui change : « ${c} »`)
-  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces')
-  const frames = await texts(p, '#registry #adaptation .button'); for (const f of ['HTML', 'React', 'Angular']) assert.ok(frames.includes(f), `l'écran s'écrit en ${f}`)
+  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 2, 'deux pièces')
+  const frames = await texts(p, '#code .button'); for (const f of ['HTML', 'React', 'Angular']) assert.ok(frames.includes(f), `l'écran s'écrit en ${f}`)
   await close()
 })

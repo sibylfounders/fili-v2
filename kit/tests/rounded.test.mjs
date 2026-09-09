@@ -261,9 +261,9 @@ test('6 · dans la feuille, chaque couleur écrite en dur est dite — sur sa li
 test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; six pièges en h4, trois pièces', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
-  assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 5, 'trois preuves, un répertoire, le code')
   assert.equal(await p.locator('#registry #wreck h4.doc-band-name').count(), 6, 'six pièges, en h4 sous leur sous-titre')
-  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces')
-  assert.ok(await p.locator('#registry #code .doc-code tbody tr').count() >= 6, 'les six coins')
+  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 2, 'deux pièces')
+  assert.ok(await p.locator('#code .doc-code tbody tr').count() >= 6, 'les six coins')
   await close()
 })

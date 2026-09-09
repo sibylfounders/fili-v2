@@ -253,7 +253,7 @@ pre.code .cs-var { color: var(--code-kw); }
   background: linear-gradient(var(--danger), var(--danger)) 50% 0 / 1px 100% no-repeat;
 }
 .space.ko[data-name]::after {
-  content: attr(data-nom); position: absolute; left: calc(50% + 0.625rem); top: 50%;
+  content: attr(data-name); position: absolute; left: calc(50% + 0.625rem); top: 50%;
   transform: translateY(-50%); white-space: nowrap;
   font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--danger);
 }
@@ -261,7 +261,7 @@ pre.code .cs-var { color: var(--code-kw); }
    « on ne voit pas et ne comprend pas les espaces » — une seule couleur
    neutre, une seule étiquette par rôle·cran, jamais l'accent). */
 .space.seen[data-name]::after {
-  content: attr(data-nom); position: absolute; left: 50%; top: 50%;
+  content: attr(data-name); position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%); white-space: nowrap;
   font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
 }

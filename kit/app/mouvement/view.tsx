@@ -21,6 +21,7 @@ const TOC: Toc = [
   ["cause", "02", "La cause"],
   ["gaze", "03", "Le regard"],
   ["registry", "04", "Le registre"],
+  ["code", "05", "Le code"],
 ];
 type Step = keyof typeof MOTION.durations;
 const ms = (c: Step) => MOTION.durations[c].ms;
@@ -649,15 +650,21 @@ export default function View() {
                   <Rules ids={["m5", "m8", "m4", "m9", "m10"]} />
                 </div></details>
               </div>
+            </div>
+          </section>
 
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Le moteur</h3>
-                  <p className="muted">Chaque valeur est lue au moteur, jamais recopiée. Une durée qui
+          {/* ═══ LE CODE — une section à part, après le registre (verdict d'Auteur,
+              9 septembre : « le code doit être une section à part, sur toutes
+              les pages ») : ce qu'on écrit, ce que ça produit, lu au moteur. ═══ */}
+          <section className="gdoc-sec set" id="code">
+            <div className="gdoc-sec-head">
+              <p className="kicker">05 · Le code</p>
+              <h2>Le moteur</h2>
+              <p className="muted">Chaque valeur est lue au moteur, jamais recopiée. Une durée qui
                   n&apos;est pas dans cette table est une faute — ou une chorégraphie, qui se déclare.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-              </div>
+            </div>
+            <div className="gdoc-body">
+              <PanelRegistry lines={CODE} />
             </div>
           </section>
         </main>

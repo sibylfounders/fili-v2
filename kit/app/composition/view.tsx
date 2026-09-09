@@ -39,6 +39,7 @@ const TOC: Toc = [
   ["journey", "02", "Le chemin de l'œil"],
   ["blanc", "03", "L'espace blanc"],
   ["registry", "04", "Le registre"],
+  ["code", "05", "Le code"],
 ];
 
 const px = (n: number) => `${Math.round(n)}px`;
@@ -1013,38 +1014,44 @@ export default function View() {
                   de rien.</p>
                 </div></details>
               </div>
+            </div>
+          </section>
 
-              <div className="doc-piece" id="adaptation">
-                <div className="doc-piece-head">
-                  <h3>L&apos;écran de la première preuve, écrit proprement</h3>
-                  <p className="muted">Un système normatif enfermé dans un framework n&apos;est
+          {/* ═══ LE CODE — une section à part, après le registre (verdict d'Auteur,
+              9 septembre : « le code doit être une section à part, sur toutes
+              les pages ») : ce qu'on écrit, ce que ça produit, lu au moteur. ═══ */}
+          <section className="gdoc-sec set" id="code">
+            <div className="gdoc-sec-head">
+              <p className="kicker">05 · Le code</p>
+              <h2>L&apos;écran de la première preuve, écrit proprement</h2>
+              <p className="muted">Un système normatif enfermé dans un framework n&apos;est
                   qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le token — et la
                   composition n&apos;a pas de token à elle : elle dépense ceux des autres familles,
                   dans un ordre. React, Angular ou HTML n&apos;en sont que des consommateurs.</p>
-                </div>
-                <PanelCode language={styl} tools={
-                  <>{(["HTML", "React", "Angular"] as const).map((f) => (
-                    <button key={f} className={`button ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
-                  ))}</>
-                } code={SNIPPETS[fw][styl]} />
-                <details className="prov"><summary>Règles &amp; sources</summary><div>
-                  <p>Le normatif, ici, c&apos;est <b>la règle et le token</b> — pas le code. La
-                  composition ne crée aucun token : le dominant est un cran de l&apos;échelle
-                  typographique (<code>--font-size-h1</code>) dépensé une seule fois ; un groupe
-                  est un écart de l&apos;échelle de rythme, plus large dehors
-                  (<code>--pad-2-block</code>) que dedans (<code>--gap-3-block</code>) ;
-                  l&apos;axe est une grille à une colonne ; l&apos;accent est la couleur primaire
-                  (<code>--primary</code>) posée sur un seul élément. Aucune surface : le blanc
-                  fait déjà le groupe. Les sorties Tailwind et shadcn pointent sur les mêmes
-                  variables.</p>
-                  <p><b>Ce que le code ne porte pas</b> : le chemin de l&apos;œil et le blanc donné
-                  avant d&apos;être repris. Ces deux règles se jugent à la relecture — aucun
-                  extrait ne les garantit, et on ne fait pas semblant.</p>
-                  <p className="muted">Sources : COMPOSITION-UX (huit règles, deux jugées à
-                  l&apos;œil) · Nathan Curtis, <i>Space in Design Systems</i> · Wathan &amp;
-                  Schoger, <i>Refactoring UI</i>.</p>
-                </div></details>
-              </div>
+            </div>
+            <div className="gdoc-body">
+              <PanelCode language={styl} tools={
+                <>{(["HTML", "React", "Angular"] as const).map((f) => (
+                  <button key={f} className={`button ${fw === f ? "on" : ""}`} onClick={() => setFw(f)}>{f}</button>
+                ))}</>
+              } code={SNIPPETS[fw][styl]} />
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <p>Le normatif, ici, c&apos;est <b>la règle et le token</b> — pas le code. La
+                composition ne crée aucun token : le dominant est un cran de l&apos;échelle
+                typographique (<code>--font-size-h1</code>) dépensé une seule fois ; un groupe
+                est un écart de l&apos;échelle de rythme, plus large dehors
+                (<code>--pad-2-block</code>) que dedans (<code>--gap-3-block</code>) ;
+                l&apos;axe est une grille à une colonne ; l&apos;accent est la couleur primaire
+                (<code>--primary</code>) posée sur un seul élément. Aucune surface : le blanc
+                fait déjà le groupe. Les sorties Tailwind et shadcn pointent sur les mêmes
+                variables.</p>
+                <p><b>Ce que le code ne porte pas</b> : le chemin de l&apos;œil et le blanc donné
+                avant d&apos;être repris. Ces deux règles se jugent à la relecture — aucun
+                extrait ne les garantit, et on ne fait pas semblant.</p>
+                <p className="muted">Sources : COMPOSITION-UX (huit règles, deux jugées à
+                l&apos;œil) · Nathan Curtis, <i>Space in Design Systems</i> · Wathan &amp;
+                Schoger, <i>Refactoring UI</i>.</p>
+              </div></details>
             </div>
           </section>
 

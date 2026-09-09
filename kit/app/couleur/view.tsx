@@ -855,6 +855,7 @@ const TOC: Toc = [
   ["swatches", "02", "Le nuancier"],
   ["engine", "03", "Le moteur"],
   ["registry", "04", "Le registre"],
+  ["code", "05", "Le code"],
 ];
 
 
@@ -1179,23 +1180,29 @@ export default function View() {
                   ))}
                 </div>
               </div>
+            </div>
+          </section>
 
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les rôles, dans les deux thèmes</h3>
-                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le token — pas l&apos;extrait
+          {/* ═══ LE CODE — une section à part, après le registre (verdict d'Auteur,
+              9 septembre : « le code doit être une section à part, sur toutes
+              les pages ») : ce qu'on écrit, ce que ça produit, lu au moteur. ═══ */}
+          <section className="gdoc-sec set" id="code">
+            <div className="gdoc-sec-head">
+              <p className="kicker">05 · Le code</p>
+              <h2>Les rôles, dans les deux thèmes</h2>
+              <p className="muted">Ce qui fait foi, c&apos;est la règle et le token — pas l&apos;extrait
                   de code, qui vieillit et finit par mentir. Un seul jeu de tokens produit les
                   variables CSS natives et une sortie Tailwind jumelle ; les deux thèmes vivent
                   dans le token, chaque consommateur en hérite sans rien coder.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-                <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
-                  <TableRoles key={key} />
-                </div></details>
-                <details className="prov"><summary>Règles &amp; sources</summary><div>
-                  <Rules ids={["c12", "c1"]} />
-                </div></details>
-              </div>
+            </div>
+            <div className="gdoc-body">
+              <PanelRegistry lines={CODE} />
+              <details className="prov"><summary>La table des rôles — chaque valeur, lue sur le rendu</summary><div>
+                <TableRoles key={key} />
+              </div></details>
+              <details className="prov"><summary>Règles &amp; sources</summary><div>
+                <Rules ids={["c12", "c1"]} />
+              </div></details>
             </div>
           </section>
 

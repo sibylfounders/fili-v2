@@ -428,6 +428,7 @@ const TOC: Toc = [
   ["gazette", "04", "La gazette"],
   ["weight", "05", "La graisse"],
   ["registry", "06", "Le registre"],
+  ["code", "07", "Le code"],
 ];
 
 /* ── LE CALAGE — la même valeur d'espace, des quatre côtés ──────────────
@@ -1007,16 +1008,22 @@ export default function View() {
                   <Rules ids={["p01", "g1", "t11", "t2", "t4", "t5", "t6", "t9"]} />
                 </div></details>
               </div>
+            </div>
+          </section>
 
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les tokens</h3>
-                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le token — pas
+          {/* ═══ LE CODE — une section à part, après le registre (verdict d'Auteur,
+              9 septembre : « le code doit être une section à part, sur toutes
+              les pages ») : ce qu'on écrit, ce que ça produit, lu au moteur. ═══ */}
+          <section className="gdoc-sec set" id="code">
+            <div className="gdoc-sec-head">
+              <p className="kicker">07 · Le code</p>
+              <h2>Les tokens</h2>
+              <p className="muted">Ce qui fait foi, c&apos;est la règle et le token — pas
                   l&apos;extrait de code, qui vieillit et finit par mentir. Chaque valeur
                   ci-dessous est lue dans le registre du moment.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-              </div>
+            </div>
+            <div className="gdoc-body">
+              <PanelRegistry lines={CODE} />
             </div>
           </section>
 

@@ -261,7 +261,11 @@ export async function faultsWriting(p) {
   const pieces = await p.$$eval('main #registry .doc-piece', (es) => es.map((e) => e.id))
   const rank = (id) => (/^(wreck|bands)$/.test(id) ? 0 : /^(invisibles|list)$/.test(id) ? 1 : 2)
   for (let i = 1; i < pieces.length; i++) if (rank(pieces[i]) < rank(pieces[i - 1])) faults.push(`les pièces du répertoire dans le désordre : ${pieces.join(' → ')}`)
-  if (pieces.length && rank(pieces[pieces.length - 1]) !== 2) faults.push(`le répertoire ne finit pas sur les valeurs et le code : ${pieces.join(' → ')}`)
+  /* Le code est une section à part, après le registre (verdict d'Auteur, 9 septembre) — jamais une pièce du registre. */
+  if (await p.locator('main #registry #code, main #registry #adaptation').count()) faults.push('le code est encore une pièce du registre')
+  const order = await p.$$eval('main .gdoc-sec', (es) => es.map((e) => e.id))
+  if (!order.includes('code')) faults.push('pas de section du code (#code)')
+  else if (order.indexOf('code') !== order.indexOf('registry') + 1) faults.push(`la section du code ne suit pas le registre : ${order.join(' → ')}`)
   const levels = await p.$$eval('main h1, main h2, main h3, main h4, main h5, main h6', (es) => es.map((e) => +e.tagName[1]))
   for (let i = 1; i < levels.length; i++) if (levels[i] > levels[i - 1] + 1) faults.push(`un saut de niveau de titre : h${levels[i - 1]} → h${levels[i]} (titre nº ${i + 1})`)
   return faults

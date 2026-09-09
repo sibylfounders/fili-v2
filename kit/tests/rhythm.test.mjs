@@ -113,18 +113,20 @@ const PROOFS = [
   ['#density .ry-sd-line', 'borderTopLeftRadius', 'r-3'],
   /* les fiches de l'étage « en colonnes » : le filet, la vignette, la commande */
   /* les scènes des bandes : deux sœurs, l'escalier des rapports, la carte en rem, la cible */
-  ['#bands .ry-fr-container', 'paddingTop', 'pad-1-block'], ['#bands .ry-fr-container', 'borderTopLeftRadius', 'r-1'],
-  ['#bands .ry-fr-card', 'borderTopLeftRadius', 'r-2'], ['#bands .ry-fr-says', 'paddingTop', 'pad-2-block'],
-  ['#bands .ry-ratio-steps', 'rowGap', 'gap-3-block'], ['#bands .ry-ratio-step', 'columnGap', 'gap-3-inline'],
-  ['#bands .ry-rem-card', 'paddingTop', 'pad-2-block'], ['#bands .ry-rem-card', 'borderTopLeftRadius', 'r-2'],
-  ['#bands .ry-target-btn', 'minHeight', 'control-height'], ['#bands .ry-target-btn', 'borderTopLeftRadius', 'r-ctl'],
-  ['#bands .ry-target-gauge', 'minHeight', 'control-height'],
-  /* l'étage « en bandes » : la parole à gauche, la scène à droite, la commande sous la phrase */
+  /* chaque scène vit deux fois, fausse à gauche et juste à droite : on mesure le côté juste — la
+     card en rem est agrandie d'entrée (×1,5), elle est mesurée pour elle-même dans l'épreuve 3 */
+  ['#bands .demo-side.good .ry-fr-container', 'paddingTop', 'pad-1-block'], ['#bands .demo-side.good .ry-fr-container', 'borderTopLeftRadius', 'r-1'],
+  ['#bands .demo-side.good .ry-fr-card', 'borderTopLeftRadius', 'r-2'], ['#bands .demo-side.good .ry-fr-says', 'paddingTop', 'pad-2-block'],
+  ['#bands .demo-side.good .ry-ratio-steps', 'rowGap', 'gap-3-block'], ['#bands .demo-side.good .ry-ratio-step', 'columnGap', 'gap-3-inline'],
+  ['#bands .demo-side.good .ry-rem-card', 'borderTopLeftRadius', 'r-2'],
+  ['#bands .demo-side.good .ry-target-btn', 'minHeight', 'control-height'], ['#bands .demo-side.good .ry-target-btn', 'borderTopLeftRadius', 'r-ctl'],
+  ['#bands .demo-side.good .ry-target-gauge', 'minHeight', 'control-height'],
+  /* l'étage « en bandes » : la parole à gauche, la scène à droite ; le cadre de la démonstration
+     porte sa situation et son action, en version compacte */
   ['#bands .doc-band', 'paddingTop', 'pad-1-block'],
   ['#bands .doc-band-say', 'rowGap', 'gap-2-block'],
-  /* la scène pleine : la variante « nue » s'efface, elle n'a ni fond ni marge — c'est son propos */
-  ['#bands .doc-scene:not(.bare)', 'borderTopLeftRadius', 'r-2'], ['#bands .doc-scene:not(.bare)', 'paddingTop', 'pad-2-block'],
-  ['#bands .doc-wreck', 'borderTopLeftRadius', 'r-3'], ['#bands .doc-wreck', 'minHeight', 'control-height-compact'],
+  ['#bands .demo-go', 'minHeight', 'control-height-compact'],
+  ['#bands .demo-stage', 'paddingTop', 'pad-2-block'],
   /* l'étage « dans le code » : le panneau et sa table */
   ['#code .doc-panel', 'borderTopLeftRadius', 'r-1'], ['#code .doc-panel', 'paddingTop', 'pad-1-block'],
   ['#code .doc-unfold', 'borderTopLeftRadius', 'r-ctl'], ['#code .doc-unfold', 'minHeight', 'control-height'],
@@ -164,75 +166,73 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
     /* la règle 1, mesurée pour elle-même : l'écart entre deux sœurs EST leur marge,
        au même pixel — c'est le même chiffre, pas deux réglages qui se ressemblent */
     const sisters = await p.evaluate(() => {
-      const c = document.querySelector('#bands .ry-fr-container')
+      const c = document.querySelector('#bands .demo-side.good .ry-fr-container')
       return [parseFloat(getComputedStyle(c.querySelector(':scope > .space.h')).width),
               parseFloat(getComputedStyle(c.querySelector('.ry-fr-card > .space.h')).width)]
     })
     ok(sisters[0], sisters[1], `${W} px — l’écart entre sœurs = leur marge`)
     ok(sisters[0], expected('gap-1-inline', W), `${W} px — et c’est le token de l’espace entre frères`)
     /* l'escalier des rapports : quatre barres à leur vraie longueur, celles du registre */
-    const barsRatio = await p.evaluate(() => [...document.querySelectorAll('#bands .ry-ratio-bar')].map((b) => parseFloat(getComputedStyle(b).width)))
+    const barsRatio = await p.evaluate(() => [...document.querySelectorAll('#bands .demo-side.good .ry-ratio-bar')].map((b) => parseFloat(getComputedStyle(b).width)))
     list(barsRatio, [FOUNDATION.pad[0], FOUNDATION.pad[1], FOUNDATION.pad[2], FOUNDATION.gap[2]], `${W} px — l’escalier des rapports`, TOL)
     /* la proximité : les quatre écarts de la carte, au repos */
-    const gaps = await p.evaluate(() => [...document.querySelectorAll('#bands .ry-prox-card .space')].map((e) => parseFloat(getComputedStyle(e).height)))
-    list(gaps, ['gap-1-block', 'gap-3-block', 'gap-1-block', 'gap-3-block'].map((n) => expected(n, W)), `${W} px — proximité au repos`, TOL)
+    const gaps = await p.evaluate(() => [...document.querySelectorAll('#bands .demo-side.good .ry-prox-card .space')].map((e) => parseFloat(getComputedStyle(e).height)))
+    list(gaps, ['gap-1-block', 'gap-3-block', 'gap-1-block', 'gap-3-block'].map((n) => expected(n, W)), `${W} px — proximité, côté juste`, TOL)
     await close()
   }
 })
-test('2 · les casses sont rendues par le token menteur, déclarées (data-intent="statement") — et la ligne cassée est deux fois plus ronde que sa carte', async () => {
+test('2 · les casses sont rendues par le token menteur, déclarées (data-intent="statement") — chaque côté montre son verdict au repos, l’action rejoue', async () => {
   const W = 1440
   const { p, close } = await nav.page(URL(), { width: W })
-  /* la profondeur */
-  /* Chaque commande est désignée par LA SCÈNE de sa bande : l'épreuve ne
-     dépend plus de l'ordre des bandes dans la section. Les scènes glissent
-     en 0,3 s : on lit après le mouvement, jamais pendant. */
-  const toggle = async (scene) => { await p.locator(`#bands .doc-band:has(${scene}) .doc-wreck`).click(); await p.waitForTimeout(600) }
+  /* Deux côtés par démonstration : le faux à gauche, déclaré ; le juste à droite.
+     Chaque scène est désignée par ce qu'elle contient : l'épreuve ne dépend pas
+     de l'ordre des bandes dans la section. */
+  const band = (scene) => `#bands .doc-band:has(${scene})`
+  const bad = (scene) => `${band(scene)} .demo-side.bad`, good = (scene) => `${band(scene)} .demo-side.good`
+  for (const scene of ['.ry-fr-container', '.ry-ratio', '.ry-rem', '.ry-target', '.ry-prox-card .ry-h3', '.ry-field'])
+    assert.equal(await p.getAttribute(bad(scene), 'data-intent'), 'statement', `${scene} : le côté faux se déclare`)
 
   /* y1 · l'écart entre deux sœurs tombe sous leur marge */
-  const gapSisters = () => calcPx(p, '#bands .ry-fr-container > .space.h', 'width')
-  const marginSisters = () => calcPx(p, '#bands .ry-fr-card > .space.h', 'width')
-  await toggle('.ry-fr-container')
-  assert.equal(await p.getAttribute('#bands .ry-fr-container > .space.h', 'data-intent'), 'statement')
-  ok(await gapSisters(), expected('gap-3-inline', W), 'sœurs cassées : l’écart tombe sous la marge')
-  await toggle('.ry-fr-container')
-  ok(await gapSisters(), await marginSisters(), 'sœurs réparées : l’écart vaut la marge')
+  const sisters = (side) => calcPx(p, `${side} .ry-fr-container > .space.h`, 'width')
+  ok(await sisters(bad('.ry-fr-container')), expected('gap-3-inline', W), 'sœurs cassées : l’écart tombe sous la marge')
+  ok(await sisters(good('.ry-fr-container')), await calcPx(p, `${good('.ry-fr-container')} .ry-fr-card > .space.h`, 'width'), 'sœurs justes : l’écart vaut la marge')
 
   /* y12 · la chaîne construite en retranchant : quatre longueurs jumelles */
-  await toggle('.ry-ratio')
-  const bars = await p.evaluate(() => [...document.querySelectorAll('#bands .ry-ratio-bar')].map((b) => parseFloat(getComputedStyle(b).width)))
+  const bars = await p.evaluate((sel) => [...document.querySelectorAll(`${sel} .ry-ratio-bar`)].map((b) => parseFloat(getComputedStyle(b).width)), bad('.ry-ratio'))
   list(bars, [0, 1, 2, 3].map((i) => FOUNDATION.pad[0] - 4 * i), 'rapports cassés : on retire 4 px à chaque pas', TOL)
-  await toggle('.ry-ratio')
 
-  /* y9 · au repos les deux cartes se ressemblent ; le texte agrandi les sépare :
-     la marge en tokens grandit avec lui, la marge en pixels ne bouge pas */
-  const marginsRem = () => p.evaluate(() => [...document.querySelectorAll('#bands .ry-rem-card')].map((e) => parseFloat(getComputedStyle(e).paddingTop)))
-  const atRest = await marginsRem()
-  ok(atRest[0], expected('pad-2-block', W), 'au repos : la carte en tokens porte la marge du registre')
-  ok(atRest[1], 16, 'au repos : la carte en pixels porte 16')
-  await toggle('.ry-rem')
-  const enlarged = await marginsRem()
-  assert.ok(enlarged[0] > atRest[0] + 1, `texte agrandi : la marge en tokens a suivi (${atRest[0]} → ${enlarged[0]})`)
+  /* y9 · le texte est agrandi d'entrée : la marge en tokens a suivi (×1,5), la marge en pixels
+     n'a pas bougé. L'action rejoue : les deux cards reviennent au corps ×1 — la marge en tokens
+     redevient celle du registre — puis le texte grandit à nouveau. */
+  const margins = () => Promise.all([calcPx(p, `${good('.ry-rem')} .ry-rem-card`, 'paddingTop'), calcPx(p, `${bad('.ry-rem')} .ry-rem-card`, 'paddingTop')])
+  const enlarged = await margins()
+  ok(enlarged[0], expected('pad-2-block', W) * 1.5, 'texte agrandi : la marge en tokens a suivi', TOL)
   ok(enlarged[1], 16, 'texte agrandi : la marge en pixels n’a pas bougé')
-  await toggle('.ry-rem')
+  await p.locator(`${band('.ry-rem')} .demo-go`).click()
+  await p.waitForTimeout(100)
+  const atRest = await margins()
+  ok(atRest[0], expected('pad-2-block', W), 'rejeu, au repos : la carte en tokens porte la marge du registre', TOL)
+  ok(atRest[1], 16, 'rejeu, au repos : la carte en pixels porte 16')
+  await p.waitForTimeout(1600)
+  list(await margins(), enlarged, 'rejeu terminé : le texte est de nouveau agrandi', TOL)
 
   /* y17 · la commande passe sous le plancher de la cible */
-  await toggle('.ry-target')
-  ok(await calcPx(p, '#bands .ry-target-btn', 'minHeight'), 36, 'cible cassée : sous le plancher')
-  await toggle('.ry-target')
-  ok(await calcPx(p, '#bands .ry-target-btn', 'minHeight'), expected('control-height', W), 'cible réparée : la hauteur due')
-  /* la proximité : le titre, puis le libellé */
-  const gaps = () => p.evaluate(() => [...document.querySelectorAll('#bands .ry-prox-card .space')].map((e) => [parseFloat(getComputedStyle(e).height), e.dataset.intent ?? null]))
-  /* deux fiches, deux commandes : la deuxième casse le libellé, la troisième le titre.
-     Dans l'ordre du document, la carte du libellé vient avant celle du titre. */
-  await toggle('.ry-prox-card .ry-h3')
-  let e = await gaps()
-  list(e.map((x) => x[0]), ['gap-1-block', 'gap-3-block', 'gap-2-block', 'gap-2-block'].map((n) => expected(n, W)), 'titre cassé : le même écart des deux côtés', TOL)
-  assert.deepEqual(e.map((x) => x[1]), [null, null, 'statement', 'statement'])
-  await toggle('.ry-prox-card .ry-h3')
-  await toggle('.ry-field')
-  e = await gaps()
-  list(e.map((x) => x[0]), ['gap-1-block', 'gap-1-block', 'gap-1-block', 'gap-3-block'].map((n) => expected(n, W)), 'libellé cassé : aussi loin de son champ que de ce qui précède', TOL)
-  assert.deepEqual(e.map((x) => x[1]), ['statement', 'statement', null, null])
+  ok(await calcPx(p, `${bad('.ry-target')} .ry-target-btn`, 'minHeight'), 36, 'cible cassée : sous le plancher')
+  ok(await calcPx(p, `${good('.ry-target')} .ry-target-btn`, 'minHeight'), expected('control-height', W), 'cible juste : la hauteur due')
+
+  /* la proximité : le titre, puis le libellé — les quatre écarts de chaque côté, et leur cote écrite */
+  const gaps = (sel) => p.evaluate((sel) => [...document.querySelectorAll(`${sel} .ry-prox-card .space`)].map((e) => [parseFloat(getComputedStyle(e).height), e.dataset.name]), sel)
+  const cote = (v) => `${String(Math.round(v * 10) / 10).replace('.', ',')} px`
+  let e = await gaps(bad('.ry-prox-card .ry-h3'))
+  list(e.map((x) => x[0]), ['gap-2-block', 'gap-2-block'].map((n) => expected(n, W)), 'titre cassé : le même écart des deux côtés', TOL)
+  assert.deepEqual(e.map((x) => x[1]), [cote(FOUNDATION.gap[1]), cote(FOUNDATION.gap[1])], 'titre cassé : chaque espace porte sa cote')
+  e = await gaps(good('.ry-prox-card .ry-h3'))
+  list(e.map((x) => x[0]), ['gap-1-block', 'gap-3-block'].map((n) => expected(n, W)), 'titre juste : un cran de plus au-dessus', TOL)
+  assert.deepEqual(e.map((x) => x[1]), [cote(FOUNDATION.gap[0]), cote(FOUNDATION.gap[2])], 'titre juste : chaque espace porte sa cote')
+  e = await gaps(bad('.ry-field'))
+  list(e.map((x) => x[0]), ['gap-1-block', 'gap-1-block'].map((n) => expected(n, W)), 'libellé cassé : aussi loin de son champ que de ce qui précède', TOL)
+  e = await gaps(good('.ry-field'))
+  list(e.map((x) => x[0]), ['gap-1-block', 'gap-3-block'].map((n) => expected(n, W)), 'libellé juste : plus près de son champ', TOL)
   await close()
 })
 test('2 · la feuille de la page consomme, pour chaque preuve, le token qu’elle nomme', () => {
@@ -362,7 +362,7 @@ test('3 · les trois arcs de la profondeur valent les coins du registre, et la c
 test('4 · chaque titre de section appartient à ce qu’il ouvre : le silence au-dessus dépasse la tête au-dessous', async () => {
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
-    const ids = ['scale', 'density', 'headings', 'registry']
+    const ids = ['scale', 'density', 'headings', 'registry', 'code']
     for (const id of ids) {
       const above = await calcPx(p, `#${id}.gdoc-sec`, 'paddingTop')
       const below = await calcPx(p, `#${id} .gdoc-body`, 'marginTop')
@@ -437,11 +437,11 @@ test('6 · dans la vue, tout style posé en ligne est un token ou une valeur du 
 test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la descente porte la tranche et les trois étages ; six bandes en h4, la liste, la correspondance', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
-  assert.equal(await p.locator('main .gdoc-sec').count(), 5, 'quatre preuves et un répertoire')
+  assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'quatre preuves, un répertoire, le code')
   assert.equal(await p.locator('#scale .slice').count() + await p.locator('#scale #depth .ry-pf').count(), 2, 'la descente : la tranche et les trois étages, dans la même preuve')
   assert.equal(await p.locator('#registry #bands h4.doc-band-name').count(), 6, 'six bandes, en h4 sous leur sous-titre')
   assert.ok(await p.locator('#registry #list .doc-list tbody tr').count() >= 1, 'la liste')
-  assert.ok(await p.locator('#registry #code .doc-code tbody tr').count() >= 1, 'les tokens')
-  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces')
+  assert.ok(await p.locator('#code .doc-code tbody tr').count() >= 1, 'les tokens')
+  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 2, 'deux pièces')
   await close()
 })

@@ -2,7 +2,7 @@
 import Scenario from "./scenario";
 import { Fragment, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { Bands, Band, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { useDensity } from "../density";
 import { RailDoc, useDocSections, type Toc } from "../rail";
@@ -151,12 +151,12 @@ export function SliceFili({ see, menu = true }:
   );
 }
 
-/* Les distances de la card sont des blocs d'espace explicites : quand une
-   casse est active, l'écart menteur se matérialise en rouge, étiquette
-   dedans (décision d'Auteur, 24 août — on voit l'erreur, on ne la devine
-   plus). Au repos, les espaces sont invisibles : ils espacent, c'est tout. */
-function Space({ j, fault, name }: { j: string; fault?: boolean; name?: string }) {
-  return <span className={`space ${fault ? "ko" : ""}`} data-name={fault ? name : undefined}
+/* Les distances de la card sont des blocs d'espace explicites. Dans le cadre
+   d'une démonstration ils sont visibles et cotés : la mesure est posée à
+   l'endroit de l'espace, en nombre — le verdict, lui, est dans la tête du
+   côté, la scène ne le répète pas (verdict d'Auteur, 9 septembre). */
+function Space({ j, v, fault }: { j: string; v?: number; fault?: boolean }) {
+  return <span className={`space ${v !== undefined ? "seen" : ""}`} data-name={v !== undefined ? `${px(v)} px` : undefined}
     data-intent={fault ? "statement" : undefined} style={{ height: `var(${j})` }} />;
 }
 /* Deux fautes, deux fiches : elles ne se cassent plus ensemble (gabarit
@@ -164,23 +164,25 @@ function Space({ j, fault, name }: { j: string; fault?: boolean; name?: string }
    entre deux cards ; sous le titre, l'espace d'un titre à sa phrase ;
    d'un libellé à son champ, le même. */
 function ProximityLabel({ broken }: { broken: boolean }) {
+  const s = useFoundation();
   return (
-    <div className="ry-prox-card">
+    <div className="ry-prox-card" data-intent={broken ? "statement" : undefined}>
       <p className="muted">Un paragraphe qui précède.</p>
-      <Space j="--gap-1-block" fault={broken} name="aussi loin de ce qui précède…" />
+      <Space j="--gap-1-block" v={s.gap[0]} />
       <label className="mono ry-block">Adresse e-mail</label>
-      <Space j={broken ? "--gap-1-block" : "--gap-3-block"} fault={broken} name="…que de son champ" />
+      <Space j={broken ? "--gap-1-block" : "--gap-3-block"} v={broken ? s.gap[0] : s.gap[2]} fault={broken} />
       <span className="field-box"><input readOnly value="prenom@exemple.fr" className="ry-field" /></span>
     </div>
   );
 }
 function ProximityHeading({ broken }: { broken: boolean }) {
+  const s = useFoundation();
   return (
-    <div className="ry-prox-card">
+    <div className="ry-prox-card" data-intent={broken ? "statement" : undefined}>
       <p className="muted">Un paragraphe qui précède la section.</p>
-      <Space j={broken ? "--gap-2-block" : "--gap-1-block"} fault={broken} name="le même écart au-dessus…" />
+      <Space j={broken ? "--gap-2-block" : "--gap-1-block"} v={broken ? s.gap[1] : s.gap[0]} fault={broken} />
       <h3 className="ry-h3">Vos coordonnées</h3>
-      <Space j={broken ? "--gap-2-block" : "--gap-3-block"} fault={broken} name="…qu&apos;au-dessous" />
+      <Space j={broken ? "--gap-2-block" : "--gap-3-block"} v={broken ? s.gap[1] : s.gap[2]} fault={broken} />
       <p className="muted">La section qu&apos;il ouvre commence ici.</p>
     </div>
   );
@@ -375,14 +377,11 @@ function Siblings({ broken }: { broken: boolean }) {
           longueurs — les cacher jusqu'au survol reviendrait à ne rien montrer. */}
       <div className="ry-fr-container">
         <CardSister name="Léa Fontan" role="UX Designer" named />
-        <span className={`space h ${broken ? "ko" : "seen gap"}`} data-name={broken ? "l’écart ment" : "l’écart"}
+        <span className="space h seen gap" data-name={`l’écart ${px(gap)}`}
           data-step={2} data-intent={broken ? "statement" : undefined}
           style={{ width: `var(${broken ? "--gap-3-inline" : "--gap-1-inline"})` }} />
         <CardSister name="Marc Aubin" role="Développeur" />
       </div>
-      <span className="gd-caption">{broken
-        ? `l’écart ${px(gap)} · la marge ${px(s.pad[1])} — ils ne sont plus égaux : chaque texte est plus près de sa voisine que de son propre bord`
-        : `l’écart ${px(gap)} · la marge ${px(s.pad[1])} — le même chiffre, et c’est la règle`}</span>
     </div>
   );
 }
@@ -404,9 +403,6 @@ function Ratios({ broken }: { broken: boolean }) {
           </li>
         ))}
       </ol>
-      <span className="gd-caption">{broken
-        ? "on retire le même nombre de pixels à chaque pas : quatre longueurs presque jumelles — l’œil ne compte pas ce qu’on retire"
-        : "on divise par racine de deux à chaque pas : quatre longueurs qu’on distingue sans effort"}</span>
     </div>
   );
 }
@@ -417,20 +413,14 @@ function Ratios({ broken }: { broken: boolean }) {
    marges sont gelées en pixels. Au repos elles se ressemblent ; agrandi,
    l'une respire et l'autre étouffe. */
 const MARGIN_LASTS = 16; /* hors chaîne : la marge fautive de la démonstration — une valeur qu'on ne pose jamais */
-function InRem({ large }: { large: boolean }) {
-  const card = (hard: boolean) => (
-    <div className={`ry-rem-card ${hard ? "hard" : ""}`} data-intent={hard && large ? "statement" : undefined}>
-      <span className="ry-rem-label mono">{hard ? `marge : ${MARGIN_LASTS} px` : "marge : var(--pad-2-block)"}</span>
-      <b>Vos coordonnées</b>
-      <span className="muted">Nom, adresse, téléphone.</span>
-    </div>
-  );
+function InRem({ hard, large, reset }: { hard: boolean; large: boolean; reset?: boolean }) {
   return (
-    <div className={`ry-rem ${large ? "large" : ""}`}>
-      <div className="ry-rem-pair">{card(false)}{card(true)}</div>
-      <span className="gd-caption">{large
-        ? "texte agrandi de moitié : à gauche la marge a grandi avec lui, à droite elle est restée où elle était — le contenu touche le bord"
-        : "au repos, les deux cards se ressemblent : c’est en agrandissant le texte que la différence apparaît"}</span>
+    <div className={`ry-rem ${large ? "large" : ""} ${reset ? "reset" : ""}`}>
+      <div className={`ry-rem-card ${hard ? "hard" : ""}`} data-intent={hard ? "statement" : undefined}>
+        <span className="ry-rem-label mono">{hard ? `marge : ${MARGIN_LASTS} px` : "marge : var(--pad-2-block)"}</span>
+        <b>Vos coordonnées</b>
+        <span className="muted">Nom, adresse, téléphone.</span>
+      </div>
     </div>
   );
 }
@@ -439,9 +429,8 @@ function InRem({ large }: { large: boolean }) {
    hauteur due ; la commande doit la remplir. Cassée, on voit le vide entre
    la commande et sa jauge, et la légende dit les deux chiffres. */
 const TARGET_BROKEN = 36; /* hors chaîne : la hauteur fautive de la démonstration — une valeur qu'on ne pose jamais */
+const targetDue = () => { const due = J["control-height"]; return px(due.top ?? due.base); };
 function Target({ broken }: { broken: boolean }) {
-  const due = J["control-height"];
-  const height = px(due.top ?? due.base);
   return (
     <div className="ry-target" data-intent={broken ? "statement" : undefined}>
       <div className="ry-target-rank">
@@ -451,9 +440,6 @@ function Target({ broken }: { broken: boolean }) {
           </span>
         ))}
       </div>
-      <span className="gd-caption">{broken
-        ? `la jauge ${height} px · la commande ${TARGET_BROKEN} px — la commande ne remplit plus sa hauteur, elle se rate au doigt`
-        : `la jauge ${height} px · la commande ${height} px — la commande remplit exactement la hauteur due`}</span>
     </div>
   );
 }
@@ -764,15 +750,21 @@ const TOC: Toc = [
   ["density", "03", "La densité"],
   ["headings", "04", "L'intervalle des titres"],
   ["registry", "05", "Le registre"],
+  ["code", "06", "Le code"],
 ];
 export default function View() {
   const [brokenDepth, setBrokenDepth] = useState(false);
-  const [brokenLib, setBrokenLib] = useState(false);
-  const [brokenTit, setBrokenTit] = useState(false);
-  const [brokenFre, setBrokenFre] = useState(false);
-  const [brokenRatio, setBrokenRatio] = useState(false);
-  const [largeText, setLargeText] = useState(false);
-  const [brokenTarget, setBrokenTarget] = useState(false);
+  /* y9 · le texte est agrandi D'ENTRÉE : au repos chaque côté montre ce que son
+     verdict dit. L'action REJOUE le geste : les deux cards reviennent au corps ×1
+     d'un coup (sans transition), le temps de voir qu'elles se ressemblent, puis
+     le texte grandit au cran du dépliant. */
+  const site = useFoundation(); /* les légendes disent le registre à la densité du site */
+  const [largeText, setLargeText] = useState(true);
+  const [resetText, setResetText] = useState(false);
+  const replayLarge = () => {
+    setResetText(true); setLargeText(false);
+    window.setTimeout(() => { setResetText(false); requestAnimationFrame(() => requestAnimationFrame(() => setLargeText(true))); }, 600); /* hors chaîne : la pause du rejeu, le temps d'une lecture */
+  };
   /* L'intervalle des titres : le quatrième nombre du moteur. Versé de la
      page d'essai le 2 septembre. */
   const [headings, setHeadings] = useState<number>(CHARTER.intervalHeadings);
@@ -947,42 +939,68 @@ export default function View() {
                   répare. C&apos;est en voyant la version fausse qu&apos;on comprend à quoi sert la juste.</p>
                 </div>
               <Bands>
-                <Band level={4} name="L&apos;espace entre deux sœurs vaut leur marge" side="le même chiffre"
+                <Band level={4} name="L&apos;espace entre deux sœurs vaut leur marge" side="le même chiffre" bare
                   says="Le dedans et le dehors d&apos;une surface se règlent ensemble, pas chacun de son côté. Un texte plus proche du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine — et l&apos;œil s&apos;y laisse prendre à chaque fois."
-                  broken={brokenFre} onBroken={setBrokenFre}
                   rules={<Rules ids={["y1", "y15"]} />}>
-                  <Siblings broken={brokenFre} />
+                  <Demo situation="Deux cards voisines dans le même container">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="L'écart dépasse la marge : chaque texte penche vers sa voisine"><Siblings broken /></DemoSide>
+                      <DemoSide ok verdict="L'écart vaut la marge, au même pixel"><Siblings broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
-                <Band level={4} name="Le libellé qui flotte" side="autant d&apos;un côté que de l&apos;autre"
+                <Band level={4} name="Le libellé qui flotte" side="autant d&apos;un côté que de l&apos;autre" bare
                   says="Un libellé posé aussi loin de son champ que du paragraphe du dessus n&apos;appartient plus à personne. On croit lire l&apos;étiquette du champ suivant — c&apos;est la faute la plus courante des formulaires."
-                  broken={brokenLib} onBroken={setBrokenLib}
                   rules={<Rules ids={["y1"]} />}>
-                  <ProximityLabel broken={brokenLib} />
+                  <Demo situation="Un libellé, entre un paragraphe et son champ">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="Aussi loin de son champ que du paragraphe : il n'appartient à personne"><ProximityLabel broken /></DemoSide>
+                      <DemoSide ok verdict="Plus près de son champ que de ce qui précède"><ProximityLabel broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
-                <Band level={4} name="Le titre qui change de camp" side="au-dessus &gt; au-dessous"
+                <Band level={4} name="Le titre qui change de camp" side="au-dessus &gt; au-dessous" bare
                   says="L&apos;espace au-dessus d&apos;un titre dépasse celui du dessous d&apos;au moins un cran. À égalité, le titre ferme le paragraphe précédent au lieu d&apos;ouvrir sa section — et le lecteur cherche un instant où commence la suite."
-                  broken={brokenTit} onBroken={setBrokenTit}
                   rules={<Rules ids={["y2"]} />}>
-                  <ProximityHeading broken={brokenTit} />
+                  <Demo situation="Un titre de section, entre deux paragraphes">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="Le même écart des deux côtés : le titre ferme le paragraphe d'avant"><ProximityHeading broken /></DemoSide>
+                      <DemoSide ok verdict="Un cran de plus au-dessus : le titre ouvre sa section"><ProximityHeading broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
-                <Band level={4} name="Des rapports, jamais des soustractions" side="÷ √2 à chaque pas"
+                <Band level={4} name="Des rapports, jamais des soustractions" side="÷ √2 à chaque pas" bare
                   says="Le même nombre de pixels retiré à chaque cran donne des longueurs presque jumelles, que personne ne distingue. Une division à chaque cran, et les mêmes longueurs se lisent d&apos;un coup d&apos;œil. L&apos;œil compare, il ne compte pas."
-                  broken={brokenRatio} onBroken={setBrokenRatio}
                   rules={<Rules ids={["y12", "y3"]} />}>
-                  <Ratios broken={brokenRatio} />
+                  <Demo situation="Quatre crans d'espacement, du plus grand au plus petit">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict={`${INDENT} px de moins à chaque pas : quatre longueurs presque jumelles`}><Ratios broken /></DemoSide>
+                      <DemoSide ok verdict="÷ √2 à chaque pas : quatre longueurs qu'on distingue d'un coup d'œil"><Ratios broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
-                <Band level={4} name="La géométrie vit en rem" side="la même card, deux marges"
+                <Band level={4} name="La géométrie vit en rem" side="la même card, deux marges" bare
                   says="Un lecteur agrandit le texte : les espaces autour doivent grandir avec lui. Une marge figée en pixels, elle, reste où elle est — et la page se referme sur son contenu au premier réglage d&apos;accessibilité."
-                  broken={largeText} onBroken={setLargeText}
-                  labelBroken="Agrandir le texte" labelRepaired="Revenir"
                   rules={<Rules ids={["y9", "y8"]} />}>
-                  <InRem large={largeText} />
+                  <Demo situation="Un lecteur agrandit le texte de moitié"
+                    action={{ label: "Agrandir le texte", onClick: replayLarge }}
+                    caption={`la marge en tokens : ${px(site.pad[1])} px au repos, ${px(site.pad[1] * 1.5)} px texte agrandi · la marge en pixels : ${MARGIN_LASTS} px dans les deux cas`}>
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="La marge gelée en pixels reste où elle est : le contenu touche le bord"><InRem hard large={largeText} reset={resetText} /></DemoSide>
+                      <DemoSide ok verdict="La marge en rem grandit avec le texte"><InRem hard={false} large={largeText} reset={resetText} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
-                <Band level={4} name="La cible au doigt a un plancher" side="rien ne descend dessous"
+                <Band level={4} name="La cible au doigt a un plancher" side="rien ne descend dessous" bare
                   says="Un bouton, un champ, un sélecteur ont une hauteur de cible dérivée du registre. Une commande trop petite se rate au doigt, et aucune décision de mise en page ne passe avant ça."
-                  broken={brokenTarget} onBroken={setBrokenTarget}
                   rules={<Rules ids={["y17"]} />}>
-                  <Target broken={brokenTarget} />
+                  <Demo situation="Trois commandes, touchées au doigt"
+                    caption={`la jauge en pointillé : ${targetDue()} px, la hauteur due · la commande : ${TARGET_BROKEN} px à gauche, ${targetDue()} px à droite`}>
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="La commande ne remplit pas sa jauge : elle se rate au doigt"><Target broken /></DemoSide>
+                      <DemoSide ok verdict="La commande remplit exactement la hauteur due"><Target broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
               </Bands>
               </div>
@@ -998,19 +1016,25 @@ export default function View() {
                   <Rules ids={["y3", "y13", "y8", "y9", "y7", "y4"]} />
                 </div></details>
               </div>
+            </div>
+          </section>
 
-              <div className="doc-piece" id="code">
-                <div className="doc-piece-head">
-                  <h3>Les tokens, et leur correspondance</h3>
-                  <p className="muted">Chaque valeur est lue dans le registre du moment, jamais recopiée.
+          {/* ═══ LE CODE — une section à part, après le registre (verdict d'Auteur,
+              9 septembre : « le code doit être une section à part, sur toutes
+              les pages ») : ce qu'on écrit, ce que ça produit, lu au moteur. ═══ */}
+          <section className="gdoc-sec set" id="code">
+            <div className="gdoc-sec-head">
+              <p className="kicker">06 · Le code</p>
+              <h2>Les tokens, et leur correspondance</h2>
+              <p className="muted">Chaque valeur est lue dans le registre du moment, jamais recopiée.
                   Deux échelles, assumées : le CSS natif garde les décimales calculées ; Tailwind
                   s&apos;accroche à sa grille de 4, arrondie, sans décimale. On ne mélange pas les deux.</p>
-                </div>
-                <PanelRegistry lines={CODE} />
-                <details className="prov"><summary>La correspondance, token par token</summary><div>
-                  <Mapping />
-                </div></details>
-              </div>
+            </div>
+            <div className="gdoc-body">
+              <PanelRegistry lines={CODE} />
+              <details className="prov"><summary>La correspondance, token par token</summary><div>
+                <Mapping />
+              </div></details>
             </div>
           </section>
 
