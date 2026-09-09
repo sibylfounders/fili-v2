@@ -16,14 +16,7 @@
    large de la scène, plus large que tout écart à l'intérieur d'une
    colonne (dedans plus serré que dehors ; faute relevée par l'Auteur sur
    la paire des photos, corrigée le jour même). */
-.cb-pair { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
-@media (min-width: 40em) { .cb-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.cb-side { display: grid; gap: var(--gap-3-block); align-content: start; }
-.cb-object { display: grid; align-content: start; }
-.cb-verdict { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
-  font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
-.cb-verdict .verdict.good { color: var(--success); font-weight: 700; }
-.cb-verdict .verdict.ko { color: var(--danger); font-weight: 700; }
+.cb-object { width: 100%; display: grid; align-content: start; } /* l'objet prend toute la largeur de son côté du cadre */
 
 /* ── 1 · un habit, un rôle ── */
 .cb-line { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { PanelCode } from "../preview";
 import { useAdaptation } from "../adaptation";
-import { Bands, Band, ListRules } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules } from "../levels";
 import type { LineList } from "../levels";
 import type { ReactNode } from "react";
 
@@ -456,20 +456,19 @@ function Magazine() {
    verdict est en TÊTE de colonne — c'est lui qui fait lire deux colonnes
    et non quatre objets. Le signe (✓ / ✗) est celui de la planche des
    Arrondis : même langue. ══ */
-function Pair({ good, bad, saysGood, saysBad }: {
-  good: ReactNode; bad: ReactNode; saysGood: string; saysBad: string;
+/* Le même objet, deux fois, dans le cadre des démonstrations (verdict
+   d'Auteur, 9 septembre) : le fautif à gauche, déclaré ; le juste à droite.
+   Aucune action — les deux états vivent ensemble, il n'y a rien à rejouer. */
+function Pair({ situation, good, bad, saysGood, saysBad }: {
+  situation: string; good: ReactNode; bad: ReactNode; saysGood: string; saysBad: string;
 }) {
   return (
-    <div className="cb-pair">
-      <div className="cb-side">
-        <p className="cb-verdict"><span className="verdict good" aria-hidden="true">✓</span>{saysGood}</p>
-        <div className="cb-object">{good}</div>
-      </div>
-      <div className="cb-side" data-intent="statement">
-        <p className="cb-verdict"><span className="verdict ko" aria-hidden="true">✗</span>{saysBad}</p>
-        <div className="cb-object">{bad}</div>
-      </div>
-    </div>
+    <Demo situation={situation}>
+      <DemoSides>
+        <DemoSide ok={false} verdict={saysBad}><div className="cb-object">{bad}</div></DemoSide>
+        <DemoSide ok verdict={saysGood}><div className="cb-object">{good}</div></DemoSide>
+      </DemoSides>
+    </Demo>
   );
 }
 
@@ -957,41 +956,41 @@ export default function View() {
                 </div>
               <Bands>
 
-                <Band level={4} name="Ce qui agit et ce qui constate ne s'habillent pas pareil" side="une seule chose change : l'habit du mot « Enregistré »"
+                <Band level={4} name="Ce qui agit et ce qui constate ne s'habillent pas pareil" side="une seule chose change : l'habit du mot « Enregistré »" bare
                   says="Un bouton est une promesse : ce qui en a l'habit se clique. « Enregistré » ne fait rien — habillé en bouton, il reçoit le clic, ne répond pas, et c'est toute la page qui cesse d'être crue."
                   rules={<p>Loi de similarité (Gestalt) : ce qui se ressemble est perçu comme de même
                     nature. Sur une interface, l&apos;habit d&apos;un bouton est une promesse
                     d&apos;usage — Material 3 le dit du bouton posé « à côté d&apos;éléments visuellement
                     similaires ».</p>}>
-                  <Pair saysGood="l'état est un badge, l'action est un bouton" saysBad="deux boutons — le premier ne répond à rien"
+                  <Pair situation="Un formulaire enregistré, et le bouton qui l'enregistre" saysGood="L'état est un badge, l'action est un bouton" saysBad="Deux boutons : le premier ne répond à rien"
                     good={<div className="cb-line"><span className="badge good">Enregistré</span><span className="button on">Enregistrer</span></div>}
                     bad={<div className="cb-line"><span className="button on">Enregistré</span><span className="button on">Enregistrer</span></div>} />
                 </Band>
 
-                <Band level={4} name="Un trait relie plus fort que l'espace" side="une seule chose change : un filet entre la photo et sa légende"
+                <Band level={4} name="Un trait relie plus fort que l'espace" side="une seule chose change : un filet entre la photo et sa légende" bare
                   says="Une légende tient à sa photo par l'air : peu dessous, davantage avant la suivante. Un filet posé entre les deux l'emporte sur cet air — l'œil suit le trait, et la légende change de photo."
                   rules={<p>Connexion uniforme (Palmer &amp; Rock, 1994) : un trait qui relie deux
                     éléments l&apos;emporte sur la proximité et sur la similarité. Un séparateur
                     n&apos;est jamais décoratif — il déplace un groupe.</p>}>
-                  <Pair saysGood="la légende appartient à la photo du dessus" saysBad="le filet l'a rattachée à la photo du dessous"
+                  <Pair situation="Deux photos, chacune avec sa légende" saysGood="La légende appartient à la photo du dessus" saysBad="Le filet l'a rattachée à la photo du dessous"
                     good={<Photos />} bad={<Photos cut />} />
                 </Band>
 
-                <Band level={4} name="Une surface se mérite" side="une seule chose change : un cadre appuyé autour de la carte"
+                <Band level={4} name="Une surface se mérite" side="une seule chose change : un cadre appuyé autour de la carte" bare
                   says="Une carte, c'est un fond et un peu d'espace ; ça suffit à grouper. Un cadre appuyé ajouté « pour faire fini » n'apporte aucune information — l'œil regarde d'abord la boîte, et lit après."
                   rules={<p>Prägnanz (Gestalt) : l&apos;œil retient la forme la plus simple qu&apos;on
                     lui donne. Wathan &amp; Schoger, <i>Refactoring UI</i> : les bordures sont le
                     dernier recours pour séparer, après l&apos;espace et le fond.</p>}>
-                  <Pair saysGood="le texte vient en premier" saysBad="la boîte vient en premier"
+                  <Pair situation="Une carte et son texte" saysGood="Le texte vient en premier" saysBad="La boîte vient en premier"
                     good={<Card />} bad={<Card heavy />} />
                 </Band>
 
-                <Band level={4} name="Tout part du même bord" side="une seule chose change : le bord de départ du texte et du tableau"
+                <Band level={4} name="Tout part du même bord" side="une seule chose change : le bord de départ du texte et du tableau" bare
                   says="Un titre, un texte, un tableau : trois choses, un seul bord, et la colonne existe. Que chacune parte d'un peu ailleurs, et aucun bloc ne paraît fautif — mais la page n'a plus de bord, et l'œil n'a plus d'axe pour descendre."
                   rules={<p>La grille (Müller-Brockmann, <i>Grid Systems</i>) : colonnes et
                     gouttières sortent de la même base que l&apos;échelle ; un élément qui ne part
                     pas d&apos;un axe existant en crée un, et chaque axe de plus est du bruit.</p>}>
-                  <Pair saysGood="un bord — l'œil descend droit" saysBad="trois bords — l'œil zigzague"
+                  <Pair situation="Un titre, un texte, un tableau" saysGood="Un bord : l'œil descend droit" saysBad="Trois bords : l'œil zigzague"
                     good={<Column />} bad={<Column defeat />} />
                 </Band>
 

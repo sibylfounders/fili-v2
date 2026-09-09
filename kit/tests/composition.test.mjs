@@ -36,7 +36,7 @@ after(async () => { await nav?.close(); site?.close() })
 const URL = () => site.url + '/composition'
 const wreck = (p, name) => p.locator('#broken .button.broken', { hasText: name }).click()
 const band = (i) => `#bands .doc-band:nth-child(${i})`
-const side = (i, k) => `${band(i)} .cb-side:nth-child(${k})` /* 1 = le juste, 2 = le fautif */
+const side = (i, k) => `${band(i)} .demo-side.${k === 1 ? 'good' : 'bad'}` /* 1 = le juste (à droite), 2 = le fautif (à gauche) */
 const boxes = (p, sel) => p.evaluate((sel) => [...document.querySelectorAll(sel)].map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, b: r.bottom } }), sel)
 
 /* ── 1 · Chaque chiffre affiché est mesuré sur le rendu ── */
@@ -81,19 +81,13 @@ test('2 · la scène est une coque, le banc s’écarte du deuxième cran de pag
     ok(await calcPx(p, '#journey .co-pair', 'columnGap'), expected('page-2-inline', W), `${W} — journal et affiche, deuxième cran de page`)
     ok(await calcPx(p, '#broken .co-lex dt', 'fontSize'), expected('font-size-small', W), `${W} — la légende au petit cran`)
     ok(await calcPx(p, '#broken .co-says', 'fontSize'), expected('font-size-body', W), `${W} — le commentaire au corps`)
-    /* la paire : à deux colonnes, l'écart entre elles est la marge de coque, et il domine */
-    ok(await calcPx(p, '#bands .cb-pair', 'rowGap'), expected('pad-1-block', W), `${W} — la paire, l'écart de coque (haut)`)
-    if (W >= 640) {
-      const between = await calcPx(p, '#bands .cb-pair', 'columnGap')
-      ok(between, expected('pad-1-inline', W), `${W} — la paire, l'écart de coque entre colonnes`)
-      const inside = await p.evaluate(() => Math.max(...[...document.querySelectorAll('#bands .cb-side:first-child *')].flatMap((e) => { const cs = getComputedStyle(e); return [cs.rowGap, cs.columnGap, cs.marginTop, cs.marginBottom].map(parseFloat).filter((v) => !Number.isNaN(v)) })))
-      assert.ok(between > inside + TOL, `${W} — dedans plus serré que dehors : ${inside} < ${between}`)
-      const [g, d] = await boxes(p, `${band(1)} .cb-side`)
-      assert.ok(Math.abs(g.y - d.y) < 1 && d.x > g.x + g.w, `${W} — deux colonnes côte à côte`)
-    } else {
-      const [g, d] = await boxes(p, `${band(1)} .cb-side`)
-      assert.ok(d.y >= g.b - TOL && Math.abs(d.x - g.x) < 1, `${W} — sur téléphone, la paire s'empile`)
-    }
+    /* la paire vit dans le cadre des démonstrations : chaque côté a la marge de card ; sous 36 rem
+       de cadre les deux côtés se suivent, au-dessus ils sont côte à côte, à égalité */
+    ok(await calcPx(p, '#bands .demo-stage', 'paddingTop'), expected('pad-2-block', W), `${W} — la scène du cadre, marge de card`)
+    const [frame] = await boxes(p, `${band(1)} .demo-wrap`)
+    const [d, g] = await boxes(p, `${band(1)} .demo-stage`)
+    if (frame.w > 36 * 16) assert.ok(Math.abs(g.y - d.y) < 1 && Math.abs(g.w - d.w) < 1 && g.x > d.x + d.w - 1, `${W} — deux colonnes côte à côte, égales`)
+    else assert.ok(g.y >= d.b - TOL && Math.abs(d.x - g.x) < 1, `${W} — sur téléphone, la paire s'empile`)
     /* le juste ne dépense que le registre : un badge, un bouton, une carte du kit */
     ok(await calcPx(p, `${side(1, 1)} .button`, 'minHeight'), expected('control-height', W), `${W} — le bouton du juste est le bouton du kit`)
     ok(await calcPx(p, `${side(3, 1)} .card`, 'paddingTop'), expected('pad-2-block', W), `${W} — la carte du juste est la carte du kit`)
@@ -108,7 +102,7 @@ test('2 · la feuille consomme, pour chaque pièce, le token qu’elle nomme, et
   const waits = (src, sel, decl) => assert.ok(block(src, sel).includes(decl), `${sel} : « ${decl} » attendu`)
   waits(g, '.co-scene', 'padding: var(--pad-1-block) var(--pad-1-inline)'); waits(g, '.co-bench', 'gap: var(--page-2-inline)')
   waits(g, '.co-duo-t', 'gap: var(--page-2-inline)'); waits(g, '.co-pair', 'gap: var(--page-2-inline)')
-  waits(css, '.cb-pair', 'gap: var(--pad-1-block) var(--pad-1-inline)'); waits(css, '.cb-photos', 'gap: var(--gap-4-block)')
+  waits(css, '.cb-photos', 'gap: var(--gap-4-block)')
   waits(css, '.cb-block.slab', 'padding: var(--pad-3-block) var(--pad-3-inline)')
   for (const sel of ['.cb-photos.cut > .cb-caption', '.cb-card.heavy', '.cb-column.defeat .cb-block.heading', '.cb-column.defeat .cb-block.text', '.cb-column.defeat .cb-block.slab']) {
     const i = css.indexOf(sel); assert.ok(i >= 0, `casse absente : ${sel}`)
@@ -185,7 +179,7 @@ test('3 · les quatre paires : le fautif diffère du juste par une seule chose, 
   for (let i = 1; i <= 4; i++) {
     assert.equal(await p.getAttribute(side(i, 1), 'data-intent'), null, `paire ${i} : le juste n'est pas une casse`)
     assert.equal(await p.getAttribute(side(i, 2), 'data-intent'), 'statement', `paire ${i} : le fautif est déclaré`)
-    assert.match(await text(p, `${side(i, 1)} .cb-verdict`), /✓/); assert.match(await text(p, `${side(i, 2)} .cb-verdict`), /✗/)
+    assert.match(await text(p, `${side(i, 1)} .demo-verdict`), /✓/); assert.match(await text(p, `${side(i, 2)} .demo-verdict`), /✗/)
   }
   /* 1 · un habit, un rôle : à gauche un badge et un bouton ; à droite deux boutons au même fond */
   const background = (sel) => calc(p, sel, 'backgroundColor')
@@ -222,7 +216,7 @@ test('4 · la scène suit la base de la densité ; le corps de la légende ne bo
   for (const density of ['compact', 'airy']) {
     const { p, close } = await nav.page(URL(), { width: W, density })
     ok(await calcPx(p, '#broken .co-scene', 'paddingTop'), expected('pad-1-block', W, DENSITIES[density]), `${density} — la scène suit la base`)
-    ok(await calcPx(p, '#bands .cb-pair', 'columnGap'), expected('pad-1-inline', W, DENSITIES[density]), `${density} — la paire suit la base`)
+    ok(await calcPx(p, '#bands .demo-stage', 'paddingTop'), expected('pad-2-block', W, DENSITIES[density]), `${density} — la scène du cadre suit la base`)
     ok(await calcPx(p, '#broken .co-lex dt', 'fontSize'), expected('font-size-small', W), `${density} — la légende ne bouge pas`)
     await close()
   }
