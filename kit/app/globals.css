@@ -787,7 +787,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
       relâchement est immédiat. C'est un déplacement : sous son portillon. ── */
 @media (prefers-reduced-motion: no-preference) {
   :is(.button, .ar-tabs button, .ar-inter, .drawer-handle, .mo-intents button, .mk-chip,
-      .doc-wreck, .doc-unfold, .rail-opens, .dot, .mega-tab, .mega-close, .sheet-home,
+      .doc-unfold, .rail-opens, .dot, .mega-tab, .mega-close, .sheet-home,
       .cp-col, .index-link, details.prov summary):active:not([disabled]) {
     animation: press var(--m-fast) var(--e-out) both; }
 }
@@ -1614,19 +1614,6 @@ button.acc-access-link { color: var(--text-secondary); }
   display: grid; justify-items: center; align-content: center; }
 .doc-scene.bare { background: transparent; padding: 0; justify-items: stretch; }
 
-/* Une commande secondaire : la cible réduite. Au repos un trait
-   pointillé — six aplats rouges dans une page feraient du rouge son
-   rythme. Elle vit dans la colonne de parole, sous la phrase. */
-.doc-wreck { justify-self: start;
-  min-height: var(--control-height-compact); min-width: var(--control-height-compact);
-  padding-inline: var(--gap-2-inline); border-radius: var(--r-3);
-  font-family: inherit; font-size: var(--font-size-label); font-weight: 600; cursor: pointer;
-  color: var(--on-danger-subtle); background: transparent;
-  border: 1px dashed var(--danger);
-  transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); } /* survol */
-.doc-wreck:hover { background: var(--danger-subtle); }
-.doc-wreck[aria-pressed="true"] { background: var(--danger-subtle); border-style: solid; }
-
 /* ── Le cadre d'une démonstration (9 septembre) : la tête dit la situation
    et porte l'action ; deux côtés ou une scène. ── */
 .demo-wrap { display: grid; gap: var(--gap-3-block); }
@@ -1753,22 +1740,22 @@ button.acc-access-link { color: var(--text-secondary); }
   .doc-list td { grid-template-columns: minmax(0, 1fr); gap: var(--gap-4-block); }
 }
 
-/* Le halo des deux commandes du gabarit — même forme que partout (bande
-   3 px collée à l'objet, trait 1 px qui la ferme), au clavier seulement.
-   « Casser » est de la famille rouge ; « Tout voir » vit sur la terre
-   sombre du panneau : sa famille est dite ici, faute de token clair. */
-.doc-wreck { --halo-r: var(--r-3); --halo-band: var(--danger-subtle); --halo-stroke: var(--focus-ring-danger); }
+/* Le halo de « Tout voir » — même forme que partout (bande 3 px collée à
+   l'objet, trait 1 px qui la ferme), au clavier seulement. Il vit sur la
+   terre sombre du panneau : sa famille est dite ici, faute de token clair.
+   (Le bouton « Casser » des bandes a quitté le gabarit le 9 septembre :
+   les démonstrations vivent dans leur cadre.) */
 .doc-unfold { position: relative; --halo-r: var(--r-ctl);
   --halo-band: rgba(255, 255, 255, 0.16); --halo-stroke: var(--code-kw); }
-:is(.doc-wreck, .doc-unfold):focus-visible::before,
-:is(.doc-wreck, .doc-unfold):focus-visible::after {
+.doc-unfold:focus-visible::before,
+.doc-unfold:focus-visible::after {
   content: ""; position: absolute; pointer-events: none; }
-:is(.doc-wreck, .doc-unfold):focus-visible::before {
+.doc-unfold:focus-visible::before {
   inset: calc(-1px - var(--focus-band) - var(--focus-line));
   border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
   border: var(--focus-line) solid var(--halo-stroke); }
-:is(.doc-wreck, .doc-unfold):focus-visible::after {
+.doc-unfold:focus-visible::after {
   inset: calc(-1px - var(--focus-band));
   border-radius: calc(var(--halo-r) + var(--focus-band));
   border: var(--focus-band) solid var(--halo-band); }
-:is(.doc-wreck, .doc-unfold):focus { outline: none; }
+.doc-unfold:focus { outline: none; }

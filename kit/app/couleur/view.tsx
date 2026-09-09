@@ -1093,10 +1093,10 @@ export default function View() {
                   <Demo situation="Un bouton, survolé — le geste est le vôtre">
                     <DemoSides>
                       <DemoSide ok={false} verdict="Le survol est calculé par un filtre : aucune table ne le connaît">
-                        <div className="cl-scene"><button type="button" className="button demo-full filter">Créer le budget</button></div>
+                        <div className="cl-scene"><button type="button" className="button demo-full filter">Survolez-moi</button></div>
                       </DemoSide>
                       <DemoSide ok verdict="Le survol est un token du registre : il se mesure">
-                        <div className="cl-scene"><button type="button" className="button demo-full token">Créer le budget</button></div>
+                        <div className="cl-scene"><button type="button" className="button demo-full token">Survolez-moi</button></div>
                       </DemoSide>
                     </DemoSides>
                   </Demo>

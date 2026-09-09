@@ -137,10 +137,12 @@ test('3 · le regard : une mise à jour ; côté faute, les huit cartes s’anim
 test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste joue les deux — le survol lent, le menu qui traîne, la naissance à zéro, l’ancienne règle qui coupait tout ; chaque tête de côté est lue sur le rendu', async () => {
   const { p, close } = await pageFree(URL())
   await p.locator('#wreck').scrollIntoViewIfNeeded(); await p.waitForTimeout(150)
-  const head = (i, k) => text(p, `${band(i)} .mv-side:nth-child(${k}) .mv-verdict-head`)
+  /* dans le cadre : le faux à gauche (k = 2), le juste à droite (k = 1) */
+  const side = (i, k) => `${band(i)} .demo-side.${k === 1 ? 'good' : 'bad'}`
+  const head = (i, k) => text(p, `${side(i, k)} .demo-verdict`)
   for (let i = 1; i <= 4; i++) {
-    assert.equal(await p.getAttribute(`${band(i)} .mv-side:nth-child(1)`, 'data-intent'), null, `paire ${i} : le juste n'est pas une casse`)
-    assert.equal(await p.getAttribute(`${band(i)} .mv-side:nth-child(2)`, 'data-intent'), 'statement', `paire ${i} : le fautif est déclaré`)
+    assert.equal(await p.getAttribute(side(i, 1), 'data-intent'), null, `paire ${i} : le juste n'est pas une casse`)
+    assert.equal(await p.getAttribute(side(i, 2), 'data-intent'), 'statement', `paire ${i} : le fautif est déclaré`)
     assert.match(await head(i, 1), /✓/); assert.match(await head(i, 2), /✗/)
     assert.equal(await p.locator(`${band(i)} .doc-wreck`).count(), 0, `paire ${i} : pas de bouton casser`)
     assert.equal(await p.locator(`${band(i)} details.prov`).count(), 1, `paire ${i} : ses règles et sources`)
@@ -149,19 +151,19 @@ test('4 · les quatre paires : le juste et le faux côte à côte, un seul geste
   assert.deepEqual(await texts(p, '#wreck .mv-slowed'), Array(4).fill(`ralenti ×${R}`), 'le ralenti est écrit sur les quatre scènes')
   assert.equal(inMs(await calc(p, `${band(1)} .mv-row:not(.slow) .button`, 'transitionDuration')), MOTION.durations.fast.ms * R)
   assert.equal(inMs(await calc(p, `${band(1)} .mv-row.slow .button`, 'transitionDuration')), MOTION.durations.slow.ms * R)
-  await p.locator(`${band(1)} .button`, { hasText: 'Survoler' }).click(); await p.waitForTimeout(120)
+  await p.locator(`${band(1)} .demo-go`).click(); await p.waitForTimeout(120)
   assert.equal(await p.locator(`${band(1)} .mv-row .button.hovered`).count(), 6, 'un geste : le curseur passe sur les deux rangées au même instant')
   assert.match(await head(1, 1), new RegExp(`${MOTION.durations.fast.ms} ms — il suit le curseur`)); assert.match(await head(1, 2), new RegExp(`${MOTION.durations.slow.ms} ms — il poursuit le curseur`))
-  assert.equal(inMs(await calc(p, `${band(2)} .mv-menu`, 'transitionDuration', 0)), MOTION.durations.base.ms * R, 'juste : le cran du menu, au ralenti')
-  assert.equal(inMs(await calc(p, `${band(2)} .mv-menu`, 'transitionDuration', 1)), EXPRESSIVE * R, 'fautif : le cran d\'une section, au ralenti')
+  assert.equal(inMs(await calc(p, `${band(2)} .mv-menu`, 'transitionDuration', 1)), MOTION.durations.base.ms * R, 'juste : le cran du menu, au ralenti')
+  assert.equal(inMs(await calc(p, `${band(2)} .mv-menu`, 'transitionDuration', 0)), EXPRESSIVE * R, 'fautif : le cran d\'une section, au ralenti')
   assert.match(await head(2, 1), new RegExp(`${MOTION.durations.base.ms} ms — il est là quand on le veut`)); assert.match(await head(2, 2), new RegExp(`${EXPRESSIVE} ms — on l'attend`))
-  await p.locator(`${band(2)} .button`).first().click(); await p.waitForTimeout(MOTION.durations.base.ms * R + 60)
+  await p.locator(`${band(2)} .demo-go`).click(); await p.waitForTimeout(MOTION.durations.base.ms * R + 60)
   assert.equal(await p.locator(`${band(2)} .mv-menu.open`).count(), 2, 'un geste, deux menus ouverts')
   assert.match(await head(3, 1), /part de 0,95 — presque sa taille/); assert.match(await head(3, 2), /part de 0 — elle surgit du néant/)
-  await p.locator(`${band(3)} .button`, { hasText: 'Notifier' }).click(); await p.waitForTimeout(MOTION.durations.base.ms * R + 60)
+  await p.locator(`${band(3)} .demo-go`).click(); await p.waitForTimeout(MOTION.durations.base.ms * R + 60)
   assert.equal(await p.locator(`${band(3)} .mv-toast.there`).count(), 2, 'un geste, deux notifications')
-  assert.equal(await calc(p, `${band(4)} .mv-toast`, 'transitionProperty', 0), 'opacity', 'notre règle : le fondu seul')
-  assert.equal(await calc(p, `${band(4)} .mv-toast`, 'transitionDuration', 1), '0s', "l'ancienne règle : rien")
+  assert.equal(await calc(p, `${band(4)} .mv-toast`, 'transitionProperty', 1), 'opacity', 'notre règle : le fondu seul')
+  assert.equal(await calc(p, `${band(4)} .mv-toast`, 'transitionDuration', 0), '0s', "l'ancienne règle : rien")
   assert.match(await head(4, 1), new RegExp(`le fondu reste \\(${MOTION.durations.base.ms} ms\\), le déplacement est parti`)); assert.match(await head(4, 2), /tout coupé : elle surgit sans passage/)
   await close()
 })
@@ -254,8 +256,12 @@ test('7 · les tokens : la démo est une coque, la carte de tâche et la carte d
   }
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
-    ok(await calcPx(p, `${band(1)} .mv-duo`, 'rowGap'), expected('pad-1-block', W), `${W} — la paire, l'écart de coque`)
-    if (W >= 640) { ok(await calcPx(p, `${band(1)} .mv-duo`, 'columnGap'), expected('pad-1-inline', W), `${W} — l'écart entre les colonnes`); const [g, d] = await p.$$eval(`${band(1)} .mv-side`, (es) => es.map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width } })); assert.ok(Math.abs(g.y - d.y) < 1 && d.x > g.x + g.w - 1, `${W} — deux colonnes côte à côte`) }
+    /* la paire vit dans le cadre : chaque côté a la marge de card ; au-dessus de 36 rem de cadre, côte à côte et égaux */
+    ok(await calcPx(p, `${band(1)} .demo-stage`, 'paddingTop'), expected('pad-2-block', W), `${W} — la scène du cadre, marge de card`)
+    const [frame] = await p.$$eval(`${band(1)} .demo-wrap`, (es) => es.map((e) => e.getBoundingClientRect().width))
+    const [d, g] = await p.$$eval(`${band(1)} .demo-stage`, (es) => es.map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, b: r.bottom } }))
+    if (frame > 36 * 16) assert.ok(Math.abs(g.y - d.y) < 1 && Math.abs(g.w - d.w) < 1 && g.x > d.x + d.w - 1, `${W} — deux colonnes côte à côte, égales`)
+    else assert.ok(g.y >= d.b - 1 && Math.abs(d.x - g.x) < 1, `${W} — sur téléphone, la paire s'empile`)
     await close()
   }
   for (const density of ['compact', 'airy']) {

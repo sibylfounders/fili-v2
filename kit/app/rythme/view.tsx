@@ -155,34 +155,38 @@ export function SliceFili({ see, menu = true }:
    d'une démonstration ils sont visibles et cotés : la mesure est posée à
    l'endroit de l'espace, en nombre — le verdict, lui, est dans la tête du
    côté, la scène ne le répète pas (verdict d'Auteur, 9 septembre). */
-function Space({ j, v, fault }: { j: string; v?: number; fault?: boolean }) {
-  return <span className={`space ${v !== undefined ? "seen" : ""}`} data-name={v !== undefined ? `${px(v)} px` : undefined}
+/* Les cotes ne se voient qu'à la demande : au repos la scène montre l'espace
+   tel qu'il se perçoit, l'action du cadre allume les mesures (verdict
+   d'Auteur, 9 septembre) — et un espace coté porte toujours la couleur de
+   son rôle : rouge pour une marge, vert pour un écart. */
+function Space({ j, v, fault, see }: { j: string; v?: number; fault?: boolean; see: boolean }) {
+  return <span className={`space gap ${see && v !== undefined ? "seen" : ""}`} data-name={see && v !== undefined ? `${px(v)} px` : undefined}
     data-intent={fault ? "statement" : undefined} style={{ height: `var(${j})` }} />;
 }
 /* Deux fautes, deux fiches : elles ne se cassent plus ensemble (gabarit
    des étages, 1er septembre). Le juste : au-dessus d'un titre, l'espace
    entre deux cards ; sous le titre, l'espace d'un titre à sa phrase ;
    d'un libellé à son champ, le même. */
-function ProximityLabel({ broken }: { broken: boolean }) {
+function ProximityLabel({ broken, see }: { broken: boolean; see: boolean }) {
   const s = useFoundation();
   return (
     <div className="ry-prox-card" data-intent={broken ? "statement" : undefined}>
       <p className="muted">Un paragraphe qui précède.</p>
-      <Space j="--gap-1-block" v={s.gap[0]} />
+      <Space j="--gap-1-block" v={s.gap[0]} see={see} />
       <label className="mono ry-block">Adresse e-mail</label>
-      <Space j={broken ? "--gap-1-block" : "--gap-3-block"} v={broken ? s.gap[0] : s.gap[2]} fault={broken} />
+      <Space j={broken ? "--gap-1-block" : "--gap-3-block"} v={broken ? s.gap[0] : s.gap[2]} fault={broken} see={see} />
       <span className="field-box"><input readOnly value="prenom@exemple.fr" className="ry-field" /></span>
     </div>
   );
 }
-function ProximityHeading({ broken }: { broken: boolean }) {
+function ProximityHeading({ broken, see }: { broken: boolean; see: boolean }) {
   const s = useFoundation();
   return (
     <div className="ry-prox-card" data-intent={broken ? "statement" : undefined}>
       <p className="muted">Un paragraphe qui précède la section.</p>
-      <Space j={broken ? "--gap-2-block" : "--gap-1-block"} v={broken ? s.gap[1] : s.gap[0]} fault={broken} />
+      <Space j={broken ? "--gap-2-block" : "--gap-1-block"} v={broken ? s.gap[1] : s.gap[0]} fault={broken} see={see} />
       <h3 className="ry-h3">Vos coordonnées</h3>
-      <Space j={broken ? "--gap-2-block" : "--gap-3-block"} v={broken ? s.gap[1] : s.gap[2]} fault={broken} />
+      <Space j={broken ? "--gap-2-block" : "--gap-3-block"} v={broken ? s.gap[1] : s.gap[2]} fault={broken} see={see} />
       <p className="muted">La section qu&apos;il ouvre commence ici.</p>
     </div>
   );
@@ -359,16 +363,16 @@ export function Ruler() {
    et leur cote. Au repos, deux fois le même nombre. */
 /* Une seule étiquette par rôle : la première card nomme sa marge, l'écart
    se nomme lui-même. Trois étiquettes sur cette largeur se chevaucheraient. */
-function CardSister({ name, role, named }: { name: string; role: string; named?: boolean }) {
+function CardSister({ name, role, named, see }: { name: string; role: string; named?: boolean; see: boolean }) {
   return (
     <div className="ry-fr-card">
-      <E j="--pad-2-inline" h see name={named ? "la marge" : undefined} genre="pad" step={2} />
+      <E j="--pad-2-inline" h see={see} name={named ? "la marge" : undefined} genre="pad" step={2} />
       <span className="ry-fr-says"><b>{name}</b><span className="muted ry-small">{role}</span></span>
-      <E j="--pad-2-inline" h see genre="pad" step={2} />
+      <E j="--pad-2-inline" h see={see} genre="pad" step={2} />
     </div>
   );
 }
-function Siblings({ broken }: { broken: boolean }) {
+function Siblings({ broken, see }: { broken: boolean; see: boolean }) {
   const s = useFoundation();
   const gap = broken ? s.gap[2] : s.gap[0];
   return (
@@ -377,11 +381,11 @@ function Siblings({ broken }: { broken: boolean }) {
           longueurs — les cacher jusqu'au survol reviendrait à ne rien montrer. */}
       <div className="ry-fr-container">
         {/* deux cards à demi-largeur : un prénom et un rôle courts, pour que rien ne passe à la ligne ni ne se coupe (retour d'Auteur, 9 septembre) */}
-        <CardSister name="Léa" role="UX" named />
-        <span className="space h seen gap" data-name={`l’écart ${px(gap)}`}
+        <CardSister name="Léa" role="UX" named see={see} />
+        <span className={`space h ${see ? "seen" : ""} gap`} data-name={see ? `l’écart ${px(gap)}` : undefined}
           data-step={2} data-intent={broken ? "statement" : undefined}
           style={{ width: `var(${broken ? "--gap-3-inline" : "--gap-1-inline"})` }} />
-        <CardSister name="Marc" role="Dev" />
+        <CardSister name="Marc" role="Dev" see={see} />
       </div>
     </div>
   );
@@ -755,6 +759,9 @@ const TOC: Toc = [
 ];
 export default function View() {
   const [brokenDepth, setBrokenDepth] = useState(false);
+  /* les espaces des trois bandes de proximité : cachés au repos, allumés par l'action du cadre */
+  const [spaces, setSpaces] = useState(false);
+  const spacesAction = { label: "Montrer les espaces", back: "Masquer les espaces", active: spaces, onClick: () => setSpaces(!spaces) };
   /* y9 · le texte est agrandi D'ENTRÉE : au repos chaque côté montre ce que son
      verdict dit. L'action REJOUE le geste : les deux cards reviennent au corps ×1
      d'un coup (sans transition), le temps de voir qu'elles se ressemblent, puis
@@ -943,30 +950,30 @@ export default function View() {
                 <Band level={4} name="L&apos;espace entre deux sœurs vaut leur marge" side="le même chiffre" bare
                   says="Le dedans et le dehors d&apos;une surface se règlent ensemble, pas chacun de son côté. Un texte plus proche du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine — et l&apos;œil s&apos;y laisse prendre à chaque fois."
                   rules={<Rules ids={["y1", "y15"]} />}>
-                  <Demo situation="Deux cards voisines dans le même container">
+                  <Demo situation="Deux cards voisines dans le même container" action={spacesAction}>
                     <DemoSides>
-                      <DemoSide ok={false} verdict="L'écart dépasse la marge : chaque texte penche vers sa voisine"><Siblings broken /></DemoSide>
-                      <DemoSide ok verdict="L'écart vaut la marge, au même pixel"><Siblings broken={false} /></DemoSide>
+                      <DemoSide ok={false} verdict="L'écart dépasse la marge : chaque texte penche vers sa voisine"><Siblings broken see={spaces} /></DemoSide>
+                      <DemoSide ok verdict="L'écart vaut la marge, au même pixel"><Siblings broken={false} see={spaces} /></DemoSide>
                     </DemoSides>
                   </Demo>
                 </Band>
                 <Band level={4} name="Le libellé qui flotte" side="autant d&apos;un côté que de l&apos;autre" bare
                   says="Un libellé posé aussi loin de son champ que du paragraphe du dessus n&apos;appartient plus à personne. On croit lire l&apos;étiquette du champ suivant — c&apos;est la faute la plus courante des formulaires."
                   rules={<Rules ids={["y1"]} />}>
-                  <Demo situation="Un libellé, entre un paragraphe et son champ">
+                  <Demo situation="Un libellé, entre un paragraphe et son champ" action={spacesAction}>
                     <DemoSides>
-                      <DemoSide ok={false} verdict="Aussi loin de son champ que du paragraphe : il n'appartient à personne"><ProximityLabel broken /></DemoSide>
-                      <DemoSide ok verdict="Plus près de son champ que de ce qui précède"><ProximityLabel broken={false} /></DemoSide>
+                      <DemoSide ok={false} verdict="Aussi loin de son champ que du paragraphe : il n'appartient à personne"><ProximityLabel broken see={spaces} /></DemoSide>
+                      <DemoSide ok verdict="Plus près de son champ que de ce qui précède"><ProximityLabel broken={false} see={spaces} /></DemoSide>
                     </DemoSides>
                   </Demo>
                 </Band>
                 <Band level={4} name="Le titre qui change de camp" side="au-dessus &gt; au-dessous" bare
                   says="L&apos;espace au-dessus d&apos;un titre dépasse celui du dessous d&apos;au moins un cran. À égalité, le titre ferme le paragraphe précédent au lieu d&apos;ouvrir sa section — et le lecteur cherche un instant où commence la suite."
                   rules={<Rules ids={["y2"]} />}>
-                  <Demo situation="Un titre de section, entre deux paragraphes">
+                  <Demo situation="Un titre de section, entre deux paragraphes" action={spacesAction}>
                     <DemoSides>
-                      <DemoSide ok={false} verdict="Le même écart des deux côtés : le titre ferme le paragraphe d'avant"><ProximityHeading broken /></DemoSide>
-                      <DemoSide ok verdict="Un cran de plus au-dessus : le titre ouvre sa section"><ProximityHeading broken={false} /></DemoSide>
+                      <DemoSide ok={false} verdict="Le même écart des deux côtés : le titre ferme le paragraphe d'avant"><ProximityHeading broken see={spaces} /></DemoSide>
+                      <DemoSide ok verdict="Un cran de plus au-dessus : le titre ouvre sa section"><ProximityHeading broken={false} see={spaces} /></DemoSide>
                     </DemoSides>
                   </Demo>
                 </Band>

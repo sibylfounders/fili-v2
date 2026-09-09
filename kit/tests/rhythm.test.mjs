@@ -220,7 +220,9 @@ test('2 · les casses sont rendues par le token menteur, déclarées (data-inten
   ok(await calcPx(p, `${bad('.ry-target')} .ry-target-btn`, 'minHeight'), 36, 'cible cassée : sous le plancher')
   ok(await calcPx(p, `${good('.ry-target')} .ry-target-btn`, 'minHeight'), expected('control-height', W), 'cible juste : la hauteur due')
 
-  /* la proximité : le titre, puis le libellé — les quatre écarts de chaque côté, et leur cote écrite */
+  /* la proximité : le titre, puis le libellé — les quatre écarts de chaque côté, et leur cote écrite
+     (les cotes sont cachées au repos depuis le 9 septembre : l'action du cadre les allume) */
+  await p.locator('#bands .demo-go', { hasText: 'Montrer les espaces' }).first().click(); await p.waitForTimeout(150)
   const gaps = (sel) => p.evaluate((sel) => [...document.querySelectorAll(`${sel} .ry-prox-card .space`)].map((e) => [parseFloat(getComputedStyle(e).height), e.dataset.name]), sel)
   const cote = (v) => `${String(Math.round(v * 10) / 10).replace('.', ',')} px`
   let e = await gaps(bad('.ry-prox-card .ry-h3'))

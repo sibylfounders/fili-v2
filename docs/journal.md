@@ -51,7 +51,7 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ## #135 — Le cadre des démonstrations : la situation en tête, une action, deux côtés
 
-*2026-09-09 · Statut : 🟢 décidé sur pièce, appliqué à Typo · Révise : la forme des bandes « ce qui se casse » (`#116` et suivantes) · Thread « le cadre des démonstrations »*
+*2026-09-09 · Statut : 🟢 décidé sur pièce, appliqué aux six pages · Révise : la forme des bandes « ce qui se casse » (`#116` et suivantes) · Thread « le cadre des démonstrations »*
 
 **Contexte** — Les bandes des cinq pages portaient un bouton en pointillé
 « Casser : … » posé dans la colonne de parole, qui basculait une scène
@@ -88,9 +88,23 @@ l'action reste dans la tête du cadre, pas dans celle du côté qui casse (A′
 `kit/app/levels.tsx`, la feuille dans `globals.css`. Typo migrée : six
 bandes à deux côtés, le faux déclaré (`data-intent="statement"`), le juste
 non ; le zoom rejoue de ×1 à ×2 au cran d'une section. Épreuves réécrites
-sur la forme (typo 15/15), banc 71/71. Mouvement reste la référence ;
-Couleur, Rythme, Composition, Arrondis suivent, page par page, après l'œil
-d'Auteur sur Typo.
+sur la forme (typo 15/15), banc 71/71.
+
+**Les six pages, le même jour** — après l'œil d'Auteur sur Typo (« go sur
+toutes les autres pages ») : Couleur (cinq paires statiques), Rythme (six
+bandes ; les espaces de la fiche sont cotés en nombre à l'endroit de la
+mesure ; le texte agrandi est l'état de repos et l'action rejoue le geste),
+Composition (quatre paires, le fautif passe à gauche), Arrondis (six pièges ;
+la molette est un **réglage partagé** et vit sous la scène, `tools` ; le
+verdict du coin saturé se lit sur la scène : le côté gauche n'est fautif
+qu'au-delà de la moitié), Mouvement (les quatre paires rejoignent le cadre :
+le geste monte dans la tête, le ralenti s'écrit en légende). Trois règles
+tenues partout : la scène ne commente pas (plus de pastille rouge ni verte,
+seulement des nombres) ; le faux à gauche, déclaré ; le bouton « Casser » et
+`doc-wreck` ont quitté `Band` et le gabarit. Au passage : `attr(data-nom)`
+oublié par la migration dans `globals.css` — les étiquettes des espaces
+étaient vides. Banc : 71 épreuves vertes page par page (typo · 6 est
+capricieuse en course complète, connue).
 
 ---
 

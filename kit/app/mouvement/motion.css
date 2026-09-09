@@ -254,16 +254,6 @@
   .gaze-grid { grid-template-columns: minmax(0, 1fr); min-height: 55rem; }
 }
 
-/* ── Une scène à deux côtés : le juste et le faux côte à côte, en même
-      temps (la forme de /composition). L'écart entre les colonnes est la
-      marge de coque, le verdict en tête de colonne. ── */
-.mv-duo { display: grid; grid-template-columns: 1fr; gap: var(--pad-1-block) var(--pad-1-inline); width: 100%; }
-@media (min-width: 40em) { .mv-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.mv-side { display: grid; gap: var(--gap-3-block); align-content: start; }
-.mv-verdict-head { margin: 0; display: flex; align-items: baseline; gap: var(--gap-3-inline);
-  font-size: var(--font-size-small); font-weight: 600; color: var(--text-primary); }
-.mv-verdict-head .verdict.good { color: var(--success); font-weight: 700; }
-.mv-verdict-head .verdict.ko { color: var(--danger); font-weight: 700; }
 
 
 /* ── Le menu des paires ── */
@@ -288,9 +278,9 @@
 
 /* ── Les bandes : des paires (verdict d'Auteur, 7 septembre — deux colonnes
       bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
-.mv-scene { position: relative; display: grid; gap: var(--gap-2-block); justify-items: center; width: 100%; }
-.mv-scene > .button, .mv-scene-menu > .button, .mv-menu-item { --mv-slowed: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
-.mv-slowed { justify-self: end; font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
+.mv-scene { width: 100%; } /* porte le ralenti de la paire ; le cadre de la démonstration fait le reste */
+.mv-scene .demo-go, .mv-scene-menu > .button, .mv-menu-item { --mv-slowed: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
+.mv-slowed { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
 .mv-row { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
 .mv-row .button { transition: background-color calc(var(--m-fast) * var(--mv-slowed, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire — le survol, au cran rapide */
 .mv-row .button.hovered { background: var(--surface-hover); } /* le survol, joué par le geste : la même couleur que le vrai survol */

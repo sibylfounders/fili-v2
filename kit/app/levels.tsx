@@ -34,16 +34,12 @@ export function Bands({ children }: { children: ReactNode }) {
 /* Une variante DÉCLARÉE, pas une liberté : « nue » — la scène apporte
    déjà sa propre coque, le cadre s'efface pour ne pas poser une surface
    sur une surface (CG4). */
-export function Band({ name, side, says, bare, broken, onBroken, labelBroken, labelRepaired, rules, level = 3, children }: {
+export function Band({ name, side, says, bare, rules, level = 3, children }: {
   name: string; side?: ReactNode; says: ReactNode; bare?: boolean;
   /* Le niveau du titre de la bande suit sa place dans l'arbre : h3 sous une
      section, h4 quand la bande vit sous un sous-titre du répertoire — jamais
      un saut de niveau (T1). */
   level?: 3 | 4;
-  broken?: boolean; onBroken?: (v: boolean) => void;
-  /* Exception déclarée : une bande dont la commande n'est pas une faute mais
-     un GESTE de l'utilisateur (agrandir le texte) nomme ses deux états. */
-  labelBroken?: string; labelRepaired?: string;
   rules?: ReactNode; children: ReactNode;
 }) {
   return (
@@ -54,12 +50,6 @@ export function Band({ name, side, says, bare, broken, onBroken, labelBroken, la
           : <h3 className="doc-band-name">{name}</h3>}
         {side && <span className="doc-band-side mono">{side}</span>}
         <p className="doc-band-says">{says}</p>
-        {onBroken && (
-          <button type="button" className="doc-wreck" aria-pressed={!!broken}
-            onClick={() => onBroken(!broken)}>
-            {broken ? (labelRepaired ?? "Réparer") : (labelBroken ?? "Casser")}
-          </button>
-        )}
       </div>
       <div className={`doc-scene${bare ? " bare" : ""}`}>{children}</div>
       {/* Les sources se lisent SOUS leur règle, pas en tas à la fin de

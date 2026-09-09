@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
-import { Bands, Band, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { MOTION } from "../../derivation.mjs";
 import "./motion.css";
@@ -313,22 +313,24 @@ function GazeDemo() {
   );
 }
 
-/* ══ Les règles qu'on peut casser : le juste et le faux côte à côte, un seul geste joue les deux, la tête de chaque côté est lue sur le rendu. ══ */
+/* ══ Les règles qu'on peut casser, dans le cadre des démonstrations (verdict
+   d'Auteur, 9 septembre) : le faux à gauche, le juste à droite, un seul geste
+   dans la tête joue les deux côtés, et le verdict de chaque côté est LU sur le
+   rendu. Le ralenti est écrit sous le cadre. ══ */
 const SLOWED_PAIRS = 3; /* chorégraphie : chaque paire joue trois fois plus lentement, et le dit ; les verdicts lus divisent par trois */
-const Scene = ({ children }: { children: React.ReactNode }) => (
-  <div className="mv-scene" style={{ "--mv-slowed": SLOWED_PAIRS } as React.CSSProperties}>
-    {children}
-    <span className="mv-slowed" aria-hidden="true">ralenti ×{SLOWED_PAIRS}</span>
-  </div>
-);
-function Side({ ok, says, wrong, children }: { ok: boolean; says: string; wrong?: boolean; children: React.ReactNode }) {
+function Scene({ situation, action, scene, children }: {
+  situation: string; action?: { label: string; onClick: () => void }; scene: React.RefObject<HTMLDivElement>; children: React.ReactNode;
+}) {
   return (
-    <div className="mv-side" data-intent={wrong ? "statement" : undefined}>
-      <p className="mv-verdict-head"><span className={`verdict ${ok ? "good" : "ko"}`} aria-hidden="true">{ok ? "✓" : "✗"}</span><span>{says}</span></p>
-      {children}
+    <div className="mv-scene" style={{ "--mv-slowed": SLOWED_PAIRS } as React.CSSProperties} ref={scene}>
+      <Demo situation={situation} action={action} caption={<span className="mv-slowed" aria-hidden="true">ralenti ×{SLOWED_PAIRS}</span>}>
+        <DemoSides>{children}</DemoSides>
+      </Demo>
     </div>
   );
 }
+/* Les deux côtés sont lus dans l'ordre du document : le faux d'abord, puis le juste. */
+const WRONG = 0, RIGHT = 1;
 
 /* 1 · Le survol suit le curseur : la même rangée deux fois, et la durée que chacune prend. */
 function BandHover() {
@@ -347,12 +349,9 @@ function BandHover() {
   const says = (d?: number) => d === undefined ? "" : okOf(d) ? `${d} ms — il suit le curseur` : `${d} ms — il poursuit le curseur`;
   const Row = () => (<><span className={`button${hovered ? " hovered" : ""}`}>Entendre</span><span className={`button${hovered ? " hovered" : ""}`}>Confronter</span><span className={`button${hovered ? " hovered" : ""}`}>Récuser</span></>);
   return (
-    <Scene>
-      <div className="mv-duo" ref={scene}>
-        <Side ok={okOf(durations[0])} says={says(durations[0])}><div className="mv-row" aria-hidden="true"><Row /></div></Side>
-        <Side ok={okOf(durations[1])} wrong says={says(durations[1])}><div className="mv-row slow" aria-hidden="true"><Row /></div></Side>
-      </div>
-      <button type="button" className="button" onClick={hover}>Survoler</button>
+    <Scene situation="Le curseur passe sur une rangée de boutons" action={{ label: "Survoler", onClick: hover }} scene={scene}>
+      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><div className="mv-row slow" aria-hidden="true"><Row /></div></DemoSide>
+      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><div className="mv-row" aria-hidden="true"><Row /></div></DemoSide>
     </Scene>
   );
 }
@@ -379,11 +378,9 @@ function BandDrags() {
     </div>
   );
   return (
-    <Scene>
-      <div className="mv-duo" ref={scene}>
-        <Side ok={okOf(durations[0])} says={says(durations[0])}><Menu /></Side>
-        <Side ok={okOf(durations[1])} wrong says={says(durations[1])}><Menu drags /></Side>
-      </div>
+    <Scene situation="Un menu, ouvert des dizaines de fois par jour" action={{ label: open ? "Fermer" : "Ouvrir", onClick: () => setOpen(!open) }} scene={scene}>
+      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><Menu drags /></DemoSide>
+      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><Menu /></DemoSide>
     </Scene>
   );
 }
@@ -408,12 +405,9 @@ function BandNothing() {
   const okOf = (d?: number | null) => d === undefined || d === null || d > 0;
   const says = (d?: number | null) => d === undefined ? "" : d === null ? "elle apparaît à sa taille" : d > 0 ? `elle part de ${dec(d)} — presque sa taille` : "elle part de 0 — elle surgit du néant";
   return (
-    <Scene>
-      <div className="mv-duo" ref={scene}>
-        <Side ok={okOf(begins[0])} says={says(begins[0])}><div className="mv-scene-toast"><Toast there={there} /></div></Side>
-        <Side ok={okOf(begins[1])} wrong says={says(begins[1])}><div className="mv-scene-toast"><Toast cls="nothing" there={there} /></div></Side>
-      </div>
-      <button type="button" className="button" onClick={notify}>Notifier</button>
+    <Scene situation="Une notification arrive" action={{ label: "Notifier", onClick: notify }} scene={scene}>
+      <DemoSide ok={okOf(begins[WRONG])} verdict={says(begins[WRONG])}><div className="mv-scene-toast"><Toast cls="nothing" there={there} /></div></DemoSide>
+      <DemoSide ok={okOf(begins[RIGHT])} verdict={says(begins[RIGHT])}><div className="mv-scene-toast"><Toast there={there} /></div></DemoSide>
     </Scene>
   );
 }
@@ -432,13 +426,11 @@ function BandReduced() {
   }, []);
   const notify = () => { setThere(false); requestAnimationFrame(() => requestAnimationFrame(() => setThere(true))); };
   const says = (l?: { props: string; duration: number }) => l === undefined ? "" : l.duration === 0 ? "tout coupé : elle surgit sans passage" : /translate|scale/.test(l.props) ? "elle monte et grandit en apparaissant" : `le fondu reste (${l.duration} ms), le déplacement est parti`;
+  const okOf = (l?: { duration: number }) => l === undefined || l.duration > 0;
   return (
-    <Scene>
-      <div className="mv-duo" ref={scene}>
-        <Side ok={readSet[0] === undefined || readSet[0].duration > 0} says={says(readSet[0])}><div className="mv-scene-toast mv-reduced"><Toast there={there} /></div></Side>
-        <Side ok={readSet[1] === undefined || readSet[1].duration > 0} wrong says={says(readSet[1])}><div className="mv-scene-toast mv-cut"><Toast there={there} /></div></Side>
-      </div>
-      <button type="button" className="button" onClick={notify}>Notifier</button>
+    <Scene situation="La même notification, pour qui a demandé moins de mouvement" action={{ label: "Notifier", onClick: notify }} scene={scene}>
+      <DemoSide ok={okOf(readSet[WRONG])} verdict={says(readSet[WRONG])}><div className="mv-scene-toast mv-cut"><Toast there={there} /></div></DemoSide>
+      <DemoSide ok={okOf(readSet[RIGHT])} verdict={says(readSet[RIGHT])}><div className="mv-scene-toast mv-reduced"><Toast there={there} /></div></DemoSide>
     </Scene>
   );
 }

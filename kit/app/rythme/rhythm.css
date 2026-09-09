@@ -223,7 +223,7 @@
 .ry-prox { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 26rem; /* hors chaîne : mesure de la carte */ }
 .ry-prox-card { background: var(--surface); border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: 0; }
 /* la cote d'un espace de la fiche : posée à son bout droit, dans l'encre seconde — un nombre, pas un jugement */
-.ry-prox-card .space.seen[data-name]::after { left: auto; right: 0; transform: translateY(-50%); color: var(--text-secondary); }
+.ry-prox-card .space.seen[data-name]::after { left: auto; right: 0; transform: translateY(-50%); } /* la couleur : celle du rôle, comme partout sur la page (9 septembre) */
 .ry-field {
   min-height: var(--control-height); width: 100%; border: 1px solid var(--border); border-radius: var(--r-ctl);
   padding: 0 var(--pad-3-inline); font: inherit; background: var(--bg);
@@ -415,8 +415,14 @@
    de suite la couleur de leur rôle, la même que leur étiquette : rouge
    pour la marge, vert pour l'écart. Une bande grise sous une étiquette
    verte, c'était deux codes pour une seule chose. */
-.ry-fr .space.seen.pad { background: var(--danger-subtle); outline-color: var(--danger); }
-.ry-fr .space.seen.gap { background: var(--success-subtle); outline-color: var(--success); }
+.ry .space.seen.pad { background: var(--danger-subtle); outline-color: var(--danger); }
+.ry .space.seen.gap { background: var(--success-subtle); outline-color: var(--success); }
+.ry .space.seen.pad[data-name]::after { color: var(--danger); }
+.ry .space.seen.gap[data-name]::after { color: var(--success); }
+/* Un espace fautif est rouge, quel que soit son rôle : la faute prime sur le
+   rôle, à gauche comme dans son verdict (retour d'Auteur, 9 septembre). */
+.ry .space.seen[data-intent="statement"] { background: var(--danger-subtle); outline-color: var(--danger); }
+.ry .space.seen[data-intent="statement"][data-name]::after { color: var(--danger); }
 .ry-fr-says {
   flex: 1; min-width: 0; display: grid; gap: var(--gap-4-block);
   padding-block: var(--pad-2-block); align-content: center;
@@ -429,6 +435,10 @@
 .ry-ratio-step { display: flex; align-items: center; gap: var(--gap-3-inline); }
 .ry-ratio-bar { height: var(--gap-4-block); border-radius: var(--r-pill); background: var(--text-primary); }
 .ry-ratio-step b { font-size: var(--font-size-label); font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+/* Le côté fautif porte la couleur de la faute, barres et nombres : la rupture
+   se lit dans la scène comme dans son verdict (retour d'Auteur, 9 septembre). */
+.ry-ratio[data-intent="statement"] .ry-ratio-bar { background: var(--danger); }
+.ry-ratio[data-intent="statement"] .ry-ratio-step b { color: var(--danger); }
 
 /* y9 · deux cartes jumelles : à gauche des marges en tokens, à droite des
       marges gelées en pixels. Le texte grandit d'un demi — une proportion,
@@ -445,7 +455,7 @@
   padding: calc(var(--pad-2-block) * var(--f)) calc(var(--pad-2-inline) * var(--f)); /* hors chaîne : la marge du registre, multipliée par l'agrandissement simulé du texte */
   font-size: calc(1rem * var(--f)); /* hors chaîne : le corps de la démonstration suit l'agrandissement */
   display: grid; gap: var(--gap-3-block); align-content: start;
-  transition: padding var(--m-base) var(--e-out), font-size var(--m-base) var(--e-out); /* la scène rejoue le geste à l'action : le cran du dépliant */
+  transition: padding var(--m-expressive) var(--e-out), font-size var(--m-expressive) var(--e-out); /* la scène rejoue le geste à l'action, au ralenti : le cran d'une arrivée, pour que l'œil suive la marge (retour d'Auteur, 9 septembre : « beaucoup plus lent ») */
 }
 .ry-rem.reset .ry-rem-card { transition: none; } /* le retour au corps ×1 se pose d'un coup ; seul l'agrandissement se voit */
 .ry-rem-card.hard {

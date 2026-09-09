@@ -368,7 +368,7 @@ function TrapNeighbors() {
   return (
     <Duo situation="Un champ et son bouton, dans la même rangée"
       right={<Row cornerButton="var(--r-ctl)" />}
-      wrong={<Row cornerButton="var(--r-2)" />}
+      wrong={<Row cornerButton="var(--r-1)" />} /* deux crans d'écart : à un cran près, l'œil ne voyait pas la faute (retour d'Auteur, 9 septembre) */
       saysRight="Le même cran pour les deux"
       saysWrong="Deux crans dans la même rangée"
     />

@@ -963,8 +963,8 @@ export default function View() {
                     d&apos;usage — Material 3 le dit du bouton posé « à côté d&apos;éléments visuellement
                     similaires ».</p>}>
                   <Pair situation="Un formulaire enregistré, et le bouton qui l'enregistre" saysGood="L'état est un badge, l'action est un bouton" saysBad="Deux boutons : le premier ne répond à rien"
-                    good={<div className="cb-line"><span className="badge good">Enregistré</span><span className="button on">Enregistrer</span></div>}
-                    bad={<div className="cb-line"><span className="button on">Enregistré</span><span className="button on">Enregistrer</span></div>} />
+                    good={<div className="cb-line"><span className="badge good">Enregistré</span><span className="button">Enregistrer</span></div>}
+                    bad={<div className="cb-line"><span className="button">Enregistré</span><span className="button">Enregistrer</span></div>} />
                 </Band>
 
                 <Band level={4} name="Un trait relie plus fort que l'espace" side="une seule chose change : un filet entre la photo et sa légende" bare
