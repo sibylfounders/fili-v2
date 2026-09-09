@@ -251,6 +251,30 @@ export async function faultsWriting(p) {
   const words = /Regardez|Observez|Voyez|Essayez|Cliquez|Appuyez|Faites glisser|Tirez|Cassez|Tournez|Serrez|Posez|Pâlissez|Retirez|Divisez|Comme vous pouvez|Vous voyez|vous voyez|Cette démonstration|À gauche vous/g
   for (const m of body.match(words) ?? []) faults.push(`un mot qui commande ou décrit : « ${m} »`)
   for (const m of body.match(/Ce qui remplace l.extrait|Ce qui a quitté cette page/g) ?? []) faults.push(`de l'histoire de page devant le lecteur : « ${m} »`)
+  /* La voix du kit (docs/voix.md, 9 septembre) : les tics que le banc refuse.
+     Aucun narrateur ni « vous » dans ce qui parle de l'objet — situation, verdict,
+     phrase de bande ; un verdict ou une situation en une ligne qui commence par
+     une majuscule ; une phrase de bande qui dit la conséquence, donc au moins
+     deux phrases. Le reste de la voix est une relecture d'Auteur. */
+  for (const m of body.match(/ni plus,? ni moins/gi) ?? []) faults.push(`un tic : « ${m} »`)
+  for (const t of await texts(p, 'main .gdoc-sec-head .muted, main .doc-piece-head .muted')) if (/^Ici,/.test(t.trim())) faults.push(`un chapô qui ouvre sur « Ici, » : « ${t.slice(0, 40)}… »`)
+  const narrator = /(^|[\s«(])(je|j'|j’|mon|ma|mes|notre|nos)(?=[\s'’,.])/i
+  const you = /(^|[\s«(])(vous|votre|vos)(?=[\s,.])/i
+  for (const t of await texts(p, 'main .demo-head > b')) {
+    if (narrator.test(t) || you.test(t)) faults.push(`une situation qui parle de quelqu'un : « ${t} »`)
+    if (!/^[A-ZÀ-Ý«0-9]/.test(t.trim())) faults.push(`une situation en minuscule : « ${t} »`)
+    if (t.length > 160) faults.push(`une situation trop longue : « ${t.slice(0, 40)}… »`)
+  }
+  for (const t of await p.$$eval('main .demo-verdict', (es) => es.map((e) => e.lastElementChild.textContent.trim()))) {
+    if (!t) continue
+    if (narrator.test(t) || you.test(t)) faults.push(`un verdict qui parle de quelqu'un : « ${t} »`)
+    if (!/^([A-ZÀ-Ý«0-9÷√]|h[1-6]\b)/.test(t)) faults.push(`un verdict en minuscule : « ${t} »`) /* h2, h3 : un niveau de titre peut ouvrir un verdict */
+    if (t.length > 160) faults.push(`un verdict trop long : « ${t.slice(0, 40)}… »`)
+  }
+  for (const t of await texts(p, 'main .doc-band-says')) {
+    if (narrator.test(t)) faults.push(`une bande avec un narrateur : « ${t.slice(0, 40)}… »`)
+    if ((t.match(/[.!?…](\s|$)/g) ?? []).length < 2) faults.push(`une bande d'une seule phrase : « ${t.slice(0, 40)}… »`)
+  }
   if (await p.locator('main .gd-foot').count()) faults.push('un pied qui commente la page')
   const h2 = await texts(p, 'main .gdoc-sec h2')
   for (const t of h2) for (const q of HEADINGS_OF_THERE_TAIL) if (q.test(t)) faults.push(`un titre de la queue commune : « ${t} »`)

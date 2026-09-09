@@ -49,6 +49,39 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #136 — La voix du kit : une voix, deux réglages
+
+*2026-09-09 · Statut : 🟢 décidé et appliqué aux six pages · Révise : `claude/voix-et-phrase-2026-09-01.md` et `claude/test-de-voix-2026-09-01.md` (la grille du 1er septembre demandait un « vous » par section) · Thread « le cadre des démonstrations »*
+
+**Contexte** — Le 1er septembre, l'Auteur avait tranché : « Oui, tout le site.
+Ça doit être MA voix », celle du blog de la v1 (« cool, un poil plus
+sérieux »). Le 9, la question revient sur pièce : six phrases de bande de
+Rythme réécrites dans cette voix, côte à côte avec l'existant. Verdict : « je
+valide le test de langage, c'est top comme ça » — puis « on met à jour le
+moteur de tonalité et on repasse intégralement sur toutes les pages », et
+« on s'assure que les prochaines pages repartiront sur les mêmes bases ».
+
+**Décision** — `docs/voix.md` fait foi. Une seule voix, deux réglages : le
+blog garde « cool, un poil plus sérieux » ; le kit prend **« cool, deux crans
+plus sobre »** — aucun narrateur (une règle montrée n'a pas de « je »), le
+« vous » possible dans une explication mais jamais dans une situation ni un
+verdict, la démonstration tient lieu de scène d'ouverture, une image
+seulement si elle est plus exacte que le mot juste, et la chaleur vient de la
+conséquence dite pour de vrai (« on tape l'adresse dans la case du
+téléphone »). Périmètre inchangé : les énoncés de règles, les sources, les
+cotes et l'étage du code ne se réchauffent pas.
+
+**Exécution** — Le banc (`faultsWriting`) refuse désormais, sur toute page :
+« ni plus, ni moins », un chapô qui ouvre sur « Ici, », un narrateur ou un
+« vous » dans une situation, un verdict ou une phrase de bande, un verdict ou
+une situation en minuscule ou de plus de deux lignes, une phrase de bande
+d'une seule phrase. Passe faite : 27 phrases de bande, deux situations, six
+verdicts — 37 blocs, sur un banc de voix avant/après
+(`claude/livrables/banc-voix-six-pages-2026-09-09.html`). `kit/tests/voice-scan.mjs`
+relit les six pages à la demande. Banc 71/71.
+
+---
+
 ## #135 — Le cadre des démonstrations : la situation en tête, une action, deux côtés
 
 *2026-09-09 · Statut : 🟢 décidé sur pièce, appliqué aux six pages · Révise : la forme des bandes « ce qui se casse » (`#116` et suivantes) · Thread « le cadre des démonstrations »*

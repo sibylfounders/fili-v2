@@ -1058,7 +1058,7 @@ export default function View() {
                 </div>
               <Bands>
                 <Band level={4} name="Le contraste se vérifie par paire" side="4,5:1 pour le texte courant" bare
-                  says="Une couleur toute seule ne veut rien dire : ce qui se mesure, c&apos;est un texte SUR son fond. Une encre douce qui pâlit fait tomber le verdict — les rapports ne sont pas recopiés d&apos;une table, ils sont calculés sur ce que l&apos;écran affiche."
+                  says="Une couleur toute seule ne veut rien dire : ce qui se lit, c&apos;est une encre sur son fond. La même encre douce passe sur du blanc et tombe sur un gris clair — et l&apos;échec ne se voit pas sur l&apos;écran calibré du designer, il se voit dehors, au soleil, sur le téléphone de quelqu&apos;un d&apos;autre. D&apos;où la règle : les rapports ne se recopient pas d&apos;une table, ils se calculent sur ce que l&apos;écran affiche."
                   rules={<>
                     <p><b>La table complète</b> — chaque paire, mesurée dans les deux thèmes :</p>
                     <TablePairs key={key} />
@@ -1073,7 +1073,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Chacun son registre" side="l&apos;erreur n&apos;est pas la marque" bare
-                  says="Trois registres, étanches : la marque signe, la sémantique alerte, le neutre porte. Une erreur qui prend la couleur de la marque détruit le vocabulaire des deux — plus rien, à l&apos;écran, ne dit ce qui est grave et ce qui est de la maison."
+                  says="Trois registres, étanches : la marque signe, la sémantique alerte, le neutre porte. Une erreur qui prend la couleur de la marque abîme les deux vocabulaires d&apos;un coup — à l&apos;écran, plus rien ne dit ce qui est grave et ce qui est de la maison. Chaque registre a ses tokens ; ils ne s&apos;empruntent pas."
                   rules={<Rules ids={["c3", "c2"]} />}>
                   <Demo situation="Une alerte d'erreur, dans un écran signé par la marque">
                     <DemoSides>
@@ -1088,9 +1088,9 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Le survol est un token" side="jamais un calcul" bare
-                  says="Un survol produit par un filtre n&apos;existe dans aucun registre : aucune table ne peut le vérifier, et personne ne saura dire quelle couleur il fabrique. Le bouton répond au survol dans les deux états."
+                  says="Un survol produit par un filtre n&apos;existe dans aucun registre : personne ne sait quelle couleur il fabrique, aucune table ne peut la vérifier, et le contraste au survol devient une loterie. Le survol est un token comme les autres — il se lit, il se mesure, il change de valeur en sombre."
                   rules={<Rules ids={["c10", "c8"]} />}>
-                  <Demo situation="Un bouton, survolé — le geste est le vôtre">
+                  <Demo situation="Un bouton, sous le pointeur">
                     <DemoSides>
                       <DemoSide ok={false} verdict="Le survol est calculé par un filtre : aucune table ne le connaît">
                         <div className="cl-scene"><button type="button" className="button demo-full filter">Survolez-moi</button></div>
@@ -1103,7 +1103,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="En sombre, l&apos;action s&apos;éclaircit" side="deux valeurs, un seul nom" bare
-                  says="Le même token porte une valeur en clair et une en sombre. Une action forcée à garder sa valeur claire dans le thème sombre s&apos;enfonce dans le fond, et le bouton cesse d&apos;être un bouton."
+                  says="Le même token porte une valeur en clair et une en sombre. Une action forcée à garder sa valeur claire dans le thème sombre s&apos;enfonce dans le fond, et le bouton cesse d&apos;être un bouton : on le cherche. Deux valeurs, un seul nom — le consommateur hérite, il ne choisit jamais."
                   rules={<Rules ids={["c12", "c14", "c13"]} />}>
                   <Demo situation="Le même écran, dans le thème sombre">
                     <DemoSides>
@@ -1126,7 +1126,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Teinter ne coûte rien" side="à luminance constante" bare
-                  says="À luminance constante, la teinte bouge et le rapport ne bouge pas — c&apos;est ce qui permet des neutres teintés à la marque, sûrs par construction. Quand la luminance file avec la teinte, les trois gris se ressemblent toujours, et leurs rapports n&apos;ont plus rien à voir."
+                  says="À luminance constante, la teinte bouge et le rapport ne bouge pas — c&apos;est ce qui permet des gris teintés à la marque, sûrs par construction. Quand la luminance file avec la teinte, les trois gris se ressemblent toujours à l&apos;œil, et leurs rapports n&apos;ont plus rien à voir : l&apos;un lit, l&apos;autre pas. Teinter ne coûte rien ; éclaircir coûte le contraste."
                   rules={<Rules ids={["c15", "c17"]} />}>
                   <Demo situation="Trois gris, teintés différemment, sur le même blanc">
                     <DemoSides>
