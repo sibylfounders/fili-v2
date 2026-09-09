@@ -59,16 +59,17 @@ test('1 · la légende de la fiche Navette suit la racine du curseur, chiffre pa
   const band = (i) => `#wreck .doc-band:nth-child(${i})`
   for (const root of ROOTS) {
     await adjust(p, 'ar-p-hard', root)
-    const said = await texts(p, `${band(1)} .ar-duo-says`)
-    list(numbers(said[0]), [rounded(chain({ root }).r[1])], `piège 1, racine ${root} — le juste dit le cran de la card`)
-    list(numbers(said[1]), [OFF_CHAIN_HARD], `piège 1, racine ${root} — le faux dit sa valeur écrite`)
+    const said = await texts(p, `${band(1)} .demo-verdict`) /* le faux à gauche, le juste à droite */
+    list(numbers(said[1]), [rounded(chain({ root }).r[1])], `piège 1, racine ${root} — le juste dit le cran de la card`)
+    list(numbers(said[0]), [OFF_CHAIN_HARD], `piège 1, racine ${root} — le faux dit sa valeur écrite`)
   }
   /* le coin saturé : la hauteur descend, et le verdict bascule exactement à la moitié — lu sur la scène */
   for (const h of [72, 56, 48, 46, 40, 20]) {
     await adjust(p, 'ar-p-sat', h)
-    const said = await texts(p, `${band(5)} .ar-duo-says`); list(numbers(said[1]), [CORNER_SAT, h], `piège 5, hauteur ${h} — le faux dit son coin et sa hauteur`)
-    const badge = await p.evaluate((b) => document.querySelector(`${b} .badge`).className, band(5))
-    assert.equal(badge.includes('ko'), CORNER_SAT > h / 2, `piège 5, hauteur ${h} — le verdict suit la moitié de la hauteur`)
+    const said = await texts(p, `${band(5)} .demo-verdict`); list(numbers(said[0]), [CORNER_SAT, h], `piège 5, hauteur ${h} — le faux dit son coin et sa hauteur`)
+    /* le verdict du côté gauche se lit sur la scène : fautif seulement au-delà de la moitié */
+    const left = await p.evaluate((b) => document.querySelector(`${b} .demo-side`).className, band(5))
+    assert.equal(left.includes('bad'), CORNER_SAT > h / 2, `piège 5, hauteur ${h} — le verdict suit la moitié de la hauteur`)
   }
   await close()
 })
@@ -147,17 +148,17 @@ test('2 · le labo du coin dessine ce qu’il dit : à gauche le même rayon, à
   for (const root of ROOTS) {
     await adjust(p, 'ar-p-hard', root)
     const r = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-obj-box`)].map((e) => parseFloat(getComputedStyle(e).borderTopLeftRadius)), band(1))
-    list(r, [chain({ root }).r[1], OFF_CHAIN_HARD], `piège 1, racine ${root} — les deux coins rendus`, TOL)
-    assert.equal(await p.getAttribute(`${band(1)} .ar-duo-one:nth-child(2)`, 'data-intent'), 'statement', 'le faux est déclaré')
+    list(r, [OFF_CHAIN_HARD, chain({ root }).r[1]], `piège 1, racine ${root} — les deux coins rendus (le faux à gauche)`, TOL)
+    assert.equal(await p.getAttribute(`${band(1)} .demo-side.bad`, 'data-intent'), 'statement', 'le faux est déclaré')
   }
   for (const h of [72, 40]) {
     await adjust(p, 'ar-p-sat', h)
     const v = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-obj-box`)].map((e) => { const cs = getComputedStyle(e); return [parseFloat(cs.borderTopLeftRadius), parseFloat(cs.height)] }), band(5))
-    list(v[0], [chain().rCtl, h], `piège 5, hauteur ${h} — le juste : le cran du composant`, TOL); list(v[1], [CORNER_SAT, h], `piège 5, hauteur ${h} — le faux : son coin fixe`, TOL)
+    list(v[1], [chain().rCtl, h], `piège 5, hauteur ${h} — le juste : le cran du composant`, TOL); list(v[0], [CORNER_SAT, h], `piège 5, hauteur ${h} — le faux : son coin fixe`, TOL)
   }
   /* les voisins dépareillés : dans la même rangée, le juste met le cran du composant sur le champ ET le bouton */
   const rows = await p.evaluate((b) => [...document.querySelectorAll(`${b} .ar-row`)].map((r) => [...r.children].map((e) => parseFloat(getComputedStyle(e).borderTopLeftRadius))), band(3))
-  assert.equal(rows[0][0], rows[0][1], 'juste : le même cran pour les deux'); assert.notEqual(rows[1][0], rows[1][1], 'faux : deux crans dans la même rangée')
+  assert.equal(rows[1][0], rows[1][1], 'juste : le même cran pour les deux'); assert.notEqual(rows[0][0], rows[0][1], 'faux : deux crans dans la même rangée')
   await close()
 })
 test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le token qu’elle nomme, et dit ses casses', () => {

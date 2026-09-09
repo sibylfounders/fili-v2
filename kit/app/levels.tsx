@@ -83,10 +83,12 @@ export function Band({ name, side, says, bare, broken, onBroken, labelBroken, la
    l'état : un verdict au-dessus, l'action bascule et se retourne (« Réparer »,
    secondaire, avec l'icône du retour). La colonne de parole de la bande garde
    le pourquoi ; le cadre dit ce qui se passe. */
-export function Demo({ situation, action, caption, children }: {
+export function Demo({ situation, action, tools, caption, children }: {
   situation: ReactNode;
   /* `active` + `back` : l'action bascule (forme B). Sans eux, elle rejoue (forme A). */
   action?: { label: string; onClick: () => void; back?: string; active?: boolean };
+  /* un réglage partagé par les deux côtés (une molette) : SOUS le phénomène — le lecteur regarde d'abord la scène */
+  tools?: ReactNode;
   caption?: ReactNode;
   children: ReactNode;
 }) {
@@ -112,6 +114,7 @@ export function Demo({ situation, action, caption, children }: {
           )}
         </div>
         {children}
+        {tools && <div className="demo-tools">{tools}</div>}
       </div>
       {caption && <p className="demo-caption mono muted">{caption}</p>}
     </div>

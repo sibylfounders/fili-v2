@@ -1660,6 +1660,7 @@ button.acc-access-link { color: var(--text-secondary); }
 .demo-single.neutral .demo-verdict { color: var(--text-secondary); }
 .demo-stage { padding: var(--pad-2-block) var(--pad-2-inline); background: var(--surface);
   display: grid; align-content: center; justify-items: center; gap: var(--gap-2-block); }
+.demo-tools { padding: var(--pad-2-block) var(--pad-2-inline); border-top: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
 .demo-caption { margin: 0; max-width: var(--measure); }
 /* sous 36 rem de cadre, les deux côtés se suivent : verdict, scène, verdict, scène */
 @container (max-width: 36rem) { /* hors chaîne : le point de bascule du cadre */

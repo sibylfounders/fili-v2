@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
-import { Bands, Band, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { chain, CHARTER, BOUNDS } from "../../derivation.mjs";
 import "./rounded.css";
@@ -304,21 +304,22 @@ function Dial({ id, label, min, max, step, value, onChange }: {
       qu'ici la FORME est le sujet : un objet sans contour est un fantôme.
    ══════════════════════════════════════════════════════════════════════ */
 
-/* Le couple juste / faux : deux objets et ce qu'ils disent d'eux-mêmes. */
-function Duo({ right, wrong, saysRight, saysWrong }: {
-  right: React.ReactNode; wrong: React.ReactNode; saysRight: string; saysWrong: string;
+/* Le couple faux / juste, dans le cadre des démonstrations (verdict d'Auteur,
+   9 septembre) : le faux à gauche, le juste à droite, chacun sous son verdict.
+   La molette, quand il y en a une, est un réglage partagé : elle vit sous la
+   scène. `wrongIs` : quand la faute dépend de la variable (le coin saturé),
+   le verdict du faux se LIT sur la scène — il n'est pas décrété. */
+function Duo({ situation, right, wrong, saysRight, saysWrong, wrongIs = false, tools }: {
+  situation: string; right: React.ReactNode; wrong: React.ReactNode; saysRight: string; saysWrong: string;
+  wrongIs?: boolean; tools?: React.ReactNode;
 }) {
   return (
-    <div className="ar-duo">
-      <div className="ar-duo-one">
-        {right}
-        <span className="mono ar-duo-says">{saysRight}</span>
-      </div>
-      <div className="ar-duo-one" data-intent="statement">
-        {wrong}
-        <span className="mono ar-duo-says ko">{saysWrong}</span>
-      </div>
-    </div>
+    <Demo situation={situation} tools={tools}>
+      <DemoSides>
+        <DemoSide ok={wrongIs} verdict={saysWrong}>{wrong}</DemoSide>
+        <DemoSide ok verdict={saysRight}>{right}</DemoSide>
+      </DemoSides>
+    </Demo>
   );
 }
 
@@ -328,33 +329,29 @@ function TrapHard() {
   const [r, setR] = useState<number>(CHARTER.root);
   const s = foundation({ root: r });
   return (
-    <div className="ar-scene">
-      <Dial id="ar-p-hard" label="La racine du produit" min={0} max={ROOT_MAX} step={2} value={r} onChange={setR} />
-      <Duo
-        right={<span className="ar-obj ar-obj-box" style={{ borderRadius: `${s.r[1]}px` }} />}
-        wrong={<span className="ar-obj ar-obj-box" style={{ borderRadius: `${HARD}px` }} />}
-        saysRight={`le cran de la card — ${fmt(s.r[1])} px`}
-        saysWrong={`${HARD} px, écrits à la main`}
-      />
-    </div>
+    <Duo situation="Deux cards, quand la racine du produit tourne"
+      tools={<Dial id="ar-p-hard" label="La racine du produit" min={0} max={ROOT_MAX} step={2} value={r} onChange={setR} />}
+      right={<span className="ar-obj ar-obj-box" style={{ borderRadius: `${s.r[1]}px` }} />}
+      wrong={<span className="ar-obj ar-obj-box" style={{ borderRadius: `${HARD}px` }} />}
+      saysRight={`Le cran de la card : ${fmt(s.r[1])} px, il suit la racine`}
+      saysWrong={`${HARD} px écrits à la main : ils ne suivront jamais`}
+    />
   );
 }
 
 /* 2 · Le pourcentage — le texte s'allonge, la faute apparaît. */
 const WORDS = ["Nouveau", "sur", "votre", "ligne", "de", "ce", "matin"];
 function TrapPct() {
-  const [n, setN] = useState(2);
+  const [n, setN] = useState(WORDS.length); /* le texte est long d'entrée : la faute est réveillée au repos, la molette la rendort */
   const text = WORDS.slice(0, n).join(" ");
   return (
-    <div className="ar-scene">
-      <Dial id="ar-p-pct" label="La longueur du texte" min={1} max={WORDS.length} step={1} value={n} onChange={setN} />
-      <Duo
-        right={<span className="ar-obj ar-obj-label">{text}</span>}
-        wrong={<span className="ar-obj ar-obj-label" style={{ borderRadius: "50%" }}>{text}</span>}
-        saysRight="le cran du composant"
-        saysWrong="50 % de la hauteur"
-      />
-    </div>
+    <Duo situation="Une étiquette dont le texte s'allonge"
+      tools={<Dial id="ar-p-pct" label="La longueur du texte" min={1} max={WORDS.length} step={1} value={n} onChange={setN} />}
+      right={<span className="ar-obj ar-obj-label">{text}</span>}
+      wrong={<span className="ar-obj ar-obj-label" style={{ borderRadius: "50%" }}>{text}</span>}
+      saysRight="Le cran du composant : la forme tient, quel que soit le texte"
+      saysWrong="50 % : le coin dépend de la boîte, et la forme fond avec le texte"
+    />
   );
 }
 
@@ -369,65 +366,57 @@ function Row({ cornerButton }: { cornerButton: string }) {
 }
 function TrapNeighbors() {
   return (
-    <div className="ar-scene">
-      <Duo
-        right={<Row cornerButton="var(--r-ctl)" />}
-        wrong={<Row cornerButton="var(--r-2)" />}
-        saysRight="le même cran pour les deux"
-        saysWrong="deux crans dans la même rangée"
-      />
-    </div>
+    <Duo situation="Un champ et son bouton, dans la même rangée"
+      right={<Row cornerButton="var(--r-ctl)" />}
+      wrong={<Row cornerButton="var(--r-2)" />}
+      saysRight="Le même cran pour les deux"
+      saysWrong="Deux crans dans la même rangée"
+    />
   );
 }
 
 /* 4 · Le survol qui arrondit — la faute, c'est vous qui la provoquez. */
 function TrapState() {
   return (
-    <div className="ar-scene">
-      <Duo
-        right={<button type="button" className="ar-obj ar-obj-button">Enregistrer</button>}
-        wrong={<button type="button" className="ar-obj ar-obj-button ar-obj-soft">Enregistrer</button>}
-        saysRight="survolez : le coin ne bouge pas"
-        saysWrong="survolez : le coin change"
-      />
-    </div>
+    <Duo situation="Un bouton sous le pointeur"
+      right={<button type="button" className="ar-obj ar-obj-button">Enregistrer</button>}
+      wrong={<button type="button" className="ar-obj ar-obj-button ar-obj-soft">Enregistrer</button>}
+      saysRight="Au survol, la couleur répond ; le coin ne bouge pas"
+      saysWrong="Au survol, le coin change : l'objet change d'identité"
+    />
   );
 }
 
 /* 5 · Le coin saturé — un seuil qu'on franchit sans le décider. */
 const CORNER_SAT = 24; /* hors chaîne : le coin de la démonstration, celui qui va saturer */
 function TrapSaturated() {
-  const [h, setH] = useState(56);
+  const [h, setH] = useState(40); /* la boîte est basse d'entrée : le coin a déjà saturé au repos, la molette remonte */
   const saturated = CORNER_SAT > h / 2;
+  /* Le verdict se LIT sur la scène : le coin sature dès qu'il dépasse la
+     moitié du petit côté. Tant qu'il tient dessous, le côté de gauche n'est
+     pas fautif — et son verdict le dit. */
   return (
-    <div className="ar-scene">
-      <Dial id="ar-p-sat" label="La hauteur de la boîte" min={20} max={72} step={2} value={h} onChange={setH} />
-      <Duo
-        right={<span className="ar-obj ar-obj-box" style={{ height: `${h}px`, borderRadius: "var(--r-ctl)" }} />}
-        wrong={<span className="ar-obj ar-obj-box" style={{ height: `${h}px`, borderRadius: `${CORNER_SAT}px` }} />}
-        saysRight="le cran du composant"
-        saysWrong={`coin ${CORNER_SAT} sur ${h} de haut`}
-      />
-      {/* Le verdict se LIT sur la scène : le coin sature dès qu'il dépasse la
-          moitié du petit côté. Il n'est pas décrété par un bouton. */}
-      <span className={`badge ${saturated ? "ko" : "good"}`}>
-        {saturated ? "le coin a dépassé la moitié de la hauteur — la boîte est devenue une pilule" : "le coin tient sous la moitié de la hauteur"}
-      </span>
-    </div>
+    <Duo situation="Une boîte dont la hauteur descend" wrongIs={!saturated}
+      tools={<Dial id="ar-p-sat" label="La hauteur de la boîte" min={20} max={72} step={2} value={h} onChange={setH} />}
+      right={<span className="ar-obj ar-obj-box" style={{ height: `${h}px`, borderRadius: "var(--r-ctl)" }} />}
+      wrong={<span className="ar-obj ar-obj-box" style={{ height: `${h}px`, borderRadius: `${CORNER_SAT}px` }} />}
+      saysRight="Le cran du composant : il tient à toute hauteur"
+      saysWrong={saturated
+        ? `Coin ${CORNER_SAT} sur ${h} de haut : plus de la moitié, la boîte est devenue une pilule`
+        : `Coin ${CORNER_SAT} sur ${h} de haut : il tient encore sous la moitié`}
+    />
   );
 }
 
 /* 6 · Le contenu dans l'arc — la courbe mange le texte. */
 function TrapArc() {
   return (
-    <div className="ar-scene">
-      <Duo
-        right={<span className="ar-obj ar-obj-arc">14:02</span>}
-        wrong={<span className="ar-obj ar-obj-arc ar-obj-tight">14:02</span>}
-        saysRight="la marge respecte la courbe"
-        saysWrong="une marge d'un pixel pour un coin de douze"
-      />
-    </div>
+    <Duo situation="Une heure dans une pastille arrondie"
+      right={<span className="ar-obj ar-obj-arc">14:02</span>}
+      wrong={<span className="ar-obj ar-obj-arc ar-obj-tight">14:02</span>}
+      saysRight="La marge respecte la courbe"
+      saysWrong="Une marge d'un pixel pour un coin de douze : le texte entre dans l'arc"
+    />
   );
 }
 
@@ -680,7 +669,7 @@ export default function View() {
                 </div>
                 <Bands>
                   {TRAPS.map((p) => (
-                    <Band key={p.key} level={4} name={p.name} side={p.side} says={p.says}
+                    <Band key={p.key} level={4} name={p.name} side={p.side} says={p.says} bare
                       rules={<Rules ids={p.rules} />}>
                       {p.scene}
                     </Band>

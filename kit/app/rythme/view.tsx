@@ -376,11 +376,12 @@ function Siblings({ broken }: { broken: boolean }) {
       {/* Les bandes restent visibles : cette scène EST la comparaison de deux
           longueurs — les cacher jusqu'au survol reviendrait à ne rien montrer. */}
       <div className="ry-fr-container">
-        <CardSister name="Léa Fontan" role="UX Designer" named />
+        {/* deux cards à demi-largeur : un prénom et un rôle courts, pour que rien ne passe à la ligne ni ne se coupe (retour d'Auteur, 9 septembre) */}
+        <CardSister name="Léa" role="UX" named />
         <span className="space h seen gap" data-name={`l’écart ${px(gap)}`}
           data-step={2} data-intent={broken ? "statement" : undefined}
           style={{ width: `var(${broken ? "--gap-3-inline" : "--gap-1-inline"})` }} />
-        <CardSister name="Marc Aubin" role="Développeur" />
+        <CardSister name="Marc" role="Dev" />
       </div>
     </div>
   );

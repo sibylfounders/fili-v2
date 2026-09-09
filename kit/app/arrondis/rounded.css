@@ -206,15 +206,6 @@
    un filet. Sur la scène grise d'une bande, un objet sans contour est un
    fantôme — et ici la FORME est le sujet, il lui faut un bord.
    ══════════════════════════════════════════════════════════════════════ */
-.ar-scene { display: grid; gap: var(--gap-1-block); justify-items: center; width: 100%; }
-.ar-duo {
-  width: 100%; display: grid; gap: var(--gap-1-inline);
-  grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start;
-}
-@media (max-width: 30rem) { .ar-duo { grid-template-columns: 1fr; } }
-.ar-duo-one { display: grid; gap: var(--gap-3-block); justify-items: center; min-height: 6rem; /* hors chaîne : la hauteur commune des deux colonnes */ align-content: center; }
-.ar-duo-says { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: 600; text-align: center; } /* tertiaire : ce que dit l'objet de lui-même — au cran étiquette, un cran de graisse au-dessus (C17) */
-.ar-duo-says.ko { color: var(--danger); }
 
 /* Le traitement commun des objets : le fond de page et un filet. */
 .ar-obj {
