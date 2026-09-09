@@ -75,7 +75,7 @@ function Application({ fault }: { fault: string }) {
 
 type Fault = { key: string; name?: string; verdict: string; prompt?: string; solution: string; says: string };
 const FAULTS: Fault[] = [
-  { key: "", verdict: "rien de cassé — un dominant, trois groupes, un seul axe",
+  { key: "", verdict: "Rien de cassé : un dominant, trois groupes, un seul axe",
     prompt: "↑ chaque mot est relié à ce qu'il nomme", solution: "",
     says: "L'écran de départ : le chiffre entre en premier, les groupes sont faits par l'écart seul, et tout part de la même verticale." },
   { key: "f-dominant", name: "deux dominants", verdict: "Faux · deux dominants, c'est aucun",
@@ -395,18 +395,19 @@ function Magazine() {
   }, [ink, tight, measureIt]);
 
   /* Forme B (verdict d'Auteur, 9 septembre) : l'action retire l'espace blanc et se
-     retourne ; ce qu'on montre — le texte ou l'encre seule — est un réglage sous la
-     scène. Le verdict au repos dit la mesure, lue sur le rendu. */
+     retourne ; ce qu'on montre — le texte ou l'encre seule — est le choix sous la
+     tête, à la place d'une ligne de verdict. La mesure, lue sur le rendu, est la légende. */
   return (
     <Demo situation="Une page de magazine ordinaire"
       action={{ label: "Retirer l'espace blanc", back: "Rendre l'espace blanc", active: tight, onClick: () => setTight(!tight) }}
-      tools={<span className="demo-seg" role="group" aria-label="Ce qu'on montre">
+      bar={<span className="demo-seg" role="group" aria-label="Ce qu'on montre">
         <span className="mono muted">Montrer</span>
         <button type="button" className={`button ${ink ? "" : "on"}`} aria-pressed={!ink} onClick={() => setInk(false)}>le texte</button>
         <button type="button" className={`button ${ink ? "on" : ""}`} aria-pressed={ink} onClick={() => setInk(true)}>l'encre seule</button>
-      </span>}>
-      <DemoScene ok={tight ? false : null} verdict={tight ? "Même encre, même surface : l'air a disparu"
-        : part === null ? "…" : `L'encre occupe ${part} % de cette page ; tout le reste est de l'espace blanc`}>
+      </span>}
+      caption={tight ? "même encre, même surface : l'air a disparu"
+        : part === null ? undefined : `l'encre occupe ${part} % de cette page ; tout le reste est de l'espace blanc`}>
+      <DemoScene ok={tight ? false : null}>
       <div className="co-scene co-duo-t">
         <div className="co-left">
           <div ref={holder} className={`co-door ${tight ? "tight" : ""}`}
@@ -782,12 +783,12 @@ export default function View() {
               l&apos;écran se répare.</p>
             </div>
             <div className="gdoc-body">
-              {/* Le cadre (verdict d'Auteur, 9 septembre) : la faute se choisit sous la scène —
-                  une à la fois, la même puce la retire — et le verdict en tête dit l'ÉTAT :
-                  faux, ou réparé tant que le pointeur est sur l'écran. Le pied de la scène
-                  dit le GESTE. Jamais deux messages qui se contredisent. */}
+              {/* Le cadre (verdict d'Auteur, 9 septembre) : la faute se choisit sous la tête,
+                  à la place d'une ligne de verdict — une à la fois, la même puce la retire.
+                  La colonne de droite commente la faute, le pied de la scène dit le GESTE ;
+                  la scène rougit (statement) tant qu'elle n'est pas réparée. */}
               <Demo situation="Un écran de réglages, juste au repos"
-                tools={<span className="demo-seg" role="group" aria-label="La faute">
+                bar={<span className="demo-seg" role="group" aria-label="La faute">
                   <span className="mono muted">Casser</span>
                   {FAULTS.filter((f) => f.key).map((f) => (
                     <button key={f.key} type="button" className={`button ${fault === f.key ? "on" : ""}`}
@@ -797,7 +798,7 @@ export default function View() {
                     </button>
                   ))}
                 </span>}>
-              <DemoScene ok={fault ? repaired : null} verdict={fault && repaired ? current.solution : current.verdict}>
+              <DemoScene ok={fault ? repaired : null}>
               <div className="co-scene co-proof1">
                 {/* Au repos, la colonne de droite EST le vocabulaire, relié à
                     l'écran par des filets ; dès qu'on casse, elle laisse la
@@ -813,10 +814,10 @@ export default function View() {
                       <dl><div><dt>{AXIS[0]}</dt><dd>{AXIS[1]}</dd></div></dl>
                     </div>
                     <div className="co-foot">
+                      {/* le pied dit l'état et le geste : la faute, puis — sous le pointeur — ce qui l'a réparée */}
                       <span className="co-prompt">
-                        {fault ? "↑ survolez l'écran : il se répare sous vos yeux" : current.prompt}
+                        {fault ? (repaired ? `${current.solution} — ↑ relâchez : la faute revient` : `${current.verdict} — ↑ survolez l'écran : il se répare sous vos yeux`) : current.prompt}
                       </span>
-                      {fault && <span className="co-solution">↑ relâchez : la faute revient</span>}
                     </div>
                   </div>
                   <div className="co-right">
@@ -960,7 +961,7 @@ export default function View() {
               <Bands>
 
                 <Band level={4} name="Ce qui agit et ce qui constate ne s'habillent pas pareil" side="une seule chose change : l'habit du mot « Enregistré »" bare
-                  says="Un bouton est une promesse : ce qui en a l'habit se clique. « Enregistré » ne fait rien — habillé en bouton, il reçoit le clic, ne répond pas, et c'est toute la page qui cesse d'être crue."
+                  says="Un bouton est une promesse : ce qui en a l'habit se clique. « Enregistré » ne fait rien, mais habillé en bouton il reçoit le clic et ne répond pas — et à partir de là, le lecteur ne croit plus aucun bouton de la page. Un état se dit avec un badge ; seule une action a droit à l'habit."
                   rules={<p>Loi de similarité (Gestalt) : ce qui se ressemble est perçu comme de même
                     nature. Sur une interface, l&apos;habit d&apos;un bouton est une promesse
                     d&apos;usage — Material 3 le dit du bouton posé « à côté d&apos;éléments visuellement
@@ -971,7 +972,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Un trait relie plus fort que l'espace" side="une seule chose change : un filet entre la photo et sa légende" bare
-                  says="Une légende tient à sa photo par l'air : peu dessous, davantage avant la suivante. Un filet posé entre les deux l'emporte sur cet air — l'œil suit le trait, et la légende change de photo."
+                  says="Une légende tient à sa photo par l'air : peu dessous, davantage avant la suivante. Un filet posé entre les deux gagne contre cet air — l'œil suit le trait, et la légende change de photo. Un séparateur n'est jamais décoratif : il déplace un groupe, même quand personne ne l'a voulu."
                   rules={<p>Connexion uniforme (Palmer &amp; Rock, 1994) : un trait qui relie deux
                     éléments l&apos;emporte sur la proximité et sur la similarité. Un séparateur
                     n&apos;est jamais décoratif — il déplace un groupe.</p>}>
@@ -980,7 +981,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Une surface se mérite" side="une seule chose change : un cadre appuyé autour de la carte" bare
-                  says="Une carte, c'est un fond et un peu d'espace ; ça suffit à grouper. Un cadre appuyé ajouté « pour faire fini » n'apporte aucune information — l'œil regarde d'abord la boîte, et lit après."
+                  says="Une carte, c'est un fond et un peu d'espace ; ça suffit à grouper. Un cadre appuyé ajouté « pour faire fini » n'ajoute aucune information, seulement un trait de plus à regarder — l'œil voit d'abord la boîte, et lit après. La bordure vient en dernier recours, après l'espace et le fond."
                   rules={<p>Prägnanz (Gestalt) : l&apos;œil retient la forme la plus simple qu&apos;on
                     lui donne. Wathan &amp; Schoger, <i>Refactoring UI</i> : les bordures sont le
                     dernier recours pour séparer, après l&apos;espace et le fond.</p>}>
@@ -989,7 +990,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Tout part du même bord" side="une seule chose change : le bord de départ du texte et du tableau" bare
-                  says="Un titre, un texte, un tableau : trois choses, un seul bord, et la colonne existe. Que chacune parte d'un peu ailleurs, et aucun bloc ne paraît fautif — mais la page n'a plus de bord, et l'œil n'a plus d'axe pour descendre."
+                  says="Un titre, un texte, un tableau : trois choses, un seul bord, et la colonne existe. Que chacune parte d'un peu ailleurs, et aucun bloc ne paraît fautif — mais la page n'a plus de bord, et l'œil zigzague pour descendre. Trois pixels entre deux départs suffisent à fabriquer un axe de plus, et chaque axe de plus est du bruit."
                   rules={<p>La grille (Müller-Brockmann, <i>Grid Systems</i>) : colonnes et
                     gouttières sortent de la même base que l&apos;échelle ; un élément qui ne part
                     pas d&apos;un axe existant en crée un, et chaque axe de plus est du bruit.</p>}>

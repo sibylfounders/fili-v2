@@ -1413,17 +1413,11 @@ button.acc-access-link { color: var(--text-secondary); }
 .co-says { font-size: var(--font-size-body); line-height: 1.6;
   color: var(--text-primary); max-width: 32ch; }
 
-/* Au repos l'invite ; au survol, la solution prend exactement sa place. */
-.co-prompt, .co-solution { position: absolute; left: 0; top: 0;
-  font: 500 var(--font-size-label)/1.5 var(--font-mono); transition: opacity var(--m-fast) var(--e-out); /* survol */
+/* Le pied, une seule ligne : l'invite au repos ; la faute et le geste quand on casse ;
+   ce qui a réparé tant que le pointeur est sur l'écran (9 septembre : plus de verdict en tête). */
+.co-prompt { position: absolute; left: 0; top: 0;
+  font: 500 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-secondary);
   pointer-events: none; max-width: 100%; }
-.co-prompt { color: var(--text-secondary); }
-/* Le pied ne dit plus un état — il dit le geste. Même voix que l'invite. */
-.co-solution { color: var(--text-secondary); opacity: 0; }
-.co-left:has(.co-door:hover) .co-foot:has(.co-solution) .co-prompt { opacity: 0; }
-.co-left:has(.co-door:hover) .co-solution { opacity: 1; }
-/* L'état, lui, est en haut : faux au repos de la faute, réparé au survol.
-   Les deux badges se superposent — la largeur ne bouge pas. */
 
 /* ── OBJET 1 · l'interface de travail ── */
 .co-app { border: 1px solid var(--border); border-radius: var(--r-1);
@@ -1643,6 +1637,11 @@ button.acc-access-link { color: var(--text-secondary); }
 .demo-stage { padding: var(--pad-2-block) var(--pad-2-inline); background: var(--surface);
   display: grid; align-content: center; justify-items: center; gap: var(--gap-2-block); }
 .demo-tools { padding: var(--pad-2-block) var(--pad-2-inline); border-top: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
+/* le choix (les fautes, ce qu'on montre) : une rangée sous la tête, à la place d'une ligne de verdict — tout part du même bord ; les molettes, elles, restent sous la scène */
+.demo-bar { padding: var(--pad-3-block) var(--pad-2-inline); border-bottom: 1px solid var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
+/* le banc à poignée dans le cadre : la scène est le banc lui-même, bord à bord */
+.preview-in-demo { display: block; padding: 0; background: var(--bg); }
+.preview-in-demo .preview-track { border-radius: 0; width: 100%; } /* le banc prend la largeur du cadre : c'est elle que la poignée mesure */
 /* un réglage à deux ou trois positions : le nom du réglage, puis ses positions en boutons compacts */
 .demo-seg { display: inline-flex; align-items: center; gap: var(--gap-3-inline); font-size: var(--font-size-label); }
 .demo-seg .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); }

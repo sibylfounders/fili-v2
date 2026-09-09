@@ -46,12 +46,12 @@ test('1 · la légende de la fiche Navette suit la racine du curseur, chiffre pa
   for (const root of ROOTS) {
     await adjust(p, 'ar-root', root)
     const s = chain({ root })
-    const readSet = numbers(await text(p, '#depth .gd-caption'))
+    const readSet = numbers(await text(p, '#depth .demo-caption'))
     list(readSet, [s.r[0], s.pad[0], s.r[1], s.pad[1], s.r[2], s.pad[2], s.r[3], s.rCtl, 4, s.gap[0], s.gap[1], s.gap[2]].map(rounded), `racine ${root}`)
   }
   for (const [ri, e] of [[12, 12], [4, 0], [36, 24]]) {
     await adjust(p, 'ar-ri', ri); await adjust(p, 'ar-gap', e)
-    const readSet = numbers(await text(p, '#corner .gd-caption'))
+    const readSet = numbers(await text(p, '#corner .demo-caption'))
     const expectedAll = e > 0 ? [ri, e, ri, rounded(e * Math.SQRT2), Math.round((Math.SQRT2 - 1) * 100), ri + e, e] : [ri, e, ri, 0, ri + e, e]
     list(readSet, expectedAll, `coin ${ri} · écart ${e}`)
   }
@@ -101,9 +101,9 @@ test('2 · le labo du coin dessine ce qu’il dit : à gauche le même rayon, à
   for (const [ri, e] of [[12, 12], [8, 20], [36, 0]]) {
     await adjust(p, 'ar-ri', ri); await adjust(p, 'ar-gap', e)
     const k = 3.2 /* hors chaîne, dit dans la vue : une unité du dessin = 3,2 */
-    const rx = await p.evaluate(() => [...document.querySelectorAll('#corner .ar-corner svg')].map((svg) => [...svg.querySelectorAll('rect')].slice(1).map((r) => parseFloat(r.getAttribute('rx')))))
+    const rx = await p.evaluate(() => [...document.querySelectorAll('#corner .demo-side svg')].map((svg) => [...svg.querySelectorAll('rect')].slice(1).map((r) => parseFloat(r.getAttribute('rx')))))
     assert.deepEqual(rx, [[ri * k, ri * k], [(ri + e) * k, ri * k]], `coin ${ri} · écart ${e} — les rayons dessinés`)
-    const verdicts = await texts(p, '#corner .ar-corner .verdict')
+    const verdicts = await texts(p, '#corner .demo-verdict > span:first-child')
     assert.deepEqual(verdicts, ['✗', '✓'])
   }
   /* La planche compte six cas : QUATRE membres de la pilule, UNE mise en garde et UN
@@ -204,7 +204,7 @@ test('4 · les coins de la fiche ne bougent ni avec la largeur ni avec la densit
     const s = chain()
     list(await p.evaluate(() => ['.ar-panel', '.ar-card', '.ar-line', '.ar-brand', '.ar-btn'].map((x) => parseFloat(getComputedStyle(document.querySelector(`#depth ${x}`)).borderTopLeftRadius))), [...s.r, s.rCtl], `${W} ${density} — coins fixes`, TOL)
     ok(await calcPx(p, '#depth .ar-panel', 'paddingTop'), s.pad[0], `${W} ${density} — la fiche vit sur la charte, pas sur le réglage du site`)
-    ok(await calcPx(p, '#depth .bench', 'paddingTop'), expected('pad-1-block', W, DENSITIES[density]), `${W} ${density} — la scène suit la base`)
+    ok(await calcPx(p, '#depth .demo-stage', 'paddingTop'), expected('pad-2-block', W, DENSITIES[density]), `${W} ${density} — la scène suit la base`)
     if (density === 'comfortable') { const h1 = await calcPx(p, '.gdoc-hero h1', 'fontSize'); ok(h1, expected('doc-cover', W), `${W} — affiche`); ok(await calcPx(p, '.gdoc-sec h2', 'fontSize'), expected('doc-section', W), `${W} — section`); display.push(h1) }
     await close()
   }

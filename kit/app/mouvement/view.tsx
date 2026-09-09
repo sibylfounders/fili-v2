@@ -334,9 +334,19 @@ function BandDrags() {
   }, []);
   const okOf = (d?: number) => d === undefined || d <= ms("base");
   const says = (d?: number) => d === undefined ? "" : okOf(d) ? `${d} ms — il est là quand on le veut` : `${d} ms — on l'attend`;
-  const Menu = ({ drags }: { drags?: boolean }) => (
+  return (
+    <Scene situation="Un menu, ouvert des dizaines de fois par jour" action={{ label: open ? "Fermer" : "Ouvrir", onClick: () => setOpen(!open) }} scene={scene}>
+      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><Menu drags open={open} toggle={() => setOpen(!open)} /></DemoSide>
+      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><Menu open={open} toggle={() => setOpen(!open)} /></DemoSide>
+    </Scene>
+  );
+}
+/* Le menu vit hors de la bande : défini dedans, il serait remonté à chaque geste
+   et s'ouvrirait sans transition — les deux côtés paraissaient identiques (9 septembre). */
+function Menu({ drags, open, toggle }: { drags?: boolean; open: boolean; toggle: () => void }) {
+  return (
     <div className="mv-scene-menu">
-      <button type="button" className="button" aria-expanded={open} onClick={() => setOpen(!open)}>Actions du témoin</button>
+      <button type="button" className="button" aria-expanded={open} onClick={toggle}>Actions du témoin</button>
       <div className={`mv-menu${drags ? " drags" : ""}${open ? " open" : ""}`} role="menu" aria-hidden={!open}>
         <span className="mv-menu-item" role="menuitem">Entendre à nouveau</span>
         <span className="mv-menu-item" role="menuitem">Confronter</span>
@@ -344,37 +354,42 @@ function BandDrags() {
       </div>
     </div>
   );
-  return (
-    <Scene situation="Un menu, ouvert des dizaines de fois par jour" action={{ label: open ? "Fermer" : "Ouvrir", onClick: () => setOpen(!open) }} scene={scene}>
-      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><Menu drags /></DemoSide>
-      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><Menu /></DemoSide>
-    </Scene>
-  );
+}
+
+/* Rejouer depuis le départ (retour d'Auteur, 9 septembre) : la notification déjà
+   là se retire d'un coup — sans transition — puis repart de zéro. */
+function useReplay(): [boolean, boolean, () => void] {
+  const [there, setThere] = useState(false);
+  const [snap, setSnap] = useState(false);
+  const replay = () => {
+    setSnap(true); setThere(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => { setSnap(false); setThere(true); }));
+  };
+  return [there, snap, replay];
 }
 
 /* 3 · Rien ne naît du néant : deux notifications, un seul geste. */
-function Toast({ cls, there }: { cls?: string; there: boolean }) {
+function Toast({ cls, there, snap }: { cls?: string; there: boolean; snap?: boolean }) {
   return (
-    <div className={`mv-toast${cls ? ` ${cls}` : ""}${there ? " there" : ""}`} role="status" aria-hidden={!there}>
+    <div className={`mv-toast${cls ? ` ${cls}` : ""}${there ? " there" : ""}${snap ? " snap" : ""}`} role="status" aria-hidden={!there}>
       <span className="point" aria-hidden="true" />Verdict enregistré
     </div>
   );
 }
 function BandNothing() {
-  const [there, setThere] = useState(false);
+  const [there, snap, notify] = useReplay();
   const scene = useRef<HTMLDivElement>(null);
   const [begins, setBegins] = useState<(number | null)[]>([]);
   useEffect(() => {
     if (!scene.current) return;
     setBegins(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-toast")).map((t) => atRest(t, (cs) => (cs.scale === "none" ? null : parseFloat(cs.scale)))));
   }, []);
-  const notify = () => { setThere(false); requestAnimationFrame(() => requestAnimationFrame(() => setThere(true))); };
   const okOf = (d?: number | null) => d === undefined || d === null || d > 0;
-  const says = (d?: number | null) => d === undefined ? "" : d === null ? "elle apparaît à sa taille" : d > 0 ? `elle part de ${dec(d)} — presque sa taille` : "elle part de 0 — elle surgit du néant";
+  const says = (d?: number | null) => d === undefined ? "" : d === null ? "Elle apparaît à sa taille" : d > 0 ? `Elle part de ${dec(d)} : presque sa taille` : "Elle part de 0 : elle surgit du néant";
   return (
-    <Scene situation="Une notification arrive" action={{ label: "Notifier", onClick: notify }} scene={scene}>
-      <DemoSide ok={okOf(begins[WRONG])} verdict={says(begins[WRONG])}><div className="mv-scene-toast"><Toast cls="nothing" there={there} /></div></DemoSide>
-      <DemoSide ok={okOf(begins[RIGHT])} verdict={says(begins[RIGHT])}><div className="mv-scene-toast"><Toast there={there} /></div></DemoSide>
+    <Scene situation="Une notification arrive" action={{ label: there ? "Rejouer" : "Notifier", onClick: notify }} scene={scene}>
+      <DemoSide ok={okOf(begins[WRONG])} verdict={says(begins[WRONG])}><div className="mv-scene-toast"><Toast cls="nothing" there={there} snap={snap} /></div></DemoSide>
+      <DemoSide ok={okOf(begins[RIGHT])} verdict={says(begins[RIGHT])}><div className="mv-scene-toast"><Toast there={there} snap={snap} /></div></DemoSide>
     </Scene>
   );
 }
@@ -384,20 +399,19 @@ function BandNothing() {
    droite (tout coupé : elle surgit sans passage). Les deux scènes simulent
    le réglage système ; le site, lui, y obéit par ses portillons. */
 function BandReduced() {
-  const [there, setThere] = useState(false);
+  const [there, snap, notify] = useReplay();
   const scene = useRef<HTMLDivElement>(null);
   const [readSet, setReadSet] = useState<{ props: string; duration: number }[]>([]);
   useEffect(() => {
     if (!scene.current) return;
     setReadSet(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-toast")).map((t) => atRest(t, (cs) => ({ props: cs.transitionProperty, duration: inMs(cs.transitionDuration.split(",")[0]) / SLOWED_PAIRS }))));
   }, []);
-  const notify = () => { setThere(false); requestAnimationFrame(() => requestAnimationFrame(() => setThere(true))); };
-  const says = (l?: { props: string; duration: number }) => l === undefined ? "" : l.duration === 0 ? "tout coupé : elle surgit sans passage" : /translate|scale/.test(l.props) ? "elle monte et grandit en apparaissant" : `le fondu reste (${l.duration} ms), le déplacement est parti`;
+  const says = (l?: { props: string; duration: number }) => l === undefined ? "" : l.duration === 0 ? "Tout coupé : elle surgit sans passage" : /translate|scale/.test(l.props) ? "Elle monte et grandit en apparaissant" : `Le fondu reste (${l.duration} ms), le déplacement est parti`;
   const okOf = (l?: { duration: number }) => l === undefined || l.duration > 0;
   return (
-    <Scene situation="La même notification, pour qui a demandé moins de mouvement" action={{ label: "Notifier", onClick: notify }} scene={scene}>
-      <DemoSide ok={okOf(readSet[WRONG])} verdict={says(readSet[WRONG])}><div className="mv-scene-toast mv-cut"><Toast there={there} /></div></DemoSide>
-      <DemoSide ok={okOf(readSet[RIGHT])} verdict={says(readSet[RIGHT])}><div className="mv-scene-toast mv-reduced"><Toast there={there} /></div></DemoSide>
+    <Scene situation="La même notification, pour qui a demandé moins de mouvement" action={{ label: there ? "Rejouer" : "Notifier", onClick: notify }} scene={scene}>
+      <DemoSide ok={okOf(readSet[WRONG])} verdict={says(readSet[WRONG])}><div className="mv-scene-toast mv-cut"><Toast there={there} snap={snap} /></div></DemoSide>
+      <DemoSide ok={okOf(readSet[RIGHT])} verdict={says(readSet[RIGHT])}><div className="mv-scene-toast mv-reduced"><Toast there={there} snap={snap} /></div></DemoSide>
     </Scene>
   );
 }
@@ -581,17 +595,17 @@ export default function View() {
                   <BandHover />
                 </Band>
                 <Band level={4} name="Un menu vit à 200" side={`${ms("base")} ms`} bare
-                  says="Ce qu'on ouvre des dizaines de fois par jour ne se fait pas attendre. Le même menu au cran d'une section, 700 ms, est à peine plus beau — et cent fois plus long."
+                  says="Ce qu'on ouvre des dizaines de fois par jour ne se fait pas attendre. Le même menu au cran d'une section, 700 ms, est à peine plus beau — et cent fois plus long. À la dixième ouverture de la journée, personne ne voit plus la beauté ; tout le monde sent l'attente."
                   rules={<Rules ids={["m3", "m10"]} />}>
                   <BandDrags />
                 </Band>
                 <Band level={4} name="Rien ne naît du néant" side={`de ${dec(0.95)} à 1`} bare
-                  says="Une notification qui arrive part de presque sa taille, avec un fondu. Partie de zéro, elle surgit comme un objet qui n'existait pas une image plus tôt."
+                  says="Une notification qui arrive part de presque sa taille, avec un fondu : elle vient de quelque part. Partie de zéro, elle surgit comme un objet qui n'existait pas une image plus tôt — et l'œil sursaute avant de lire."
                   rules={<Rules ids={["m7"]} />}>
                   <BandNothing />
                 </Band>
                 <Band level={4} name="Moins de mouvement, pas aucun" side="les fondus restent" bare
-                  says="Quelqu'un qui a demandé moins de mouvement à son système ne veut pas d'objets qui se déplacent. Il a toujours besoin de savoir qu'une chose est arrivée : le fondu reste. Notre ancienne règle coupait tout."
+                  says="Quelqu'un qui a demandé moins de mouvement à son système ne veut pas d'objets qui se déplacent. Il a toujours besoin de savoir qu'une chose est arrivée : le fondu reste. L'ancienne règle du kit coupait tout — et la notification surgissait sans passage, pire pour lui que le mouvement qu'il refusait."
                   rules={<Rules ids={["m1"]} />}>
                   <BandReduced />
                 </Band>

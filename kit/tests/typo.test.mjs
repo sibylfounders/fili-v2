@@ -165,7 +165,7 @@ test('2 · la mesure, dans son cadre : la courte à 28 ch, la juste à la mesure
       return { maxW: cs.maxWidth, w: p.getBoundingClientRect().width, ch, track, bound: bw, boundHidden: hidden, verdict: d.querySelector('.badge').textContent.trim(),
         n: parseInt(d.querySelector('.mono.muted').textContent.match(/≈ (\d+)/)[1]), fs: parseFloat(cs.fontSize), lh: parseFloat(cs.lineHeight) }
     })
-    const instance = async (name) => { await p.locator('#measure .preview-tools .button', { hasText: name }).click(); await p.waitForTimeout(150); return read() }
+    const instance = async (name) => { await p.locator('#measure .demo-bar .button', { hasText: name }).click(); await p.waitForTimeout(150); return read() }
     const m = { short: await instance('Trop court'), right: await instance('Juste'), sans: await instance('Sans borne') }
     /* le ch du navigateur est l'avance du « 0 » ; vingt zéros rendus s'en écartent d'un rien (crénage) : 2 % */
     ok(parseFloat(m.short.maxW), 28 * m.short.ch, `${W} — courte : 28 ch`, 0.02 * 28 * m.short.ch)

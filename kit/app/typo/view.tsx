@@ -296,18 +296,18 @@ function MeasureInFrame() {
   const instance = INSTANCE.find((c) => c.key === key)!;
   return (
     <Preview
+      situation="Un paragraphe, dans un cadre qui s'élargit"
       ceiling={FRAME_MEASURE}
       background="plain"
       tools={<>
-        <span className="mono muted">La largeur du texte :</span>
+        <span className="mono muted">La largeur du texte</span>
         {INSTANCE.map((c) => (
           <button key={c.key} className={`button ${key === c.key ? "on" : ""}`}
             aria-pressed={key === c.key} onClick={() => setKey(c.key)}>{c.name}</button>
         ))}
       </>}
       children={() => <LineMeasured key={instance.key} instance={instance.key} maxW={instance.maxW} />}
-      foot={<span className="gd-caption">Le pointillé est la borne :
-        la faute n&apos;apparaît qu&apos;en s&apos;élargissant.</span>}
+      foot="le pointillé est la borne : la faute n'apparaît qu'en s'élargissant"
     />
   );
 }
@@ -866,7 +866,7 @@ export default function View() {
                 </div>
               <Bands>
                 <Band level={4} name="Le zoom du lecteur" side="du rem dans chaque borne" bare
-                  says="Un lecteur agrandit le texte : la fenêtre, elle, ne bouge pas. Une taille exprimée en part d&apos;écran seule ne grandit donc pas d&apos;un pixel. L&apos;échec est silencieux — invisible en test standard, bloquant pour qui dépend du zoom."
+                  says="Un lecteur agrandit le texte : la fenêtre, elle, ne bouge pas. Une taille exprimée en part d&apos;écran seule ne grandit donc pas d&apos;un pixel, et l&apos;échec est silencieux — invisible en test standard, bloquant pour qui dépend du zoom. Du rem dans chaque borne, et le corps suit le lecteur."
                   rules={<Rules ids={["t3"]} />}>
                   <Demo situation="Un lecteur règle son navigateur à 200 %"
                     action={{ label: "Agrandir le texte", onClick: replayZoom }}
@@ -895,7 +895,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Le saut de niveau" side="un niveau à la fois" bare
-                  says="Les niveaux de titre se suivent sans saut. Un h2 suivi directement d&apos;un h4 casse l&apos;arbre que le lecteur d&apos;écran parcourt : l&apos;utilisateur en conclut qu&apos;il manque du contenu. Aucun bénéfice en échange."
+                  says="Les niveaux de titre se suivent sans saut. Un h2 suivi d&apos;un h4 casse l&apos;arbre que le lecteur d&apos;écran parcourt : l&apos;utilisateur en conclut qu&apos;il manque du contenu, et il cherche. Sauter un niveau pour avoir un titre plus petit, c&apos;est régler une taille avec la structure — la taille a ses crans, la structure a les siens."
                   rules={<Rules ids={["t1", "p01"]} />}>
                   <Demo situation="Le plan d'un dossier, lu par un lecteur d'écran">
                     <DemoSides>
@@ -906,7 +906,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="La graisse" side="les titres, jamais le texte long" bare
-                  says="Quand tout est important, plus rien ne l&apos;est. Un paragraphe entier en demi-gras n&apos;appuie plus rien du tout — et la graisse fine sous le corps courant dégrade le trait, même quand la couleur passe les seuils."
+                  says="Quand tout est important, plus rien ne l&apos;est. Un paragraphe entier en demi-gras n&apos;appuie plus rien du tout ; et la graisse fine sous le corps courant dégrade le trait, même quand la couleur passe les seuils. Le corps courant à 400, la graisse aux titres et aux étiquettes : deux poids qui se répondent."
                   rules={<Rules ids={["t7"]} />}>
                   <Demo situation="Un paragraphe de texte courant">
                     <DemoSides>
@@ -929,7 +929,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Les capitales" side="brèves, espacées, jamais tapées" bare
-                  says="Les capitales ont été dessinées pour ouvrir une phrase, pas pour en porter quatre. Sur du texte courant, elles effacent la silhouette des mots : l&apos;œil se met à épeler au lieu de lire."
+                  says="Les capitales ont été dessinées pour ouvrir une phrase, pas pour en porter quatre. Sur du texte courant, elles effacent la silhouette des mots — cette forme que l&apos;œil reconnaît avant de lire — et l&apos;œil se met à épeler. En étiquette brève et espacée, elles reprennent leur rôle ; c&apos;est la feuille de style qui les pose, jamais le texte source."
                   rules={<Rules ids={["t8"]} />}>
                   <Demo situation="Le même paragraphe, tapé en capitales ou non">
                     <DemoSides>
@@ -954,7 +954,7 @@ export default function View() {
                 </Band>
 
                 <Band level={4} name="Les 16 px du champ" side="jamais sous le plancher" bare
-                  says="Sous seize pixels, Safari sur iPhone zoome la page entière dès qu&apos;on touche le champ. Ce n&apos;est pas une préférence esthétique, c&apos;est un comportement de plateforme — et il suffit d&apos;un champ pour l&apos;attraper."
+                  says="Sous seize pixels, Safari sur iPhone zoome la page entière dès qu&apos;on touche le champ, et le lecteur se retrouve dans un coin du formulaire sans savoir pourquoi. Ce n&apos;est pas une préférence esthétique, c&apos;est un comportement de plateforme — et il suffit d&apos;un champ pour l&apos;attraper."
                   rules={<Rules ids={["t10"]} />}>
                   <Demo situation="Un champ de formulaire, touché sur un iPhone">
                     <DemoSides>

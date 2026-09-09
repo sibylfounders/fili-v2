@@ -308,7 +308,7 @@ test('3 · la scène de la preuve 02 suit ses DEUX réglages — la densité qu�
   const simulated = async (p) => numbers(await text(p, '#density .bullet-w'))[0]
   for (const site of DENSITIES_SITE) {
     const { p, close } = await nav.page(URL(), { width: W, density: site })
-    const buttons = p.locator('#density .preview-tools .button')
+    const buttons = p.locator('#density .demo-bar .button')
     assert.equal(await buttons.count(), 3, 'trois densités au choix')
     for (const [i, d] of ['airy', 'comfortable', 'compact'].entries()) {
       await buttons.nth(i).click()
@@ -318,7 +318,7 @@ test('3 · la scène de la preuve 02 suit ses DEUX réglages — la densité qu�
       for (const [sel, prop, token] of STEPS)
         ok(await calcPx(p, `#density ${sel}`, prop), expected(token, S, DENSITIES[d]), `site ${site} · scène ${d} à ${S} px — ${sel} ${prop}`)
       /* la légende dit la largeur simulée et les trois marges qu'on voit */
-      const says = numbers(await text(p, '#density .gd-caption'))
+      const says = numbers(await text(p, '#density .demo-caption'))
       list(says, [S, ...['pad-1-block', 'pad-2-block', 'pad-3-block'].map((n) => rounded(expected(n, S, DENSITIES[d])))], `site ${site} · scène ${d} — la légende`)
       /* les coins, eux, ne bougent d'aucun des deux réglages */
       ok(await calcPx(p, '#density .ry-sd', 'borderTopLeftRadius'), expected('r-1', W), `site ${site} · scène ${d} — le coin ne suit pas la densité`)

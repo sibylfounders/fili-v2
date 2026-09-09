@@ -6562,3 +6562,54 @@ fiche lue) ; la lane du ton et sa place réservée n'existent plus — à la pla
 le bouton a la cible du kit, la bannière la marge de ligne, les objets
 s'écartent au cran de la ligne. Course complète : 71 vertes. Versé au dépôt
 avec le cadre des démonstrations (`360d568`, autre fil).
+
+## 9 septembre 2026 (3) — Retours d'Auteur de l'après-midi : le cadre gagne une rangée de choix ; /mouvement joue vraiment
+
+**Le cadre des démonstrations.** Deux sortes de commandes vivaient au même
+endroit, sous la scène. L'Auteur tranche : un *choix* à plusieurs positions
+(« Casser », « Montrer ») monte sous la tête, à la place de la ligne de
+verdict — « pas besoin de la ligne dessous le titre, mets les actions à la
+place » ; une *molette* reste sous la scène — « dans le cas des sliders c'est
+pertinent de les laisser en dessous ». Le cadre a donc `bar` (sous la tête)
+et `tools` (sous la scène), et une scène peut se passer de verdict. Sur
+/composition, l'écran qu'on casse et la page de magazine passent sur `bar` ;
+la mesure d'encre devient la légende, la faute et sa réparation tiennent sur
+la ligne du pied de l'écran.
+
+**/mouvement, trois défauts vus à l'œil.**
+- « Même animation, même durée des deux côtés » : le menu était défini à
+  l'intérieur de sa bande — React le remontait à chaque geste, il s'ouvrait
+  sans transition. Sorti de la bande, il joue ses 200 et ses 700.
+- « Permettre de relancer depuis le départ » : une notification déjà là
+  repartait d'où elle en était. Elle se retire maintenant d'un coup, sans
+  transition, puis repart de zéro ; l'action dit « Rejouer ».
+- Le survol : plus de bouton « Survoler » ni de geste scripté. Deux grilles
+  identiques de petits boutons, balayées par le vrai curseur ; la grille
+  lente traîne derrière lui.
+
+**Au banc.** Mouvement : pas d'action sur la bande du survol, deux grilles
+égales au cran compact, le survol répond au vrai curseur ; à mi-course du
+menu juste, le fautif est loin derrière ; la notification rejouée repart de
+presque rien puis revient. Composition : les fautes se choisissent dans la
+rangée sous la tête, la mesure d'encre se lit en légende. 24 vertes sur les
+deux pages.
+
+## 9 septembre 2026 (4) — Les cinq derniers bancs passent sur le cadre
+
+**Le constat d'Auteur.** « Il reste ces blocs à adapter au nouveau format » :
+la fiche à trois densités (/rythme), l'intervalle des titres (/rythme), la
+largeur du texte (/typo), l'application quand la racine tourne et les deux
+coins emboîtés (/arrondis).
+
+**La décision.** Le banc à poignée (`Preview`) sait maintenant vivre dans le
+cadre : une situation en tête, son choix sous la tête (`bar`), le banc en
+scène bord à bord, la légende dessous. La fiche à trois densités et le
+paragraphe qui s'élargit passent par là. Les trois autres prennent le cadre
+directement : la molette sous la scène, le verdict lu au-dessus (« Ça tient »
+/ « Trop serré » / « Trop large » pour les titres), deux côtés sous leur
+verdict pour les coins — la scène de nuit reste, déclarée en thème sombre ;
+l'application garde son fond de marque. Plus aucun `bench` nu sur ces pages.
+
+**Au banc.** Les épreuves lisent la rangée de choix (`.demo-bar`) et la
+légende du cadre (`.demo-caption`) ; les rayons dessinés se lisent côté par
+côté, les verdicts dans la tête de côté. Course complète : 71 vertes.

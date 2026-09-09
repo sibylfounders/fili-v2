@@ -106,13 +106,15 @@
 .ar-btn.first { background: #111827; color: #FFFFFF; }
 
 /* ── 02 · Le labo du coin — deux coins côte à côte sur la scène de nuit ── */
-.ar-lab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--page-2-inline); width: min(100%, 52rem); /* hors chaîne : la mesure du labo */ }
-@media (max-width: 40em) { .ar-lab { grid-template-columns: 1fr; } }
-.ar-corner { display: flex; flex-direction: column; gap: var(--gap-3-block); }
-.ar-corner .heading { font: 600 var(--font-size-label)/1.4 var(--font-mono); display: flex; gap: var(--gap-3-inline); align-items: baseline; }
-.ar-corner .verdict.ko { color: var(--danger); } /* la scène est en thème sombre : le rouge du versant sombre */
-.ar-corner .verdict.good { color: var(--success); }
-.ar-corner svg { width: 100%; height: auto; display: block; border-radius: var(--r-1); }
+/* Les deux scènes de 01 et 02 dans le cadre des démonstrations (9 septembre) :
+   la scène de marque garde son fond de marque ; la scène de nuit se déclare en
+   thème sombre et prend le fond de page de ce versant — les verdicts des côtés
+   y sont rouge et vert par le système (verdict d'Auteur, 7 septembre). */
+.ar-stage-primary { background: var(--primary); color: var(--on-primary); }
+.ar-night { background: var(--bg); color: var(--text-primary); }
+.ar-night .demo-stage { background: var(--bg); }
+.ar-night .demo-verdict, .ar-night .demo-side.good .demo-verdict, .ar-night .demo-side.good .demo-stage { border-color: var(--border); }
+.ar-night svg { width: min(100%, 26rem); height: auto; display: block; border-radius: var(--r-1); } /* hors chaîne : la mesure du labo */
 
 /* ── 03 · La liste fermée de la pilule — planche de cards sur la scène pâle.
       Une colonne sous le seuil de mise en page, deux au-dessus, trois quand le rail est là. ── */

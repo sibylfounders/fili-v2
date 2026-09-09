@@ -34,7 +34,7 @@ let site, nav
 before(async () => { site = await openSite(); nav = await openBrowser() })
 after(async () => { await nav?.close(); site?.close() })
 const URL = () => site.url + '/composition'
-const wreck = (p, name) => p.locator('#broken .demo-tools .button', { hasText: name }).click()
+const wreck = (p, name) => p.locator('#broken .demo-bar .button', { hasText: name }).click()
 const band = (i) => `#bands .doc-band:nth-child(${i})`
 const side = (i, k) => `${band(i)} .demo-side.${k === 1 ? 'good' : 'bad'}` /* 1 = le juste (à droite), 2 = le fautif (à gauche) */
 const boxes = (p, sel) => p.evaluate((sel) => [...document.querySelectorAll(sel)].map((e) => { const r = e.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, b: r.bottom } }), sel)
@@ -66,7 +66,7 @@ test('1 · les cotes de « écarts tous égaux » sont les distances rendues ent
     walk(art); return Math.round((area / (base.width * base.height)) * 100)
   })
   assert.ok(part > 5 && part < 60, `une part d'encre plausible : ${part} %`)
-  assert.match(await text(p, '#blanc .demo-single.neutral .demo-verdict'), new RegExp(`L'encre occupe ${part} %`))
+  assert.match(await text(p, '#blanc .demo-caption'), new RegExp(`l'encre occupe ${part} %`))
   await close()
 })
 
@@ -127,9 +127,9 @@ test('3 · l’écran : deux dominants, tout cloisonné, écarts égaux, quatre 
   /* deux dominants */
   await wreck(p, 'deux dominants'); await far()
   ok(await calcPx(p, `${app} .co-list .co-label`, 'fontSize'), rest.kpi, 'cassé : le titre de la liste au corps du chiffre', 0.5)
-  assert.match(await text(p, '#broken .demo-single.bad .demo-verdict'), /deux dominants/)
+  assert.match(await text(p, '#broken .demo-single.bad .co-prompt'), /deux dominants/)
   await hover(); ok(await calcPx(p, `${app} .co-list .co-label`, 'fontSize'), rest.heading, 'survolé : réparé')
-  assert.match(await text(p, '#broken .demo-single.good .demo-verdict'), /Réparé/, 'survolé : le verdict le dit')
+  assert.match(await text(p, '#broken .demo-single.good .co-prompt'), /Réparé/, 'survolé : le pied le dit')
   /* tout cloisonné */
   await wreck(p, 'deux dominants'); await wreck(p, 'tout cloisonné'); await far()
   assert.equal(await p.locator(`${app} .co-b`).evaluateAll((es) => es.filter((e) => parseFloat(getComputedStyle(e).borderTopWidth) > 0).length), 4, 'cassé : quatre cadres')
@@ -151,7 +151,7 @@ test('3 · l’écran : deux dominants, tout cloisonné, écarts égaux, quatre 
   const accent = () => p.evaluate((c) => [...document.querySelectorAll('#broken .co-app *')].filter((e) => getComputedStyle(e).color === c || getComputedStyle(e).backgroundColor === c).length, primary)
   assert.ok(await accent() >= 5, 'cassé : l\'accent partout')
   await hover(); assert.ok(await accent() <= 2, 'survolé : l\'accent rendu à un seul élément')
-  await wreck(p, 'la rupture partout'); assert.equal(await p.locator('#broken .demo-single.bad').count(), 0, 'réparé : plus de verdict rouge')
+  await wreck(p, 'la rupture partout'); assert.equal(await p.locator('#broken .demo-single.bad').count(), 0, 'réparé : plus de scène rouge')
   await close()
 })
 test('3 · l’espace blanc retiré : mêmes mots, même corps, même surface — l’air seul a disparu ; l’encre montrée est celle mesurée ; le chemin de l’œil rend ses deux tracés', async () => {
@@ -164,7 +164,7 @@ test('3 · l’espace blanc retiré : mêmes mots, même corps, même surface �
   assert.equal(after.words, before.words, 'pas un mot retiré'); ok(after.fs, before.fs, 'même corps')
   assert.ok(after.h < before.h * 0.8, `l'article a perdu son air : ${after.h} < ${before.h}`)
   ok(after.door, before.door, 'la surface est gardée : la place de la page ne bouge pas', 1)
-  assert.match(await text(p, '#blanc .demo-single.bad .demo-verdict'), /l'air a disparu/)
+  assert.match(await text(p, '#blanc .demo-caption'), /l'air a disparu/)
   await p.locator('#blanc .demo-go').click(); await p.waitForTimeout(120)
   await p.locator('#blanc .demo-seg .button', { hasText: 'encre' }).click(); await p.waitForTimeout(120)
   const tasks = await p.locator('#blanc .co-task').count(), lines = await p.evaluate(() => { const range = document.createRange(); let n = 0

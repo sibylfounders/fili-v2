@@ -196,7 +196,7 @@ type Src = { t: string; h: string };
 const DECISIONS: Src = { t: "Décisions du 25 août 2026, séance sur pièce", h: "#" };
 const RULES: { id: string; name: string; heading: string; statement: string; why: string; src: Src[]; div?: string }[] = [
   { id: "y1", name: "1", heading: "L'espace entre deux frères vaut leur marge",
-    statement: "L'espace qui sépare deux surfaces sœurs est exactement leur marge intérieure — ni plus, ni moins. Le dedans et le dehors d'une surface ne se règlent pas séparément : c'est le même chiffre.",
+    statement: "L'espace qui sépare deux surfaces sœurs est exactement leur marge intérieure. Le dedans et le dehors d'une surface ne se règlent pas séparément : c'est le même chiffre.",
     why: "Un contenu plus proche du bord du voisin que de son propre bord a l'air d'appartenir au voisin. L'espace dit qui est lié à qui — il ne doit pas mentir.",
     src: [DECISIONS, { t: "Atlassian — Spacing", h: "https://atlassian.design/foundations/spacing" }, { t: "NN/g — Principe de proximité", h: "https://www.nngroup.com/articles/gestalt-proximity/" }] },
   { id: "y2", name: "2", heading: "Le titre appartient à ce qu'il ouvre",
@@ -558,10 +558,11 @@ export function SituationDensity() {
   ) as CSSProperties;
   return (
     <Preview
+      situation="Une fiche de profil, à trois densités"
       ceiling={FRAME}
       onWidth={setWide}
       tools={<>
-        <span className="mono muted">La densité :</span>
+        <span className="mono muted">La densité</span>
         {DEMO.map((x) => (
           <button key={x.key} className={`button ${d === x.key ? "on" : ""}`}
             aria-pressed={d === x.key} onClick={() => setD(x.key)}>{x.name}</button>
@@ -590,7 +591,7 @@ export function SituationDensity() {
           </div>
         </div>
       )}
-      foot={<span className="gd-caption">{saysDensity(d, wide)}</span>}
+      foot={saysDensity(d, wide)}
     />
   );
 }
@@ -701,7 +702,18 @@ export function Wheel({ id, label, min, max, increment, value, onValue, says }: 
    est vrai mais brouillerait la démonstration ; la page Typographie est
    leur endroit.
    Le verdict est LU sur les nombres rendus, jamais décrété. ── */
-export function Hierarchy({ foundation, ratio }: { foundation: Foundation; ratio: number }) {
+export function hierarchyVerdict(foundation: Foundation) {
+  const t = foundation.text;
+  const contrast = t.h3 / t.body;
+  const shout = t.h1 / t.body;
+  return contrast < 1.16
+    ? { word: "Trop serré", says: "le sous-titre ne se distingue plus de son texte : plus rien ne se hiérarchise.", tone: "ko" }
+    : shout > 3
+      ? { word: "Trop large", says: "le titre crie, et le corps a l'air d'une note de bas de page.", tone: "ko" }
+      : { word: "Ça tient", says: "chaque niveau se détache du suivant sans écraser le corps.", tone: "ok" };
+}
+/* `bare` : dans le cadre des démonstrations, le verdict est dit au-dessus de la scène — pas ici. */
+export function Hierarchy({ foundation, ratio, bare }: { foundation: Foundation; ratio: number; bare?: boolean }) {
   const t = foundation.text;
   const r = fr2(ratio);
   const lines = [
@@ -711,13 +723,7 @@ export function Hierarchy({ foundation, ratio }: { foundation: Foundation; ratio
     { name: "la taille du corps", v: t.body, calc: "son plancher", fixed: true,
       txt: "Le corps ne bouge pas : seize pixels, quoi qu'il arrive. C'est le point fixe autour duquel toute la hiérarchie se règle." },
   ];
-  const contrast = t.h3 / t.body;
-  const shout = t.h1 / t.body;
-  const verdict = contrast < 1.16
-    ? { word: "Trop serré", says: "le sous-titre ne se distingue plus de son texte : plus rien ne se hiérarchise.", tone: "ko" }
-    : shout > 3
-      ? { word: "Trop large", says: "le titre crie, et le corps a l'air d'une note de bas de page.", tone: "ko" }
-      : { word: "Ça tient", says: "chaque niveau se détache du suivant sans écraser le corps.", tone: "ok" };
+  const verdict = hierarchyVerdict(foundation);
   return (
     <div className="hier">
       <div className="hier-sheet">
@@ -742,9 +748,9 @@ export function Hierarchy({ foundation, ratio }: { foundation: Foundation; ratio
           </div>
         ))}
       </div>
-      <p className={`hier-verdict ${verdict.tone}`}>
+      {!bare && <p className={`hier-verdict ${verdict.tone}`}>
         <b>{verdict.word}</b> <span>{verdict.says}</span>
-      </p>
+      </p>}
     </div>
   );
 }
@@ -907,17 +913,18 @@ export default function View() {
               </p>
             </div>
             <div className="gdoc-body">
-              <div className="rank">
-                <Wheel id="ry-tit" label="Le titre plus ou moins haut"
+              {/* le cadre des démonstrations (9 septembre) : la molette sous la scène,
+                  le verdict lu au-dessus d'elle */}
+              <Demo situation="Quatre niveaux de titres, un seul nombre"
+                tools={<Wheel id="ry-tit" label="Le titre plus ou moins haut"
                   min={BOUNDS.intervalHeadings[0]} max={BOUNDS.intervalHeadings[1]} increment={0.01}
-                  value={headings} onValue={setHeadings} says={fr2(headings)} />
-              </div>
-              <div className="bench veil">
-                <Hierarchy foundation={foundationHeadings} ratio={headings} />
-              </div>
-              <span className="gd-caption">
-                {`quatre tailles de texte, un seul nombre — chaque cran vaut le précédent × ${fr2(headings)}, et le corps ne bouge pas`}
-              </span>
+                  value={headings} onValue={setHeadings} says={fr2(headings)} />}
+                caption={`quatre tailles de texte, un seul nombre — chaque cran vaut le précédent × ${fr2(headings)}, et le corps ne bouge pas`}>
+                <DemoScene ok={hierarchyVerdict(foundationHeadings).tone === "ok"}
+                  verdict={`${hierarchyVerdict(foundationHeadings).word} — ${hierarchyVerdict(foundationHeadings).says}`}>
+                  <Hierarchy foundation={foundationHeadings} ratio={headings} bare />
+                </DemoScene>
+              </Demo>
             </div>
           </section>
 
@@ -944,7 +951,7 @@ export default function View() {
                 </div>
               <Bands>
                 <Band level={4} name="L&apos;espace entre deux sœurs vaut leur marge" side="le même chiffre" bare
-                  says="Le dedans et le dehors d&apos;une surface se règlent ensemble, pas chacun de son côté. Un texte plus proche du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine — et l&apos;œil s&apos;y laisse prendre à chaque fois."
+                  says="Le dedans et le dehors d&apos;une surface se règlent d&apos;un seul chiffre, jamais chacun de son côté. Un texte plus près du bord de sa voisine que du sien a l&apos;air d&apos;appartenir à la voisine. L&apos;œil ne vérifie pas, il conclut — et il conclut à chaque fois."
                   rules={<Rules ids={["y1", "y15"]} />}>
                   <Demo situation="Deux cards voisines dans le même container" action={spacesAction}>
                     <DemoSides>
@@ -954,7 +961,7 @@ export default function View() {
                   </Demo>
                 </Band>
                 <Band level={4} name="Le libellé qui flotte" side="autant d&apos;un côté que de l&apos;autre" bare
-                  says="Un libellé posé aussi loin de son champ que du paragraphe du dessus n&apos;appartient plus à personne. On croit lire l&apos;étiquette du champ suivant — c&apos;est la faute la plus courante des formulaires."
+                  says="Un libellé à égale distance de son champ et du paragraphe du dessus n&apos;appartient à personne. On le lit comme l&apos;étiquette du champ suivant, on tape l&apos;adresse dans la case du téléphone, et on accuse le formulaire. C&apos;est la faute la plus courante des formulaires, et la moins vue : rien n&apos;a l&apos;air cassé."
                   rules={<Rules ids={["y1"]} />}>
                   <Demo situation="Un libellé, entre un paragraphe et son champ" action={spacesAction}>
                     <DemoSides>
@@ -964,7 +971,7 @@ export default function View() {
                   </Demo>
                 </Band>
                 <Band level={4} name="Le titre qui change de camp" side="au-dessus &gt; au-dessous" bare
-                  says="L&apos;espace au-dessus d&apos;un titre dépasse celui du dessous d&apos;au moins un cran. À égalité, le titre ferme le paragraphe précédent au lieu d&apos;ouvrir sa section — et le lecteur cherche un instant où commence la suite."
+                  says="Un titre est une porte : il ouvre ce qui vient, il ne ferme pas ce qui précède. Ça se joue à un cran d&apos;espace — davantage au-dessus qu&apos;au-dessous. À égalité, le titre colle au paragraphe d&apos;avant, et le lecteur perd une demi-seconde à chercher où commence la suite. Une demi-seconde par titre, sur toute une page."
                   rules={<Rules ids={["y2"]} />}>
                   <Demo situation="Un titre de section, entre deux paragraphes" action={spacesAction}>
                     <DemoSides>
@@ -974,7 +981,7 @@ export default function View() {
                   </Demo>
                 </Band>
                 <Band level={4} name="Des rapports, jamais des soustractions" side="÷ √2 à chaque pas" bare
-                  says="Le même nombre de pixels retiré à chaque cran donne des longueurs presque jumelles, que personne ne distingue. Une division à chaque cran, et les mêmes longueurs se lisent d&apos;un coup d&apos;œil. L&apos;œil compare, il ne compte pas."
+                  says="L&apos;œil compare, il ne compte pas. Quatre pixels de moins à chaque cran, et l&apos;on obtient quatre longueurs que personne ne distingue. Une division par √2 à chaque cran, et les mêmes quatre longueurs se lisent d&apos;un coup d&apos;œil. Une échelle se construit en rapports, comme une gamme : pas en additions."
                   rules={<Rules ids={["y12", "y3"]} />}>
                   <Demo situation="Quatre crans d'espacement, du plus grand au plus petit">
                     <DemoSides>
@@ -984,7 +991,7 @@ export default function View() {
                   </Demo>
                 </Band>
                 <Band level={4} name="La géométrie vit en rem" side="la même card, deux marges" bare
-                  says="Un lecteur agrandit le texte : les espaces autour doivent grandir avec lui. Une marge figée en pixels, elle, reste où elle est — et la page se referme sur son contenu au premier réglage d&apos;accessibilité."
+                  says="Quelqu&apos;un agrandit le texte dans son navigateur. Si les marges sont en rem, elles grandissent avec lui et la page respire pareil. Si une marge est figée en pixels, elle reste où elle était, et le contenu vient toucher le bord. Ça ne casse rien — ça se referme, discrètement, au premier réglage d&apos;accessibilité."
                   rules={<Rules ids={["y9", "y8"]} />}>
                   <Demo situation="Un lecteur agrandit le texte de moitié"
                     action={{ label: "Agrandir le texte", onClick: replayLarge }}
@@ -996,7 +1003,7 @@ export default function View() {
                   </Demo>
                 </Band>
                 <Band level={4} name="La cible au doigt a un plancher" side="rien ne descend dessous" bare
-                  says="Un bouton, un champ, un sélecteur ont une hauteur de cible dérivée du registre. Une commande trop petite se rate au doigt, et aucune décision de mise en page ne passe avant ça."
+                  says="Un pouce ne vise pas, il tombe. Bouton, champ, sélecteur : chacun a une hauteur de cible qui vient du registre, et rien ne descend dessous — aucune contrainte de mise en page ne passe avant. Une commande trop basse ne paraît pas fausse à l&apos;écran ; elle se rate, simplement, une fois sur trois."
                   rules={<Rules ids={["y17"]} />}>
                   <Demo situation="Trois commandes, touchées au doigt"
                     caption={`la jauge en pointillé : ${targetDue()} px, la hauteur due · la commande : ${TARGET_BROKEN} px à gauche, ${targetDue()} px à droite`}>

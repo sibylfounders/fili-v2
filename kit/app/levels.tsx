@@ -73,10 +73,12 @@ export function Band({ name, side, says, bare, rules, level = 3, children }: {
    l'état : un verdict au-dessus, l'action bascule et se retourne (« Réparer »,
    secondaire, avec l'icône du retour). La colonne de parole de la bande garde
    le pourquoi ; le cadre dit ce qui se passe. */
-export function Demo({ situation, action, tools, caption, children }: {
+export function Demo({ situation, action, bar, tools, caption, children }: {
   situation: ReactNode;
   /* `active` + `back` : l'action bascule (forme B). Sans eux, elle rejoue (forme A). */
   action?: { label: string; onClick: () => void; back?: string; active?: boolean };
+  /* un choix à plusieurs positions (les fautes, ce qu'on montre) : SOUS la tête, à la place du verdict */
+  bar?: ReactNode;
   /* un réglage partagé par les deux côtés (une molette) : SOUS le phénomène — le lecteur regarde d'abord la scène */
   tools?: ReactNode;
   caption?: ReactNode;
@@ -103,6 +105,8 @@ export function Demo({ situation, action, tools, caption, children }: {
             </button>
           )}
         </div>
+        {/* le choix sous la tête, à la place d'une ligne de verdict (retour d'Auteur, 9 septembre) */}
+        {bar && <div className="demo-bar">{bar}</div>}
         {children}
         {tools && <div className="demo-tools">{tools}</div>}
       </div>
@@ -125,11 +129,12 @@ export function DemoSide({ ok, verdict, children }: { ok: boolean; verdict: Reac
   );
 }
 /* Une scène : le verdict au-dessus bascule avec l'action. */
-export function DemoScene({ ok, verdict, children }: { ok: boolean | null; verdict: ReactNode; children: ReactNode }) {
+export function DemoScene({ ok, verdict, children }: { ok: boolean | null; verdict?: ReactNode; children: ReactNode }) {
   const tone = ok === null ? "neutral" : ok ? "good" : "bad";
   return (
     <div className={`demo-single ${tone}`} data-intent={ok === false ? "statement" : undefined}>
-      <p className="demo-verdict"><span aria-hidden="true">{ok === null ? "·" : ok ? "✓" : "✗"}</span><span>{verdict}</span></p>
+      {/* sans verdict quand la scène se commente elle-même (les réglages sous la tête tiennent la place) */}
+      {verdict != null && <p className="demo-verdict"><span aria-hidden="true">{ok === null ? "·" : ok ? "✓" : "✗"}</span><span>{verdict}</span></p>}
       <div className="demo-stage">{children}</div>
     </div>
   );

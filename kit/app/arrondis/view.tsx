@@ -422,22 +422,22 @@ function TrapArc() {
 
 const TRAPS: { key: string; name: string; side: string; says: string; rules: string[]; scene: React.ReactNode }[] = [
   { key: "hard", name: "La valeur en dur", side: "la racine bouge, elle non",
-    says: "Un coin qui n'est pas un cran ne bouge pas quand la racine bouge. Il a l'air juste aujourd'hui, et il est déjà faux demain — le jour où le produit change de racine, lui seul restera en arrière. Dès que la racine bouge, les deux se séparent.",
+    says: "Un coin écrit à la main ne bouge pas quand la racine bouge. Il a l'air juste aujourd'hui, et il est déjà faux demain : le jour où le produit change de racine, tous les coins suivent — sauf lui, resté en arrière à sa valeur. Un coin est un cran de la chaîne, jamais un nombre.",
     rules: ["a2", "a8"], scene: <TrapHard /> },
   { key: "pct", name: "Le pourcentage", side: "la faute dort jusqu'au contenu",
-    says: "Un coin dérivé de la hauteur ne se voit pas tant que le texte est court. Le texte s'allonge, et la forme se met à fondre toute seule — personne n'aura vu venir la gélule.",
+    says: "Un coin dérivé de la hauteur ne se voit pas tant que le texte est court. Le texte s'allonge, la boîte s'élargit, et la forme se met à fondre toute seule — personne n'aura vu venir la gélule. Le coin vient du cran du composant ; il ne dépend jamais de la boîte qui le porte.",
     rules: ["a3"], scene: <TrapPct /> },
   { key: "vois", name: "Les voisins dépareillés", side: "deux crans dans une rangée",
-    says: "Un champ et un bouton de même taille, côte à côte, avec deux coins différents. L'œil lit deux systèmes dans la même rangée, et personne ne sait dire lequel est le bon.",
+    says: "Un champ et un bouton de même taille, côte à côte, avec deux coins différents. L'œil lit deux systèmes dans la même rangée, personne ne sait dire lequel est le bon — alors on doute des deux. Dans une rangée, tout le monde prend le coin de la row.",
     rules: ["a4", "a10"], scene: <TrapNeighbors /> },
   { key: "state", name: "Le survol qui arrondit", side: "le coin dit l'identité",
-    says: "La couleur, l'ombre et l'anneau sont là pour dire l'état. Le coin, lui, dit ce que l'objet EST — s'il change sous la main, l'objet change d'identité en cours de route. Les deux boutons répondent au survol ; un seul reste lui-même.",
+    says: "La couleur, l'ombre et l'anneau sont là pour dire l'état. Le coin, lui, dit ce que l'objet est — s'il change sous la main, l'objet change d'identité en cours de route. Le survol répond par la couleur ; le coin ne bouge pas.",
     rules: ["a1"], scene: <TrapState /> },
   { key: "sat", name: "Le coin saturé", side: "un seuil, pas une pente",
-    says: "Au-delà de la moitié du petit côté, le coin s'écrase et la surface devient une pilule sans l'avoir demandé. La hauteur descend, et il y a un moment exact où ça bascule.",
+    says: "Au-delà de la moitié du petit côté, le coin s'écrase et la surface devient une pilule sans l'avoir demandé. La hauteur descend, et il y a un moment exact où ça bascule — un seuil, pas une pente. Un coin fixe sur une boîte dont la hauteur varie finit toujours par le franchir.",
     rules: ["saturation", "a7"], scene: <TrapSaturated /> },
   { key: "arc", name: "Le contenu dans l'arc", side: "marge ≥ trois dixièmes du coin",
-    says: "La marge intérieure vaut au moins trois dixièmes du coin, sinon le texte entre dans la courbe. C'est la seule raison légitime de gonfler une marge à cause d'un arrondi.",
+    says: "La marge intérieure vaut au moins trois dixièmes du coin, sinon le texte entre dans la courbe. C'est la seule raison légitime de gonfler une marge à cause d'un arrondi — et elle se calcule, elle ne se règle pas à l'œil.",
     rules: ["clearance", "slope"], scene: <TrapArc /> },
 ];
 
@@ -547,18 +547,17 @@ export default function View() {
               container monte avec elle : c&apos;est exactement pour ça qu&apos;elle a une borne.</p>
             </div>
             <div className="gdoc-body">
-              <figure className="gd-figure">
-                <div className="bench primary">
-                  <Dial id="ar-root" label="Racine" min={0} max={ROOT_MAX} step={2} value={root} onChange={setRoot} />
-                  <RecordShuttle root={root} />
-                </div>
-                <figcaption className="gd-caption">
-                  panneau r{fmt(s.r[0])} marge {fmt(s.pad[0])} · carte r{fmt(s.r[1])} marge {fmt(s.pad[1])} · ligne r{fmt(s.r[2])} marge {fmt(s.pad[2])} ·
+              {/* le cadre des démonstrations (9 septembre) : la molette sous la scène ; la scène garde sa nuit de marque */}
+              <Demo situation="Une application de transport, quand la racine tourne"
+                tools={<Dial id="ar-root" label="Racine" min={0} max={ROOT_MAX} step={2} value={root} onChange={setRoot} />}
+                caption={<>panneau r{fmt(s.r[0])} marge {fmt(s.pad[0])} · carte r{fmt(s.r[1])} marge {fmt(s.pad[1])} · ligne r{fmt(s.r[2])} marge {fmt(s.pad[2])} ·
                   marque r{fmt(s.r[3])} · boutons r{fmt(s.rCtl)} = racine ÷ 4 · espaces {fmt(s.gap[0])} · {fmt(s.gap[1])} · {fmt(s.gap[2])} —
                   le coin divise par deux à chaque profondeur, la marge ne descend jamais sous le coin,
-                  le coin ne glisse pas avec l&apos;écran
-                </figcaption>
-              </figure>
+                  le coin ne glisse pas avec l&apos;écran</>}>
+                <div className="demo-stage ar-stage-primary">
+                  <RecordShuttle root={root} />
+                </div>
+              </Demo>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>« On ne choisit jamais un coin : la profondeur le choisit, divisé par deux à chaque
                 niveau. » Le registre porte quatre coins de profondeur — le container, la card, la row,
@@ -582,30 +581,23 @@ export default function View() {
               change, jusqu&apos;au moment où l&apos;intérieur redevient parallèle.</p>
             </div>
             <div className="gdoc-body">
-              <figure className="gd-figure">
-                {/* La scène de nuit (verdict d'Auteur, 7 septembre) : fond noir,
-                    et les verdicts par le système — plus une couleur écrite. */}
-                <div className="bench black" data-theme="dark">
-                  <div className="ar-dials">
-                    <Dial id="ar-ri" label="Coin intérieur" min={4} max={36} step={1} value={ri} onChange={setRi} />
-                    <Dial id="ar-gap" label="Écart" min={0} max={24} step={1} value={gap} onChange={setGap} />
-                  </div>
-                  <div className="ar-lab">
-                    <div className="ar-corner">
-                      <div className="heading"><span className="verdict ko">✗</span><span>extérieur = intérieur</span></div>
-                      <Corner Ro={ri} ri={ri} E={gap} ok={false} />
-                    </div>
-                    <div className="ar-corner">
-                      <div className="heading"><span className="verdict good">✓</span><span>extérieur = intérieur + écart</span></div>
-                      <Corner Ro={ri + gap} ri={ri} E={gap} ok />
-                    </div>
-                  </div>
+              {/* Le cadre des démonstrations (9 septembre) : deux côtés sous leur verdict,
+                  les deux molettes sous la scène. La scène de nuit reste (verdict d'Auteur,
+                  7 septembre) : fond noir, et les verdicts par le système. */}
+              <Demo situation="Deux coins emboîtés, séparés par un écart"
+                tools={<div className="ar-dials">
+                  <Dial id="ar-ri" label="Coin intérieur" min={4} max={36} step={1} value={ri} onChange={setRi} />
+                  <Dial id="ar-gap" label="Écart" min={0} max={24} step={1} value={gap} onChange={setGap} />
+                </div>}
+                caption={<>intérieur {ri} · écart {gap} — extérieur égal, {ri} : l&apos;écart dans la diagonale monte
+                  à {fmt(dL)}{gap > 0 ? ` (+${pct} %)` : ""} · extérieur {ri + gap} : il reste {gap} partout</>}>
+                <div className="ar-night" data-theme="dark">
+                  <DemoSides>
+                    <DemoSide ok={false} verdict="Extérieur égal à l'intérieur : l'écart se creuse dans l'angle"><Corner Ro={ri} ri={ri} E={gap} ok={false} /></DemoSide>
+                    <DemoSide ok verdict="Extérieur = intérieur + écart : les deux coins restent parallèles"><Corner Ro={ri + gap} ri={ri} E={gap} ok /></DemoSide>
+                  </DemoSides>
                 </div>
-                <figcaption className="gd-caption">
-                  intérieur {ri} · écart {gap} — extérieur égal, {ri} : l&apos;écart dans la diagonale monte
-                  à {fmt(dL)}{gap > 0 ? ` (+${pct} %)` : ""} · extérieur {ri + gap} : il reste {gap} partout
-                </figcaption>
-              </figure>
+              </Demo>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>Le fait : deux coins égaux séparés d&apos;un écart <i>e</i> s&apos;éloignent de <i>e</i> × √2
                 dans la diagonale. La chaîne ÷ 2 choisit dans la bande ; le labo montre son plancher,

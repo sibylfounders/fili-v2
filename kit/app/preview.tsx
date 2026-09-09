@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { Demo } from "./levels";
 
 /* Le banc d'essai — porté de l'atelier, recomposé le 23 août :
    une tête d'outils toujours visibles (plus rien ne se cache au survol),
@@ -20,8 +21,11 @@ const INCREMENT_WIDE = 64;
    la mise en page se réorganiser en continu, ce qui est le sujet. Le
    double-clic sur la poignée ramène à la largeur de départ. */
 
-export function Preview({ children, tools, foot, ceiling, onWidth, background }: {
+export function Preview({ children, situation, tools, foot, ceiling, onWidth, background }: {
   children: (width: number) => React.ReactNode;
+  /* Dans le cadre des démonstrations (9 septembre) : la situation en tête,
+     les outils sous la tête (le choix), la légende sous le cadre. */
+  situation?: React.ReactNode;
   tools?: React.ReactNode;
   foot?: React.ReactNode;
   /* Une variante DÉCLARÉE, pas une liberté : « uni » — le damier dit la part
@@ -78,12 +82,7 @@ export function Preview({ children, tools, foot, ceiling, onWidth, background }:
     else if (e.key === "End") { e.preventDefault(); setW(bound(DEFAULTS)); }
   };
 
-  return (
-    <div className={`preview${background === "plain" ? " plain" : ""}`}>
-      {/* Une rangée de commandes = UNE boîte. Il y avait ici deux boîtes
-          souples imbriquées pour un seul enfant, et une rangée vide quand
-          l'aperçu n'a pas d'outils (verdict d'Auteur, 1er septembre). */}
-      {tools && <div className="preview-tools">{tools}</div>}
+  const track = (
       <div ref={wrapRef} className="preview-track">
         <div className="preview-frame" style={{ width: `${current}px` }}>
           <div className="preview-scene">{current > 0 ? children(current) : null}</div>
@@ -99,6 +98,26 @@ export function Preview({ children, tools, foot, ceiling, onWidth, background }:
           <span className="handle-stroke" />
         </div>
       </div>
+  );
+  if (situation) {
+    /* le cadre des démonstrations : le choix sous la tête, le banc en scène, la légende dessous */
+    return (
+      <div className={`preview${background === "plain" ? " plain" : ""}`}>
+        <Demo situation={situation}
+          bar={tools && <span className="demo-seg" role="group">{tools}</span>}
+          caption={foot}>
+          <div className="demo-stage preview-in-demo">{track}</div>
+        </Demo>
+      </div>
+    );
+  }
+  return (
+    <div className={`preview${background === "plain" ? " plain" : ""}`}>
+      {/* Une rangée de commandes = UNE boîte. Il y avait ici deux boîtes
+          souples imbriquées pour un seul enfant, et une rangée vide quand
+          l'aperçu n'a pas d'outils (verdict d'Auteur, 1er septembre). */}
+      {tools && <div className="preview-tools">{tools}</div>}
+      {track}
       {foot}
     </div>
   );
