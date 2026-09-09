@@ -169,12 +169,10 @@
 .tp-witness { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
 /* Ce qu'on compare (retour d'Auteur, 9 septembre) : la boîte sur laquelle la
    marge est mesurée — la hauteur de ligne sans calage, capitales → ligne de
-   base avec. Teintée à la marque, lue sur le rendu ; son nom hors de la carte.
+   base avec. Teintée à la marque, lue sur le rendu ; le verdict du côté la nomme.
    Les deux lignes de la font (capitales, ligne de base) restent en filet. */
 .tp-box { position: absolute; left: var(--pad-1-inline); right: var(--pad-1-inline); pointer-events: none;
   background: color-mix(in srgb, var(--primary) 14%, transparent); } /* hors chaîne : le voile de la boîte, assez léger pour lire au travers */
-.tp-box > i { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: calc(var(--pad-1-inline) + var(--gap-3-inline));
-  font: var(--weight-label) var(--font-size-label)/1 var(--font-mono); font-style: normal; color: var(--primary); white-space: nowrap; }
 .tp-line { position: absolute; left: var(--pad-1-inline); right: var(--pad-1-inline); height: 0; pointer-events: none;
   border-top: 1px dashed var(--primary); opacity: .7; }
 

@@ -490,9 +490,7 @@ function CardAligned({ broken }: { broken: boolean }) {
             cote du haut va du bord de la carte au sommet des capitales. Rien n'est posé. */}
         {onCard && (
           <>
-            <span className="tp-box" aria-hidden="true" style={{ top: `${box.top}px`, height: `${box.height}px` }}>
-              <i>{broken ? "la hauteur de ligne" : "capitales → ligne de base"}</i>
-            </span>
+            <span className="tp-box" aria-hidden="true" style={{ top: `${box.top}px`, height: `${box.height}px` }} />
             <span className="tp-cote tp-cote-v" aria-hidden="true" style={{ height: `${top}px`, right: `${side / 2}px` }}>
               <span className="tp-cote-label">{fr(top)} px</span>
             </span>
@@ -991,8 +989,8 @@ export default function View() {
                   rules={<Rules ids={["t12"]} />}>
                   <Demo situation="Une carte, son titre posé à la même distance des quatre bords">
                     <DemoSides>
-                      <DemoSide ok={false} verdict="L'air de la ligne revient : le haut n'est plus celui qu'on voit"><CardAligned broken /></DemoSide>
-                      <DemoSide ok verdict="Calé sur les capitales : le haut vaut les côtés"><CardAligned broken={false} /></DemoSide>
+                      <DemoSide ok={false} verdict="La marge part de la hauteur de ligne : l'air au-dessus des lettres s'ajoute, le haut paraît plus grand que les côtés"><CardAligned broken /></DemoSide>
+                      <DemoSide ok verdict="La marge part des capitales et de la ligne de base : le haut vaut les côtés, ce qu'on écrit est ce qu'on voit"><CardAligned broken={false} /></DemoSide>
                     </DemoSides>
                   </Demo>
                 </Band>
