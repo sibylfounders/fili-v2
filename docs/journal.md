@@ -6515,3 +6515,28 @@ générateur.
 **Au banc.** Les épreuves de /couleur suivent la mosaïque au registre ; une
 épreuve attend la mesure au lieu du tiret après une réparation (elle tombait
 une fois sur deux). Course complète : 71 vertes.
+
+## 9 septembre 2026 (2) — /couleur : le nuancier montre des métiers, pour de vrai
+
+**Le constat d'Auteur.** « J'arrive toujours pas à aimer cette présentation.
+Ça fait lourd visuellement. » Six languettes, chacune peinte deux fois — un
+grand fond doux et un bloc plein avec son signe —, collées dans une coque
+arrondie : six surfaces colorées empilées, ça pèse quoi qu'on mette dedans.
+
+**La décision.** Le titre disait « des métiers, pas des teintes » ; la scène
+montrait des teintes. Chaque couple joue maintenant son métier, nu sur le
+blanc de la page : la marque, une étiquette « Recommandé » et un bouton
+« Continuer » ; le neutre, « Brouillon » et le bouton sombre « Enregistrer » ;
+l'information, une bannière « Sauvegardé automatiquement » et un compteur ;
+le danger, un message sous un champ « Adresse introuvable » et « Supprimer » ;
+le succès, « Payé » et « Livré » ; l'avertissement, « Places limitées » et
+« 2 places ». Le ton et le fond doux sont toujours là — à la place exacte
+qu'ils ont dans un produit. Plus de coque, plus de signes, plus de phrases de
+voix ; les deux groupes restent (ce qui ne juge pas, les trois verdicts), et
+sous chaque métier sa fiche lue sur le rendu.
+
+**Au banc.** Les mêmes mesures (chaque couple peint par ses quatre valeurs, la
+fiche lue) ; la lane du ton et sa place réservée n'existent plus — à la place,
+le bouton a la cible du kit, la bannière la marge de ligne, les objets
+s'écartent au cran de la ligne. Course complète : 71 vertes. Versé au dépôt
+avec le cadre des démonstrations (`360d568`, autre fil).
