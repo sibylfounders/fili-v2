@@ -54,7 +54,7 @@ const resolve = (p, theme, names) => p.evaluate(([theme, names]) => {
 }, [theme, names])
 const toHex = (rgbText) => '#' + rgbText.match(/\d+/g).slice(0, 3).map((v) => Number(v).toString(16).padStart(2, '0')).join('').toUpperCase()
 /* attendre que la page ait fini ses relevés (elle mesure après le rendu) */
-const survey = (p) => p.waitForFunction(() => ![...document.querySelectorAll('#palette .cm-specs, #swatches .gd-lng-record, #code table td')].some((e) => e.textContent.includes('…')))
+const survey = (p) => p.waitForFunction(() => ![...document.querySelectorAll('#charte .cm-specs, #swatches .gd-lng-record, #code table td')].some((e) => e.textContent.includes('…')))
 /* Remise à niveau du 7 septembre 2026 : la page a pris les quatre étages (2 septembre,
    verdict d'Auteur : « garde 01 à 03 puis 05 ; 04 devient une règle qu'on peut casser »).
    « Deux thèmes » est devenu la première bande de #casser — UN seul panneau, dans le thème
@@ -74,7 +74,7 @@ test('1 · la mosaïque, ses proportions et la table des rôles disent les valeu
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { theme }); await survey(p)
     const pal = PAL[theme]
-    const specs = await p.evaluate(() => [...document.querySelectorAll('#palette .cm-tile')].map((t) => [...t.querySelectorAll('.cm-specs span')].map((s) => s.textContent)))
+    const specs = await p.evaluate(() => [...document.querySelectorAll('#charte .cm-tile')].map((t) => [...t.querySelectorAll('.cm-specs span')].map((s) => s.textContent)))
     assert.equal(specs.length, 6)
     TILES.forEach(([role], i) => {
       const hex = pal[role]
@@ -82,7 +82,7 @@ test('1 · la mosaïque, ses proportions et la table des rôles disent les valeu
       assert.equal(specs[i][3], `RGB ${[1, 3, 5].map((k) => parseInt(hex.slice(k, k + 2), 16)).join(', ')}`, `${theme} — ${role} RGB`)
       assert.equal(specs[i][0], `color.${role === 'bg' ? 'background' : role}`)
     })
-    await p.locator('#palette .rank .button', { hasText: 'Proportions' }).click()
+    /* depuis le 9 septembre : les proportions sous le tableau de bord, la mosaïque au registre (#charte) */
     const props = await p.evaluate(() => [...document.querySelectorAll('#palette .cp-col')].map((c) => [c.querySelector('.cp-hex').textContent, c.querySelector('.cp-pct').textContent, getComputedStyle(c).flexBasis]))
     const expectedAll = [['bg', 56], ['surface', 18], ['text-primary', 14], ['border-strong', 7], ['primary', 5]]
     expectedAll.forEach(([role, part], i) => { assert.equal(props[i][0], pal[role], `${theme} — proportion ${role}`); assert.equal(props[i][1], `${part} %`); assert.equal(props[i][2], `${part}%`) })
@@ -142,7 +142,7 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { theme }); await survey(p)
     const pal = PAL[theme]
-    const painted = await p.evaluate(() => [...document.querySelectorAll('#palette .cm-tile')].map((t) => [getComputedStyle(t).backgroundColor, getComputedStyle(t).color]))
+    const painted = await p.evaluate(() => [...document.querySelectorAll('#charte .cm-tile')].map((t) => [getComputedStyle(t).backgroundColor, getComputedStyle(t).color]))
     TILES.forEach(([role, on], i) => { assert.equal(painted[i][0], rgb(pal[role]), `${theme} — tuile ${role} peinte`); assert.equal(painted[i][1], rgb(pal[on.slice(2)]), `${theme} — tuile ${role} encre`) })
     const lng = await p.evaluate(() => [...document.querySelectorAll('#swatches .gd-lng')].map((l) => [getComputedStyle(l.querySelector('.gd-lng-soft')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-soft')).color, getComputedStyle(l.querySelector('.gd-lng-tone')).backgroundColor, getComputedStyle(l.querySelector('.gd-lng-tone')).color]))
     TABS.forEach(([token, tone, onTone, soft, onSoft], i) => assert.deepEqual(lng[i], [soft, onSoft, tone, onTone].map((n) => rgb(pal[n.slice(2)])), `${theme} — languette ${token} peinte`))
@@ -198,7 +198,7 @@ test('3 · une marque entre par le rail : la scène entière est dérivée d’e
   const names = await chips.evaluateAll((els) => els.map((e) => e.title))
   /* l'état de la page avant qu'on touche au rail : c'est lui qui ne doit pas bouger */
   const varPage = () => p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim().toUpperCase())
-  const tilePage = () => calc(p, '#palette .cm-tile', 'backgroundColor')
+  const tilePage = () => calc(p, '#charte .cm-tile', 'backgroundColor')
   assert.equal(await varPage(), PAL.light.primary, 'au départ, la page est sur la charte')
   const brands = { Spotify: '#1DB954', Netflix: '#E50914', Slack: '#4A154B' }
   for (const [name, hex] of Object.entries(brands)) {
@@ -276,6 +276,8 @@ test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une 
   assert.equal(await text(p, `${c3} [data-theme="dark"] .badge`), `${fmt(r)} — illisible`)
   assert.equal(await text(p, `${c3} [data-theme="light"] .badge`), fmt(ratio(PAL.light, '--on-primary', '--primary')), 'le clair ne bouge pas')
   await wreck(4); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c3)
+  /* le rapport se relit sur le rendu après la réparation : on attend la mesure, pas le tiret */
+  await p.waitForFunction((s) => !/—/.test(document.querySelector(`${s} [data-theme="dark"] .badge`)?.textContent ?? '—'), c3, { timeout: 3000 })
   assert.equal(await text(p, `${c3} [data-theme="dark"] .badge`), fmt(ratio(PAL.dark, '--on-primary', '--primary')), 'réparé')
   /* teinter sans tenir la luminance (casse inventée le 2 septembre) : les trois gris se ressemblent encore,
      leurs rapports n'ont plus rien à voir — chacun calculé sur la valeur rendue, jamais recopié */
@@ -364,7 +366,7 @@ test('6 · dans la vue, toute couleur écrite en dur est une casse, une étude, 
 
 /* ── 8 · L'écriture et le répertoire (8 septembre 2026, soir) ──
    La palette et la situation sont fondues en une preuve, la marque rare
-   (#palette garde la mosaïque, #situation le tableau de bord, dans la même
+   (#situation le tableau de bord et les proportions ; la mosaïque au registre, #charte, dans la même
    section) ; la queue commune a disparu ; UN répertoire (#registre) range les
    rôles (#code), les six gammes (#gammes, ouvertes), cinq bandes (#casser, en
    h4) et la liste (#invisibles). */
@@ -372,9 +374,11 @@ test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire d
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
   assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
-  assert.equal(await p.locator('#palette #situation .bn-photo').count() + await p.locator('#palette .cm-tile').count() > 1 ? 1 : 0, 1, 'la marque rare : le tableau de bord et la mosaïque, dans la même preuve')
+  assert.equal(await p.locator('#palette #situation .bn-photo').count(), 1, 'la marque rare : le tableau de bord porte la preuve')
+  assert.ok(await p.locator('#palette .cp-col').count() >= 3 && await p.locator('#palette .cm-tile').count() === 0, 'sous lui, les proportions seules — la mosaïque est au registre')
+  assert.ok(await p.locator('#registry #charte .cm-tile').count() >= 6, 'la charte en mosaïque, entière, au registre')
   assert.equal(await p.locator('#registry #wreck h4.doc-band-name').count(), 5, 'cinq gestes, en h4 sous leur sous-titre')
-  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 4, 'quatre pièces')
+  assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 5, 'cinq pièces')
   assert.equal(await p.locator('#registry #gammes .gm').count(), 6, 'six gammes, lisibles sans un clic')
   assert.ok(await p.$eval('#registry #gammes details.prov', (d) => d.open), 'les gammes sont ouvertes d\'entrée')
   assert.ok(await p.locator('#registry #invisibles .doc-list tbody tr').count() >= 1, 'la liste')

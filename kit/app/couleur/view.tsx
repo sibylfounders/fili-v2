@@ -248,13 +248,15 @@ const PROPORTIONS: { name: string; token: string; on: string; part: number; edge
   { name: "primary", token: "--primary", on: "--on-primary", part: 5 },
 ];
 
-function Palette({ key }: { key: string }) {
+/* Depuis le 9 septembre (verdict d'Auteur : « ensemble ça fait surchargé »),
+   la Palette rend UNE vue, sans bascule : les proportions sous le tableau de
+   bord — la mesure de la preuve —, la mosaïque au registre, entière. */
+function Palette({ key, view }: { key: string; view: "mosaique" | "proportions" }) {
   /* Le graphisme EXACT de la charte (verdict d'Auré, 24 août : « j'aimais
      beaucoup ce graphisme exactement ») : tuiles pleines sans écart, nom en
      haut à gauche, specs mono en bas à droite — mais branché sur les tokens
      vivants : les valeurs affichées sont lues sur la page rendue. */
   const ref = useRef<HTMLDivElement>(null);
-  const [view, setView] = useState<"mosaique" | "proportions">("mosaique");
   const [rgbs, setRgbs] = useState<Record<string, number[]>>({});
   const [copy, setCopy] = useState<string | null>(null);
   useMeasure(key, () => {
@@ -276,12 +278,6 @@ function Palette({ key }: { key: string }) {
   };
   return (
     <div ref={ref} style={{ width: "100%", display: "grid", gap: "var(--gap-2-block)" }}>
-      <div className="rank" style={{ gap: "var(--gap-3-inline)" }}>
-        {([["mosaique", "Mosaïque"], ["proportions", "Proportions"]] as const).map(([v, name]) => (
-          /* commandes secondaires d'une tête d'outil : la cible compacte */
-          <button key={v} className={`button ${view === v ? "on" : ""}`} style={{ height: "var(--control-height-compact)", padding: "0 var(--pad-3-inline)", fontSize: "var(--font-size-small)" }} onClick={() => setView(v)}>{name}</button>
-        ))}
-      </div>
       {view === "mosaique" ? (
         <div className="cm-mos">
           {TILES.map((t) => (
@@ -946,9 +942,9 @@ export default function View() {
                 </figcaption>
               </figure>
               <figure className="gd-figure" style={{ justifyItems: "stretch" }}>
-                <Palette key={key} />
+                <Palette key={key} view="proportions" />
                 <figcaption className="gd-caption">
-                  la charte en mosaïque, puis en proportions : le blanc, l&apos;encre et les gris font tout le travail, la marque garde ses cinq pour cent
+                  la part de chaque rôle sur l&apos;écran : le blanc, l&apos;encre et les gris font tout le travail, la marque garde ses cinq pour cent
                 </figcaption>
               </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
@@ -1062,8 +1058,8 @@ export default function View() {
               <p className="kicker">04 · Le registre</p>
               <h2>Des rôles, jamais des valeurs — et chaque valeur, lue sur le rendu</h2>
               <p className="muted">Cinq gestes ordinaires qui cassent sans message d&apos;erreur ; les
-              règles qui ne se photographient pas ; les six gammes d&apos;où les rôles se posent ; et
-              chaque rôle, sa valeur claire, sa valeur sombre, résolues sur la page rendue et suivant
+              règles qui ne se photographient pas ; la charte en mosaïque ; les six gammes d&apos;où
+              les rôles se posent ; et chaque rôle, sa valeur claire, sa valeur sombre, résolues sur la page rendue et suivant
               la marque du moment. Les lignes marquées « décision d&apos;Auteur » sont des réglages du
               kit, pas des lois de la perception.</p>
             </div>
@@ -1144,6 +1140,15 @@ export default function View() {
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
                   <Rules ids={["c1", "c4", "c5", "c6", "c11", "c12", "c16", "c17"]} />
                 </div></details>
+              </div>
+
+              <div className="doc-piece" id="charte">
+                <div className="doc-piece-head">
+                  <h3>La charte, en mosaïque</h3>
+                  <p className="muted">Chaque rôle et ses valeurs — hex, HSL, RGB — lues sur la page
+                  rendue, à copier d&apos;un clic.</p>
+                </div>
+                <Palette key={key} view="mosaique" />
               </div>
 
               <div className="doc-piece" id="gammes">

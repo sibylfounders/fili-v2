@@ -6442,3 +6442,31 @@ lecteur finit sur ce qu'il réutilise.
 
 **Au banc.** L'épreuve de l'écriture vérifie l'ordre des pièces sur les six
 pages. Course complète : 71 vertes.
+
+## 9 septembre 2026 — /couleur : le tableau de bord porte la preuve seul ; l'aurore réparée
+
+**Le constat d'Auteur.** « J'aime beaucoup ces deux démos, problème : ensemble
+ça fait vraiment surchargé. » En fondant la palette et la situation en une
+preuve, la nuit d'avant avait empilé deux grands objets — le tableau de bord
+et la mosaïque de la charte — sous un même titre. Et le chapeau de la preuve
+faisait huit lignes.
+
+**La décision (conseil donné, retenu).** La preuve dit « la marque tient parce
+qu'elle est rare » : c'est le tableau de bord qui le fait ressentir. Il reste
+seul. Sous lui, la bande des **proportions** — une bande, plus la hauteur de
+la mosaïque qu'elle remplaçait — chiffre ce qu'on vient de voir : la marque à
+cinq pour cent. La **mosaïque** descend au registre, entière (même graphisme,
+valeurs à copier), en pièce « La charte, en mosaïque », avant les six gammes.
+La bascule Mosaïque / Proportions n'a plus lieu d'être. Le chapeau tient en
+deux phrases ; le détail du voile est dans « Règles & sources ».
+
+**L'aurore.** Ce n'était pas l'animation : la migration du code en anglais
+avait renommé les définitions du dessin (dégradés, filtres, masques, cœur,
+montagnes) sans renommer ce qui les appelait — onze références mortes, des
+lamelles noires. Le générateur est corrigé et l'aurore régénérée ; plus une
+référence sans définition. Un fichier généré ne se migre pas : on migre son
+générateur.
+
+**Au banc.** Les épreuves de /couleur suivent la mosaïque au registre ; une
+épreuve attend la mesure au lieu du tiret après une réparation (elle tombait
+une fois sur deux). Course complète : 71 vertes.

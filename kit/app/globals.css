@@ -895,7 +895,10 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 .cm-name { font-size: var(--font-size-small); font-weight: 500; letter-spacing: 0.01em; }
 .cm-specs { display: flex; flex-direction: column; align-self: flex-end; align-items: flex-end;
   gap: 2px; font: 400 var(--font-size-label)/1.4 var(--font-mono); }
-.cm-props { display: flex; width: 100%; height: calc(clamp(9rem, 20vh, 12rem) * 2.2);
+/* La bande des proportions vit seule sous le tableau de bord depuis le 9 septembre :
+   c'est la mesure de la preuve, pas une seconde scène — une bande, plus la hauteur
+   de la mosaïque qu'elle remplaçait (le × 2,2 est tombé avec la bascule). */
+.cm-props { display: flex; width: 100%; height: clamp(9rem, 20vh, 12rem); /* hors chaîne : la hauteur d'une bande de mesure */
   border: 1px solid var(--border); border-radius: var(--r-1); overflow: hidden; }
 .cp-col { display: flex; flex-direction: column; align-items: flex-start;
   justify-content: space-between; flex-grow: 1; min-width: 0; overflow: hidden;
