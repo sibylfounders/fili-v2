@@ -743,7 +743,12 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 .bench.black { background: var(--bg); color: var(--text-primary); }
 /* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
    (décision d'Auteur, 24 août). */
-.gd-figure { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); justify-items: center; } /* même règle : la figure ne s'élargit jamais au-delà de sa colonne */
+/* Tout part du même bord : un objet posé dans une figure part de l'axe de la
+   page, comme le titre, la commande et la légende — centré, il crée un axe de
+   plus, et chaque axe de plus est du bruit (retour d'Auteur, 9 septembre :
+   la liste au corps unique flottait au milieu de sa colonne). Les scènes qui
+   composent leur propre espace (un banc) restent maîtresses de leur dedans. */
+.gd-figure { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); justify-items: start; } /* même règle : la figure ne s'élargit jamais au-delà de sa colonne */
 .gd-figure > .gd-caption { justify-self: start; }
 /* La légende est du texte : elle se justifie à gauche comme tout le reste
    de la page (charte, 24 août). Centrée, elle se lisait comme une
@@ -928,8 +933,12 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 /* Deux groupes côte à côte dès qu'il y a la place pour deux colonnes
    lisibles, empilés sinon — aucun palier écrit à la main : c'est la
    largeur d'une colonne lisible qui décide. */
+/* Dedans plus serré que dehors : deux groupes de trois doivent se lire comme
+   deux colonnes, pas comme six blocs. L'écart entre les colonnes prend donc
+   le cran de la page, au-dessus de tout ce qui sépare deux métiers dans une
+   colonne (deux marges de card et un filet) — retour d'Auteur, 9 septembre. */
 .gd-swatches { display: grid; width: 100%; align-items: start;
-  gap: var(--gap-1-block) var(--gap-1-inline);
+  gap: var(--page-2-block) var(--page-2-inline);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
 .gd-nfam { display: grid; gap: var(--gap-3-block); min-width: 0; }
 .gd-nfam-heading { letter-spacing: 0.05em; text-transform: uppercase; }
@@ -944,7 +953,8 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 /* Deux lignes, toujours : la version claire (le fond doux) puis la version
    pleine (le ton) — le même métier dans ses deux régimes (verdict d'Auteur,
    9 septembre). */
-.gd-lng-scene { display: grid; justify-items: start; gap: var(--gap-3-block) var(--gap-3-inline); }
+.gd-lng-scene { display: grid; justify-items: start; align-items: center; gap: var(--gap-3-block) var(--gap-3-inline);
+  grid-auto-rows: var(--control-height); } /* chaque ligne a la hauteur d'une commande : six blocs de même taille, quel que soit l'objet */
 .gd-lng-record { font: 600 var(--font-size-label)/1.4 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : la fiche d'un métier */
 /* Les objets : un bouton (la cible et le coin du composant), une étiquette
    (le cran de la ligne), une bannière (une ligne pleine largeur au cran de
@@ -954,7 +964,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
   padding: 0 var(--pad-3-inline); border-radius: var(--r-ctl); font-weight: 500; font-size: var(--font-size-body); }
 .gd-obj-tag { display: inline-flex; align-items: center; min-height: var(--control-height-compact);
   padding: 0 var(--pad-3-inline); border-radius: var(--r-pill); font-weight: 600; font-size: var(--font-size-small); }
-.gd-obj-banner, .gd-obj-field { justify-self: stretch; padding: var(--pad-3-block) var(--pad-3-inline);
+.gd-obj-banner, .gd-obj-field { justify-self: stretch; align-self: stretch; display: flex; align-items: center; padding: 0 var(--pad-3-inline);
   border-radius: var(--r-3); font-size: var(--font-size-small); }
 .gd-obj-field { border-inline-start: var(--focus-band) solid currentColor; } /* le message d'un champ : un trait à la couleur de l'encre, l'épaisseur de la bande de focus */
 .gd-obj-count { display: inline-flex; align-items: center; justify-content: center;

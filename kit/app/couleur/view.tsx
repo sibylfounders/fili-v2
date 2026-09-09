@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Bands, Band, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { useTheme, useSchemeSystem } from "../theme";
 import { derived, range, rangeNeutrals, rangeFamily, setOnRange, PRIMARY_DEFAULTS } from "../../derivation.mjs";
@@ -562,7 +562,7 @@ function DuoThemes({ key, tier }: { key: string; tier: boolean }) {
           return (
             <div key={name} className="cl-pan-measure">
               <span>{name}</span>
-              <span className={`badge ${ko ? "ko" : "good"}`}>{fmt(r)}{ko ? " — sous le seuil, recalé d'office" : ""}</span>
+              <span className={`badge ${ko ? "ko" : "good"}`}>{fmt(r)}</span>
             </div>
           );
         })}
@@ -617,7 +617,7 @@ function MiniScreen({ key }: { key: string }) {
         fontWeight: 600, fontSize: "var(--font-size-small)",
       }}>Enregistrer</span>
       <span className={`badge ${r > 0 && r < 4.5 ? "ko" : ""}`}>
-        {fmt(r)}{r > 0 && r < 4.5 ? " — illisible" : ""}
+        {fmt(r)}
       </span>
     </div>
   );
@@ -636,7 +636,6 @@ function HueConstant({ broken }: { broken?: boolean }) {
   const rounded = (hex: string) => (Math.round(contrast(hexTo(hex), hexTo("#FFFFFF")) * 10) / 10).toFixed(1).replace(".", ",");
   const gray = broken ? GRAY_DERIVED : GRAY_HUES;
   const ratios = gray.map(([, hex]) => rounded(hex));
-  const identical = ratios.every((r) => r === ratios[0]);
   /* Le rapport de CHAQUE gris est posé sous sa tuile. Une phrase dans une
      pastille ne montrait pas le rapport entre trois nombres — elle le
      racontait, et débordait de sa colonne (verdict d'Auteur, 2 septembre).
@@ -655,9 +654,6 @@ function HueConstant({ broken }: { broken?: boolean }) {
           </li>
         ))}
       </ol>
-      <span className={`badge ${identical ? "good" : "ko"}`}>
-        {identical ? "le même rapport pour les trois" : "trois rapports différents"}
-      </span>
     </div>
   );
 }
@@ -862,15 +858,10 @@ const TOC: Toc = [
 
 
 export default function View() {
-  const [tier, setTier] = useState(false);
   /* La démo montre une marque, elle ne pilote plus le site : la barre
      d'outils reste le seul endroit où l'on choisit celle de Fili. On
      retient donc la marque regardée, pas une couleur recopiée. */
   const [brandView, setBrandView] = useState("fili");
-  const [brand, setBrand] = useState(false);
-  const [filter, setFilter] = useState(false);
-  const [actionDark, setActionDark] = useState(false);
-  const [hueFree, setHueFree] = useState(false);
   const { primary } = usePrimary();
   const { theme } = useTheme();
   const sysDark = useSchemeSystem();
@@ -1064,61 +1055,83 @@ export default function View() {
                   C&apos;est ce qui les rend coûteux : rien ne les signale.</p>
                 </div>
               <Bands>
-                <Band level={4} name="Le contraste se vérifie par paire" side="4,5:1 pour le texte courant"
+                <Band level={4} name="Le contraste se vérifie par paire" side="4,5:1 pour le texte courant" bare
                   says="Une couleur toute seule ne veut rien dire : ce qui se mesure, c&apos;est un texte SUR son fond. Une encre douce qui pâlit fait tomber le verdict — les rapports ne sont pas recopiés d&apos;une table, ils sont calculés sur ce que l&apos;écran affiche."
-                  broken={tier} onBroken={setTier}
-                  labelBroken="Casser : pâlir l&apos;encre douce" labelRepaired="Rendre l&apos;encre du registre"
-                  bare rules={<>
+                  rules={<>
                     <p><b>La table complète</b> — chaque paire, mesurée dans les deux thèmes :</p>
                     <TablePairs key={key} />
                     <Rules ids={["c7", "c9", "c13"]} />
                   </>}>
-                  <DuoThemes key={key} tier={tier} />
+                  <Demo situation="Une carte de profil : chaque encre est mesurée sur le fond qui la porte">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="L'encre douce pâlie tombe sous 4,5:1"><DuoThemes key={`${key}-tier`} tier /></DemoSide>
+                      <DemoSide ok verdict="L'encre du registre tient sur son fond"><DuoThemes key={key} tier={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Chacun son registre" side="l&apos;erreur n&apos;est pas la marque"
+                <Band level={4} name="Chacun son registre" side="l&apos;erreur n&apos;est pas la marque" bare
                   says="Trois registres, étanches : la marque signe, la sémantique alerte, le neutre porte. Une erreur qui prend la couleur de la marque détruit le vocabulaire des deux — plus rien, à l&apos;écran, ne dit ce qui est grave et ce qui est de la maison."
-                  broken={brand} onBroken={setBrand}
                   rules={<Rules ids={["c3", "c2"]} />}>
-                  <div className="cl-scene">
-                    <Alert tone="danger" colorSingleOne={false} brand={brand} />
-                    {brand && <span className="badge ko">l&apos;erreur porte la couleur de la marque — le vocabulaire chromatique est détruit</span>}
-                  </div>
+                  <Demo situation="Une alerte d'erreur, dans un écran signé par la marque">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="L'erreur porte la marque : plus rien ne dit ce qui alerte">
+                        <div className="cl-scene"><Alert tone="danger" colorSingleOne={false} brand /></div>
+                      </DemoSide>
+                      <DemoSide ok verdict="L'erreur porte la sémantique, la marque signe ailleurs">
+                        <div className="cl-scene"><Alert tone="danger" colorSingleOne={false} brand={false} /></div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Le survol est un token" side="jamais un calcul"
+                <Band level={4} name="Le survol est un token" side="jamais un calcul" bare
                   says="Un survol produit par un filtre n&apos;existe dans aucun registre : aucune table ne peut le vérifier, et personne ne saura dire quelle couleur il fabrique. Le bouton répond au survol dans les deux états."
-                  broken={filter} onBroken={setFilter}
                   rules={<Rules ids={["c10", "c8"]} />}>
-                  <div className="cl-scene">
-                    <button type="button" className={`button demo-full ${filter ? "filter" : "token"}`}>Créer le budget</button>
-                    {filter && <span className="badge ko">ce survol est calculé à la volée — aucune table ne peut le vérifier</span>}
-                  </div>
+                  <Demo situation="Un bouton, survolé — le geste est le vôtre">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="Le survol est calculé par un filtre : aucune table ne le connaît">
+                        <div className="cl-scene"><button type="button" className="button demo-full filter">Créer le budget</button></div>
+                      </DemoSide>
+                      <DemoSide ok verdict="Le survol est un token du registre : il se mesure">
+                        <div className="cl-scene"><button type="button" className="button demo-full token">Créer le budget</button></div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="En sombre, l&apos;action s&apos;éclaircit" side="deux valeurs, un seul nom"
+                <Band level={4} name="En sombre, l&apos;action s&apos;éclaircit" side="deux valeurs, un seul nom" bare
                   says="Le même token porte une valeur en clair et une en sombre. Une action forcée à garder sa valeur claire dans le thème sombre s&apos;enfonce dans le fond, et le bouton cesse d&apos;être un bouton."
-                  broken={actionDark} onBroken={setActionDark}
                   rules={<Rules ids={["c12", "c14", "c13"]} />}>
-                  <div className="cl-pair">
-                    <div data-theme="light" className="cl-side">
-                      <span className="mono cl-side-name">clair</span>
-                      <MiniScreen key={`light-${actionDark}-${primary}`} />
-                    </div>
-                    <div data-theme="dark" data-intent={actionDark ? "statement" : undefined}
-                      className="cl-side" style={actionDark ? actionDarkStyle : undefined}>
-                      <span className="mono cl-side-name">sombre{actionDark ? " — forcée" : ""}</span>
-                      <MiniScreen key={`dark-${actionDark}-${primary}`} />
-                    </div>
-                  </div>
+                  <Demo situation="Le même écran, dans le thème sombre">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="L'action garde sa valeur claire : elle s'enfonce dans le fond">
+                        <div className="cl-pair one">
+                          <div data-theme="dark" className="cl-side" style={actionDarkStyle}>
+                            <MiniScreen key={`dark-forced-${primary}`} />
+                          </div>
+                        </div>
+                      </DemoSide>
+                      <DemoSide ok verdict="L'action prend sa valeur sombre : le bouton reste un bouton">
+                        <div className="cl-pair one">
+                          <div data-theme="dark" className="cl-side">
+                            <MiniScreen key={`dark-${primary}`} />
+                          </div>
+                        </div>
+                      </DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
 
-                <Band level={4} name="Teinter ne coûte rien" side="à luminance constante"
+                <Band level={4} name="Teinter ne coûte rien" side="à luminance constante" bare
                   says="À luminance constante, la teinte bouge et le rapport ne bouge pas — c&apos;est ce qui permet des neutres teintés à la marque, sûrs par construction. Quand la luminance file avec la teinte, les trois gris se ressemblent toujours, et leurs rapports n&apos;ont plus rien à voir."
-                  broken={hueFree} onBroken={setHueFree}
-                  labelBroken="Casser : laisser filer la luminance"
                   rules={<Rules ids={["c15", "c17"]} />}>
-                  <HueConstant broken={hueFree} />
+                  <Demo situation="Trois gris, teintés différemment, sur le même blanc">
+                    <DemoSides>
+                      <DemoSide ok={false} verdict="La luminance file avec la teinte : trois rapports différents"><HueConstant broken /></DemoSide>
+                      <DemoSide ok verdict="À luminance constante : le même rapport pour les trois"><HueConstant broken={false} /></DemoSide>
+                    </DemoSides>
+                  </Demo>
                 </Band>
               </Bands>
               </div>

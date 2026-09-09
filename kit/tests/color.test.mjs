@@ -113,7 +113,7 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
     assert.equal(records.length, 6, `${theme} — six lignes signées`)
     TABS.forEach(([token, tone, , soft, onSoft], i) => assert.equal(records[i], `${token} · ${pal[tone.slice(2)]} · doux ${pal[soft.slice(2)]} · ${fmt(ratio(pal, onSoft, soft))}`, `${theme} — le métier ${token}`))
     /* le panneau du contraste par paire : UN seul, dans le thème du lecteur (2 septembre) — trois rapports, lus */
-    const badges = await p.evaluate(() => [...document.querySelectorAll('#wreck .gd-pan .badge')].map((b) => b.textContent))
+    const badges = await p.evaluate(() => [...document.querySelectorAll('#wreck .demo-side.good .gd-pan .badge')].map((b) => b.textContent))
     assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface'], ['--on-primary', '--primary']].map(([a, b]) => fmt(ratio(pal, a, b))), `panneau ${theme}`)
     for (const b of badges) assert.ok(parseFloat(b.replace(',', '.')) >= 4.5, `panneau ${theme} : ${b}`)
     /* la table complète, dans le dépliant de sa règle : chaque ligne, les deux thèmes, au seuil */
@@ -128,11 +128,10 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
       assert.ok(ratio(PAL.light, t, f) >= s && ratio(PAL.dark, t, f) >= s, `${pair} tient ${s}`)
     }
     /* le mini-écran, dans ses deux versants ; les gris à luminance constante : un rapport sous chaque tuile */
-    for (const t of ['light', 'dark']) assert.equal(await text(p, `#wreck .cl-side[data-theme="${t}"] .badge`), fmt(ratio(PAL[t], '--on-primary', '--primary')), `mini-écran ${t}`)
+    assert.equal(await text(p, '#wreck .demo-side.good .cl-side[data-theme="dark"] .badge'), fmt(ratio(PAL.dark, '--on-primary', '--primary')), 'mini-écran sombre')
     const gray = ['#6B7280', '#78716A', '#67737F'].map((h) => (Math.round(contrast(h, '#FFFFFF') * 10) / 10).toFixed(1).replace('.', ','))
     assert.ok(gray.every((g) => g === gray[0]), `trois gris, un rapport : ${gray}`)
-    assert.deepEqual(await texts(p, '#wreck .cl-hue-ratio'), gray.map((g) => `${g}:1`), 'chaque gris porte son rapport')
-    assert.equal(await text(p, '#wreck .cl-hue .badge'), 'le même rapport pour les trois')
+    assert.deepEqual(await texts(p, '#wreck .demo-side.good .cl-hue-ratio'), gray.map((g) => `${g}:1`), 'chaque gris porte son rapport')
     await close()
   }
 })
@@ -165,15 +164,15 @@ test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux son
       bars[i].steps.forEach(({ step, roles: readSet }) => assert.deepEqual(readSet, (setAll[step] ?? []).map((r) => (r.exact ? r.role : `≈ ${r.role}`)), `gamme ${i} — rôles sur ${step}`))
     })
     /* l'alerte : fond doux, filet et encre du danger — une carte (coin, marge) */
-    const al = '#wreck .doc-band:nth-child(2) [style*="border-inline-start"]'
+    const al = '#wreck .doc-band:nth-child(2) .demo-side.good [style*="border-inline-start"]'
     assert.equal(await calc(p, al, 'backgroundColor'), rgb(pal['danger-subtle'])); assert.equal(await calc(p, al, 'borderLeftColor'), rgb(pal.danger)); assert.equal(await calc(p, al, 'color'), rgb(pal.danger))
     ok(await calcPx(p, al, 'borderTopLeftRadius'), expected('r-2', 1440), 'alerte : coin de carte'); ok(await calcPx(p, al, 'paddingTop'), expected('pad-2-block', 1440), 'alerte : marge de carte')
     /* le panneau du contraste rend le thème du lecteur ; les deux versants du mini-écran rendent chacun le leur */
-    const c = await p.evaluate(() => { const pan = document.querySelector('#wreck .gd-pan'); return [getComputedStyle(pan.querySelector('.gd-pan-card')).backgroundColor, getComputedStyle(pan.querySelector('.gd-pan-card span')).color] })
+    const c = await p.evaluate(() => { const pan = document.querySelector('#wreck .demo-side.good .gd-pan'); return [getComputedStyle(pan.querySelector('.gd-pan-card')).backgroundColor, getComputedStyle(pan.querySelector('.gd-pan-card span')).color] })
     assert.deepEqual(c, [rgb(pal.bg), rgb(pal['text-primary'])], `panneau peint dans le thème ${theme}`)
-    for (const t of ['light', 'dark']) {
-      const v = await p.evaluate((t) => { const e = document.querySelector(`#wreck .cl-side[data-theme="${t}"] [style*="border"]`); return [getComputedStyle(e).backgroundColor, getComputedStyle(e.firstElementChild).backgroundColor] }, t)
-      assert.deepEqual(v, [rgb(PAL[t].bg), rgb(PAL[t].primary)], `versant ${t} peint dans son thème`)
+    {
+      const v = await p.evaluate(() => { const e = document.querySelector('#wreck .demo-side.good .cl-side[data-theme="dark"] [style*="border"]'); return [getComputedStyle(e).backgroundColor, getComputedStyle(e.firstElementChild).backgroundColor] })
+      assert.deepEqual(v, [rgb(PAL.dark.bg), rgb(PAL.dark.primary)], 'le versant sombre peint dans son thème')
     }
     /* le voile du bento : un calcul, dit, qui tient 4,5 */
     await p.waitForFunction(() => /voile \d+ %/.test(document.querySelector('#situation .bn-veil-says')?.textContent ?? ''))
@@ -241,54 +240,43 @@ test('3 · une marque entre par le rail : la scène entière est dérivée d’e
 })
 
 /* ── 4 · Les casses ── */
-test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une action sombre, teinter sans tenir la luminance — chacune déclarée, rendue, jugée, réparée', async () => {
+test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une action sombre, teinter sans tenir la luminance — le faux et le juste côte à côte, le faux déclaré, chaque nombre lu sur le rendu', async () => {
   const { p, close } = await nav.page(URL()); await survey(p)
   const band = (i) => `#wreck .doc-band:nth-child(${i})`
-  const wreck = (i) => p.locator(`${band(i)} .doc-wreck`).click()
-  /* pâlir l'encre douce : le gris refusé, posé de force, et le verdict tombe */
-  const pan = `${band(1)} .gd-pan`
-  await wreck(1); await p.waitForSelector(`${pan}[data-intent="statement"] .badge.ko`)
-  assert.equal(await p.getAttribute(pan, 'data-intent'), 'statement')
-  assert.equal(await p.evaluate((s) => getComputedStyle(document.querySelector(s)).getPropertyValue('--text-secondary').trim(), pan), '#9CA3AF')
-  const badge = await text(p, `${pan} .badge.ko`)
-  assert.ok(badge.startsWith(fmt(contrast('#9CA3AF', PAL.light.surface))) && /recalé d'office/.test(badge) && contrast('#9CA3AF', PAL.light.surface) < 4.5, `pâli : ${badge}`)
-  await wreck(1); await p.waitForFunction((s) => !document.querySelector(`${s}[data-intent]`) && !document.querySelector(`${s} .badge.ko`), pan, { timeout: 3000 })
-  assert.equal(await p.getAttribute(pan, 'data-intent'), null); assert.equal(await p.locator(`${pan} .badge.ko`).count(), 0, 'réparé : le verdict remonte')
+  const bad = (i) => `${band(i)} .demo-side.bad`, good = (i) => `${band(i)} .demo-side.good`
+  assert.equal(await p.locator('#wreck .doc-wreck').count(), 0, 'plus de bouton « Casser » dans les bandes')
+  for (const i of [1, 2, 3, 4, 5]) {
+    assert.equal(await p.getAttribute(bad(i), 'data-intent'), 'statement', `bande ${i} : le faux se déclare`)
+    assert.equal(await p.getAttribute(good(i), 'data-intent'), null, `bande ${i} : le juste ne se déclare pas`)
+  }
+  /* pâlir l'encre douce : le gris refusé, posé de force à gauche, et le verdict tombe ; à droite le registre */
+  const panBad = `${bad(1)} .gd-pan`, panGood = `${good(1)} .gd-pan`
+  await p.waitForSelector(`${panBad} .badge.ko`)
+  assert.equal(await p.evaluate((s) => getComputedStyle(document.querySelector(s)).getPropertyValue('--text-secondary').trim(), panBad), '#9CA3AF')
+  const badge = await text(p, `${panBad} .badge.ko`)
+  assert.ok(badge.startsWith(fmt(contrast('#9CA3AF', PAL.light.surface))) && contrast('#9CA3AF', PAL.light.surface) < 4.5, `pâli : ${badge}`)
+  assert.equal(await p.locator(`${panGood} .badge.ko`).count(), 0, 'à droite, aucun rapport sous le seuil')
   /* la marque prêtée à l'erreur */
-  const c1 = band(2)
-  await wreck(2)
-  const al = `${c1} [style*="border-inline-start"]`
-  assert.equal(await p.getAttribute(al, 'data-intent'), 'statement'); assert.equal(await calc(p, al, 'backgroundColor'), rgb(PAL.light['primary-subtle'])); assert.match(await text(p, `${c1} .badge.ko`), /marque/)
-  await wreck(2); assert.equal(await calc(p, al, 'backgroundColor'), rgb(PAL.light['danger-subtle']))
-  /* le survol par filtre : une couleur qu'aucun registre ne connaît */
-  const c2 = band(3)
-  await p.locator(`${c2} .demo-full`).hover(); await p.waitForTimeout(350)
-  assert.equal(await calc(p, `${c2} .demo-full`, 'filter'), 'none'); assert.equal(await calc(p, `${c2} .demo-full`, 'backgroundColor'), rgb(PAL.light['primary-hover']), 'au repos, le survol est un token')
-  await wreck(3); await p.locator(`${c2} .demo-full`).hover(); await p.waitForTimeout(350)
-  assert.match(await calc(p, `${c2} .demo-full`, 'filter'), /brightness/); assert.equal(await calc(p, `${c2} .demo-full`, 'backgroundColor'), rgb(PAL.light.primary), 'cassé : un filtre sur la marque')
-  assert.match(await text(p, `${c2} .badge.ko`), /calculé à la volée/)
-  await wreck(3)
-  /* l'action sombre forcée en thème sombre : C14 mord */
-  const c3 = band(4)
-  await wreck(4); await p.waitForSelector(`${c3} [data-theme="dark"][data-intent="statement"] .badge.ko`)
-  assert.equal(await p.getAttribute(`${c3} [data-theme="dark"]`, 'data-intent'), 'statement')
+  const al = (side) => `${side} [style*="border-inline-start"]`
+  assert.equal(await calc(p, al(bad(2)), 'backgroundColor'), rgb(PAL.light['primary-subtle']), 'à gauche, l’erreur porte la marque')
+  assert.equal(await calc(p, al(good(2)), 'backgroundColor'), rgb(PAL.light['danger-subtle']), 'à droite, la sémantique')
+  /* le survol par filtre : une couleur qu'aucun registre ne connaît — le geste est celui du lecteur */
+  await p.locator(`${good(3)} .demo-full`).hover(); await p.waitForTimeout(350)
+  assert.equal(await calc(p, `${good(3)} .demo-full`, 'filter'), 'none'); assert.equal(await calc(p, `${good(3)} .demo-full`, 'backgroundColor'), rgb(PAL.light['primary-hover']), 'à droite, le survol est un token')
+  await p.locator(`${bad(3)} .demo-full`).hover(); await p.waitForTimeout(350)
+  assert.match(await calc(p, `${bad(3)} .demo-full`, 'filter'), /brightness/); assert.equal(await calc(p, `${bad(3)} .demo-full`, 'backgroundColor'), rgb(PAL.light.primary), 'à gauche, un filtre sur la marque')
+  /* l'action sombre forcée en thème sombre : C14 mord — à gauche ; à droite, la valeur sombre du token */
+  await p.waitForSelector(`${bad(4)} [data-theme="dark"] .badge.ko`)
   const r = contrast(PAL.dark['on-primary'], '#312E81'); assert.ok(r < 4.5)
-  assert.equal(await text(p, `${c3} [data-theme="dark"] .badge`), `${fmt(r)} — illisible`)
-  assert.equal(await text(p, `${c3} [data-theme="light"] .badge`), fmt(ratio(PAL.light, '--on-primary', '--primary')), 'le clair ne bouge pas')
-  await wreck(4); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c3)
-  /* le rapport se relit sur le rendu après la réparation : on attend la mesure, pas le tiret */
-  await p.waitForFunction((s) => !/—/.test(document.querySelector(`${s} [data-theme="dark"] .badge`)?.textContent ?? '—'), c3, { timeout: 3000 })
-  assert.equal(await text(p, `${c3} [data-theme="dark"] .badge`), fmt(ratio(PAL.dark, '--on-primary', '--primary')), 'réparé')
-  /* teinter sans tenir la luminance (casse inventée le 2 septembre) : les trois gris se ressemblent encore,
-     leurs rapports n'ont plus rien à voir — chacun calculé sur la valeur rendue, jamais recopié */
-  const c5 = band(5)
-  const ratios = async () => { const t = await p.evaluate((s) => [...document.querySelectorAll(`${s} .cl-hue-tile`)].map((e) => getComputedStyle(e).backgroundColor), c5)
-    return [t.map((c) => (Math.round(contrast(toHex(c), '#FFFFFF') * 10) / 10).toFixed(1).replace('.', ',') + ':1'), await texts(p, `${c5} .cl-hue-ratio`)] }
-  let [computed, said] = await ratios(); assert.deepEqual(said, computed, 'au repos, chaque rapport dit est celui de la tuile rendue'); assert.ok(said.every((d) => d === said[0]), 'un seul rapport pour les trois')
-  await wreck(5); await p.waitForSelector(`${c5} .badge.ko`)
-  ;[computed, said] = await ratios(); assert.deepEqual(said, computed, 'cassé, chaque rapport dit est encore celui de la tuile rendue'); assert.ok(new Set(said).size === 3, `cassé : trois rapports différents (${said})`)
-  assert.equal(await text(p, `${c5} .badge.ko`), 'trois rapports différents')
-  await wreck(5); await p.waitForFunction((s) => !document.querySelector(`${s} .badge.ko`), c5)
+  assert.equal(await text(p, `${bad(4)} [data-theme="dark"] .badge`), fmt(r), 'à gauche, le rapport tombe')
+  await p.waitForFunction((s) => !/—/.test(document.querySelector(`${s} [data-theme="dark"] .badge`)?.textContent ?? '—'), good(4), { timeout: 3000 })
+  assert.equal(await text(p, `${good(4)} [data-theme="dark"] .badge`), fmt(ratio(PAL.dark, '--on-primary', '--primary')), 'à droite, le rapport du registre')
+  /* teinter sans tenir la luminance : les trois gris se ressemblent encore, leurs rapports n'ont plus rien
+     à voir — chacun calculé sur la valeur rendue, jamais recopié */
+  const ratios = async (side) => { const t = await p.evaluate((s) => [...document.querySelectorAll(`${s} .cl-hue-tile`)].map((e) => getComputedStyle(e).backgroundColor), side)
+    return [t.map((c) => (Math.round(contrast(toHex(c), '#FFFFFF') * 10) / 10).toFixed(1).replace('.', ',') + ':1'), await texts(p, `${side} .cl-hue-ratio`)] }
+  let [computed, said] = await ratios(good(5)); assert.deepEqual(said, computed, 'à droite, chaque rapport dit est celui de la tuile rendue'); assert.ok(said.every((d) => d === said[0]), 'un seul rapport pour les trois')
+  ;[computed, said] = await ratios(bad(5)); assert.deepEqual(said, computed, 'à gauche, chaque rapport dit est encore celui de la tuile rendue'); assert.ok(new Set(said).size === 3, `à gauche : trois rapports différents (${said})`)
   await close()
 })
 
@@ -327,7 +315,16 @@ test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une val
        ses objets s'écartent au cran de la ligne, la bannière porte la marge de ligne. */
     ok(await calcPx(p, '#swatches .gd-lng', 'rowGap'), expected('gap-3-block', W), `${W} — un métier : ses trois lignes au cran de la ligne`)
     ok(await calcPx(p, '#swatches .gd-lng-scene', 'columnGap'), expected('gap-3-inline', W), `${W} — les objets d'un métier s'écartent au cran de la ligne`)
-    ok(await calcPx(p, '#swatches .gd-obj-banner', 'paddingTop'), expected('pad-3-block', W), `${W} — la bannière : marge de ligne`)
+    /* six blocs de même taille, et deux colonnes qui se lisent comme deux colonnes :
+       l'écart entre elles dépasse tout ce qui sépare deux métiers dedans (dedans plus serré que dehors) */
+    const blocks = await p.$$eval('#swatches .gd-lng', (es) => es.map((e) => { const cs = getComputedStyle(e); return Math.round(e.getBoundingClientRect().height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)) }))
+    if (W >= 768) assert.ok(Math.max(...blocks) - Math.min(...blocks) <= 1, `${W} — six métiers, une seule hauteur : ${blocks}`) /* à 320, la fiche passe à la ligne selon la longueur de son nom */
+    if (W >= 1440) {
+      const between = await calcPx(p, '#swatches .gd-swatches', 'columnGap')
+      const inside = await p.$$eval('#swatches .gd-nfam-lines', (gs) => Math.max(...gs.map((g) => { const r = [...g.children].map((e) => e.getBoundingClientRect()); return Math.max(...r.slice(1).map((b, i) => b.top - r[i].bottom)) })))
+      assert.ok(between > inside, `${W} — l'écart entre les colonnes (${between}) doit dépasser l'écart dedans (${inside})`)
+    }
+    ok(await calcPx(p, '#swatches .gd-obj-banner', 'height'), expected('control-height', W), `${W} — la bannière : la hauteur d'une commande, comme chaque ligne d'un métier`)
     ok(await calcPx(p, '#swatches .gd-obj-banner', 'paddingLeft'), expected('pad-3-inline', W), `${W} — la bannière : marge de ligne`)
     ok(await calcPx(p, '#swatches .gd-obj-button', 'minHeight'), expected('control-height', W), `${W} — le bouton du métier a la cible du kit`)
     const t = await faultsSizes(p, W, { exclusions })
@@ -340,7 +337,7 @@ test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une val
   assert.ok(display[0] < display[1] && display[1] < display[2], `l'affiche glisse : ${display}`)
   for (const density of ['compact', 'airy']) {
     const { p, close } = await nav.page(URL(), { width: 1440, density })
-    ok(await calcPx(p, '#wreck .doc-band:nth-child(2) [style*="border-inline-start"]', 'paddingTop'), expected('pad-2-block', 1440, DENSITIES[density]), `${density} — l'alerte suit la base`)
+    ok(await calcPx(p, '#wreck .doc-band:nth-child(2) .demo-side.good [style*="border-inline-start"]', 'paddingTop'), expected('pad-2-block', 1440, DENSITIES[density]), `${density} — l'alerte suit la base`)
     ok(await calcPx(p, '#situation .bench', 'paddingTop'), expected('pad-1-block', 1440, DENSITIES[density]), `${density} — la scène suit la base`)
     await close()
   }
