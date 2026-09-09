@@ -2,7 +2,7 @@
 import Scenario from "./scenario";
 import { Fragment, useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, DemoScene, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { useDensity } from "../density";
 import { RailDoc, useDocSections, type Toc } from "../rail";
@@ -846,26 +846,22 @@ export default function View() {
                   Plus on entre profond dans la card, plus les marges et les coins se resserrent — sans que personne ait eu à le décider niveau par niveau. Et entre deux voisines, l&apos;espace vaut exactement leur marge.
                 </figcaption>
               </figure>
-              <div className="rank">
-                <button className={`button broken ${brokenDepth ? "on" : ""}`} onClick={() => setBrokenDepth(!brokenDepth)}>
-                  {brokenDepth ? "Réparer" : "Casser : l'enfant plus rond"}
-                </button>
+              {/* Forme B — une scène, la casse remplace l'état (verdict d'Auteur, 9 septembre).
+                  La terre sombre, comme la gazette de Typo : un panneau se lit comme un objet
+                  posé quand ce qui l'entoure n'est pas, lui aussi, du papier. Variante déjà
+                  déclarée du banc ; la colonne des cotes se déclare en thème sombre (7 septembre). */}
+              <div id="depth">
+                <Demo situation="Une tranche de réglages, emboîtée sur trois étages"
+                  action={{ label: "Arrondir la row", back: "Réparer", active: brokenDepth, onClick: () => setBrokenDepth(!brokenDepth) }}>
+                  <DemoScene ok={brokenDepth ? false : null} verdict={brokenDepth
+                    ? "La row est devenue plus ronde que la card qui la contient : l'emboîtement ne se lit plus"
+                    : "La marge se divise par √2, le coin par deux : les trois étages tiennent"}>
+                    <div className="bench dark">
+                      <Depths broken={brokenDepth} />
+                    </div>
+                  </DemoScene>
+                </Demo>
               </div>
-              <figure className="gd-figure" id="depth">
-                {/* La terre sombre, comme la gazette de Typo : un panneau se lit
-                      comme un objet posé quand ce qui l'entoure n'est pas, lui aussi,
-                      du papier. Variante déjà déclarée du banc. Le panneau garde
-                      son papier clair ; ce qui repose directement sur la terre — la
-                      colonne des cotes — se déclare en thème sombre (verdict
-                      d'Auteur, 7 septembre) : ses encres et le rouge de la faute
-                      viennent du système, pas d'un token propre à la terre de code. */}
-                <div className="bench dark">
-                  <Depths broken={brokenDepth} />
-                </div>
-                <figcaption className="gd-caption">{brokenDepth
-                  ? "la row est devenue plus ronde que la card qui la contient — l'emboîtement ne se lit plus"
-                  : "la marge se divise par racine de deux, le coin par deux — et les trois étages tiennent"}</figcaption>
-              </figure>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <p>Quatre décisions entrent dans <b>le moteur</b> — la base, l&apos;intervalle, la racine des coins, l&apos;intervalle des titres — et toute la géométrie en sort, sur quatre axes : l&apos;horizontal, le vertical, le texte et la cible. Aucune valeur n&apos;est écrite à la main. La tranche, elle, emboîte ses fonds en cascade : le container, la card, la row, avec des marges et des coins qui se resserrent à chaque étage — l&apos;emboîtement est relevé sur une application en production.</p>
                 <Rules ids={["y8", "y9", "y3", "y7", "y17", "y4", "y10", "y16", "y15"]} />

@@ -1374,8 +1374,8 @@ button.acc-access-link { color: var(--text-secondary); }
   width: 100%; }
 /* La preuve 01 empile le verdict et le banc : elle seule, les autres
    scènes de la page gardent leur mise en page. */
-.co-proof1 { display: grid; justify-items: start; gap: var(--pad-3-block); }
-.co-duo-t { display: grid; grid-template-columns: 3fr 2fr;
+.co-proof1 { display: grid; justify-items: start; gap: var(--pad-3-block); width: 100%; } /* toute la largeur de la scène du cadre */
+.co-duo-t { display: grid; grid-template-columns: 3fr 2fr; width: 100%;
   gap: var(--page-2-inline); align-items: center; }
 /* Le banc de la preuve 01 : l'écran à gauche, les mots à droite, et les
    filets tracés PAR-DESSUS les deux — d'où le calque en position absolue
@@ -1424,11 +1424,6 @@ button.acc-access-link { color: var(--text-secondary); }
 .co-left:has(.co-door:hover) .co-solution { opacity: 1; }
 /* L'état, lui, est en haut : faux au repos de la faute, réparé au survol.
    Les deux badges se superposent — la largeur ne bouge pas. */
-.co-verdict { display: inline-grid; }
-.co-verdict > .badge { grid-area: 1 / 1; transition: opacity var(--m-fast) var(--e-out); } /* survol */
-.co-verdict > .badge.good { opacity: 0; }
-.co-proof1:has(.co-door:hover) .co-verdict > .badge.ko { opacity: 0; }
-.co-proof1:has(.co-door:hover) .co-verdict > .badge.good { opacity: 1; }
 
 /* ── OBJET 1 · l'interface de travail ── */
 .co-app { border: 1px solid var(--border); border-radius: var(--r-1);
@@ -1648,6 +1643,9 @@ button.acc-access-link { color: var(--text-secondary); }
 .demo-stage { padding: var(--pad-2-block) var(--pad-2-inline); background: var(--surface);
   display: grid; align-content: center; justify-items: center; gap: var(--gap-2-block); }
 .demo-tools { padding: var(--pad-2-block) var(--pad-2-inline); border-top: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
+/* un réglage à deux ou trois positions : le nom du réglage, puis ses positions en boutons compacts */
+.demo-seg { display: inline-flex; align-items: center; gap: var(--gap-3-inline); font-size: var(--font-size-label); }
+.demo-seg .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); }
 .demo-caption { margin: 0; max-width: var(--measure); }
 /* sous 36 rem de cadre, les deux côtés se suivent : verdict, scène, verdict, scène */
 @container (max-width: 36rem) { /* hors chaîne : le point de bascule du cadre */

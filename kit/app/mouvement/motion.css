@@ -7,32 +7,11 @@
 .motion-page .motion-hero h1 { max-width: 12ch; }
 .motion-page .motion-hero .lede { max-width: 35rem; font-size: var(--font-size-h3); }
 
-.motion-demo {
-  margin: 0; overflow: hidden; width: 100%;
-  border: 1px solid var(--border); border-radius: var(--r-1);
-  background: var(--surface);
-}
-.motion-demo-head {
-  min-height: calc(var(--control-height) + 2 * var(--pad-2-block));
-  display: flex; align-items: center; justify-content: space-between;
-  gap: var(--gap-1-inline); padding: var(--pad-2-block) var(--pad-1-inline);
-  border-bottom: 1px solid var(--border); background: var(--bg);
-}
-.motion-demo-head b { font-size: var(--font-size-body); font-weight: 650; }
-.motion-replay { display: inline-flex; align-items: center; gap: var(--gap-3-inline); flex: none; }
-.motion-replay svg { width: 0.9rem; height: 0.9rem; } /* hors chaîne : l'icône du bouton */
-.motion-compare {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px; background: var(--border); } /* hors chaîne : le filet entre les deux côtés */
-.motion-panel { min-width: 0; background: var(--surface); }
-.motion-panel-head {
-  min-height: var(--control-height); display: flex; align-items: center; justify-content: space-between;
-  gap: var(--gap-3-inline); padding: var(--pad-3-block) var(--pad-2-inline);
-  border-bottom: 1px solid var(--border); color: var(--text-secondary);
-  font-size: var(--font-size-small); font-weight: 600;
-}
-.motion-panel.is-bad .motion-panel-head { color: var(--danger); }
-.motion-panel.is-good .motion-panel-head { color: var(--success); }
+/* Les trois preuves vivent dans le cadre des démonstrations (9 septembre) :
+   la situation en tête, une action, deux côtés sous leur verdict. Ici ne
+   reste que ce qui est propre à leurs scènes. */
+.motion-demo { width: 100%; }
+.motion-panel { min-width: 0; width: 100%; }
 
 /* 01 · La trace ------------------------------------------------------ */
 .trace-board {
@@ -152,15 +131,7 @@
   top: calc(var(--pad-2-block) + 3rem); width: 1px; height: calc(var(--gap-3-block) + 2.1rem);
   border-left: 1px dashed var(--primary); scale: 1 0; transform-origin: top;
 }
-.origin-ghost { display: none; }
-.origin-panel.is-bad .origin-ghost {
-  position: absolute; display: block; right: 12%; bottom: 12%; width: 3.5rem; height: 3.5rem; /* hors chaîne : la cible dessinée, nulle part */
-  border: 1px dashed var(--danger); border-radius: var(--r-pill); opacity: .55;
-}
-.origin-ghost::before, .origin-ghost::after { content: ""; position: absolute; inset: 50% 20% auto; border-top: 1px solid var(--danger); }
-.origin-ghost::after { rotate: 90deg; }
-.origin-ghost span { position: absolute; right: calc(100% + var(--gap-3-inline)); top: 50%; width: 4rem; border-top: 1px dashed var(--danger); rotate: -28deg; transform-origin: right; } /* hors chaîne : la cible dessinée */
-.origin-ghost i { position: absolute; right: calc(100% + 4.25rem); top: -.25rem; font: 700 var(--font-size-label)/1 var(--font-mono); color: var(--danger); } /* hors chaîne : la cible dessinée */
+/* La cible dessinée du mauvais point de départ est sortie le 9 septembre (retour d'Auteur : « c'est quoi ce rond ? ») : le menu qui surgit loin de son bouton suffit à montrer la faute. */
 .origin-panel.is-open .origin-menu { opacity: 1; pointer-events: auto; }
 .origin-panel.is-open .origin-ray { scale: 1 1; }
 @media (prefers-reduced-motion: no-preference) {
@@ -239,18 +210,13 @@
 }
 
 @media (max-width: 54rem) {
-  .motion-compare { grid-template-columns: minmax(0, 1fr); }
   .trace-board { min-height: 14rem; }
   .origin-stage { min-height: 22rem; }
   .gaze-grid { min-height: 28rem; }
 }
 @media (max-width: 34rem) {
-  .motion-demo-head { align-items: flex-start; }
-  .motion-demo-head > div { max-width: 55%; }
-  .motion-replay { padding-inline: var(--gap-3-inline); }
   .trace-board { min-height: 13rem; }
   .trace-copy b { max-width: 8ch; }
-  .motion-panel-head > span:first-child { max-width: 55%; }
   .gaze-grid { grid-template-columns: minmax(0, 1fr); min-height: 55rem; }
 }
 

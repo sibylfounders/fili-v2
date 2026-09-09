@@ -91,26 +91,12 @@ function Rules({ ids }: { ids: string[] }) {
   );
 }
 
-const Play = () => (
-  <svg viewBox="0 0 16 16" aria-hidden="true">
-    <path d="M5.25 3.15 12.4 8l-7.15 4.85z" fill="currentColor" />
-  </svg>
-);
 
 const Check = () => (
   <svg viewBox="0 0 16 16" aria-hidden="true">
     <path d="m3.2 8.1 3 3.05 6.6-6.55" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-
-function DemoButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button type="button" className="button on motion-replay" onClick={onClick}>
-      <Play />
-      <span>{children}</span>
-    </button>
-  );
-}
 
 function TaskCard() {
   return (
@@ -128,10 +114,7 @@ function TaskCard() {
 function TraceBoard({ good, right, run }: { good: boolean; right: boolean; run: number }) {
   const direction = right ? "to-right" : "to-left";
   return (
-    <article className={`motion-panel trace-panel ${good ? "is-good" : "is-bad"}`} data-intent={good ? undefined : "statement"}>
-      <div className="motion-panel-head">
-        <span>{good ? "La carte se déplace" : "La carte disparaît, une autre paraît"}</span>
-      </div>
+    <article className={`motion-panel trace-panel ${good ? "is-good" : "is-bad"}`}>
       <div className="trace-board" aria-label={good ? "Bon exemple : la carte reste visible pendant tout son déplacement" : "Mauvais exemple : la carte disparaît puis réapparaît ailleurs"}>
         <div className="trace-column"><span>À faire</span><i /></div>
         <div className="trace-column"><span>Terminé</span><i /></div>
@@ -157,22 +140,19 @@ function TraceDemo() {
     if (good) setRead(atRest(good, (cs) => ({ duration: inMs(cs.transitionDuration.split(",")[0]), curve: cs.transitionTimingFunction.split(/,(?![^(]*\))/)[0].trim() === MOTION.curve })));
   }, []);
   return (
-    <figure className="gd-figure">
-      <div className="motion-demo trace-demo" ref={scene}>
-        <div className="motion-demo-head">
-          <b>Une carte passe de « À faire » à « Terminé »</b>
-          <DemoButton onClick={move}>{run ? "Rejouer" : "Déplacer"}</DemoButton>
-        </div>
-        <div className="motion-compare">
-          <TraceBoard good={false} right={right} run={run} />
-          <TraceBoard good right={right} run={run} />
-        </div>
-      </div>
-      <figcaption className="gd-caption">
-        {read ? `${read.duration} ms${read.curve ? " sur la courbe du kit" : ""}, lus sur le rendu — le cran d'une section, parce que la carte change de zone` : "la même carte, un seul déplacement"}
-        {read && read.duration === 0 ? " · mouvement réduit : elle saute, et c'est voulu" : ""}
-      </figcaption>
-    </figure>
+    <div className="motion-demo trace-demo" ref={scene}>
+      <Demo situation="Une carte passe de « À faire » à « Terminé »"
+        action={{ label: run ? "Rejouer" : "Déplacer", onClick: move }}
+        caption={<>
+          {read ? `${read.duration} ms${read.curve ? " sur la courbe du kit" : ""}, lus sur le rendu — le cran d'une section, parce que la carte change de zone` : "la même carte, un seul déplacement"}
+          {read && read.duration === 0 ? " · mouvement réduit : elle saute, et c'est voulu" : ""}
+        </>}>
+        <DemoSides>
+          <DemoSide ok={false} verdict="La carte disparaît, une autre paraît"><TraceBoard good={false} right={right} run={run} /></DemoSide>
+          <DemoSide ok verdict="La carte se déplace"><TraceBoard good right={right} run={run} /></DemoSide>
+        </DemoSides>
+      </Demo>
+    </div>
   );
 }
 
@@ -189,12 +169,8 @@ function MenuCard() {
 
 function CausePanel({ good, open, toggle }: { good: boolean; open: boolean; toggle: () => void }) {
   return (
-    <article className={`motion-panel origin-panel ${good ? "is-good" : "is-bad"} ${open ? "is-open" : ""}`} data-intent={good ? undefined : "statement"}>
-      <div className="motion-panel-head">
-        <span>{good ? "Le menu sort de son bouton" : "Le menu sort de nulle part"}</span>
-      </div>
+    <article className={`motion-panel origin-panel ${good ? "is-good" : "is-bad"} ${open ? "is-open" : ""}`}>
       <div className="origin-stage">
-        <div className="origin-ghost" aria-hidden="true"><span /><i /></div>
         <span className="origin-ray" aria-hidden="true" />
         <button type="button" className="origin-trigger" aria-expanded={open} onClick={toggle}>
           <span className="origin-thumb">A</span>
@@ -218,21 +194,16 @@ function CauseDemo() {
       origins: menus.map((m) => { const o = getComputedStyle(m).transformOrigin.split(" ").map(parseFloat); return o[0] === 0 && o[1] === 0 ? "le coin du bouton" : "son propre centre"; }) });
   }, []);
   return (
-    <figure className="gd-figure">
-      <div className="motion-demo cause-demo" ref={scene}>
-        <div className="motion-demo-head">
-          <b>Le même menu, deux points de départ</b>
-          <DemoButton onClick={toggle}>{open ? "Fermer" : "Ouvrir"}</DemoButton>
-        </div>
-        <div className="motion-compare">
-          <CausePanel good={false} open={open} toggle={toggle} />
-          <CausePanel good open={open} toggle={toggle} />
-        </div>
-      </div>
-      <figcaption className="gd-caption">
-        {read ? `${read.duration} ms, le cran du panneau · point de départ lu sur le rendu : ${read.origins[1]} / ${read.origins[0]}` : "le même menu, un seul geste"}
-      </figcaption>
-    </figure>
+    <div className="motion-demo cause-demo" ref={scene}>
+      <Demo situation="Le même menu, deux points de départ"
+        action={{ label: open ? "Fermer" : "Ouvrir", onClick: toggle }}
+        caption={read ? `${read.duration} ms, le cran du panneau · point de départ lu sur le rendu : ${read.origins[1]} / ${read.origins[0]}` : "le même menu, un seul geste"}>
+        <DemoSides>
+          <DemoSide ok={false} verdict="Le menu sort de nulle part"><CausePanel good={false} open={open} toggle={toggle} /></DemoSide>
+          <DemoSide ok verdict="Le menu sort de son bouton"><CausePanel good open={open} toggle={toggle} /></DemoSide>
+        </DemoSides>
+      </Demo>
+    </div>
   );
 }
 
@@ -260,10 +231,7 @@ function MiniVisual({ type }: { type: (typeof cards)[number][2] }) {
 
 function GazeBoard({ good, target, run }: { good: boolean; target: number; run: number }) {
   return (
-    <article className={`motion-panel gaze-panel ${good ? "is-good" : "is-bad"}`} data-intent={good ? undefined : "statement"}>
-      <div className="motion-panel-head">
-        <span>{good ? "Seule la carte qui change bouge" : "Les huit cartes bougent"}</span>
-      </div>
+    <article className={`motion-panel gaze-panel ${good ? "is-good" : "is-bad"}`}>
       <div key={run} className={`gaze-grid ${run ? "is-running" : ""}`} aria-label={good ? "Bon exemple : seule la carte modifiée s'anime" : "Mauvais exemple : toutes les cartes s'animent en même temps"}>
         {cards.map(([title, value, type], index) => (
           <div key={title} className={`gaze-card gaze-${type} ${index === target ? "is-target" : ""}`}>
@@ -295,21 +263,16 @@ function GazeDemo() {
     return () => cancelAnimationFrame(id);
   }, [run]);
   return (
-    <figure className="gd-figure">
-      <div className="motion-demo gaze-demo" ref={scene}>
-        <div className="motion-demo-head">
-          <b>Une donnée change sur le tableau de bord</b>
-          <DemoButton onClick={update}>{run ? "Changer encore" : "Mettre à jour"}</DemoButton>
-        </div>
-        <div className="motion-compare">
-          <GazeBoard good={false} target={target} run={run} />
-          <GazeBoard good target={target} run={run} />
-        </div>
-      </div>
-      <figcaption className="gd-caption">
-        {counts ? (counts[0] + counts[1] ? `${counts[0]} cartes animées d'un côté, ${counts[1]} de l'autre — comptées sur le rendu · ${ms("expressive")} ms, le cran d'une arrivée` : "mouvement réduit : rien ne s'anime, la carte qui a changé est seulement étiquetée") : "huit cartes, une seule donnée change"}
-      </figcaption>
-    </figure>
+    <div className="motion-demo gaze-demo" ref={scene}>
+      <Demo situation="Une donnée change sur le tableau de bord"
+        action={{ label: run ? "Changer encore" : "Mettre à jour", onClick: update }}
+        caption={counts ? (counts[0] + counts[1] ? `${counts[0]} cartes animées d'un côté, ${counts[1]} de l'autre — comptées sur le rendu · ${ms("expressive")} ms, le cran d'une arrivée` : "mouvement réduit : rien ne s'anime, la carte qui a changé est seulement étiquetée") : "huit cartes, une seule donnée change"}>
+        <DemoSides>
+          <DemoSide ok={false} verdict="Les huit cartes bougent"><GazeBoard good={false} target={target} run={run} /></DemoSide>
+          <DemoSide ok verdict="Seule la carte qui change bouge"><GazeBoard good target={target} run={run} /></DemoSide>
+        </DemoSides>
+      </Demo>
+    </div>
   );
 }
 
@@ -332,26 +295,30 @@ function Scene({ situation, action, scene, children }: {
 /* Les deux côtés sont lus dans l'ordre du document : le faux d'abord, puis le juste. */
 const WRONG = 0, RIGHT = 1;
 
-/* 1 · Le survol suit le curseur : la même rangée deux fois, et la durée que chacune prend. */
+/* 1 · Le survol suit le curseur : la même rangée deux fois, et la durée que chacune prend.
+   Pas de geste scripté (retour d'Auteur, 9 septembre) : le lecteur balaie lui-même
+   une rangée de petits boutons, et la rangée lente traîne derrière son curseur. */
+const HOVER_ROW = ["Entendre", "Confronter", "Récuser", "Ajourner", "Classer", "Notifier"];
+function HoverRow({ slow }: { slow?: boolean }) {
+  return (
+    <div className={`mv-row${slow ? " slow" : ""}`} aria-hidden="true">
+      {HOVER_ROW.map((l) => <span key={l} className="button">{l}</span>)}
+    </div>
+  );
+}
 function BandHover() {
   const scene = useRef<HTMLDivElement>(null);
   const [durations, setDurations] = useState<number[]>([]);
-  const [hovered, setHovered] = useState(false);
-  const stopwatch = useRef<number>(0);
   useEffect(() => {
     if (!scene.current) return;
     setDurations(Array.from(scene.current.querySelectorAll<HTMLElement>(".mv-row")).map((r) => inMs(getComputedStyle(r.querySelector(".button")!).transitionDuration.split(",")[0]) / SLOWED_PAIRS));
-    return () => clearTimeout(stopwatch.current);
   }, []);
-  /* un seul geste : le curseur passe sur les deux rangées au même instant, puis les quitte */
-  const hover = () => { clearTimeout(stopwatch.current); setHovered(false); requestAnimationFrame(() => requestAnimationFrame(() => { setHovered(true); stopwatch.current = window.setTimeout(() => setHovered(false), ms("slow") * SLOWED_PAIRS + 400); })); }; /* chorégraphie : le temps que la rangée lente arrive, puis on repart */
   const okOf = (d?: number) => d === undefined || d <= ms("fast");
   const says = (d?: number) => d === undefined ? "" : okOf(d) ? `${d} ms — il suit le curseur` : `${d} ms — il poursuit le curseur`;
-  const Row = () => (<><span className={`button${hovered ? " hovered" : ""}`}>Entendre</span><span className={`button${hovered ? " hovered" : ""}`}>Confronter</span><span className={`button${hovered ? " hovered" : ""}`}>Récuser</span></>);
   return (
-    <Scene situation="Le curseur passe sur une rangée de boutons" action={{ label: "Survoler", onClick: hover }} scene={scene}>
-      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><div className="mv-row slow" aria-hidden="true"><Row /></div></DemoSide>
-      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><div className="mv-row" aria-hidden="true"><Row /></div></DemoSide>
+    <Scene situation="Le curseur balaie une rangée de boutons" scene={scene}>
+      <DemoSide ok={okOf(durations[WRONG])} verdict={says(durations[WRONG])}><HoverRow slow /></DemoSide>
+      <DemoSide ok={okOf(durations[RIGHT])} verdict={says(durations[RIGHT])}><HoverRow /></DemoSide>
     </Scene>
   );
 }

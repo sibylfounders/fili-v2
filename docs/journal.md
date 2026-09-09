@@ -106,6 +106,14 @@ oublié par la migration dans `globals.css` — les étiquettes des espaces
 étaient vides. Banc : 71 épreuves vertes page par page (typo · 6 est
 capricieuse en course complète, connue).
 
+**Les grandes preuves aussi** (même jour, « comme la page Mouvement, même
+chose pour les preuves du haut de page ») — Typo (les voix, la gazette avec
+l'interligne en réglage), Rythme (la profondeur), Composition (l'espace blanc
+avec l'encre en réglage ; l'écran cassé avec ses cinq fautes en puces sous la
+scène, et le verdict qui dit « réparé » tant que le pointeur est sur l'écran),
+Mouvement (ses trois preuves prennent le composant commun, avec le ✓ / ✗).
+Plus un seul bouton « Casser : … » sur les six pages.
+
 ---
 
 ## #134 — Le code de Fili est écrit en anglais ; le lexique est ouvert

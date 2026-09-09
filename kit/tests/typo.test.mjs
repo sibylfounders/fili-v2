@@ -217,21 +217,24 @@ test('2 · la feuille de la page consomme, pour chaque preuve, le token qu’ell
 test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés ; saut de niveau, graisse, capitales, champ à 14 px, calage — le faux et le juste côte à côte, le faux déclaré', async () => {
   const W = 1440
   const { p, close } = await nav.page(URL(), { width: W })
-  const broken = (sec, n = 0) => p.locator(`${sec} .button.broken`).nth(n)
+  /* les preuves du haut de page vivent dans le cadre : l'action dans la tête, le verdict au-dessus de la scène */
+  const go = (sec) => p.locator(`${sec} .demo-go`)
   /* le nom orphelin */
-  await broken('#fonts').click()
+  await go('#fonts').click()
   assert.equal(await p.getAttribute('#fonts .gd-voice', 'data-intent'), 'statement')
   assert.match(await calc(p, '#fonts .gd-vblock.primary .gd-vglyph', 'fontFamily'), /^"Geist Text"/)
-  assert.match(await text(p, '#fonts .badge.ko'), /orphelin/)
-  await broken('#fonts').click(); assert.equal(await p.getAttribute('#fonts .gd-voice', 'data-intent'), null); assert.match(await calc(p, '#fonts .gd-vblock.primary .gd-vglyph', 'fontFamily'), /^"?Geist"?,/)
-  /* justifier, puis étouffer — l'une remplace l'autre */
-  await broken('#gazette', 0).click()
+  assert.match(await text(p, '#fonts .demo-single.bad .demo-verdict'), /n'existe pas/)
+  await go('#fonts').click(); assert.equal(await p.getAttribute('#fonts .gd-voice', 'data-intent'), null); assert.match(await calc(p, '#fonts .gd-vblock.primary .gd-vglyph', 'fontFamily'), /^"?Geist"?,/)
+  assert.equal(await p.locator('#fonts .demo-single.neutral').count(), 1, 'réparé : le verdict redevient neutre')
+  /* justifier (l'action), puis étouffer (le réglage sous la scène) — les deux se cumulent, le verdict les nomme */
+  await go('#gazette').click()
   assert.equal(await p.getAttribute('#gazette .gazette', 'data-intent'), 'statement'); assert.equal(await calc(p, '#gazette .gz-cols p', 'textAlign'), 'justify')
-  await broken('#gazette', 1).click()
-  assert.equal(await calc(p, '#gazette .gz-cols p', 'textAlign'), 'start', 'justifier se répare quand étouffer prend')
+  await p.locator('#gazette .demo-seg .button', { hasText: '1,15' }).click()
+  assert.equal(await calc(p, '#gazette .gz-cols p', 'textAlign'), 'justify', 'les deux fautes se cumulent')
   const fs = await calcPx(p, '#gazette .gz-cols p', 'fontSize'); ok(await calcPx(p, '#gazette .gz-cols p', 'lineHeight'), 1.15 * fs, 'étouffé : 1,15', 0.1)
-  assert.match(await text(p, '#gazette .badge.ko'), /1,15/)
-  await broken('#gazette', 1).click(); assert.equal(await p.getAttribute('#gazette .gazette', 'data-intent'), null); ok(await calcPx(p, '#gazette .gz-cols p', 'lineHeight'), 1.6 * fs, 'réparé : 1,6', 0.1)
+  assert.match(await text(p, '#gazette .demo-single.bad .demo-verdict'), /1,15/)
+  await go('#gazette').click(); await p.locator('#gazette .demo-seg .button', { hasText: '1,6' }).click()
+  assert.equal(await p.getAttribute('#gazette .gazette', 'data-intent'), null); ok(await calcPx(p, '#gazette .gz-cols p', 'lineHeight'), 1.6 * fs, 'réparé : 1,6', 0.1)
   /* les bandes (#casser) : la commande qui casse est celle du gabarit commun */
   const card = (i) => `#wreck .doc-band:nth-child(${i})`
   const bad = (i) => `${card(i)} .demo-side.bad`, good = (i) => `${card(i)} .demo-side.good`

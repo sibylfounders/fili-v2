@@ -622,15 +622,12 @@ export default function View() {
               le produit entier passe en font système, en silence.</p>
             </div>
             <div className="gdoc-body">
-              <div className="rank">
-                <button className={`button broken ${badName ? "on" : ""}`} onClick={() => setBadName(!badName)}>
-                  {badName ? "Réparer le nom" : "Casser : déclarer « Geist Text »"}
-                </button>
-                {badName && (
-                  <span className="badge ko">nom orphelin — font système, en silence</span>
-                )}
-              </div>
-              <figure className="gd-figure" style={{ width: "100%" }}>
+              {/* Forme B — une scène, la casse remplace l'état : la font est déclarée sous un
+                  nom qui n'existe pas, et rien ne le dit — sauf le verdict, lu sur le rendu. */}
+              <Demo situation="Deux fonts déclarées dans la feuille du kit"
+                action={{ label: "Déclarer « Geist Text »", back: "Réparer le nom", active: badName, onClick: () => setBadName(!badName) }}
+                caption="une font qui lit, une font qui chiffre — livrées avec le kit, au nom près">
+                <DemoScene ok={badName ? false : null} verdict={badName ? "« Geist Text » n'existe pas : le produit passe en font système, en silence" : "Geist et JetBrains Mono, sous leur vrai nom"}>
                 {/* casse : « Geist Text » n'existe pas — la pile de secours prend la main, en silence */}
                 <div className="gd-voice" data-intent={badName ? "statement" : undefined} style={badName ? { fontFamily: '"Geist Text", ui-sans-serif, system-ui, sans-serif' } : undefined}>
                   <div className="gd-vblock primary">
@@ -642,11 +639,7 @@ export default function View() {
                     <div className="gd-vwho"><b>JetBrains Mono</b><span>400 · 600</span></div>
                   </div>
                 </div>
-                <figcaption className="gd-caption">
-                  une font qui lit, une font qui chiffre — livrées avec le kit, au nom près
-                </figcaption>
-              </figure>
-              <div className="gd-costumes" data-intent={badName ? "statement" : undefined} style={badName ? { fontFamily: '"Geist Text", ui-sans-serif, system-ui, sans-serif' } : undefined}>
+                <div className="gd-costumes" data-intent={badName ? "statement" : undefined} style={badName ? { fontFamily: '"Geist Text", ui-sans-serif, system-ui, sans-serif' } : undefined}>
                 <div className="gd-costume">
                   <span className="role">Le titre</span>
                   <span className="spec heading">Il porte la page, brièvement</span>
@@ -668,6 +661,8 @@ export default function View() {
                   <span className="record">Mono 400 · tabular</span>
                 </div>
               </div>
+                </DemoScene>
+              </Demo>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <Rules ids={["t11", "t7"]} />
               </div></details>
@@ -759,20 +754,22 @@ export default function View() {
               d&apos;autre. Une règle cassée, et la page ment aussitôt.</p>
             </div>
             <div className="gdoc-body">
-              <div className="rank">
-                <button className={`button broken ${justif ? "on" : ""}`} onClick={() => { setJustif(!justif); if (!justif) setTight(false); }}>
-                  {justif ? "Réparer le fer" : "Casser : justifier"}
-                </button>
-                <button className={`button broken ${tight ? "on" : ""}`} onClick={() => { setTight(!tight); if (!tight) setJustif(false); }}>
-                  {tight ? "Rendre l'air" : "Casser : étouffer l'interligne"}
-                </button>
-                {(justif || tight) && (
-                  <span className="badge ko">
-                    {justif ? "Justifié — rivières d'espace, retour de ligne irrégulier" : "Étouffé — interligne 1,15, sous le plancher de 1,5"}
-                  </span>
-                )}
-              </div>
-              <figure className="gd-figure">
+              {/* Forme B — l'action justifie et se retourne ; l'interligne est un réglage
+                  partagé, sous la scène : les deux fautes peuvent se cumuler, le verdict les
+                  nomme toutes les deux. */}
+              <Demo situation="Une gazette composée par les règles, et rien d'autre"
+                action={{ label: "Justifier", back: "Réparer le fer", active: justif, onClick: () => setJustif(!justif) }}
+                tools={<span className="demo-seg" role="group" aria-label="Interligne">
+                  <span className="mono muted">Interligne</span>
+                  <button type="button" className={`button ${tight ? "" : "on"}`} aria-pressed={!tight} onClick={() => setTight(false)}>1,6</button>
+                  <button type="button" className={`button ${tight ? "on" : ""}`} aria-pressed={tight} onClick={() => setTight(true)}>1,15</button>
+                </span>}
+                caption="fer à gauche · corps ≥ 16 px · interligne 1,6 · mesure bornée en ch · capitales espacées, jamais tapées">
+                <DemoScene ok={justif || tight ? false : null}
+                  verdict={justif && tight ? "Justifiée et étouffée : rivières d'espace, interligne 1,15 sous le plancher de 1,5"
+                    : justif ? "Justifiée : rivières d'espace, retour de ligne irrégulier"
+                    : tight ? "Étouffée : interligne 1,15, sous le plancher de 1,5"
+                    : "Fer à gauche, interligne 1,6 : la page tient sans qu'on ait réglé un titre"}>
                 {/* Essai du 2 septembre : la gazette est posée sur une terre sombre
                       plutôt que sur le voile gris. Une feuille de papier se lit comme
                       une feuille quand ce qui l'entoure n'est pas, lui aussi, du
@@ -805,11 +802,8 @@ export default function View() {
                     réels : la page garde son unique h1.</p>
                   </div>
                 </div>
-                <figcaption className="gd-caption">
-                  fer à gauche · corps ≥ 16 px · interligne 1,6 ·
-                  mesure bornée en ch · capitales espacées, jamais tapées
-                </figcaption>
-              </figure>
+                </DemoScene>
+              </Demo>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <Rules ids={["t9", "t8", "t10"]} />
               </div></details>

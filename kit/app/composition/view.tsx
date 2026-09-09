@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { PanelCode } from "../preview";
 import { useAdaptation } from "../adaptation";
-import { Bands, Band, Demo, DemoSides, DemoSide, ListRules } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, DemoScene, ListRules } from "../levels";
 import type { LineList } from "../levels";
 import type { ReactNode } from "react";
 
@@ -394,20 +394,19 @@ function Magazine() {
     return () => { clearTimeout(t); window.removeEventListener("resize", measureIt); };
   }, [ink, tight, measureIt]);
 
+  /* Forme B (verdict d'Auteur, 9 septembre) : l'action retire l'espace blanc et se
+     retourne ; ce qu'on montre — le texte ou l'encre seule — est un réglage sous la
+     scène. Le verdict au repos dit la mesure, lue sur le rendu. */
   return (
-    <>
-      <div className="rank">
-        <button className={`button ${ink ? "on" : ""}`} onClick={() => setInk(!ink)}>
-          {ink ? "Rendre le texte" : "Ne montrer que l'encre"}
-        </button>
-        <button className={`button broken ${tight ? "on" : ""}`} onClick={() => setTight(!tight)}>
-          {tight ? "Rendre l'espace blanc" : "Retirer l'espace blanc"}
-        </button>
-        <span className={`badge ${tight ? "ko" : ""}`}>
-          {tight ? "même encre, même surface — l'air a disparu"
-                 : part === null ? "…" : `l'encre occupe ${part} % de cette page`}
-        </span>
-      </div>
+    <Demo situation="Une page de magazine ordinaire"
+      action={{ label: "Retirer l'espace blanc", back: "Rendre l'espace blanc", active: tight, onClick: () => setTight(!tight) }}
+      tools={<span className="demo-seg" role="group" aria-label="Ce qu'on montre">
+        <span className="mono muted">Montrer</span>
+        <button type="button" className={`button ${ink ? "" : "on"}`} aria-pressed={!ink} onClick={() => setInk(false)}>le texte</button>
+        <button type="button" className={`button ${ink ? "on" : ""}`} aria-pressed={ink} onClick={() => setInk(true)}>l'encre seule</button>
+      </span>}>
+      <DemoScene ok={tight ? false : null} verdict={tight ? "Même encre, même surface : l'air a disparu"
+        : part === null ? "…" : `L'encre occupe ${part} % de cette page ; tout le reste est de l'espace blanc`}>
       <div className="co-scene co-duo-t">
         <div className="co-left">
           <div ref={holder} className={`co-door ${tight ? "tight" : ""}`}
@@ -446,7 +445,8 @@ function Magazine() {
             ? "Chaque tache couvre un signe. Tout le reste — l'immense majorité de la page — est de l'espace blanc : il n'occupe pas la place, il la donne."
             : "Une page de magazine ordinaire. Sa forme se lit avant le premier mot : les marges, les colonnes et les respirations disent par où entrer."}</p>
       </div>
-    </>
+      </DemoScene>
+    </Demo>
   );
 }
 
@@ -747,6 +747,7 @@ export class EcranConformite {
 export default function View() {
   const activeId = useDocSections("broken");
   const [fault, setFault] = useState("");
+  const [repaired, setRepaired] = useState(false); /* le pointeur est sur l'écran : il se répare, et le verdict le dit */
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
   const { styl } = useAdaptation();
   const door = useRef<HTMLDivElement>(null);
@@ -781,30 +782,30 @@ export default function View() {
               l&apos;écran se répare.</p>
             </div>
             <div className="gdoc-body">
-              <div className="rank">
-                {FAULTS.filter((f) => f.key).map((f) => (
-                  <button key={f.key} className={`button broken ${fault === f.key ? "on" : ""}`}
-                    aria-pressed={fault === f.key}
-                    onClick={() => setFault(fault === f.key ? "" : f.key)}>
-                    Casser : {f.name}
-                  </button>
-                ))}
-              </div>
+              {/* Le cadre (verdict d'Auteur, 9 septembre) : la faute se choisit sous la scène —
+                  une à la fois, la même puce la retire — et le verdict en tête dit l'ÉTAT :
+                  faux, ou réparé tant que le pointeur est sur l'écran. Le pied de la scène
+                  dit le GESTE. Jamais deux messages qui se contredisent. */}
+              <Demo situation="Un écran de réglages, juste au repos"
+                tools={<span className="demo-seg" role="group" aria-label="La faute">
+                  <span className="mono muted">Casser</span>
+                  {FAULTS.filter((f) => f.key).map((f) => (
+                    <button key={f.key} type="button" className={`button ${fault === f.key ? "on" : ""}`}
+                      aria-pressed={fault === f.key}
+                      onClick={() => setFault(fault === f.key ? "" : f.key)}>
+                      {f.name}
+                    </button>
+                  ))}
+                </span>}>
+              <DemoScene ok={fault ? repaired : null} verdict={fault && repaired ? current.solution : current.verdict}>
               <div className="co-scene co-proof1">
-                {/* Le haut dit l'ÉTAT (faux / réparé), le bas dit le GESTE
-                    (survolez / relâchez) : jamais deux messages qui se
-                    contredisent. Les deux badges occupent la même case. */}
-                <span className="co-verdict">
-                  <span className={`badge ${fault ? "ko" : ""}`}>{current.verdict}</span>
-                  {fault && <span className="badge good">{current.solution}</span>}
-                </span>
                 {/* Au repos, la colonne de droite EST le vocabulaire, relié à
                     l'écran par des filets ; dès qu'on casse, elle laisse la
                     place au commentaire de la faute. Les deux restent posés
                     l'un sur l'autre pour que rien ne saute au changement. */}
                 <div className="co-bench" ref={bench}>
                   <div className="co-left">
-                    <div className="co-door" ref={door}>
+                    <div className="co-door" ref={door} onMouseEnter={() => setRepaired(true)} onMouseLeave={() => setRepaired(false)}>
                       <Application fault={fault} />
                       <Overlay fault={fault} holder={door} />
                     </div>
@@ -827,6 +828,8 @@ export default function View() {
                   <Caption bench={bench} active={!fault} />
                 </div>
               </div>
+              </DemoScene>
+              </Demo>
             </div>
           </section>
 
