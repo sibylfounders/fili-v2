@@ -444,6 +444,7 @@ function CardAligned({ broken }: { broken: boolean }) {
   const [top, setTop] = useState(0);
   const [side, setSide] = useState(0);
   const [cap, setCap] = useState(0);
+  const [box, setBox] = useState({ top: 0, height: 0 });
   const [onCard, setOnCard] = useState(true);
 
   useEffect(() => {
@@ -456,6 +457,11 @@ function CardAligned({ broken }: { broken: boolean }) {
       if (!c || !k) return;
       setTop(k.getBoundingClientRect().top - c.getBoundingClientRect().top);
       setCap(k.getBoundingClientRect().height);
+      /* la boîte sur laquelle la marge est mesurée : celle du paragraphe rendu —
+         la hauteur de ligne quand rien n'est calé, capitales → ligne de base quand
+         le calage est déclaré. Lue, jamais posée. */
+      const pr = k.parentElement!.getBoundingClientRect();
+      setBox({ top: pr.top - c.getBoundingClientRect().top, height: pr.height });
       /* le côté se mesure comme le haut : depuis le bord extérieur de la
          carte, trait du cadre compris — sinon on compare deux choses qui
          ne partent pas du même endroit. */
@@ -475,19 +481,23 @@ function CardAligned({ broken }: { broken: boolean }) {
         data-intent={broken ? "statement" : undefined}>
         <p>
           <span ref={capital} className="tp-witness" aria-hidden="true" />
-          Coursue — départs du soir
+          Coursue
         </p>
-        {/* les cotes se lisent là où elles se mesurent (verdict d'Auteur, 9 septembre) :
-            le haut, du bord de la carte au sommet des capitales ; le côté, du bord au texte.
-            Les nombres sont mesurés sur le rendu, jamais posés. */}
+        {/* Ce qu'on compare (verdict d'Auteur, 9 septembre) : la BOÎTE sur laquelle la
+            marge est mesurée. Sans calage, c'est la hauteur de ligne — de l'air au-dessus
+            et au-dessous des lettres ; calée, c'est capitales → ligne de base. La boîte est
+            teintée et lue sur le rendu ; les deux lignes de la font restent en filet ; la
+            cote du haut va du bord de la carte au sommet des capitales. Rien n'est posé. */}
         {onCard && (
           <>
+            <span className="tp-box" aria-hidden="true" style={{ top: `${box.top}px`, height: `${box.height}px` }}>
+              <i>{broken ? "la hauteur de ligne" : "capitales → ligne de base"}</i>
+            </span>
             <span className="tp-cote tp-cote-v" aria-hidden="true" style={{ height: `${top}px`, right: `${side / 2}px` }}>
               <span className="tp-cote-label">{fr(top)} px</span>
             </span>
-            <span className="tp-cote tp-cote-h" aria-hidden="true" style={{ width: `${side}px`, top: `${top + cap / 2}px` }}>
-              <span className="tp-cote-label">{fr(side)} px</span>
-            </span>
+            <span className="tp-line" aria-hidden="true" style={{ top: `${top}px` }} />
+            <span className="tp-line" aria-hidden="true" style={{ top: `${top + cap}px` }} />
           </>
         )}
       </div>
@@ -911,14 +921,14 @@ export default function View() {
                     <DemoSides>
                       <DemoSide ok={false} verdict="Tout en demi-gras : plus rien ne ressort">
                         <div className="tp-scene">
-                          <p style={{ fontWeight: 600 }}>Un texte long en demi-gras
+                          <p style={{ fontWeight: "var(--weight-heading)" }}>Un texte long en demi-gras
                           n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
                           demi-gras appartient aux titres.</p>
                         </div>
                       </DemoSide>
                       <DemoSide ok verdict="Le corps courant à 400, la graisse aux titres">
                         <div className="tp-scene">
-                          <p style={{ fontWeight: 400 }}>Un texte long en demi-gras
+                          <p style={{ fontWeight: "var(--weight-body)" }}>Un texte long en demi-gras
                           n&apos;appuie plus rien : quand tout est important, rien ne l&apos;est. Le
                           demi-gras appartient aux titres.</p>
                         </div>

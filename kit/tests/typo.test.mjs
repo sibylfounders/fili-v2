@@ -266,9 +266,10 @@ test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés 
   if (knows) {
     await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(100)
     const rest = await alignment(`${good(6)} .tp-alignment`); ok(rest.top, rest.side, 'calé : le haut vaut les côtés', 1)
-    assert.ok(numbers(rest.says).length >= 2 && Math.abs(numbers(rest.says)[0] - numbers(rest.says)[1]) <= 1, `calé, la page le dit : ${rest.says}`)
+    ok(numbers(rest.says)[0], rest.top, `calé, la page le dit : ${rest.says}`, 0.5)
+    assert.equal(await p.locator(`${good(6)} .tp-line`).count(), 2, 'les lignes de la font : capitales, ligne de base'); assert.equal(await p.locator(`${good(6)} .tp-box`).count(), 1, 'la boîte mesurée')
     const broken = await alignment(`${bad(6)} .tp-alignment`); assert.ok(broken.top > broken.side + 2, `cassé : l'air revient au-dessus (${broken.top} > ${broken.side})`)
-    assert.ok(numbers(broken.says).length >= 2, `cassé, la page lit les deux nombres : ${broken.says}`)
+    ok(numbers(broken.says)[0], broken.top, `cassé, la page lit le haut : ${broken.says}`, 0.5)
   } else assert.match(await text(p, `${good(6)} .badge`), /ne sait pas encore caler/)
   await close()
 })
@@ -355,7 +356,7 @@ test('4 · la densité change les marges des coques, jamais un corps ; l’affic
 })
 
 /* ── 5 · C17 ── */
-test('5 · dans les deux thèmes, tout tertiaire rendu porte 600 au moins, au cran étiquette au moins, jamais un paragraphe lu', async () => {
+test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au moins (allégé en sombre), au cran étiquette au moins, jamais un paragraphe lu', async () => {
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { width: 1440, theme })
     const f = await faultsC17(p, theme, 1440)

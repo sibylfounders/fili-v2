@@ -20,11 +20,11 @@
 }
 .gd-vblock.primary { background: var(--primary); color: var(--on-primary); }
 .gd-vblock.dark { background: var(--code-bg); color: var(--code-text); }
-.gd-vglyph { font-size: clamp(5.5rem, 3rem + 9vw, 10rem); line-height: 1; font-weight: 500; letter-spacing: -0.04em; } /* hors chaîne : le glyphe est un spécimen, il suit le cadre, pas l'échelle de texte */
-.gd-vblock.dark .gd-vglyph { font-family: var(--font-mono); font-weight: 600; letter-spacing: 0; }
+.gd-vglyph { font-size: clamp(5.5rem, 3rem + 9vw, 10rem); line-height: 1; font-weight: var(--weight-label); letter-spacing: -0.04em; } /* hors chaîne : le glyphe est un spécimen, il suit le cadre, pas l'échelle de texte */
+.gd-vblock.dark .gd-vglyph { font-family: var(--font-mono); letter-spacing: 0; } /* T14 : plus de graisse propre au sombre, le jeton fait l'écart */
 .gd-vwho { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-3-inline); }
-.gd-vwho b { font-weight: 600; }
-.gd-vwho span { font: 600 var(--font-size-label)/1 var(--font-mono); opacity: 0.75; }
+.gd-vwho b { font-weight: var(--weight-heading); }
+.gd-vwho span { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); opacity: 0.75; }
 
 /* les quatre costumes : un rôle = un costume, portés par les filets ;
    chaque costume est une ligne — sa marge, son espace intérieur */
@@ -38,10 +38,10 @@
 @media (max-width: 40rem) { .gd-costume { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
 .gd-costume .role { color: var(--text-secondary); font-size: var(--font-size-small); }
 .gd-costume .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.gd-costume .spec.heading { font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; }
-.gd-costume .spec.label { font-size: var(--font-size-label); font-weight: 500; text-transform: uppercase; letter-spacing: var(--tracking-label); } /* T8 : espacées, par le style */
+.gd-costume .spec.heading { font-size: var(--font-size-h1); font-weight: var(--weight-heading); letter-spacing: -0.02em; }
+.gd-costume .spec.label { font-size: var(--font-size-label); font-weight: var(--weight-label); text-transform: uppercase; letter-spacing: var(--tracking-label); } /* T8 : espacées, par le style */
 .gd-costume .spec.code { font-family: var(--font-mono); font-size: var(--font-size-label); }
-.gd-costume .record { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
+.gd-costume .record { font: var(--weight-heading) var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
 
 /* ── 02 · L'échelle (répertoire) : les huit crans du registre, montrés en
       vrai — chaque rangée est rendue PAR son token ; les bornes affichées
@@ -49,10 +49,10 @@
 .gd-range { display: grid; gap: var(--gap-1-block); width: 100%; }
 .gd-gstep { display: grid; grid-template-columns: 15rem minmax(0, 1fr); align-items: baseline; gap: var(--gap-3-inline); } /* hors chaîne : la colonne des fiches, une mesure */
 @media (max-width: 48rem) { .gd-gstep { grid-template-columns: 1fr; gap: var(--gap-4-block); } }
-.gd-gstep .record { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: normal; } /* tertiaire : la fiche d’un cran de la gamme — en petit, un cran de graisse au-dessus (C17) */
-.gd-gstep .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; /* la graisse des titres du site */ letter-spacing: -0.02em; line-height: var(--leading-heading); }
-.gd-gstep .spec.current { white-space: normal; overflow: visible; font-weight: 400; letter-spacing: 0; line-height: var(--leading-body); max-width: var(--measure); }
-.gd-gstep .spec.label { font-weight: 500; letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: var(--leading-body); } /* T8 : le petit cran porte l'étiquette */
+.gd-gstep .record { font: var(--weight-heading) var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: normal; } /* tertiaire : la fiche d’un cran de la gamme — en petit, un cran de graisse au-dessus (C17) */
+.gd-gstep .spec { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: var(--weight-label); /* la graisse des titres du site */ letter-spacing: -0.02em; line-height: var(--leading-heading); }
+.gd-gstep .spec.current { white-space: normal; overflow: visible; font-weight: var(--weight-body); letter-spacing: 0; line-height: var(--leading-body); max-width: var(--measure); }
+.gd-gstep .spec.label { font-weight: var(--weight-label); letter-spacing: var(--tracking-label); text-transform: uppercase; line-height: var(--leading-body); } /* T8 : le petit cran porte l'étiquette */
 
 /* ── 03 · La mesure : même texte, seule la largeur change — trois figures,
       séparées par le cran de page ── */
@@ -71,15 +71,15 @@
   padding: var(--pad-1-block) var(--pad-1-inline);
   color: var(--text-primary); text-align: left;
 }
-.gz-mast { text-align: center; font-weight: 600; letter-spacing: -0.03em; font-size: var(--font-size-display); line-height: 1.1; }
+.gz-mast { text-align: center; font-weight: var(--weight-heading); letter-spacing: -0.03em; font-size: var(--font-size-display); line-height: 1.1; }
 .gz-date {
   margin-top: var(--gap-3-block); text-align: center;
-  font-size: var(--font-size-small); font-weight: 500;
+  font-size: var(--font-size-small); font-weight: var(--weight-label);
   text-transform: uppercase; letter-spacing: var(--tracking-label); /* T8 : brèves, espacées, jamais tapées */
   color: var(--text-secondary);
   padding-bottom: var(--gap-3-block); border-bottom: 2px solid var(--text-primary);
 }
-.gz-head { margin-top: var(--gap-1-block); font-size: var(--font-size-h1); font-weight: 600; letter-spacing: -0.02em; line-height: var(--leading-heading); text-wrap: balance; }
+.gz-head { margin-top: var(--gap-1-block); font-size: var(--font-size-h1); font-weight: var(--weight-heading); letter-spacing: -0.02em; line-height: var(--leading-heading); text-wrap: balance; }
 .gz-lede { margin-top: var(--gap-3-block); color: var(--text-secondary); line-height: var(--leading-body); }
 .gz-cols { margin-top: var(--gap-1-block); columns: 2; column-gap: var(--page-2-inline); }
 @media (max-width: 40rem) { .gz-cols { columns: 1; } }
@@ -100,7 +100,7 @@
 .gd-tree { width: 100%; display: grid; gap: var(--gap-3-block); text-align: left; }
 .gd-tree-level { padding-inline-start: var(--pad-2-inline); }
 .gd-tree-rank {
-  font: 600 var(--font-size-label)/1.5 var(--font-mono);
+  font: var(--weight-heading) var(--font-size-label)/1.5 var(--font-mono);
   padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-3);
   background: var(--surface-hover); color: var(--text-primary);
 }
@@ -136,7 +136,7 @@
 .gd-measure-bound.off { visibility: hidden; }
 .gd-measure-bound b {
   position: absolute; top: 100%; right: 0; padding-top: var(--gap-4-block);
-  font: 600 var(--font-size-label)/1.5 var(--font-mono);
+  font: var(--weight-heading) var(--font-size-label)/1.5 var(--font-mono);
   color: var(--text-tertiary); white-space: nowrap; /* tertiaire : la cote de la borne */
 }
 
@@ -159,7 +159,7 @@
   max-width: 34ch; /* hors chaîne : la largeur du spécimen, une mesure de lecture */
 }
 .tp-alignment > p {
-  margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading);
+  margin: 0; font-size: var(--font-size-display); line-height: var(--leading-heading); /* au cran de l'affiche : l'air d'une ligne se voit (retour d'Auteur, 9 septembre) */
   text-box: trim-both cap alphabetic;
 }
 .tp-alignment.broken > p { text-box: normal; }
@@ -167,6 +167,16 @@
    ligne de base — sans chasse, il ne déplace rien et n'agrandit pas la
    ligne (la hauteur des capitales est sous l'ascendante). */
 .tp-witness { display: inline-block; width: 0; height: 1cap; vertical-align: baseline; }
+/* Ce qu'on compare (retour d'Auteur, 9 septembre) : la boîte sur laquelle la
+   marge est mesurée — la hauteur de ligne sans calage, capitales → ligne de
+   base avec. Teintée à la marque, lue sur le rendu ; son nom hors de la carte.
+   Les deux lignes de la font (capitales, ligne de base) restent en filet. */
+.tp-box { position: absolute; left: var(--pad-1-inline); right: var(--pad-1-inline); pointer-events: none;
+  background: color-mix(in srgb, var(--primary) 14%, transparent); } /* hors chaîne : le voile de la boîte, assez léger pour lire au travers */
+.tp-box > i { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin-left: calc(var(--pad-1-inline) + var(--gap-3-inline));
+  font: var(--weight-label) var(--font-size-label)/1 var(--font-mono); font-style: normal; color: var(--primary); white-space: nowrap; }
+.tp-line { position: absolute; left: var(--pad-1-inline); right: var(--pad-1-inline); height: 0; pointer-events: none;
+  border-top: 1px dashed var(--primary); opacity: .7; }
 
 /* ── 05 · La graisse (section à part, décision d'Auteur du 8 septembre 2026) ──
       LA LISTE AU CORPS UNIQUE : trois lignes, une seule taille — le corps.
@@ -233,14 +243,10 @@
    Les longueurs sont mesurées sur le rendu, posées en ligne. */
 .tp-cote { position: absolute; pointer-events: none; color: var(--text-secondary); }
 .tp-cote-v { top: 0; width: 0; border-left: 1px solid currentColor; }
-.tp-cote-h { left: 0; height: 0; border-top: 1px solid currentColor; }
 .tp-cote::before, .tp-cote::after { content: ""; position: absolute; }
 .tp-cote-v::before, .tp-cote-v::after { left: -3px; width: 7px; border-top: 1px solid currentColor; } /* hors chaîne : les tirets d'une cote */
 .tp-cote-v::before { top: 0; } .tp-cote-v::after { bottom: 0; }
-.tp-cote-h::before, .tp-cote-h::after { top: -3px; height: 7px; border-left: 1px solid currentColor; } /* hors chaîne : les tirets d'une cote */
-.tp-cote-h::before { left: 0; } .tp-cote-h::after { right: 0; }
-.tp-cote-label { position: absolute; font: 600 var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
+.tp-cote-label { position: absolute; font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
   color: var(--bg); background: var(--text-secondary); border-radius: var(--r-ctl);
   padding: 0.15rem 0.4rem; /* hors chaîne : la pastille d'une cote, à l'échelle du repère (comme .co-r-label) */ }
 .tp-cote-v .tp-cote-label { right: var(--gap-3-inline); top: 50%; transform: translateY(-50%); }
-.tp-cote-h .tp-cote-label { left: 50%; bottom: var(--gap-3-block); transform: translateX(-50%); }
