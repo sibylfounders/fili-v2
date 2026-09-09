@@ -12,7 +12,7 @@
       retirer d'ici quand globals.css sera migré. ── */
 .ry .rank { gap: var(--gap-3-inline); }
 .ry .button { min-height: var(--control-height); height: auto; padding: var(--pad-3-block) var(--pad-3-inline); border-radius: var(--r-ctl); font-size: var(--font-size-small); }
-.ry .button.demo-go { min-height: var(--control-height-compact); padding: 0 var(--gap-2-inline); font-size: var(--font-size-label); } /* l'action d'un cadre garde sa version compacte */
+.ry .button.demo-go, .ry .demo-seg .button { min-height: var(--control-height-compact); padding: 0 var(--gap-2-inline); font-size: var(--font-size-label); } /* l'action d'un cadre et son choix gardent leur version compacte */
 .ry .badge { border-radius: var(--r-ctl); padding: var(--gap-4-block) var(--gap-3-inline); font-size: var(--font-size-small); }
 .ry .divergence { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); }
 .ry .eye { border-radius: var(--r-3); padding: var(--pad-3-block) var(--pad-3-inline); font-size: var(--font-size-small); }

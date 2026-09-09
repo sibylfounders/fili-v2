@@ -548,7 +548,7 @@ export default function View() {
             </div>
             <div className="gdoc-body">
               {/* le cadre des démonstrations (9 septembre) : la molette sous la scène ; la scène garde sa nuit de marque */}
-              <Demo situation="Une application de transport, quand la racine tourne"
+              <Demo situation="Un écran entier, quatre profondeurs de coins : une seule racine les règle"
                 tools={<Dial id="ar-root" label="Racine" min={0} max={ROOT_MAX} step={2} value={root} onChange={setRoot} />}
                 caption={<>panneau r{fmt(s.r[0])} marge {fmt(s.pad[0])} · carte r{fmt(s.r[1])} marge {fmt(s.pad[1])} · ligne r{fmt(s.r[2])} marge {fmt(s.pad[2])} ·
                   marque r{fmt(s.r[3])} · boutons r{fmt(s.rCtl)} = racine ÷ 4 · espaces {fmt(s.gap[0])} · {fmt(s.gap[1])} · {fmt(s.gap[2])} —
@@ -584,7 +584,7 @@ export default function View() {
               {/* Le cadre des démonstrations (9 septembre) : deux côtés sous leur verdict,
                   les deux molettes sous la scène. La scène de nuit reste (verdict d'Auteur,
                   7 septembre) : fond noir, et les verdicts par le système. */}
-              <Demo situation="Deux coins emboîtés, séparés par un écart"
+              <Demo situation="Deux coins emboîtés : à rayons égaux, l'écart se creuse dans l'angle"
                 tools={<div className="ar-dials">
                   <Dial id="ar-ri" label="Coin intérieur" min={4} max={36} step={1} value={ri} onChange={setRi} />
                   <Dial id="ar-gap" label="Écart" min={0} max={24} step={1} value={gap} onChange={setGap} />

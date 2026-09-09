@@ -1640,8 +1640,9 @@ button.acc-access-link { color: var(--text-secondary); }
 /* le choix (les fautes, ce qu'on montre) : une rangée sous la tête, à la place d'une ligne de verdict — tout part du même bord ; les molettes, elles, restent sous la scène */
 .demo-bar { padding: var(--pad-3-block) var(--pad-2-inline); border-bottom: 1px solid var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
 /* le banc à poignée dans le cadre : la scène est le banc lui-même, bord à bord */
-.preview-in-demo { display: block; padding: 0; background: var(--bg); }
+.preview-in-demo { display: block; padding: 0; background: var(--surface); } /* la part d'écran que la largeur simulée ne couvre pas : le fond de scène */
 .preview-in-demo .preview-track { border-radius: 0; width: 100%; } /* le banc prend la largeur du cadre : c'est elle que la poignée mesure */
+.preview-in-demo .preview-frame { border-radius: 0; border-width: 0 1px 0 0; } /* l'écran simulé colle aux bords du cadre ; son seul bord est le droit, celui de la poignée */
 /* un réglage à deux ou trois positions : le nom du réglage, puis ses positions en boutons compacts */
 .demo-seg { display: inline-flex; align-items: center; gap: var(--gap-3-inline); font-size: var(--font-size-label); }
 .demo-seg .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); }

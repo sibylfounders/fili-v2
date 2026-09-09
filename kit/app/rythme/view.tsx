@@ -558,11 +558,11 @@ export function SituationDensity() {
   ) as CSSProperties;
   return (
     <Preview
-      situation="Une fiche de profil, à trois densités"
+      situation="Une fiche : la densité change sa base, jamais sa structure"
       ceiling={FRAME}
       onWidth={setWide}
       tools={<>
-        <span className="mono muted">La densité</span>
+        <span className="mono muted">Densité</span>
         {DEMO.map((x) => (
           <button key={x.key} className={`button ${d === x.key ? "on" : ""}`}
             aria-pressed={d === x.key} onClick={() => setD(x.key)}>{x.name}</button>
@@ -915,7 +915,7 @@ export default function View() {
             <div className="gdoc-body">
               {/* le cadre des démonstrations (9 septembre) : la molette sous la scène,
                   le verdict lu au-dessus d'elle */}
-              <Demo situation="Quatre niveaux de titres, un seul nombre"
+              <Demo situation="Quatre niveaux, un seul nombre : il règle un contraste, pas une taille"
                 tools={<Wheel id="ry-tit" label="Le titre plus ou moins haut"
                   min={BOUNDS.intervalHeadings[0]} max={BOUNDS.intervalHeadings[1]} increment={0.01}
                   value={headings} onValue={setHeadings} says={fr2(headings)} />}

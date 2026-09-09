@@ -296,11 +296,11 @@ function MeasureInFrame() {
   const instance = INSTANCE.find((c) => c.key === key)!;
   return (
     <Preview
-      situation="Un paragraphe, dans un cadre qui s'élargit"
+      situation="Un paragraphe : trop court, il essouffle ; trop long, il perd la ligne"
       ceiling={FRAME_MEASURE}
       background="plain"
       tools={<>
-        <span className="mono muted">La largeur du texte</span>
+        <span className="mono muted">Largeur du texte</span>
         {INSTANCE.map((c) => (
           <button key={c.key} className={`button ${key === c.key ? "on" : ""}`}
             aria-pressed={key === c.key} onClick={() => setKey(c.key)}>{c.name}</button>
