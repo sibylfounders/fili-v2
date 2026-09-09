@@ -37,3 +37,4 @@ kit/tests/last-run.json
 kit/tests/last-run.log
 kit/tests/banc-de-nuit.launchd.log
 docs/banc-du-jour.md
+kit/.shots/
