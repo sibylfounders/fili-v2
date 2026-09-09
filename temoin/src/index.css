@@ -66,9 +66,9 @@
      atteintes qui se recouvrent rendent le clic imprévisible.
 
      Écrite en CSS et non en utilitaires : le centrage et le débordement d'une
-     zone hors flux n'ont pas de jeton, et les seules valeurs employées ici sont
+     zone hors flux n'ont pas de token, et les seules valeurs employées ici sont
      celles que le fichier de règles tolère — 0, 50 %, 100 %. La mesure, elle,
-     vient du jeton. */
+     vient du token. */
   .reached-comfort {
     position: relative;
   }

@@ -257,7 +257,7 @@
   });
 
   /* Un cran est MORT quand il retombe sur la valeur du précédent : deux
-     jetons différents, un seul espace à l'écran. C'est ce que l'arrondi
+     tokens différents, un seul espace à l'écran. C'est ce que l'arrondi
      fabrique en bas d'échelle — et c'est là que l'échelle s'arrête. */
   const dead = (S, i) => i > 0 && S[i] === S[i - 1];
 

@@ -109,7 +109,7 @@ export const CATEGORIES: Category[] = [
   { key: "contact", name: "Contact",
     says: "À venir — par où joindre l'équipe du kit, et par où proposer une règle, une correction ou une pièce." },
   { key: "telechargements", name: "Téléchargements",
-    says: "À venir — les jetons pour le code et pour Figma, le paquet du kit, et la charte à lire hors ligne." },
+    says: "À venir — les tokens pour le code et pour Figma, le paquet du kit, et la charte à lire hors ligne." },
 ];
 
 /* ── Ce qu'on lit dans la liste ── */

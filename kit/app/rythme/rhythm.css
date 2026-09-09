@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   PAGE RYTHME — styles propres (préfixe ry-). Le squelette du gabarit
+   PAGE RYTHME — styles propres (préfixe ry-). Le skeleton du gabarit
    documentaire nu (gdoc, banc, gd-figure, prov…) vit dans globals.css et
    n'est pas touché. Tout ici consomme le registre de tokens.css : marges
    et espaces par profondeur (pad-*, gap-*), coins r-*, texte font-size-*,
@@ -102,7 +102,7 @@
 .tr-btn.first { background: var(--text-primary); color: var(--bg); box-shadow: none; }
 /* Un chiffre et sa légende ne sont pas deux blocs séparés par un écart :
    c'est un COUPLE typographique, et ce qui les tient est l'interligne, pas
-   un jeton d'espacement. Le cran 4 les écartait comme deux voisins (retour
+   un token d'espacement. Le cran 4 les écartait comme deux voisins (retour
    d'Auteur, 2 septembre) ; ici l'écart est nul et c'est la hauteur de ligne
    du chiffre qui fait le travail — aucune valeur écrite à la main. */
 .tr-sub {
@@ -136,7 +136,7 @@
 @media (max-width: 52rem) { .ry-pf-scene { grid-template-columns: minmax(0, 1fr); } }
 .ry-pf {
   background: var(--bg); border-radius: var(--r-1);
-  /* Le jeton est le repli : sans socle passé à la scène, rien ne change. */
+  /* Le token est le repli : sans socle passé à la scène, rien ne change. */
   padding: var(--pf-p1, var(--pad-1-block)) var(--pf-p1, var(--pad-1-inline));
   display: grid; gap: var(--pf-g1, var(--gap-1-block));
   /* Une surface qui pose son fond pose AUSSI son encre. Sans cette ligne,
@@ -238,7 +238,7 @@
    c'est une légende, pas un panneau posé dans le banc. Quatre boîtes
    séparées par leur opération — la ligne se lit comme une phrase.
    La réglette est un instrument de mesure, pas une mise en page : elle pose
-   côte à côte des jetons des deux axes parce qu'elle les MESURE. */
+   côte à côte des tokens des deux axes parce qu'elle les MESURE. */
 .ry-ruler { --ry-increment: 2.75rem; /* hors chaîne : la place que prend « ÷ √2 » entre deux boîtes */
   display: flex; flex-wrap: wrap; align-items: stretch;
   gap: var(--gap-1-block) var(--ry-increment); /* hors chaîne : l'écart entre deux boîtes EST la place du « ÷ √2 », pas une distance du kit */
@@ -360,7 +360,7 @@
       La géométrie est posée en variables --sd-*, calculées par la vue
       depuis le moteur pour la base choisie ET la largeur simulée du cadre
       (px calculés, jamais écrits). Les coins, eux, ne bougent d'aucune
-      des deux : ce sont les jetons du registre. ── */
+      des deux : ce sont les tokens du registre. ── */
 .ry-sd {
   width: 100%; background: var(--surface); color: var(--text-primary);
   border-radius: var(--r-1); padding: var(--sd-p1) var(--sd-p1i);
@@ -427,7 +427,7 @@
 .ry-ratio[data-intent="statement"] .ry-ratio-bar { background: var(--danger); }
 .ry-ratio-step b { font-size: var(--font-size-label); font-variant-numeric: tabular-nums; color: var(--text-secondary); }
 
-/* y9 · deux cartes jumelles : à gauche des marges en jetons, à droite des
+/* y9 · deux cartes jumelles : à gauche des marges en tokens, à droite des
       marges gelées en pixels. Le texte grandit d'un demi — une proportion,
       pas un cran — et seule la première suit. */
 .ry-rem { width: 100%; display: grid; gap: var(--gap-2-block); }
@@ -435,7 +435,7 @@
 @media (max-width: 44rem) { .ry-rem-pair { grid-template-columns: minmax(0, 1fr); } }
 /* Agrandir le texte, c'est agrandir la racine : TOUT ce qui est en rem
    grandit du même facteur. La démonstration applique ce facteur au texte
-   et aux marges en jetons — c'est fidèle au mécanisme ; la carte en pixels,
+   et aux marges en tokens — c'est fidèle au mécanisme ; la carte en pixels,
    elle, ne peut pas suivre, et c'est le sujet. */
 .ry-rem { --f: 1; }
 .ry-rem.large { --f: 1.5; }
@@ -475,7 +475,7 @@
    des cotes repose directement sur la terre : elle se déclare en thème
    sombre (data-theme="dark", dans la vue) et ses encres comme le rouge de la
    faute sont ceux du versant sombre du système — aucune encre propre à la
-   scène, aucun jeton neuf. L'accent la traverse sans retouche. */
+   scène, aucun token neuf. L'accent la traverse sans retouche. */
 
 /* ═══ LE SCÉNARIO DU MOTEUR — DES SLIDES (2 septembre 2026) ═══════════
    Un seul plateau, toujours le même, et des slides qui s'y succèdent : une
@@ -652,7 +652,7 @@
   display: grid; gap: var(--gap-2-block); align-content: start; }
 
 /* ── LA FICHE ÉVOLUE, ELLE NE SE REMPLACE PAS ────────────────────────
-   Elle est montée une fois pour tout le scénario : ce sont ses JETONS qui
+   Elle est montée une fois pour tout le scénario : ce sont ses TOKENS qui
    changent d'une slide à l'autre, et ce qui les consomme a le droit d'y
    mettre le temps. Sans cette règle, la fiche saute d'un état à l'autre et
    on perd le seul endroit où le moteur se voit travailler (verdict
@@ -880,7 +880,7 @@
    À l'étape de la racine, la seule chose qui change est un rayon de seize
    pixels sur une carte de quatre cents : sans repère, personne ne le voit
    (verdict d'Auteur, 2 septembre). Chaque coin trace donc SON arc, à partir
-   du jeton qui le règle — rien n'est mesuré, donc rien ne peut décrocher
+   du token qui le règle — rien n'est mesuré, donc rien ne peut décrocher
    quand on tourne la molette. Et la cote porte son calcul, pas un nombre
    nu : 16 px, puis ÷ 2 = 8, puis ÷ 2 = 4. Les trois arrivent l'un après
    l'autre, dans l'ordre de la division. */
@@ -916,7 +916,7 @@
 .mo-record.corners .tr-sub:first-of-type::before {
   width: var(--r-3); height: var(--r-3); border-top-left-radius: var(--r-3); }
 
-/* la cote : elle sort du même jeton, donc elle ne peut pas mentir */
+/* la cote : elle sort du même token, donc elle ne peut pas mentir */
 .mo-record.corners .slice::after, .mo-record.corners .tr-card::after,
 .mo-record.corners .tr-sub:first-of-type::after {
   inset-block-start: -0.15em; white-space: nowrap;

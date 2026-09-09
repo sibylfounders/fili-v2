@@ -2,7 +2,7 @@
    Ce qui doit être vrai à l'écran, mesuré sans l'œil (plan validé par
    l'Auteur le 26 août 2026) :
    1 · chaque chiffre affiché sort du moteur ;
-   2 · chaque preuve est rendue par son propre jeton (crans, voix, mesure, gazette, arbre, champ) ;
+   2 · chaque preuve est rendue par son propre token (crans, voix, mesure, gazette, arbre, champ) ;
    3 · chaque casse rend le mensonge qu'elle déclare, et se répare ;
    4 · la densité ne touche pas au texte ; les titres glissent ;
    5 · le tertiaire suit C17 ;
@@ -31,7 +31,7 @@
    Rééquilibrage du 8 septembre 2026 (soir, instructions d'Auteur) : la queue
    en trois sections communes aux pages a disparu ; la page porte UN répertoire
    (#registre) sous un titre à elle, qui range les six dérives (#casser, en h4
-   sous un sous-titre), la liste (#invisibles) et les jetons (#code). Épreuve 8 :
+   sous un sous-titre), la liste (#invisibles) et les tokens (#code). Épreuve 8 :
    l'écriture — aucun mot qui commande ou décrit, pas d'histoire de page, pas de
    pied, un seul répertoire, aucun saut de niveau de titre ; et le compte des
    pièces.                                                                     */
@@ -110,7 +110,7 @@ test('1 · la carte du zoom s’ouvre au ×2 : le corps affiché et le corps ren
     await close()
   }
 })
-test('1 · dans la vue, toute taille posée en ligne est un jeton ou le corps calculé, ou sa ligne (ou la précédente) dit « casse »', () => {
+test('1 · dans la vue, toute taille posée en ligne est un token ou le corps calculé, ou sa ligne (ou la précédente) dit « casse »', () => {
   const src = fs.readFileSync(path.join(KIT, 'app/typo/view.tsx'), 'utf8').split('\n')
   const faults = []
   src.forEach((l, i) => {
@@ -123,7 +123,7 @@ test('1 · dans la vue, toute taille posée en ligne est un jeton ou le corps ca
   assert.deepEqual(faults, [])
 })
 
-/* ── 2 · Chaque preuve est rendue par son propre jeton ── */
+/* ── 2 · Chaque preuve est rendue par son propre token ── */
 test('2 · les huit rangs de l’échelle valent leur cran à chaque largeur ; les crans de texte descendent strictement, l’échelle entière à l’écran large', async () => {
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
@@ -207,7 +207,7 @@ test('2 · la gazette est fer à gauche, corps ≥ 16, interligne ≥ 1,5, capit
     await close()
   }
 })
-test('2 · la feuille de la page consomme, pour chaque preuve, le jeton qu’elle nomme', () => {
+test('2 · la feuille de la page consomme, pour chaque preuve, le token qu’elle nomme', () => {
   const css = fs.readFileSync(path.join(KIT, 'app/typo/typo.css'), 'utf8')
   const block = (sel) => { const i = css.indexOf(`\n${sel} {`); assert.ok(i >= 0, `sélecteur absent : ${sel}`); return css.slice(i, css.indexOf('}', i)) }
   const waits = (sel, decl) => assert.ok(block(sel).includes(decl), `${sel} : « ${decl} » attendu`)
@@ -313,7 +313,7 @@ test('7 · deux fonds, deux graisses : le versant sombre est un vrai thème somb
   assert.equal(await calc(p, '#weight .tp-background.black', 'backgroundColor'), rgb(inks('dark')['bg']))
   assert.equal(await calc(p, black, 'color'), rgb(inks('dark')['text-primary']))
   assert.equal(await calc(p, '#weight .tp-background.light', 'backgroundColor'), rgb(inks('light')['bg']))
-  /* le jeton lui-même, dans les deux thèmes, tel que tokens.css le sert */
+  /* le token lui-même, dans les deux thèmes, tel que tokens.css le sert */
   const token = await p.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--weight-body').trim())
   assert.equal(token, String(WEIGHT.roles.body), 'la page claire sert la graisse claire')
   /* le curseur : l'écart affiché est celui du registre, et il repeint la carte sombre seule */
@@ -392,12 +392,12 @@ test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée 
 })
 
 /* ── 8 · L'écriture et le répertoire ── */
-test('8 · l’écriture : aucun mot qui commande ou décrit l’écran, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; six dérives en h4, treize règles, douze jetons', async () => {
+test('8 · l’écriture : aucun mot qui commande ou décrit l’écran, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; six dérives en h4, treize règles, douze tokens', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
   assert.equal(await p.locator('#registry #wreck h4.doc-band-name').count(), 6, 'six dérives, chacune sous le sous-titre en h4')
   assert.equal(await p.locator('#registry #invisibles .doc-list tbody tr').count(), 13, 'treize règles en liste')
-  assert.equal(await p.locator('#registry #code .doc-code tbody tr').count(), 12, 'douze jetons')
+  assert.equal(await p.locator('#registry #code .doc-code tbody tr').count(), 12, 'douze tokens')
   assert.equal(await p.locator('main .gdoc-sec').count(), 6, 'cinq preuves et un répertoire')
   assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces, chacune sous son sous-titre')
   await close()

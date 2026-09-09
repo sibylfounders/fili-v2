@@ -6,7 +6,7 @@
  *   marges [B, B/R, B/R²] · rayons [R0/2, R0/4, R0/8] · écart = base ÷ 2 ·
  *   bord = B · adoucissement x²(3−2x) sur 320→1440 · amplitudes par axe.
  * Ce qui est RECONSTRUIT et ne peut pas être présenté comme vérifié :
- *   1. Le nom et le nombre des crans. La note dénombre vingt-deux jetons ; ce
+ *   1. Le nom et le nombre des crans. La note dénombre vingt-deux tokens ; ce
  *      moteur en produit vingt-trois. L'écart n'est pas comblé par une valeur
  *      inventée : il est déclaré.
  *   2. L'écart pris à chaque profondeur (marge ÷ 2), et non une seule fois au
@@ -220,7 +220,7 @@ export function derive(entries = ENTRIES_DEFAULTS) {
   return { entries: e, radiusRoot, margins, gaps, radii, edge: margins.container, text, control, dotRequired, corner, depthMiniTargets, prose: { depth: e.proseDepth, ratioWorst: r4(proseWorst) } }
 }
 
-/* Un jeton fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne
+/* Un token fluide. Le générateur adoucit sa courbe en JavaScript ; le CSS ne
    sait qu'interpoler droit. On pose donc la droite qui joint les deux bornes,
    et on MESURE ce qu'elle coûte au lieu de le supposer. */
 export function clampOf(value, axis, unit = 'rem') {
@@ -270,7 +270,7 @@ export function gapCurveRight(value, axis) {
   return { gap: r4(worst), width: or }
 }
 
-/* Les jetons. Deux axes d'espacement, un axe de rayon. */
+/* Les tokens. Deux axes d'espacement, un axe de rayon. */
 export function tokens(foundation) {
   const output = {}
   for (const axis of ['inline', 'block']) {

@@ -2,7 +2,7 @@
    PAGE COULEUR — styles propres (préfixe cl-), nés le 2 septembre 2026 en
    passant les trois étages du dessous au gabarit commun. Ils remplacent des
    styles en ligne : une grille de scène n'est pas une décision locale, elle
-   consomme le registre comme le reste. Tout ce qui suit sort des jetons.
+   consomme le registre comme le reste. Tout ce qui suit sort des tokens.
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* La scène d'une bande : une pile simple, l'air pris dans la chaîne. */
@@ -38,7 +38,7 @@
   width: 100%; min-height: 3.25rem; /* hors chaîne : la silhouette de l'aplat de démonstration */
   margin-bottom: var(--gap-3-block);
   border-radius: var(--r-2);
-  color: #FFFFFF; /* étude : le blanc pur, référence du rapport mesuré — pas un jeton */
+  color: #FFFFFF; /* étude : le blanc pur, référence du rapport mesuré — pas un token */
   display: grid; place-items: center;
   font-weight: 600; font-size: var(--font-size-body);
 }

@@ -160,7 +160,7 @@ test('2 · le labo du coin dessine ce qu’il dit : à gauche le même rayon, à
   assert.equal(rows[0][0], rows[0][1], 'juste : le même cran pour les deux'); assert.notEqual(rows[1][0], rows[1][1], 'faux : deux crans dans la même rangée')
   await close()
 })
-test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le jeton qu’elle nomme, et dit ses casses', () => {
+test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le token qu’elle nomme, et dit ses casses', () => {
   const css = CSS()
   const block = (sel) => { const i = css.indexOf(`\n${sel} {`); assert.ok(i >= 0, `sélecteur absent : ${sel}`); return css.slice(i, css.indexOf('}', i)) }
   const waits = (sel, decl) => assert.ok(block(sel).includes(decl), `${sel} : « ${decl} » attendu`)
@@ -170,9 +170,9 @@ test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le
   waits('.ar-btn', 'border-radius: var(--ar-rctl)'); waits('.ar-btn', 'min-height: var(--control-height)')
   for (const sel of ['.ar-dot', '.ar-avatar', '.ar-inter', '.ar-tabs']) waits(sel, 'border-radius: var(--r-pill)')
   /* Le bouton en pilule n'est plus une casse depuis le 31 août : sa règle ne pose que
-     des jetons du kit, elle n'a donc rien à déclarer — et écrire « casse » sur cette
+     des tokens du kit, elle n'a donc rien à déclarer — et écrire « casse » sur cette
      ligne serait une déclaration fausse. Ce qu'on exige à la place : que la règle du
-     bouton soit entièrement faite de jetons (la forme est permise), que la seule chose
+     bouton soit entièrement faite de tokens (la forme est permise), que la seule chose
      qui distingue le bouton doux soit son fond, et que la gélule — le seul vrai recalé
      — garde ses deux lignes dites. */
   for (const decl of ['min-height: var(--control-height)', 'padding: var(--pad-3-block) var(--pad-3-inline)', 'border-radius: var(--r-pill)']) waits('.ar-btn-pill', decl)

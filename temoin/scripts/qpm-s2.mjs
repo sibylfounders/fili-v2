@@ -419,12 +419,12 @@ test('S2-T13', `Aucune couleur hors des ${COLORS_OF_SYSTEM.length} du système`,
  *
  *  Trou (2) de l'essai du 2026-08-12. La règle est écrite noir sur blanc depuis
  *  l'origine — « le rond qui tourne est interdit : il occupe sans informer » —
- *  et rien ne la vérifiait. L'attente s'annonce par un squelette qui a la forme
+ *  et rien ne la vérifiait. L'attente s'annonce par un skeleton qui a la forme
  *  de ce qui vient ; un rond qui tourne ne dit ni quoi, ni combien, ni jusqu'à
  *  quand.
  *
  *  Liste blanche, pas liste noire : une seule animation est admise, la
- *  respiration du squelette. Tout autre mouvement livré par l'outil est refusé
+ *  respiration du skeleton. Tout autre mouvement livré par l'outil est refusé
  *  sans avoir à être nommé.
  *
  *  Le mouvement peut aussi s'écrire à la main, hors du périmètre habituel : la
@@ -439,7 +439,7 @@ test('S2-T14', 'Rien ne tourne dans le vide', () => {
     if (ANIMATIONS_ALLOWEDALL.includes(cls)) continue
     hits.push({
       path,
-      detail: `« ${cls} » — la seule animation admise est la respiration du squelette ; ` +
+      detail: `« ${cls} » — la seule animation admise est la respiration du skeleton ; ` +
         `ce qui attend prend la forme de ce qui vient`,
     })
   }
@@ -459,11 +459,11 @@ test('S2-T14', 'Rien ne tourne dans le vide', () => {
  *  Le composant sait déjà se taire — il attend qu'on lui déclare qu'il est dans
  *  une suite. Personne ne vérifiait que la déclaration était là.
  *
- *  Ce qui est lu : un jeton écrit DANS une boucle. C'est la répétition qui se
- *  prouve, pas celle qui se devine — un jeton produit par une boucle apparaît
+ *  Ce qui est lu : un token écrit DANS une boucle. C'est la répétition qui se
+ *  prouve, pas celle qui se devine — un token produit par une boucle apparaît
  *  autant de fois qu'il y a de lignes, par construction.
  *
- *  Angle mort déclaré : trois jetons écrits à la main l'un après l'autre se
+ *  Angle mort déclaré : trois tokens écrits à la main l'un après l'autre se
  *  répètent aussi, et ce test ne les voit pas. Ils sont rares — on ne recopie
  *  pas trois fois la même ligne — et ils se voient à la relecture, là où une
  *  boucle ne se voit jamais. */

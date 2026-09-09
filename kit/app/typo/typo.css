@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════════════
    PAGE TYPOGRAPHIE — styles propres (préfixes gd-, gz-), migrés sur la
-   chaîne le 25 août 2026. Le squelette du gabarit documentaire nu (gdoc,
+   chaîne le 25 août 2026. Le skeleton du gabarit documentaire nu (gdoc,
    banc, gd-figure, gd-legende, card, badge, bouton, prov…) vit dans
    globals.css et n'est pas touché ici. Tout ce qui suit consomme les
-   jetons du registre ; ce qui n'en descend pas est dit sur sa ligne.
+   tokens du registre ; ce qui n'en descend pas est dit sur sa ligne.
    Ces blocs REMPLACENT leurs homonymes de globals.css (mêmes sélecteurs,
    chargés après) — à retirer là-bas.
    ═══════════════════════════════════════════════════════════════════════ */
@@ -44,7 +44,7 @@
 .gd-costume .record { font: 600 var(--font-size-label)/1.5 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; } /* tertiaire : la fiche d’un costume — en petit, un cran de graisse au-dessus (C17) */
 
 /* ── 02 · L'échelle (répertoire) : les huit crans du registre, montrés en
-      vrai — chaque rangée est rendue PAR son jeton ; les bornes affichées
+      vrai — chaque rangée est rendue PAR son token ; les bornes affichées
       sont calculées par le moteur, jamais une seconde source. ── */
 .gd-range { display: grid; gap: var(--gap-1-block); width: 100%; }
 .gd-gstep { display: grid; grid-template-columns: 15rem minmax(0, 1fr); align-items: baseline; gap: var(--gap-3-inline); } /* hors chaîne : la colonne des fiches, une mesure */
@@ -60,7 +60,7 @@
 .gd-measure p { position: relative; line-height: var(--leading-body); font-size: var(--font-size-body); }
 .gd-measure.mute p { color: var(--text-secondary); opacity: 0.55; }
 /* le « faux » s'efface (décision d'Auteur, 24 août) — par voile, pas par
-   un jeton pâle : le registre n'a pas de text-muted, à dessein */
+   un token pâle : le registre n'a pas de text-muted, à dessein */
 
 /* ── 04 · La gazette : l'imprimé, terre natale de la typographie.
       Une feuille = un container : son coin, sa marge. Encre sur papier —
@@ -172,7 +172,7 @@
 /* ── 05 · La graisse (section à part, décision d'Auteur du 8 septembre 2026) ──
       LA LISTE AU CORPS UNIQUE : trois lignes, une seule taille — le corps.
       Ce qui sépare le nom, le sous-titre et le bouton, c'est la graisse
-      (les jetons --weight-*, lus au registre) et l'encre (première,
+      (les tokens --weight-*, lus au registre) et l'encre (première,
       seconde). « Égaliser » ramène tout à la graisse du courant et à
       l'encre première : c'est la casse, et elle est dite. Chaque ligne est
       une ligne : sa marge, son espace intérieur, le coin de la ligne. ── */
@@ -205,9 +205,9 @@
 
 /* DEUX FONDS, DEUX GRAISSES : deux cartes côte à côte, le même paragraphe.
    Le versant sombre porte data-theme="dark" : il prend le fond, les encres
-   ET le jeton de graisse du thème sombre — rien n'est peint ici. Le curseur
+   ET le token de graisse du thème sombre — rien n'est peint ici. Le curseur
    ne repeint que --weight-body sur cette carte (dans la vue), jamais le
-   registre. Le paragraphe consomme le jeton : c'est lui qui change. */
+   registre. Le paragraphe consomme le token : c'est lui qui change. */
 .tp-backgrounds-scene { display: grid; gap: var(--gap-2-block); width: 100%; }
 .tp-backgrounds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-1-inline); width: 100%; }
 @media (max-width: 48rem) { .tp-backgrounds { grid-template-columns: 1fr; } }

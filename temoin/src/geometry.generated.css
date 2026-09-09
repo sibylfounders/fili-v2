@@ -2,7 +2,7 @@
    Produite par tools/fili/geometrie/produire.mjs depuis l'Échelle Semantic Rhythm.
    Base 24 · ratio 1.4142135623730951 · arrondi de départ 24.
    TOUT EN REM, sauf la cible au doigt : la taille de texte de l'utilisateur commande.
-   Chaque jeton est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
+   Chaque token est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
    l'horizontal va de 0.8 à 1.2, le vertical de 0.9 à 1.16,
    le texte de 0.96 à 1.07, les rayons de 0.86 à 1.12,
    les contrôles de 1 à 1.06. */

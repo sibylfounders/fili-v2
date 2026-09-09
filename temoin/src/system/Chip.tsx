@@ -1,4 +1,4 @@
-/* Zone système. Un jeton dit un état par son LIBELLÉ et sa TEINTE — jamais par
+/* Zone système. Un token dit un état par son LIBELLÉ et sa TEINTE — jamais par
    la couleur seule, le libellé en est le second porteur (K2 §7.1).
    La teinte n'est pas une charte : elle vient d'une convention que personne n'a
    le droit de casser. Elle est calculée depuis la primaire, jamais choisie.
@@ -39,7 +39,7 @@ export function Chip({
   children,
 }: {
   tone?: Tone
-  /* Déclaré par ce qui contient le jeton : une ligne de liste, une cellule de
+  /* Déclaré par ce qui contient le token : une ligne de liste, une cellule de
      tableau, toute suite d'éléments de même nature. */
   repeats?: boolean
   children: ReactNode

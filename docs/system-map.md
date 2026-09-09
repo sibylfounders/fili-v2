@@ -89,7 +89,7 @@ La séance ouverte sur É1 le 2026-08-07 a été annulée sur une condition d'ad
 non remplie ; la condition est levée depuis `#056`, la séance est réouvrable.
 
 **Le système** porte **quinze composants** — Button, TextField, Selection,
-EtatAsync, Section, Titre, Texte, Pile, Grille, Jeton, Alerte, Vide, Squelette,
+EtatAsync, Section, Titre, Texte, Pile, Grille, Token, Alerte, Vide, Skeleton,
 Rendu, Prose — plus Icone, interne et non exporté.
 
 ---
@@ -105,7 +105,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Page | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
 | `/` · La porte | 🟡 | Couverture de charte, l'accès direct aux six familles (7 septembre), le moteur en objet vivant, une carte et un spécimen par page ouverte, la carte du système par famille — tout lu dans la liste unique des pages (`kit/app/pages.ts`) | Rouverte le 7 septembre : réécrite sur la liste unique, rendu vérifié sur capture, en attente de l'œil d'Auteur (`#111`) |
-| `/typo` · Typographie | 🟡 | Quatorze règles (T13 une seule taille, T14 deux fonds deux graisses, depuis le 8 septembre ; T12 le calage depuis le 4), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, la section Graisse (liste au corps unique, deux fonds à l'écart réglable — l'écart de 20 attend l'œil de l'Auteur), six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **8 septembre : section Graisse, deux épreuves neuves, quatorze vertes sur la machine d'Auteur ; les jetons de graisse (`--weight-*`) ont une valeur claire et une sombre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
+| `/typo` · Typographie | 🟡 | Quatorze règles (T13 une seule taille, T14 deux fonds deux graisses, depuis le 8 septembre ; T12 le calage depuis le 4), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, la section Graisse (liste au corps unique, deux fonds à l'écart réglable — l'écart de 20 attend l'œil de l'Auteur), six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **8 septembre : section Graisse, deux épreuves neuves, quatorze vertes sur la machine d'Auteur ; les tokens de graisse (`--weight-*`) ont une valeur claire et une sombre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
 | `/rythme` · Rythme | 🟡 | Le moteur en ouverture (le scénario, douze slides, depuis le 2 septembre) ; la descente : coque, carte, ligne, marge et coin ensemble (chaîne et profondeur fondues le 8 septembre) ; la densité qui change la base ; l'intervalle des titres ; le registre — réécrite sur les huit décisions le 25 août | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **Reverrouillée le 7 septembre : le film déclare ses valeurs écrites à la main, le couple chiffre-légende est mesuré, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
 | `/couleur` · Couleur | 🟡 | Dix-sept règles ; la marque rare (palette et situation fondues le 8 septembre : le tableau de bord, la mosaïque), le nuancier en six lignes signées, le moteur ; le registre : les rôles dans les deux thèmes, les six gammes ouvertes, cinq bandes (dont « teinter ne coûte rien ») | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Reverrouillée le 7 septembre : cinq épreuves réécrites (un seul panneau mesuré dans les deux thèmes, la casse de la teinte entre à l'épreuve), une faute corrigée (la marque du panneau de code écrite à la main, lue au moteur), le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré — et, depuis le 7 septembre, les deux étages du bas : quatre paires (le bon et le mauvais côte à côte, le même objet deux fois, une seule chose change — un habit, un trait, un cadre, un bord) et quatre lois en liste ; la table des quinze lois a disparu, les quinze sont toutes là | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Verrouillée le 7 septembre : dix épreuves écrites au niveau des quatre autres pages, le banc passé vert (course complète), la dette des treize valeurs fermée — quatre sur la chaîne, neuf déclarées réductions de l'objet imité.** Réserve d'Auteur consignée : les textes des paires ne le convainquent pas encore. |
@@ -119,7 +119,7 @@ décisions d'entrée : primary, base, intervalle, racine des coins (+ l'interval
 des titres). Il écrit `kit/app/tokens.css` en entier, `kit/tokens.tailwind.mjs`
 et `kit/tokens.figma.json` (`npm run tokens`) ; `kit/derivation.test.mjs`
 rejoue les huit pages de décision et vérifie le site lui-même : aucun ancien
-nom, aucun jeton orphelin, aucun nombre posé hors des lignes qui le disent
+nom, aucun token orphelin, aucun nombre posé hors des lignes qui le disent
 (`npm test`). Le gabarit documentaire descend de la chaîne : silence au 4ᵉ cran
 de page, titres du site à un cran et demi au-dessus de l'affiche.
 
@@ -135,7 +135,7 @@ seul lien vers l'accueil, par le routeur ; inerte sur l'accueil.
 **La liste des pages** (7 septembre) — 🟢 une seule, `kit/app/pages.ts` :
 deux catégories, six familles dans l'ordre d'Auteur, chaque page avec son
 adresse, son état écrit à la main et ses deux phrases. Le menu, le rail, le
-tiroir et l'accueil la lisent ; créer une page = une ligne.
+drawer et l'accueil la lisent ; créer une page = une ligne.
 
 **Le menu et le rail** (2 septembre, direction A) — 🟢 posés, mesurés par le
 banc. Le rail garde la page : une ligne en tête dit la famille et s'ouvre, la
@@ -155,11 +155,11 @@ carte de la démo l'est. S3 ne se rouvre que dans ce chantier-là.
 
 **Le mouvement du kit** (décisions d'Auteur du 3 septembre, posé le 4, jugé et
 ouvert le 7) — 🟢. Le moteur porte quatre durées avec leur emploi (100 bouton ·
-survol · appui ; 200 menu · infobulle · dépliant ; 300 tiroir · fenêtre · panneau ;
+survol · appui ; 200 menu · infobulle · dépliant ; 300 drawer · fenêtre · panneau ;
 700 arrivée d'une section) et la courbe du kit, `cubic-bezier(0.23, 1, 0.32, 1)`,
 **validée à l'œil sur le site le 7 septembre** (« courbe OK », jugée contre celle
 de Material sur `/couleur`). Plus une seule durée écrite à la main dans les
-feuilles : chaque transition prend son jeton et dit son emploi, ou dit
+feuilles : chaque transition prend son token et dit son emploi, ou dit
 « chorégraphie » sur sa ligne — trois seulement (le film de `/rythme`, l'entrée
 de l'accueil, la boucle du chemin de l'œil sur `/composition`). Une valeur qu'on
 fait glisser ne s'anime pas. Les vraies commandes répondent à l'appui. Sous
@@ -174,7 +174,7 @@ famille depuis le 7 septembre, verrouillée par le banc ; le mouvement est une
 d'Auteur : moteur 29/29, pages 12 · 12 · 9 · 8 · 10 · 12 — Composition puis Mouvement ont rejoint le banc le 7 septembre). Le site construit à part, ouvert dans Chromium à 320 · 768 · 1440,
 dans les trois densités et les deux thèmes ; le navigateur mesure, le moteur
 prédit, au dixième de pixel. Six épreuves communes — les chiffres affichés, les
-preuves par leur jeton, la densité, les titres, C17, rien en dur — et, par page,
+preuves par leur token, la densité, les titres, C17, rien en dur — et, par page,
 ce que sa terre exige : 66 épreuves sur les six pages (`#126` → `#129`, Composition et Mouvement le 7 septembre).
 Le 1er septembre, douze d'entre elles étaient rouges — les pages avaient bougé
 les 27, 30 et 31 août et le banc n'avait pas été relancé. Neuf disaient une page
@@ -202,7 +202,7 @@ rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au co
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
 pousseraient à grouper les commits, et le journal vit de leur finesse.
 
-**Le moteur de couleur** — 🟢 verrouillé. Le 7 septembre, un jeton
+**Le moteur de couleur** — 🟢 verrouillé. Le 7 septembre, un token
 `--code-danger` est né et mort le même jour : ce qui a besoin de toute la
 famille sombre se déclare en thème sombre et prend le rouge du système
 (verdict d'Auteur) — la colonne des cotes de `/rythme`, et le labo du coin de
@@ -266,11 +266,11 @@ trois (`#124`).
 | Le suivi ClickUp | 🔴 | — | Il porte la série J et s'arrête à `#012` ; la série K n'y existe pas. |
 | La carte du système à reprendre | 🟢 | `#054` | Fermée : réécrite au dépôt, et dérivée pour l'écran. |
 | L'emphase du journal invisible sur É6 | 🔴 | `#054` | Le texte des entrées est entier, son relief ne l'est pas : aucun composant du registre ne rend du balisage. |
-| Le moteur de géométrie sans preuve contre la source | 🔴 | `#059` | Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois jetons produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt. |
+| Le moteur de géométrie sans preuve contre la source | 🔴 | `#059` | Le socle est exact ; le découpage en crans et le rythme responsive sont reconstruits. Vingt-trois tokens produits là où la note en dénombrait vingt-deux. Se ferme le jour où le générateur revient au dépôt. |
 | La provenance des hauteurs de témoin | 🔴 | `#059` | Elles se disaient « multiples de l'échelle d'espacement, 21 pas de 32 ». La phrase n'a plus d'objet. Les valeurs restent justes, leur justification est à réécrire. |
 | Les cinq trous de la promesse mesurée | 🟢 | `#081` → `#083` | Fermée : couleur nommée (`#082`), rond qui tourne, icône répétée, texte suivi hors pile, porte des données (`#083`). |
 | Le corpus ne lit qu'une seule façon d'écrire du style | 🔴 | `#086` | Douze des treize contrôles lisent des classes utilitaires. Sur du CSS ordinaire, l'appareil est muet. « Ce cadre juge n'importe quel code » est faux tant que ça dure. |
-| Le contrôle de couleur est aveugle aux jetons étrangers | 🔴 | `#085` | Il ne connaît que les familles livrées par défaut. Un écran écrit dans un autre vocabulaire de jetons le traverse en silence — la porte est fermée, mais aucun message ne nomme la faute. |
+| Le contrôle de couleur est aveugle aux tokens étrangers | 🔴 | `#085` | Il ne connaît que les familles livrées par défaut. Un écran écrit dans un autre vocabulaire de tokens le traverse en silence — la porte est fermée, mais aucun message ne nomme la faute. |
 | La règle du mouvement est trop large d'un cran | 🔴 | `#084` | « Rien ne tourne dans le vide » vise l'attente et refuse toute animation, y compris l'ouverture d'une fenêtre. Constatée en mesure, non corrigée. |
 | Rien ne traduit du code existant vers le cadre | 🔴 | `#084` | 240 refus sur un écran étranger pour 2 décisions réelles (palette, échelle). Sans outil de traduction, le cadre a raison et n'est pas adoptable. |
 | L'amorçage lit hors de la couche de données | 🔴 | `#083` | Le démarrage lit l'état par la fenêtre et non par la porte. Il n'affiche rien, il ne peut donc oublier aucun état — mais il est exempté par son nom, et une exemption nommée est une dette. |
@@ -279,7 +279,7 @@ trois (`#124`).
 | Le wording des pages du kit | 🟢 | `#112` → 8 septembre 2026 | Fermée : les cinq pages passées aux règles d'écriture d'Auteur (aucun mot qui commande ou décrit, pas d'histoire de page, un répertoire au titre de la page), éprouvé au banc. Reste à l'œil. |
 | Les seuils de mise en page du site | 🔴 | 25 août 2026 | Le site en porte neuf (80 · 69 · 62 · 56 · 48 · 44 · 40 rem, 900 · 560 px) là où la décision 7 en veut un seul par régime. Déclaré dans le moteur (`thresholdRail`), à arbitrer dans un thread à part. |
 | La page Composition hors chaîne | 🟢 | 25 août → 7 septembre 2026 | Fermée : ses treize valeurs sont arbitrées — quatre appartiennent au kit (la scène de preuve, les écarts d'un banc, la légende) et descendent de la chaîne ; neuf appartiennent aux objets imités (l'interface, le journal, l'affiche, le magazine) et n'y entrent pas, dit sur chaque ligne (« réduction déclarée ») et exclu par son nom au banc. Au passage : le marqueur de dette exemptait tout ce qui le suivait dans la feuille — vingt-six autres valeurs de la page n'étaient pas lues ; elles le sont, et la dette de l'accueil est bornée (« FIN DE LA DETTE »). |
-| La page Accueil hors chaîne | 🔴 | 25 août 2026 | Ses anciens jetons sont rabattus sur la chaîne pour que la page tienne ; ses valeurs propres (`--acc-*`) restent posées en dur, bloc marqué « dette déclarée » et borné dans globals.css. À dériver quand la page sera reprise. |
+| La page Accueil hors chaîne | 🔴 | 25 août 2026 | Ses anciens tokens sont rabattus sur la chaîne pour que la page tienne ; ses valeurs propres (`--acc-*`) restent posées en dur, bloc marqué « dette déclarée » et borné dans globals.css. À dériver quand la page sera reprise. |
 | Le journal en retard de onze entrées | 🟢 | 25 → 26 août 2026 | Fermée : les huit décisions et les trois entrées du thread « Le kit passe sur la chaîne » sont versées (`#114` → `#124`) et scellées (75 entrées). |
 | Les sept témoins non jugés après migration | 🔴 | `#059` | Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non. |
 
@@ -298,12 +298,12 @@ trois (`#124`).
 | `fili.labels.json` | dépôt | Le catalogue de libellés. |
 | `fili.registry.json` | dépôt | Ce que le Gardien lit pour statuer. |
 | `fili.geometry.json` | dépôt | La géométrie dérivée de l'Échelle — pièce générée, jamais éditée. |
-| `src/geometry.generated.css` | dépôt | Les vingt-trois jetons fluides — pièce générée, jamais éditée. |
+| `src/geometry.generated.css` | dépôt | Les vingt-trois tokens fluides — pièce générée, jamais éditée. |
 | `witnesses/before-after-2026-08-11.html` | dépôt | Les sept gabarits dans leurs deux états, côte à côte, pour la séance. |
 | `claude/migration-echelle-correspondance.md` | projet | La table de correspondance ligne à ligne de la migration. |
 | `fili.assertions.json` | dépôt | Le manifeste des assertions déclarées. |
 | `fili/geometry.json` | dépôt | La géométrie, dérivée de l'Échelle. **Vérifiée contre la source** (`#060`), deux écarts déclarés. |
-| `fili/lexicon.json` | dépôt | La correspondance avec l'outil de l'Auteur. Refuse de statuer si un jeton cité manque. |
+| `fili/lexicon.json` | dépôt | La correspondance avec l'outil de l'Auteur. Refuse de statuer si un token cité manque. |
 | `public/system/index.html` | dépôt | **Le système au complet, sur une page** — cartographie des dénominateurs, espaces, couleurs, texte, composants, règles, lexique. Générée. |
 
 ---

@@ -7,7 +7,7 @@ import { Density } from "./density";
 import { Adaptation } from "./adaptation";
 import { OPEN } from "./pages";
 
-/* Le tiroir de réglages — l'ancien panneau « Theming & playground »,
+/* Le drawer de réglages — l'ancien panneau « Theming & playground »,
    replié derrière une poignée (gabarit documentaire nu, 24 août : un
    outil qui ne sert qu'une fois n'occupe pas l'écran en permanence).
    Mêmes réglages, mêmes mécaniques globales (attributs sur <html>,
@@ -15,7 +15,7 @@ import { OPEN } from "./pages";
    Ne s'affiche pour l'instant que sur la page Rythme — Typographie et
    Couleur le recevront à leur passe, une page à la fois. */
 /* Les pages du kit viennent de la liste unique (pages.ts, 7 septembre) :
-   le tiroir n'a plus sa propre liste à tenir à jour. */
+   le drawer n'a plus sa propre liste à tenir à jour. */
 const PAGES = ["/", ...OPEN.map((pg) => pg.path!)];
 
 export function Drawer() {

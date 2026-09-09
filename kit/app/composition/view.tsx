@@ -30,7 +30,7 @@ import type { ReactNode } from "react";
    toutes là : cinq sur l'écran de la preuve 01, une par preuve 02 et 03,
    quatre en bandes, quatre en liste — la table qui les répétait a disparu.
    Enfin l'adaptation : le même écran, écrit dans votre stack — la
-   composition n'a pas de jeton à elle, elle dépense ceux des autres
+   composition n'a pas de token à elle, elle dépense ceux des autres
    familles, dans un ordre.
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -529,11 +529,11 @@ const LIST: LineList[] = [
    typo, dépensé une fois), des groupes faits par le blanc seul (un écart
    de rythme, plus large dehors que dedans), un seul axe (une grille à une
    colonne), l'accent posé sur un seul élément. La composition n'a pas de
-   jeton à elle : elle dépense ceux des autres familles. ── */
+   token à elle : elle dépense ceux des autres familles. ── */
 const SNIPPETS: Record<string, Record<string, string>> = {
   React: {
     Tailwind: `// tailwind.config : theme.extend <- rhythm, typography, color (tokens.tailwind.mjs)
-// La composition n'a pas de jeton à elle : elle dépense ceux des autres familles
+// La composition n'a pas de token à elle : elle dépense ceux des autres familles
 export function ScreenConformite({ folders, delay, last }) {
   return (
     <main className="grid gap-pad-2-block py-pad-2-block px-pad-1-inline">  {/* une colonne : un seul axe ; dehors… */}
@@ -553,7 +553,7 @@ export function ScreenConformite({ folders, delay, last }) {
     </main>
   );
 }`,
-    shadcn: `// shadcn/ui vit sur Tailwind — donc sur nos jetons. Il fournit une surface
+    shadcn: `// shadcn/ui vit sur Tailwind — donc sur nos tokens. Il fournit une surface
 // (Card) et un accent (Button) : la composition décide où les dépenser
 import { Button } from "@/components/ui/button";
 
@@ -576,7 +576,7 @@ export function ScreenConformite({ folders, delay, last }) {
     </main>
   );
 }`,
-    "HTML natif": `/* Le normatif : la règle et le jeton. Ce code n'est qu'un exemple. */
+    "HTML natif": `/* Le normatif : la règle et le token. Ce code n'est qu'un exemple. */
 export function ScreenConformite({ folders, delay, last }) {
   return (
     <main className="screen">
@@ -597,7 +597,7 @@ export function ScreenConformite({ folders, delay, last }) {
   );
 }
 
-/* styles.css — aucun jeton propre : ceux du rythme, de la typo, de la couleur */
+/* styles.css — aucun token propre : ceux du rythme, de la typo, de la couleur */
 .screen    { display: grid; gap: var(--pad-2-block);           /* dehors… */
             padding: var(--pad-2-block) var(--pad-1-inline); }
 .group   { display: grid; gap: var(--gap-3-block); }           /* …plus large que dedans */
@@ -632,7 +632,7 @@ export class EcranConformite {
   @Input() dossiers = 0; @Input() retard = 0; @Input() derniers: { nom: string }[] = [];
 }`,
     shadcn: `// spartan/ui porte l'esprit de shadcn côté Angular — mêmes classes,
-// donc mêmes jetons : l'accent au bouton par défaut, la surface non dépensée
+// donc mêmes tokens : l'accent au bouton par défaut, la surface non dépensée
 @Component({
   selector: "kit-ecran-conformite",
   template: \`
@@ -934,7 +934,7 @@ export default function View() {
               une seule chose change), les lois qui vivent chez les autres familles
               (#liste), et l'écran de la première preuve écrit proprement
               (#adaptation) — ici l'extrait est du vrai contenu : la composition
-              n'a pas de jeton à elle, seulement un ordre. ═══ */}
+              n'a pas de token à elle, seulement un ordre. ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">04 · Le registre</p>
@@ -1018,8 +1018,8 @@ export default function View() {
                 <div className="doc-piece-head">
                   <h3>L&apos;écran de la première preuve, écrit proprement</h3>
                   <p className="muted">Un système normatif enfermé dans un framework n&apos;est
-                  qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le jeton — et la
-                  composition n&apos;a pas de jeton à elle : elle dépense ceux des autres familles,
+                  qu&apos;une bibliothèque. Ici le normatif vit dans la règle et le token — et la
+                  composition n&apos;a pas de token à elle : elle dépense ceux des autres familles,
                   dans un ordre. React, Angular ou HTML n&apos;en sont que des consommateurs.</p>
                 </div>
                 <PanelCode language={styl} tools={
@@ -1028,8 +1028,8 @@ export default function View() {
                   ))}</>
                 } code={SNIPPETS[fw][styl]} />
                 <details className="prov"><summary>Règles &amp; sources</summary><div>
-                  <p>Le normatif, ici, c&apos;est <b>la règle et le jeton</b> — pas le code. La
-                  composition ne crée aucun jeton : le dominant est un cran de l&apos;échelle
+                  <p>Le normatif, ici, c&apos;est <b>la règle et le token</b> — pas le code. La
+                  composition ne crée aucun token : le dominant est un cran de l&apos;échelle
                   typographique (<code>--font-size-h1</code>) dépensé une seule fois ; un groupe
                   est un écart de l&apos;échelle de rythme, plus large dehors
                   (<code>--pad-2-block</code>) que dedans (<code>--gap-3-block</code>) ;

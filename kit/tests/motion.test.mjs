@@ -20,7 +20,7 @@
        « à gauche » ; une phrase d'observation sous chaque titre, une légende
        lue par preuve, observation / règle / réglage sous chaque preuve, pas
        de badge décrété ni de pied ; par démo un titre et un bouton ;
-   7 · les jetons, la densité, les titres, C17, rien en dur, zéro débord, zéro
+   7 · les tokens, la densité, les titres, C17, rien en dur, zéro débord, zéro
        erreur ; la page est une fondation dans le menu ; six sections, trois
        preuves, quatre paires, huit lignes en liste, neuf lignes de code.
 
@@ -240,8 +240,8 @@ test('6 · l’écriture d’Auteur : aucun mot qui décrit l’écran ou racont
   await close()
 })
 
-/* ── 7 · Les jetons, la densité, C17, rien en dur, la place dans le menu, les étages ── */
-test('7 · les jetons : la démo est une coque, la carte de tâche et la carte du tableau de bord sont des cards, le menu parle au cran ligne ; la coque suit la base de la densité ; l’affiche et les sections glissent', async () => {
+/* ── 7 · Les tokens, la densité, C17, rien en dur, la place dans le menu, les étages ── */
+test('7 · les tokens : la démo est une coque, la carte de tâche et la carte du tableau de bord sont des cards, le menu parle au cran ligne ; la coque suit la base de la densité ; l’affiche et les sections glissent', async () => {
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
     ok(await calcPx(p, '#trace .motion-demo', 'borderTopLeftRadius'), expected('r-1', W), `${W} — la démo, coin de coque`)

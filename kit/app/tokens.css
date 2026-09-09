@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   LES JETONS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer
+   LES TOKENS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer
    Décisions d'entrée : base 24 · intervalle √2 · racine 16 (bornée à 38)
    · intervalle des titres 1.25. Les huit décisions du 25 août 2026 sont les lois.
    À la charte : marges 24 · 17 · 12 — espaces 17 · 12 · 8,5 · 6 — coins 16 · 8 · 4 · 2
@@ -210,7 +210,7 @@
   --control-height: 2.25rem;
 }
 
-/* Le gabarit documentaire — chaque cran est un alias d'un jeton de la chaîne (décision 8 ; verdict du 25 août :
+/* Le gabarit documentaire — chaque cran est un alias d'un token de la chaîne (décision 8 ; verdict du 25 août :
    silence = 4ᵉ cran). La marge de page suit le régime : le bord sur mobile, le 3ᵉ cran de page dès que
    le rail est là. Les titres du site sont une INTENTION D'AUTEUR déclarée (amendement du 25 août) :
    bornes dérivées (affiche : section → sept crans ; section : h1 → section), pentes du gabarit nu
@@ -247,7 +247,7 @@
 :root {
   --m-fast: 100ms; /* bouton, survol, appui */
   --m-base: 200ms; /* menu, infobulle, dépliant */
-  --m-slow: 300ms; /* tiroir, fenêtre, panneau */
+  --m-slow: 300ms; /* drawer, fenêtre, panneau */
   --m-expressive: 700ms; /* arrivée d'une section au défilement */
   --e-out: cubic-bezier(0.23, 1, 0.32, 1); /* ce qui entre décélère — départ vif, pose franche */
 }

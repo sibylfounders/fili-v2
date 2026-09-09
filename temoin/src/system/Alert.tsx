@@ -10,7 +10,7 @@
    parce qu'un acte réussi est un état déclaré au contrat (K2 §6) et qu'il ne
    s'annonçait nulle part : l'écran changeait trois mots, et un lecteur d'écran
    n'entendait rien. Il prend le rôle « statut » et jamais « alerte » : un
-   succès rend compte, il n'interrompt pas. Son vocabulaire est celui du jeton
+   succès rend compte, il n'interrompt pas. Son vocabulaire est celui du token
    — même nom de ton, même forme, même couple de teintes —, pour qu'un état
    n'ait pas deux noms selon l'endroit où on le lit. */
 import type { ReactNode } from 'react'
@@ -23,7 +23,7 @@ type Tone = 'refusal' | 'waiting' | 'lock'
 /* Le fond teinté porte l'état, et il le porte seul. La barre latérale a été
    retirée le 2026-08-11 : elle disait une troisième fois ce que la teinte et le
    libellé disaient déjà, et elle déséquilibrait le bloc. Le trait devient un
-   contour ordinaire, de la même famille que celui du jeton — un état n'a pas
+   contour ordinaire, de la même famille que celui du token — un état n'a pas
    deux traitements selon l'endroit où on le lit. */
 const LOOK: Record<Tone, string> = {
   refusal: 'border-error-stroke bg-error-surface text-error-on',

@@ -69,7 +69,7 @@ export async function openBrowser() {
 /* ── Ce que le moteur prédit, à une largeur d'écran ──
    Le CSS interpole DROIT entre les deux bornes (clamp), là où la pièce
    d'Auteur affiche une courbe adoucie : on prédit ce que le navigateur
-   calcule, c'est-à-dire la valeur de clamp(). Un jeton fixe vaut sa valeur. */
+   calcule, c'est-à-dire la valeur de clamp(). Un token fixe vaut sa valeur. */
 const evalCss = (expr, W) => {
   const src = expr
     .replace(/(-?[\d.]+)rem/g, (_, v) => String(parseFloat(v) * ROOT_BROWSER))
@@ -84,7 +84,7 @@ export const registry = (base = DENSITIES.comfortable) => {
   if (!registries.has(base)) registries.set(base, tokens(chain({ base })))
   return registries.get(base)
 }
-/* La valeur d'un jeton (nom sans « -- ») à la largeur W, pour une base ; les
+/* La valeur d'un token (nom sans « -- ») à la largeur W, pour une base ; les
    alias var(--x) se résolvent dans le registre, puis dans le gabarit. */
 export function expected(name, W, base = DENSITIES.comfortable) {
   const j = registry(base)
@@ -94,7 +94,7 @@ export function expected(name, W, base = DENSITIES.comfortable) {
     const source = W >= OFF_CHAIN.thresholdRail * ROOT_BROWSER && REGISTRY.docColumnsDesktop[name] ? REGISTRY.docColumnsDesktop[name] : REGISTRY.docColumns[name]
     css = registry(DENSITIES.comfortable)[source].css
   }
-  if (css === undefined) throw new Error(`refus de statuer — jeton inconnu : ${name}`)
+  if (css === undefined) throw new Error(`refus de statuer — token inconnu : ${name}`)
   css = css.replace(/var\(--([a-z0-9-]+)\)/g, (_, n) => String(expected(n, W, base)))
   return evalCss(css, W)
 }
@@ -211,7 +211,7 @@ export async function faultsC17(p, theme, W) {
 /* ── « Rien en dur », mesuré : dans les corps de sections, chaque marge,
    espace ou coin calculé appartient aux valeurs que le moteur produit à
    cette largeur — sauf casse déclarée (data-intent="statement") et sauf les
-   blocs d'espace eux-mêmes, qui SONT des jetons rendus visibles. ── */
+   blocs d'espace eux-mêmes, qui SONT des tokens rendus visibles. ── */
 export async function faultsInHard(p, W, base, { root = 'main .gdoc-body', exclusions = [] } = {}) {
   const set = admissible(W, base)
   return p.evaluate(([root, set, exclusions, tol]) => {

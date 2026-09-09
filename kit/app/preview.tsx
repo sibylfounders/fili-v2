@@ -105,7 +105,7 @@ export function Preview({ children, tools, foot, ceiling, onWidth, background }:
 }
 
 /* Un surligneur minuscule, zéro dépendance : commentaires, chaînes,
-   jetons var(--…), balises, mots-clés. Les encres viennent de la famille
+   tokens var(--…), balises, mots-clés. Les encres viennent de la famille
    couleur (code-com / code-str / code-kw / code-tag). Approximatif et
    assumé : il aide à lire un spécimen, il ne compile rien. */
 const RX_SYNTAX = /(<!--[\s\S]*?-->|\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(var\(--[a-z0-9-]+\)|--[a-z0-9-]+)|(<\/?[a-zA-Z][a-zA-Z0-9-]*|\/>)|(\b(?:import|export|from|function|return|const|let|class|extends|new|if|else|selector|template|styleUrl|standalone)\b)/g;

@@ -1137,7 +1137,7 @@ export default function View() {
 
               <div className="doc-piece" id="invisibles">
                 <div className="doc-piece-head">
-                  <h3>Les autres règles</h3>
+                  <h3>Les règles qui ne se photographient pas</h3>
                   <p className="muted">Elles se vérifient dans le code, sur l&apos;écran allumé, ou
                   nulle part — et alors elles s&apos;assument comme un choix, daté.</p>
                 </div>

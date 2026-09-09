@@ -4,7 +4,7 @@ import { AURORE_HTML } from "./aurore-boreale";
 /* ═══════════════════════════════════════════════════════════════════════
    L'AURORE — l'illustration du kit, en code (25 août 2026).
    Aucune couleur n'est écrite dedans : elle lit --primary, --accent et
-   --bg là où vivent les jetons (la racine, tout data-theme) et recalcule
+   --bg là où vivent les tokens (la racine, tout data-theme) et recalcule
    ses crans aux clartés de la gamme 50–950 du moteur. Elle suit donc la
    primaire du panneau Theming et le thème, sans une ligne de plus.
 

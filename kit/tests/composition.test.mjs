@@ -3,7 +3,7 @@
    2026, quand la page a pris ses deux étages du bas et fermé sa dette) :
    1 · chaque chiffre affiché est MESURÉ sur le rendu, jamais déclaré — les cotes
        de la preuve 01, la part d'encre de la preuve 03 ;
-   2 · chaque pièce du kit est rendue par son jeton : la scène est une coque, un
+   2 · chaque pièce du kit est rendue par son token : la scène est une coque, un
        banc s'écarte du deuxième cran de page, la légende parle au petit cran ;
        et la paire du bas tient sa propre loi — dedans plus serré que dehors ;
    3 · chaque casse rend le mensonge qu'elle déclare, et se répare : les cinq
@@ -70,7 +70,7 @@ test('1 · les cotes de « écarts tous égaux » sont les distances rendues ent
   await close()
 })
 
-/* ── 2 · Chaque pièce du kit est rendue par son jeton ── */
+/* ── 2 · Chaque pièce du kit est rendue par son token ── */
 test('2 · la scène est une coque, le banc s’écarte du deuxième cran de page, la légende parle au petit cran ; la paire du bas est deux colonnes — l’écart entre elles dépasse tout écart dedans', async () => {
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
@@ -102,7 +102,7 @@ test('2 · la scène est une coque, le banc s’écarte du deuxième cran de pag
     await close()
   }
 })
-test('2 · la feuille consomme, pour chaque pièce, le jeton qu’elle nomme, et dit chacune de ses casses', () => {
+test('2 · la feuille consomme, pour chaque pièce, le token qu’elle nomme, et dit chacune de ses casses', () => {
   const css = CSS(), g = GLOBAL()
   const block = (src, sel) => { const i = src.indexOf(`\n${sel} {`); assert.ok(i >= 0, `sélecteur absent : ${sel}`); return src.slice(i, src.indexOf('}', i)) }
   const waits = (src, sel, decl) => assert.ok(block(src, sel).includes(decl), `${sel} : « ${decl} » attendu`)

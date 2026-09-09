@@ -51,7 +51,7 @@ const css = `/* PIÈCE GÉNÉRÉE — ne pas éditer à la main.
    Produite par tools/fili/geometrie/produire.mjs depuis l'Échelle Semantic Rhythm.
    Base ${foundation.entries.base} · ratio ${foundation.entries.ratio} · arrondi de départ ${foundation.radiusRoot}.
    TOUT EN REM, sauf la cible au doigt : la taille de texte de l'utilisateur commande.
-   Chaque jeton est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
+   Chaque token est fluide de 320 à 1440 px. Les deux axes ne bougent pas ensemble :
    l'horizontal va de ${AXES.inline.min} à ${AXES.inline.max}, le vertical de ${AXES.block.min} à ${AXES.block.max},
    le texte de ${AXES.type.min} à ${AXES.type.max}, les rayons de ${AXES.radius.min} à ${AXES.radius.max},
    les contrôles de ${AXES.control.min} à ${AXES.control.max}. */
@@ -61,4 +61,4 @@ ${lines.join('\n')}
 `
 fs.writeFileSync(path.join(ROOT, 'src/geometry.generated.css'), css)
 
-console.log(`geometrie: ${Object.keys(j).length} jetons produits · pire ecart ${worstGap.gap} px sur ${worstGap.name} a ${worstGap.width} px`)
+console.log(`geometrie: ${Object.keys(j).length} tokens produits · pire ecart ${worstGap.gap} px sur ${worstGap.name} a ${worstGap.width} px`)

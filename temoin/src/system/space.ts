@@ -6,11 +6,11 @@
    « à quelle profondeur ? ». La profondeur se lit dans la structure, l'écart
    s'en déduit. Et les deux axes ne bougent pas ensemble : une colonne distribue
    verticalement, une grille distribue des deux côtés, et ce n'est pas le même
-   jeton. */
+   token. */
 
 export type Space = 'detail' | 'card' | 'container' | 'page' | 'wide'
 
-/* profondeur → jeton, par axe. Les nombres vivent dans fili/geometrie.json. */
+/* profondeur → token, par axe. Les nombres vivent dans fili/geometrie.json. */
 export const GAP_BLOCK: Record<Space, string> = {
   detail: 'gap-y-block-detail',
   card: 'gap-y-block-card',

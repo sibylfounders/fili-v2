@@ -26,7 +26,7 @@ import { chain, CHARTER, BOUNDS, INTENTS } from "../../derivation.mjs";
 
    Trois lois tenues par ce fichier :
    1. La fiche n'est pas une copie — c'est la TrancheFili de la page Rythme.
-   2. Aucune slide du moteur n'écrit une valeur : elle MASQUE les jetons pas
+   2. Aucune slide du moteur n'écrit une valeur : elle MASQUE les tokens pas
       encore entrés, et la géométrie revient d'elle-même. Les seules valeurs
       écrites en dur sont celles de la slide « avant » — c'est son sujet :
       elles ne descendent de rien. Rupture déclarée.
@@ -133,7 +133,7 @@ function discard(pts: ({ x: number; y: number } | null)[]): ({ x: number; y: num
   });
 }
 
-/* ── Les jetons de la scène ──────────────────────────────────────────
+/* ── Les tokens de la scène ──────────────────────────────────────────
    Le masque du récit, alimenté par le vrai moteur : les groupes pas encore
    entrés restent à zéro, les autres prennent la valeur que chaine() rend
    pour les réglages du moment. C'est ce qui permet de poser une molette
@@ -471,7 +471,7 @@ export default function Scenario() {
      molette, ils se rangent en haut et laissent la place aux blocs. */
   const blocks = s.genre === "visual" && !s.sieve && !s.unknown;
 
-  /* Les jetons de la scène. Le crible pose ses valeurs écrites à la main,
+  /* Les tokens de la scène. Le crible pose ses valeurs écrites à la main,
      tout le reste vient du moteur — et CHAQUE slide, texte comprise, dit
      dans quel état elle montre la fiche. C'est ce qui permet de la garder à
      l'écran d'un bout à l'autre : « on efface tout » se voit, il ne se
@@ -778,7 +778,7 @@ export default function Scenario() {
       <div className="mo-scene" ref={scene}>
         <div className="mo-door">
           {/* Les arcs des coins ne sont plus MESURÉS sur la fiche : ils sont
-              dessinés par les coins eux-mêmes, à partir du même jeton. Une
+              dessinés par les coins eux-mêmes, à partir du même token. Une
               cote mesurée décroche dès qu'on tourne la molette ; une cote
               dérivée ne le peut pas. Et elle porte son calcul, pas un
               nombre nu (verdict d'Auteur : « soit une formule, soit rien »). */}

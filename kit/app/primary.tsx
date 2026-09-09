@@ -10,7 +10,7 @@ import { derived, toCss, PRIMARY_DEFAULTS } from "../derivation.mjs";
    mémorisé d'une visite à l'autre. Au chargement, le script de layout.tsx
    réinjecte la feuille EN CACHE avant la première peinture : aucun flash,
    aucune dérivation au boot. À la primaire de la charte, la feuille est
-   retirée : les jetons générés de tokens.css font foi. */
+   retirée : les tokens générés de tokens.css font foi. */
 
 const KEY = "kit-primary";
 const KEY_CSS = "kit-primary-css";

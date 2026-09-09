@@ -29,18 +29,18 @@ import { chain, tokens, aWidth, AXES, CHARTER, WIDTH_MIN, WIDTH_MAX, WEIGHT } fr
    · LE RÉPERTOIRE (06) — une seule section, au titre de la page (8 sept.
      2026, plus de queue commune aux six pages) : les six dérives en bandes,
      les treize règles en liste avec leur colonne « où ça se vérifie », les
-     jetons. Les pièces viennent d'etages.tsx ; l'assemblage est à la page.
+     tokens. Les pièces viennent d'etages.tsx ; l'assemblage est à la page.
 
    L'extrait prêt à coller et sa bascule HTML / React / Angular ont été
    retirés le 2 septembre : un extrait vieillit et se met à mentir dès que
-   le composant bouge. Le normatif, c'est la règle et le jeton.
+   le composant bouge. Le normatif, c'est la règle et le token.
 
    Les styles propres à la page vivent dans typo.css. Le contenu ne perd
    rien : toutes les règles et toutes les casses restent.
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* Le registre, lu dans le moteur — jamais recopié. Le moteur est en
-   JavaScript : on nomme ici la forme d'un jeton pour le TypeScript strict. */
+   JavaScript : on nomme ici la forme d'un token pour le TypeScript strict. */
 type Token = { axis: string | null; base: number; bottom?: number; top?: number; css: string };
 const REGISTRY = tokens(chain()) as unknown as Record<string, Token>;
 const RATIO: number = CHARTER.intervalHeadings;
@@ -54,7 +54,7 @@ const fr2 = (v: number) => String(Math.round(v * 100) / 100).replace(".", ",");
 const bounds = (name: string) => `${fr(REGISTRY[`font-size-${name}`].bottom!)}→${fr(REGISTRY[`font-size-${name}`].top!)} px`;
 
 /* Les huit crans, du haut de l'échelle au bas : deux titres du site, six
-   crans de texte. Chaque rangée de l'échelle est rendue PAR son jeton. */
+   crans de texte. Chaque rangée de l'échelle est rendue PAR son token. */
 /* Les deux titres du site glissent avec l'écran entre deux crans de la chaîne
    (intention d'auteur déclarée, 25 août) : ils se rendent par leur alias --doc-*,
    et leur fiche dit les deux crans-bornes. */
@@ -104,7 +104,7 @@ const RULES: { id: string; name: string; heading: string; statement: string; why
     why: "Le référencement lit le h1 comme le sujet de la page — l'absence coûte autant que la duplication. Déjà tenu par un garde-fou automatique.",
     src: [{ t: "MDN — Heading elements", h: "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/Heading_Elements" }] },
   { id: "t2", name: "T2", heading: "La taille glisse",
-    statement: "Les tailles varient continûment entre deux bornes selon la largeur — pas de paliers de media queries. La variation vit dans le jeton, jamais dans un écran.",
+    statement: "Les tailles varient continûment entre deux bornes selon la largeur — pas de paliers de media queries. La variation vit dans le token, jamais dans un écran.",
     why: "C'est le jumeau typographique du rythme : si chaque écran redéfinissait ses corps, le système n'existerait plus. Un régime est une mise en page, jamais une échelle.",
     src: [{ t: "Smashing — Fluid Type (2023)", h: "https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/" }, DECISIONS] },
   { id: "t3", name: "T3", heading: "Le zoom garde ses droits",
@@ -155,7 +155,7 @@ const RULES: { id: string; name: string; heading: string; statement: string; why
     why: "Chaque taille ajoutée est un cran de plus à tenir, et une interface dense n'en supporte pas six. La graisse et l'encre séparent sans agrandir — et la taille reste disponible pour ce qui doit vraiment dominer.",
     src: [{ t: "Sajid — The 80% of UI Design : Typography (2024)", h: "https://www.youtube.com/watch?v=9-oefwZ6Z74" }, { t: "IBM Carbon — Typography", h: "https://carbondesignsystem.com/elements/typography/overview/" }, { t: "Décision d'Auteur du 8 septembre 2026", h: "#" }] },
   { id: "t14", name: "T14", heading: "Deux fonds, deux graisses",
-    statement: `Chaque jeton de graisse résout une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde que la claire. Aujourd'hui l'écart vaut ${WEIGHT.gapDark} pour tous les rôles : c'est une valeur de départ, à poser à l'œil.`,
+    statement: `Chaque token de graisse résout une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde que la claire. Aujourd'hui l'écart vaut ${WEIGHT.gapDark} pour tous les rôles : c'est une valeur de départ, à poser à l'œil.`,
     why: "Le blanc sur noir rayonne dans l'œil : à graisse égale, il paraît plus gros et plus serré que le noir sur blanc. À l'impression c'est l'inverse — l'encre bave et le blanc s'amincit. Cette règle est écrite pour l'écran.",
     div: "Aucune source ne chiffre l'écart : seule la direction est publiée. Le nombre est un arbitrage d'Auteur, et il est dit comme tel — sur cette page, au curseur.",
     src: [{ t: "Google Fonts Knowledge — Glossaire", h: "https://fonts.google.com/knowledge/glossary" }, { t: "Décision d'Auteur du 8 septembre 2026", h: "#" }] },
@@ -354,7 +354,7 @@ const LIST: LineList[] = [
     says: "Toute font déclarée est appariée à un fichier versé au dépôt, au nom strictement identique, avec sa pile de secours. Un nom orphelin ne produit aucune erreur : juste un produit entier en font système.",
     or: "dans le code" },
   { name: "La taille glisse, jamais par paliers",
-    says: "Les tailles varient continûment entre deux bornes selon la largeur, et la variation vit dans la définition du jeton. Aucun écran ne redéfinit un corps.",
+    says: "Les tailles varient continûment entre deux bornes selon la largeur, et la variation vit dans la définition du token. Aucun écran ne redéfinit un corps.",
     or: "dans le code" },
   { name: "Un seul rapport, un seul curseur",
     says: "Chaque cran vaut le précédent multiplié par le même intervalle, et toute l'échelle glisse d'un même facteur avec la largeur. Aucun cran ne s'étire tout seul.",
@@ -378,7 +378,7 @@ const LIST: LineList[] = [
     says: "Le corps peut rester unique dans une liste ou une carte : la graisse et l'encre séparent les éléments sans les agrandir. On ne monte le corps qu'après avoir épuisé ces deux leviers.",
     or: "sur l'écran allumé", tone: "render" },
   { name: "Deux fonds, deux graisses",
-    says: "Chaque jeton de graisse porte une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde. L'écart est le même pour tous les rôles ; il se lit dans le fichier des jetons.",
+    says: "Chaque token de graisse porte une valeur en clair et une en sombre, et la sombre n'est jamais plus lourde. L'écart est le même pour tous les rôles ; il se lit dans le fichier des tokens.",
     or: "dans le code" },
   { name: "La pile de secours est calée sur la font livrée",
     says: "Tant que la font n'est pas arrivée, le texte se peint dans la police système. Si ses mesures diffèrent, tout saute à la bascule — et le calage se recalcule sur les mauvaises.",
@@ -495,7 +495,7 @@ function CardAligned({ broken }: { broken: boolean }) {
    la fait tomber sous les yeux. Les graisses sont LUES dans le moteur
    (GRAISSE), jamais recopiées. Puis DEUX FONDS, DEUX GRAISSES : le même
    paragraphe sur clair et sur sombre ; le versant sombre est un vrai thème
-   sombre (data-theme), et son jeton de graisse est allégé de l'écart du
+   sombre (data-theme), et son token de graisse est allégé de l'écart du
    registre — le curseur le fait varier pour que l'Auteur pose le nombre à
    l'œil. « La même graisse » est la casse : le blanc sur noir pèse plus. ── */
 const SUBS = [
@@ -543,8 +543,8 @@ function TwoBackgrounds({ identical, gap, onGap }: { identical: boolean; gap: nu
           <p>{TEXT_BACKGROUNDS}</p>
           <span className="mono muted">fond clair · {light}</span>
         </div>
-        {/* le versant sombre est un VRAI thème sombre : ses encres, son fond, et son jeton de graisse.
-            Le curseur ne repeint que ce jeton, ici — le registre, lui, garde son écart. */}
+        {/* le versant sombre est un VRAI thème sombre : ses encres, son fond, et son token de graisse.
+            Le curseur ne repeint que ce token, ici — le registre, lui, garde son écart. */}
         <div className="tp-background black" data-theme="dark" data-intent={identical ? "statement" : undefined}
           style={{ ["--weight-body" as string]: dark } as CSSProperties}>
           <p>{TEXT_BACKGROUNDS}</p>
@@ -668,7 +668,7 @@ export default function View() {
           </section>
 
           {/* ═══ RÉPERTOIRE — l'échelle : les huit crans du registre, en vrai ═══
-              Chaque rangée est rendue PAR son jeton ; les bornes en légende
+              Chaque rangée est rendue PAR son token ; les bornes en légende
               sont calculées par le moteur, jamais recopiées. Huit crans : six
               pour le texte, deux pour les titres du site — des h5/h6 récurrents
               signalent une structure à réorganiser, pas un cran à ajouter. */}
@@ -852,14 +852,14 @@ export default function View() {
 
           {/* ═══ LE RÉPERTOIRE — une seule section, à la typographie : les six
               dérives en bandes (#casser), les règles qui se vérifient ailleurs
-              (#invisibles), les jetons (#code). Les pièces viennent d'etages.tsx ;
+              (#invisibles), les tokens (#code). Les pièces viennent d'etages.tsx ;
               leur assemblage et leur titre sont ceux de cette page (8 sept. 2026). ═══ */}
           <section className="gdoc-sec set" id="registry">
             <div className="gdoc-sec-head">
               <p className="kicker">06 · Le registre</p>
               <h2>Ce que la typographie règle sans qu&apos;on la voie</h2>
               <p className="muted">Six dérives ordinaires qu&apos;aucun outil ne signale, treize
-              règles qui se vérifient dans le code ou à l&apos;écran allumé, et les jetons
+              règles qui se vérifient dans le code ou à l&apos;écran allumé, et les tokens
               qui les portent. Les lignes marquées « décision d&apos;Auteur » sont des
               réglages du kit, pas des lois de la lecture.</p>
             </div>
@@ -966,8 +966,8 @@ export default function View() {
 
               <div className="doc-piece" id="code">
                 <div className="doc-piece-head">
-                  <h3>Les jetons</h3>
-                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le jeton — pas
+                  <h3>Les tokens</h3>
+                  <p className="muted">Ce qui fait foi, c&apos;est la règle et le token — pas
                   l&apos;extrait de code, qui vieillit et finit par mentir. Chaque valeur
                   ci-dessous est lue dans le registre du moment.</p>
                 </div>

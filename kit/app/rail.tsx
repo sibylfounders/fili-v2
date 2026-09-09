@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
 export type Toc = [string, string, string][]; /* [id, index, libellé] */
 
 /* La liste des pages vit dans pages.ts — une seule, lue par le menu, le
-   rail, le tiroir et l'accueil (7 septembre 2026). Le rail ne porte plus
+   rail, le drawer et l'accueil (7 septembre 2026). Le rail ne porte plus
    la sienne : il ne peut plus diverger de l'accueil. */
 import { CATEGORIES, keyOf, familyOf, pageOf, pagesOf, type Family, type Page } from "./pages";
 

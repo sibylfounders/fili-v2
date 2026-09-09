@@ -24,7 +24,7 @@ FAIL ferme la porte.
 
 - Le journal (`docs/journal.md`) est scellé : les entrées passées ne se
   réécrivent jamais, toute entrée nouvelle attend l'accord d'Auteur.
-- Aucune valeur en dur dans les interfaces : tout passe par les jetons.
+- Aucune valeur en dur dans les interfaces : tout passe par les tokens.
 - Un écart assumé se déclare et se date ; la négligence, elle, est interdite.
 
 *Node : version dans `.nvmrc`. Rangement du dépôt effectué le 2026-08-23 —

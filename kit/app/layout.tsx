@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <header className="chrome">
           {/* La marque mène à l'accueil (8 septembre 2026). */}
           <Brand />
-          {/* Le tiroir de réglages du gabarit documentaire nu — ne rend
+          {/* Le drawer de réglages du gabarit documentaire nu — ne rend
               rien sur les pages qui gardent leur panneau permanent. */}
           <Drawer />
         </header>

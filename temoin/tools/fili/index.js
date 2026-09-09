@@ -381,7 +381,7 @@ const readable = (v) => String(Math.round(v * 100) / 100).replace('.', ',')
 
 const s3 = {
   meta: { type: 'problem', schema: [], messages: {
-    offScale: "FILI R3.1 — « {{classe}} » n'appartient pas à l'échelle déclarée pour cette propriété. L'échelle porte des noms de profondeur, plus des nombres, et chaque nom porte son axe : un jeton horizontal ne se pose pas sur une propriété verticale, et une propriété qui porte les deux axes à la fois n'a aucun jeton valide. Une valeur hors échelle appelle une compensation, qui appelle une exception, qui appelle un correctif.",
+    offScale: "FILI R3.1 — « {{classe}} » n'appartient pas à l'échelle déclarée pour cette propriété. L'échelle porte des noms de profondeur, plus des nombres, et chaque nom porte son axe : un token horizontal ne se pose pas sur une propriété verticale, et une propriété qui porte les deux axes à la fois n'a aucun token valide. Une valeur hors échelle appelle une compensation, qui appelle une exception, qui appelle un correctif.",
     margin: "FILI R3.2 — « {{classe}} » est une marge. En zone applicative, l'espace se pose par le conteneur ({{ok}}), jamais par l'enfant qui pousse ses voisins. Une rupture déclarée ne lève jamais cette règle.",
     styleInLine: "FILI R3.3 — espacement en style inline ({{prop}}). Ni token, ni thème, ni mode sombre, ni surcharge responsive : c'est de la négligence, jamais une intention.",
     proximity: "FILI R3.7 — l'écart entre ces groupes ({{parent}} px) n'atteint pas {{facteur}} fois leur écart intérieur ({{enfant}} px). Deux groupes emboîtés au même rang se ressemblent : c'est le rapport, et lui seul, qui dit à l'œil ce qui va avec quoi. Le facteur est le ratio de l'Échelle — deux profondeurs voisines en sont séparées par construction.",
@@ -394,10 +394,10 @@ const s3 = {
     if (!f.decide) return {}
     const scale = new Set(f.registry.spacing.scale.map(String))
     const exceptions = new Set(f.registry.spacing.exceptions || [])
-    /* Deux axes distincts, et le nom du jeton porte le sien. L'échelle d'une
+    /* Deux axes distincts, et le nom du token porte le sien. L'échelle d'une
        propriété horizontale n'est donc pas celle d'une propriété verticale, et
        une propriété qui porte les deux axes à la fois — p-…, gap-… — n'a aucun
-       jeton valide : elle les mélangerait. C'est ce que le modèle d'Auteur rend
+       token valide : elle les mélangerait. C'est ce que le modèle d'Auteur rend
        détectable, et qui était impossible avec un axe unique. */
     const AXIS_OF = {}
     for (const [axis, prefixes] of Object.entries(f.registry.spacing.axes || {}))
@@ -706,16 +706,16 @@ const s5 = {
   }
 }
 
-/* ── S2 · R2.7 — le squelette annonce la page qui vient ──────────────────── */
+/* ── S2 · R2.7 — le skeleton annonce la page qui vient ──────────────────── */
 /* Née du point de passage B-6, séance du 2026-08-07 : « les titres et les
-   textes ne sont pas traités en squelette comme le reste ». Le défaut n'est pas
+   textes ne sont pas traités en skeleton comme le reste ». Le défaut n'est pas
    qu'il manque du gris, c'est qu'il en manque À CÔTÉ du gris : une section qui
-   attend s'affiche à moitié lue, et le squelette dément la page qu'il annonce.
+   attend s'affiche à moitié lue, et le skeleton dément la page qu'il annonce.
    Arbitrage d'Auteur du 2026-08-08 : la règle ne juge que le chargement, elle
    laisse le haut de page écrit, elle se contrôle sur le fichier, et elle se
    déclare avec un motif quand un écran doit en sortir.
    Ce qu'elle ne voit pas, et qui est su : le Gardien lit un fichier, pas une
-   image. Un squelette de la bonne quantité et de la mauvaise forme passe. */
+   image. Un skeleton de la bonne quantité et de la mauvaise forme passe. */
 
 function nameJSX(n) {
   return n && n.type === 'JSXElement' && n.openingElement &&
@@ -753,7 +753,7 @@ const s2skeleton = {
     headingWritten: "FILI R2.7 — le titre de cette section reste écrit pendant qu'elle attend ses données. Une section qui attend attend en entier : à moitié grise, à moitié lue, elle annonce une page qui n'est pas celle qui arrive.",
     sentenceWritten: "FILI R2.7 — la phrase posée sous ce titre reste écrite pendant que la section attend. Elle explique un contenu que personne ne voit encore.",
     contentOpaque: "FILI R2.7 — un bloc de contenu est rendu à côté du conteneur d'état, sans qu'on puisse lire ce qu'il contient. Écrivez-le à sa place, dans les états du conteneur.",
-    loadingSpeaks: "FILI R2.7 — <{{el}}> est rendu pendant le chargement. Le chargement ne montre que du squelette : un mot vrai à côté du gris fait croire que la page est arrivée.",
+    loadingSpeaks: "FILI R2.7 — <{{el}}> est rendu pendant le chargement. Le chargement ne montre que du skeleton : un mot vrai à côté du gris fait croire que la page est arrivée.",
     ruptureWithoutReason: "FILI R2.7 — rupture déclarée sans motif. Nommez la raison pour laquelle cet écran sort de la règle."
   } },
   create(context) {

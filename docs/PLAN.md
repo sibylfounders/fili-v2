@@ -71,9 +71,9 @@ paquets.
 
 ## La doctrine d'agnosticisme
 
-**Le normatif, c'est la règle et le jeton. Toute implémentation n'est qu'un
+**Le normatif, c'est la règle et le token. Toute implémentation n'est qu'un
 exemple.** Les règles vivent en markdown avec leurs identifiants stables ;
-les jetons sortent d'un seul calcul vers plusieurs cibles (CSS, Tailwind,
+les tokens sortent d'un seul calcul vers plusieurs cibles (CSS, Tailwind,
 Figma — d'autres peuvent naître). Les composants React du site sont une
 implémentation de démonstration, jamais la référence : un portage futur
 n'invalide rien, parce que rien de normatif ne vit dans le code d'exemple.
@@ -81,7 +81,7 @@ La spec est la vérité, le code la démontre.
 
 **L'adaptation est une exigence de naissance** (décision d'Auteur du 23 août) :
 React, Angular et HTML, en CSS natif et en Tailwind — « c'est ce que demande
-le marché ». Les jetons sortent en double cible dès le premier jour, et les
+le marché ». Les tokens sortent en double cible dès le premier jour, et les
 démonstrations du kit s'accrochent aux règles de la stack choisie.
 
 **La méthode de matérialisation** : chaque famille jugée en séance naît

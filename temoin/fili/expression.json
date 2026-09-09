@@ -45,7 +45,7 @@
     },
     "mean": {
       "value": 500,
-      "use": "un libellé, un jeton, une étiquette"
+      "use": "un libellé, un token, une étiquette"
     },
     "pressed": {
       "value": 600,
@@ -70,7 +70,7 @@
       "value": "var(--rr-type-body)",
       "use": "le texte courant",
       "leading": "1.6",
-      "$source": "calculé — fili/geometry.json, jeton type-corps"
+      "$source": "calculé — fili/geometry.json, token type-corps"
     },
     "lede": {
       "value": "1.1875rem",
@@ -81,19 +81,19 @@
       "value": "var(--rr-type-body)",
       "use": "titre de niveau 3",
       "leading": "1.35",
-      "$source": "calculé — fili/geometry.json, jeton type-corps (un titre de niveau 3 est à zéro pas du corps)"
+      "$source": "calculé — fili/geometry.json, token type-corps (un titre de niveau 3 est à zéro pas du corps)"
     },
     "level2": {
       "value": "var(--rr-type-heading2)",
       "use": "titre de niveau 2",
       "leading": "1.2",
-      "$source": "calculé — fili/geometry.json, jeton type-titre2"
+      "$source": "calculé — fili/geometry.json, token type-titre2"
     },
     "level1": {
       "value": "var(--rr-type-heading1)",
       "use": "titre de niveau 1",
       "leading": "1.1",
-      "$source": "calculé — fili/geometry.json, jeton type-titre1"
+      "$source": "calculé — fili/geometry.json, token type-titre1"
     },
     "$leading": "L'interligne appartient à la taille : le séparer produirait deux listes qui divergent. Le texte courant ne descend jamais sous 1,5 — seuil de lisibilité instruit par l'étude de mise en page. Et il décroît avec le corps à l'intérieur d'un régime : 1,65 à 14 px, 1,60 à 17 px, 1,55 à 19 px. C'est la direction que la source donne sans jamais donner de nombre ; les nombres sont ceux du projet.",
     "$regime": "Deux régimes, et la règle ne vaut que dans le sien. RÉGIME DE LECTURE — 'fin', 'corps', 'chapeau' : du texte suivi, qu'on lit ligne après ligne. Le rapport interlignage/corps y DÉCROÎT quand le corps grandit : plus le texte est petit, plus il a besoin d'air pour que l'œil retrouve la ligne suivante. RÉGIME DE TITRE — 'niveau3', 'niveau2', 'niveau1' : même sens de décroissance, valeurs plus serrées, parce qu'un titre se voit avant de se lire. HORS RÉGIME — 'menu' : une étiquette, jamais un texte suivi ; sa chasse élargie le dit. Elle n'entre dans aucune monotonie. Une assertion de monotonie écrite globalement, sans ces trois périmètres, bloquerait l'échelle de Fili elle-même.",
@@ -148,10 +148,10 @@
     }
   },
   "opacities": {
-    "$intent": "Une échelle fermée de voiles. Sans elle, chaque teinte pâle est un nombre inventé sur place — c'est le cas que K5 a trouvé sur ses propres jetons.",
+    "$intent": "Une échelle fermée de voiles. Sans elle, chaque teinte pâle est un nombre inventé sur place — c'est le cas que K5 a trouvé sur ses propres tokens.",
     "veil": {
       "value": 0.05,
-      "use": "le fond très pâle d'un jeton ou d'une alerte"
+      "use": "le fond très pâle d'un token ou d'une alerte"
     },
     "hue": {
       "value": 0.1,
@@ -262,7 +262,7 @@
     "$source": "Grille de Lucide — 16, 20, 24.",
     "small": {
       "value": "16px",
-      "use": "dans un libellé fin, un jeton, une ligne de texte courant"
+      "use": "dans un libellé fin, un token, une ligne de texte courant"
     },
     "current": {
       "value": "20px",
@@ -274,7 +274,7 @@
     }
   },
   "radii": {
-    "$intent": "Le rayon d'une SURFACE suit la profondeur d'emboîtement : il se divise par deux à chaque niveau. Les COMPOSANTS font exception — un bouton, un champ, une liste de choix, un jeton portent un rayon qui leur est propre, hors de la chaîne et hors du thème. Il serait contre-productif qu'un bouton change d'arrondi selon l'endroit où il tombe : on doit le reconnaître partout. « Net » et « pastille » ne sont pas des rayons — l'un est l'absence de rayon, l'autre est une forme.",
+    "$intent": "Le rayon d'une SURFACE suit la profondeur d'emboîtement : il se divise par deux à chaque niveau. Les COMPOSANTS font exception — un bouton, un champ, une liste de choix, un token portent un rayon qui leur est propre, hors de la chaîne et hors du thème. Il serait contre-productif qu'un bouton change d'arrondi selon l'endroit où il tombe : on doit le reconnaître partout. « Net » et « pastille » ne sont pas des rayons — l'un est l'absence de rayon, l'autre est une forme.",
     "$source": "Échelle Semantic Rhythm, décision d'Auteur du 2026-08-11. Rayon racine 24 : coque 12, carte 6, détail 3. Les anciens crans « doux » (2) et « contrôle » (8) n'avaient aucune valeur commune avec la loi du ÷2 ; ils disparaissent, et la distinction qu'ils portaient — adoucir vs désigner — est reprise par « net » d'un côté et par la profondeur de l'autre.",
     "$exception": "Décision d'Auteur du 2026-08-11. Avant, tout ce qui se manipulait prenait le dernier cran de la chaîne : un bouton s'arrondissait donc autrement selon sa profondeur, et changeait de forme quand la base changeait. Le rayon de contrôle est désormais DÉCLARÉ, pas dérivé.",
     "$ruleOfComponent": "Trois temps, décisions d'Auteur du 2026-08-11, rendues sur essais. UN — le rayon d'un composant descend du TON du système, jamais de sa profondeur : un bouton doit se reconnaître partout, et il est à angle droit si le système l'est. Il en prend le tiers. DEUX — sa TAILLE ne bouge pas. Un bouton et un champ gardent la même hauteur : c'est ce qui aligne la lecture, verticale comme horizontale. C'est donc l'arrondi qui se rabat sur elle, et jamais l'inverse : il ne dépasse pas les deux tiers de la marge verticale du composant. La voie opposée — agrandir le composant avec son arrondi — a été essayée et écartée : elle fait déborder la barre d'actions sur téléphone, gonfle le bouton d'icône et sort les hauteurs de l'échelle. TROIS — au-delà de ce plafond, ce n'est plus un arrondi mais une forme : le produit emploie la pastille. Et la pastille est une promesse — CE COMPOSANT TIENT SUR UNE LIGNE. Sur deux lignes son arrondi devient énorme et le texte entre dans la courbe.",
@@ -293,12 +293,12 @@
     },
     "detail": {
       "value": "var(--rr-radius-detail)",
-      "use": "une petite surface posée dans une carte — un cadre, un squelette, une place vide"
+      "use": "une petite surface posée dans une carte — un cadre, un skeleton, une place vide"
     },
     "control": {
       "value": "var(--rr-radius-control)",
-      "use": "un bouton, un champ, une liste de choix, un jeton",
-      "$source": "calculé — fili/geometry.json, jeton radius-controle : le tiers du ton du système"
+      "use": "un bouton, un champ, une liste de choix, un token",
+      "$source": "calculé — fili/geometry.json, token radius-controle : le tiers du ton du système"
     },
     "dot": {
       "value": "9999px",
@@ -391,9 +391,9 @@
     }
   },
   "expectations": {
-    "$intent": "Les formes que prend une attente. Un squelette juste ressemble à ce qu'il remplace ; un squelette faux dément la page qui arrive — c'est ce que juge le point de passage B-6. Et une attente qui ne dit rien n'est pas une attente, c'est un vide.",
+    "$intent": "Les formes que prend une attente. Un skeleton juste ressemble à ce qu'il remplace ; un skeleton faux dément la page qui arrive — c'est ce que juge le point de passage B-6. Et une attente qui ne dit rien n'est pas une attente, c'est un vide.",
     "skeleton": {
-      "value": "lignes | bloc | jetons",
+      "value": "lignes | bloc | tokens",
       "use": "la forme de ce qui vient, pas une forme générique"
     },
     "count": {
@@ -443,7 +443,7 @@
       "what": "la couleur en entier",
       "before": "des tons déclarés à la main, monochromes jusqu'aux états, mesurés après coup",
       "after": "une primaire déclarée, tout le reste calculé, les couples construits pour tenir leur seuil",
-      "reason": "Correction d'Auteur, en deux temps. D'abord : le monochrome portait sur les surfaces et les textes, pas sur les états — supprimer le rouge de l'erreur était une faute de convention. Ensuite : un jeton de couleur est un couple, et les teintes doivent se calculer depuis une primaire. La planche cesse de déclarer des valeurs et se met à déclarer une source et une règle."
+      "reason": "Correction d'Auteur, en deux temps. D'abord : le monochrome portait sur les surfaces et les textes, pas sur les états — supprimer le rouge de l'erreur était une faute de convention. Ensuite : un token de couleur est un couple, et les teintes doivent se calculer depuis une primaire. La planche cesse de déclarer des valeurs et se met à déclarer une source et une règle."
     },
     {
       "what": "les fontes, l'ombre intérieure, les icônes",
@@ -475,14 +475,14 @@
   ],
   "$limits": [
     "Cette planche ne dit pas si ces valeurs sont les bonnes. C'est B-4, et c'est l'œil de l'Auteur qui tranche, sur un écran réel et non sur cette planche seule.",
-    "Aucune assertion ne vérifie encore que le produit emploie ces jetons plutôt que des valeurs écrites sur place. C'est S6, exigible avant l'ouverture de K6.",
+    "Aucune assertion ne vérifie encore que le produit emploie ces tokens plutôt que des valeurs écrites sur place. C'est S6, exigible avant l'ouverture de K6.",
     "Sept registres sont déclarés sans emploi aujourd'hui — le rail, la bascule bureau, deux crans d'élévation, les cinq plans, le voile, la durée ample. Ils viennent d'une source déclarée et n'inventent rien ; ils entrent pour qu'aucun nombre ne soit écrit sur place le jour où ils serviront.",
     "L'étude de mise en page porte une mécanique de régimes verticaux — trois régimes croisés avec quatre rôles d'espacement, par décalage d'un cran — beaucoup plus fine que les trois densités de section du registre de Fili. Elle n'entre pas ici : c'est une LOI, pas une valeur, et sa place est dans le corpus.",
     "Les contrastes mesurés le sont sur le fond papier. Un ton posé sur un fond en retrait, en survol ou en sélection est mesuré séparément."
   ],
   "$stance": {
     "rule": "Deux familles, et elles n'obéissent pas à la même loi. Les SURFACES et les TEXTES sont discrets : une échelle tirée de la teinte de la primaire à très faible chroma, pour qu'aucune surface n'oriente l'œil de celui qui juge un témoin. Les ÉTATS SYSTÈME sont inviolables : l'erreur est rouge, le succès vert, l'alerte jaune.",
-    "pair": "Un jeton de couleur n'est pas une valeur, c'est un COUPLE : une surface et ce qui s'écrit dessus. Les deux se déclarent ensemble, se calculent ensemble et tiennent leur contraste par construction — jamais mesurés après coup, jamais employés séparément.",
+    "pair": "Un token de couleur n'est pas une valeur, c'est un COUPLE : une surface et ce qui s'écrit dessus. Les deux se déclarent ensemble, se calculent ensemble et tiennent leur contraste par construction — jamais mesurés après coup, jamais employés séparément.",
     "calc": "Rien n'est saisi à la main. Une seule couleur est déclarée — la primaire de la charte partagée — et tout le reste en est dérivé : les gris à sa teinte, les états par harmonisation bornée, chaque partenaire par recherche de la clarté qui fait tenir le seuil. Les hexadécimaux de ce système sont des RÉSULTATS, reproductibles et vérifiables, pas des choix à croire sur parole.",
     "reason": "Fili affiche des témoins qu'un œil doit juger. Une identité visuelle forte contaminerait ce jugement. D'où la discipline sur les surfaces et les textes — et d'où, à l'inverse, le respect strict des conventions d'état : elles ne sont pas la voix de Fili, elles sont le langage commun.",
     "information": "L'information est le seul état qui n'a pas de teinte conventionnelle. Elle prend celle de la primaire — c'est le seul endroit où la marque parle.",
@@ -615,7 +615,7 @@
   },
   "skeleton": {
     "$intent": "Les mesures des barres d'attente. Elles ne descendent pas de l'Échelle : une barre d'attente prend la place d'un CONTENU, pas d'un espace. Elles vivaient écrites dans le composant ; la migration les déplace à la planche sans en changer aucune.",
-    "$source": "Valeurs déjà employées par Squelette.tsx avant la migration du 2026-08-11 — aucune valeur nouvelle, aucun arbitrage rouvert.",
+    "$source": "Valeurs déjà employées par Skeleton.tsx avant la migration du 2026-08-11 — aucune valeur nouvelle, aucun arbitrage rouvert.",
     "line": {
       "value": "16px",
       "use": "une ligne de texte en attente"

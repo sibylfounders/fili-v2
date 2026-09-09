@@ -1,4 +1,4 @@
-/* Styles du kit — ne consomment QUE les jetons (tokens.css), migrés sur la chaîne du 25 août 2026.
+/* Styles du kit — ne consomment QUE les tokens (tokens.css), migrés sur la chaîne du 25 août 2026.
    Aucune valeur d'espace, de rayon ou de taille en dur hors des lignes qui le disent (« hors chaîne », « casse »)
    et des deux blocs de dette déclarée (.accueil, .co-*). */
 * { box-sizing: border-box; }
@@ -257,7 +257,7 @@ pre.code .cs-var { color: var(--code-kw); }
   transform: translateY(-50%); white-space: nowrap;
   font: 600 var(--font-size-label)/1 var(--font-mono); color: var(--danger);
 }
-/* Une étiquette par jeton, posée DANS l'espace qu'elle nomme (24 août :
+/* Une étiquette par token, posée DANS l'espace qu'elle nomme (24 août :
    « on ne voit pas et ne comprend pas les espaces » — une seule couleur
    neutre, une seule étiquette par rôle·cran, jamais l'accent). */
 .space.seen[data-name]::after {
@@ -300,7 +300,7 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
    Décision d'Auteur (23 août) : un design system ne fait pas du theming
    page par page. Le pont provisoire de la page Couleur est mort ici,
    avec la palette de travail. */
-/* Le banc des états de la page Couleur — le survol par jeton (C10),
+/* Le banc des états de la page Couleur — le survol par token (C10),
    et la casse qui le remplace par un filtre pour le voir échouer */
 .demo-full { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
 /* Le survol gris du bouton d'outil (.bouton:hover) l'emportait sur ces deux règles et la démo
@@ -308,7 +308,7 @@ details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — ch
    les deux règles pèsent désormais autant que le survol d'outil, et disent leur fond. */
 .button.demo-full.token:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
 .button.demo-full.filter:hover { background: var(--primary); border-color: var(--primary); filter: brightness(0.72); } /* casse : le survol par un filtre, une couleur qu'aucun registre ne connaît */
-/* Une ligne de liste survolée prend surface-hover — le survol est un jeton */
+/* Une ligne de liste survolée prend surface-hover — le survol est un token */
 .demo-line:hover { background: var(--surface-hover); }
 
 /* ── L'accueil : tuiles de fondations et étapes de méthode ── */
@@ -705,7 +705,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 .gdoc-body { margin-top: var(--doc-head); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
 /* ── Le répertoire (8 septembre 2026) : une seule section par page, sous un
    titre à elle, qui range plusieurs PIÈCES — les dérives en bandes, les
-   règles en liste, les jetons en panneau, une table de valeurs — chacune
+   règles en liste, les tokens en panneau, une table de valeurs — chacune
    sous son sous-titre. Le sous-titre est un h3 ; les bandes qu'il abrite
    descendent en h4 (jamais un saut de niveau). ── */
 .doc-piece { display: grid; gap: var(--gap-1-block); }
@@ -795,7 +795,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
   .gdoc .set.set { opacity: 1; transform: none; }
 }
 
-/* ── Le tiroir de réglages : l'ancien panneau permanent, replié derrière
+/* ── Le drawer de réglages : l'ancien panneau permanent, replié derrière
       une poignée — un outil qui ne sert qu'une fois n'occupe pas l'écran. ── */
 .drawer-handle {
   margin-left: auto; background: none; border: 0; cursor: pointer;
@@ -872,7 +872,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 
 /* Le code couleur des espaces (décision d'Auteur, 24 août) : danger pour
    les retraits (padding), success pour les écarts (gap / margin) — la
-   convention des inspecteurs, portée par nos jetons sémantiques. */
+   convention des inspecteurs, portée par nos tokens sémantiques. */
 .space.seen.pad[data-name]::after { color: var(--danger); }
 .space.seen.gap[data-name]::after { color: var(--success); }
 /* Au repos, rien : les espaces espacent. La couleur n'apparaît qu'au
@@ -944,7 +944,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
 /* EXCEPTION DÉCLARÉE au halo de focus : le halo se dessine à l'EXTÉRIEUR
    de l'objet, or les lignes sont bord à bord dans un cadre qui rogne —
    il serait coupé. Le focus est donc un trait calé à l'intérieur, même
-   jeton de couleur, même épaisseur : l'indicateur reste sous contrat. */
+   token de couleur, même épaisseur : l'indicateur reste sous contrat. */
 .gd-lng:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
 .gd-lng-soft { flex: 1 1 auto; min-width: 0;
   padding: var(--pad-3-block) var(--pad-3-inline);
@@ -1197,7 +1197,7 @@ a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
    monogramme) ; le générateur Semantic Rhythm (une entrée, tout
    recalcule). Un principe porteur : le kit se prouve. ═══ */
 /* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
-   Registre parallèle en dur ; seuls les anciens jetons et les rayons ont été rabattus. */
+   Registre parallèle en dur ; seuls les anciens tokens et les rayons ont été rabattus. */
 .home { --acc-silence: clamp(6rem, 4.8rem + 5vw, 10rem);
   --acc-head: clamp(2.2rem, 1.9rem + 1.8vw, 3.4rem); }
 .acc-column { max-width: 66rem; margin-inline: auto;
@@ -1736,7 +1736,7 @@ button.acc-access-link { color: var(--text-secondary); }
 /* Le halo des deux commandes du gabarit — même forme que partout (bande
    3 px collée à l'objet, trait 1 px qui la ferme), au clavier seulement.
    « Casser » est de la famille rouge ; « Tout voir » vit sur la terre
-   sombre du panneau : sa famille est dite ici, faute de jeton clair. */
+   sombre du panneau : sa famille est dite ici, faute de token clair. */
 .doc-wreck { --halo-r: var(--r-3); --halo-band: var(--danger-subtle); --halo-stroke: var(--focus-ring-danger); }
 .doc-unfold { position: relative; --halo-r: var(--r-ctl);
   --halo-band: rgba(255, 255, 255, 0.16); --halo-stroke: var(--code-kw); }

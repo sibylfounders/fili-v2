@@ -97,7 +97,7 @@ test('décision 5 — à 320 : 12,8 · 16 · 20 · 25 · 31,3 · 39,1 ; à 1440 
   assert.ok(aWidth(16, 'type', 1000, 16) > 16)
   /* un seul corps : plus de --font-size-base */
   assert.ok(!('font-size-base' in j))
-  /* T10, faute détectable : aucun jeton de corps dont la borne basse passe sous 1rem */
+  /* T10, faute détectable : aucun token de corps dont la borne basse passe sous 1rem */
   assert.ok(j['font-size-body'].css.startsWith('clamp(1rem,'))
 })
 
@@ -147,7 +147,7 @@ test('gabarit — les titres du site glissent comme le gabarit nu (amendement d�
   near(j['font-size-section'].base / j['font-size-display'].base, Math.sqrt(1.25), 0.001)
   assert.equal(REGISTRY.doc['doc-cover'], 'clamp(var(--font-size-section), 6vw, var(--font-size-cover-max))')
   assert.equal(REGISTRY.doc['doc-section'], 'clamp(var(--font-size-h1), 3.4vw, var(--font-size-section))')
-  assert.ok(!('font-size-cover' in j) && !('font-size-display-2' in j), 'pas de jeton sans consommateur')
+  assert.ok(!('font-size-cover' in j) && !('font-size-display-2' in j), 'pas de token sans consommateur')
 })
 test('gabarit — les huit crans --doc-* sont des alias de la chaîne, plus une valeur à part ; le silence suit la densité (64 · 96 · 128)', () => {
   const css = toCssRhythm()
@@ -161,12 +161,12 @@ test('gabarit — les huit crans --doc-* sont des alias de la chaîne, plus une 
   const j = tokens(chain())
   assert.ok(block.includes(`--doc-rail: ${j['page-6-inline'].css};`) && block.includes(`--doc-gutter: ${j['page-2-inline'].css};`) && block.includes(`--doc-margin: ${j['edge-inline'].css};`), 'colonnes pincées')
   assert.ok(block.includes('@media (min-width: 69rem)') && block.includes(`--doc-margin: ${j['page-3-inline'].css};`), 'la marge de page suit le régime')
-  assert.ok(!/--doc-(cover|section|silence|tete|scene-[a-z]+): (clamp\([\d.]|\d)/.test(css), 'aucun --doc-* posé en valeur (les bornes de l’affiche sont des jetons ; les colonnes portent la valeur écrite de la chaîne)')
+  assert.ok(!/--doc-(cover|section|silence|tete|scene-[a-z]+): (clamp\([\d.]|\d)/.test(css), 'aucun --doc-* posé en valeur (les bornes de l’affiche sont des tokens ; les colonnes portent la valeur écrite de la chaîne)')
   list([chain({ base: 16 }).page[3], chain().page[3], chain({ base: 32 }).page[3]], [64, 96, 128])
 })
 
 /* ── Le moteur d'avant : ce qui ne devait pas bouger n'a pas bougé ── */
-test('rythme — les jetons de la coque valent ceux du tokens.css d’avant, au dix-millième (pad-1 = ancien step-i6 / step-b8, control-height)', () => {
+test('rythme — les tokens de la coque valent ceux du tokens.css d’avant, au dix-millième (pad-1 = ancien step-i6 / step-b8, control-height)', () => {
   const j = tokens(chain())
   assert.equal(j['pad-1-inline'].css, 'clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem)')
   assert.equal(j['pad-1-block'].css, 'clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem)')
@@ -218,7 +218,7 @@ test('couleur — l\'accent d\'auteur est souverain (telle quelle, deux thèmes)
 })
 
 /* ── Décision du 31 août 2026 (#133) : le halo de focus — trois familles, deux régimes ── */
-test('couleur — le trait clavier du halo est le cran le moins soutenu qui tient 3:1 (marque, rouge ; neutre = border-strong) ; le clic ne montre rien (aucun jeton pâle) ; les paires tiennent pour toute marque', () => {
+test('couleur — le trait clavier du halo est le cran le moins soutenu qui tient 3:1 (marque, rouge ; neutre = border-strong) ; le clic ne montre rien (aucun token pâle) ; les paires tiennent pour toute marque', () => {
   for (const hex of [PRIMARY_DEFAULTS, '#F4A6C1', '#111111', '#FACC15', '#1DB954', '#F97316']) {
     const q = derived(hex)
     for (const th of ['light', 'dark']) {
@@ -232,12 +232,12 @@ test('couleur — le trait clavier du halo est le cran le moins soutenu qui tien
         assert.ok(backgrounds.some((f) => contrast(plusFar, f) < 3), `${hex} ${th} ${t} est bien au bord du seuil (${src})`)
       }
       assert.equal(p['focus-ring-neutral'], p['border-strong'])
-      /* le clic ne montre rien : aucun jeton de trait pâle ne survit (C4 — un rôle sans consommateur ne reste pas) */
+      /* le clic ne montre rien : aucun token de trait pâle ne survit (C4 — un rôle sans consommateur ne reste pas) */
       for (const dead of ['focus-ring-soft', 'focus-ring-danger-soft', 'focus-ring-neutral-soft']) assert.equal(p[dead], undefined, dead)
     }
     assert.deepEqual(verify(q), [], hex)
   }
-  /* les trois traits sortent dans le CSS et dans Figma, et aucun jeton pâle n'y traîne */
+  /* les trois traits sortent dans le CSS et dans Figma, et aucun token pâle n'y traîne */
   const css = toCss(derived(PRIMARY_DEFAULTS))
   for (const t of ['focus-ring', 'focus-ring-danger', 'focus-ring-neutral']) assert.ok(css.includes(`--${t}: #`), t)
   assert.ok(!css.includes('-soft'))
@@ -296,7 +296,7 @@ test('gap-4 et la cible compacte — la chaîne continuée d’un cran vers le b
 })
 
 /* ── Les sorties : CSS, Tailwind, Figma — une seule source ── */
-test('sorties — tokens.css, Tailwind et Figma portent les mêmes jetons, et pas un nombre hors chaîne sans être déclaré', () => {
+test('sorties — tokens.css, Tailwind et Figma portent les mêmes tokens, et pas un nombre hors chaîne sans être déclaré', () => {
   const css = toCssRhythm(), tw = toTailwind(), fg = toFigma()
   const j = tokens(chain())
   for (const n of Object.keys(j)) {
@@ -316,14 +316,14 @@ test('sorties — tokens.css, Tailwind et Figma portent les mêmes jetons, et pa
   for (const dead of ['--radius:', '--radius-card', '--radius-shell', '--font-size-base', '--step-', '--space-inline', '--space-block']) assert.ok(!css.includes(dead), `${dead} est mort`)
 })
 
-/* ── Le site : un seul registre (décision 8) — aucun ancien nom, aucun jeton orphelin, aucun --doc-* posé ── */
+/* ── Le site : un seul registre (décision 8) — aucun ancien nom, aucun token orphelin, aucun --doc-* posé ── */
 const readApp = () => {
   const read = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((f) => (f.isDirectory() ? read(path.join(d, f.name)) : /\.(tsx|css)$/.test(f.name) ? [path.join(d, f.name)] : []))
   return read(path.join(HERE, 'app')).map((f) => [path.relative(HERE, f), fs.readFileSync(f, 'utf8')])
 }
 test('site — plus aucun ancien nom (--space-*, --radius*, --step-*, --font-size-base) dans app/', () => {
   const faults = []
-  /* « --radius » cité à propos de shadcn (le nom que shadcn lit) n'est pas un jeton du kit */
+  /* « --radius » cité à propos de shadcn (le nom que shadcn lit) n'est pas un token du kit */
   for (const [f, src] of readApp()) if (f !== 'app/tokens.css') for (const m of src.matchAll(/--(space-[a-z0-9-]+|radius(?:-card|-shell)?|step-[a-z0-9]+|font-size-base)\b/g)) {
     const line = src.slice(src.lastIndexOf('\n', m.index) + 1, src.indexOf('\n', m.index))
     if (m[1] === 'radius' && /shadcn/i.test(line)) continue
@@ -339,9 +339,9 @@ test('site — chaque var(--…) consommée est définie : par la chaîne, le re
   const locaux = new Set(sources.flatMap(([, src]) => [...src.matchAll(/["']?--([a-z0-9-]+)["']?(?:\s+as\s+string\])?\s*:/g)].map((m) => m[1])))
   const orphans = new Set()
   for (const [f, src] of sources) for (const m of src.matchAll(/var\(--([a-z0-9-]+)[,)]/g)) if (!defined.has(m[1]) && !color.has(m[1]) && !locaux.has(m[1])) orphans.add(`${f} → --${m[1]}`)
-  assert.deepEqual([...orphans], [], 'jetons consommés sans définition')
+  assert.deepEqual([...orphans], [], 'tokens consommés sans définition')
 })
-test('site — « pas de nombre » : dans les feuilles du kit, un espace, une taille ou un rayon est un jeton, ou une valeur déclarée hors chaîne / casse (les blocs de dette exceptés)', () => {
+test('site — « pas de nombre » : dans les feuilles du kit, un espace, une taille ou un rayon est un token, ou une valeur déclarée hors chaîne / casse (les blocs de dette exceptés)', () => {
   const faults = []
   for (const [f, src] of readApp().filter(([f]) => f.endsWith('.css') && f !== 'app/tokens.css' && f !== 'app/fonts.css')) {
     let debt = false
@@ -394,7 +394,7 @@ test('graisse — trois rôles (400 · 500 · 600) ; en sombre chaque rôle s’
   /* la préférence système du sombre est servie comme le thème déclaré */
   assert.ok(/prefers-color-scheme: dark\) \{\s*:root:not\(\[data-theme="light"\]\) \{[^}]*--weight-body/.test(dark), 'le sombre par préférence système porte aussi la graisse')
 })
-test('site — aucune durée ni courbe écrite à la main dans les feuilles : une transition ou une animation prend un jeton de mouvement, ou dit « chorégraphie » sur sa ligne', () => {
+test('site — aucune durée ni courbe écrite à la main dans les feuilles : une transition ou une animation prend un token de mouvement, ou dit « chorégraphie » sur sa ligne', () => {
   const faults = []
   for (const [f, src] of readApp().filter(([f]) => f.endsWith('.css') && f !== 'app/tokens.css')) {
     src.split('\n').forEach((line, i) => {

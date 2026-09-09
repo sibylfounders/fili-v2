@@ -5,7 +5,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
    (décision d'Auteur, 23 août) : Clair, Système (défaut — le sombre
    s'active sur la préférence du système, règle C13), Sombre. Posé en
    attribut sur <html> (valeurs API : light / dark), résolu par les
-   jetons de tokens.css (une valeur par thème et par rôle, règle C12),
+   tokens de tokens.css (une valeur par thème et par rôle, règle C12),
    mémorisé d'une page et d'une visite à l'autre.
 
    L'état est lu depuis <html> par useSyncExternalStore : le script de

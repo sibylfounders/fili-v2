@@ -7,7 +7,7 @@
      « LE MOTEUR DU RYTHME ». Les huit décisions du 25 août 2026 y sont les
      lois ; le crash-test kit/derivation.test.mjs les rejoue une à une.
 
-   Régénérer les jetons : node kit/tokens.write.mjs   (tokens.css · Tailwind · Figma)
+   Régénérer les tokens : node kit/tokens.write.mjs   (tokens.css · Tailwind · Figma)
                           --css, --tailwind, --figma, --rythme : la même chose, à l'écran
 
    ───────────────────────────────────────────────────────────────────────
@@ -42,13 +42,13 @@
    · FOCUS — le HALO (décision d'Auteur sur pièce Figma, 2026-08-31, qui
      révise la forme de C18) : une bande pâle de la famille de l'objet,
      collée à lui, fermée par un trait fin. La bande est le fond doux de la
-     famille (primary-subtle, danger-subtle, surface) — aucun jeton neuf.
+     famille (primary-subtle, danger-subtle, surface) — aucun token neuf.
      Le TRAIT est le cran le MOINS SOUTENU de la famille qui tient encore
      3:1 sur bg et surface (le plus clair en clair, le plus sombre en
      sombre) : c'est l'indicateur au sens de la norme, il est sous contrat.
      Le halo ne se montre qu'au clavier — le clic ne montre rien (verdict
      d'Auteur du 31 août, sur le site : essayés puis retirés, les traits
-     pâles du clic n'ont plus de consommateur, donc plus de jeton, C4).
+     pâles du clic n'ont plus de consommateur, donc plus de token, C4).
      Trois familles de halo : marque (focus-ring), rouge (focus-ring-danger),
      neutre (focus-ring-neutral = border-strong, déjà sous contrat).
      L'accent n'y touche pas.
@@ -65,7 +65,7 @@
      mécanisée. La conformité AA n'est pas vérifiée après coup : elle est
      obtenue par construction.
 
-   Régénérer les jetons : node kit/derivation.mjs --css > (bloc tokens.css)
+   Régénérer les tokens : node kit/derivation.mjs --css > (bloc tokens.css)
    Vérifier une primaire :  node kit/derivation.mjs "#0E7C5B"            */
 
 const toLinear = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
@@ -627,7 +627,7 @@ export const OFF_CHAIN = {
   thresholdSetupInPage: 40,      /* décision 7 : le seuil des deux régimes, en em (640 px à 16) — valeur de registre */
   thresholdRail: 69,            /* le palier du gabarit documentaire : sous 69 em le rail cède la colonne (globals.css) — un second seuil, dette dite */
   steps: 6,                 /* décision 8 : l'échelle continuée au-dessus de la coque, six crans de page calculés… */
-  stepsConsumed: [2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de jeton sans consommateur) */
+  stepsConsumed: [2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de token sans consommateur) */
   maxPage: '90rem',         /* la largeur maximale du gabarit — une mesure, comme --measure */
   /* LE GABARIT DOCUMENTAIRE, dérivé (décision 8, verdict d'Auteur du 25 août sur la planche
      du gabarit) : le silence entre sections = 4ᵉ cran de page (96 ; compact 64 · aéré 128) ;
@@ -659,7 +659,7 @@ export const MOTION = {
   durations: {
     fast: { ms: 100, use: 'bouton, survol, appui' },
     base: { ms: 200, use: 'menu, infobulle, dépliant' },
-    slow: { ms: 300, use: 'tiroir, fenêtre, panneau' },
+    slow: { ms: 300, use: 'drawer, fenêtre, panneau' },
     expressive: { ms: 700, use: "arrivée d'une section au défilement" },
   },
   curve: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -707,7 +707,7 @@ export function chain(entries = {}) {
   const gap = [pad[1], pad[2], r4(e.base / (I * I * I)), r4(e.base / (I * I * I * I))]
   /* gap-4 (6 = base ÷ 4) : la chaîne continuée d'un cran encore, pour ce qui vit dans une
      ligne — l'intérieur d'un badge, une cellule, un chiffre et son libellé (arbitrage du
-     25 août, étape 5 : sept endroits du kit vivaient à 2 ou 3 px sans jeton d'arrivée). */
+     25 août, étape 5 : sept endroits du kit vivaient à 2 ou 3 px sans token d'arrivée). */
   const edge = pad[0]
 
   /* 8 · les crans de page : la chaîne continuée au-dessus de la coque (× I, × I² …) */
@@ -731,7 +731,7 @@ export function chain(entries = {}) {
     entries: e,
     r, rCtl, pad, gap, edge, page, text,
     control: OFF_CHAIN.target,
-    /* la cible des commandes secondaires (tiroir, têtes d'outils) : la cible ÷ √2 = 31, au-dessus du plancher de 24 */
+    /* la cible des commandes secondaires (drawer, têtes d'outils) : la cible ÷ √2 = 31, au-dessus du plancher de 24 */
     controlCompact: r4(OFF_CHAIN.target / Math.SQRT2),
     /* la garantie, vérifiée : aucun enfant plus rond que son parent, aucune marge sous son coin */
     guarantees: {
@@ -742,7 +742,7 @@ export function chain(entries = {}) {
   }
 }
 
-/* LE RYTHME. Une valeur de socle et un axe → un jeton fluide : la droite qui
+/* LE RYTHME. Une valeur de socle et un axe → un token fluide : la droite qui
    joint les deux bornes, en rem. L'axe type porte le plancher du corps : la
    borne basse de clamp() ne descend jamais sous le corps (décision 5). */
 export function fluid(value, axis, { floor = 0, unit = 'rem' } = {}) {
@@ -756,13 +756,13 @@ export function fluid(value, axis, { floor = 0, unit = 'rem' } = {}) {
   const u = unit === 'px' ? (v) => `${n(v)}px` : (v) => `${n(v / ROOT_BROWSER)}rem`
   return { bottom: r4(bottom), top: r4(top), freeze: r4(Math.max(value * factor(axis, WIDTH_FREEZE), floor)), css: `clamp(${u(bottom)}, ${u(origin)} + ${n(slope)}vw, ${u(top)})` }
 }
-/* La valeur d'un jeton fluide à une largeur donnée, sur la courbe adoucie
+/* La valeur d'un token fluide à une largeur donnée, sur la courbe adoucie
    (ce que la pièce d'Auteur affiche) — pour les pages et le crash-test. */
 export function aWidth(value, axis, width, floor = 0) {
   return r4(Math.max(value * factor(axis, width), floor))
 }
 
-/* LES JETONS. Le registre complet, nom par nom, pour une base donnée.
+/* LES TOKENS. Le registre complet, nom par nom, pour une base donnée.
    Deux axes d'espacement (G7 : ils ne se mélangent jamais) ; les coins et le
    bouton sans axe (décisions 2, 7) ; le texte sur l'axe type, borné ; la
    cible sur l'axe control. */
@@ -804,7 +804,7 @@ export const REGISTRY = {
   },
   text: { 'leading-body': '1.6', 'leading-heading': '1.2', measure: '65ch', 'tracking-label': '0.08em' },
   shadcn: { 'r-1': '0.75rem', 'r-2': '0.5rem', 'r-3': '0.375rem', 'r-4': '0.375rem', 'control-height': '2.25rem' },
-  /* LE GABARIT DOCUMENTAIRE — chaque cran est un ALIAS d'un jeton de la chaîne (décision 8).
+  /* LE GABARIT DOCUMENTAIRE — chaque cran est un ALIAS d'un token de la chaîne (décision 8).
      La marge de page suit le régime de mise en page : le bord sur mobile, le 3ᵉ cran de page
      quand le rail est là. La scène est une coque : sa marge, sur chaque axe. */
   doc: {
@@ -839,7 +839,7 @@ export function toCssRhythm(entries = {}) {
   const e = foundation.entries
   return [
     `/* ═══════════════════════════════════════════════════════════════════════`,
-    `   LES JETONS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer`,
+    `   LES TOKENS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer`,
     `   Décisions d'entrée : base ${e.base} · intervalle ${e.interval === Math.SQRT2 ? '√2' : e.interval} · racine ${e.root} (bornée à ${BOUNDS.root[1]})`,
     `   · intervalle des titres ${e.intervalHeadings}. Les huit décisions du 25 août 2026 sont les lois.`,
     `   À la charte : marges ${foundation.pad.map(px).join(' · ')} — espaces ${foundation.gap.map(px).join(' · ')} — coins ${foundation.r.map(px).join(' · ')}`,
@@ -905,7 +905,7 @@ export function toCssRhythm(entries = {}) {
     ...Object.entries(REGISTRY.shadcn).map(([n, v]) => line(n, v)),
     `}`,
     ``,
-    `/* Le gabarit documentaire — chaque cran est un alias d'un jeton de la chaîne (décision 8 ; verdict du 25 août :`,
+    `/* Le gabarit documentaire — chaque cran est un alias d'un token de la chaîne (décision 8 ; verdict du 25 août :`,
     `   silence = 4ᵉ cran). La marge de page suit le régime : le bord sur mobile, le 3ᵉ cran de page dès que`,
     `   le rail est là. Les titres du site sont une INTENTION D'AUTEUR déclarée (amendement du 25 août) :`,
     `   bornes dérivées (affiche : section → sept crans ; section : h1 → section), pentes du gabarit nu`,
@@ -945,7 +945,7 @@ export function toTokensCss(entries = {}, primary = PRIMARY_DEFAULTS) {
   return toCssRhythm(entries) + '\n\n' + toCss(derived(primary), primary) + '\n'
 }
 
-/* ── SORTIE FIGMA — jetons gelés à 768 (décision 7), bornes en description ── */
+/* ── SORTIE FIGMA — tokens gelés à 768 (décision 7), bornes en description ── */
 export function toFigma(entries = {}, primary = PRIMARY_DEFAULTS) {
   const foundation = chain(entries)
   const j = tokens(foundation)
@@ -958,7 +958,7 @@ export function toFigma(entries = {}, primary = PRIMARY_DEFAULTS) {
   const group = (re) => Object.fromEntries(Object.entries(j).filter(([n]) => re.test(n)).map(([n, t]) => [n, dim(t, n)]))
   const colors = (o) => Object.fromEntries(Object.entries(o).map(([n, v]) => [n, { $type: 'color', $value: v }]))
   return {
-    $description: `Jetons du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base ${foundation.entries.base} · √2 · racine ${foundation.entries.root} · titres × ${foundation.entries.intervalHeadings} · primary ${primary}. Les jetons fluides sont gelés à ${WIDTH_FREEZE} px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.`,
+    $description: `Tokens du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base ${foundation.entries.base} · √2 · racine ${foundation.entries.root} · titres × ${foundation.entries.intervalHeadings} · primary ${primary}. Les tokens fluides sont gelés à ${WIDTH_FREEZE} px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.`,
     spacing: { ...group(/^(pad|gap|edge)-/), density: Object.fromEntries(Object.entries(DENSITIES).map(([name, base]) => [name, { $type: 'dimension', $value: `${base}px`, $description: 'La densité change la base ; la chaîne se recalcule.' }])) },
     page: group(/^page-/),
     radius: { ...group(/^r-/), 'r-ctl': { $type: 'dimension', $value: `${px(foundation.rCtl)}px`, $description: 'Le composant prend le coin de la ligne (r-3).' } },

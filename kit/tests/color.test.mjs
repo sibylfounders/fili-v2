@@ -2,7 +2,7 @@
    Ce qui doit être vrai à l'écran, mesuré sans l'œil (plan validé par
    l'Auteur le 26 août 2026) :
    1 · chaque chiffre affiché sort du moteur (hex, RGB, rapports) et tient son seuil ;
-   2 · chaque preuve est peinte par son propre jeton (mosaïque, nuancier, gammes, alerte, panneaux, voile) ;
+   2 · chaque preuve est peinte par son propre token (mosaïque, nuancier, gammes, alerte, panneaux, voile) ;
    3 · le moteur sous les yeux : une marque entre, toute la famille suit, les seuils tiennent ;
    4 · les casses rendent le mensonge qu'elles déclarent, et se réparent ;
    5 · le thème sombre, et C17 dans les deux thèmes ;
@@ -44,7 +44,7 @@ const PAIRS = {
 }
 const TABS = GROUPS_SWATCHES.flatMap(([, tokens]) => tokens).map((j) => [j, ...PAIRS[j]])
 const TILES = [['primary', '--on-primary'], ['bg', '--text-primary'], ['primary-subtle', '--on-primary-subtle'], ['text-primary', '--bg'], ['surface', '--text-primary'], ['border-strong', '--bg']]
-/* résoudre un jeton dans un hôte thématisé, comme la page le fait — par le moteur de rendu */
+/* résoudre un token dans un hôte thématisé, comme la page le fait — par le moteur de rendu */
 const resolve = (p, theme, names) => p.evaluate(([theme, names]) => {
   const h = document.createElement('div'); h.dataset.theme = theme; document.body.appendChild(h)
   const s = document.createElement('span'); h.appendChild(s)
@@ -137,7 +137,7 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
   }
 })
 
-/* ── 2 · Chaque preuve est peinte par son propre jeton ── */
+/* ── 2 · Chaque preuve est peinte par son propre token ── */
 test('2 · la mosaïque, le nuancier, les gammes, l’alerte et les panneaux sont peints par la valeur dérivée ; le voile du bento est calculé et tient 4,5', async () => {
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { theme }); await survey(p)
@@ -263,7 +263,7 @@ test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une 
   /* le survol par filtre : une couleur qu'aucun registre ne connaît */
   const c2 = band(3)
   await p.locator(`${c2} .demo-full`).hover(); await p.waitForTimeout(350)
-  assert.equal(await calc(p, `${c2} .demo-full`, 'filter'), 'none'); assert.equal(await calc(p, `${c2} .demo-full`, 'backgroundColor'), rgb(PAL.light['primary-hover']), 'au repos, le survol est un jeton')
+  assert.equal(await calc(p, `${c2} .demo-full`, 'filter'), 'none'); assert.equal(await calc(p, `${c2} .demo-full`, 'backgroundColor'), rgb(PAL.light['primary-hover']), 'au repos, le survol est un token')
   await wreck(3); await p.locator(`${c2} .demo-full`).hover(); await p.waitForTimeout(350)
   assert.match(await calc(p, `${c2} .demo-full`, 'filter'), /brightness/); assert.equal(await calc(p, `${c2} .demo-full`, 'backgroundColor'), rgb(PAL.light.primary), 'cassé : un filtre sur la marque')
   assert.match(await text(p, `${c2} .badge.ko`), /calculé à la volée/)

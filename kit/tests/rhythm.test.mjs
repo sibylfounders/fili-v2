@@ -2,7 +2,7 @@
    Ce qui doit être vrai à l'écran, mesuré sans l'œil (plan validé par
    l'Auteur le 26 août 2026) :
    1 · chaque chiffre affiché sort du moteur ;
-   2 · chaque preuve est rendue par son propre jeton ;
+   2 · chaque preuve est rendue par son propre token ;
    3 · la densité recalcule sous les yeux ;
    4 · les titres glissent avec l'écran ;
    5 · le tertiaire suit C17 ;
@@ -63,9 +63,9 @@ test('1 · dans la vue, aucun nombre en pixels n’est écrit à la main hors d�
   assert.deepEqual(faults, [])
 })
 
-/* ── 2 · Chaque preuve est rendue par son propre jeton — mesuré aux trois largeurs ── */
+/* ── 2 · Chaque preuve est rendue par son propre token — mesuré aux trois largeurs ── */
 const PROOFS = [
-  /* [sélecteur, propriété calculée, jeton] — la tranche Fili : coque → carte → ligne */
+  /* [sélecteur, propriété calculée, token] — la tranche Fili : coque → carte → ligne */
   ['#scale .slice', 'paddingTop', 'pad-1-block'], ['#scale .slice', 'paddingLeft', 'pad-1-inline'],
   ['#scale .slice', 'borderTopLeftRadius', 'r-1'], ['#scale .slice', 'columnGap', 'gap-1-inline'],
   /* la marge du panneau est tracée par quatre bandes posées sur son bord (31 août) :
@@ -129,13 +129,13 @@ const PROOFS = [
   ['#code .doc-panel', 'borderTopLeftRadius', 'r-1'], ['#code .doc-panel', 'paddingTop', 'pad-1-block'],
   ['#code .doc-unfold', 'borderTopLeftRadius', 'r-ctl'], ['#code .doc-unfold', 'minHeight', 'control-height'],
 ]
-/* Les quatre crans de la réglette, dans l'ordre où elle les pose : le jeton
+/* Les quatre crans de la réglette, dans l'ordre où elle les pose : le token
    qu'elle DESSINE, et la valeur de charte qu'elle ÉCRIT à côté. */
 const STEPS_RULER = [
   ['pad-1-block', (s) => s.pad[0]], ['pad-2-block', (s) => s.pad[1]],
   ['gap-2-block', (s) => s.gap[1]], ['gap-3-inline', (s) => s.gap[2]],
 ]
-test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulaire sont rendus par leur jeton, aux trois largeurs', async () => {
+test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulaire sont rendus par leur token, aux trois largeurs', async () => {
   for (const W of WIDTHS) {
     const { p, close } = await nav.page(URL(), { width: W })
     for (const [sel, prop, token] of PROOFS) ok(await calcPx(p, sel, prop), expected(token, W), `${W} px — ${sel} ${prop} = --${token}`)
@@ -147,18 +147,18 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
     ok(pair[1], pair[2], `${W} px — c'est l'interligne de titre qui les tient`, 0.01)
     /* la réglette (31 août) : quatre crans DESSINÉS à leur vraie longueur — c'est
        tout son propos, et c'est la seule preuve de la page qu'on peut fausser sans
-       que rien ne se voie. Chaque barre vaut son jeton à cette largeur ; le nombre
+       que rien ne se voie. Chaque barre vaut son token à cette largeur ; le nombre
        écrit à côté est la valeur de charte, comme partout ailleurs sur la page. */
     const bars = await p.evaluate(() => [...document.querySelectorAll('#scale .ry-step-bar')].map((b) => parseFloat(getComputedStyle(b).width)))
     list(bars, STEPS_RULER.map(([j]) => expected(j, W)), `${W} px — la réglette à la vraie longueur`, TOL)
     list((await texts(p, '#scale .ry-ruler .ry-step b')).flatMap(numbers), STEPS_RULER.map(([, v]) => rounded(v(FOUNDATION))), `${W} px — la réglette dit sa charte`)
-    /* côte à côte, son écart vertical est un jeton du kit ; empilée (sous 56 rem), elle porte
+    /* côte à côte, son écart vertical est un token du kit ; empilée (sous 56 rem), elle porte
        le « ÷ √2 » entre deux boîtes des deux côtés — c'est la seule mesure d'atelier de la page,
        et elle est dite sur sa ligne */
     const increment = await p.evaluate(() => { const cs = getComputedStyle(document.querySelector('#scale .ry-ruler')); return [parseFloat(cs.rowGap), parseFloat(cs.columnGap)] })
     ok(increment[0], W >= 56 * 16 ? expected('gap-1-block', W) : increment[1], `${W} px — l’écart vertical de la réglette`)
     /* la bande se replie sous 62 rem : la scène passe sous la parole, et l'écart
-       des colonnes devient l'écart des rangs — les deux sont des jetons */
+       des colonnes devient l'écart des rangs — les deux sont des tokens */
     ok(await calcPx(p, '#bands .doc-band', W >= 62 * 16 ? 'columnGap' : 'rowGap'),
        expected(W >= 62 * 16 ? 'doc-gutter' : 'gap-1-block', W), `${W} px — l’écart de la bande`)
     /* la règle 1, mesurée pour elle-même : l'écart entre deux sœurs EST leur marge,
@@ -169,7 +169,7 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
               parseFloat(getComputedStyle(c.querySelector('.ry-fr-card > .space.h')).width)]
     })
     ok(sisters[0], sisters[1], `${W} px — l’écart entre sœurs = leur marge`)
-    ok(sisters[0], expected('gap-1-inline', W), `${W} px — et c’est le jeton de l’espace entre frères`)
+    ok(sisters[0], expected('gap-1-inline', W), `${W} px — et c’est le token de l’espace entre frères`)
     /* l'escalier des rapports : quatre barres à leur vraie longueur, celles du registre */
     const barsRatio = await p.evaluate(() => [...document.querySelectorAll('#bands .ry-ratio-bar')].map((b) => parseFloat(getComputedStyle(b).width)))
     list(barsRatio, [FOUNDATION.pad[0], FOUNDATION.pad[1], FOUNDATION.pad[2], FOUNDATION.gap[2]], `${W} px — l’escalier des rapports`, TOL)
@@ -179,7 +179,7 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
     await close()
   }
 })
-test('2 · les casses sont rendues par le jeton menteur, déclarées (data-intent="statement") — et la ligne cassée est deux fois plus ronde que sa carte', async () => {
+test('2 · les casses sont rendues par le token menteur, déclarées (data-intent="statement") — et la ligne cassée est deux fois plus ronde que sa carte', async () => {
   const W = 1440
   const { p, close } = await nav.page(URL(), { width: W })
   /* la profondeur */
@@ -204,14 +204,14 @@ test('2 · les casses sont rendues par le jeton menteur, déclarées (data-inten
   await toggle('.ry-ratio')
 
   /* y9 · au repos les deux cartes se ressemblent ; le texte agrandi les sépare :
-     la marge en jetons grandit avec lui, la marge en pixels ne bouge pas */
+     la marge en tokens grandit avec lui, la marge en pixels ne bouge pas */
   const marginsRem = () => p.evaluate(() => [...document.querySelectorAll('#bands .ry-rem-card')].map((e) => parseFloat(getComputedStyle(e).paddingTop)))
   const atRest = await marginsRem()
-  ok(atRest[0], expected('pad-2-block', W), 'au repos : la carte en jetons porte la marge du registre')
+  ok(atRest[0], expected('pad-2-block', W), 'au repos : la carte en tokens porte la marge du registre')
   ok(atRest[1], 16, 'au repos : la carte en pixels porte 16')
   await toggle('.ry-rem')
   const enlarged = await marginsRem()
-  assert.ok(enlarged[0] > atRest[0] + 1, `texte agrandi : la marge en jetons a suivi (${atRest[0]} → ${enlarged[0]})`)
+  assert.ok(enlarged[0] > atRest[0] + 1, `texte agrandi : la marge en tokens a suivi (${atRest[0]} → ${enlarged[0]})`)
   ok(enlarged[1], 16, 'texte agrandi : la marge en pixels n’a pas bougé')
   await toggle('.ry-rem')
 
@@ -235,7 +235,7 @@ test('2 · les casses sont rendues par le jeton menteur, déclarées (data-inten
   assert.deepEqual(e.map((x) => x[1]), ['statement', 'statement', null, null])
   await close()
 })
-test('2 · la feuille de la page consomme, pour chaque preuve, le jeton qu’elle nomme', () => {
+test('2 · la feuille de la page consomme, pour chaque preuve, le token qu’elle nomme', () => {
   const css = fs.readFileSync(path.join(KIT, 'app/rythme/rhythm.css'), 'utf8')
   const block = (sel) => { const i = css.indexOf(`\n${sel} {`); assert.ok(i >= 0, `sélecteur absent : ${sel}`); return css.slice(i, css.indexOf('}', i)) }
   const waits = (sel, decl) => assert.ok(block(sel).includes(decl), `${sel} : « ${decl} » attendu`)
@@ -262,7 +262,7 @@ test('2 · la feuille de la page consomme, pour chaque preuve, le jeton qu’ell
 })
 
 /* ── 3 · La densité recalcule sous les yeux ── */
-test('3 · par le tiroir, la densité change la base de la tranche et du silence — jamais les coins, jamais les colonnes', async () => {
+test('3 · par le drawer, la densité change la base de la tranche et du silence — jamais les coins, jamais les colonnes', async () => {
   const W = 1440
   const { p, close } = await nav.page(URL(), { width: W })
   const measureIt = async () => ({
@@ -394,7 +394,7 @@ test('6 · dans les corps de sections, chaque marge, espace et coin calculé est
      et /arrondis : une mesure qui ne descend pas de la chaîne est admise si — et
      seulement si — sa ligne le dit. Ce que la page perd ici en balayage, elle le
      rend plus haut : chacun des sélecteurs ainsi dispensés est mesuré nommément,
-     jeton par jeton, dans l'épreuve 2. */
+     token par token, dans l'épreuve 2. */
   const css = fs.readFileSync(path.join(KIT, 'app/rythme/rhythm.css'), 'utf8')
   const global = fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
   const exclusions = ['padding', 'padding-inline', 'padding-block', 'padding-inline-end', 'gap', 'row-gap', 'column-gap', 'border-radius', 'margin']
@@ -406,7 +406,7 @@ test('6 · dans les corps de sections, chaque marge, espace et coin calculé est
     await p.waitForTimeout(120)
     /* La scène de la preuve 02 est réglée sur la largeur SIMULÉE par le cadre,
        pas sur celle de la fenêtre : ses marges sont bien des valeurs du moteur,
-       mais à une autre largeur. Elle est mesurée nommément, jeton par jeton, dans
+       mais à une autre largeur. Elle est mesurée nommément, token par token, dans
        son épreuve (3 · les deux réglages) — elle sort donc de ce balayage-ci. */
     const f = await faultsInHard(p, W, DENSITIES.comfortable, { exclusions: [...exclusions, '.ry-sd', '.ry-sd *'] })
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
@@ -415,7 +415,7 @@ test('6 · dans les corps de sections, chaque marge, espace et coin calculé est
     await close()
   }
 })
-test('6 · dans la vue, tout style posé en ligne est un jeton ou une valeur du moteur, ou sa ligne dit « hors chaîne »', () => {
+test('6 · dans la vue, tout style posé en ligne est un token ou une valeur du moteur, ou sa ligne dit « hors chaîne »', () => {
   const src = fs.readFileSync(path.join(KIT, 'app/rythme/view.tsx'), 'utf8')
   const faults = []
   src.split('\n').forEach((l, i) => {
@@ -432,7 +432,7 @@ test('6 · dans la vue, tout style posé en ligne est un jeton ou une valeur du 
    La chaîne et la profondeur sont fondues en une preuve, la descente (#echelle
    garde la tranche, #profondeur le schéma des trois étages, dans la même
    section) ; la queue commune a disparu ; UN répertoire (#registre) range les
-   jetons et leur correspondance (#code), six bandes (#bandes, en h4) et la
+   tokens et leur correspondance (#code), six bandes (#bandes, en h4) et la
    liste (#liste). */
 test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la descente porte la tranche et les trois étages ; six bandes en h4, la liste, la correspondance', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
@@ -441,7 +441,7 @@ test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire d
   assert.equal(await p.locator('#scale .slice').count() + await p.locator('#scale #depth .ry-pf').count(), 2, 'la descente : la tranche et les trois étages, dans la même preuve')
   assert.equal(await p.locator('#registry #bands h4.doc-band-name').count(), 6, 'six bandes, en h4 sous leur sous-titre')
   assert.ok(await p.locator('#registry #list .doc-list tbody tr').count() >= 1, 'la liste')
-  assert.ok(await p.locator('#registry #code .doc-code tbody tr').count() >= 1, 'les jetons')
+  assert.ok(await p.locator('#registry #code .doc-code tbody tr').count() >= 1, 'les tokens')
   assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 3, 'trois pièces')
   await close()
 })

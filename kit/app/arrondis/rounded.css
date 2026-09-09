@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   PAGE ARRONDIS — styles propres (préfixe ar-). Le squelette du gabarit
+   PAGE ARRONDIS — styles propres (préfixe ar-). Le skeleton du gabarit
    documentaire nu (gdoc, banc, gd-figure, prov…) vit dans globals.css et
    n'est pas touché. Le chrome de la page consomme le registre (tokens.css,
    généré par derivation.mjs) ; les objets de démo portent leur géométrie
@@ -66,10 +66,10 @@
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: flex-end;
 }
-.ar-background { position: absolute; inset: 0; padding: 40px 16px 0; gap: 8px; /* hors chaîne : le squelette de l'écran derrière le voile */ display: flex; flex-direction: column; }
-.ar-background .bar { height: 8px; /* hors chaîne : barre de squelette */ border-radius: var(--ar-r4); background: #9CA3AF; width: 60%; opacity: 0.5; }
+.ar-background { position: absolute; inset: 0; padding: 40px 16px 0; gap: 8px; /* hors chaîne : le skeleton de l'écran derrière le voile */ display: flex; flex-direction: column; }
+.ar-background .bar { height: 8px; /* hors chaîne : barre de skeleton */ border-radius: var(--ar-r4); background: #9CA3AF; width: 60%; opacity: 0.5; }
 .ar-background .bar.c { width: 38%; }
-.ar-background .plan { margin-top: 12px; height: 88px; /* hors chaîne : le plan, squelette */ background: #FFFFFF; border-radius: var(--ar-r2); opacity: 0.5; }
+.ar-background .plan { margin-top: 12px; height: 88px; /* hors chaîne : le plan, skeleton */ background: #FFFFFF; border-radius: var(--ar-r2); opacity: 0.5; }
 .ar-veil { position: absolute; inset: 0; background: rgba(17, 24, 39, 0.32); }
 /* Une valeur qu'on fait glisser ne s'anime pas (loi du 3 septembre) : la fiche est
    pilotée par les molettes de la racine et de la marge — aucune transition sur ce

@@ -182,7 +182,7 @@ la profondeur, ce sont des faits, pas des jugements.
 ### Les deux axes ne se mélangent jamais
 
 L'horizontal et le vertical ne respirent pas au même rythme. Le nom de la classe
-porte son axe, et **un jeton horizontal posé sur une propriété verticale est une
+porte son axe, et **un token horizontal posé sur une propriété verticale est une
 faute** que le robot voit.
 
 \`\`\`
@@ -260,7 +260,7 @@ il ne rabat pas la valeur en silence.
 **Une surface** suit la profondeur : son rayon se divise par deux à chaque niveau.
 \`rounded-net\` pour ce qui se lit — une section, un tableau.
 
-**Un composant** — bouton, champ, liste de choix, jeton — ne suit pas la profondeur.
+**Un composant** — bouton, champ, liste de choix, token — ne suit pas la profondeur.
 Il prend \`rounded-control\`, et ce rayon ne change ni avec l'endroit où il tombe,
 ni avec le thème : un bouton doit se reconnaître partout. Il est plus petit que le
 rayon de sa carte par construction, parce qu'un arrondi se lit par rapport à la
@@ -328,9 +328,9 @@ Tout ce qui attend une réponse expose ses états : **ça charge, ça a raté, c
 vide, voilà le contenu.** Aucun n'est optionnel, et la mécanique passe par
 \`EtatAsync\` — jamais par des conditions écrites à la main dans la page.
 
-Le squelette d'attente ressemble à ce qu'il remplace. **Le rond qui tourne est
+Le skeleton d'attente ressemble à ce qu'il remplace. **Le rond qui tourne est
 interdit** : il occupe sans informer. Une seule animation existe dans tout le
-système, la respiration du squelette — il n'y en a pas d'autre à choisir.
+système, la respiration du skeleton — il n'y en a pas d'autre à choisir.
 
 **Ce qui vient d'ailleurs entre par une seule porte.** Une donnée lue à la main
 dans une page contourne le conteneur, donc les quatre états, et il ne reste que
@@ -370,7 +370,7 @@ d'abord, la solution ensuite, un seul de chaque.
 1. Aucun nombre écrit à la main, hors les sept tolérés.
 2. Aucune balise interactive nue.
 3. Chaque attente expose ses quatre états.
-4. Aucun jeton horizontal sur une propriété verticale.
+4. Aucun token horizontal sur une propriété verticale.
 5. Aucune marge extérieure, sauf \`mx-auto\`.
 6. Chaque écart choisi par profondeur, pas au jugé.
 

@@ -1,11 +1,11 @@
-/* Zone système. Un squelette juste annonce la page qui vient ; un squelette
+/* Zone système. Un skeleton juste annonce la page qui vient ; un skeleton
    faux la dément — c'est ce que juge B-6, et c'est pourquoi il prend la forme
    de ce qu'il remplace plutôt qu'une forme générique.
    Il ne remplace pas une durée réelle : É1 doit montrer un compte qui avance,
    pas un rond qui tourne (K2 §6).
    La forme « titre » est née de R2.7 : une section qui attend attend en entier,
    son titre compris. Sans elle, un titre et une phrase auraient exactement la
-   même allure en gris, et le squelette n'annoncerait plus la hiérarchie. */
+   même allure en gris, et le skeleton n'annoncerait plus la hiérarchie. */
 
 type Shape = 'lines' | 'block' | 'tokens' | 'heading'
 

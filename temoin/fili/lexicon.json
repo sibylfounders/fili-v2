@@ -1,12 +1,12 @@
 {
   "$comment": "Le lexique entre l'Échelle Semantic Rhythm et Fili. PIÈCE GÉNÉRÉE — ne pas éditer à la main : tout vient de tools/fili/lexicon/produce.mjs.",
-  "$rule": "Aucune valeur n'est déclarée ici. Chaque entrée pointe sur un jeton de fili/geometry.json, et la génération refuse de statuer si l'un manque.",
+  "$rule": "Aucune valeur n'est déclarée ici. Chaque entrée pointe sur un token de fili/geometry.json, et la génération refuse de statuer si l'un manque.",
   "$survey": "Table relevée dans l'outil de l'Auteur le 2026-08-11 — la charge utile envoyée à ses écrans de démonstration.",
   "$ruling": {
     "slice": "Les noms de Fili restent la référence. Ceux de l'outil sont des alias.",
     "date": "2026-08-11",
-    "reason": "Ce n'est pas un arbitrage de goût : les noms de l'outil se lisent mieux, et c'est reconnu. C'est un fait de mécanique. La règle qui attrape un jeton horizontal posé sur une propriété verticale se déclenche sur les préfixes 'inline-' et 'block-' : le nom N'EST PAS une convention d'écriture, c'est la prise du contrôle. Les renommer, c'est réécrire une règle verrouillée, le registre qu'elle lit, la configuration des utilitaires et les emplois dans les écrans — pour un gain de confort.",
-    "ceAllows": "Dans une feuille de style écrite à la main, les noms de l'outil sont utilisables tels quels : src/lexicon.generated.css les fait pointer sur les jetons du dépôt.",
+    "reason": "Ce n'est pas un arbitrage de goût : les noms de l'outil se lisent mieux, et c'est reconnu. C'est un fait de mécanique. La règle qui attrape un token horizontal posé sur une propriété verticale se déclenche sur les préfixes 'inline-' et 'block-' : le nom N'EST PAS une convention d'écriture, c'est la prise du contrôle. Les renommer, c'est réécrire une règle verrouillée, le registre qu'elle lit, la configuration des utilitaires et les emplois dans les écrans — pour un gain de confort.",
+    "ceAllows": "Dans une feuille de style écrite à la main, les noms de l'outil sont utilisables tels quels : src/lexicon.generated.css les fait pointer sur les tokens du dépôt.",
     "ceQuOnRefused": "Ajouter les noms de l'outil comme classes utilitaires en plus de celles de Fili. Ce serait deux façons légales d'écrire la même valeur, et c'est ce que ce système interdit partout ailleurs. Une équivalence déclarée dans un lexique n'est pas un doublon ; deux classes qui font la même chose en sont un.",
     "seReopens": "Par une entrée de journal, jamais en silence. Le coût de la bascule est chiffré : la règle des espaces, le registre, la configuration, et les emplois dans les sept écrans."
   },
@@ -121,7 +121,7 @@
     {
       "side": "tool",
       "name": "--pageR",
-      "what": "le rayon du cadre de la démonstration — c'est le rayon racine, et Fili ne l'expose pas comme jeton : chez lui le rayon racine EST la marge, il n'a pas de nom propre."
+      "what": "le rayon du cadre de la démonstration — c'est le rayon racine, et Fili ne l'expose pas comme token : chez lui le rayon racine EST la marge, il n'a pas de nom propre."
     },
     {
       "side": "tool",
@@ -131,12 +131,12 @@
     {
       "side": "tool",
       "name": "--type-scale",
-      "what": "l'intervalle des titres. Ce n'est pas un jeton mais une décision d'entrée : elle vaut 1.25 chez Fili."
+      "what": "l'intervalle des titres. Ce n'est pas un token mais une décision d'entrée : elle vaut 1.25 chez Fili."
     },
     {
       "side": "tool",
       "name": "fontSize",
-      "what": "la taille du corps, envoyée à part. Chez Fili c'est le jeton type-corps."
+      "what": "la taille du corps, envoyée à part. Chez Fili c'est le token type-corps."
     },
     {
       "side": "fili",

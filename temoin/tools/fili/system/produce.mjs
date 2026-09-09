@@ -84,7 +84,7 @@ const nbReferences = Object.entries(exp).reduce((a, [f, v]) => (f.startsWith('$'
 
 /* Ce qui descend d'une décision, et ce qui ne descend de rien. */
 const derived = [
-  { what: "jetons de géométrie — marges, écarts, rayons, bord, texte, cible, tous fluides", n: nbTokensGeo, of: 'base · intervalle · corps · cible · amplitudes' },
+  { what: "tokens de géométrie — marges, écarts, rayons, bord, texte, cible, tous fluides", n: nbTokensGeo, of: 'base · intervalle · corps · cible · amplitudes' },
   { what: "couleurs — fonds, encres, traits, et les quatre états avec leurs couples", n: nbColors, of: 'couleur primaire' },
   { what: "tailles de texte — le corps et les trois niveaux de titre", n: nbSizesCalc, of: 'corps · intervalle des titres' },
 ]
@@ -99,7 +99,7 @@ for (const [n, v] of Object.entries(geo.radii || {})) if (!known.has(v)) known.s
 for (const [n, v] of Object.entries(geo.text || {})) if (!known.has(v)) known.set(Math.round(v * 1000) / 1000, `texte ${n}`)
 if (geo.control) known.set(geo.control.target, 'target')
 
-/* Une valeur qui pointe sur un jeton calculé n'est pas une valeur choisie,
+/* Une valeur qui pointe sur un token calculé n'est pas une valeur choisie,
    même si sa famille ne le déclare pas dans sa source. On le lit au renvoi. */
 const returns = (o) => /var\(--rr-/.test(String(value(o))) || String(o?.$source || '').includes('calculé')
 const IGNORE = new Set(['sizes'])
@@ -451,7 +451,7 @@ fait respecter. Cette page ne décide rien — elle lit les fichiers du dépôt 
 valeur change là-bas, on regénère.</p>
 
 ${section('map', '00 — La cartographie', 'Huit décisions, et tout le reste en descend',
-  "Un jeton est soit calculé, soit choisi. Cette page dit lequel est lequel — et combien de valeurs sont encore choisies alors qu'elles pourraient être calculées.",
+  "Un token est soit calculé, soit choisi. Cette page dit lequel est lequel — et combien de valeurs sont encore choisies alors qu'elles pourraient être calculées.",
   map, noteMap)}
 
 ${section('spaces', '01 — Les espaces', 'Trois réglages, et tout le reste se calcule',
@@ -514,8 +514,8 @@ ${section('linter', '11 — Le robot', `${totalRules} règles, et une famille pa
   'Le vert dit « rien n\'a été inventé ». Il ne dit jamais « c\'est bien réglé ». Ça, c\'est l\'œil, et le robot ne le remplacera pas.')}
 
 ${lex ? section('lexicon', '12 — Le lexique', `${lex.mappings.length} mots qui se traduisent, ${lex.untranslatable.length} qui ne se traduisent pas`,
-  "L'Échelle Semantic Rhythm et Fili portent les mêmes idées sous d'autres noms. Voici la table. Un écran écrit dans une langue peut désormais s'habiller avec les jetons de l'autre, sans être réécrit.",
-  lexicon, "Le lexique ne déclare aucune valeur : chaque entrée pointe sur un jeton du dépôt, et la génération refuse de statuer si l'un manque.") : ''}
+  "L'Échelle Semantic Rhythm et Fili portent les mêmes idées sous d'autres noms. Voici la table. Un écran écrit dans une langue peut désormais s'habiller avec les tokens de l'autre, sans être réécrit.",
+  lexicon, "Le lexique ne déclare aucune valeur : chaque entrée pointe sur un token du dépôt, et la génération refuse de statuer si l'un manque.") : ''}
 
 <p class="foot">Page produite par <span class="mono">tools/fili/systeme/produire.mjs</span> depuis
 <span class="mono">fili/geometrie.json</span>, <span class="mono">fili/palette.json</span>,
