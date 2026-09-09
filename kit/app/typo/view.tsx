@@ -754,22 +754,21 @@ export default function View() {
               d&apos;autre. Une règle cassée, et la page ment aussitôt.</p>
             </div>
             <div className="gdoc-body">
-              {/* Forme B — l'action justifie et se retourne ; l'interligne est un réglage
-                  partagé, sous la scène : les deux fautes peuvent se cumuler, le verdict les
-                  nomme toutes les deux. */}
+              {/* Forme B — l'action justifie et se retourne ; l'interligne est un choix
+                  sous la tête, à la place d'une ligne de verdict (retour d'Auteur, 9 septembre) :
+                  les deux fautes peuvent se cumuler, la légende les nomme toutes les deux. */}
               <Demo situation="Une gazette composée par les règles, et rien d'autre"
                 action={{ label: "Justifier", back: "Réparer le fer", active: justif, onClick: () => setJustif(!justif) }}
-                tools={<span className="demo-seg" role="group" aria-label="Interligne">
+                bar={<span className="demo-seg" role="group" aria-label="Interligne">
                   <span className="mono muted">Interligne</span>
                   <button type="button" className={`button ${tight ? "" : "on"}`} aria-pressed={!tight} onClick={() => setTight(false)}>1,6</button>
                   <button type="button" className={`button ${tight ? "on" : ""}`} aria-pressed={tight} onClick={() => setTight(true)}>1,15</button>
                 </span>}
-                caption="fer à gauche · corps ≥ 16 px · interligne 1,6 · mesure bornée en ch · capitales espacées, jamais tapées">
-                <DemoScene ok={justif || tight ? false : null}
-                  verdict={justif && tight ? "Justifiée et étouffée : rivières d'espace, interligne 1,15 sous le plancher de 1,5"
-                    : justif ? "Justifiée : rivières d'espace, retour de ligne irrégulier"
-                    : tight ? "Étouffée : interligne 1,15, sous le plancher de 1,5"
-                    : "Fer à gauche, interligne 1,6 : la page tient sans qu'on ait réglé un titre"}>
+                caption={justif && tight ? "justifiée et étouffée : rivières d'espace, interligne 1,15 sous le plancher de 1,5"
+                    : justif ? "justifiée : rivières d'espace, retour de ligne irrégulier"
+                    : tight ? "étouffée : interligne 1,15, sous le plancher de 1,5"
+                    : "fer à gauche · corps ≥ 16 px · interligne 1,6 · mesure bornée en ch · capitales espacées, jamais tapées"}>
+                <DemoScene ok={justif || tight ? false : null}>
                 {/* Essai du 2 septembre : la gazette est posée sur une terre sombre
                       plutôt que sur le voile gris. Une feuille de papier se lit comme
                       une feuille quand ce qui l'entoure n'est pas, lui aussi, du

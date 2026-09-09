@@ -232,7 +232,7 @@ test('3 · nom orphelin, justifier, étouffer — déclarés, rendus, réparés 
   await p.locator('#gazette .demo-seg .button', { hasText: '1,15' }).click()
   assert.equal(await calc(p, '#gazette .gz-cols p', 'textAlign'), 'justify', 'les deux fautes se cumulent')
   const fs = await calcPx(p, '#gazette .gz-cols p', 'fontSize'); ok(await calcPx(p, '#gazette .gz-cols p', 'lineHeight'), 1.15 * fs, 'étouffé : 1,15', 0.1)
-  assert.match(await text(p, '#gazette .demo-single.bad .demo-verdict'), /1,15/)
+  assert.equal(await p.locator('#gazette .demo-single.bad').count(), 1, 'cassée : la scène est déclarée'); assert.match(await text(p, '#gazette .demo-caption'), /1,15/)
   await go('#gazette').click(); await p.locator('#gazette .demo-seg .button', { hasText: '1,6' }).click()
   assert.equal(await p.getAttribute('#gazette .gazette', 'data-intent'), null); ok(await calcPx(p, '#gazette .gz-cols p', 'lineHeight'), 1.6 * fs, 'réparé : 1,6', 0.1)
   /* les bandes (#casser) : la commande qui casse est celle du gabarit commun */

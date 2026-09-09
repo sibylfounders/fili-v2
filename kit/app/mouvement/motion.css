@@ -247,7 +247,8 @@
 .mv-scene { width: 100%; } /* porte le ralenti de la paire ; le cadre de la démonstration fait le reste */
 .mv-scene .demo-go, .mv-scene-menu > .button, .mv-menu-item { --mv-slowed: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
 .mv-slowed { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
-.mv-row { display: grid; grid-template-columns: repeat(3, auto); gap: var(--gap-3-block) var(--gap-3-inline); } /* une grille de petits boutons, alignés : le curseur la balaie lui-même (retour d'Auteur, 9 septembre) */
+.mv-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-3-block) var(--gap-3-inline); width: 100%; }
+.mv-row .button { min-width: 0; } /* une grille de petits boutons, alignés : le curseur la balaie lui-même (retour d'Auteur, 9 septembre) */
 .mv-row .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); cursor: default;
   transition: background-color calc(var(--m-fast) * var(--mv-slowed, 1)) var(--e-out); } /* chorégraphie : le ralenti de la paire — le survol, au cran rapide */
 .mv-scene-toast { display: grid; justify-items: start; min-height: calc(var(--control-height) + var(--gap-2-block)); }
