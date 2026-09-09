@@ -153,7 +153,7 @@
       SES DEUX BORDS nommés (T12) : la forme courte active le rognage en
       ne disant rien, et une déclaration dont le sens tient à ce piège
       n'est pas relisible. ── */
-.tp-alignment {
+.tp-alignment { position: relative; /* les cotes se posent sur la carte */
   padding: var(--pad-1-inline); /* la même valeur des quatre côtés : le sujet de la démo, pas un espace de page */
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-1);
   max-width: 34ch; /* hors chaîne : la largeur du spécimen, une mesure de lecture */
@@ -225,3 +225,22 @@
 
 /* Le zoom rejoué : le corps passe de ×1 à ×2 au cran d'une section — c'est un mouvement de découverte, pas une réponse */
 .tp-zoom-text { transition: font-size var(--m-expressive) var(--e-out); }
+.tp-zoom-text.reset { transition: none; } /* le retour à ×1 se pose d'un coup : seul l'agrandissement se voit */
+
+/* Les cotes du calage : le trait à l'endroit de la mesure, le nombre dans une
+   pastille pleine posée sur le trait (le vocabulaire des repères de
+   Composition). Encre seconde : l'accent d'Auteur ne tient pas sur ce fond.
+   Les longueurs sont mesurées sur le rendu, posées en ligne. */
+.tp-cote { position: absolute; pointer-events: none; color: var(--text-secondary); }
+.tp-cote-v { top: 0; width: 0; border-left: 1px solid currentColor; }
+.tp-cote-h { left: 0; height: 0; border-top: 1px solid currentColor; }
+.tp-cote::before, .tp-cote::after { content: ""; position: absolute; }
+.tp-cote-v::before, .tp-cote-v::after { left: -3px; width: 7px; border-top: 1px solid currentColor; } /* hors chaîne : les tirets d'une cote */
+.tp-cote-v::before { top: 0; } .tp-cote-v::after { bottom: 0; }
+.tp-cote-h::before, .tp-cote-h::after { top: -3px; height: 7px; border-left: 1px solid currentColor; } /* hors chaîne : les tirets d'une cote */
+.tp-cote-h::before { left: 0; } .tp-cote-h::after { right: 0; }
+.tp-cote-label { position: absolute; font: 600 var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
+  color: var(--bg); background: var(--text-secondary); border-radius: var(--r-ctl);
+  padding: 0.15rem 0.4rem; /* hors chaîne : la pastille d'une cote, à l'échelle du repère (comme .co-r-label) */ }
+.tp-cote-v .tp-cote-label { right: var(--gap-3-inline); top: 50%; transform: translateY(-50%); }
+.tp-cote-h .tp-cote-label { left: 50%; bottom: var(--gap-3-block); transform: translateX(-50%); }

@@ -433,24 +433,24 @@ function TablePairs({ key }: { key: string }) {
    Le ton et le fond doux sont toujours là, mais à la place qu'ils ont dans
    un produit. Sous chaque métier, sa fiche, lue sur le rendu. ── */
 type Job = {
-  art: string; word: string; name: string; token: string;
+  word: string; name: string; token: string;
   tone: string; onTone: string; soft: string; onSoft: string;
   /* l'objet peint par le ton, et l'objet peint par le fond doux : le métier */
   toneObject: { kind: "button" | "tag" | "count"; text: string };
   softObject: { kind: "tag" | "banner" | "field"; text: string };
 };
 const TABS: Job[] = [
-  { art: "La", word: "brand", name: "La marque", token: "primary", tone: "--primary", onTone: "--on-primary", soft: "--primary-subtle", onSoft: "--on-primary-subtle",
+  { word: "brand", name: "La marque", token: "primary", tone: "--primary", onTone: "--on-primary", soft: "--primary-subtle", onSoft: "--on-primary-subtle",
     toneObject: { kind: "button", text: "Continuer" }, softObject: { kind: "tag", text: "Recommandé" } },
-  { art: "Le", word: "danger", name: "Le danger", token: "danger", tone: "--danger", onTone: "--on-danger", soft: "--danger-subtle", onSoft: "--on-danger-subtle",
+  { word: "danger", name: "Le danger", token: "danger", tone: "--danger", onTone: "--on-danger", soft: "--danger-subtle", onSoft: "--on-danger-subtle",
     toneObject: { kind: "button", text: "Supprimer" }, softObject: { kind: "field", text: "Adresse introuvable" } },
-  { art: "Le", word: "succès", name: "Le succès", token: "success", tone: "--success", onTone: "--on-success", soft: "--success-subtle", onSoft: "--on-success-subtle",
+  { word: "succès", name: "Le succès", token: "success", tone: "--success", onTone: "--on-success", soft: "--success-subtle", onSoft: "--on-success-subtle",
     toneObject: { kind: "tag", text: "Livré" }, softObject: { kind: "tag", text: "Payé" } },
-  { art: "Le", word: "neutral", name: "Le neutre", token: "neutral", tone: "--text-primary", onTone: "--bg", soft: "--surface", onSoft: "--text-secondary",
+  { word: "neutral", name: "Le neutre", token: "neutral", tone: "--text-primary", onTone: "--bg", soft: "--surface", onSoft: "--text-secondary",
     toneObject: { kind: "button", text: "Enregistrer" }, softObject: { kind: "tag", text: "Brouillon" } },
-  { art: "L’", word: "information", name: "L’information", token: "info", tone: "--info", onTone: "--on-info", soft: "--info-subtle", onSoft: "--on-info-subtle",
+  { word: "information", name: "L’information", token: "info", tone: "--info", onTone: "--on-info", soft: "--info-subtle", onSoft: "--on-info-subtle",
     toneObject: { kind: "count", text: "3" }, softObject: { kind: "banner", text: "Sauvegardé automatiquement" } },
-  { art: "L’", word: "avertissement", name: "L’avertissement", token: "warning", tone: "--warning", onTone: "--on-warning", soft: "--warning-subtle", onSoft: "--on-warning-subtle",
+  { word: "avertissement", name: "L’avertissement", token: "warning", tone: "--warning", onTone: "--on-warning", soft: "--warning-subtle", onSoft: "--on-warning-subtle",
     toneObject: { kind: "tag", text: "2 places" }, softObject: { kind: "banner", text: "Places limitées" } },
 ];
 
@@ -491,7 +491,7 @@ function Swatches({ key }: { key: string }) {
               return (
                 <div key={l.token} className="gd-lng" role="listitem" style={{ ["--rank" as string]: i }}
                   aria-label={`${l.name}. ${records[l.token] ?? ""}`}>
-                  <p className="gd-lng-heading" aria-hidden="true"><span>{l.art}</span><b>{l.word}</b></p>
+                  <p className="gd-lng-heading" aria-hidden="true"><b>{l.word}</b></p>
                   <div className="gd-lng-scene" aria-hidden="true">
                     <span className={`gd-lng-soft gd-obj-${l.softObject.kind}`} style={{ background: `var(${l.soft})`, color: `var(${l.onSoft})` }}>
                       {l.softObject.text}

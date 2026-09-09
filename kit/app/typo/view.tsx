@@ -442,6 +442,7 @@ function CardAligned({ broken }: { broken: boolean }) {
   const capital = useRef<HTMLSpanElement>(null);
   const [top, setTop] = useState(0);
   const [side, setSide] = useState(0);
+  const [cap, setCap] = useState(0);
   const [onCard, setOnCard] = useState(true);
 
   useEffect(() => {
@@ -453,6 +454,7 @@ function CardAligned({ broken }: { broken: boolean }) {
       const c = card.current, k = capital.current;
       if (!c || !k) return;
       setTop(k.getBoundingClientRect().top - c.getBoundingClientRect().top);
+      setCap(k.getBoundingClientRect().height);
       /* le côté se mesure comme le haut : depuis le bord extérieur de la
          carte, trait du cadre compris — sinon on compare deux choses qui
          ne partent pas du même endroit. */
@@ -474,10 +476,21 @@ function CardAligned({ broken }: { broken: boolean }) {
           <span ref={capital} className="tp-witness" aria-hidden="true" />
           Coursue — départs du soir
         </p>
+        {/* les cotes se lisent là où elles se mesurent (verdict d'Auteur, 9 septembre) :
+            le haut, du bord de la carte au sommet des capitales ; le côté, du bord au texte.
+            Les nombres sont mesurés sur le rendu, jamais posés. */}
+        {onCard && (
+          <>
+            <span className="tp-cote tp-cote-v" aria-hidden="true" style={{ height: `${top}px`, right: `${side / 2}px` }}>
+              <span className="tp-cote-label">{fr(top)} px</span>
+            </span>
+            <span className="tp-cote tp-cote-h" aria-hidden="true" style={{ width: `${side}px`, top: `${top + cap / 2}px` }}>
+              <span className="tp-cote-label">{fr(side)} px</span>
+            </span>
+          </>
+        )}
       </div>
-      {!onCard
-        ? <span className="badge">votre navigateur ne sait pas encore caler le texte — la démo ne peut rien montrer ici</span>
-        : <span className="mono muted">haut {fr(top)} px · côtés {fr(side)} px</span>}
+      {!onCard && <span className="badge">votre navigateur ne sait pas encore caler le texte — la démo ne peut rien montrer ici</span>}
     </div>
   );
 }
@@ -563,8 +576,13 @@ export default function View() {
   const [tight, setTight] = useState(false);
   /* répertoire */
   const [zoom, setZoom] = useState(2); /* le zoom est ALLUMÉ d'entrée : la démo montre ce qui doit tenir sous zoom, pas l'état de repos (verdict d'Auteur, 31 août) */
-  /* l'action du cadre REJOUE le zoom : les deux côtés repartent de ×1 au même instant, puis passent à ×2 */
-  const replayZoom = () => { setZoom(1); requestAnimationFrame(() => requestAnimationFrame(() => setZoom(2))); };
+  /* l'action du cadre REJOUE le zoom : les deux côtés repartent de ×1 au même instant, posés d'un coup
+     (sans transition), le temps de voir qu'ils sont identiques ; puis le ×2 arrive au cran d'une section. */
+  const [reset, setReset] = useState(false);
+  const replayZoom = () => {
+    setReset(true); setZoom(1);
+    window.setTimeout(() => { setReset(false); requestAnimationFrame(() => requestAnimationFrame(() => setZoom(2))); }, 600); /* hors chaîne : la pause du rejeu, le temps d'une lecture */
+  };
   /* la graisse (05) */
   const [equal, setEqual] = useState(false);
   const [identical, setIdentical] = useState(false);
@@ -872,7 +890,7 @@ export default function View() {
                       <DemoSide ok={false} verdict="La part d'écran seule ne gagne pas un pixel">
                         <div className="tp-scene">
                           {/* casse : tout en vw, le zoom ne mord plus — le corps calculé à la largeur réelle, sans le zoom */}
-                          <span className="tp-zoom-text" style={{ fontSize: `${bodyVw}px`, lineHeight: "var(--leading-body)" }}>
+                          <span className={`tp-zoom-text${reset ? " reset" : ""}`} style={{ fontSize: `${bodyVw}px`, lineHeight: "var(--leading-body)" }}>
                             Portez ce vieux whisky au juge blond qui fume
                           </span>
                           <span className="mono muted">corps = {fr(bodyVw)} px · zoom ×{zoom}</span>
@@ -881,7 +899,7 @@ export default function View() {
                       <DemoSide ok verdict="Le rem suit le zoom : le corps double">
                         <div className="tp-scene">
                           {/* le corps calculé par le moteur à la largeur réelle de l'écran, sous le zoom — le nombre est vrai, pas posé */}
-                          <span className="tp-zoom-text" style={{ fontSize: `${body}px`, lineHeight: "var(--leading-body)" }}>
+                          <span className={`tp-zoom-text${reset ? " reset" : ""}`} style={{ fontSize: `${body}px`, lineHeight: "var(--leading-body)" }}>
                             Portez ce vieux whisky au juge blond qui fume
                           </span>
                           <span className="mono muted">corps = {fr(body)} px</span>

@@ -99,7 +99,7 @@ test('1 · le zoom, deux côtés : au repos la droite rend le corps du moteur au
     assert.match(await text(p, `${bad} .mono.muted`), /zoom ×2/)
     /* l'action rejoue : les deux repartent de ×1, la droite remonte à ×2, la gauche ne bouge pas */
     await p.locator(`${card} .demo-go`).click()
-    await p.waitForTimeout(1600) /* la pause du rejeu (600) puis le cran d’une section (700) */
+    await p.waitForTimeout(900)
     ok(await render(good), body(W, 2), `${W} — rejoué : exactement le même corps`)
     ok(await render(bad), body(W), `${W} — rejoué : la gauche n’a pas bougé`)
     await close()
@@ -372,7 +372,7 @@ test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée 
     /* chaque bande porte son propre dépliant : on les ouvre tous, d'un coup */
     await p.evaluate(() => document.querySelectorAll('details.prov').forEach((d) => { d.open = true }))
     await p.waitForTimeout(120)
-    const f = await faultsInHard(p, W, DENSITIES.comfortable, { exclusions: selectorsDeclaredAll(css, 'padding') }) /* les pastilles des cotes : réduction déclarée */
+    const f = await faultsInHard(p, W, DENSITIES.comfortable)
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
     /* la seule taille hors gamme admise sur cette page est le corps calculé de la carte
        du zoom — et la page s'ouvre au ×2 (31 août) : c'est CETTE valeur-là qui est rendue */

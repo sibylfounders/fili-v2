@@ -372,7 +372,7 @@ test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée 
     /* chaque bande porte son propre dépliant : on les ouvre tous, d'un coup */
     await p.evaluate(() => document.querySelectorAll('details.prov').forEach((d) => { d.open = true }))
     await p.waitForTimeout(120)
-    const f = await faultsInHard(p, W, DENSITIES.comfortable, { exclusions: selectorsDeclaredAll(css, 'padding') }) /* les pastilles des cotes : réduction déclarée */
+    const f = await faultsInHard(p, W, DENSITIES.comfortable)
     assert.deepEqual(f, [], `${W} px : ${f.length} valeur(s) hors moteur`)
     /* la seule taille hors gamme admise sur cette page est le corps calculé de la carte
        du zoom — et la page s'ouvre au ×2 (31 août) : c'est CETTE valeur-là qui est rendue */
