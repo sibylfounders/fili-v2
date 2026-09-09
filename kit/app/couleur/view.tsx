@@ -520,10 +520,13 @@ function Swatches({ key }: { key: string }) {
    card, clair et sombre : chaque panneau EST son thème (data-theme), et
    les rapports sont mesurés dedans, sur la page rendue. La casse pâlit
    l'encre douce avec le gris que le registre refuse — et le verdict tombe. ── */
+/* Deux paires, celles que la card porte : l'encre et l'encre douce sur la
+   surface. Le bouton « Suivre » et sa paire sont sortis le 9 septembre
+   (verdict d'Auteur : pas besoin de boutons dans les exemples) — le texte
+   sur la marque se mesure au mini-écran et à la table complète. */
 const PAIRS_DUO: [string, string, string][] = [
   ["l'encre sur la card", "--text-primary", "--surface"],
   ["l'encre douce", "--text-secondary", "--surface"],
-  ["le texte sur la marque", "--on-primary", "--primary"],
 ];
 /* ── La scène du contraste par paire ──
    UN seul panneau, dans le thème où le lecteur se trouve. Il y en avait
@@ -552,8 +555,6 @@ function DuoThemes({ key, tier }: { key: string; tier: boolean }) {
       <div className="gd-pan-card">
         <span className="cl-pan-name">Léa Fontan</span>
         <span className="cl-pan-role">UX Designer — chaque encre de cette card est mesurée sur le fond qui la porte.</span>
-        {/* un bouton : le coin du composant, la marge de la row, la cible au doigt */}
-        <span className="cl-pan-btn">Suivre</span>
       </div>
       <div className="cl-pan-measures">
         {PAIRS_DUO.map(([name], i) => {
@@ -625,13 +626,13 @@ function MiniScreen({ key }: { key: string }) {
 
 /* Trois gris à la MÊME luminance — la teinte bouge, le rapport ne bouge
    pas. (Valeurs d'étude calées au calcul, pas des tokens.) */
-const GRAY_HUES: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#78716A"], ["gris bleuté", "#67737F"]];
+const GRAY_HUES: [string, string][] = [["pur", "#6B7280"], ["chaud", "#78716A"], ["bleuté", "#67737F"]];
 /* La casse : on teinte SANS tenir la luminance. Les trois gris restent des
    gris, ils se ressemblent encore — et pourtant leurs rapports n'ont plus
    rien à voir. C'est le geste que la règle interdit, commis pour de vrai.
    (Valeurs d'étude, hors registre ; les rapports affichés sont calculés
    sur ces valeurs, jamais recopiés.) */
-const GRAY_DERIVED: [string, string][] = [["gris pur", "#6B7280"], ["gris chaud", "#A8A29E"], ["gris bleuté", "#475569"]];
+const GRAY_DERIVED: [string, string][] = [["pur", "#6B7280"], ["chaud", "#A8A29E"], ["bleuté", "#475569"]];
 function HueConstant({ broken }: { broken?: boolean }) {
   const rounded = (hex: string) => (Math.round(contrast(hexTo(hex), hexTo("#FFFFFF")) * 10) / 10).toFixed(1).replace(".", ",");
   const gray = broken ? GRAY_DERIVED : GRAY_HUES;
@@ -1164,7 +1165,7 @@ export default function View() {
                   quelle ; les autres crans en descendent. Les neutres sont les marches fixes,
                   teintées à la marque. Aucun rôle ne consomme un cran : il s&apos;y pose.</p>
                 </div>
-              <details className="prov" open><summary>Les six gammes — la marque, les neutres, et les quatre familles sémantiques</summary>
+              {/* les six gammes, à plat : plus de dépliant ici (verdict d'Auteur, 9 septembre) */}
                 <div className="gm-next">
                   <span className="mono muted gm-heading" style={{ fontSize: "var(--font-size-label)", letterSpacing: "var(--tracking-label)", textTransform: "uppercase" }}>La marque — dérivée du primary</span>
                   <Range primary={primary} />
@@ -1177,7 +1178,6 @@ export default function View() {
                     </React.Fragment>
                   ))}
                 </div>
-              </details>
               </div>
 
               <div className="doc-piece" id="code">

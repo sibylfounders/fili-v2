@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type ReactNode, type CSSProperties } from "react";
 import { Preview } from "../preview";
-import { Bands, Band, Demo, DemoSides, DemoSide, ListRules, PanelRegistry } from "../levels";
+import { Bands, Band, Demo, DemoSides, DemoSide, DemoScene, ListRules, PanelRegistry } from "../levels";
 import type { LineList, LineCode } from "../levels";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { chain, tokens, aWidth, AXES, CHARTER, WIDTH_MIN, WIDTH_MAX, WEIGHT } from "../../derivation.mjs";
@@ -554,9 +554,7 @@ function TwoBackgrounds({ identical, gap, onGap }: { identical: boolean; gap: nu
         <div className="tp-background black" data-theme="dark" data-intent={identical ? "statement" : undefined}
           style={{ ["--weight-body" as string]: dark } as CSSProperties}>
           <p>{TEXT_BACKGROUNDS}</p>
-          {identical
-            ? <span className="badge ko">fond sombre · {dark} — même poids qu&apos;en clair, il pèse plus</span>
-            : <span className="mono muted">fond sombre · {dark} ({light} − {gap})</span>}
+          <span className="mono muted">fond sombre · {dark}{identical ? "" : ` (${light} − ${gap})`}</span>
         </div>
       </div>
       <div className="tp-wheel">
@@ -825,33 +823,25 @@ export default function View() {
               <p className="muted">Même corps. Trois poids, deux encres.</p>
             </div>
             <div className="gdoc-body">
-              <div className="rank">
-                <button className={`button broken ${equal ? "on" : ""}`} onClick={() => setEqual(!equal)}>
-                  {equal ? "Rendre les poids" : "Égaliser les poids"}
-                </button>
-                {equal && <span className="badge ko">même poids, même encre — plus rien ne se distingue</span>}
-              </div>
-              <figure className="gd-figure" style={{ width: "100%" }}>
-                <ListBodyUnique equal={equal} />
-                <figcaption className="gd-caption">
-                  un seul corps · nom {WEIGHT.roles.heading} · sous-titre {WEIGHT.roles.body}, encre seconde · bouton {WEIGHT.roles.label}
-                </figcaption>
-              </figure>
+              {/* Forme B — une scène, la casse remplace l'état (verdict d'Auteur, 9 septembre) :
+                  la situation en tête, une seule action qui bascule et se retourne, le verdict
+                  au-dessus de la scène. La liste est un spécimen : ses boutons sont dessinés. */}
+              <Demo situation="Une liste d'abonnements, tout au même corps"
+                action={{ label: "Égaliser les poids", back: "Rendre les poids", active: equal, onClick: () => setEqual(!equal) }}
+                caption={`un seul corps · nom ${WEIGHT.roles.heading} · sous-titre ${WEIGHT.roles.body}, encre seconde · bouton ${WEIGHT.roles.label}`}>
+                <DemoScene ok={!equal} verdict={equal ? "Même poids, même encre — plus rien ne se distingue" : "Trois poids, deux encres — la hiérarchie tient sans changer de corps"}>
+                  <ListBodyUnique equal={equal} />
+                </DemoScene>
+              </Demo>
 
               <h3 className="tp-sub-heading">Le blanc sur noir pèse plus</h3>
-              <p className="muted" style={{ maxWidth: "var(--measure)" }}>Même paragraphe, même corps. En sombre,
-              chaque poids est allégé du même écart.</p>
-              <div className="rank">
-                <button className={`button broken ${identical ? "on" : ""}`} onClick={() => setIdentical(!identical)}>
-                  {identical ? "Rendre la compensation" : "Même poids sur les deux fonds"}
-                </button>
-              </div>
-              <figure className="gd-figure" style={{ width: "100%" }}>
-                <TwoBackgrounds identical={identical} gap={gap} onGap={setGap} />
-                <figcaption className="gd-caption">
-                  le registre allège de {WEIGHT.gapDark} — valeur de départ, à poser à l&apos;œil
-                </figcaption>
-              </figure>
+              <Demo situation="Le même paragraphe, sur fond clair et sur fond sombre"
+                action={{ label: "Même poids sur les deux fonds", back: "Rendre la compensation", active: identical, onClick: () => setIdentical(!identical) }}
+                caption={`le registre allège de ${WEIGHT.gapDark} — valeur de départ, à poser à l'œil`}>
+                <DemoScene ok={!identical} verdict={identical ? "Même poids sur les deux fonds — le blanc sur noir pèse plus" : "En sombre, chaque poids est allégé du même écart"}>
+                  <TwoBackgrounds identical={identical} gap={gap} onGap={setGap} />
+                </DemoScene>
+              </Demo>
               <details className="prov"><summary>Règles &amp; sources</summary><div>
                 <Rules ids={["t13", "t14", "t7"]} />
               </div></details>

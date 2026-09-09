@@ -54,14 +54,6 @@
    consomment le registre, ils appartiennent donc à la feuille de la page. */
 .cl-pan-name { font-weight: 600; letter-spacing: -0.01em; }
 .cl-pan-role { font-size: var(--font-size-small); color: var(--text-secondary); }
-.cl-pan-btn {
-  justify-self: start; display: inline-flex; align-items: center;
-  min-height: var(--control-height);
-  padding: var(--pad-3-block) var(--pad-3-inline);
-  border-radius: var(--r-ctl);
-  background: var(--primary); color: var(--on-primary);
-  font-weight: 600; font-size: var(--font-size-small);
-}
 .cl-pan-measures { display: grid; gap: var(--gap-3-block); }
 .cl-pan-measure {
   display: flex; align-items: center; justify-content: space-between;

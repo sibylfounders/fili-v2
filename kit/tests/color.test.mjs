@@ -112,9 +112,9 @@ test('1 · le nuancier, les deux panneaux, la table complète, le mini-écran et
     const records = await texts(p, '#swatches .gd-lng-record')
     assert.equal(records.length, 6, `${theme} — six lignes signées`)
     TABS.forEach(([token, tone, , soft, onSoft], i) => assert.equal(records[i], `${token} · ${pal[tone.slice(2)]} · doux ${pal[soft.slice(2)]} · ${fmt(ratio(pal, onSoft, soft))}`, `${theme} — le métier ${token}`))
-    /* le panneau du contraste par paire : UN seul, dans le thème du lecteur (2 septembre) — trois rapports, lus */
+    /* le panneau du contraste par paire : UN seul, dans le thème du lecteur (2 septembre) — deux rapports, lus ; le bouton est sorti le 9 septembre */
     const badges = await p.evaluate(() => [...document.querySelectorAll('#wreck .demo-side.good .gd-pan .badge')].map((b) => b.textContent))
-    assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface'], ['--on-primary', '--primary']].map(([a, b]) => fmt(ratio(pal, a, b))), `panneau ${theme}`)
+    assert.deepEqual(badges, [['--text-primary', '--surface'], ['--text-secondary', '--surface']].map(([a, b]) => fmt(ratio(pal, a, b))), `panneau ${theme}`)
     for (const b of badges) assert.ok(parseFloat(b.replace(',', '.')) >= 4.5, `panneau ${theme} : ${b}`)
     /* la table complète, dans le dépliant de sa règle : chaque ligne, les deux thèmes, au seuil */
     await p.locator('#wreck .doc-band:nth-child(1) details.prov summary').click()
@@ -361,7 +361,7 @@ test('6 · dans la vue, toute couleur écrite en dur est une casse, une étude, 
    section) ; la queue commune a disparu ; UN répertoire (#registre) range les
    rôles (#code), les six gammes (#gammes, ouvertes), cinq bandes (#casser, en
    h4) et la liste (#invisibles). */
-test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la marque rare porte le tableau de bord et la mosaïque ; quatre pièces au répertoire, les gammes ouvertes', async () => {
+test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire de page, pas de pied, un seul répertoire au titre de la page, aucun saut de niveau ; la marque rare porte le tableau de bord et la mosaïque ; quatre pièces au répertoire, les gammes à plat', async () => {
   const { p, close } = await nav.page(URL(), { width: 1440 })
   assert.deepEqual(await faultsWriting(p), [])
   assert.equal(await p.locator('main .gdoc-sec').count(), 4, 'trois preuves et un répertoire')
@@ -371,7 +371,7 @@ test('8 · l’écriture : aucun mot qui commande ou décrit, pas d’histoire d
   assert.equal(await p.locator('#registry #wreck h4.doc-band-name').count(), 5, 'cinq gestes, en h4 sous leur sous-titre')
   assert.equal(await p.locator('#registry .doc-piece-head h3').count(), 5, 'cinq pièces')
   assert.equal(await p.locator('#registry #gammes .gm').count(), 6, 'six gammes, lisibles sans un clic')
-  assert.ok(await p.$eval('#registry #gammes details.prov', (d) => d.open), 'les gammes sont ouvertes d\'entrée')
+  assert.equal(await p.locator('#registry #gammes details').count(), 0, 'les gammes à plat, sans dépliant')
   assert.ok(await p.locator('#registry #invisibles .doc-list tbody tr').count() >= 1, 'la liste')
   await close()
 })
