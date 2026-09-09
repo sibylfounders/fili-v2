@@ -90,6 +90,14 @@ jobs:
         run: npx eslint .
 
       # ------------------------------------------------------------------
+      # Le kit — la preuve du système, jugée par ses propres règles.
+      # Zéro dépendance ; tourne hors du working-directory `temoin`.
+      # ------------------------------------------------------------------
+      - name: 'Kit · épreuves du moteur et des pages'
+        working-directory: kit
+        run: node --test derivation.test.mjs
+
+      # ------------------------------------------------------------------
       # Règle d'or n°5 — tout contrôle produit un chiffre, pas seulement un avis.
       # ------------------------------------------------------------------
       - name: 'Publier le périmètre et le coût'

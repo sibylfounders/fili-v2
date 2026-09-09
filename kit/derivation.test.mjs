@@ -268,7 +268,7 @@ test('couleur — les états suivent un quart du déplacement de la marque, plaf
 /* ── C17 : le tertiaire est une intention, jamais un défaut ── */
 // Le bloc CSS (entre ses accolades) qui contient une ligne donnée.
 const blockOf = (src, line) => { const i = src.indexOf(line); const a = src.lastIndexOf('{', i); const z = src.indexOf('}', i); return src.slice(a, z) }
-test('C17 — chaque emploi de text-tertiary dans les feuilles du kit porte « tertiaire : » et ce que c’est, et son cran de graisse (600 au moins) ; aucun style en ligne ne le pose', () => {
+test('C17 — chaque emploi de text-tertiary dans les feuilles du kit porte « tertiaire : » et ce que c’est, et son cran de graisse (le rôle titre) ; aucun style en ligne ne le pose', () => {
   const faults = []
   for (const [f, src] of readApp()) {
     if (f === 'app/tokens.css') continue
@@ -276,7 +276,7 @@ test('C17 — chaque emploi de text-tertiary dans les feuilles du kit porte « t
       if (!line.includes('var(--text-tertiary)')) return
       if (f.endsWith('.css')) {
         if (!/tertiaire\s*:/.test(line)) faults.push(`${f}:${i + 1} — tertiaire sans intention dite`)
-        if (!/(font-weight:\s*|font:\s*)(6|7)00\b/.test(blockOf(src, line))) faults.push(`${f}:${i + 1} — tertiaire en petit sans son cran de graisse (600 au moins)`)
+        if (!/(font-weight:\s*|font:\s*(normal\s+)?)(var\(--weight-heading\)|700\b)/.test(blockOf(src, line))) faults.push(`${f}:${i + 1} — tertiaire en petit sans son cran de graisse (le rôle titre, ou un 700 déclaré)`)
       }
       else if (/style=\{/.test(line) || /color:\s*["']var\(--text-tertiary\)/.test(line)) faults.push(`${f}:${i + 1} — tertiaire posé en ligne`)
     })
@@ -360,6 +360,30 @@ test('site — « pas de nombre » : dans les feuilles du kit, un espace, une ta
   }
   assert.deepEqual(faults.slice(0, 40), [], `${faults.length} valeur(s) posée(s)`)
 })
+test('site — « pas de nombre » dans les vues : un style inline pose un token, ou déclare sa valeur (« hors chaîne », « casse », ou l\'élément dit data-intent="statement") — décision d\'Auteur du 9 septembre 2026', () => {
+  const faults = []
+  const PROPS = /\b(fontSize|borderRadius|padding(?:Top|Right|Bottom|Left|Inline|Block)?|gap|rowGap|columnGap|margin(?:Top|Right|Bottom|Left|Inline|Block)?)\s*:\s*(["'`])([^"'`]*)\2/g
+  for (const [f, src] of readApp().filter(([f]) => f.endsWith('.tsx'))) {
+    let debt = false
+    const lines = src.split('\n')
+    lines.forEach((line, i) => {
+      if (/HORS CHAÎNE — dette déclarée/.test(line)) debt = true
+      if (/FIN DE LA DETTE/.test(line)) debt = false
+      if (debt) return
+      if (/hors chaîne|casse/.test(line) || (i > 0 && /hors chaîne|casse/.test(lines[i - 1]))) return /* en JSX, le commentaire vit sur la ligne du dessus */
+      /* l'élément ouvert sur cette ligne (ou les lignes juste au-dessus, jusqu'à son « < ») porte-t-il l'intention ? */
+      const head = lines.slice(Math.max(0, i - 6), i + 1).join('\n')
+      const tag = head.slice(head.lastIndexOf('<'))
+      if (/data-intent=/.test(tag)) return
+      for (const m of line.matchAll(PROPS)) {
+        const v = m[3].trim()
+        if (/^(0|1px|2px|auto|100%|50%|inherit|initial|unset|none)(\s+(0|1px|2px|auto|100%|50%))*$/.test(v)) continue
+        if (/\d(px|rem|ch)\b/.test(v) && !/\dem\b/.test(v) && !/^-1px$/.test(v)) faults.push(`${f}:${i + 1} ${m[1]}: ${v}`)
+      }
+    })
+  }
+  assert.deepEqual(faults.slice(0, 40), [], `${faults.length} valeur(s) posée(s) dans les vues`)
+})
 
 
 /* ── Le mouvement (décisions d'Auteur du 3 septembre 2026) : quatre durées avec leur emploi, une courbe,
@@ -393,6 +417,17 @@ test('graisse — trois rôles (400 · 500 · 600) ; en sombre chaque rôle s’
   }
   /* la préférence système du sombre est servie comme le thème déclaré */
   assert.ok(/prefers-color-scheme: dark\) \{\s*:root:not\(\[data-theme="light"\]\) \{[^}]*--weight-body/.test(dark), 'le sombre par préférence système porte aussi la graisse')
+})
+/* ── T13 / T14 : une graisse est un rôle, jamais un nombre (9 septembre 2026) ── */
+test('site — « pas de graisse à la main » : dans les feuilles et les vues du kit, une graisse est un token (--weight-body / -label / -heading), ou un nombre déclaré hors chaîne / casse sur sa ligne', () => {
+  const faults = []
+  for (const [f, src] of readApp().filter(([f]) => f !== 'app/tokens.css' && f !== 'app/fonts.css')) {
+    src.split('\n').forEach((line, i) => {
+      if (/hors chaîne|casse/.test(line)) return
+      for (const m of line.matchAll(/(?:font-weight\s*:\s*|(?<![-\w])font\s*:\s*(?:normal\s+)?|fontWeight\s*[:=]\s*["']?)(\d{3})\b/g)) faults.push(`${f}:${i + 1} — ${m[1]}`)
+    })
+  }
+  assert.deepEqual(faults, [], `${faults.length} graisse(s) à la main`)
 })
 test('site — aucune durée ni courbe écrite à la main dans les feuilles : une transition ou une animation prend un token de mouvement, ou dit « chorégraphie » sur sa ligne', () => {
   const faults = []

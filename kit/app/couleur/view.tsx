@@ -410,7 +410,7 @@ function TablePairs({ key }: { key: string }) {
           {PAIRS.map(([text, background, label, threshold], i) => (
             <tr key={label}>
               <td style={{ whiteSpace: "normal" }}>{label}<br />
-                <span className="mono" style={{ color: "var(--text-secondary)", fontWeight: 400, fontSize: "var(--font-size-label)" }}>{text} / {background}</span></td>
+                <span className="mono" style={{ color: "var(--text-secondary)", fontWeight: "var(--weight-body)", fontSize: "var(--font-size-label)" }}>{text} / {background}</span></td>
               <td className="mono" style={{ color: "var(--text-secondary)" }}>{threshold === 3 ? "3:1" : "4,5:1"}</td>
               <Cell r={lines[i]?.light ?? 0} threshold={threshold} />
               <Cell r={lines[i]?.dark ?? 0} threshold={threshold} />
@@ -615,7 +615,7 @@ function MiniScreen({ key }: { key: string }) {
       <span style={{
         background: "var(--primary)", color: "var(--on-primary)", borderRadius: "var(--r-ctl)",
         padding: "var(--pad-3-block) var(--pad-3-inline)", minHeight: "var(--control-height)", display: "inline-flex", alignItems: "center",
-        fontWeight: 600, fontSize: "var(--font-size-small)",
+        fontWeight: "var(--weight-heading)", fontSize: "var(--font-size-small)",
       }}>Enregistrer</span>
       <span className={`badge ${r > 0 && r < 4.5 ? "ko" : ""}`}>
         {fmt(r)}

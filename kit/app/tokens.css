@@ -153,7 +153,7 @@
 }
 
 /* La graisse — un rôle, une graisse (T13) ; deux fonds, deux graisses : en thème sombre chaque rôle s'allège
-   de 20 (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */
+   de 20 (T14 — posé à l'œil par l'Auteur sur /typo, 9 septembre 2026). La sombre n'est jamais plus lourde. */
 :root, [data-theme="light"] {
   --weight-body: 400;
   --weight-label: 500;

@@ -16,7 +16,7 @@
 }
 .cl-side { display: grid; gap: var(--gap-3-block); }
 .cl-pair.one { grid-template-columns: minmax(0, 1fr); } /* un seul versant par côté du cadre */
-.cl-side-name { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: 600; } /* tertiaire : le nom du versant, une méta de démonstration — un cran de graisse au-dessus (C17) */
+.cl-side-name { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: var(--weight-heading); } /* tertiaire : le nom du versant, une méta de démonstration — un cran de graisse au-dessus (C17) */
 
 /* ── « Teinter ne coûte rien » : trois gris, trois rapports ──
    Trois blocs à parts égales, qui occupent toute la scène. La première
@@ -41,18 +41,18 @@
   border-radius: var(--r-2);
   color: #FFFFFF; /* étude : le blanc pur, référence du rapport mesuré — pas un token */
   display: grid; place-items: center;
-  font-weight: 600; font-size: var(--font-size-body);
+  font-weight: var(--weight-heading); font-size: var(--font-size-body);
 }
 /* Le rapport reste le sujet de la scène — il porte le cran du texte courant
    et la graisse, pas un cran de titre : trois nombres à comparer n'ont pas
    besoin de crier pour se comparer (verdict d'Auteur, 2 septembre). */
-.cl-hue-ratio { font-size: var(--font-size-body); font-weight: 600; }
-.cl-hue-name { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: 600; } /* tertiaire : le nom d'un gris de démonstration — un cran de graisse au-dessus (C17) */
+.cl-hue-ratio { font-size: var(--font-size-body); font-weight: var(--weight-heading); }
+.cl-hue-name { color: var(--text-tertiary); font-size: var(--font-size-label); font-weight: var(--weight-heading); } /* tertiaire : le nom d'un gris de démonstration — un cran de graisse au-dessus (C17) */
 
 /* ── La scène du contraste par paire ──
    Les styles de ce panneau vivaient en ligne dans le composant ; ils
    consomment le registre, ils appartiennent donc à la feuille de la page. */
-.cl-pan-name { font-weight: 600; letter-spacing: -0.01em; }
+.cl-pan-name { font-weight: var(--weight-heading); letter-spacing: -0.01em; }
 .cl-pan-role { font-size: var(--font-size-small); color: var(--text-secondary); }
 .cl-pan-measures { display: grid; gap: var(--gap-3-block); }
 .cl-pan-measure {

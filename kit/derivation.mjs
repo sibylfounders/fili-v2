@@ -669,9 +669,9 @@ export const MOTION = {
    vidéo « The 80% of UI Design – Typography ») — un rôle, une graisse : le
    courant, l'étiquette, le titre ; et deux fonds, deux graisses : en thème
    sombre chaque rôle s'allège du MÊME écart, parce que le blanc sur noir
-   paraît plus gros que le noir sur blanc (T14). L'écart est une valeur de
-   DÉPART : l'Auteur la pose à l'œil sur /typo. La sombre n'est jamais plus
-   lourde que la claire. Geist est variable : l'écart est un nombre d'axe,
+   paraît plus gros que le noir sur blanc (T14). L'écart de 20 était une valeur
+   de départ ; l'Auteur l'a posé à l'œil sur /typo le 9 septembre 2026 : 20 reste.
+   La sombre n'est jamais plus lourde que la claire. Geist est variable : l'écart est un nombre d'axe,
    pas un fichier de plus. */
 export const WEIGHT = {
   roles: { body: 400, label: 500, heading: 600 },
@@ -881,7 +881,7 @@ export function toCssRhythm(entries = {}) {
     `}`,
     ``,
     `/* La graisse — un rôle, une graisse (T13) ; deux fonds, deux graisses : en thème sombre chaque rôle s'allège`,
-    `   de ${WEIGHT.gapDark} (T14 — valeur de départ, l'Auteur la pose à l'œil sur /typo). La sombre n'est jamais plus lourde. */`,
+    `   de ${WEIGHT.gapDark} (T14 — posé à l'œil par l'Auteur sur /typo, 9 septembre 2026). La sombre n'est jamais plus lourde. */`,
     `:root, [data-theme="light"] {`,
     ...Object.entries(WEIGHT.roles).map(([n, v]) => line(`weight-${n}`, v)),
     `}`,

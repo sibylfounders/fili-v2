@@ -378,7 +378,7 @@ test('4 · chaque titre de section appartient à ce qu’il ouvre : le silence a
 })
 
 /* ── 5 · Le tertiaire suit C17 ── */
-test('5 · dans les deux thèmes, tout tertiaire rendu porte 600 au moins, au cran étiquette au moins, jamais un paragraphe lu', async () => {
+test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au moins (allégé en sombre), au cran étiquette au moins, jamais un paragraphe lu', async () => {
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { width: 1440, theme })
     assert.equal(await p.getAttribute('html', 'data-theme'), theme)

@@ -24,8 +24,8 @@
   background: color-mix(in srgb, var(--bg) 68%, transparent); padding: var(--pad-3-block) var(--pad-3-inline);
 }
 .trace-column > span {
-  display: block; font: 700 var(--font-size-label)/1 var(--font-mono);
-  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : l'étiquette d'une colonne, 700 */
+  display: block; font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : l'étiquette d'une colonne */
 }
 .trace-column > i {
   display: block; height: 4.4rem; margin-top: var(--gap-2-block); /* hors chaîne : l'emplacement vide, à la hauteur de la carte */
@@ -38,14 +38,14 @@
 .trace-avatar {
   width: 2rem; height: 2rem; display: grid; place-items: center; flex: none; /* hors chaîne : l'avatar */
   border-radius: var(--r-pill); background: var(--primary-subtle); color: var(--primary-text);
-  font: 700 var(--font-size-label)/1 var(--font-mono); }
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); }
 .trace-copy { min-width: 0; display: grid; gap: var(--gap-4-block); }
 .trace-copy b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--font-size-small); }
 .trace-copy i { display: flex; gap: .22rem; } /* hors chaîne : les étiquettes en filaire */
 .trace-copy i span { width: 1.1rem; height: .22rem; border-radius: var(--r-pill); background: var(--border); } /* hors chaîne : une étiquette en filaire */
 .trace-copy i span:nth-child(2) { width: .72rem; } /* hors chaîne */
 .trace-copy i span:nth-child(3) { width: .4rem; background: var(--primary); } /* hors chaîne */
-.trace-handle { margin-inline-start: auto; color: var(--text-tertiary); letter-spacing: .1em; rotate: 90deg; font-weight: 700; } /* tertiaire : la poignée */
+.trace-handle { margin-inline-start: auto; color: var(--text-tertiary); letter-spacing: .1em; rotate: 90deg; font-weight: var(--weight-heading); } /* tertiaire : la poignée */
 .trace-moving {
   position: absolute; z-index: 2; top: calc(var(--pad-2-block) + var(--font-size-label) + var(--gap-2-block));
   left: var(--pad-2-inline); width: calc((100% - 2 * var(--pad-2-inline) - var(--gap-2-inline)) / 2);
@@ -105,7 +105,7 @@
 .origin-trigger small { color: var(--text-secondary); font-size: var(--font-size-label); }
 .origin-thumb {
   width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: var(--r-2); /* hors chaîne : la vignette du projet */
-  background: var(--primary); color: var(--on-primary); font: 700 var(--font-size-small)/1 var(--font-mono);
+  background: var(--primary); color: var(--on-primary); font: var(--weight-heading) var(--font-size-small)/1 var(--font-mono);
 }
 .origin-dots { color: var(--text-secondary); letter-spacing: .15em; }
 .origin-menu {
@@ -116,7 +116,7 @@
   opacity: 0; pointer-events: none; transition: opacity var(--m-slow) var(--e-out); } /* le fondu du menu s'écrit nu : il reste sous mouvement réduit */
 .origin-menu-title {
   padding: var(--gap-3-block) var(--pad-3-inline); color: var(--text-tertiary); /* tertiaire : le titre du menu, 700 */
-  font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase;
 }
 .origin-menu > span[role="menuitem"] {
   min-height: var(--control-height-compact); display: flex; align-items: center; gap: var(--gap-3-inline);
@@ -159,7 +159,7 @@
 .gaze-card > em {
   position: absolute; right: var(--pad-3-inline); top: var(--pad-3-block);
   display: inline-flex; align-items: center; gap: .25rem; color: var(--success); /* hors chaîne : l'étiquette « mis à jour » */
-  font: normal 700 var(--font-size-label)/1 var(--font-mono); opacity: 0; }
+  font: normal var(--weight-heading) var(--font-size-label)/1 var(--font-mono); opacity: 0; }
 .gaze-card > em svg { width: .7rem; height: .7rem; } /* hors chaîne : la coche */
 .mini-bars, .mini-spark { height: 1.4rem; display: flex; align-items: flex-end; gap: .2rem; } /* hors chaîne : un graphique en filaire */
 .mini-bars i, .mini-spark i { width: .32rem; border-radius: 2px 2px 0 0; background: var(--primary); } /* hors chaîne : un graphique en filaire */
@@ -174,7 +174,7 @@
 .mini-people i {
   width: 1.35rem; height: 1.35rem; display: grid; place-items: center; margin-right: -.25rem; /* hors chaîne : les avatars empilés */
   border: 2px solid var(--bg); border-radius: var(--r-pill); background: var(--primary-subtle); color: var(--primary-text);
-  font: normal 700 var(--font-size-label)/1 var(--font-mono); }
+  font: normal var(--weight-heading) var(--font-size-label)/1 var(--font-mono); }
 .mini-stock { display: flex; gap: .2rem; } /* hors chaîne : un graphique en filaire */
 .mini-stock i { width: 1.4rem; height: .32rem; border-radius: var(--r-pill); background: var(--warning); } /* hors chaîne : un graphique en filaire */
 .mini-stock i:last-child { opacity: .28; }
@@ -183,7 +183,7 @@
 .mini-message i:last-child { width: 60%; }
 .mini-campaign { display: block; width: 4rem; height: .4rem; border-radius: var(--r-pill); background: var(--surface-hover); overflow: hidden; } /* hors chaîne : une jauge en filaire */
 .mini-campaign i { display: block; width: 70%; height: 100%; border-radius: inherit; background: var(--success); }
-.mini-delta { justify-self: start; padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-3); background: var(--success-subtle); color: var(--success); font: 700 var(--font-size-label)/1 var(--font-mono); }
+.mini-delta { justify-self: start; padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-3); background: var(--success-subtle); color: var(--success); font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); }
 
 @media (prefers-reduced-motion: no-preference) {
   .gaze-panel.is-bad .gaze-grid.is-running .gaze-card:nth-child(1) { animation: gaze-rise var(--m-expressive) var(--e-out); }
@@ -246,7 +246,7 @@
       bon / pas bon plutôt qu'un bouton casser). Un geste joue les deux côtés. ── */
 .mv-scene { width: 100%; } /* porte le ralenti de la paire ; le cadre de la démonstration fait le reste */
 .mv-scene .demo-go, .mv-scene-menu > .button, .mv-menu-item { --mv-slowed: 1; } /* les vraies commandes d'une scène ralentie répondent à la vitesse réelle */
-.mv-slowed { font: 700 var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
+.mv-slowed { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : le ralenti, écrit sur la scène */
 .mv-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-3-block) var(--gap-3-inline); width: 100%; }
 .mv-row .button { min-width: 0; } /* une grille de petits boutons, alignés : le curseur la balaie lui-même (retour d'Auteur, 9 septembre) */
 .mv-row .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); cursor: default;
@@ -259,7 +259,7 @@
 .mv-toast.snap { transition: none !important; } /* le rejeu : elle se retire d'un coup avant de repartir de zéro */
 .mv-toast { display: flex; align-items: center; gap: var(--gap-3-inline);
   background: var(--text-primary); color: var(--bg); border-radius: var(--r-2);
-  padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: 600;
+  padding: var(--pad-3-block) var(--pad-2-inline); font-size: var(--font-size-small); font-weight: var(--weight-heading);
   opacity: 0; transition: opacity calc(var(--m-base) * var(--mv-slowed, 1)) var(--e-out); } /* le fondu s'écrit nu ; chorégraphie : le ralenti de la paire */
 .mv-toast .point { width: var(--gap-3-inline); height: var(--gap-3-inline); border-radius: var(--r-pill); background: var(--success); flex: none; }
 @media (prefers-reduced-motion: no-preference) {

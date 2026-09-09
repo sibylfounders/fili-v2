@@ -105,7 +105,7 @@ Rendu, Prose — plus Icone, interne et non exporté.
 | Page | Statut | Ce qu'elle porte | Ce qui la bloque |
 |---|---|---|---|
 | `/` · La porte | 🟡 | Couverture de charte, l'accès direct aux six familles (7 septembre), le moteur en objet vivant, une carte et un spécimen par page ouverte, la carte du système par famille — tout lu dans la liste unique des pages (`kit/app/pages.ts`) | Rouverte le 7 septembre : réécrite sur la liste unique, rendu vérifié sur capture, en attente de l'œil d'Auteur (`#111`) |
-| `/typo` · Typographie | 🟡 | Quatorze règles (T13 une seule taille, T14 deux fonds deux graisses, depuis le 8 septembre ; T12 le calage depuis le 4), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, la section Graisse (liste au corps unique, deux fonds à l'écart réglable — l'écart de 20 attend l'œil de l'Auteur), six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **8 septembre : section Graisse, deux épreuves neuves, quatorze vertes sur la machine d'Auteur ; les tokens de graisse (`--weight-*`) ont une valeur claire et une sombre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
+| `/typo` · Typographie | 🟡 | Quatorze règles (T13 une seule taille, T14 deux fonds deux graisses, depuis le 8 septembre ; T12 le calage depuis le 4), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, la section Graisse (liste au corps unique, deux fonds à l'écart réglable — l'écart de 20 posé à l'œil par l'Auteur le 9 septembre), six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **8 septembre : section Graisse, deux épreuves neuves, quatorze vertes sur la machine d'Auteur ; les tokens de graisse (`--weight-*`) ont une valeur claire et une sombre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
 | `/rythme` · Rythme | 🟡 | Le moteur en ouverture (le scénario, douze slides, depuis le 2 septembre) ; la descente : coque, carte, ligne, marge et coin ensemble (chaîne et profondeur fondues le 8 septembre) ; la densité qui change la base ; l'intervalle des titres ; le registre — réécrite sur les huit décisions le 25 août | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **Reverrouillée le 7 septembre : le film déclare ses valeurs écrites à la main, le couple chiffre-légende est mesuré, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
 | `/couleur` · Couleur | 🟡 | Dix-sept règles ; la marque rare (palette et situation fondues le 8 septembre : le tableau de bord, la mosaïque), le nuancier en six lignes signées, le moteur ; le registre : les rôles dans les deux thèmes, les six gammes ouvertes, cinq bandes (dont « teinter ne coûte rien ») | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Reverrouillée le 7 septembre : cinq épreuves réécrites (un seul panneau mesuré dans les deux thèmes, la casse de la teinte entre à l'épreuve), une faute corrigée (la marque du panneau de code écrite à la main, lue au moteur), le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
 | `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré — et, depuis le 7 septembre, les deux étages du bas : quatre paires (le bon et le mauvais côte à côte, le même objet deux fois, une seule chose change — un habit, un trait, un cadre, un bord) et quatre lois en liste ; la table des quinze lois a disparu, les quinze sont toutes là | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Verrouillée le 7 septembre : dix épreuves écrites au niveau des quatre autres pages, le banc passé vert (course complète), la dette des treize valeurs fermée — quatre sur la chaîne, neuf déclarées réductions de l'objet imité.** Réserve d'Auteur consignée : les textes des paires ne le convainquent pas encore. |
@@ -127,8 +127,11 @@ de page, titres du site à un cran et demi au-dessus de l'affiche.
 `kit/app/levels.tsx` : la situation en tête et une seule action qui porte le
 verbe ; deux côtés (le faux à gauche, déclaré ; au repos chaque côté montre
 son verdict, l'action rejoue) ou une scène (le verdict bascule, « ↺ Réparer ») ;
-un réglage partagé (`tools`) vit sous la scène ; la scène ne commente pas,
-elle mesure. Posé sur les six pages ; `Band` n'a plus de bouton « Casser ».
+un choix à positions (`bar` : « Casser », « Montrer », « Densité »…) vit sous
+la tête, à la place d'une ligne de verdict ; une molette (`tools`) vit sous la
+scène ; la scène ne commente pas, elle mesure. Le banc à poignée (`Preview`)
+sait vivre dans le cadre, bord à bord. Posé sur les six pages, plus aucun banc
+nu ; `Band` n'a plus de bouton « Casser ». La tête dit l'enjeu, pas le décor.
 
 **Le lexique et la langue du code** (8 septembre, `#134`) — 🟢 `docs/lexique.md`
 fait foi : prose française, code anglais. Tout identifiant du kit et du témoin
@@ -209,6 +212,33 @@ rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au co
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
 pousseraient à grouper les commits, et le journal vit de leur finesse.
 
+**Le kit est jugé par ses propres règles, au commit et au push** (9 septembre,
+décision d'Auteur — voie B). Le linter FILI de `temoin/` ne sait pas lire le kit
+(classes Tailwind, registre de composants, hooks de données : rien de tout cela
+dans le kit) ; lancé à blanc, il refuse de statuer sur ses 33 fichiers. Le
+linter du kit, c'est `kit/derivation.test.mjs` — 30 épreuves, moins d'une
+seconde, zéro dépendance — qui lit le CSS tel qu'il est écrit : aucun nombre
+posé hors des lignes qui le déclarent, aucune durée ni courbe à la main,
+mouvement réduit tenu. Il entre dans le hook `pre-commit` et dans la CI, en
+**verrou** (une faute volontaire l'a fait rougir, restaurée à l'octet près).
+Le banc de pages reste un voyant. **La graisse est un rôle, jamais un nombre**
+(9 septembre, T13) : les 198 graisses écrites à la main des feuilles et des vues
+sont passées aux trois jetons `--weight-body / -label / -heading` ; seuls les
+objets imités de /composition gardent leur 700, dit sur la ligne ; le gras du
+navigateur (b, strong, th, h3–h6) prend le rôle titre, les champs héritent, une
+scène qui déclare son thème repart du courant de ce thème. Deux épreuves le
+tiennent : « pas de graisse à la main » au linter du moteur (32 épreuves), et
+`tests/weight.test.mjs` au banc de pages — sept pages, deux thèmes, toute
+graisse rendue est un rôle (74 vertes). L'écart en sombre, 20, est posé à l'œil.
+Le même jour, la règle « pas de nombre »
+s'étend aux styles inline des vues (31e épreuve), avec la grammaire du CSS —
+« hors chaîne » ou « casse » sur la ligne ou celle du dessus, bloc de dette
+borné — et une exemption propre au kit : un élément qui porte
+`data-intent="statement"` montre une faute exprès. Neuf tailles écrites à la
+main sont tombées : trois petits textes gris passés à `--font-size-small`, le
+spécimen « Aa » de l'accueil devenu les crans du kit eux-mêmes (il suit la
+densité), et une casse déclarée reconnue comme telle.
+
 **Le moteur de couleur** — 🟢 verrouillé. Le 7 septembre, un token
 `--code-danger` est né et mort le même jour : ce qui a besoin de toute la
 famille sombre se déclare en thème sombre et prend le rouge du système
@@ -238,8 +268,8 @@ cran chaque rôle se pose, sans qu'un rôle consomme jamais un cran (`#113`).
 Une encre de plus depuis le 25 août, `text-tertiary` (3:1 au seuil sur le
 fond le plus dur), tenue par **C17** : une intention dite sur sa ligne, jamais
 du texte lu, jamais sous le cran étiquette, et — depuis le 26 août, sur pièce —
-un cran de graisse de plus en petit (600 au moins). Le vérificateur éprouve les
-trois (`#124`).
+un cran de graisse de plus en petit (le rôle titre — 600, 580 en sombre — depuis
+le 9 septembre ; « 600 au moins » avant). Le vérificateur éprouve les trois (`#124`).
 
 ---
 

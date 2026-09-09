@@ -36,11 +36,11 @@ const TRIALS: { hex: string; name: string }[] = [
 const SPECIMENS: Record<string, React.ReactNode> = {
   typo: (
     <div className="acc-sp-typo" aria-hidden="true">
-      <span style={{ fontSize: "3.4rem" }}>Aa</span>
-      <span style={{ fontSize: "2.3rem" }}>Aa</span>
-      <span style={{ fontSize: "1.55rem", color: "var(--text-secondary)" }}>Aa</span>
-      <span style={{ fontSize: "1.05rem", color: "var(--text-secondary)" }}>Aa</span>
-      <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Aa</span>
+      <span style={{ fontSize: "var(--font-size-display)" }}>Aa</span>
+      <span style={{ fontSize: "var(--font-size-h2)" }}>Aa</span>
+      <span style={{ fontSize: "var(--font-size-h3)", color: "var(--text-secondary)" }}>Aa</span>
+      <span style={{ fontSize: "var(--font-size-body)", color: "var(--text-secondary)" }}>Aa</span>
+      <span style={{ fontSize: "var(--font-size-small)", color: "var(--text-secondary)" }}>Aa</span>
     </div>
   ),
   rhythm: (
@@ -309,7 +309,7 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
-            <p className="muted" style={{ fontSize: "0.8125rem" }}>Ce tableau est lu dans la
+            <p className="muted" style={{ fontSize: "var(--font-size-small)" }}>Ce tableau est lu dans la
             liste des pages du kit : il ne peut pas être en retard sur le menu. ⚪ idée ·
             🟡 en cours · 🟢 verrouillé — l&apos;état est écrit à chaque verdict, jamais deviné.</p>
             <details className="prov"><summary>Règles &amp; sources</summary><div>

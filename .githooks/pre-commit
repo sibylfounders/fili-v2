@@ -33,6 +33,15 @@ else
   echo "     Le commit passe, mais la preuve est incomplète : npm install."
 fi
 
+# ── Le kit : ses épreuves, à chaque enregistrement ───────────────────────────
+#
+# Le kit est la preuve du système : il est jugé par ses propres règles, écrites
+# dans sa langue (CSS nu, jetons dérivés). Zéro dépendance, moins d'une seconde
+# — donc un verrou, pas un voyant. Décision d'Auteur du 2026-09-09 (voie B).
+
+RACINE_FILI="$(git rev-parse --show-toplevel)"
+( cd "$RACINE_FILI/kit" && node --test derivation.test.mjs )
+
 # ── Le kit : l'état du banc, dit à chaque enregistrement ─────────────────────
 #
 # Ce bloc NE lance PAS le banc (deux minutes et un navigateur : ce serait un
@@ -44,7 +53,6 @@ fi
 # Il ne corrige la carte que si personne d'autre n'y écrit ; sinon il se
 # contente de parler, pour ne pas mêler sa correction au travail en cours.
 
-RACINE_FILI="$(git rev-parse --show-toplevel)"
 if git diff --quiet -- docs/system-map.md 2>/dev/null \
    && git diff --cached --quiet -- docs/system-map.md 2>/dev/null; then
   node "$RACINE_FILI/kit/tests/bench-state.mjs" --ecrire || true

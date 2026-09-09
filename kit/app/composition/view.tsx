@@ -602,7 +602,7 @@ export function ScreenConformite({ folders, delay, last }) {
 .screen    { display: grid; gap: var(--pad-2-block);           /* dehors… */
             padding: var(--pad-2-block) var(--pad-1-inline); }
 .group   { display: grid; gap: var(--gap-3-block); }           /* …plus large que dedans */
-.dominant { font: 600 var(--font-size-h1) / var(--leading-heading) var(--font-sans); }  /* un seul par vue */
+.dominant { font: var(--weight-heading) var(--font-size-h1) / var(--leading-heading) var(--font-sans); }  /* un seul par vue */
 .label{ color: var(--text-secondary); }
 .actions  { display: flex; gap: var(--pad-3-inline); }
 .main{ background: var(--primary); color: var(--on-primary); }  /* l'accent, dépensé une fois */
@@ -735,7 +735,7 @@ export class EcranConformite {
   .screen    { display: grid; gap: var(--pad-2-block);
               padding: var(--pad-2-block) var(--pad-1-inline); }
   .group   { display: grid; gap: var(--gap-3-block); }
-  .dominant { font: 600 var(--font-size-h1) / var(--leading-heading) var(--font-sans); }
+  .dominant { font: var(--weight-heading) var(--font-size-h1) / var(--leading-heading) var(--font-sans); }
   .label{ color: var(--text-secondary); }
   .actions  { display: flex; gap: var(--pad-3-inline); }
   .main{ background: var(--primary); color: var(--on-primary); }

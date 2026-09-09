@@ -36,7 +36,7 @@
 
 /* ── 3 · le simple gagne ── */
 .cb-card { gap: var(--gap-4-block); }
-.cb-card-heading { margin: 0; font-weight: 600; }
+.cb-card-heading { margin: 0; font-weight: var(--weight-heading); }
 .cb-card-text { margin: 0; font-size: var(--font-size-small); color: var(--text-secondary); }
 /* casse : une seule chose change — un cadre double épais à la place du filet fin */
 .cb-card.heavy { border: 4px double var(--text-secondary); } /* casse */
@@ -45,7 +45,7 @@
 .cb-column { display: grid; gap: var(--gap-3-block);
   padding-inline-start: var(--pad-3-inline); border-inline-start: 1px dashed var(--border-strong); }
 .cb-block { margin: 0; }
-.cb-block.heading { font-weight: 600; }
+.cb-block.heading { font-weight: var(--weight-heading); }
 .cb-block.text { font-size: var(--font-size-small); color: var(--text-secondary); }
 .cb-block.slab { display: grid; gap: var(--gap-4-block);
   background: var(--surface-hover); border-radius: var(--r-3);

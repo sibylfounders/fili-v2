@@ -12,7 +12,7 @@ import net from 'node:net'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
-import { chain, tokens, derived, PRIMARY_DEFAULTS, REGISTRY, ROOT_BROWSER, DENSITIES, INTENTS, OFF_CHAIN } from '../derivation.mjs'
+import { chain, tokens, derived, PRIMARY_DEFAULTS, REGISTRY, ROOT_BROWSER, DENSITIES, INTENTS, OFF_CHAIN, WEIGHT } from '../derivation.mjs'
 
 export const KIT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 export const WIDTHS = [320, 768, 1440]
@@ -189,23 +189,24 @@ export async function faultsSizes(p, W, { exclusions = [], allowed = [], root = 
 export const overflow = (p) => p.evaluate(() => Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth))
 
 /* ── C17, mesuré : tout élément dont l'encre calculée est le tertiaire porte
-   600 au moins, ne descend pas sous le cran étiquette, et n'est pas un
-   paragraphe de texte lu. ── */
+   le rôle titre au moins (allégé de l'écart en sombre, T14 — 9 septembre 2026),
+   ne descend pas sous le cran étiquette, et n'est pas un paragraphe de texte lu. ── */
 export async function faultsC17(p, theme, W) {
   const tertiary = rgb(inks(theme)['text-tertiary'])
   const label = expected('font-size-label', W)
-  return p.evaluate(([tertiary, label, tol]) => {
+  const heading = theme === 'dark' ? WEIGHT.dark('heading') : WEIGHT.roles.heading
+  return p.evaluate(([tertiary, label, tol, heading]) => {
     const faults = []
     for (const el of document.querySelectorAll('main *')) {
       const cs = getComputedStyle(el)
       if (cs.color !== tertiary || !el.textContent.trim()) continue
       const describe = () => `${el.tagName.toLowerCase()}.${[...el.classList].join('.')} « ${el.textContent.trim().slice(0, 40)} »`
-      if (parseInt(cs.fontWeight) < 600) faults.push(`${describe()} — graisse ${cs.fontWeight} (600 au moins)`)
+      if (parseInt(cs.fontWeight) < heading) faults.push(`${describe()} — graisse ${cs.fontWeight} (le rôle titre, ${heading}, au moins)`)
       if (parseFloat(cs.fontSize) < label - tol) faults.push(`${describe()} — corps ${cs.fontSize} sous le cran étiquette`)
       if (el.tagName === 'P' && el.textContent.trim().length > 160) faults.push(`${describe()} — un paragraphe lu en tertiaire`)
     }
     return faults
-  }, [tertiary, label, TOL])
+  }, [tertiary, label, TOL, heading])
 }
 
 /* ── « Rien en dur », mesuré : dans les corps de sections, chaque marge,

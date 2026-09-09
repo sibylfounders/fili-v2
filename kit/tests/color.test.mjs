@@ -281,7 +281,7 @@ test('4 · pâlir l’encre, prêter la marque, survoler par filtre, forcer une 
 })
 
 /* ── 5 · Le thème sombre, et C17 ── */
-test('5 · dans les deux thèmes, tout tertiaire rendu porte 600 au moins, au cran étiquette au moins, jamais un paragraphe lu (le tableau des rôles : dette dite, hors jeu)', async () => {
+test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au moins (allégé en sombre), au cran étiquette au moins, jamais un paragraphe lu (le tableau des rôles : dette dite, hors jeu)', async () => {
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { width: 1440, theme }); await survey(p)
     assert.equal(await calc(p, 'body', 'backgroundColor'), rgb(PAL[theme].surface), `${theme} — la page est dans son thème (le corps de page est la surface)`)

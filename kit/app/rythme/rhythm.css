@@ -37,7 +37,7 @@
 .ry-start { justify-self: start; }
 .ry-scrolls { overflow-x: auto; }
 .ry-small { font-size: var(--font-size-small); }
-.ry-h3 { margin: 0; font-size: var(--font-size-h3); font-weight: 600; letter-spacing: -0.01em; line-height: var(--leading-heading); }
+.ry-h3 { margin: 0; font-size: var(--font-size-h3); font-weight: var(--weight-heading); letter-spacing: -0.01em; line-height: var(--leading-heading); }
 .ry-fault { color: var(--danger); }
 
 /* ── 01 · La chaîne — la tranche Fili (CG4) : la coque (marge 1, coin 1) → la carte
@@ -60,7 +60,7 @@
 .tr-nav { width: 9.5rem; /* hors chaîne : mesure de la colonne */ flex: none; display: flex; flex-direction: column; gap: var(--gap-4-block); }
 .tr-brand { display: flex; align-items: center; min-height: var(--control-height-compact);
   gap: var(--gap-3-inline); padding: 0 var(--pad-3-inline);
-  margin-bottom: var(--gap-3-block); font-weight: 600; }
+  margin-bottom: var(--gap-3-block); font-weight: var(--weight-heading); }
 .tr-brand .m { width: 1.15rem; height: 1.15rem; /* hors chaîne : le monogramme, une glyphe */ color: var(--primary); flex: none; }
 /* Une entrée de menu est un CONTRÔLE, pas une ligne de texte : sa hauteur
    est la cible des commandes secondaires, sans marge de ligne en plus.
@@ -68,7 +68,7 @@
    Le menu est un décor non cliquable — la cible pleine ne s'y impose pas. */
 .tr-item { display: flex; align-items: center; min-height: var(--control-height-compact);
   padding: 0 var(--pad-3-inline); border-radius: var(--r-3); color: var(--text-secondary); }
-.tr-item.on { background: var(--bg); color: var(--text-primary); font-weight: 600; }
+.tr-item.on { background: var(--bg); color: var(--text-primary); font-weight: var(--weight-heading); }
 /* La carte est une rangée : sa marge gauche, son dedans, sa marge droite.
    Les deux colonnes s'étirent sur toute la hauteur — c'est ce qui rend
    l'anneau de marge continu (1er septembre). */
@@ -82,9 +82,9 @@
   border-radius: var(--r-pill); flex: none;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--primary-subtle); color: var(--on-primary-subtle);
-  font: 600 var(--font-size-small)/1 var(--font-sans);
+  font: var(--weight-heading) var(--font-size-small)/1 var(--font-sans);
 }
-.tr-name { display: block; font-weight: 600; font-size: var(--font-size-body); letter-spacing: -0.01em; }
+.tr-name { display: block; font-weight: var(--weight-heading); font-size: var(--font-size-body); letter-spacing: -0.01em; }
 .tr-role { color: var(--text-secondary); }
 /* La commande secondaire et les blocs de chiffres prennent le traitement du
    kit : fond blanc, filet gris (2 septembre 2026). Ils étaient en gris
@@ -96,7 +96,7 @@
 .tr-btn {
   border: 0; cursor: default; border-radius: var(--r-ctl);
   min-height: var(--control-height); padding: var(--pad-3-block) var(--pad-3-inline);
-  font: 600 var(--font-size-small)/1 var(--font-sans);
+  font: var(--weight-heading) var(--font-size-small)/1 var(--font-sans);
   background: var(--bg); color: var(--text-primary);
   box-shadow: inset 0 0 0 1px var(--border);
 }
@@ -147,7 +147,7 @@
 }
 .ry-pf-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--gap-2-inline); }
 .ry-pf-head b { font-size: var(--font-size-h3); letter-spacing: -0.02em; }
-.ry-pf-head .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; letter-spacing: var(--tracking-label); }
+.ry-pf-head .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: var(--weight-heading); letter-spacing: var(--tracking-label); }
 .ry-pf-line .mono { color: var(--text-secondary); }
 .ry-pf-card {
   background: var(--surface); border-radius: var(--r-2);
@@ -217,7 +217,7 @@
 .ry-pf-side.wrong { color: var(--danger); }
 .ry-pf-side-says { display: grid; gap: var(--gap-4-block); min-width: 0; }
 .ry-pf-side-says b { color: var(--text-primary); font-size: var(--font-size-small); }
-.ry-pf-side-says .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; }
+.ry-pf-side-says .mono { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: var(--weight-heading); }
 
 /* ── La proximité : une carte dont chaque distance est un bloc d'espace explicite. ── */
 .ry-prox { display: grid; gap: var(--gap-2-block); width: 100%; max-width: 26rem; /* hors chaîne : mesure de la carte */ }
@@ -258,7 +258,7 @@
   padding: var(--pad-3-block) var(--pad-3-inline); transition: background-color var(--m-fast) var(--e-out); } /* survol */
 .ry-step-bar { height: 0.375rem; /* hors chaîne : l'épaisseur du trait de mesure */
   border-radius: var(--r-pill); background: var(--ry-color, var(--text-primary)); }
-.ry-ruler .ry-step b { font: 600 var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.ry-ruler .ry-step b { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums; }
 .ry-step-role { font-size: var(--font-size-label); color: var(--text-secondary); }
 /* L'opération se lit DANS l'écart, entre les deux boîtes qu'elle relie. */
 .ry-step-increment { position: absolute; inset-inline-end: calc(var(--ry-increment) / -2);
@@ -370,8 +370,8 @@
   text-align: left; display: flex; flex-direction: column; gap: var(--sd-g1);
 }
 .ry-sd-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sd-g2i); }
-.ry-sd-name { font-weight: 700; letter-spacing: -0.02em; font-size: var(--font-size-h3); }
-.ry-sd-meta { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; letter-spacing: var(--tracking-label); }
+.ry-sd-name { font-weight: var(--weight-heading); letter-spacing: -0.02em; font-size: var(--font-size-h3); }
+.ry-sd-meta { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: var(--weight-heading); letter-spacing: var(--tracking-label); }
 .ry-sd-card {
   background: var(--bg); border-radius: var(--r-2);
   padding: var(--sd-p2) var(--sd-p2i);
@@ -381,7 +381,7 @@
 .ry-sd-circle { width: 2.75rem; height: 2.75rem; /* hors chaîne : la pastille d'avatar, un objet — pas une cible */
   border-radius: var(--r-pill); flex: none; background: var(--primary-subtle); }
 .ry-sd-who { display: flex; flex-direction: column; min-width: 0; }
-.ry-sd-who b { font-weight: 600; letter-spacing: -0.015em; }
+.ry-sd-who b { font-weight: var(--weight-heading); letter-spacing: -0.015em; }
 .ry-sd-who span { color: var(--text-secondary); font-size: var(--font-size-small); }
 .ry-sd-lines { display: flex; flex-direction: column; gap: var(--sd-g3); }
 .ry-sd-line {
@@ -390,7 +390,7 @@
   display: flex; align-items: center; justify-content: space-between; gap: var(--sd-g3i);
   font-size: var(--font-size-small);
 }
-.ry-sd-line b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; }
+.ry-sd-line b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: var(--weight-heading); }
 
 /* ── Les scènes de l'étage « en bandes ». Chaque casse est dite sur SA
       ligne : c'est la seule valeur hors chaîne qu'elle porte. ── */
@@ -461,7 +461,7 @@
 .ry-rem-card.hard {
   padding: 16px; /* casse : une marge gelée en pixels — elle ne suivra pas le texte */
 }
-.ry-rem-label { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 600; }
+.ry-rem-label { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: var(--weight-heading); }
 
 /* y17 · la jauge en pointillé est la hauteur due ; la commande la remplit. */
 .ry-target { width: 100%; display: grid; gap: var(--gap-2-block); }
@@ -539,7 +539,7 @@
 /* Le chapô et le lecteur vivent sur la page, pas dans le panneau. */
 .mo-chap { grid-column: 1 / 4; grid-row: 1; z-index: 3; margin: 0;
   align-self: start; padding-block-start: 0.5rem;
-  font: 700 var(--font-size-label)/1 var(--font-mono);
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
   letter-spacing: var(--tracking-label); text-transform: uppercase;
   color: var(--text-tertiary); } /* tertiaire : le chapô du film, un kicker */
 .mo-player { grid-column: 1 / 5; grid-row: 3; z-index: 3; align-self: end; }
@@ -558,7 +558,7 @@
    graisse, même surlignage d'auteur (verdict d'Auteur, 2 septembre :
    « garde ce traitement sur toutes les pages »). */
 .mo-heading, .mo-question, .mo-sentence { margin: 0; max-width: var(--measure);
-  font-size: var(--font-size-h2); font-weight: 700; letter-spacing: -0.03em;
+  font-size: var(--font-size-h2); font-weight: var(--weight-heading); letter-spacing: -0.03em;
   line-height: var(--leading-heading); text-wrap: balance; }
 /* L'accent de l'auteur ne colore pas le texte — il le SURLIGNE. Un vert de
    signature en encre serait illisible ; posé derrière la ligne, il garde
@@ -610,7 +610,7 @@
 .mo-slide-text { display: grid; gap: var(--gap-2-block); }
 @keyframes mo-between { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: none; } }
 .mo-sub { margin: 0; font-size: var(--font-size-body); line-height: 1.6; opacity: 0.86; }
-.mo-sub b { opacity: 1; font-weight: 700; }
+.mo-sub b { opacity: 1; font-weight: var(--weight-heading); }
 
 /* ── Le compteur : une ANNOTATION, pas un bloc. Il a d'abord été une
       feuille grise arrondie posée sur le coin du panneau — et c'est la
@@ -625,7 +625,7 @@
 /* Une carte émotionnelle : le chiffre dit combien, la couleur dit si ça
    tient, l'humeur dit ce que ça fait de le vivre. */
 .mo-counter b { display: flex; align-items: center; gap: var(--gap-4-inline);
-  font-size: var(--font-size-h1); font-weight: 700; line-height: 1;
+  font-size: var(--font-size-h1); font-weight: var(--weight-heading); line-height: 1;
   letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 .mo-counter b i { font-style: normal; }
 .mo-mood { font-size: 0.78em; line-height: 1;
@@ -634,7 +634,7 @@
   from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
   to { opacity: 1; transform: none; }
 }
-.mo-counter span { font: 700 var(--font-size-label)/1 var(--font-mono);
+.mo-counter span { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
   letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : l'étiquette du compteur */
 /* Le chiffre reste à l'encre du texte, toujours (verdict d'Auteur,
    2 septembre). Le rouge et le vert le faisaient basculer d'un registre à
@@ -696,7 +696,7 @@
   inset-block-start: 0.4rem; inset-inline-start: 0.5rem;
   background: var(--text-primary); color: var(--bg);
   border-radius: var(--r-3); padding: 0.22em 0.5em;
-  font: 700 var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); white-space: nowrap;
   animation: mo-version 0.35s var(--e-out) both; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
 @keyframes mo-version {
   from { opacity: 0; transform: translateY(-0.25rem); }
@@ -711,9 +711,9 @@
 .mo-sieve i { position: absolute; transform: translate(-50%, -50%) rotate(-3deg);
   background: var(--bg); color: var(--fam-ink); border: 1px solid var(--fam-edge);
   border-radius: var(--r-3); padding: 0.2em 0.45em; white-space: nowrap;
-  font: 700 var(--font-size-label)/1 var(--font-mono); font-style: normal;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); font-style: normal;
   animation: mo-falls 0.28s var(--e-out) both; } /* chorégraphie : le film (verdict d'Auteur, 4 septembre) */
-.mo-sieve i em { font-style: normal; font-weight: 500; margin-inline-start: 0.18em; }
+.mo-sieve i em { font-style: normal; font-weight: var(--weight-label); margin-inline-start: 0.18em; }
 .mo-sieve i:nth-child(even) { transform: translate(-50%, -50%) rotate(4deg); }
 @keyframes mo-falls { from { opacity: 0; scale: 0.4; } to { opacity: 1; scale: 1; } }
 
@@ -737,13 +737,13 @@
    raconte (verdict d'Auteur, 2 septembre : « attention au contraste »). */
 .mo-list b { flex: none; display: flex; align-items: baseline; gap: 0.2em;
   background: var(--bg); border-radius: var(--r-3); padding: 0.16em 0.4em;
-  font: 700 var(--font-size-label)/1.4 var(--font-mono);
+  font: var(--weight-heading) var(--font-size-label)/1.4 var(--font-mono);
   font-variant-numeric: tabular-nums; color: var(--fam-ink); }
 .mo-list b i { font-style: normal; }
 .mo-list .mo-n { min-width: 2.2ch; text-align: right; }
  /* L'unité se distingue par sa graisse, jamais par un voile : le vert à
    62 % sur blanc ne se lit plus (2,5:1 mesuré). */
-.mo-list .mo-u { font-weight: 500; }
+.mo-list .mo-u { font-weight: var(--weight-label); }
 .mo-list span { font-size: var(--font-size-label); line-height: 1.4; opacity: 0.86; }
 
 /* Les quatre familles. Les marges en rouge et les écarts en vert reprennent
@@ -789,19 +789,19 @@
   from { opacity: 0; transform: translateY(calc(-50% + 0.75rem)); }
   to { opacity: 1; transform: translateY(-50%); }
 }
-.mo-note b { font-size: var(--font-size-small); font-weight: 700; }
+.mo-note b { font-size: var(--font-size-small); font-weight: var(--weight-heading); }
 .mo-note span { font-size: var(--font-size-small); line-height: 1.5; opacity: 0.86; }
 
 
 .mo-caption { margin: 0; align-self: flex-start;
-  font: 600 var(--font-size-label)/1.4 var(--font-mono); opacity: 0.85; }
+  font: var(--weight-heading) var(--font-size-label)/1.4 var(--font-mono); opacity: 0.85; }
 
 /* ── Le lecteur ── */
 .mo-player { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
 .mo-circle { display: grid; place-items: center; flex: none; cursor: pointer; position: relative;
   width: var(--control-height); height: var(--control-height); border-radius: var(--r-pill);
   border: 1px solid var(--border); background: var(--bg); color: var(--text-primary);
-  font: 600 var(--font-size-small)/1 inherit; }
+  font: var(--weight-heading) var(--font-size-small)/1 inherit; }
 .mo-circle:hover:not(:disabled) { background: var(--surface-hover); }
 .mo-circle:disabled { opacity: 0.35; cursor: default; }
 .mo-readout { border-color: var(--text-primary); }
@@ -812,7 +812,7 @@
 .mo-readout.in-progress .ic-pause { display: block; }
 .mo-readout.end .ic-play, .mo-readout.end .ic-pause { display: none; }
 .mo-readout.end .ic-re { display: block; }
-.mo-cnt { color: var(--text-tertiary); font-weight: 600; font-variant-numeric: tabular-nums; } /* tertiaire : le rang du slide, une méta du lecteur */
+.mo-cnt { color: var(--text-tertiary); font-weight: var(--weight-heading); font-variant-numeric: tabular-nums; } /* tertiaire : le rang du slide, une méta du lecteur */
 .mo-time { flex: 1; max-width: 9rem; height: 2px; border-radius: var(--r-pill);
   background: var(--border); overflow: hidden; }
 .mo-time i { display: block; height: 100%; background: var(--text-primary); transform-origin: 0 50%; }
@@ -861,10 +861,10 @@
   display: grid; grid-template-columns: minmax(0, 1fr) 5ch;
   align-items: center; gap: var(--gap-4-block) var(--gap-3-inline); }
 .mo-wheel label { grid-column: 1 / -1;
-  font: 700 var(--font-size-label)/1 var(--font-mono);
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
   letter-spacing: var(--tracking-label); text-transform: uppercase; opacity: 0.85; }
 .mo-wheel input[type=range] { width: 100%; accent-color: var(--accent); }
-.mo-wheel output { font: 600 var(--font-size-small)/1 var(--font-mono);
+.mo-wheel output { font: var(--weight-heading) var(--font-size-small)/1 var(--font-mono);
   font-variant-numeric: tabular-nums; }
 
 
@@ -880,7 +880,7 @@
   border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
   border-radius: var(--r-ctl); background: transparent; color: inherit;
   cursor: pointer; white-space: nowrap;
-  font: 600 var(--font-size-small)/1 inherit;
+  font: var(--weight-heading) var(--font-size-small)/1 inherit;
   transition: background-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); } /* survol */
 .mo-intents button:hover:not(.on) { background: color-mix(in srgb, currentColor 12%, transparent); }
 .mo-intents button.on { background: var(--text-primary); border-color: var(--text-primary);
@@ -930,7 +930,7 @@
 .mo-record.corners .slice::after, .mo-record.corners .tr-card::after,
 .mo-record.corners .tr-sub:first-of-type::after {
   inset-block-start: -0.15em; white-space: nowrap;
-  font: 700 var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
 }
 .mo-record.corners .slice::after {
   content: var(--corner-1); inset-inline-start: calc(var(--r-1) + 0.4rem); }
@@ -951,7 +951,7 @@
 
 /* La question qui cadre les intentions : ce ne sont pas des réglages, ce
    sont des positionnements de produit. */
-.mo-request { margin: 0; font-size: var(--font-size-small); font-weight: 700; }
+.mo-request { margin: 0; font-size: var(--font-size-small); font-weight: var(--weight-heading); }
 
 /* ═══ LA HIÉRARCHIE — la scène de la section 04 (2 septembre 2026) ═══
    Elle remplace un couple titre + texte, qui ne montrait qu'un seul cran :
@@ -977,17 +977,17 @@
   background: linear-gradient(var(--border-strong), var(--border-strong)) 50% 0 / 1px 100% no-repeat; }
 .hier-line.fixed .hier-measure { border-color: var(--success);
   background-image: linear-gradient(var(--success), var(--success)); }
-.hier-heading { font-weight: 700; letter-spacing: -0.02em; }
-.hier-body { font-weight: 400; line-height: 1.6; color: var(--text-secondary); }
+.hier-heading { font-weight: var(--weight-heading); letter-spacing: -0.02em; }
+.hier-body { font-weight: var(--weight-body); line-height: 1.6; color: var(--text-secondary); }
 /* Aucune transition sur la taille : sous le doigt, un texte qui met un
    tiers de seconde à rejoindre le curseur donne l'impression que la mise en
    page se réajuste APRÈS lui (verdict d'Auteur, 2 septembre). */
 
 .hier-side { flex: none; width: 9rem; display: grid; gap: 0.15em;
   text-align: right; justify-items: end; align-self: center; }
-.hier-side b { font: 700 var(--font-size-label)/1.3 var(--font-mono);
+.hier-side b { font: var(--weight-heading) var(--font-size-label)/1.3 var(--font-mono);
   font-variant-numeric: tabular-nums; }
-.hier-side em { font: 600 var(--font-size-label)/1.3 var(--font-mono); font-style: normal;
+.hier-side em { font: var(--weight-heading) var(--font-size-label)/1.3 var(--font-mono); font-style: normal;
   color: var(--text-tertiary); } /* tertiaire : le nom du cran, à côté de sa cote */
 .hier-side i { font-style: normal; font-size: var(--font-size-label); line-height: 1.3;
   color: var(--text-secondary); }
@@ -996,7 +996,7 @@
 
 /* Le verdict est LU sur les nombres rendus, jamais décrété. */
 .hier-verdict { margin: 0; font-size: var(--font-size-small); line-height: 1.5; }
-.hier-verdict b { font-weight: 700; }
+.hier-verdict b { font-weight: var(--weight-heading); }
 .hier-verdict.ko b { color: var(--danger); }
 .hier-verdict.ok b { color: var(--success); }
 .hier-verdict span { color: var(--text-secondary); }

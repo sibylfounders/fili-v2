@@ -61,7 +61,7 @@ export function Drawer() {
           <Theme />
           <Density />
           <Adaptation />
-          <p className="muted" style={{ fontSize: "0.75rem" }}>
+          <p className="muted" style={{ fontSize: "var(--font-size-small)" }}>
             Chaque réglage porte le site entier, cette page comprise, et se
             souvient de votre choix.
           </p>

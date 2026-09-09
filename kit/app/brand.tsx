@@ -12,7 +12,7 @@ export function Brand() {
   const inside = (
     <>
       <b>Kit</b>
-      <span className="muted" style={{ fontSize: "0.8125rem" }}>
+      <span className="muted" style={{ fontSize: "var(--font-size-small)" }}>
         un design system qui montre ses raisons
       </span>
     </>

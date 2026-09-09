@@ -6646,3 +6646,47 @@ l'application garde son fond de marque. Plus aucun `bench` nu sur ces pages.
 **Au banc.** Les épreuves lisent la rangée de choix (`.demo-bar`) et la
 légende du cadre (`.demo-caption`) ; les rayons dessinés se lisent côté par
 côté, les verdicts dans la tête de côté. Course complète : 71 vertes.
+
+## 9 septembre 2026 (5) — La graisse passe aux rôles : plus un nombre dans les feuilles
+
+**Le constat.** Le moteur servait trois rôles depuis le 8 septembre (courant
+400, étiquette 500, titre 600, allégés de 20 en sombre), mais les feuilles du
+kit écrivaient encore leurs graisses à la main : 198 occurrences, dont 49 à
+700 et un 650 qui n'appartenaient à aucun rôle. L'échelle typographique
+montrait tous les titres au même poids.
+
+**La décision.** Une graisse est un rôle, jamais un nombre. Chaque valeur
+écrite prend le jeton de sa valeur (400 → courant, 500 → étiquette, 600 →
+titre). Les 700 prennent le rôle titre : presque tous sont du petit texte mono
+en capitales — kickers, en-têtes de table, étiquettes de molette, colonnes —
+et C17 dit déjà « en petit, un cran au-dessus » ; les titres de scènes (le film
+du moteur, le menu, les cartes) le prennent aussi. Le 650 de la tête des démos
+devient titre. Trois cas tranchés par l'Auteur (« je te laisse choisir ») : les
+titres du site gardent leur écran — h1 et h3 à la graisse de l'étiquette, h2 à
+celle du courant, la raison sur la ligne (T13 : ils portent leur hiérarchie par
+le corps) ; le grand titre de l'accueil descend au rôle titre ; le spécimen de
+/typo perd sa graisse propre au sombre, qui le rendait plus lourd sur fond noir
+à l'inverse de T14. Seuls les six objets imités de /composition (tableau de
+bord, presse, magazine) gardent leur 700 : la graisse appartient à l'objet
+imité, dite « hors chaîne » sur sa ligne.
+
+**Ce que le banc a vu que le relevé ne voyait pas.** Le gras du navigateur —
+b, strong, th, h3 à h6 — rendait 700 sans qu'aucune feuille l'écrive : il prend
+le rôle titre. Les champs et boutons gardaient le 400 du navigateur en thème
+sombre : ils héritent. Une scène qui déclare son thème (les deux fonds de
+/typo, la nuit d'/arrondis, les coins de /rythme) héritait la graisse de la
+page : elle repart du courant de son thème.
+
+**L'écart en sombre.** Posé à l'œil par l'Auteur sur /typo : 20 reste. Le
+moteur et `tokens.css` le disent comme une valeur posée, plus comme une valeur
+de départ.
+
+**Au banc.** Le linter du moteur gagne « pas de graisse à la main » : dans les
+feuilles et les vues, une graisse est un jeton ou un nombre déclaré sur sa
+ligne (32 vertes, et il rougit sur un 600 glissé). Le banc de pages gagne
+`tests/weight.test.mjs` : sur les sept pages, dans les deux thèmes, toute
+graisse rendue est l'un des trois rôles, allégés en sombre, hors les éléments
+que la feuille déclare. C17 lit désormais le rôle titre et non « 600 au
+moins ». Course complète sur le Mac : 74 vertes. Rien n'est commité : l'arbre
+porte le travail d'autres fils.
+

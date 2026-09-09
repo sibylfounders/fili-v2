@@ -1,5 +1,5 @@
 {
-  "$description": "Jetons du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base 24 · √2 · racine 16 · titres × 1.25 · primary #4F46E5. Les jetons fluides sont gelés à 768 px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.",
+  "$description": "Tokens du kit Fili — GÉNÉRÉS par kit/derivation.mjs. Base 24 · √2 · racine 16 · titres × 1.25 · primary #4F46E5. Les tokens fluides sont gelés à 768 px (décision 7) : justes à 768, faux ailleurs — leurs bornes sont en description.",
   "spacing": {
     "pad-1-inline": {
       "$type": "dimension",
@@ -609,7 +609,7 @@
     "slow": {
       "$type": "duration",
       "$value": "300ms",
-      "$description": "Emploi : tiroir, fenêtre, panneau."
+      "$description": "Emploi : drawer, fenêtre, panneau."
     },
     "expressive": {
       "$type": "duration",

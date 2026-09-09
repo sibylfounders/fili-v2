@@ -232,7 +232,7 @@ test('4 · la scène suit la base de la densité ; le corps de la légende ne bo
 })
 
 /* ── 5 · C17 ── */
-test('5 · dans les deux thèmes, tout tertiaire rendu porte 600 au moins, au cran étiquette au moins, jamais un paragraphe lu', async () => {
+test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au moins (allégé en sombre), au cran étiquette au moins, jamais un paragraphe lu', async () => {
   for (const theme of ['light', 'dark']) {
     const { p, close } = await nav.page(URL(), { width: 1440, theme })
     const f = await faultsC17(p, theme, 1440)

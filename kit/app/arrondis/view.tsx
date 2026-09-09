@@ -127,10 +127,10 @@ function Corner({ Ro, ri, E, ok }: { Ro: number; ri: number; E: number; ok: bool
       <rect x={ox + Ek} y={oy + Ek} width="2000" height="2000" rx={rk} fill="var(--text-primary)" />
       <path d={`M${ox + Rk} ${oy} A ${Rk} ${Rk} 0 0 0 ${ox} ${oy + Rk}`} stroke={hue} strokeWidth={DRAWING.arc} fill="none" strokeLinecap="round" />
       <line x1={a} y1={oy + (a - ox)} x2={b} y2={oy + (b - ox)} stroke={hue} strokeWidth={DRAWING.stroke} />
-      <text x={ox - 10} y={oy + Rk * 0.55 + 5} textAnchor="end" fontSize={DRAWING.measure} fontWeight="600" fontFamily={mono} fill={hue}>{Ro}</text>
-      <text x={ox + Ek + rk + 6} y={oy + Ek + rk + 5} fontSize={DRAWING.measure} fontWeight="600" fontFamily={mono} fill="var(--bg)">{ri}</text>
-      {E > 0 && <text x={W - 10} y={oy + Ek / 2 + 5} textAnchor="end" fontSize={DRAWING.measureSmall} fontWeight="600" fontFamily={mono} fill="var(--text-primary)">{E}</text>}
-      <text x={(a + b) / 2 + 12} y={oy + ((a + b) / 2 - ox) - 8} fontSize={DRAWING.measureSmall} fontWeight="600" fontFamily={mono} fill={hue}>{fmt(d)}</text>
+      <text x={ox - 10} y={oy + Rk * 0.55 + 5} textAnchor="end" fontSize={DRAWING.measure} style={{ fontWeight: "var(--weight-heading)" }} fontFamily={mono} fill={hue}>{Ro}</text>
+      <text x={ox + Ek + rk + 6} y={oy + Ek + rk + 5} fontSize={DRAWING.measure} style={{ fontWeight: "var(--weight-heading)" }} fontFamily={mono} fill="var(--bg)">{ri}</text>
+      {E > 0 && <text x={W - 10} y={oy + Ek / 2 + 5} textAnchor="end" fontSize={DRAWING.measureSmall} style={{ fontWeight: "var(--weight-heading)" }} fontFamily={mono} fill="var(--text-primary)">{E}</text>}
+      <text x={(a + b) / 2 + 12} y={oy + ((a + b) / 2 - ox) - 8} fontSize={DRAWING.measureSmall} style={{ fontWeight: "var(--weight-heading)" }} fontFamily={mono} fill={hue}>{fmt(d)}</text>
     </svg>
   );
 }
