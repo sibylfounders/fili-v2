@@ -12,7 +12,7 @@ import net from 'node:net'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
-import { chain, tokens, derived, PRIMARY_DEFAULTS, REGISTRY, ROOT_BROWSER, DENSITIES, INTENTS, OFF_CHAIN, WEIGHT } from '../derivation.mjs'
+import { LAYOUTS, chain, tokens, derived, PRIMARY_DEFAULTS, REGISTRY, ROOT_BROWSER, DENSITIES, INTENTS, OFF_CHAIN, WEIGHT } from '../derivation.mjs'
 
 export const KIT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 export const WIDTHS = [320, 768, 1440]
@@ -20,7 +20,9 @@ export const DENSITIES_SITE = ['compact', 'comfortable', 'airy']
 export const TOL = 0.06 /* au dixième de pixel, avec l'arrondi du navigateur */
 
 /* ── Le serveur du site construit ── */
-const portFree = () => new Promise((res) => { const s = net.createServer(); s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)) }) })
+/* le port est pris là où Next écoute — toutes interfaces (::) — pas seulement en IPv4 : un port libre en v4 peut être
+   refusé en v6 (constaté le 10 septembre 2026 sur le Mac, EADDRINUSE sur tout port haut) */
+const portFree = () => new Promise((res, rej) => { const s = net.createServer(); s.on('error', rej); s.listen(0, '::', () => { const { port } = s.address(); s.close(() => res(port)) }) })
 export async function openSite(port) {
   port ??= await portFree()
   const proc = spawn(process.execPath, [path.join(KIT, 'node_modules/next/dist/bin/next'), 'start', '-p', String(port)], { cwd: KIT, stdio: ['ignore', 'pipe', 'pipe'] })
@@ -91,13 +93,17 @@ export function expected(name, W, base = DENSITIES.comfortable) {
   let css = j[name]?.css ?? REGISTRY.doc[name]
   /* les colonnes ne suivent pas la densité ; la marge de page change de cran avec le régime du rail */
   if (css === undefined && REGISTRY.docColumns[name]) {
-    const source = W >= OFF_CHAIN.thresholdRail * ROOT_BROWSER && REGISTRY.docColumnsDesktop[name] ? REGISTRY.docColumnsDesktop[name] : REGISTRY.docColumns[name]
+    const source = W >= LAYOUTS.doc.sums.rail * ROOT_BROWSER && REGISTRY.docColumnsDesktop[name] ? REGISTRY.docColumnsDesktop[name] : REGISTRY.docColumns[name]
     css = registry(DENSITIES.comfortable)[source].css
   }
   if (css === undefined) throw new Error(`refus de statuer — token inconnu : ${name}`)
   css = css.replace(/var\(--([a-z0-9-]+)\)/g, (_, n) => String(expected(n, W, base)))
   return evalCss(css, W)
 }
+/* La largeur de la zone de lecture à une largeur de fenêtre W (px), en rem : ce que le gabarit lui
+   laisse — deux marges, et dès la somme du rail, le rail et sa gouttière. Les seuils intérieurs
+   (bande, tables, listes) se lisent sur elle, jamais sur la fenêtre (LAYOUTS.doc.sums). */
+export const readingWidth = (W) => W / ROOT_BROWSER - 2 * expected('doc-margin', W) / ROOT_BROWSER - (W >= LAYOUTS.doc.sums.rail * ROOT_BROWSER ? (expected('doc-rail', W) + expected('doc-gutter', W)) / ROOT_BROWSER : 0)
 /* Les valeurs que le moteur peut produire à cette largeur — pour le balayage « rien en dur ». */
 export function admissible(W, base = DENSITIES.comfortable) {
   const v = new Set([0])

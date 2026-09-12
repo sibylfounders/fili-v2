@@ -39,7 +39,9 @@ const WORD = { 5: 'cinq', 6: 'six', 7: 'seven' }
 
 /* Le socle : ce qui, en bougeant, fait bouger toutes les pages à la fois. */
 const FOUNDATION = [
-  'kit/app/globals.css',
+  'kit/app/kit.css',
+  'kit/app/app.css',
+  'kit/app/demo.css',
   'kit/app/tokens.css',
   'kit/app/preview.tsx',
   'kit/app/layout.tsx',
