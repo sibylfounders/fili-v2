@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Témoin · le tertiaire et son contraste — 12 septembre 2026</title>
+<style>
+  /* TÉMOIN — LE TERTIAIRE ET SON CONTRASTE (12 septembre 2026, journal #146)
+     Trois valeurs du même rôle, dans les deux thèmes, sur les emplois réels.
+     Rien n'est décidé ici : la planche montre, l'Auteur tranche à l'œil.
+     Les rapports sont mesurés (WCAG 2.1, sRGB) et écrits sous chaque colonne. */
+
+  :root {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: ui-monospace, Menlo, monospace;
+    --label: 0.7656rem;
+    --small: 0.856rem;
+    --body: 1.07rem;
+    --tracking: 0.08em;
+  }
+
+  /* les deux thèmes du kit, tels quels */
+  .clair  { --bg: #FFFFFF; --surface: #F3F4F6; --border: #E6E7EB;
+            --primaire: #151725; --secondaire: #505362; }
+  .sombre { --bg: #050611; --surface: #151726; --border: #252736;
+            --primaire: #FFFFFF; --secondaire: #9FA2AF; }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #FAFAFB; color: #151725;
+         font: var(--body)/1.5 var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+  .tete { max-width: 62rem; margin: 0 auto; padding: 3rem 1.5rem 0; }
+  .tete h1 { font-size: 1.6rem; line-height: 1.2; margin: 0 0 .75rem; letter-spacing: -0.015em; }
+  .tete p { margin: 0 0 .5rem; color: #505362; max-width: 44rem; }
+  .tete .dit { font-family: var(--font-mono); font-size: var(--label);
+               text-transform: uppercase; letter-spacing: var(--tracking);
+               color: #8A8C9B; margin-bottom: 1rem; }
+
+  .verdict-cadre { max-width: 62rem; margin: 1.75rem auto 0; padding: 1rem 1.25rem;
+                   border: 1px solid #E6E7EB; border-radius: 10px; background: #FFFFFF; }
+  .verdict-cadre > b { display: block; margin-bottom: .35rem; }
+  .verdict-cadre p { margin: 0; color: #505362; font-size: var(--small); }
+
+  .theme { max-width: 62rem; margin: 2.5rem auto; padding: 0 1.5rem; }
+  .theme > h2 { font-size: .95rem; margin: 0 0 1rem; letter-spacing: var(--tracking);
+                text-transform: uppercase; font-family: var(--font-mono); color: #505362; }
+
+  .colonnes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  @media (max-width: 52rem) { .colonnes { grid-template-columns: 1fr; } }
+
+  .colonne { border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+             background: var(--bg); }
+  .colonne.retenu { outline: 2px solid #2F6BFF; outline-offset: 2px; }
+
+  /* l'étiquette de la colonne : hors du thème, pour ne pas être jugée avec lui */
+  .etiquette { padding: .7rem .9rem; border-bottom: 1px solid var(--border);
+               display: flex; align-items: baseline; justify-content: space-between; gap: .5rem;
+               font-family: var(--font-mono); font-size: var(--label); }
+  .etiquette .nom { color: var(--primaire); font-weight: 600; letter-spacing: var(--tracking);
+                    text-transform: uppercase; }
+  .etiquette .hex { color: var(--secondaire); }
+
+  /* la scène : le rail, un kicker, une mention — les emplois réels du tertiaire */
+  .scene { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); }
+  .rail { border-right: 1px solid var(--border); padding: .9rem .8rem; display: grid;
+          gap: .55rem; align-content: start; background: var(--surface); }
+  .rail-titre { font-family: var(--font-mono); font-size: var(--label);
+                text-transform: uppercase; letter-spacing: var(--tracking);
+                color: var(--tertiaire); }
+  .rail-lien { display: flex; gap: .5rem; align-items: baseline; font-size: var(--small); }
+  .rail-index { font-family: var(--font-mono); font-size: var(--label); color: var(--tertiaire); }
+  .rail-nom { color: var(--secondaire); }
+  .rail-lien.actif .rail-nom { color: var(--primaire); font-weight: 600; }
+
+  .corps { padding: .9rem 1rem 1rem; display: grid; gap: .5rem; align-content: start; }
+  .kicker { font-family: var(--font-mono); font-size: var(--label);
+            text-transform: uppercase; letter-spacing: var(--tracking);
+            color: var(--tertiaire); font-weight: 600; margin: 0; }
+  .corps h3 { margin: 0; font-size: 1.05rem; line-height: 1.25; color: var(--primaire);
+              letter-spacing: -0.01em; }
+  .corps p { margin: 0; font-size: var(--small); color: var(--secondaire); }
+  .mention { font-size: var(--small); color: var(--tertiaire); }
+
+  .trois { margin-top: .35rem; padding-top: .6rem; border-top: 1px solid var(--border);
+           display: grid; gap: .15rem; font-size: var(--small); }
+  .trois .n1 { color: var(--primaire); }
+  .trois .n2 { color: var(--secondaire); }
+  .trois .n3 { color: var(--tertiaire); }
+
+  /* les rapports, écrits hors de la scène */
+  .mesures { border-top: 1px solid var(--border); padding: .6rem .9rem .75rem;
+             font-family: var(--font-mono); font-size: var(--label); display: grid; gap: .2rem;
+             background: var(--bg); }
+  .mesures div { display: flex; justify-content: space-between; gap: .75rem; color: var(--secondaire); }
+  .mesures .ok   { color: #1B7F4B; }
+  .mesures .non  { color: #C0392B; }
+
+  .note { max-width: 62rem; margin: 0 auto 3.5rem; padding: 0 1.5rem;
+          color: #505362; font-size: var(--small); }
+  .note ul { margin: .5rem 0 0; padding-left: 1.1rem; }
+  .note li { margin-bottom: .35rem; }
+</style></head>
+<body>
+
+<div class="tete">
+  <p class="dit">Témoin · 12 septembre 2026 · journal #146</p>
+  <h1>Le tertiaire, et ce qu'il coûte de le rendre lisible</h1>
+  <p>206 textes sous le seuil de contraste sur 3 615 mesurés aux sept pages, et une seule cause :
+     <code>--text-tertiary</code>. Trois valeurs du même rôle sont montrées ici, dans les deux thèmes,
+     sur les emplois qui le portent vraiment — le titre du rail, l'index, le kicker, une mention.</p>
+  <p>La question n'est pas « lequel passe » : elle est <b>combien de niveaux de texte il te reste</b>
+     une fois le tertiaire remonté. Chaque colonne montre donc les trois niveaux ensemble, en bas.</p>
+</div>
+
+<div class="verdict-cadre">
+  <b>Ce que la mesure tranche déjà</b>
+  <p>Le candidat A (4,50:1 sur le fond) <b>ne tient pas sur la surface</b> — 4,09:1 en clair, 3,98:1 en
+     sombre — et le rail, justement, est posé sur la surface. Si la règle est « AA partout », A est une
+     fausse solution et il ne reste que B. A n'est gardé ici que pour montrer ce que coûte le demi-pas.</p>
+</div>
+
+<section class="theme">
+  <h2>Thème clair — fond #FFFFFF, surface #F3F4F6</h2>
+  <div class="colonnes">
+
+    <div class="colonne clair" style="--tertiaire:#8A8C9B">
+      <div class="etiquette"><span class="nom">Actuel</span><span class="hex">#8A8C9B</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="non">3,33:1</span></div>
+        <div><span>sur la surface</span><span class="non">3,03:1</span></div>
+      </div>
+    </div>
+
+    <div class="colonne clair" style="--tertiaire:#747683">
+      <div class="etiquette"><span class="nom">Candidat A</span><span class="hex">#747683</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="ok">4,50:1</span></div>
+        <div><span>sur la surface</span><span class="non">4,09:1</span></div>
+      </div>
+    </div>
+
+    <div class="colonne clair retenu" style="--tertiaire:#6E6F7B">
+      <div class="etiquette"><span class="nom">Candidat B</span><span class="hex">#6E6F7B</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="ok">4,97:1</span></div>
+        <div><span>sur la surface</span><span class="ok">4,52:1</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="theme">
+  <h2>Thème sombre — fond #050611, surface #151726</h2>
+  <div class="colonnes">
+
+    <div class="colonne sombre" style="--tertiaire:#61646F">
+      <div class="etiquette"><span class="nom">Actuel</span><span class="hex">#61646F</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="non">3,42:1</span></div>
+        <div><span>sur la surface</span><span class="non">3,01:1</span></div>
+      </div>
+    </div>
+
+    <div class="colonne sombre" style="--tertiaire:#737784">
+      <div class="etiquette"><span class="nom">Candidat A</span><span class="hex">#737784</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="ok">4,52:1</span></div>
+        <div><span>sur la surface</span><span class="non">3,98:1</span></div>
+      </div>
+    </div>
+
+    <div class="colonne sombre retenu" style="--tertiaire:#7C808E">
+      <div class="etiquette"><span class="nom">Candidat B</span><span class="hex">#7C808E</span></div>
+      <div class="scene">
+        <div class="rail">
+          <div class="rail-titre">Fondations</div>
+          <div class="rail-lien"><span class="rail-index">02</span><span class="rail-nom">Rythme</span></div>
+          <div class="rail-lien actif"><span class="rail-index">03</span><span class="rail-nom">Couleur</span></div>
+          <div class="rail-lien"><span class="rail-index">04</span><span class="rail-nom">Arrondis</span></div>
+        </div>
+        <div class="corps">
+          <p class="kicker">01 · La profondeur</p>
+          <h3>Le coin se divise par deux à chaque étage</h3>
+          <p>Le texte courant occupe le second niveau : il porte le propos sans disputer le titre.</p>
+          <p class="mention">En attente de l'œil d'Auteur</p>
+          <div class="trois">
+            <span class="n1">Premier niveau — le titre</span>
+            <span class="n2">Deuxième niveau — le courant</span>
+            <span class="n3">Troisième niveau — le repère</span>
+          </div>
+        </div>
+      </div>
+      <div class="mesures">
+        <div><span>sur le fond</span><span class="ok">5,13:1</span></div>
+        <div><span>sur la surface</span><span class="ok">4,51:1</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="note">
+  <b>Ce que la planche ne dit pas, et qu'il faut regarder à l'œil</b>
+  <ul>
+    <li>Le secondaire est à 7,62:1 (clair) et 7,94:1 (sombre). Avec le candidat B, l'écart entre le
+      deuxième et le troisième niveau tombe de 4,3 points à 2,7 : c'est là, et nulle part ailleurs,
+      que la décision se joue.</li>
+    <li>Le tertiaire ne change pas de teinte, seulement de clarté — la famille de gris reste la même.</li>
+    <li>Rien n'est appliqué au kit : cette planche est un instrument, pas un correctif. Les valeurs
+      restent celles d'aujourd'hui tant que le verdict n'est pas écrit au journal.</li>
+    <li>Troisième voie, non montrée ici parce qu'elle ne se juge pas sur une couleur : garder le
+      tertiaire tel quel et le sortir du rail, des kickers et des index — il ne porterait plus que
+      du décor, où 3:1 suffit.</li>
+  </ul>
+</div>
+
+</body></html>
