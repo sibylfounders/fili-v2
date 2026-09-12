@@ -49,6 +49,38 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #146 — Le relevé du plomb prend la septième page, et le contraste du tertiaire est chiffré
+
+*2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (plomb : sept pages, 0 faux) · Applique : `#144`*
+
+**Le plomb** — `tests/plomb.mjs` relevait six pages : `/adaptation` n'y était pas,
+par le même oubli que `#144`. Elle passe la loi sans une faute (26 voisinages, 0
+faux) — elle n'était simplement jamais relevée. Elle entre, et le compte des pages
+n'est plus écrit en dur dans le verdict.
+
+**Le contraste, mesuré** — `#143` disait la dette sans la chiffrer. Elle l'est :
+**206 textes sous le seuil sur 3 615 mesurés** aux sept pages (rythme 30, typo 37,
+arrondis 27, couleur 33, composition 18, mouvement 26, adaptation 35). Une seule
+cause, un seul jeton :
+
+| rôle | clair | sur blanc | sombre | sur le fond sombre |
+|---|---|---|---|---|
+| `--text-primary` | `#151725` | 17,78:1 ✓ | `#FFFFFF` | 20,18:1 ✓ |
+| `--text-secondary` | `#505362` | 7,62:1 ✓ | `#9FA2AF` | 7,94:1 ✓ |
+| `--text-tertiary` | `#8A8C9B` | **3,33:1** ✗ | `#61646F` | **3,42:1** ✗ |
+
+Le tertiaire tombe à 3,03:1 sur `--surface`. Pour atteindre 4,5 sur blanc il
+faudrait `#747683` ; pour l'atteindre aussi sur la surface, `#6E6F7B`.
+
+**Ce que ça pose, et qui n'est pas tranché** — ce n'est pas une correction, c'est
+une décision de palette : monter le tertiaire à 4,5 le rapproche du secondaire
+(7,62) et comprime les trois niveaux de texte en deux et demi. L'autre voie est de
+dire que le tertiaire n'est pas un rôle de texte courant et de le borner aux
+emplois où 3:1 suffit — mais le rail, les kickers et les index sont du texte
+courant, et ils le portent aujourd'hui. **En attente du verdict d'Auteur.**
+
+---
+
 ## #145 — Le rendez-vous de nuit ne lançait plus rien depuis le renommage
 
 *2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (lancé par macOS, `runs = 1`, `last exit code = 0`, course verte) · Applique : `#144`*

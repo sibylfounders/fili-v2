@@ -28,7 +28,10 @@ const args = process.argv.slice(2)
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d }
 const W = parseInt(opt('--width', '1440'), 10)
 const BASE = opt('--url', 'http://localhost:3001')
-const PAGES = ['rythme', 'composition', 'couleur', 'arrondis', 'typo', 'mouvement']
+/* les sept pages qui ont un gabarit ; /adaptation entre le 12 septembre 2026 (`#146`) —
+   elle passait déjà la loi, elle n'était simplement jamais relevée */
+const PAGES = ['rythme', 'composition', 'couleur', 'arrondis', 'typo', 'mouvement', 'adaptation']
+const COMBIEN = { 5: 'cinq', 6: 'six', 7: 'sept' }
 
 /* ce qu'on attend d'un contenant : le jeton d'un voisinage entre textes, celui d'un
    voisinage qui bute sur une scène (un cran au-dessus) */
@@ -172,5 +175,5 @@ for (const slug of PAGES) {
   await ctx.close()
 }
 await br.close()
-console.log(rouge ? `\n🔴 ${rouge} voisinages faux` : '\n🟢 les six pages tiennent la loi')
+console.log(rouge ? `\n🔴 ${rouge} voisinages faux` : `\n🟢 les ${COMBIEN[PAGES.length] ?? PAGES.length} pages tiennent la loi`)
 process.exit(rouge ? 1 : 0)
