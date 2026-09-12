@@ -8,8 +8,8 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#144` — 95 entrées au journal, **84 scellées** ;
-> `#134` → `#144` attendent le sceau, et `#050` et `#112` sont signalées réécrites
+> **Dernière décision au journal** : `#145` — 96 entrées au journal, **84 scellées** ;
+> `#134` → `#145` attendent le sceau, et `#050` et `#112` sont signalées réécrites
 > par `immutable.mjs` (atteinte antérieure, non traitée).
 
 **Légende des statuts**
@@ -278,7 +278,11 @@ qu'un instrument qui ne peut plus échouer rendrait décoratif tout vert qui le
 suit. Une nuit n'est verte que si tout l'est. Vérifiée par sabotage : deux
 fautes posées, une dans une page et une dans une traverse, toutes deux nommées
 au bulletin et la pastille rabattue ; retirées, la course repasse au vert
-(4 min 40). Le verrou au commit
+(4 min 40). **Et le rendez-vous lui-même a été réarmé le 12 septembre (`#145`)** :
+il lançait encore `kit/epreuves/course-de-nuit.mjs`, les noms d'avant le
+renommage, avec `last exit code = 1` — la course n'avait donc rien lancé depuis
+le 8 septembre. `install-the-run.sh` relancé, rendez-vous déclenché par macOS et
+non par un terminal : `runs = 1`, sortie 0, course verte. Le verrou au commit
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
 pousseraient à grouper les commits, et le journal vit de leur finesse.
 

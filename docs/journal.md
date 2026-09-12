@@ -49,6 +49,45 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #145 — Le rendez-vous de nuit ne lançait plus rien depuis le renommage
+
+*2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (lancé par macOS, `runs = 1`, `last exit code = 0`, course verte) · Applique : `#144`*
+
+**Contexte** — `#144` a réparé la course. Restait à vérifier une chose évidente
+mais jamais regardée : que macOS la lance.
+
+**Ce qui n'allait pas** — L'agent `fr.fili.banc-de-nuit` était bien installé et se
+déclenchait chaque nuit, mais il lançait `kit/epreuves/course-de-nuit.mjs` — les
+noms d'avant le renommage. Son `last exit code` valait **1**, et sa sortie partait
+dans `kit/epreuves/banc-de-nuit.launchd.log`, un dossier qui ne contient plus que
+ce log orphelin. **La course de nuit n'a donc rien lancé depuis le renommage** :
+son dernier journal lisible date du 8 septembre.
+
+Ce journal raconte d'ailleurs toute l'histoire à lui seul : deux
+`command not found: node`, puis **cinq nuits de suite « 🔴 4 page(s) refusée(s) »**
+— les quatre pages dont le slug ne correspondait à aucun fichier (`#144`). Le banc
+criait juste, dans un fichier que personne n'ouvrait, puis il s'est tu.
+
+**La leçon, qui prolonge `#143`** — on a vérifié que l'épreuve pouvait échouer, puis
+que la course mesurait ce qu'elle annonçait. Il manquait le maillon d'avant : que
+quelqu'un la lance. Un instrument a trois façons de mentir, et on les découvre dans
+cet ordre inverse de leur gravité — il mesure mal, il mesure autre chose, il ne
+tourne pas du tout.
+
+**Décision** — Rien à écrire : `kit/tests/install-the-run.sh` posait déjà les bons
+chemins, il n'avait simplement jamais été relancé après le renommage. Relancé, il
+réécrit le rendez-vous et le déclare à macOS.
+
+**Mesure** — Rendez-vous relancé par `launchctl start` (donc par macOS, sans hériter
+d'un terminal, ce qui est le cas qui échouait) : course complète, `runs = 1`,
+`last exit code = 0`, log dans `kit/tests/banc-de-nuit.launchd.log`, bulletin dans
+`docs/banc-du-jour.md`, **🟢 tout est vert** à 22 h 17.
+
+**Reste à faire, dit** — `kit/epreuves/` ne contient plus que son log orphelin ; à
+supprimer quand l'Auteur l'aura regardé.
+
+---
+
 ## #144 — La course de nuit ne mesurait que la moitié de ce qu'elle annonçait
 
 *2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (course complète 🟢 en 4 min 40, capacité à rougir vérifiée par sabotage) · Applique : `#143` · Révise le dispositif posé le 1er septembre*
