@@ -8,8 +8,8 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#146` — 97 entrées au journal, **84 scellées** ;
-> `#134` → `#146` attendent le sceau, et `#050` et `#112` sont signalées réécrites
+> **Dernière décision au journal** : `#147` — 98 entrées au journal, **84 scellées** ;
+> `#134` → `#147` attendent le sceau, et `#050` et `#112` sont signalées réécrites
 > par `immutable.mjs` (atteinte antérieure, non traitée).
 
 **Légende des statuts**
@@ -295,18 +295,23 @@ fautes disent désormais leur marge en lignes (`marginLines`), dans la même uni
 pour les quatre cas. Une preuve qui tient à un cheveu dit la police de la
 machine, pas la loi : trois mutations sur onze étaient dans ce cas, dont une à
 2,5 px, et l'épreuve refusait de statuer sur le Mac tout en passant ailleurs.
-11/11 sur deux machines, marge la plus courte 3,6 lignes, posée. **Ce que
-l'épreuve dit des pages du kit reste rouge et non traité, mais chiffré depuis le
-12 septembre (`#146`)** : **206 textes sous le seuil de contraste sur 3 615
-mesurés** aux sept pages, et une cause unique — `--text-tertiary` vaut 3,33:1 sur
-blanc en clair et 3,42:1 en sombre, là où 4,5 est exigé (3,03:1 sur `--surface`).
-Il faudrait `#747683` pour tenir sur blanc, `#6E6F7B` pour tenir aussi sur la
-surface. Ce n'est pas une correction mais une décision de palette — monter le
-tertiaire le rapproche du secondaire (7,62:1) et comprime trois niveaux de texte
-en deux et demi : **en attente du verdict d'Auteur**. S'y ajoute une soixantaine
-de valeurs hors chaîne au rendu (les compensations optiques négatives des titres),
-dont la vraie question est si l'épreuve doit apprendre à lire une compensation
-déclarée.
+11/11 sur deux machines, marge la plus courte 3,6 lignes, posée. **Le contraste est tranché le 12 septembre
+(`#147`, révise `#124`)** : le tertiaire visait 3:1 sous une exception « objets
+secondaires, jamais du texte lu ». Elle est levée — 24 de ses 35 emplois sont du
+texte lu, et la contrepartie de graisse du 26 août s'appuyait sur l'exemption
+« grand texte » de la norme, qui demande 18,66 px en gras quand les crans du
+tertiaire vont de 11,4 à 13,7 px : elle ne couvrait aucun emploi. La cible passe à
+4,5 dans le moteur, le tertiaire devient `#6D6F7E` en clair (4,97 / 4,52) et
+`#7D808C` en sombre (5,13 / 4,51). **Contraste : 206 textes sous le seuil → 5.**
+Les cinq restants sont les objets d'étude de `/couleur` — la page dont le sujet est
+le contraste montre délibérément des rapports faibles, et l'épreuve n'a aucun moyen
+de le savoir : **il manque une façon de déclarer « ce texte est une étude »**, comme
+`data-intent="statement"` le fait pour les nombres (dette dite). L'écart entre
+deuxième et troisième niveau tombe de 4,3 points à 2,7 : le cran de graisse de C17
+devient le principal séparateur perceptif, plus une compensation de contraste.
+Reste, non traité, une soixantaine de valeurs hors chaîne au rendu (les
+compensations optiques négatives des titres), dont la vraie question est si
+l'épreuve doit apprendre à lire une compensation déclarée.
 
 **Le kit est jugé par ses propres règles, au commit et au push** (9 septembre,
 décision d'Auteur — voie B). Le linter FILI de `temoin/` ne sait pas lire le kit

@@ -286,7 +286,7 @@
       },
       "text-tertiary": {
         "$type": "color",
-        "$value": "#8A8C9B"
+        "$value": "#6D6F7E"
       },
       "primary-subtle": {
         "$type": "color",
@@ -452,7 +452,7 @@
       },
       "text-tertiary": {
         "$type": "color",
-        "$value": "#61646F"
+        "$value": "#7D808C"
       },
       "primary-subtle": {
         "$type": "color",

@@ -189,8 +189,10 @@ test('couleur — la famille dérivée est celle du tokens.css d’avant, au bit
   assert.ok(Object.keys(light).length >= 37 && Object.keys(dark).length >= 37)
   for (const [n, v] of Object.entries(light)) if (n !== 'text-tertiary') assert.equal(pal.light[n], v, `light ${n}`)
   for (const [n, v] of Object.entries(dark)) if (n !== 'text-tertiary') assert.equal(pal.dark[n], v, `dark ${n}`)
-  /* text-tertiary (25 août) : le gris clair des petits textes indicatifs, calé à 3:1 — exception déclarée */
-  for (const t of ['light', 'dark']) { const r = contrast(pal[t]['text-tertiary'], pal[t].surface); assert.ok(r >= 3 && r < 3.1, `${t} tertiary au seuil : ${r}`) ; assert.ok(contrast(pal[t]['text-tertiary'], pal[t].bg) >= 3) }
+  /* text-tertiary : calé au seuil du TEXTE depuis le 12 septembre 2026 (`#147`, révise `#124`) — il était
+     à 3:1 sous l'exception « objets secondaires », levée parce que 24 de ses 35 emplois sont du texte lu
+     et qu'aucun de ses crans (11,4 à 13,7 px) n'atteint les 18,66 px que l'exemption « grand texte » exige */
+  for (const t of ['light', 'dark']) { const r = contrast(pal[t]['text-tertiary'], pal[t].surface); assert.ok(r >= 4.5 && r < 4.6, `${t} tertiary au seuil : ${r}`) ; assert.ok(contrast(pal[t]['text-tertiary'], pal[t].bg) >= 4.5) }
   assert.ok(contrast(pal.light['text-tertiary'], pal.light.bg) < contrast(pal.light['text-secondary'], pal.light.bg), 'plus clair que le texte second')
   assert.deepEqual(verify(pal), [])
   assert.ok(toCss(pal).includes('--primary: #4F46E5;'))

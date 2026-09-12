@@ -219,10 +219,15 @@ export function derived(primary = PRIMARY_DEFAULTS, accent = undefined) {
   light['text-secondary'] = aligned(lchToHex([0.446, hue(0.024), H]), [light.bg, light.surface], 4.5, [hue(0.024), H])
   light['border-strong'] = aligned(lchToHex([0.551, hue(0.022), H]), [light.bg, light.surface], 3, [hue(0.022), H])
   /* text-tertiary — les petits textes indicatifs (kicker, fiches, légendes, pieds) : le gris le plus
-     clair qui tienne encore 3:1 sur le fond le plus dur (le gris posé), cherché au seuil.
-     EXCEPTION DÉCLARÉE (Arbitrage d'Auteur, 25 août : « limite côté lisibilité, mais ce sont des
-     objets secondaires ») : jamais pour du texte lu, jamais sous le cran label. */
-  light['text-tertiary'] = partner(light.surface, [hue(0.022), H], 3, { toTheBottom: true })
+     clair qui tienne 4,5:1 sur le fond le plus dur (le gris posé), cherché au seuil.
+     L'EXCEPTION EST LEVÉE (12 septembre 2026, `#147` — révise `#124`). Elle visait 3:1 en réservant
+     le tertiaire aux objets secondaires, et la contrepartie du 26 août — un cran de graisse en petit —
+     s'appuyait sur l'exemption « grand texte » de la norme. Deux faits l'ont défaite : sur 35 emplois,
+     24 sont du texte lu (le titre du rail, le kicker, le pied de page, les fiches, l'étiquette d'un
+     champ) ; et l'exemption demande 18,66 px en gras quand les crans du tertiaire vont de 11,4 à
+     13,7 px — elle ne couvrait donc aucun emploi. Le rôle est devenu le troisième niveau de texte du
+     kit : la valeur suit. Le cran de graisse de C17 est gardé — il aide l'œil, il ne conforme rien. */
+  light['text-tertiary'] = partner(light.surface, [hue(0.022), H], 4.5, { toTheBottom: true })
 
   dark.bg = lchToHex([0.130, hue(0.025), H])
   dark.surface = lchToHex([0.210, hue(0.030), H])
@@ -231,7 +236,7 @@ export function derived(primary = PRIMARY_DEFAULTS, accent = undefined) {
   dark['text-primary'] = '#FFFFFF'
   dark['text-secondary'] = aligned(lchToHex([0.714, hue(0.019), H]), [dark.bg, dark.surface], 4.5, [hue(0.019), H], { toTheBottom: false })
   dark['border-strong'] = aligned(lchToHex([0.714, hue(0.019), H]), [dark.bg, dark.surface], 3, [hue(0.019), H], { toTheBottom: false })
-  dark['text-tertiary'] = partner(dark.surface, [hue(0.019), H], 3, { toTheBottom: false })
+  dark['text-tertiary'] = partner(dark.surface, [hue(0.019), H], 4.5, { toTheBottom: false }) /* 4,5 depuis le 12 septembre 2026 — voir le clair */
 
   /* ── Marque — la décision reste entière tant qu'elle porte son encre.
      ZONE MÉDIANE (Arbitrage d'Auteur, 24 août — tranché sur le nuancier
@@ -495,7 +500,7 @@ export function setOnRange(rangeHex, roles) {
 export const PAIRS_DECLAREDALL = [
   ['text-primary', 'bg', 4.5], ['text-primary', 'surface', 4.5],
   ['text-secondary', 'bg', 4.5], ['text-secondary', 'surface', 4.5],
-  ['text-tertiary', 'bg', 3], ['text-tertiary', 'surface', 3], /* exception déclarée : objets secondaires, jamais du texte lu */
+  ['text-tertiary', 'bg', 4.5], ['text-tertiary', 'surface', 4.5], /* l'exception « objets secondaires » est levée le 12 septembre 2026 (`#147`) : le tertiaire est le troisième niveau de TEXTE du kit, il tient donc le seuil du texte */
   ['primary-text', 'bg', 4.5], ['primary-text', 'surface', 4.5], ['primary-text-hover', 'bg', 4.5],
   ['on-primary', 'primary', 4.5],
   ['primary-text', 'primary-subtle', 4.5], ['on-primary-subtle', 'primary-subtle', 4.5],

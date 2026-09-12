@@ -49,6 +49,75 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #147 — Le tertiaire devient le troisième niveau de TEXTE : l'exception du 25 août est levée
+
+*2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (moteur 35/35, pages 92/92, plomb 7/7, contraste 206 → 5) · **Révise `#124`** (et son complément du 26 août) · Délégué par l'Auteur : « je te laisse décider »*
+
+**Ce qui était décidé** — `#124` posait `text-tertiary` comme « le gris le plus clair
+qui tienne encore **3:1** », avec une exception déclarée dans le moteur : *« limite
+côté lisibilité, mais ce sont des objets secondaires » — jamais pour du texte lu,
+jamais sous le cran étiquette*. Le complément du 26 août lui donnait une
+contrepartie : en petit, le tertiaire porte un cran de graisse de plus, *« l'œil
+retrouve en épaisseur ce que l'encre a cédé en contraste (…) c'est le principe même
+de la norme, qui admet un contraste moindre dès que le texte est gras »*.
+
+**Deux faits ont défait cette décision.**
+
+1. **L'exception ne décrit plus l'usage.** Sur les **35 emplois** du tertiaire dans
+   9 feuilles, **15 sont sûrement du texte lu** — le titre du rail, le kicker de
+   section, le pied de page, les fiches de `/typo` et `/couleur`, l'étiquette d'un
+   champ, le chapô du film, l'en-tête de colonne — et **9 de plus se discutent**
+   (l'index du menu, les repères, l'état, le nom du cran). Onze seulement sont
+   franchement des objets secondaires. Le rôle n'a pas été détourné une fois : il
+   est devenu, en trois semaines, le troisième niveau de texte du kit.
+2. **La contrepartie ne s'appuyait sur rien.** L'exemption « grand texte » de la
+   norme demande **18,66 px en gras** (14 pt), ou 24 px. Les crans que le tertiaire
+   emploie vont de **11,4 à 13,7 px**. Aucun emploi ne l'atteint, ni n'en approche.
+   Le cran de graisse aide l'œil — cela reste vrai et on le garde — mais il ne
+   **conformait** rien, et la phrase du 26 août se trompait sur ce point. Le
+   tertiaire n'a donc jamais été conforme sur aucun de ses emplois.
+
+**Décision** — L'exception est **levée**. La cible du moteur passe de 3 à 4,5 dans
+les deux thèmes ; les paires déclarées (C7) suivent ; la page `/couleur`, qui
+publie la table des seuils, dit le nouveau. Le moteur cherche au seuil et trouve
+`#6D6F7E` en clair (4,97 sur le fond, 4,52 sur la surface) et `#7D808C` en sombre
+(5,13 / 4,51) — à un ou deux bits près les valeurs que la planche candidate avait
+calculées à la main, ce qui est la meilleure preuve que la dérivation fait son
+travail. **Aucun emploi n'a été touché** : c'est la valeur qui rejoint l'usage,
+pas l'inverse.
+
+**Ce que ça coûte, dit franchement** — l'écart entre le deuxième et le troisième
+niveau tombe de 4,3 points de rapport à 2,7. Trois niveaux de texte subsistent,
+mais plus serrés. La contrepartie de graisse de C17 devient le principal
+séparateur perceptif entre secondaire et tertiaire ; elle n'est plus une
+compensation de contraste, elle est une hiérarchie à part entière.
+
+**Alternative écartée** — tenir l'arbitrage du 25 août et ramener 15 à 24 emplois
+au secondaire. Écartée pour une raison de méthode, pas de coût : quand les trois
+quarts des emplois contredisent une règle pendant trois semaines sans que personne
+ne les sente faux, ce n'est pas l'usage qui a dérivé, c'est la règle qui a pris du
+retard sur le travail. La règle du 25 août décrivait un rôle que le kit n'a pas
+construit.
+
+**Mesure** — contraste : **206 textes sous le seuil → 5**, sur 3 615 mesurés.
+Les cinq restants sont tous sur `/couleur`, et ce sont ses **objets d'étude** :
+la tuile de démonstration porte `color: #FFFFFF /* étude : le blanc pur, référence
+du rapport mesuré — pas un token */`, et le panneau des paires montre des encres
+sur cartes teintées. La page dont le sujet EST le contraste montre délibérément
+des rapports faibles. **L'épreuve n'a aucun moyen de le savoir** : il manque au kit
+une façon de déclarer « ce texte est une étude, son rapport est le sujet et non une
+faute », comme `data-intent="statement"` le fait pour les nombres. Dette dite,
+à inventer.
+
+**Au passage, un faux positif de l'épreuve corrigé** — `verify` comptait en faute
+le texte réservé aux lecteurs d'écran (`.ar-sr`, « Trajets accessibles », 4,19:1) :
+il est dans le document, il a bien une boîte d'un pixel découpée, mais personne ne
+le voit, et un rapport de contraste ne parle que de ce qui se voit. Le compter,
+c'était demander à une page d'être moins accessible pour passer une épreuve
+d'accessibilité.
+
+---
+
 ## #146 — Le relevé du plomb prend la septième page, et le contraste du tertiaire est chiffré
 
 *2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (plomb : sept pages, 0 faux) · Applique : `#144`*
