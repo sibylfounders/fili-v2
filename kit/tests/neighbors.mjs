@@ -230,6 +230,13 @@ export function inspectContrast() {
     if (c.display === 'none' || c.visibility === 'hidden' || parseFloat(c.opacity) === 0) continue
     const r = el.getBoundingClientRect()
     if (r.width === 0 || r.height === 0) continue
+    /* le texte réservé aux lecteurs d'écran : il est dans le document, il a bien une boîte —
+       un pixel, découpée — mais personne ne le VOIT, et un rapport de contraste ne parle que
+       de ce qui se voit. Le compter en faute, c'est demander à une page d'être moins
+       accessible pour passer une épreuve d'accessibilité (12 septembre 2026, vu sur
+       « Trajets accessibles » de /arrondis, à 4,19:1). */
+    if (r.width <= 1 || r.height <= 1) continue
+    if (c.clipPath && c.clipPath !== 'none' && /inset\(\s*50%/.test(c.clipPath)) continue
     if (seen.has(el)) continue
     seen.add(el)
     const bg = background(el)
