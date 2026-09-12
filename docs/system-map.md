@@ -8,8 +8,8 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#147` — 98 entrées au journal, **84 scellées** ;
-> `#134` → `#147` attendent le sceau, et `#050` et `#112` sont signalées réécrites
+> **Dernière décision au journal** : `#148` — 99 entrées au journal, **84 scellées** ;
+> `#134` → `#148` attendent le sceau, et `#050` et `#112` sont signalées réécrites
 > par `immutable.mjs` (atteinte antérieure, non traitée).
 
 **Légende des statuts**
@@ -302,16 +302,23 @@ texte lu, et la contrepartie de graisse du 26 août s'appuyait sur l'exemption
 « grand texte » de la norme, qui demande 18,66 px en gras quand les crans du
 tertiaire vont de 11,4 à 13,7 px : elle ne couvrait aucun emploi. La cible passe à
 4,5 dans le moteur, le tertiaire devient `#6D6F7E` en clair (4,97 / 4,52) et
-`#7D808C` en sombre (5,13 / 4,51). **Contraste : 206 textes sous le seuil → 5.**
-Les cinq restants sont les objets d'étude de `/couleur` — la page dont le sujet est
-le contraste montre délibérément des rapports faibles, et l'épreuve n'a aucun moyen
-de le savoir : **il manque une façon de déclarer « ce texte est une étude »**, comme
-`data-intent="statement"` le fait pour les nombres (dette dite). L'écart entre
-deuxième et troisième niveau tombe de 4,3 points à 2,7 : le cran de graisse de C17
-devient le principal séparateur perceptif, plus une compensation de contraste.
-Reste, non traité, une soixantaine de valeurs hors chaîne au rendu (les
-compensations optiques négatives des titres), dont la vraie question est si
-l'épreuve doit apprendre à lire une compensation déclarée.
+`#7D808C` en sombre (5,13 / 4,51). **Contraste : 206 textes sous le seuil → 0 sur les
+sept pages** (`#148` : l'inspecteur lit désormais `data-intent="statement"`, la
+grammaire que le kit avait déjà — 30 casses déclarées sur `/couleur`, comptées et
+dites, jamais tues). L'écart entre deuxième et troisième niveau tombe de 4,3 points
+à 2,7 : le cran de graisse de C17 devient le principal séparateur perceptif, et non
+plus une compensation de contraste — **à revoir de ce fait**.
+
+**🔴 Ce que l'épreuve refuse encore, relevé complet le 12 septembre (`#148`)** — le
+contraste est réglé, les filets et les débords sont propres sur les sept pages, mais
+l'épreuve les refuse toutes sur trois comptes : le solde (1 à 6 par page), les
+contrôles étirés (5 à 15), et surtout **65 à 142 valeurs « hors chaîne » AU RENDU par
+page** (776 en tout). Le linter du moteur lit le CSS écrit et le trouve propre ;
+l'épreuve lit le CSS calculé à 1440 px. L'hypothèse à vérifier AVANT toute
+correction : ce n'est peut-être pas les pages qui sont sales, mais la table des
+valeurs admissibles au rendu qui n'est pas construite comme la chaîne les produit
+(`clamp()`, arrondis sous-pixel, traits d'un pixel). **Le prochain geste est une
+mesure, pas une réparation.**
 
 **Le kit est jugé par ses propres règles, au commit et au push** (9 septembre,
 décision d'Auteur — voie B). Le linter FILI de `temoin/` ne sait pas lire le kit

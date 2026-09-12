@@ -137,7 +137,7 @@ function report({ proof, file, over, url }) {
   if (nb.faults.length > 10) lines.push(`   … et ${nb.off - 10} de plus`)
   const ct = file.contrast, ctBad = ct.faults.length > 0
   red ||= ctBad
-  lines.push(`${ctBad ? R : G} contraste — ${ct.checked} textes mesurés${ct.undecidable ? `, ${ct.undecidable} sur image (non jugés)` : ''}${ctBad ? `, ${ct.faults.length} sous le seuil` : ''}`)
+  lines.push(`${ctBad ? R : G} contraste — ${ct.checked} textes mesurés${ct.undecidable ? `, ${ct.undecidable} sur image (non jugés)` : ''}${ct.declared ? `, ${ct.declared} casse(s) déclarée(s) (data-intent="statement", non jugées)` : ''}${ctBad ? `, ${ct.faults.length} sous le seuil` : ''}`)
   for (const f of ct.faults.slice(0, 10)) lines.push(`   · ${f.where} ${f.ratio}:1 (il faut ${f.need}) « ${f.text} »`)
   if (ct.faults.length > 10) lines.push(`   … et ${ct.faults.length - 10} de plus`)
   const ovBad = over.filter((o) => o.overflow > 0)

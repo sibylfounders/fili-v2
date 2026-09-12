@@ -218,7 +218,7 @@ export function inspectContrast() {
     return { r: 255, g: 255, b: 255, a: 1 }
   }
   const faults = [], seen = new Set()
-  let checked = 0, undecidable = 0
+  let checked = 0, undecidable = 0, declared = 0
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
   let t
   while ((t = walker.nextNode())) {
@@ -226,6 +226,13 @@ export function inspectContrast() {
     const el = t.parentElement
     if (!el || /^(script|style|noscript|template)$/i.test(el.tagName)) continue
     if (el.closest('[aria-hidden="true"]')) continue /* un signe décoratif, caché aux lecteurs d'écran, n'est pas un texte lu */
+    /* une casse déclarée : l'élément dit data-intent="statement", la même grammaire que le linter
+       du moteur emploie pour les nombres posés en ligne (décision d'Auteur du 9 septembre 2026).
+       Sur une page dont le SUJET est le contraste, un rapport faible est la démonstration, pas la
+       faute — et l'épreuve n'a aucun autre moyen de faire la différence. Elles ne sont pas tues
+       pour autant : elles sont comptées et dites à part, sans quoi une page pourrait s'exempter
+       en silence (12 septembre 2026, `#148`). */
+    if (el.closest('[data-intent="statement"]')) { declared++; continue }
     const c = cs(el)
     if (c.display === 'none' || c.visibility === 'hidden' || parseFloat(c.opacity) === 0) continue
     const r = el.getBoundingClientRect()
@@ -254,7 +261,7 @@ export function inspectContrast() {
       faults.push({ where: s, ratio: Math.round(got * 100) / 100, need, text: t.textContent.trim().slice(0, 40) })
     }
   }
-  return { checked, undecidable, faults }
+  return { checked, undecidable, declared, faults }
 }
 
 /* ── « Pas de nombre », au rendu : chaque espace, taille et rayon calculé est une valeur que le

@@ -49,6 +49,63 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #148 — L'épreuve entend enfin une casse déclarée — et le relevé complet dit ce qu'elle refuse vraiment
+
+*2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (contraste 0 faute sur les sept pages, preuve 11/11, moteur 35/35) · Applique : `#147`*
+
+**La casse déclarée** — `#147` laissait cinq fautes de contraste sur `/couleur` et
+les disait « objets d'étude, l'épreuve n'a aucun moyen de le savoir ». C'était faux
+sur un point : **le moyen existait déjà**. Le kit a sa grammaire pour ça depuis le
+9 septembre — un élément qui rompt délibérément le dit par `data-intent="statement"`,
+et le linter du moteur la lit pour les nombres posés en ligne. La page `/couleur` la
+posait même déjà sur son panneau « faux ». C'est `verify` qui ne la lisait pas.
+
+L'inspecteur de contraste la lit désormais. Sur `/couleur` : **831 textes mesurés,
+30 casses déclarées, zéro faute**. Elles ne sont pas tues pour autant — le rapport
+les compte et les dit à part, sans quoi une page pourrait s'exempter en silence.
+C'est la règle qui vaut pour toutes les exemptions de cette épreuve : une image
+non jugée est dite, un texte de lecteur d'écran est sauté, une casse déclarée est
+comptée. Ce qui sort du jugement doit rester visible.
+
+**Le relevé complet, qui corrige ce que ce journal disait** — les entrées `#143`,
+`#146` et `#147` ne parlaient que du contraste, parce que c'est la seule chose que
+j'avais comptée. Les sept pages passées à l'épreuve entière disent autre chose :
+
+| | fermer | solder | contrôle | filet | nombres | contraste | débords |
+|---|---|---|---|---|---|---|---|
+| `/rythme` | 0 | 6 | 14 | 0 | **116** | 0 | 0 |
+| `/typo` | 0 | 4 | 6 | 0 | **118** | 0 | 0 |
+| `/arrondis` | 0 | 1 | 6 | 0 | **65** | 0 | 0 |
+| `/couleur` | 1 | 3 | 15 | 0 | **106** | 0 | 0 |
+| `/composition` | 0 | 2 | 5 | 0 | **142** | 0 | 0 |
+| `/mouvement` | 0 | 4 | 6 | 0 | **94** | 0 | 0 |
+| `/adaptation` | 0 | 5 | 7 | 0 | **136** | 0 | 0 |
+
+Le contraste est réglé et les filets et débords sont propres partout. Mais
+**l'épreuve refuse toujours les sept pages**, sur trois comptes dont un énorme :
+65 à 142 valeurs « hors chaîne » **au rendu**, par page.
+
+**Ce que ce nombre veut probablement dire** — et c'est une hypothèse, pas un
+constat : le linter du moteur lit le CSS ÉCRIT et le trouve propre (35/35, dont
+« pas de nombre »). L'épreuve, elle, lit le CSS CALCULÉ à 1440 px. Entre les deux
+il y a les `clamp()` de la chaîne, qui n'atterrissent pas sur des valeurs de la
+table à une largeur donnée, les arrondis sous-pixel, les traits d'un pixel. Autrement
+dit : le chiffre ne dit peut-être pas que les pages sont sales, mais que **la table
+des valeurs admissibles au rendu n'est pas construite comme la chaîne les produit**.
+Trois chiffres à vérifier avant toute correction — combien de ces valeurs tombent à
+moins d'un dixième de pixel d'un cran admis, combien sont des traits, combien sont
+vraiment posées.
+
+**Ce qu'il ne faut pas faire, et pourquoi c'est dit ici** — corriger 776 valeurs sur
+sept pages sans avoir répondu à cette question, ce serait accorder les pages sur un
+instrument qu'on n'a pas vérifié. C'est exactement la faute que `#143` a corrigée
+dans l'autre sens. **Le prochain geste est une mesure, pas une réparation.**
+
+**Au passage** — `kit/epreuves/`, qui ne contenait plus que le log orphelin du
+rendez-vous d'avant le renommage (`#145`), est supprimé.
+
+---
+
 ## #147 — Le tertiaire devient le troisième niveau de TEXTE : l'exception du 25 août est levée
 
 *2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (moteur 35/35, pages 92/92, plomb 7/7, contraste 206 → 5) · **Révise `#124`** (et son complément du 26 août) · Délégué par l'Auteur : « je te laisse décider »*
