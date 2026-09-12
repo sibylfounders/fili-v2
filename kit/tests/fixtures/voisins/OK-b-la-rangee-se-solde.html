@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Fixture piégée · b · la rangée se solde</title>
+<style>
+  /* Fixture piégée : trois colonnes de texte, aucune image, rien d'élastique. La rangée ne peut pas
+     se fermer ; elle SE SOLDE : à 1440, deux colonnes de six lignes et une de huit — rapport 1,35, sous le seuil 1,5.
+     Le piège : la grille étire les trois BOÎTES à la même hauteur (rapport 1 sur la boîte, toujours
+     vert, toujours faux). Le solde se mesure sur le CONTENU. */
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 40px; color: #1a1a1a; background: #fff; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; max-width: 960px; }
+  .row > div { background: #f3f5f7; padding: 16px; }
+  .row p { margin: 0; }
+  .ghost { display: none; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="c1"><p>La courte. Une colonne courte, qui dit une chose et s'arrête. Elle ne cherche pas à rattraper ses voisines, et ses voisines ne l'attendent pas non plus vraiment.</p></div>
+    <div class="c2"><p>La moyenne. Une colonne moyenne qui développe un peu plus son propos, sans image pour la fermer, et qui tient sa place entre la courte et la longue sans faire de bruit, ni vide, ni débord.</p></div>
+    <div class="c3"><p>La longue. La colonne la plus longue de la rangée ; c'est elle qui fixe la hauteur de la boîte des deux autres, et c'est elle qu'on compare à la plus courte : huit lignes contre six, un rapport de 1,35 — sous le seuil, la rangée se solde encore.</p><span class="ghost">98 commentaires</span></div>
+  </div>
+</body></html>

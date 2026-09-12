@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Fixture piégée · a · la rangée se ferme</title>
+<style>
+  /* Fixture piégée : une rangée à colonnes avec un élément élastique (l'image). Elle SE FERME :
+     l'image remplit la hauteur que le texte impose, les bas de contenu sont alignés.
+     Le piège : le texte porte un demi-ligne de marge intérieure en bas (12 px sous 24 de ligne) —
+     les BOÎTES ont la même hauteur (grille étirée), les CONTENUS diffèrent d'une demi-ligne.
+     Une mesure sur la boîte dirait toujours « aligné » ; une mesure au contenu dit « à une ligne
+     près », et c'est ce qu'il faut. Un compteur masqué traîne dans le code : il ne se lit pas. */
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 40px; color: #1a1a1a; background: #fff; }
+  .row { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; align-items: stretch; max-width: 900px; }
+  .media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .text { padding-bottom: 12px; }
+  .text p { margin: 0 0 12px; }
+  .text p:last-of-type { margin-bottom: 0; }
+  .ghost { display: none; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="media"><img src="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect width=%22400%22 height=%22300%22 fill=%22%237a8ca0%22/><circle cx=%22200%22 cy=%22150%22 r=%2290%22 fill=%22%23e7ecf1%22/></svg>" alt=""></div>
+    <div class="text">
+      <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2">Le bas de l'image et le bas du texte arrivent ensemble</h2>
+      <p>Une rangée qui porte une image n'a pas à choisir entre deux hauteurs : l'image prend celle du texte. Elle est élastique, le texte ne l'est pas — le texte est intouchable, l'image se recadre.</p>
+      <p>Ce que l'œil pèse, c'est la masse : deux blocs qui finissent à la même ligne se lisent comme une seule rangée. Un bas qui traîne une ligne plus bas passe encore ; deux lignes, et la rangée est ouverte.</p>
+      <p>La mesure se fait au contenu. La boîte peut être étirée par la grille, ça ne compte pas : c'est le dernier pixel de texte et le dernier pixel d'image qui comptent.</p>
+      <span class="ghost">312 commentaires</span>
+    </div>
+  </div>
+</body></html>

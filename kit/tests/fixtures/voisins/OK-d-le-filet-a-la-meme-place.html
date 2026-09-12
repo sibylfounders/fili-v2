@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Fixture piégée · d · le filet a le même espace des deux côtés</title>
+<style>
+  /* Fixture piégée : un filet entre deux paragraphes. Au-dessus, 24 px ; au-dessous, 40 px. Ce n'est
+     pas égal — mais l'écart (16) reste sous une ligne (24) : le filet passe. Un juge qui exige
+     l'égalité stricte rougirait ici à tort. Le piège second : l'espace se lit au CONTENU des
+     voisins (du dernier texte au trait, du trait au premier texte), pas à leurs boîtes — la boîte
+     d'un paragraphe déborde son texte de quelques pixels de chaque côté, et ces pixels s'annulent. */
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 40px; color: #1a1a1a; background: #fff; max-width: 640px; }
+  p { margin: 0; }
+  hr { border: 0; border-top: 1px solid #c8ccd0; margin: 24px 0 40px; }
+</style></head>
+<body>
+  <p>Un filet n'est jamais décoratif : il déplace un groupe. Posé plus près du paragraphe du dessus que de celui du dessous, il rattache le premier et repousse le second — et le lecteur lit deux blocs là où il y avait un propos.</p>
+  <hr>
+  <p class="after">Le même espace des deux côtés, à une ligne près, et le filet redevient ce qu'il est : une respiration entre deux choses de même rang. La mesure se fait du dernier texte au trait, puis du trait au premier texte.</p>
+</body></html>

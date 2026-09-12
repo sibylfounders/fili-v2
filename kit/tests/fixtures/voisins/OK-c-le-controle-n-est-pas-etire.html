@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Fixture piégée · c · le contrôle n'est pas étiré</title>
+<style>
+  /* Fixture piégée : une rangée avec un bloc de texte et un bouton. Le bouton garde SA hauteur :
+     une ligne, ses marges intérieures, et un plancher de 44 px (la cible au doigt) — ce plancher
+     n'est pas un étirement, c'est la taille d'une cible. Le piège est là : 44 > une ligne + les
+     marges, et un juge trop nerveux crierait « étiré ». La règle vise le bouton tiré à la hauteur
+     d'un BLOC, pas le bouton qui vise la cible. */
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 40px; color: #1a1a1a; background: #fff; }
+  .row { display: flex; gap: 24px; align-items: flex-start; max-width: 900px; }
+  .block { flex: 1; }
+  .block p { margin: 0 0 12px; }
+  button { font: inherit; min-height: 44px; padding: 8px 16px; border: 1px solid #1a1a1a; background: #fff; border-radius: 4px; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="block">
+      <p>Un bloc de texte à gauche, assez haut pour qu'un bouton étiré à sa hauteur se voie de loin. Un contrôle n'est jamais élastique : il ne remplit pas, il ne se recadre pas, il a la taille de ce qu'il dit, plus ce qu'il faut pour être touché.</p>
+      <p>La grille ou le flex qui étire ses enfants « pour faire propre » fabrique des boutons de deux cents pixels de haut. Personne ne les a dessinés ; ils sont là parce que le conteneur ne distingue pas un bloc d'une action.</p>
+      <p>La réponse n'est pas d'interdire l'étirement — c'est ce qui ferme une rangée à image. C'est de dire que le contrôle n'en fait pas partie : il se cale en haut, ou au centre, et garde sa hauteur.</p>
+    </div>
+    <button type="button">Enregistrer</button>
+  </div>
+</body></html>
