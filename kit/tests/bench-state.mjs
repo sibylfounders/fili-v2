@@ -31,11 +31,28 @@ const ROOT = path.resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const CARD = path.join(ROOT, 'docs', 'system-map.md')
 const RUN = path.join(ROOT, 'kit', 'tests', 'last-run.json')
 
-/* Les six pages qui ont une épreuve (Composition et Mouvement depuis le
-   7 septembre 2026). `/` n'en a pas : cette pièce ne parle jamais d'elle — son cas est
-   écrit sur la carte à la main, et c'est une dette dite, pas un vert qui ment. */
-export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition', 'mouvement']
-const WORD = { 5: 'cinq', 6: 'six', 7: 'seven' }
+/* Les sept pages qui ont une épreuve (Composition et Mouvement depuis le
+   7 septembre 2026, Adaptation depuis le 10). `/` n'en a pas : cette pièce ne parle
+   jamais d'elle — son cas est écrit sur la carte à la main, et c'est une dette dite,
+   pas un vert qui ment. */
+export const PAGES = ['rythme', 'typo', 'arrondis', 'couleur', 'composition', 'mouvement', 'adaptation']
+
+/* Une page porte son nom français (l'URL, la carte, le bulletin) ; son épreuve porte
+   le nom anglais du fichier. Les deux ne se devinent pas l'un de l'autre, et les avoir
+   supposés égaux a coûté cher : quatre des six pages pointaient vers un fichier absent,
+   et la course de nuit annonçait un verdict qu'elle n'avait pas mesuré (12 septembre
+   2026, `#144`). La correspondance est écrite ici, une fois, et les deux pièces la lisent. */
+export const TEST_OF = {
+  rythme: 'rhythm', typo: 'typo', arrondis: 'rounded', couleur: 'color',
+  composition: 'composition', mouvement: 'motion', adaptation: 'adaptive',
+}
+
+/* Les épreuves qui ne sont d'aucune page : elles traversent le site entier. Elles ne
+   rabattent aucune pastille de la carte — elles n'ont pas de page à rabattre — mais
+   une seule rouge suffit à refuser la nuit. */
+export const CROSSING = ['postures', 'weight', 'frontiere']
+
+const WORD = { 5: 'cinq', 6: 'six', 7: 'sept' }
 
 /* Le socle : ce qui, en bougeant, fait bouger toutes les pages à la fois. */
 const FOUNDATION = [
@@ -85,7 +102,7 @@ export function state() {
   const run = fs.existsSync(RUN) ? JSON.parse(fs.readFileSync(RUN, 'utf8')) : null
   return PAGES.map((page) => {
     const movesPage = lastOneWriting([`kit/app/${page}`, ...FOUNDATION])
-    const movesTest = lastOneWriting([`kit/tests/${page}.test.mjs`, 'kit/tests/bench.mjs'])
+    const movesTest = lastOneWriting([`kit/tests/${TEST_OF[page]}.test.mjs`, 'kit/tests/bench.mjs'])
     const moves = Math.max(movesPage, movesTest)
     const passage = run?.pages?.[page] ?? null
 
@@ -159,7 +176,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log(`\nÉTAT DU BANC — ${WORD[PAGES.length] ?? PAGES.length} pages\n`)
   for (const l of lines) console.log(`  ${l.healthy ? '🟢' : '🟡'} /${l.page} — ${l.reason}`)
 
-  if (process.argv.includes('--write')) {
+  /* le drapeau s'écrit en français, comme le hook l'appelle ; « --write » reste accepté,
+     c'est le nom qu'un renommage avait laissé seul dans le code — et pendant ce temps le
+     hook passait « --ecrire » à une pièce qui ne l'écoutait pas (12 septembre 2026) */
+  if (process.argv.includes('--ecrire') || process.argv.includes('--write')) {
     const folded = writeThereCard(lines)
     if (folded.length) console.log(`\n  ✎ carte corrigée : ${folded.map((p) => '/' + p).join(', ')} — le vert ne tenait plus.`)
   } else if (sick.length) {

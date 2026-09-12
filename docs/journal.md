@@ -49,6 +49,69 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #144 — La course de nuit ne mesurait que la moitié de ce qu'elle annonçait
+
+*2026-09-12 (nuit) · Statut : 🟢 mesuré et tenu (course complète 🟢 en 4 min 40, capacité à rougir vérifiée par sabotage) · Applique : `#143` · Révise le dispositif posé le 1er septembre*
+
+**Contexte** — `#143` avait laissé la panne dite mais non traitée. Elle est de la
+même famille que celle du 11 septembre, et plus grave : là, l'instrument refusait
+de statuer et se faisait entendre ; ici, il annonçait un verdict.
+
+**Ce qui n'allait pas** — Trois choses, toutes filles du même renommage :
+
+1. La liste `PAGES` nomme les pages par leur slug français — c'est juste, c'est
+   l'URL, la carte et le bulletin. Mais la course en déduisait le nom du fichier
+   d'épreuve, qui est anglais : `rythme` → `tests/rythme.test.mjs`, qui n'existe
+   pas (`rhythm`). **Quatre pages sur six** pointaient ainsi vers un fichier
+   absent. Le bulletin les disait mesurées.
+2. `postures`, `weight`, `frontiere` et la page `/adaptation` n'étaient dans
+   aucune liste : quatre épreuves existantes que rien ne lançait jamais.
+3. Le bulletin s'écrivait dans `docs/bench-of-day.md` quand la console, la carte
+   et le `.gitignore` annonçaient `docs/banc-du-jour.md`.
+
+Et, trouvé en réparant : le hook `pre-commit` appelle `bench-state.mjs --ecrire`
+depuis le 9 septembre, quand le code teste `--write`. **Le garde-fou qui rabat la
+carte était inerte depuis le renommage** — c'est justement lui qui devait empêcher
+un vert décoratif de durer.
+
+**La leçon** — Une correspondance qu'on croit devinable ne l'est pas. Le français
+est la langue de ce qui se lit (pages, carte, bulletin, journal), l'anglais celle
+des fichiers ; les deux ne se déduisent pas l'un de l'autre. Elle s'écrit donc une
+fois, `TEST_OF`, et les deux pièces la lisent. Partout où un renommage a laissé
+croire à une traduction automatique, il a laissé une panne silencieuse : trois ici,
+plus le drapeau du hook.
+
+**Décision** — La course lance désormais, dans cet ordre : le moteur ; **la preuve
+de l'épreuve d'un fichier** (`verify.mjs --prove`) ; le site construit une fois ;
+les sept pages, chacune par son nom de fichier ; les trois épreuves de traverse ;
+le relevé du plomb sur le site debout. La preuve passe **en second, avant toute
+mesure** : c'est la leçon de `#143` — un instrument qui ne peut plus échouer rend
+décoratif tout vert qui le suit, et il faut l'apprendre avant, pas après. Une nuit
+n'est verte que si tout l'est : compter les seules pages, c'était écrire « les six
+pages sont vertes » au-dessus d'un prouveur mort.
+
+Le bulletin demande maintenant le TAP explicitement : sans lui, node choisit son
+format selon qu'il parle à un terminal ou à un tuyau — et il parlait à un tuyau,
+si bien que le bulletin ne savait plus nommer ce qui était tombé et renvoyait
+chaque fois au log brut. Un bulletin qu'il faut quitter pour savoir n'est pas un
+bulletin.
+
+**Mesure** — Course complète verte en 4 min 40 : sept pages, trois traverses, le
+plomb, le moteur, la preuve. Puis **vérifiée par sabotage**, comme la batterie :
+deux fautes posées, une dans une page (`/adaptation`) et une dans une traverse
+(`frontiere`) ; les deux sont remontées, nommées au bulletin, et la pastille
+d'`/adaptation` a été rabattue à 🟡. Sabotages retirés, la course repasse au vert.
+Au passage, elle a retiré d'elle-même deux mentions périmées (« le banc l'a
+refusée le 8 septembre ») sur `/typo` et `/rythme`, sans les repasser au vert —
+retirer une confiance, jamais l'accorder.
+
+**Alternative écartée** — renommer les fichiers d'épreuve en français pour que la
+déduction redevienne vraie. Écartée : le code du kit s'écrit en anglais, et un
+renommage de plus pour réparer les dégâts d'un renommage est exactement le geste
+qui a produit ces trois pannes.
+
+---
+
 ## #143 — Une épreuve qui ne peut pas échouer ne prouve rien : la marge d'une mutation se mesure en lignes
 
 *2026-09-12 (soir) · Statut : 🟢 mesuré et tenu (moteur 35/35, pages 92/92, plomb 6/6 pages, preuve 11/11 sur deux machines) · Applique : `#142` · Révise le dispositif de preuve posé le 11 septembre (3)*

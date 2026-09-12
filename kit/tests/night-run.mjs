@@ -6,10 +6,23 @@
  * rouges et quatre pages portaient un vert qui ne voulait plus rien dire.
  *
  * Cette pièce retire le geste. Une fois par nuit : le site est construit, les
- * quatre épreuves passent, le verdict s'écrit en français dans
- * docs/banc-du-jour.md, et la carte du système est remise au vrai.
+ * épreuves passent, le verdict s'écrit en français dans docs/banc-du-jour.md,
+ * et la carte du système est remise au vrai.
  *
  * Elle ne corrige rien et ne juge rien. Elle mesure, elle écrit, elle se tait.
+ *
+ * Ce qu'elle lance, depuis le 12 septembre 2026 (`#144`) — elle n'en lançait que
+ * la moitié, et quatre pages sur six pointaient vers un fichier qui n'existait
+ * pas, si bien que la course annonçait un verdict qu'elle n'avait pas mesuré :
+ *
+ *   1 · le moteur (derivation.test.mjs) — cinq secondes, aucune dépendance ;
+ *   2 · la preuve de l'épreuve d'un fichier (verify.mjs --prove) — AVANT tout le
+ *       reste : un instrument qui ne peut plus échouer rendrait tous les verts
+ *       suivants décoratifs, et c'est exactement ce qui est arrivé le 11 ;
+ *   3 · le site construit une fois, pour tout ce qui suit ;
+ *   4 · chaque page sur son épreuve, séparément, par son nom de fichier (TEST_OF) ;
+ *   5 · les épreuves qui traversent le site (postures, weight, frontiere) ;
+ *   6 · le relevé du plomb, sur le site debout.
  *
  *   node kit/tests/night-run.mjs
  */
@@ -17,13 +30,16 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { PAGES, state, writeThereCard } from './bench-state.mjs'
+import { PAGES, TEST_OF, CROSSING, state, writeThereCard } from './bench-state.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const KIT = path.join(ROOT, 'kit')
 const JOURNAL_RAW = path.join(KIT, 'tests', 'last-run.log')
 const RUN = path.join(KIT, 'tests', 'last-run.json')
-const BULLETIN = path.join(ROOT, 'docs', 'bench-of-day.md')
+/* le bulletin s'écrit où la console dit qu'il s'écrit, et où la carte le cherche :
+   un renommage l'avait envoyé dans bench-of-day.md pendant que tout le reste
+   annonçait banc-du-jour.md (12 septembre 2026) */
+const BULLETIN = path.join(ROOT, 'docs', 'banc-du-jour.md')
 
 const env = { ...process.env, KIT_DIST: '.next-tests', CI: '1' }
 let raw = ''
@@ -35,7 +51,12 @@ function launch(heading, command, args) {
   return { ok: r.status === 0, output: (r.stdout ?? '') + (r.stderr ?? '') }
 }
 
-/* Les noms des épreuves tombées, tels que le banc les prononce. */
+/* Les noms des épreuves tombées, tels que le banc les prononce. On demande le TAP
+   explicitement (--test-reporter=tap) : sans lui, node choisit son format selon qu'il
+   parle à un terminal ou à un tuyau, et ici il parlait à un tuyau — le bulletin ne
+   savait plus nommer ce qui était tombé et renvoyait chaque fois au log brut
+   (12 septembre 2026). Un bulletin qu'il faut quitter pour savoir n'est pas un bulletin. */
+const TAP = ['--test', '--test-reporter=tap']
 const fallen = (output) =>
   output.split('\n').filter((l) => /^not ok /.test(l.trim())).map((l) => l.trim().replace(/^not ok \d+\s*-?\s*/, ''))
 
@@ -45,10 +66,16 @@ const start = new Date()
       les pages n'ont plus de référence à laquelle se comparer. */
 const engine = launch('engine', 'npm', ['test', '--silent'])
 
-/* 2 · Le site construit à part, une seule fois pour toutes les pages. */
+/* 2 · La preuve avant la mesure : l'épreuve d'un fichier rejoue ses fixtures piégées
+      et leurs mutations. Si elle ne peut plus échouer, elle ne prouve plus rien, et
+      un vert qui la suivrait ne vaudrait rien non plus. Elle n'a besoin ni du site
+      ni d'une construction : elle passe en premier, et pour quelques secondes. */
+const proof = launch('preuve', 'node', ['tests/verify.mjs', '--prove'])
+
+/* 3 · Le site construit à part, une seule fois pour toutes les pages. */
 const construction = launch('construction', 'npm', ['run', 'build', '--silent'])
 
-/* 3 · Chaque page sur son épreuve, séparément : une page rouge n'emporte pas
+/* 4 · Chaque page sur son épreuve, séparément : une page rouge n'emporte pas
       les autres dans son verdict.
 
    Et si le site n'a pas pu être construit, RIEN n'est mesuré : on garde alors
@@ -60,8 +87,35 @@ const previous = fs.existsSync(RUN) ? JSON.parse(fs.readFileSync(RUN, 'utf8')) :
 const pages = { ...(previous.pages ?? {}) }
 for (const page of PAGES) {
   if (!construction.ok) continue
-  const r = launch(`épreuve ${page}`, 'node', ['--test', `tests/${page}.test.mjs`])
+  const r = launch(`épreuve ${page}`, 'node', [...TAP, `tests/${TEST_OF[page]}.test.mjs`])
   pages[page] = { green: r.ok, date: new Date().toISOString(), fallen: r.ok ? [] : fallen(r.output) }
+}
+
+/* 5 · Les épreuves qui ne sont d'aucune page : elles traversent le site entier
+      (les postures dans la matrice N2, la graisse sur toutes les pages en deux
+      thèmes, la frontière). Elles ne rabattent aucune pastille — elles n'ont pas
+      de page à rabattre — mais une rouge refuse la nuit. */
+const crossing = { ...(previous.crossing ?? {}) }
+for (const name of CROSSING) {
+  if (!construction.ok) continue
+  const r = launch(`épreuve ${name}`, 'node', [...TAP, `tests/${name}.test.mjs`])
+  crossing[name] = { green: r.ok, date: new Date().toISOString(), fallen: r.ok ? [] : fallen(r.output) }
+}
+
+/* 6 · Le relevé du plomb : c'est le seul qui demande le site DEBOUT, une fois,
+      pour les six Fondations. On le monte ici et on le referme derrière soi. */
+let plomb = previous.plomb ?? null
+if (construction.ok) {
+  const { openSite } = await import('./bench.mjs')
+  let site = null
+  try {
+    site = await openSite()
+    const r = launch('plomb', 'node', ['tests/plomb.mjs', '--url', site.url])
+    plomb = { green: r.ok, date: new Date().toISOString() }
+  } catch (e) {
+    note('plomb', `le site n'a pas pu être monté pour le relevé — ${e.message}`)
+    plomb = { green: false, date: new Date().toISOString(), unmounted: true }
+  } finally { site?.close() }
 }
 
 fs.writeFileSync(RUN, JSON.stringify({
@@ -69,17 +123,26 @@ fs.writeFileSync(RUN, JSON.stringify({
   date: start.toISOString(),
   measured: construction.ok,
   engine: engine.ok,
+  proof: proof.ok,
   construction: construction.ok,
   pages,
+  crossing,
+  plomb,
 }, null, 2) + '\n')
 fs.writeFileSync(JOURNAL_RAW, raw.trim() + '\n')
 
-/* 4 · La carte remise au vrai — jamais dans le sens du vert. */
+/* 7 · La carte remise au vrai — jamais dans le sens du vert. */
 const lines = state()
 const folded = writeThereCard(lines)
 
-/* 5 · Le bulletin, en français, pour être lu en dix secondes au réveil. */
+/* 8 · Le bulletin, en français, pour être lu en dix secondes au réveil. */
 const reds = construction.ok ? PAGES.filter((p) => !pages[p]?.green) : []
+const crossReds = construction.ok ? CROSSING.filter((n) => !crossing[n]?.green) : []
+const plombRed = construction.ok && plomb && !plomb.green
+/* Une nuit est verte quand TOUT ce qui a été mesuré est vert : les pages, ce qui les
+   traverse, le plomb, le moteur et la preuve. Ne compter que les pages, c'est écrire
+   « les six pages sont vertes » au-dessus d'un instrument qui ne peut plus échouer. */
+const allGreen = construction.ok && !reds.length && !crossReds.length && !plombRed && engine.ok && proof.ok
 const when = start.toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' })
 const bulletin = [
   '# Le banc — dernière course',
@@ -88,11 +151,18 @@ const bulletin = [
   '',
   !construction.ok
     ? '## 🔴 Le site n\'a pas pu être construit — rien n\'a été mesuré cette nuit.\n\nCe n\'est pas un verdict sur les pages : l\'état ci-dessous reste celui de la dernière course qui a abouti. À regarder quand même, une panne qui dure aveugle le banc.'
-    : reds.length === 0
-      ? `## 🟢 Les ${({ 5: 'cinq', 6: 'six' })[PAGES.length] ?? PAGES.length} pages sont vertes.`
-      : `## 🔴 ${reds.length} page(s) refusée(s) : ${reds.map((p) => '`/' + p + '`').join(', ')}`,
+    : allGreen
+      ? `## 🟢 Tout est vert — les ${({ 5: 'cinq', 6: 'six', 7: 'sept' })[PAGES.length] ?? PAGES.length} pages, ce qui les traverse, le plomb, le moteur et la preuve.`
+      : `## 🔴 ${[
+          reds.length && `${reds.length} page(s) refusée(s) : ${reds.map((p) => '`/' + p + '`').join(', ')}`,
+          crossReds.length && `${crossReds.length} épreuve(s) de traverse : ${crossReds.map((n) => '`' + n + '`').join(', ')}`,
+          plombRed && 'le relevé du plomb',
+          !engine.ok && 'le moteur',
+          !proof.ok && 'la preuve de l\'épreuve',
+        ].filter(Boolean).join(' · ')}`,
   '',
   `Le moteur : ${engine.ok ? '🟢 vert' : '🔴 rouge — c\'est lui qu\'il faut regarder d\'abord'}.`,
+  `La preuve de l'épreuve d'un fichier : ${proof.ok ? '🟢 elle peut toujours échouer' : '🔴 elle ne prouve plus rien — tout vert qui suit est décoratif'}.`,
   '',
   '| Page | Cette nuit | Ce que dit la carte |',
   '|---|---|---|',
@@ -102,10 +172,20 @@ const bulletin = [
     return `| \`/${p}\` | ${thisNight} | ${l ? l.reason : '—'} |`
   }),
   '',
-  ...(reds.length
-    ? ['## Ce qui est tombé', '', ...reds.flatMap((p) => [
-        `**\`/${p}\`**`, '',
-        ...(pages[p]?.fallen?.length ? pages[p].fallen.map((t) => `- ${t}`) : ['- voir le détail brut']),
+  '| Ce qui traverse le site | Cette nuit | Ce que ça tient |',
+  '|---|---|---|',
+  ...CROSSING.map((n) => {
+    const says = { postures: 'les postures dans la matrice des treize situations',
+                   weight: 'la graisse : toute graisse rendue est un rôle, sept pages en deux thèmes',
+                   frontiere: 'la frontière : deux crans entre deux textes, trois contre une scène' }[n] ?? '—'
+    return `| \`${n}\` | ${!construction.ok ? 'non mesurée' : crossing[n]?.green ? '🟢' : '🔴'} | ${says} |`
+  }),
+  `| \`plomb\` | ${!construction.ok ? 'non mesuré' : plomb?.green ? '🟢' : '🔴'} | l'espace vu contre l'espace réglé, sur les six Fondations |`,
+  '',
+  ...(reds.length || crossReds.length
+    ? ['## Ce qui est tombé', '', ...[...reds.map((p) => ['/' + p, pages[p]]), ...crossReds.map((n) => [n, crossing[n]])].flatMap(([name, r]) => [
+        `**\`${name}\`**`, '',
+        ...(r?.fallen?.length ? r.fallen.map((t) => `- ${t}`) : ['- voir le détail brut']),
         '',
       ])]
     : []),
@@ -122,5 +202,5 @@ const bulletin = [
 fs.mkdirSync(path.dirname(BULLETIN), { recursive: true })
 fs.writeFileSync(BULLETIN, bulletin)
 
-console.log(`\nCourse terminée — ${reds.length === 0 && construction.ok ? '🟢 tout est vert' : '🔴 ' + (construction.ok ? reds.length + ' page(s) refusée(s)' : 'construction impossible')}.`)
+console.log(`\nCourse terminée — ${allGreen ? '🟢 tout est vert' : '🔴 ' + (construction.ok ? [reds.length && reds.length + ' page(s)', crossReds.length && crossReds.length + ' de traverse', plombRed && 'le plomb', !engine.ok && 'le moteur', !proof.ok && 'la preuve'].filter(Boolean).join(', ') + ' à regarder' : 'construction impossible')}.`)
 console.log(`Bulletin : docs/banc-du-jour.md\n`)
