@@ -18,6 +18,7 @@ export const rhythm = {
     'gap-3-inline': 'var(--gap-3-inline)',
     'gap-4-inline': 'var(--gap-4-inline)',
     'edge-inline': 'var(--edge-inline)',
+    'page-1-inline': 'var(--page-1-inline)',
     'page-2-inline': 'var(--page-2-inline)',
     'page-3-inline': 'var(--page-3-inline)',
     'page-4-inline': 'var(--page-4-inline)',
@@ -30,6 +31,7 @@ export const rhythm = {
     'gap-3-block': 'var(--gap-3-block)',
     'gap-4-block': 'var(--gap-4-block)',
     'edge-block': 'var(--edge-block)',
+    'page-1-block': 'var(--page-1-block)',
     'page-2-block': 'var(--page-2-block)',
     'page-3-block': 'var(--page-3-block)',
     'page-4-block': 'var(--page-4-block)',
@@ -59,6 +61,7 @@ export const rhythm = {
 export const typography = {
   fontFamily: {
     sans: 'var(--font-sans)',
+    heading: 'var(--font-heading)',
     mono: 'var(--font-mono)',
     serif: 'var(--font-serif)'
   },
@@ -206,6 +209,11 @@ export const rhythmLiteral = {
       max: '28px',
       computed: '19.2 → 28.8 px'
     },
+    'page-1-inline': {
+      min: '28px',
+      max: '40px',
+      computed: '27.2 → 40.7 px'
+    },
     'page-2-inline': {
       min: '40px',
       max: '56px',
@@ -265,6 +273,11 @@ export const rhythmLiteral = {
       min: '20px',
       max: '28px',
       computed: '21.6 → 27.8 px'
+    },
+    'page-1-block': {
+      min: '32px',
+      max: '40px',
+      computed: '30.5 → 39.4 px'
     },
     'page-2-block': {
       min: '44px',

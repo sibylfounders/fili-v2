@@ -11,6 +11,8 @@
     "tokens": "node tokens.write.mjs",
     "test": "node --test derivation.test.mjs",
     "test:pages": "KIT_DIST=.next-tests next build && KIT_DIST=.next-tests node --test 'tests/*.test.mjs'",
+    "verify": "node tests/verify.mjs",
+    "plomb": "node tests/plomb.mjs",
     "bench:state": "node tests/bench-state.mjs",
     "bench:night": "node tests/night-run.mjs"
   },

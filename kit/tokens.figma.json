@@ -100,6 +100,11 @@
     }
   },
   "page": {
+    "page-1-inline": {
+      "$type": "dimension",
+      "$value": "31.93px",
+      "$description": "Fluide de 27.15 à 40.73 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
     "page-2-inline": {
       "$type": "dimension",
       "$value": "45.16px",
@@ -119,6 +124,11 @@
       "$type": "dimension",
       "$value": "180.63px",
       "$description": "Fluide de 153.6 à 230.4 px (320 → 1440), gelé à 768 px. Axe inline."
+    },
+    "page-1-block": {
+      "$type": "dimension",
+      "$value": "33.65px",
+      "$description": "Fluide de 30.55 à 39.37 px (320 → 1440), gelé à 768 px. Axe block."
     },
     "page-2-block": {
       "$type": "dimension",

@@ -625,9 +625,10 @@ export const OFF_CHAIN = {
   targetMin: 24,             /* décision 6 : le plancher WCAG 2.5.8, seule valeur en px avec les traits */
   pill: 9999,
   thresholdSetupInPage: 40,      /* décision 7 : le seuil des deux régimes, en em (640 px à 16) — valeur de registre */
-  thresholdRail: 69,            /* le palier du gabarit documentaire : sous 69 em le rail cède la colonne (globals.css) — un second seuil, dette dite */
+  /* le palier du gabarit (69 em, dette dite du 25 août) a quitté cette table le 11 septembre 2026 :
+     il est devenu une SOMME — LAYOUTS.doc.sums.rail — calculée par le moteur, jamais posée */
   steps: 6,                 /* décision 8 : l'échelle continuée au-dessus de la coque, six crans de page calculés… */
-  stepsConsumed: [2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de token sans consommateur) */
+  stepsConsumed: [1, 2, 3, 4, 6], /* …et seuls ceux qu'un consommateur emploie sont émis (pas de token sans consommateur) ; le 1er cran est entré le 11 septembre 2026 avec la frontière à trois crans (#138) */
   maxPage: '90rem',         /* la largeur maximale du gabarit — une mesure, comme --measure */
   /* LE GABARIT DOCUMENTAIRE, dérivé (décision 8, verdict d'Auteur du 25 août sur la planche
      du gabarit) : le silence entre sections = 4ᵉ cran de page (96 ; compact 64 · aéré 128) ;
@@ -663,6 +664,233 @@ export const MOTION = {
     expressive: { ms: 700, use: "arrivée d'une section au défilement" },
   },
   curve: 'cubic-bezier(0.23, 1, 0.32, 1)',
+}
+
+/* L'ADAPTATION (doctrine du 9 septembre 2026, ⚪ — aucune règle acquise) : une
+   zone ne connaît que trois grandeurs — la place, la hauteur, la visée — et un
+   seuil est une SOMME de largeurs de travail, jamais un palier. Les valeurs
+   sont posées ici pour être lues par la page et son code ; elles ne descendent
+   pas encore de la chaîne. Dette dite : la mesure du texte a trois valeurs en
+   concurrence (16 px / 70, 17 px / 62, 65ch), donc la largeur de travail du
+   texte courant n'est pas calculable. La portée est une observation, pas une
+   règle (la reprise tactile a rétrogradé la zone d'atteinte). En rem. */
+export const ADAPTATION = {
+  work: {
+    list: { rem: 17, protects: 'le titre ne se tronque pas' },
+    sheet: { rem: 26, protects: 'deux colonnes de champs sans repli' },
+    prose: { rem: 34, protects: 'la mesure de lecture plus ses marges' },
+    form: { rem: 20, comfort: 26, protects: 'étiquette et champ sur la même ligne' },
+    nav: { rem: 15, rail: 4.5, protects: 'le libellé le plus long, entier' },
+    context: { rem: 16, protects: 'une valeur reste lisible avec son libellé' },
+    halfKeyboard: { rem: 15, protects: "il s'étire jusque-là puis se centre — un clavier ne grandit pas" },
+  },
+  gutter: 1.5,
+  floorHeight: 34, /* décision d'Auteur, à sourcer : K4 pose 568 px = 35,5 rem */
+  reach: 40, /* observation — deux sources à nommer avant d'en faire une règle */
+  /* un seuil : les largeurs de travail des zones qui tiennent côte à côte, plus une gouttière entre chaque */
+  threshold(...zones) { return zones.reduce((a, b) => a + b, 0) + this.gutter * (zones.length - 1) },
+}
+
+/* LE REGISTRE DE LA CHARTE, LU UNE FOIS (12 septembre 2026). tokens(chain()) est pur : mêmes entrées,
+   mêmes sorties. Le palier du rail le recalculait à chaque pas de sa recherche (3 600 pas × 3 tokens), et
+   la couche d'adaptation demandait ce palier deux fois à chaque image d'un redimensionnement — près de
+   100 ms de script par image, sur toutes les pages (banc tests/bench-resize.mjs). Une lecture, puis la
+   mémoire : le moteur ne change pas de réponse, il cesse de la refaire. */
+let charterRegister
+const register = () => (charterRegister ??= tokens(chain()))
+const railThresholds = new Map()
+
+/* LA POSTURE (principe d'Auteur, 10 septembre 2026, ⚪) : FILI CONÇOIT POUR DES
+   POSTURES, PAS POUR DES TAILLES D'ÉCRAN. Une interface s'adapte à la situation
+   d'usage de sa surface, pas simplement à sa taille ; le designer écrit les
+   règles qui survivent aux changements de posture, pas une collection d'écrans.
+   Le raisonnement : état physique → orientation → posture → règles d'adaptation
+   → composition — jamais angle → layout. Les angles sont des seuils d'ÉTAT
+   PHYSIQUE, pas des points de rupture : personne ne dessine 45° ou 137°. Quatre
+   états pour une charnière, quatre postures aujourd'hui — un vocabulaire, pas
+   une liste définitive : une posture s'ajoute ici sans toucher au principe.
+   La surface active change avec l'état (fermé → écran extérieur ; ouvert →
+   écran intérieur) : l'extérieur n'est jamais un écran qui grandit. Les
+   dimensions restent une variable de composition, parmi d'autres. */
+export const POSTURE = {
+  /* l'état physique d'un appareil à une charnière, lu sur l'angle d'ouverture (degrés) */
+  states: [
+    { key: 'closed', from: 0, to: 0, name: 'fermé', surface: 'outer', says: "l'écran intérieur n'est pas utilisé : l'écran extérieur est la surface active" },
+    { key: 'acute', from: 1, to: 90, name: 'semi-ouvert', surface: 'inner', says: 'deux surfaces intérieures actives, en angle aigu ou droit' },
+    { key: 'wide', from: 91, to: 179, name: 'largement ouvert', surface: 'inner', says: 'deux surfaces intérieures toujours distinctes, largement déployées — un état à part : la relation entre les surfaces, leur visibilité et les usages ne sont plus les mêmes' },
+    { key: 'flat', from: 180, to: 180, name: 'à plat', surface: 'inner', says: 'une surface plane : la charnière ne structure plus nécessairement deux espaces' },
+  ],
+  /* les postures d'usage reconnues aujourd'hui ; `divided` : la charnière est une frontière physique */
+  postures: {
+    mobile: { name: 'Mobile', says: 'appareil fermé, écran extérieur actif, une surface compacte — verticale ou horizontale', divided: false },
+    book: { name: 'Livre', says: 'semi-ouvert, charnière verticale : deux surfaces séparées par une frontière verticale', divided: true },
+    laptop: { name: 'Laptop', says: 'semi-ouvert, charnière horizontale : deux surfaces séparées par une frontière horizontale — contenu / commandes, visualisation / interaction', divided: true },
+    tablet: { name: 'Tablet', says: 'ouvert à plat, une grande surface intérieure plane — verticale ou horizontale', divided: false },
+  },
+  state(opening) {
+    const a = Math.max(0, Math.min(180, Math.round(opening)))
+    return this.states.find((s) => a >= s.from && a <= s.to) ?? this.states[0]
+  },
+  /* état physique → orientation → posture ; `hinge` : 'vertical' | 'horizontal' */
+  of(opening, hinge = 'vertical') {
+    const s = this.state(opening)
+    if (s.key === 'closed') return this.postures.mobile
+    if (s.key === 'flat') return this.postures.tablet
+    return hinge === 'horizontal' ? this.postures.laptop : this.postures.book
+  },
+  /* SUR LE WEB, LA POSTURE SE DÉRIVE (vérifié le 10 septembre 2026) : l'API Device
+     Posture n'existe pas sur les navigateurs de bureau ; les segments de viewport,
+     eux, existent partout où l'on émule une pliure. Deux segments côte à côte →
+     Livre ; l'un sur l'autre → Laptop ; un seul segment → Tablet ou Mobile selon la
+     surface : Mobile tant qu'une seule zone y tient (la plus petite somme à deux
+     zones du gabarit ne passe pas), Tablet dès que deux zones tiennent.
+     `twoZones` : cette somme, en rem ; `hinge` : 'vertical' | 'horizontal' | null. */
+  /** @param {{ widthRem: number, segments?: number, hinge?: 'vertical' | 'horizontal' | null, twoZones: number }} o */
+  derive({ widthRem, segments = 1, hinge = null, twoZones }) {
+    if (segments >= 2) return hinge === 'horizontal' ? this.postures.laptop : this.postures.book
+    return widthRem < twoZones ? this.postures.mobile : this.postures.tablet
+  },
+  keyOf(posture) { return Object.keys(this.postures).find((k) => this.postures[k] === posture) },
+}
+
+/* LE GABARIT DÉCLARE SES ZONES (stratégie postures, 11 septembre 2026, ⚪ — premier cas
+   « Fili par Fili »). Ce qu'on déclare une fois, on le vérifie partout : jamais un écran par
+   appareil. Le gabarit documentaire a trois zones ; chacune dit sa largeur de travail et ce
+   qu'elle protège. Le rail et les repères n'ont PAS de nombre : leur colonne est un cran de la
+   chaîne (page-6-inline, décision 🟢 #123 du 25 août) — leur protection se mesure sur le
+   rendu (aucun libellé coupé), pas contre une valeur. La lecture a deux largeurs : 17 rem, sous
+   laquelle elle n'existe pas (la scène la plus étroite du kit, 320 px, marges déduites), et
+   34 rem, sa mesure de confort (ADAPTATION.work.prose) — le rail ne prend sa colonne que si la
+   lecture garde son confort.
+   Les seuils du site deviennent des SOMMES : le palier du rail est résolu par le moteur (marges
+   + rail + gouttière + lecture 34, sur la chaîne confortable) ; les seuils intérieurs à la
+   lecture (bande, tables, listes) sont des sommes de colonnes déclarées, lues en requêtes de
+   conteneur sur la zone de lecture — plus jamais sur la fenêtre. Toute valeur de seuil écrite
+   dans une feuille doit figurer ici ; l'épreuve `tests/postures.test.mjs` le vérifie.
+   Le NIVEAU se déclare aux deux endroits : le produit (`level`, ce qu'il exige) et la zone
+   (`rem` / `comfort`, jusqu'où elle sait aller). Sans l'un des deux, l'épreuve refuse de statuer.
+   Règles de survie (N2) : (1) une zone ne descend jamais sous sa largeur de travail ; (2) une
+   zone ne traverse pas une frontière physique — en Livre, la frontière prime sur la somme : le
+   rail d'un côté, la lecture de l'autre ; en Laptop, la lecture en haut, le rail en bas ; (3) de
+   part et d'autre d'un seuil, mêmes commandes, même ordre. */
+export const LAYOUTS = {
+  doc: {
+    level: 'N2',
+    root: '.gdoc',
+    zones: {
+      reading: { rem: 17, comfort: 34, protects: 'la mesure de lecture (34) ; à 17, une colonne de texte qui tient encore sur la plus petite fenêtre du kit', selector: '.gdoc-content' },
+      nav: { token: 'doc-rail', protects: 'le libellé le plus long, entier — aucune sœur du rail ne se coupe', selector: '.gdoc-rail .rail-block:not(.rail-sum)' },
+      marks: { token: 'doc-rail', protects: 'un numéro et son titre de section commencent sur la même ligne', selector: '.gdoc-rail .rail-sum' },
+    },
+    /* les colonnes intérieures à la lecture, déclarées avec leur protection (réglages ⚪, posés le 11 septembre 2026, à valider à l'œil) */
+    columns: {
+      say: { rem: 18, protects: 'la colonne de parole d\'une bande (hors chaîne, dite dans globals.css)' },
+      scene: { rem: 26, protects: 'une scène de démonstration à sa largeur minimale (la fiche : deux colonnes de champs sans repli)' },
+      name: { rem: 15, protects: 'le nom d\'une règle sur une ligne' },
+      says: { rem: 20, protects: 'ce que la règle dit — deux ou trois lignes, pas un mot par ligne' },
+      ref: { rem: 9.5, protects: 'une source, une valeur, un numéro (hors chaîne : l\'étiquette repliée des tables)' },
+      value: { rem: 17, protects: 'une valeur avec son libellé, repliée' },
+    },
+    /* l'écart entre deux colonnes intérieures, à sa borne haute — une somme ne peut pas glisser : la gouttière
+       du gabarit (page-2-inline) entre parole et scène ; deux marges de cellule (gap-2-inline) entre deux colonnes de table */
+    get gutter() { return register()['page-2-inline'].top / ROOT_BROWSER },
+    get cell() { return 2 * register()['gap-2-inline'].top / ROOT_BROWSER },
+    /* LES SOMMES, en rem. `rail` est un seuil de FENÊTRE (les marges en font partie) ; les autres sont
+       des seuils de la ZONE DE LECTURE (requêtes de conteneur `reading`). */
+    get sums() {
+      const c = this.columns, g = this.gutter, cell = this.cell
+      return {
+        rail: railThreshold(this.zones.reading.comfort),
+        band: r1(c.say.rem + g + c.scene.rem),
+        table: r1(c.name.rem + c.says.rem + c.ref.rem + 2 * cell),
+        list: r1(c.ref.rem + cell + c.value.rem),
+      }
+    },
+    /* la plus petite somme à deux zones : sous elle, la surface est Mobile (POSTURE.derive) */
+    get twoZones() { return this.sums.rail },
+  },
+  /* L'ACCUEIL n'a qu'une zone : sa colonne de lecture (66 rem au plus, centrée — hors chaîne,
+     dette dite du 25 août). Il se déclare N2 pour les règles de survie : en Livre la colonne se lit
+     dans le premier panneau, en Laptop dans le segment du haut. L'index des familles (75 / 52 rem)
+     est la feuille de menu, un verdict d'Auteur du 2 septembre — un seuil de scène, figé. */
+  home: {
+    level: 'N2',
+    root: '.accueil',
+    zones: { index: { rem: 17, comfort: 34, protects: 'une colonne de lecture (66 rem au plus) ; en Livre, elle se lit dans le premier panneau', selector: '.accueil main .acc-column' } },
+    columns: {}, get sums() { return {} },
+  },
+  /* LES SURFACES DU BANC (11 septembre 2026) — des surfaces d'usage, jamais des tailles d'écran
+     à viser : la bande d'atelier y pose sa fenêtre, l'épreuve y passe ses pages. Le pliable
+     (400 × 571 par panneau, charnière de 4 px) n'est pas ici : il ne s'obtient qu'avec une
+     vraie pliure, donnée par le navigateur — DevTools pour l'œil, l'émulation pour l'épreuve. */
+  surfaces: {
+    mobile: { name: 'Mobile', w: 390, h: 844 },
+    tablet: { name: 'Tablette', w: 820, h: 1180 },
+    desktop: { name: 'Bureau', w: 1440, h: 900 },
+  },
+  /* LES SCÈNES QUI DÉCLARENT LEURS COLONNES (11 septembre 2026) — un seuil de scène devient une
+     somme lue sur la zone de lecture le jour où la scène dit ce que ses colonnes protègent.
+     Première : la tranche de /rythme, dont le menu et la carte se posaient côte à côte sur un
+     seuil de FENÊTRE (40 em) — en Livre, la fenêtre disait « large » et la lecture était étroite :
+     la carte débordait de 7 px. Lue sur la lecture, la scène s'empile là où elle n'a pas la place. */
+  scenes: {
+    /* LA BANDE D'ATELIER (11 septembre 2026) — les trois appareils sont un outil : ils n'ont rien à
+       faire quand la surface EST déjà petite. Ils se retirent sous la somme, lue sur l'en-tête
+       lui-même (conteneur `chrome`), jamais sur la fenêtre. Les commandes sont des cibles du kit :
+       leur largeur descend de la chaîne (control-height-compact et gap-3-inline, à leur borne
+       haute — une somme ne glisse pas), elle ne se tape pas. */
+    "bande d'atelier": {
+      columns: {
+        brand: { rem: 15, protects: 'la marque et sa devise, sans se couper' },
+        get tools() { return { rem: three('control-height-compact', 3, 2), protects: 'la couleur, le fond et les trois points' } },
+        get devices() { return { rem: three('control-height-compact', 3, 3), protects: 'mobile, tablette, bureau — et le filet qui les sépare du reste' } },
+      },
+      get sum() { return r1(this.columns.brand.rem + this.columns.tools.rem + this.columns.devices.rem) },
+    },
+    'rythme · la tranche': {
+      columns: { menu: { rem: 9.5, protects: 'la colonne du menu (hors chaîne : mesure de la colonne, rhythm.css)' }, card: { rem: 26, protects: 'la carte radiographiée : ses deux boutons et ses trois cellules sur une ligne' } },
+      get sum() { return r1(this.columns.menu.rem + LAYOUTS.doc.gutter + this.columns.card.rem) },
+    },
+  },
+  /* LES SEUILS DE FENÊTRE QUI RESTENT DANS LES FEUILLES (relevé du 11 septembre 2026) — des seuils
+     de SCÈNE, propres à une preuve, ou des dettes dites (la feuille de menu, l'ancien châssis /typo).
+     Figés ici, feuille par feuille, dans l'ordre : l'épreuve postures refuse tout seuil de fenêtre
+     qui n'y figure pas — la liste ne peut que raccourcir, page par page, quand chacun devient une
+     somme sur sa zone. Le 58 de globals.css n'y est pas : c'est la somme du rail. */
+  sceneThresholds: {
+    /* 12 sept. 2026 : le décor de page est sorti de globals.css (séparation kit / démos) ; les seuils suivent leur feuille — mêmes valeurs, re-classées, jamais un de plus. */
+    'app/app.css': [80, 56, 75, 52],
+    'app/accueil.css': [44],
+    'app/adaptation/adaptive.css': [40],
+    'app/arrondis/rounded.css': [40, 69],
+    'app/couleur/color.css': [30, 48, '900px', '560px', 48],
+    'app/composition/composition.css': [64, 62],
+    'app/mouvement/motion.css': [54, 34, 54, 34],
+    'app/rythme/rhythm.css': [52, 56, 62, 62],
+    'app/typo/typo.css': [48, 40, 48, 40, 48],
+  },
+}
+export const SURFACES = LAYOUTS.surfaces
+const r1 = (v) => Math.round(v * 10) / 10
+/* n commandes et leurs écarts, à leur borne haute — la largeur d'une rangée de boutons compacts */
+const three = (token, n, gaps) => r1(n * register()[token].top / ROOT_BROWSER + gaps * register()['gap-3-inline'].top / ROOT_BROWSER)
+/* la valeur d'un token fluide à une largeur de fenêtre (px), telle que le navigateur la calcule : clamp() droit */
+export function linear(name, widthPx) {
+  const t = register()[name]
+  if (!t || t.bottom === undefined) throw new Error(`refus de statuer — token non fluide : ${name}`)
+  const k = Math.min(1, Math.max(0, (widthPx - WIDTH_MIN) / (WIDTH_MAX - WIDTH_MIN)))
+  return (t.bottom + (t.top - t.bottom) * k) / ROOT_BROWSER
+}
+/* le palier du rail, résolu : la plus petite fenêtre (rem, au demi-rem au-dessus) où marge + rail +
+   gouttière + lecture + marge tiennent — sur les crans de la chaîne au régime « rail là » */
+function railThreshold(reading) {
+  if (railThresholds.has(reading)) return railThresholds.get(reading)
+  for (let w = 20; w <= 200; w += 0.05) {
+    const px = w * ROOT_BROWSER
+    const need = 2 * linear('page-3-inline', px) + linear('page-6-inline', px) + linear('page-2-inline', px) + reading
+    if (w >= need) { const v = Math.ceil(w * 2) / 2; railThresholds.set(reading, v); return v }
+  }
+  throw new Error('refus de statuer — le palier du rail est introuvable')
 }
 
 /* LA GRAISSE (décisions d'Auteur du 8 septembre 2026, d'après le relevé de la
@@ -801,6 +1029,8 @@ export const REGISTRY = {
     'font-sans': '"Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif',
     'font-mono': '"JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Menlo, monospace',
     'font-serif': 'Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Times New Roman", ui-serif, serif',
+    /* les titres : la famille du texte, sauf décision d'entrée (greffe, 11 septembre 2026) */
+    'font-heading': 'var(--font-sans)',
   },
   text: { 'leading-body': '1.6', 'leading-heading': '1.2', measure: '65ch', 'tracking-label': '0.08em' },
   shadcn: { 'r-1': '0.75rem', 'r-2': '0.5rem', 'r-3': '0.375rem', 'r-4': '0.375rem', 'control-height': '2.25rem' },
@@ -823,6 +1053,20 @@ export const REGISTRY = {
 }
 
 
+/* LES FAMILLES — deux décisions d'entrée de plus depuis la greffe (11 septembre
+   2026) : fontText, la famille du texte courant, et fontHeading, celle des titres.
+   Sans elles, la charte ; sans fontHeading, les titres prennent la famille du
+   texte. La famille doit être SERVIE par la page (sinon la pile système prend,
+   et le rapport le dit). La troisième famille, la mécanique (--font-mono), reste
+   au kit quoi qu'il arrive : c'est la voix de l'instrument, pas celle du site. */
+export const stack = (family) => `"${family}", ui-sans-serif, system-ui, sans-serif`
+export function fonts(entries = {}) {
+  const f = { ...REGISTRY.fonts }
+  if (entries.fontText) f['font-sans'] = stack(entries.fontText)
+  if (entries.fontHeading && entries.fontHeading !== (entries.fontText ?? '')) f['font-heading'] = stack(entries.fontHeading)
+  return f
+}
+
 /* ── SORTIE CSS — tokens.css entier, prêt à écrire ── */
 export function toCssRhythm(entries = {}) {
   const foundation = chain(entries)
@@ -841,7 +1085,7 @@ export function toCssRhythm(entries = {}) {
     `/* ═══════════════════════════════════════════════════════════════════════`,
     `   LES TOKENS DU RYTHME — GÉNÉRÉS par kit/derivation.mjs, ne pas éditer`,
     `   Décisions d'entrée : base ${e.base} · intervalle ${e.interval === Math.SQRT2 ? '√2' : e.interval} · racine ${e.root} (bornée à ${BOUNDS.root[1]})`,
-    `   · intervalle des titres ${e.intervalHeadings}. Les huit décisions du 25 août 2026 sont les lois.`,
+    `   · intervalle des titres ${e.intervalHeadings}${e.fontText ? ` · texte ${e.fontText} · titres ${e.fontHeading ?? e.fontText}` : ''}. Les huit décisions du 25 août 2026 sont les lois.`,
     `   À la charte : marges ${foundation.pad.map(px).join(' · ')} — espaces ${foundation.gap.map(px).join(' · ')} — coins ${foundation.r.map(px).join(' · ')}`,
     `   — bouton ${px(foundation.rCtl)} — crans de page ${foundation.page.map(px).join(' · ')}`,
     `   — texte ${Object.values(foundation.text).slice(0, 6).map(px).join(' · ')}.`,
@@ -876,7 +1120,7 @@ export function toCssRhythm(entries = {}) {
     ``,
     `/* Hors chaîne — déclaré au registre, jamais dérivé : familles, interligne, mesure, capitales. */`,
     `:root {`,
-    ...Object.entries(REGISTRY.fonts).map(([n, v]) => line(n, v)),
+    ...Object.entries(fonts(entries)).map(([n, v]) => line(n, v)),
     ...Object.entries(REGISTRY.text).map(([n, v]) => line(n, v)),
     `}`,
     ``,
@@ -900,8 +1144,8 @@ export function toCssRhythm(entries = {}) {
     block(space(j)),
     `}`,
     ``,
-    `/* Adaptation shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */`,
-    `[data-adaptation="shadcn"] {`,
+    `/* Stack shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */`,
+    `[data-stack="shadcn"] {`,
     ...Object.entries(REGISTRY.shadcn).map(([n, v]) => line(n, v)),
     `}`,
     ``,
@@ -913,11 +1157,17 @@ export function toCssRhythm(entries = {}) {
     `:root {`,
     ...Object.entries(REGISTRY.doc).map(([n, v]) => line(n, v)),
     `  /* les colonnes : la chaîne à la base de la charte, sans suivre la densité */`,
-    ...Object.entries(REGISTRY.docColumns).map(([n, v]) => line(n, tokens(chain()).hasOwnProperty(v) ? tokens(chain())[v].css : `var(--${v})`)),
+    ...Object.entries(REGISTRY.docColumns).map(([n, v]) => line(n, register().hasOwnProperty(v) ? register()[v].css : `var(--${v})`)),
     `}`,
-    `@media (min-width: ${OFF_CHAIN.thresholdRail}rem) {`,
+    `/* Le palier du rail est une SOMME (11 septembre 2026) : marge + rail + gouttière + lecture ${LAYOUTS.doc.zones.reading.comfort} rem + marge, résolue`,
+    `   sur la chaîne confortable = ${String(LAYOUTS.doc.sums.rail).replace('.', ',')} rem de fenêtre. Sous elle, une zone (--doc-zones: 1) : le rail cède la colonne ;`,
+    `   dès elle, deux zones. Les seuils intérieurs à la lecture sont des sommes de colonnes (LAYOUTS.doc.sums), lus en requêtes`,
+    `   de conteneur dans globals.css — jamais sur la fenêtre. */`,
+    `:root { --doc-zones: 1; }`,
+    `@media (min-width: ${LAYOUTS.doc.sums.rail}rem) {`,
     `  :root {`,
-    ...Object.entries(REGISTRY.docColumnsDesktop).map(([n, v]) => `  ${line(n, tokens(chain())[v].css)}`),
+    `    --doc-zones: 2;`,
+    ...Object.entries(REGISTRY.docColumnsDesktop).map(([n, v]) => `  ${line(n, register()[v].css)}`),
     `  }`,
     `}`,
     ``,
@@ -1012,7 +1262,7 @@ export function toTailwindFile(entries = {}) {
 export const rhythm = ${q({ spacing: tw.spacing, borderRadius: tw.borderRadius, height: tw.height, minHeight: tw.minHeight, screens: tw.screens })};
 
 /* Sortie jumelle — typographie : le corps borné et les crans dérivés (décision 5). */
-export const typography = ${q({ fontFamily: { sans: 'var(--font-sans)', mono: 'var(--font-mono)', serif: 'var(--font-serif)' }, fontSize: tw.fontSize, lineHeight: { body: 'var(--leading-body)', heading: 'var(--leading-heading)' }, maxWidth: { measure: 'var(--measure)' }, letterSpacing: { label: 'var(--tracking-label)' }, fontWeight: tw.fontWeight })};
+export const typography = ${q({ fontFamily: { sans: 'var(--font-sans)', heading: 'var(--font-heading)', mono: 'var(--font-mono)', serif: 'var(--font-serif)' }, fontSize: tw.fontSize, lineHeight: { body: 'var(--leading-body)', heading: 'var(--leading-heading)' }, maxWidth: { measure: 'var(--measure)' }, letterSpacing: { label: 'var(--tracking-label)' }, fontWeight: tw.fontWeight })};
 
 /* Sortie jumelle — couleur (COLOR-UX.md 2.0.0). Les utilitaires pointent
    sur les variables : le thème (clair/sombre) se résout au rendu, jamais

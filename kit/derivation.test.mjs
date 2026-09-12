@@ -13,7 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chain, tokens, fluid, aWidth, factor, AXES, CHARTER, BOUNDS, DENSITIES, OFF_CHAIN,
-  toCssRhythm, toFigma, toTailwind, REGISTRY, INTENTS, WEIGHT, derived, toCss, verify, contrast, hexToLch, lchToHex, range, rangeFamily, rangeNeutrals, PRIMARY_DEFAULTS, ACCENT_AUTHOR, PAIRS_DECLAREDALL, WIDTH_FREEZE, PART_STATES, CEILING_STATES, MOTION,
+  toCssRhythm, toFigma, toTailwind, REGISTRY, INTENTS, WEIGHT, derived, toCss, verify, contrast, hexToLch, lchToHex, range, rangeFamily, rangeNeutrals, PRIMARY_DEFAULTS, ACCENT_AUTHOR, PAIRS_DECLAREDALL, WIDTH_FREEZE, PART_STATES, CEILING_STATES, MOTION, LAYOUTS, POSTURE, linear, fonts,
 } from './derivation.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
@@ -134,9 +134,10 @@ test('décision 8 — la table « après » de la page : pad 24 · 17 · 12, esp
 })
 test('décision 8 — les crans de page sont la chaîne continuée au-dessus de la coque : 34 · 48 (migration du 11 août) · 68 · 96 · 136 · 192', () => {
   list(chain().page, [33.9, 48, 67.9, 96, 135.8, 192], 0.051)
-  /* seuls les crans consommés sont émis : 2 (tête, gouttière), 3 (marge), 4 (silence), 6 (rail) */
+  /* seuls les crans consommés sont émis : 1 (la frontière à trois crans, #139),
+     2 (tête, gouttière), 3 (marge), 4 (silence), 6 (rail) */
   const j = tokens(chain())
-  assert.deepEqual(Object.keys(j).filter((n) => /^page-.*-block$/.test(n)), ['page-2-block', 'page-3-block', 'page-4-block', 'page-6-block'])
+  assert.deepEqual(Object.keys(j).filter((n) => /^page-.*-block$/.test(n)), ['page-1-block', 'page-2-block', 'page-3-block', 'page-4-block', 'page-6-block'])
 })
 
 /* ── Le gabarit documentaire, dérivé (verdict d'Auteur du 25 août sur la planche du gabarit) ── */
@@ -160,7 +161,9 @@ test('gabarit — les huit crans --doc-* sont des alias de la chaîne, plus une 
   /* les colonnes ne suivent pas la densité : leur valeur est celle de la chaîne confortable, écrite */
   const j = tokens(chain())
   assert.ok(block.includes(`--doc-rail: ${j['page-6-inline'].css};`) && block.includes(`--doc-gutter: ${j['page-2-inline'].css};`) && block.includes(`--doc-margin: ${j['edge-inline'].css};`), 'colonnes pincées')
-  assert.ok(block.includes('@media (min-width: 69rem)') && block.includes(`--doc-margin: ${j['page-3-inline'].css};`), 'la marge de page suit le régime')
+  /* le palier du rail est une somme résolue par le moteur (11 septembre 2026) : marge + rail + gouttière + lecture 34 + marge, au demi-rem au-dessus */
+  assert.equal(LAYOUTS.doc.sums.rail, 58, 'le palier du rail : 58 rem, la somme sur la chaîne confortable')
+  assert.ok(block.includes(`@media (min-width: ${LAYOUTS.doc.sums.rail}rem)`) && block.includes('--doc-zones: 2;') && block.includes(`--doc-margin: ${j['page-3-inline'].css};`), 'la marge de page suit le régime, et le régime est dit (--doc-zones)')
   assert.ok(!/--doc-(cover|section|silence|tete|scene-[a-z]+): (clamp\([\d.]|\d)/.test(css), 'aucun --doc-* posé en valeur (les bornes de l’affiche sont des tokens ; les colonnes portent la valeur écrite de la chaîne)')
   list([chain({ base: 16 }).page[3], chain().page[3], chain({ base: 32 }).page[3]], [64, 96, 128])
 })
@@ -472,4 +475,49 @@ test('site — mouvement réduit (décision 1 du 3 septembre) : un déplacement 
     })
   }
   assert.deepEqual(faults, [], `${faults.length} déplacement(s) qui joueraient encore sous mouvement réduit`)
+})
+
+/* ── Stratégie postures (11 septembre 2026) : le gabarit déclare ses zones, les seuils sont des sommes, la posture se dérive ── */
+test('postures — le gabarit déclare trois zones et son niveau ; le palier du rail est une somme résolue sur la chaîne (58 rem) ; bande, table et liste sont des sommes de colonnes déclarées ; aucune somme n’est un nombre posé', () => {
+  const d = LAYOUTS.doc
+  assert.equal(d.level, 'N2')
+  assert.deepEqual(Object.keys(d.zones), ['reading', 'nav', 'marks'])
+  assert.equal(d.zones.reading.rem, 17); assert.equal(d.zones.reading.comfort, 34)
+  assert.equal(d.zones.nav.token, 'doc-rail'); assert.equal(d.zones.marks.token, 'doc-rail')
+  /* le palier : la plus petite fenêtre où marge + rail + gouttière + lecture 34 + marge tiennent, au demi-rem au-dessus */
+  const W = d.sums.rail * 16
+  const need = 2 * linear('page-3-inline', W) + linear('page-6-inline', W) + linear('page-2-inline', W) + 34
+  assert.ok(d.sums.rail >= need && d.sums.rail - 0.5 < need, `58 rem : la somme y tient (${need.toFixed(2)}) et pas un demi-rem plus bas`)
+  assert.equal(d.sums.band, d.columns.say.rem + d.gutter + d.columns.scene.rem)
+  assert.equal(d.sums.table, Math.round((d.columns.name.rem + d.columns.says.rem + d.columns.ref.rem + 2 * d.cell) * 10) / 10)
+  assert.equal(d.sums.list, Math.round((d.columns.ref.rem + d.cell + d.columns.value.rem) * 10) / 10)
+  assert.equal(d.gutter, 3.6, 'la gouttière à sa borne haute : une somme ne glisse pas')
+  for (const c of Object.values(d.columns)) assert.ok(c.rem > 0 && c.protects, 'chaque colonne dit ce qu’elle protège')
+  assert.ok(!('thresholdRail' in OFF_CHAIN), 'le 69 a quitté la table des valeurs hors chaîne')
+})
+test('postures — sur le web la posture se dérive : deux segments côte à côte → Livre, l’un sur l’autre → Laptop ; un segment → Mobile sous la somme à deux zones, Tablet dès qu’elle tient', () => {
+  const two = LAYOUTS.doc.twoZones
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 50, segments: 2, hinge: 'vertical', twoZones: two })), 'book')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 35.7, segments: 2, hinge: 'horizontal', twoZones: two })), 'laptop')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 390 / 16, segments: 1, twoZones: two })), 'mobile')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 25, segments: 1, twoZones: two })), 'mobile', 'le pliable fermé : Mobile')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 50, segments: 1, twoZones: two })), 'mobile', 'à plat sur 800 px, une zone tient : encore Mobile — la surface, pas l’appareil')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 820 / 16, segments: 1, twoZones: two })), 'mobile')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 1180 / 16, segments: 1, twoZones: two })), 'tablet')
+  assert.equal(POSTURE.keyOf(POSTURE.derive({ widthRem: 90, segments: 1, twoZones: two })), 'tablet', 'un écran de bureau est une surface plane : Tablet')
+  assert.equal(POSTURE.of(125, 'vertical'), POSTURE.postures.book, 'l’angle dit la même chose que les segments')
+})
+
+/* ── La greffe (11 septembre 2026) : les deux polices du site sont des décisions d'entrée ── */
+test('greffe — sans entrée, la charte : --font-heading vaut la famille du texte ; avec fontText/fontHeading, les deux familles entrent, la mécanique reste au kit', () => {
+  const charte = toCssRhythm()
+  assert.ok(charte.includes('--font-sans: "Geist"') && charte.includes('--font-heading: var(--font-sans);'), 'au kit, les titres prennent la famille du texte')
+  const same = fonts({ fontText: 'Roboto', fontHeading: 'Roboto' })
+  assert.equal(same['font-sans'], '"Roboto", ui-sans-serif, system-ui, sans-serif')
+  assert.equal(same['font-heading'], 'var(--font-sans)', 'un site à une seule famille n’en reçoit pas deux')
+  const two = toCssRhythm({ fontText: 'Inter', fontHeading: 'Fraunces' })
+  assert.ok(two.includes('--font-sans: "Inter", ui-sans-serif') && two.includes('--font-heading: "Fraunces", ui-sans-serif'))
+  assert.ok(two.includes(REGISTRY.fonts['font-mono']), 'la mécanique ne change pas avec le site')
+  const kitCss = fs.readFileSync(path.join(HERE, 'app/kit.css'), 'utf8')
+  assert.ok(/h1, h2, h3, h4, h5, h6 \{ font-family: var\(--font-heading\); \}/.test(kitCss), 'le token a un consommateur : les titres')
 })
