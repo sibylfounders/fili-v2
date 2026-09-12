@@ -102,8 +102,14 @@
 /* Deux boutons côte à côte : leur marge est celle de la ligne, leur espace aussi. */
 .ar-actions { display: flex; gap: var(--ar-g2); }
 /* Les boutons sont des composants : le coin de la ligne (racine ÷ 4), la marge de la ligne, la cible au doigt. */
-.ar-btn { border-radius: var(--ar-rctl); flex: 1; height: auto; min-height: var(--control-height); padding: var(--ar-p3); background: #F3F4F6; color: #111827; }
-.ar-btn.first { background: #111827; color: #FFFFFF; }
+/* les deux classes dites : le bouton de la fiche est un bouton de tranche que la page complète.
+   demo.css pose .tr-btn et cette feuille pose .ar-btn — même poids, et l'atelier passe en
+   dernier quel que soit l'ordre des imports (Next range la feuille partagée après celles des
+   pages) : la marge et le coin de la tranche reprenaient ceux de la fiche, qui se dérivent de
+   la racine. Nommer les deux rend à « ar-btn complète tr-btn » son sens, sans dépendre d'un
+   ordre (12 septembre 2026) */
+.tr-btn.ar-btn { border-radius: var(--ar-rctl); flex: 1; height: auto; min-height: var(--control-height); padding: var(--ar-p3); background: #F3F4F6; color: #111827; }
+.tr-btn.ar-btn.first { background: #111827; color: #FFFFFF; }
 
 /* ── 02 · Le labo du coin — deux coins côte à côte sur la scène de nuit ── */
 /* Les deux scènes de 01 et 02 dans le cadre des démonstrations (9 septembre) :

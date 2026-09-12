@@ -168,7 +168,9 @@ test('2 · la feuille de la page consomme, pour chaque preuve, la variable ou le
   waits('.ar-panel', 'border-radius: var(--ar-r1) var(--ar-r1) 0 0'); waits('.ar-panel', 'padding: var(--ar-p1)'); waits('.ar-panel', 'gap: var(--ar-g1)')
   waits('.ar-card', 'border-radius: var(--ar-r2)'); waits('.ar-card', 'padding: var(--ar-p2)'); waits('.ar-card', 'gap: var(--ar-g2)')
   waits('.ar-line', 'border-radius: var(--ar-r3)'); waits('.ar-line', 'padding: var(--ar-p3)'); waits('.ar-line', 'gap: var(--ar-g3)')
-  waits('.ar-btn', 'border-radius: var(--ar-rctl)'); waits('.ar-btn', 'min-height: var(--control-height)')
+  /* le bouton de la fiche dit ses deux classes depuis le 12 septembre 2026 : il complète le
+     bouton de tranche de l'atelier, et le dire est ce qui lui garde sa marge et son coin */
+  waits('.tr-btn.ar-btn', 'border-radius: var(--ar-rctl)'); waits('.tr-btn.ar-btn', 'min-height: var(--control-height)')
   for (const sel of ['.ar-dot', '.ar-avatar', '.ar-inter', '.ar-tabs']) waits(sel, 'border-radius: var(--r-pill)')
   /* Le bouton en pilule n'est plus une casse depuis le 31 août : sa règle ne pose que
      des tokens du kit, elle n'a donc rien à déclarer — et écrire « casse » sur cette
