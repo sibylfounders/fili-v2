@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit — L'adaptation (proposition, pièce à juger)</title>
+<meta name="description" content="Proposition : la page Adaptation du kit, en pièce à part — la zone lit son conteneur, le seuil se lit, la bascule ne perd rien.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   KIT — PAGE ADAPTATION, PROPOSITION À PART (9 septembre 2026)
+   Pièce libre, à juger sur pièce. Écrite contre
+   claude/reprise-adaptation-regles-2026-09-09.md (A1–A14, ⚪).
+   · trois scènes, une seule commande : la place, une règle graduée en rem ;
+   · chaque scène se joue seule une fois à l'arrivée, puis se tient à la main ;
+   · les formes sont de vraies requêtes de conteneur — la page ne triche pas ;
+   · la lecture « machine » lit l'arbre du document, pas un texte écrit d'avance.
+   Toutes les valeurs de gabarit viennent des tokens du kit (tokens.css du 9 sept.).
+   Les largeurs de travail des scènes (champ 15, action 7,5, avatar 3,5…) sont
+   des RÉGLAGES DE SCÈNE posés ici, dits au répertoire — pas des valeurs du kit.
+   ========================================================================= */
+:root {
+  --bg: #FFFFFF; --surface: #F3F4F6; --surface-hover: #E6E7EB;
+  --text-primary: #151725; --text-secondary: #505362; --text-tertiary: #8A8C9B;
+  --border: #E6E7EB; --border-strong: #6E717F;
+  --primary: #4F46E5; --on-primary: #F9FAFF; --primary-text: #4F46E5; --primary-subtle: #E2E6FF;
+  --accent: #75E242;
+  --danger: #B91C1C; --danger-subtle: #FEE2E2; --success: #15803D; --success-subtle: #DCFCE7;
+  --night-bg: #050611; --night-surface: #151726; --night-hover: #252736; --night-text: #FFFFFF;
+  --night-secondary: #9FA2AF; --night-border: #252736; --night-primary: #808BFC; --night-danger: #F87171; --night-success: #4ADE80;
+
+  --m-fast: 100ms; --m-base: 200ms; --m-slow: 300ms; --m-expressive: 700ms;
+  --e-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --fs-label: clamp(0.7155rem, 0.6644rem + 0.1124vw, 0.7656rem);
+  --fs-small: clamp(0.8rem, 0.7429rem + 0.1257vw, 0.856rem);
+  --fs-body: clamp(1rem, 0.9286rem + 0.1571vw, 1.07rem);
+  --fs-h3: clamp(1.25rem, 1.1607rem + 0.1964vw, 1.3375rem);
+  --t-cover: clamp(2.6rem, 6vw, 5rem);
+  --t-section: clamp(1.9rem, 3.4vw, 2.9rem);
+  --measure: 65ch;
+  --w-body: 400; --w-label: 500; --w-title: 600;
+
+  --r-1: 0.75rem; --r-2: 0.5rem; --r-3: 0.375rem; --r-pill: 9999px;
+  --pad-1: 1.5rem; --pad-2: 1rem; --pad-3: 0.625rem;
+  --gap-1: 1.5rem; --gap-2: 1rem; --gap-3: 0.5rem; --gap-4: 0.25rem;
+  --control: 2.25rem;
+  --v-rail: 15rem; --v-margin: clamp(1.25rem, 5vw, 5rem);
+  --v-block: clamp(7rem, 13vw, 11rem); --v-head: clamp(2.5rem, 5vw, 4rem);
+  --v-scene: clamp(1.5rem, 4vw, 4rem);
+
+  /* réglages de scène — largeurs de travail posées pour la démonstration (dites au répertoire) */
+  --w-field: 15rem; --w-action: 7.5rem; --w-avatar: 3.5rem; --w-text: 8rem; --w-gap: 1rem; --w-tool: 6rem; --w-more: 4.5rem;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text-primary); font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: var(--w-body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, figure, figcaption { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button, input { font: inherit; color: inherit; }
+a { color: inherit; }
+b, strong { font-weight: var(--w-title); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--r-3); }
+.skip { position: absolute; left: var(--gap-2); top: var(--gap-2); background: var(--text-primary); color: #fff;
+  padding: var(--gap-3) var(--gap-2); border-radius: var(--r-2); translate: 0 -300%; z-index: 200; }
+.skip:focus-visible { translate: 0 0; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+
+/* ── barre, grille, rail — le gabarit documentaire nu ── */
+.bar { display: flex; align-items: baseline; gap: var(--gap-2); padding: 14px var(--v-margin);
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+.bar-brand { font-weight: var(--w-title); letter-spacing: -.02em; }
+.bar-claim { color: var(--text-secondary); font-size: var(--fs-small); }
+.bar-note { margin-left: auto; font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.shell { display: grid; grid-template-columns: var(--v-rail) minmax(0, 1fr); gap: clamp(2rem, 4vw, 4rem);
+  padding: 0 var(--v-margin); max-width: 90rem; margin: 0 auto; }
+.rail { display: none; }
+@media (width >= 1100px) { .rail { display: block; } }
+@media (width < 1100px) { .shell { grid-template-columns: minmax(0, 1fr); } }
+.rail-sticky { position: sticky; top: 5.5rem; padding: 2.5rem 0; display: flex; flex-direction: column; gap: var(--gap-1); max-height: calc(100vh - 5.5rem); }
+.rail-title { font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.rail-list { display: flex; flex-direction: column; }
+.rail-link { display: grid; grid-template-columns: 2rem 1fr auto; align-items: baseline; gap: var(--gap-3);
+  padding: 9px 0; text-decoration: none; color: var(--text-secondary); font-size: .9375rem; line-height: 1.35; transition: color var(--m-fast) var(--e-out); }
+.rail-link:hover, .rail-link.is-active { color: var(--text-primary); }
+.rail-index { font: var(--w-title) var(--fs-label)/1 var(--font-mono); color: var(--text-tertiary); }
+.rail-marker { align-self: center; width: .5rem; height: .5rem; border-radius: var(--r-pill); background: transparent; }
+.rail-link.is-active .rail-marker { background: var(--primary); }
+.rail-foot { margin-top: auto; font-size: var(--fs-small); color: var(--text-tertiary); line-height: 1.5; }
+
+.content { min-width: 0; padding-bottom: var(--v-block); }
+.hero { padding: var(--v-block) 0 0; }
+.hero h1 { margin-top: var(--gap-1); font-size: var(--t-cover); line-height: 1.04; font-weight: var(--w-label); letter-spacing: -.035em; max-width: 18ch; text-wrap: balance; }
+.hero h1 .point { display: inline-block; width: .38em; height: .38em; border-radius: var(--r-pill); background: var(--primary); margin-left: .08em; }
+.hero .lede { margin-top: var(--v-head); font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.65; color: var(--text-secondary); max-width: var(--measure); }
+.hero .lede b { color: var(--text-primary); }
+.sec { padding-top: var(--v-block); }
+.sec-head { max-width: var(--measure); }
+.sec-head h2 { margin-top: var(--gap-2); font-size: var(--t-section); line-height: 1.1; font-weight: var(--w-label); letter-spacing: -.03em; text-wrap: balance; }
+.sec-head .lead { margin-top: var(--gap-1); color: var(--text-secondary); line-height: 1.65; }
+.after { margin-top: var(--gap-1); max-width: var(--measure); color: var(--text-secondary); line-height: 1.65; }
+.after b { color: var(--text-primary); }
+.reveal { opacity: 0; translate: 0 12px; transition: opacity var(--m-expressive) var(--e-out), translate var(--m-expressive) var(--e-out); }
+.reveal.in { opacity: 1; translate: 0 0; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; translate: none; transition: none; } }
+
+/* ── la scène ── */
+.stage { margin-top: var(--v-head); border-radius: var(--r-1); padding: var(--v-scene); background: var(--surface); overflow: hidden; }
+.stage.night { background: var(--night-bg); color: var(--night-text); }
+
+/* la commande unique : la place, une règle graduée en rem. L'objet en dessous a exactement cette largeur. */
+.place { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-3); }
+.ruler { position: relative; height: 2.75rem; }
+.ruler input { -webkit-appearance: none; appearance: none; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; background: transparent; cursor: ew-resize; }
+.ruler input::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+.ruler input::-moz-range-track { height: 100%; background: transparent; }
+.ruler input::-webkit-slider-thumb { -webkit-appearance: none; width: 1rem; height: 100%; border-radius: var(--r-3); background: var(--primary); border: 0; box-shadow: 0 0 0 4px var(--bg); }
+.ruler input::-moz-range-thumb { width: 1rem; height: 100%; border-radius: var(--r-3); background: var(--primary); border: 0; box-shadow: 0 0 0 4px var(--bg); }
+.night .ruler input::-webkit-slider-thumb { background: var(--night-primary); box-shadow: 0 0 0 4px var(--night-bg); }
+.night .ruler input::-moz-range-thumb { background: var(--night-primary); box-shadow: 0 0 0 4px var(--night-bg); }
+.ruler input:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: var(--r-3); }
+.ticks { position: absolute; left: 0; right: 0; bottom: 0; height: 1.75rem; pointer-events: none; }
+.ticks i { position: absolute; bottom: 0; width: 1px; height: .5rem; background: var(--border-strong); }
+.ticks i.big { height: .9rem; }
+.ticks i b { position: absolute; bottom: 1.05rem; left: 0; translate: -50% 0; font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--text-tertiary); white-space: nowrap; }
+.night .ticks i { background: var(--night-secondary); }
+.place-read { display: flex; flex-wrap: wrap; gap: var(--gap-3) var(--gap-1); align-items: baseline; font-size: var(--fs-small); color: var(--text-secondary); min-height: 1.5em; }
+.place-read b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-primary); font-weight: var(--w-title); }
+.night .place-read { color: var(--night-secondary); } .night .place-read b { color: var(--night-text); }
+.frame { position: relative; max-width: 100%; transition: none; }
+.frame::after { content: ""; position: absolute; top: 0; bottom: 0; right: -1px; width: 2px; background: var(--primary); opacity: .5; }
+.night .frame::after { background: var(--night-primary); }
+
+/* ── 01 · la fenêtre menteuse ── */
+.win { display: grid; grid-template-columns: 3fr 2fr 1fr; gap: var(--w-gap); }
+.cell { container-type: inline-size; container-name: zone; min-width: 0; }
+.cell-read { margin-top: var(--gap-3); font: var(--w-body) var(--fs-label)/1.4 var(--font-mono); color: var(--text-tertiary); }
+.cell-read b { color: var(--text-primary); font-weight: var(--w-title); }
+.card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-2);
+  display: grid; grid-template-columns: var(--w-avatar) minmax(0, 1fr) auto; gap: var(--w-gap); align-items: center; }
+.avatar { width: var(--w-avatar); height: var(--w-avatar); border-radius: var(--r-pill); background: var(--primary); color: var(--on-primary);
+  display: grid; place-items: center; font-weight: var(--w-title); letter-spacing: .02em; }
+.who { display: grid; gap: .1em; min-width: 0; }
+.who b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.who span { font-size: var(--fs-small); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acts { display: flex; gap: var(--gap-3); }
+.acts .button { min-width: 5.5rem; justify-content: center; }
+#sc-fenetre { padding-inline: var(--pad-1); } /* cette scène a besoin de sa largeur : le remplissage descend d'un cran, dit */
+.button { height: var(--control); padding: 0 var(--pad-3); border: 1px solid var(--border-strong); border-radius: var(--r-3); background: var(--bg);
+  display: inline-flex; align-items: center; gap: .4em; white-space: nowrap; cursor: pointer; font-size: var(--fs-small); font-weight: var(--w-label); }
+.button.main { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.button svg { width: 1.1em; height: 1.1em; flex: none; }
+/* déployée ≥ 27 rem : avatar 3,5 + écart 1 + texte 8 + écart 1 + actions 5,5 + 5,5 + 0,5 + remplissage 2 = 27 */
+/* resserrée 18 → 27 : avatar 3,5 + écart 1 + actions 11,5 + remplissage 2 = 18 */
+@container zone (width < 27rem) {
+  .card { grid-template-columns: var(--w-avatar) minmax(0, 1fr); }
+  .card .acts { grid-column: 2; }
+}
+/* repliée < 18 rem : avatar au-dessus, les actions en icônes — le nom reste entier (A7) */
+@container zone (width < 18rem) {
+  .card { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .card .acts { grid-column: 1; }
+  .card .button .txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .card .button { padding: 0 .55rem; }
+}
+
+/* ── 02 · la somme ── */
+.sum { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2); }
+.segs { position: relative; height: 3.25rem; margin-top: 1.5rem; }
+.seg { position: absolute; top: 0; height: 2rem; border: 1px solid var(--night-secondary); border-radius: var(--r-3);
+  display: grid; place-items: center; font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--night-secondary); white-space: nowrap; overflow: hidden; }
+.seg.g { border-style: dashed; border-color: var(--night-border); color: var(--night-border); }
+.seg-end { position: absolute; top: 0; height: 3.25rem; width: 2px; background: var(--night-success); }
+.seg-end b { position: absolute; top: 2.3rem; left: .5rem; font: var(--w-title) var(--fs-label)/1 var(--font-mono); color: var(--night-success); white-space: nowrap; }
+.ghost { position: absolute; top: 0; height: 3.25rem; width: 0; border-left: 2px dashed var(--night-danger); opacity: .8; }
+.ghost b { position: absolute; top: -1.5rem; right: .5rem; font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--night-danger); white-space: nowrap; }
+.form { container-type: inline-size; container-name: ligne; }
+.row { display: grid; grid-template-columns: var(--w-field) var(--w-field) var(--w-action); gap: var(--w-gap); align-items: end; }
+.field { display: grid; gap: .3em; min-width: 0; }
+.field span { font-size: var(--fs-small); color: var(--night-secondary); }
+.field input { height: var(--control); border: 1px solid var(--night-border); border-radius: var(--r-3); background: var(--night-surface); color: var(--night-text); padding: 0 var(--pad-3); min-width: 0; width: 100%; }
+.row .button { background: var(--night-primary); color: var(--night-bg); border-color: var(--night-primary); justify-content: center; }
+/* deux lignes < 39,5 rem : 15 + 1 + 15 + 1 + 7,5 = 39,5 */
+@container ligne (width < 39.5rem) {
+  .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .row .button { grid-column: 1 / -1; justify-self: start; width: var(--w-action); }
+}
+/* une colonne < 31 rem : 15 + 1 + 15 = 31 */
+@container ligne (width < 31rem) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+}
+.sum-read { margin-top: var(--gap-3); font: var(--w-body) var(--fs-small)/1.5 var(--font-sans); color: var(--night-secondary); }
+.sum-read b { color: var(--night-text); font-family: var(--font-mono); font-weight: var(--w-title); }
+
+/* ── 03 · la bascule sans perte ── */
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 13rem; gap: var(--gap-1); align-items: start; }
+.split .col { min-width: 0; }
+@media (width < 700px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.tb-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2); }
+.tb-label { font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.tb { display: flex; gap: var(--gap-3); background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-3); position: relative; }
+.tb .button { width: var(--w-tool); justify-content: center; flex: none; }
+.tb .button.hid { display: none; }
+.tb .more { width: var(--w-more); position: relative; }
+.tb .more > .button { width: var(--w-more); }
+.tb .more[hidden] { display: none; }
+.menu { position: absolute; top: calc(100% + .35rem); right: 0; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--gap-4);
+  display: grid; gap: 2px; min-width: 10rem; z-index: 5; box-shadow: 0 8px 24px rgba(21,23,37,.12); }
+.menu .button { width: 100%; justify-content: start; border-color: transparent; }
+.menu .button:hover { background: var(--surface); }
+.machine { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-2); padding: var(--pad-2); display: grid; gap: var(--gap-2); position: sticky; top: 6rem; }
+.machine h3 { font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.tree { display: grid; gap: 2px; font-size: var(--fs-small); }
+.tree li { display: grid; grid-template-columns: 1.4rem 1fr auto; gap: var(--gap-3); align-items: baseline; padding: .15rem 0; border-bottom: 1px solid var(--surface); }
+.tree li i { font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--text-tertiary); font-style: normal; }
+.tree li em { font-style: normal; font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--text-tertiary); }
+.tree li.lost { color: var(--danger); text-decoration: line-through; }
+.tree li.lost em { color: var(--danger); text-decoration: none; }
+.tree-sum { font-size: var(--fs-small); color: var(--text-secondary); }
+.tree-sum b { font-family: var(--font-mono); }
+.tree-sum.ko { color: var(--danger); }
+
+/* ── règles & sources, répertoire ── */
+.rules { margin-top: var(--gap-1); max-width: var(--measure); border-top: 1px solid var(--border); }
+.rules summary { cursor: pointer; padding: var(--gap-2) 0; font-weight: var(--w-label); list-style: none; display: flex; justify-content: space-between; }
+.rules summary::after { content: "+"; color: var(--text-tertiary); }
+.rules[open] summary::after { content: "–"; }
+.rules .body { padding-bottom: var(--gap-1); display: grid; gap: var(--gap-2); color: var(--text-secondary); line-height: 1.6; font-size: .95rem; }
+.rules .id { font: var(--w-title) var(--fs-label)/1 var(--font-mono); color: var(--primary-text); letter-spacing: .04em; }
+.rules .tag { font: var(--w-title) var(--fs-label)/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); margin-right: .5em; }
+.rep { display: grid; gap: var(--v-head); margin-top: var(--v-head); }
+.rep h3 { font-size: var(--fs-h3); font-weight: var(--w-label); letter-spacing: -.01em; }
+.tbl { width: 100%; border-collapse: collapse; font-size: .95rem; margin-top: var(--gap-2); }
+.tbl th, .tbl td { text-align: left; vertical-align: top; padding: .55rem .75rem .55rem 0; border-bottom: 1px solid var(--border); }
+.tbl th { font: var(--w-title) var(--fs-label)/1.4 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); }
+.tbl td:first-child { font-family: var(--font-mono); font-size: var(--fs-small); color: var(--primary-text); white-space: nowrap; }
+.tbl td:last-child { white-space: nowrap; }
+.tbl td.m { font-family: var(--font-mono); font-size: var(--fs-small); }
+.tbl .st { font: var(--w-body) var(--fs-label)/1 var(--font-mono); color: var(--text-tertiary); }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--gap-1); margin-top: var(--gap-2); }
+.grid3 div { border-top: 2px solid var(--text-primary); padding-top: var(--gap-3); }
+.grid3 b { display: block; }
+.grid3 p { color: var(--text-secondary); font-size: .95rem; line-height: 1.55; margin-top: .3em; }
+.wrap { overflow-x: auto; }
+.foot { margin-top: var(--v-block); padding-top: var(--gap-1); border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--gap-2); font-size: var(--fs-small); color: var(--text-tertiary); }
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Aller au contenu</a>
+
+<header class="bar">
+  <span class="bar-brand">Kit</span>
+  <span class="bar-claim">un design system qui montre ses raisons</span>
+  <span class="bar-note">Proposition · pièce à juger</span>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Sommaire">
+    <div class="rail-sticky">
+      <div class="rail-title">Fondation · Adaptation</div>
+      <ul class="rail-list">
+        <li><a class="rail-link is-active" href="#fenetre"><span class="rail-index">01</span><span>La fenêtre menteuse</span><span class="rail-marker"></span></a></li>
+        <li><a class="rail-link" href="#somme"><span class="rail-index">02</span><span>La somme</span><span class="rail-marker"></span></a></li>
+        <li><a class="rail-link" href="#bascule"><span class="rail-index">03</span><span>La bascule sans perte</span><span class="rail-marker"></span></a></li>
+        <li><a class="rail-link" href="#repertoire"><span class="rail-index">04</span><span>Répertoire</span><span class="rail-marker"></span></a></li>
+      </ul>
+      <div class="rail-foot">Un composant ne sait pas où est la fenêtre. Il sait combien de place il a.</div>
+    </div>
+  </nav>
+
+  <main class="content" id="content">
+
+    <section class="hero">
+      <p class="eyebrow">Fondation · L'adaptation</p>
+      <h1>La fenêtre n'a jamais été la cause<span class="point" aria-hidden="true"></span></h1>
+      <p class="lede">On a appris à faire répondre les écrans à trois largeurs d'appareil. Mais un composant ne vit pas
+        dans une fenêtre : il vit dans une <b>zone</b> — un conteneur qui a ses règles — et la seule chose qu'il
+        connaît, c'est la place qu'on lui laisse. Le seuil où il change de forme n'est pas un choix : il se lit,
+        en additionnant ce que ses morceaux réclament. Et quand il change de forme, rien de ce qu'il fait ne
+        disparaît. Trois scènes, une seule commande : la place, en rem.</p>
+    </section>
+
+    <!-- ══════════ 01 · situation ══════════ -->
+    <section class="sec reveal" id="fenetre">
+      <div class="sec-head">
+        <p class="eyebrow">01 · La fenêtre menteuse</p>
+        <h2>Même fenêtre, trois formes</h2>
+        <p class="lead">Une fiche de contact, posée trois fois dans la même page : pleine colonne, deux tiers, un
+          tiers. Aucune des trois ne regarde la fenêtre. Chacune mesure la place de sa propre zone et prend la
+          forme qui y tient. Quand la fenêtre rétrécit, la grande fiche rejoint la forme de la petite — au moment
+          exact où sa place devient celle de la petite.</p>
+      </div>
+
+      <figure class="stage" id="sc-fenetre">
+        <div class="place" data-scene="fenetre" data-min="16" data-max="60">
+          <div class="ruler">
+            <div class="ticks" aria-hidden="true"></div>
+            <input type="range" min="16" max="60" step="0.5" value="60" aria-label="Largeur de la fenêtre, en rem">
+          </div>
+          <p class="place-read"><span>Fenêtre <b data-read="w">60 rem</b></span><span data-read="note">Trois zones, trois places, trois formes.</span></p>
+          <div class="frame">
+            <div class="win">
+              <div class="cell"><div class="card" data-card>
+                <span class="avatar" aria-hidden="true">LF</span>
+                <span class="who"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+                <span class="acts">
+                  <button class="button main" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 5h14v10H3z"/><path d="M3 5l7 6 7-6"/></svg><span class="txt">Écrire</span></button>
+                  <button class="button" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h12v12H4z"/><path d="M4 8h12M8 4v12"/></svg><span class="txt">Dossier</span></button>
+                </span>
+              </div><p class="cell-read"><b data-cell="w">—</b> · <span data-cell="s">—</span></p></div>
+              <div class="cell"><div class="card" data-card>
+                <span class="avatar" aria-hidden="true">LF</span>
+                <span class="who"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+                <span class="acts">
+                  <button class="button main" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 5h14v10H3z"/><path d="M3 5l7 6 7-6"/></svg><span class="txt">Écrire</span></button>
+                  <button class="button" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h12v12H4z"/><path d="M4 8h12M8 4v12"/></svg><span class="txt">Dossier</span></button>
+                </span>
+              </div><p class="cell-read"><b data-cell="w">—</b> · <span data-cell="s">—</span></p></div>
+              <div class="cell"><div class="card" data-card>
+                <span class="avatar" aria-hidden="true">LF</span>
+                <span class="who"><b>Léa Fontan</b><span>Témoin · entendue le 12 mai</span></span>
+                <span class="acts">
+                  <button class="button main" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 5h14v10H3z"/><path d="M3 5l7 6 7-6"/></svg><span class="txt">Écrire</span></button>
+                  <button class="button" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h12v12H4z"/><path d="M4 8h12M8 4v12"/></svg><span class="txt">Dossier</span></button>
+                </span>
+              </div><p class="cell-read"><b data-cell="w">—</b> · <span data-cell="s">—</span></p></div>
+            </div>
+          </div>
+        </div>
+        <figcaption class="sr">Trois fiches identiques dans trois colonnes de largeurs différentes ; chacune prend la forme qui tient dans sa colonne, indépendamment de la fenêtre.</figcaption>
+      </figure>
+
+      <p class="after">La fiche ne connaît que trois grandeurs : la <b>place</b> (le plus long segment continu de sa
+        zone), la <b>hauteur</b>, la <b>visée</b>. La fenêtre n'en fait pas partie. C'est pour ça que la même fiche
+        peut être déployée dans une colonne et repliée dans la colonne d'à côté, sur le même écran, au même
+        instant — et qu'elle se comporte pareil dans un tiroir, une modale ou une page d'impression. Ce que la
+        fenêtre décide, c'est autre chose : combien de colonnes la page donne. Ça, c'est la grille, et elle n'a
+        qu'un seuil.</p>
+
+      <details class="rules">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">A1</span> — La zone lit son conteneur, jamais la fenêtre. Un composant réutilisable répond à l'espace réel de son
+            conteneur ; aucune requête média de largeur dans un fichier de composant, une requête de conteneur à la place. La fenêtre
+            gouverne la page — rail, marge, colonnes — une seule fois, à un seul seuil (Y7, décision #120).</p>
+          <p><span class="id">A3</span> — La place est un segment continu : ce que la zone mesure, c'est l'élément qui la borne réellement,
+            jamais un ancêtre plus large qu'elle. Dans une imbrication, le conteneur est nommé.</p>
+          <p><span class="tag">Observation</span> un composant qui lit la fenêtre marche dans une page et casse dans la suivante.
+            <span class="tag">Règle</span> la zone est l'unité. <span class="tag">Réglage</span> la fiche bascule à 27 et 18 rem — deux sommes, lues au répertoire.</p>
+          <p>Sources : la seule règle de la V1 qui survit mot pour mot (« le composant répond à l'espace réel de son conteneur ») ·
+            décision d'Auteur #120, 25 août 2026 (un régime est une mise en page) · CSS Containment Module Level 3, container queries.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════ 02 · transformation ══════════ -->
+    <section class="sec reveal" id="somme">
+      <div class="sec-head">
+        <p class="eyebrow">02 · La somme</p>
+        <h2>Le seuil n'a pas été choisi, il a été lu</h2>
+        <p class="lead">Une ligne de formulaire : deux champs et une action. Chaque morceau a une largeur de travail —
+          ce qu'il lui faut pour tenir sans se casser. Mises bout à bout, ces largeurs font un nombre. La ligne passe
+          à deux lignes au millimètre où la place devient plus courte que ce nombre. Pas avant, pas après, et pas à
+          768 pixels.</p>
+      </div>
+
+      <figure class="stage night" id="sc-somme">
+        <div class="place" data-scene="somme" data-min="16" data-max="54">
+          <div class="ruler">
+            <div class="ticks" aria-hidden="true"></div>
+            <input type="range" min="16" max="54" step="0.5" value="54" aria-label="Place de la zone, en rem">
+          </div>
+          <p class="place-read"><span>Place <b data-read="w">54 rem</b></span><span data-read="note">La ligne tient : 54 ≥ 39,5.</span></p>
+          <div class="sum">
+            <div class="segs" aria-hidden="true">
+              <span class="seg" style="left:0;width:15rem">champ · 15</span>
+              <span class="seg g" style="left:15rem;width:1rem"></span>
+              <span class="seg" style="left:16rem;width:15rem">champ · 15</span>
+              <span class="seg g" style="left:31rem;width:1rem"></span>
+              <span class="seg" style="left:32rem;width:7.5rem">action · 7,5</span>
+              <span class="seg-end" style="left:39.5rem"><b>= 39,5 rem</b></span>
+              <span class="ghost" style="left:48rem"><b>768 px — un appareil, pas cette ligne</b></span>
+            </div>
+            <div class="frame">
+              <div class="form">
+                <form class="row" onsubmit="return false">
+                  <label class="field"><span>Nom</span><input type="text" value="Léa Fontan"></label>
+                  <label class="field"><span>Courriel</span><input type="email" value="lea.fontan@exemple.fr"></label>
+                  <button class="button" type="button">Envoyer</button>
+                </form>
+              </div>
+            </div>
+            <p class="sum-read" data-read="formula">Une ligne : <b>15 + 1 + 15 + 1 + 7,5 = 39,5</b> — la place la couvre.</p>
+          </div>
+        </div>
+        <figcaption class="sr">Une règle graduée montre les largeurs de travail des trois morceaux mises bout à bout ; quand la place descend sous leur somme, la ligne se replie.</figcaption>
+      </figure>
+
+      <p class="after">Trois valeurs suffisent à écrire le seuil, et il est vérifiable par un tiers sans voir l'écran : on
+        additionne. Le trait rouge est ce que ferait un seuil copié sur un appareil : il ne coïncide avec rien de ce
+        que la ligne réclame, et la ligne se casserait avant lui ou après lui, jamais dessus. Un seuil qui tombe
+        sur une largeur d'appareil est presque toujours un seuil qui n'a pas été calculé. Le deuxième seuil se lit
+        de la même manière : <b>15 + 1 + 15 = 31</b>, en dessous les deux champs ne tiennent plus côte à côte.</p>
+
+      <details class="rules">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">A2</span> — Le seuil se calcule, il ne se décrète pas. Un seuil de zone est la somme des largeurs de travail des
+            segments que la zone doit tenir côte à côte à partir de là ; il porte sa formule. Aucun seuil dont la valeur en pixels vaut
+            320, 360, 375, 390, 414, 480, 600, 640, 768, 820, 1024, 1280 ou 1440.</p>
+          <p><span class="id">A4</span> — La hauteur compte, et elle a un plancher : une zone ancrée ou superposée déclare sa condition en
+            hauteur ; sous 34 rem rien d'essentiel ne tient à une hauteur fixe ; clavier ouvert, l'action principale vit au-dessus du
+            demi-clavier (15 rem).</p>
+          <p><span class="tag">Réglages de scène</span> champ 15 rem, action 7,5 rem, écart 1 rem — posés pour la démonstration ; les largeurs de
+            travail du kit se posent au registre, une par pattern. <span class="tag">Dette</span> celle du texte courant n'est pas calculable
+            tant que sa mesure a trois valeurs (16 px / 70, 17 px / 62, 65ch).</p>
+          <p>Sources : V1 « seuil dérivé du contenu, jamais un breakpoint d'appareil copié » · doctrine d'adaptation du 9 septembre 2026
+            (largeurs de travail, hauteur plancher, demi-clavier) · protocole K4 (hauteur de référence 568 px).</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════ 03 · comparaison ══════════ -->
+    <section class="sec reveal" id="bascule">
+      <div class="sec-head">
+        <p class="eyebrow">03 · La bascule sans perte</p>
+        <h2>Ce qui change et ce qui ne change pas sont deux images de la même chose</h2>
+        <p class="lead">Une barre de six actions traverse un seuil. À gauche, ce que l'œil voit : les actions qui ne
+          tiennent plus se rangent sous « Plus ». À droite, ce que la machine lit dans le document : six noms, dans
+          le même ordre, à chaque largeur. La deuxième barre fait ce qu'on voit partout — elle jette ce qui ne
+          tient pas — et la machine le compte.</p>
+      </div>
+
+      <figure class="stage" id="sc-bascule">
+        <div class="place" data-scene="bascule" data-min="12" data-max="62">
+          <div class="ruler">
+            <div class="ticks" aria-hidden="true"></div>
+            <input type="range" min="12" max="62" step="0.5" value="62" aria-label="Place de la barre, en rem">
+          </div>
+          <p class="place-read"><span>Place <b data-read="w">62 rem</b></span><span data-read="note">Six actions tiennent.</span></p>
+          <div class="split">
+            <div class="col"><div class="frame">
+              <div class="tb-wrap">
+                <p class="tb-label">Comme il faut — ce qui ne tient pas se range</p>
+                <div class="tb" data-tb="ok" role="toolbar" aria-label="Actions du dossier">
+                  <button class="button" type="button">Nouveau</button>
+                  <button class="button" type="button">Ouvrir</button>
+                  <button class="button" type="button">Enregistrer</button>
+                  <button class="button" type="button">Partager</button>
+                  <button class="button" type="button">Exporter</button>
+                  <button class="button" type="button">Supprimer</button>
+                  <span class="more" hidden>
+                    <button class="button" type="button" aria-expanded="false" aria-haspopup="true">Plus</button>
+                    <div class="menu" role="group" aria-label="Autres actions" hidden></div>
+                  </span>
+                </div>
+                <p class="tb-label">La faute — ce qui ne tient pas disparaît</p>
+                <div class="tb" data-tb="ko" role="toolbar" aria-label="Actions du dossier (version fautive)">
+                  <button class="button" type="button">Nouveau</button>
+                  <button class="button" type="button">Ouvrir</button>
+                  <button class="button" type="button">Enregistrer</button>
+                  <button class="button" type="button">Partager</button>
+                  <button class="button" type="button">Exporter</button>
+                  <button class="button" type="button">Supprimer</button>
+                </div>
+              </div>
+            </div></div>
+            <aside class="machine" aria-live="polite">
+              <h3>Ce que la machine lit</h3>
+              <ol class="tree" data-tree="ok"></ol>
+              <p class="tree-sum" data-sum="ok"></p>
+              <h3>La faute, lue</h3>
+              <ol class="tree" data-tree="ko"></ol>
+              <p class="tree-sum" data-sum="ko"></p>
+            </aside>
+          </div>
+        </div>
+        <figcaption class="sr">Deux barres d'outils réagissent à la même place ; la première range les actions excédentaires dans un menu, la seconde les supprime. Le panneau de droite liste les actions présentes dans le document pour chacune.</figcaption>
+      </figure>
+
+      <p class="after">La bascule a le droit de tout changer de la forme : la disposition, la densité, le regroupement, le
+        libellé. Elle n'a pas le droit de toucher à ce que la machine lit — l'ensemble des actions, leur ordre, leur
+        nom complet, ce qu'il faut pour décider, le focus et la valeur en cours. C'est la règle qui rend
+        l'adaptation vérifiable sans regarder l'écran : on rend la zone de chaque côté du seuil et on compare deux
+        arbres. S'ils diffèrent, quelque chose a été perdu.</p>
+
+      <details class="rules">
+        <summary>Règles &amp; sources</summary>
+        <div class="body">
+          <p><span class="id">A5</span> — Rien ne disparaît : l'ensemble {rôle, nom accessible} des contrôles est le même des deux côtés du seuil ;
+            un contrôle groupé sous un bouton nommé compte comme présent.</p>
+          <p><span class="id">A6</span> — L'ordre ne bouge pas : la séquence des éléments focalisables est identique ; ce qui se déplace se déplace en CSS.</p>
+          <p><span class="id">A7</span> — Le nom ne change pas : un libellé peut se raccourcir ou devenir une icône, le nom accessible reste le nom complet.</p>
+          <p><span class="id">A8</span> — La décision garde ses données : erreur, risque, obligation, état restent visibles sans action des deux côtés.</p>
+          <p><span class="id">A9</span> — L'état survit à la bascule : focus, valeur saisie, ouvert/fermé sont identiques avant et après.</p>
+          <p><span class="id">A10</span> — La base est le plus petit état viable : la zone sans aucune requête de conteneur active passe A5 à A8.</p>
+          <p>Sources : V1 « ce qui ne change jamais » (nature, priorité, information nécessaire, nom accessible, ordre DOM, fonction
+            essentielle) · WCAG 2.2, 1.3.2 ordre séquentiel logique, 2.4.3 parcours du focus, 4.1.2 nom, rôle et valeur.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ══════════ 04 · répertoire ══════════ -->
+    <section class="sec reveal" id="repertoire">
+      <div class="sec-head">
+        <p class="eyebrow">04 · Répertoire</p>
+        <h2>Trois grandeurs, quatorze règles, trois réglages</h2>
+      </div>
+
+      <div class="rep">
+        <div>
+          <h3>Les trois grandeurs d'une zone</h3>
+          <div class="grid3">
+            <div><b>La place</b><p>Le plus long segment continu de l'axe en ligne du conteneur. Pas la largeur nominale, pas une somme de morceaux. En rem.</p></div>
+            <div><b>La hauteur</b><p>L'espace en bloc, clavier compris. Plancher 34 rem ; demi-clavier 15 rem.</p></div>
+            <div><b>La visée</b><p>Deux moitiés : la précision, qui appartient au tactile (pointeur grossier → confort, T6) ; la portée, une observation — 40 rem — pas une règle.</p></div>
+          </div>
+        </div>
+
+        <div class="wrap">
+          <h3>Les règles</h3>
+          <table class="tbl">
+            <thead><tr><th>N°</th><th>Règle</th><th>Ce qu'on mesure</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>A1</td><td>La zone lit son conteneur, jamais la fenêtre</td><td>aucune requête média de largeur dans un composant</td><td class="st">⚪</td></tr>
+              <tr><td>A2</td><td>Le seuil se calcule, il ne se décrète pas</td><td>chaque seuil porte sa formule ; aucun seuil sur une largeur d'appareil</td><td class="st">⚪ · texte bloqué</td></tr>
+              <tr><td>A3</td><td>La place est un segment continu</td><td>le conteneur de requête borne réellement la zone ; nommé si imbriqué</td><td class="st">⚪</td></tr>
+              <tr><td>A4</td><td>La hauteur compte, et elle a un plancher</td><td>condition en bloc déclarée ; utilisable à 34 rem ; action principale hors du demi-clavier</td><td class="st">⚪</td></tr>
+              <tr><td>A5</td><td>Rien ne disparaît</td><td>même ensemble {rôle, nom} des deux côtés du seuil</td><td class="st">⚪</td></tr>
+              <tr><td>A6</td><td>L'ordre ne bouge pas</td><td>même séquence de focus</td><td class="st">⚪</td></tr>
+              <tr><td>A7</td><td>Le nom ne change pas</td><td>même nom accessible, texte visible libre</td><td class="st">⚪</td></tr>
+              <tr><td>A8</td><td>La décision garde ses données</td><td>alerte, statut, requis visibles sans action</td><td class="st">⚪</td></tr>
+              <tr><td>A9</td><td>L'état survit à la bascule</td><td>focus, valeur, ouvert/fermé identiques avant et après</td><td class="st">⚪</td></tr>
+              <tr><td>A10</td><td>La base est le plus petit état viable</td><td>requêtes neutralisées, la zone passe A5–A8</td><td class="st">⚪</td></tr>
+              <tr><td>A11</td><td>Le plan se déclare</td><td>flux / ancré / superposé écrit ; un changement de plan au seuil est dit</td><td class="st">⚪ · reconstruite</td></tr>
+              <tr><td>A12</td><td>Une frontière est un conteneur nommé</td><td>aucun chevauchement de deux zones du même plan</td><td class="st">⚪ · reconstruite</td></tr>
+              <tr><td>A13</td><td>Ce qui se replie garde une poignée</td><td>tout contenu retiré est atteignable par un contrôle nommé et à état</td><td class="st">⚪ · reconstruite</td></tr>
+              <tr><td>A14</td><td>Un pliage ne cache jamais l'essentiel</td><td>à la place la plus étroite, l'action principale est visible sans ouvrir</td><td class="st">⚪ · reconstruite</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="wrap">
+          <h3>Réglages et largeurs de travail</h3>
+          <table class="tbl">
+            <thead><tr><th>Valeur</th><th>Quoi</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td>34 rem</td><td>hauteur plancher d'une zone</td><td class="st">réglage FILI ⚪ — à sourcer (K4 : 568 px = 35,5 rem)</td></tr>
+              <tr><td>15 rem</td><td>demi-clavier — ce qu'un clavier ouvert retire</td><td class="st">réglage FILI ⚪</td></tr>
+              <tr><td>40 rem</td><td>portée des pouces</td><td class="st">observation, pas règle</td></tr>
+              <tr><td>15 · 7,5 · 3,5 · 8 · 5,5 · 1</td><td>champ, action, avatar, texte de fiche, action de fiche, écart — largeurs de travail de ces scènes</td><td class="st">réglages de scène, pas du kit</td></tr>
+              <tr><td>27 · 18 · 39,5 · 31</td><td>les quatre seuils de cette page — tous des sommes, écrites dans la feuille</td><td class="st">lus, pas choisis</td></tr>
+              <tr><td>texte courant</td><td>largeur de travail non calculable — trois mesures en concurrence</td><td class="st">🔴 dette</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <h3>Ce qui tombe de la V1</h3>
+          <p class="after" style="margin-top:var(--gap-3)"><b>compact / regular / expanded</b> — trois paliers nommés pour toute l'interface. L'unité n'est
+            plus globale ; les états d'une zone se nomment par ce qui change (une ligne / deux lignes, déployée / repliée,
+            libellé / icône), par pattern. Les tests de la V1 — juste avant, sur, après chaque seuil ; contenu court, long,
+            traduit ; conteneurs imbriqués — restent, comme protocole du banc, pas comme règles.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>Proposition « adaptation » — pièce à part, à juger, 9 septembre 2026</span>
+      <span>Quatorze règles ⚪ · Léa Fontan est un témoin fictif</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   UNE COMMANDE : la place. Chaque scène a une règle graduée en rem ; l'objet
+   dessous a exactement cette largeur. Les formes sont des requêtes de
+   conteneur en CSS — le script ne fait que lire ce qui s'est passé et
+   l'écrire en clair. À l'arrivée d'une scène, la place descend puis remonte
+   une fois (chorégraphie, dite : six secondes) ; sous mouvement réduit,
+   rien ne se joue seul. Prendre la règle arrête le récit.
+   ═══════════════════════════════════════════════════════════════════════ */
+(function () {
+  var FREE = matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  var REM = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  var fmt = function (v) { return String(Math.round(v * 2) / 2).replace('.', ','); };
+  var rem = function (px) { return px / REM; };
+
+  /* le sommaire */
+  var links = [].slice.call(document.querySelectorAll('.rail-link'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) {
+        var i = secs.indexOf(e.target);
+        links.forEach(function (l, j) { l.classList.toggle('is-active', i === j); });
+      } });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    secs.forEach(function (s) { s && io.observe(s); });
+    var rv = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); rv.unobserve(e.target); } }); }, { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(function (s) { rv.observe(s); });
+  } else { document.querySelectorAll('.reveal').forEach(function (s) { s.classList.add('in'); }); }
+
+  /* la règle graduée, une par scène */
+  function Place(root, onRead) {
+    var input = root.querySelector('input'), frame = root.querySelector('.frame'), ticks = root.querySelector('.ticks'), ruler = root.querySelector('.ruler');
+    var min = +root.dataset.min, max = +root.dataset.max, avail = max, playing = null;
+    var readW = root.querySelector('[data-read="w"]');
+    function drawTicks() {
+      ticks.innerHTML = '';
+      var top = +input.max, span = top - min, step = span > 40 ? 10 : 5;
+      for (var v = Math.ceil(min / step) * step; v <= top; v += step) {
+        var i = document.createElement('i'); i.style.left = (v - min) + 'rem';
+        if (v % 10 === 0) { i.className = 'big'; var b = document.createElement('b'); b.textContent = v; i.appendChild(b); }
+        ticks.appendChild(i);
+      }
+    }
+    function apply() {
+      var v = Math.min(+input.value, avail);
+      frame.style.width = v + 'rem';
+      readW.textContent = fmt(v) + ' rem';
+      onRead(v);
+    }
+    function fit() { /* la scène ne peut pas être plus large que la colonne réelle */
+      avail = Math.max(min, Math.floor(rem(frame.parentElement.clientWidth) * 2) / 2);
+      var atEnd = +input.value >= +input.max; /* une place qu'on n'a pas réglée suit le bord */
+      input.max = Math.min(max, avail);
+      if (atEnd) input.value = input.max;
+      /* la règle est à l'échelle 1 : un rem de règle est un rem d'objet, le curseur est au bord du cadre */
+      ruler.style.marginLeft = min + 'rem'; ruler.style.width = (input.max - min) + 'rem';
+      drawTicks(); apply();
+    }
+    function stop() { if (playing) { cancelAnimationFrame(playing); playing = null; } }
+    function play() { /* descend puis remonte, six secondes en tout */
+      if (!FREE) return;
+      var hi = +input.max, lo = min, t0 = performance.now(), D = 6000;
+      var ease = function (x) { return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+      (function step(t) {
+        var p = Math.min(1, (t - t0) / D);
+        var k = p < .5 ? ease(p * 2) : 1 - ease((p - .5) * 2);
+        input.value = hi - (hi - lo) * k; apply();
+        if (p < 1) playing = requestAnimationFrame(step); else playing = null;
+      })(t0);
+    }
+    input.addEventListener('input', function () { stop(); apply(); });
+    input.addEventListener('pointerdown', stop); input.addEventListener('keydown', stop);
+    drawTicks();
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(frame.parentElement); else fit();
+    if ('IntersectionObserver' in window) {
+      var once = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { once.disconnect(); setTimeout(play, 400); } }); }, { threshold: .5 });
+      once.observe(root);
+    }
+    return { apply: apply };
+  }
+
+  /* 01 — trois zones : on lit la place de chaque cellule et la forme prise */
+  (function () {
+    var root = document.querySelector('[data-scene="fenetre"]'); if (!root) return;
+    var cells = [].slice.call(root.querySelectorAll('.cell')), note = root.querySelector('[data-read="note"]');
+    function state(w) { return w >= 27 ? 'déployée' : w >= 18 ? 'resserrée' : 'repliée'; }
+    function read() {
+      var forms = [];
+      cells.forEach(function (c) {
+        var w = rem(c.getBoundingClientRect().width), s = state(w); forms.push(s);
+        c.querySelector('[data-cell="w"]').textContent = fmt(w) + ' rem';
+        c.querySelector('[data-cell="s"]').textContent = s;
+      });
+      var uniq = forms.filter(function (f, i) { return forms.indexOf(f) === i; }).length;
+      note.textContent = uniq === 3 ? 'Trois zones, trois places, trois formes.' :
+        uniq === 2 ? 'Deux formes dans la même fenêtre.' : 'Toutes les zones ont la même forme : la place est trop courte partout.';
+    }
+    Place(root, function () { requestAnimationFrame(read); });
+  })();
+
+  /* 02 — la somme : on lit quelle formule la place couvre */
+  (function () {
+    var root = document.querySelector('[data-scene="somme"]'); if (!root) return;
+    var note = root.querySelector('[data-read="note"]'), formula = root.querySelector('[data-read="formula"]');
+    Place(root, function (v) {
+      if (v >= 39.5) { note.textContent = 'La ligne tient : ' + fmt(v) + ' ≥ 39,5.'; formula.innerHTML = 'Une ligne : <b>15 + 1 + 15 + 1 + 7,5 = 39,5</b> — la place la couvre.'; }
+      else if (v >= 31) { note.textContent = 'Deux lignes : ' + fmt(v) + ' < 39,5.'; formula.innerHTML = 'L’action descend : <b>' + fmt(v) + ' < 39,5</b>. Les deux champs tiennent encore : <b>15 + 1 + 15 = 31</b>.'; }
+      else { note.textContent = 'Une colonne : ' + fmt(v) + ' < 31.'; formula.innerHTML = 'Tout descend : <b>' + fmt(v) + ' < 31</b>. Chaque champ prend la place entière.'; }
+    });
+  })();
+
+  /* 03 — la bascule : deux barres, la même place ; la machine lit le document */
+  (function () {
+    var root = document.querySelector('[data-scene="bascule"]'); if (!root) return;
+    var TOOL = 6, MORE = 4.5, GAP = .5, PAD = .625;
+    var ok = root.querySelector('[data-tb="ok"]'), ko = root.querySelector('[data-tb="ko"]');
+    var more = ok.querySelector('.more'), moreBtn = more.querySelector('button'), menu = more.querySelector('.menu');
+    var note = root.querySelector('[data-read="note"]');
+    var okBtns = [].slice.call(ok.querySelectorAll(':scope > .button')), koBtns = [].slice.call(ko.querySelectorAll('.button'));
+    var names = okBtns.map(function (b) { return b.textContent; });
+    function fits(v, withMore) { var inner = v - 2 * PAD - (withMore ? MORE + GAP : 0); return Math.max(0, Math.floor((inner + GAP) / (TOOL + GAP))); }
+    function layout(v) {
+      var n = fits(v, false), shown = n >= 6 ? 6 : fits(v, true);
+      /* comme il faut : l'excédent va dans le menu, dans l'ordre du document */
+      menu.innerHTML = '';
+      okBtns.forEach(function (b, i) {
+        b.classList.toggle('hid', i >= shown);
+        if (i >= shown) { var c = document.createElement('button'); c.type = 'button'; c.className = 'button'; c.textContent = b.textContent; menu.appendChild(c); }
+      });
+      more.hidden = shown >= 6; if (more.hidden) { menu.hidden = true; moreBtn.setAttribute('aria-expanded', 'false'); }
+      /* la faute : l'excédent disparaît */
+      koBtns.forEach(function (b, i) { b.classList.toggle('hid', i >= n); });
+      readTree(shown, n);
+      note.textContent = shown >= 6 ? 'Six actions tiennent.' : (6 - shown) + (6 - shown > 1 ? ' actions rangées sous « Plus » — la faute en a perdu ' : ' action rangée sous « Plus » — la faute en a perdu ') + (6 - n) + '.';
+    }
+    function readTree(shown, n) {
+      /* on lit le DOM, pas une liste écrite d'avance : les boutons présents, dans l'ordre, y compris dans le menu */
+      var treeOk = root.querySelector('[data-tree="ok"]'), treeKo = root.querySelector('[data-tree="ko"]');
+      var present = [].slice.call(ok.querySelectorAll('.button')).filter(function (b) { return b !== moreBtn && !b.classList.contains('hid'); });
+      treeOk.innerHTML = present.map(function (b, i) {
+        var inMenu = menu.contains(b);
+        return '<li><i>' + (i + 1) + '</i><span>' + b.textContent + '</span><em>' + (inMenu ? 'sous Plus' : 'visible') + '</em></li>';
+      }).join('');
+      root.querySelector('[data-sum="ok"]').innerHTML = '<b>' + present.length + '</b> noms · même ordre · rien de perdu';
+      var kept = koBtns.filter(function (b) { return !b.classList.contains('hid'); });
+      treeKo.innerHTML = names.map(function (nm, i) {
+        var lost = i >= n;
+        return '<li' + (lost ? ' class="lost"' : '') + '><i>' + (i + 1) + '</i><span>' + nm + '</span><em>' + (lost ? 'perdu' : 'visible') + '</em></li>';
+      }).join('');
+      var s = root.querySelector('[data-sum="ko"]');
+      s.innerHTML = '<b>' + kept.length + '</b> noms' + (kept.length < 6 ? ' · <b>' + (6 - kept.length) + '</b> perdu' + (6 - kept.length > 1 ? 's' : '') : '');
+      s.classList.toggle('ko', kept.length < 6);
+    }
+    moreBtn.addEventListener('click', function () { var open = menu.hidden; menu.hidden = !open; moreBtn.setAttribute('aria-expanded', String(open)); });
+    document.addEventListener('pointerdown', function (e) { if (!more.contains(e.target)) { menu.hidden = true; moreBtn.setAttribute('aria-expanded', 'false'); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { menu.hidden = true; moreBtn.setAttribute('aria-expanded', 'false'); moreBtn.focus(); } });
+    Place(root, layout);
+  })();
+})();
+</script>
+</body>
+</html>

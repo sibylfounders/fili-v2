@@ -45,7 +45,11 @@ export const CATEGORIES: Category[] = [
       p("Pourquoi ce projet"), p("Process"), p("Vérification"), p("Audit du corpus"),
     ] }]] },
     { name: "Principes", columns: [[{ name: "Principes", pages: [
-      p("Accessibilité"), p("Adaptatif"), p("Charge cognitive"), p("Lois UX"),
+      p("Accessibilité"),
+      p("Adaptation", { path: "/adaptation", state: "🟡",
+        says: "La zone, pas la fenêtre — un seuil est une somme de largeurs de travail, jamais un palier.",
+        foot: "Un composant ne sait pas où est la fenêtre. Il sait combien de place il a." }),
+      p("Charge cognitive"), p("Lois UX"),
       p("Performance perçue"), p("Validation et récupération"),
     ] }]] },
     { name: "Langages", columns: [[{ name: "Langages", pages: [
