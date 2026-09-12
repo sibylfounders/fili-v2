@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Témoin — la page Bordures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Témoin — 9 septembre 2026. La page Bordures : trois preuves validées au
+   checkpoint (le même gris quatre rôles · ce qui reste quand tout tombe ·
+   l'anneau au clavier). Jetons du kit. */
+:root {
+  --bg:#FFFFFF; --surface:#F3F4F6; --surface-hover:#E6E7EB;
+  --text:#151725; --text-2:#505362; --text-3:#8A8C9B;
+  --border:#E6E7EB; --border-strong:#6E717F;
+  --primary:#4F46E5; --primary-subtle:#E2E6FF; --on-primary:#F9FAFF; --accent:#75E242;
+  --danger:#B91C1C; --danger-subtle:#FEE2E2; --success:#15803D; --success-subtle:#DCFCE7;
+  --focus-ring:#7881FD; --focus-ring-danger:#F3594E; --focus-ring-neutral:#6E717F;
+  --focus-band:3px; --focus-line:1px;
+  --sans:"Geist",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --m-fast:100ms; --m-base:200ms; --m-slow:300ms; --m-expressive:700ms;
+  --e-out:cubic-bezier(0.23,1,0.32,1);
+  --r-1:16px; --r-2:8px; --r-3:4px;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.5; }
+.wrap { max-width:1080px; margin:0 auto; padding:56px 32px 120px; }
+.kicker { font:600 12px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin:0 0 12px; }
+h1 { font-size:clamp(40px,6vw,64px); font-weight:600; letter-spacing:-.03em; line-height:1.05; margin:0 0 20px; max-width:14ch; }
+h1 .pt { display:inline-block; width:.26em; height:.26em; background:var(--accent); border-radius:50%; margin-left:.12em; }
+.lede { color:var(--text-2); margin:0; max-width:56ch; font-size:20px; }
+section.proof { margin-top:104px; }
+.proof h2 { font-size:30px; font-weight:600; letter-spacing:-.02em; margin:0 0 8px; }
+.proof .obs { color:var(--text-2); margin:0 0 28px; max-width:60ch; }
+.demo-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:14px; }
+.demo-head b { font-size:16px; font-weight:600; }
+.btn { font:600 13px var(--sans); color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:var(--r-3); padding:0 12px; height:2.25rem; cursor:pointer; transition:background-color var(--m-fast) var(--e-out); }
+.btn:hover { background:var(--surface-hover); }
+.btn.on { background:var(--text); color:var(--bg); border-color:var(--text); }
+.stage { border-radius:var(--r-1); background:var(--surface); padding:32px; }
+.verdict { margin:14px 0 0; font:600 13px/1.5 var(--mono); color:var(--text-2); letter-spacing:.01em; display:flex; flex-wrap:wrap; gap:6px 22px; }
+.verdict .ko { color:var(--danger); } .verdict .ok { color:var(--success); }
+details.prov { margin-top:28px; border-top:1px solid var(--border); padding-top:14px; max-width:68ch; color:var(--text-2); }
+details.prov summary { cursor:pointer; font-weight:600; color:var(--text); }
+details.prov p { margin:12px 0 0; }
+details.prov b { color:var(--text); }
+
+/* ── 01 · le même gris ── */
+.dossier { --t: var(--border-strong); display:grid; grid-template-columns:1.1fr .9fr; gap:32px; background:var(--bg); border-radius:var(--r-2); padding:28px; }
+.dossier h4 { margin:0 0 18px; font-size:18px; font-weight:600; letter-spacing:-.01em; }
+.dossier label { display:block; font-size:13px; font-weight:500; color:var(--text-2); margin:0 0 6px; }
+.field { height:2.75rem; border:1px solid var(--t); border-radius:var(--r-3); background:var(--bg); padding:0 12px; display:flex; align-items:center; color:var(--text-3); font-size:15px; margin-bottom:16px; }
+.field.filled { color:var(--text); }
+.choices { display:grid; gap:8px; margin-bottom:16px; }
+.choice { border:1px solid transparent; border-radius:var(--r-3); padding:8px 12px; font-size:15px; display:flex; justify-content:space-between; }
+.choice.picked { border-color:var(--t); }
+.choice small { color:var(--text-3); font-size:13px; }
+.cardo { border:1px solid var(--t); border-radius:var(--r-2); padding:18px; margin-bottom:18px; }
+.cardo b { display:block; font-size:15px; margin-bottom:4px; } .cardo p { margin:0; color:var(--text-2); font-size:14px; }
+table.tbl { width:100%; border-collapse:collapse; font-size:14px; }
+.tbl th { text-align:left; font:600 11px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); padding:8px 0; border-bottom:1px solid var(--t); }
+.tbl td { padding:10px 0; border-bottom:1px solid var(--t); }
+.tbl tr:last-child td { border-bottom:0; }
+.role { font:600 11px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin:0 0 8px; display:flex; align-items:center; gap:8px; }
+.role i { width:14px; height:0; border-top:1px solid var(--t); }
+.dial { display:flex; align-items:center; gap:14px; margin-top:22px; font:600 13px var(--mono); color:var(--text-2); }
+.dial input { flex:1; max-width:22rem; accent-color:var(--text); }
+.dial span { min-width:8rem; text-align:right; }
+.dial input:focus-visible { outline:1px solid var(--focus-ring-neutral); outline-offset:3px; }
+
+/* ── 02 · ce qui reste ── */
+.dash { --shadow:0 18px 40px -28px rgba(5,6,17,.5); background:var(--bg); border-radius:var(--r-2); padding:0; display:grid; grid-template-columns:180px 1fr; min-height:26rem; overflow:hidden; border:1px solid var(--border);
+  transition:border-color var(--m-slow) var(--e-out); }
+.dash * { transition:background-color var(--m-slow) var(--e-out), border-color var(--m-slow) var(--e-out), box-shadow var(--m-slow) var(--e-out), color var(--m-slow) var(--e-out); }
+.d-nav { background:var(--surface); border-right:1px solid var(--border); padding:18px 12px; display:grid; align-content:start; gap:4px; font-size:14px; }
+.d-nav span { padding:6px 10px; border-radius:var(--r-3); color:var(--text-2); }
+.d-nav span.on { background:var(--primary-subtle); color:var(--primary); font-weight:500; }
+.d-main { padding:20px 24px; display:grid; align-content:start; gap:18px; }
+.d-bar { display:flex; justify-content:space-between; align-items:center; }
+.d-bar b { font-size:18px; font-weight:600; }
+.d-btn { font:600 13px var(--sans); height:2.25rem; padding:0 12px; border-radius:var(--r-3); border:1px solid var(--border); background:var(--bg); color:var(--text); }
+.d-btn.p { background:var(--primary); border-color:var(--primary); color:var(--on-primary); }
+.d-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.d-kpi { border:1px solid var(--border); border-radius:var(--r-2); padding:12px 14px; background:var(--bg); box-shadow:var(--shadow); }
+.d-kpi small { display:block; font:600 11px var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
+.d-kpi strong { display:block; font-size:22px; font-weight:600; margin-top:2px; }
+.d-kpi strong.g { color:var(--success); }
+.d-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.d-in { height:2.5rem; border:1px solid var(--border-strong); border-radius:var(--r-3); background:var(--bg); padding:0 10px; display:flex; align-items:center; font-size:14px; color:var(--text-3); }
+.d-in.err { border-color:var(--danger); color:var(--text); }
+.d-card { border:1px solid var(--border); border-radius:var(--r-2); padding:14px; background:var(--bg); font-size:14px; box-shadow:var(--shadow); }
+.d-card b { display:block; margin-bottom:6px; }
+.d-card i { display:block; height:8px; border-radius:99px; background:var(--surface-hover); margin-top:8px; width:70%; }
+.d-card i + i { width:45%; }
+.d-tag { display:inline-block; font:600 11px var(--mono); border-radius:var(--r-3); padding:3px 8px; background:var(--success-subtle); color:var(--success); }
+/* les couches qui tombent */
+.dash.s1 { --shadow:none; }
+.dash.s2 .d-nav, .dash.s2 .d-nav span.on, .dash.s2 .d-btn.p, .dash.s2 .d-tag, .dash.s2 .d-card i, .dash.s2 .d-kpi, .dash.s2 .d-card, .dash.s2 .d-in { background:var(--bg); }
+.dash.s2 .d-card i { background:transparent; border-top:1px solid var(--border); border-radius:0; height:0; margin-top:14px; }
+.dash.s3, .dash.s3 * { color:var(--text) !important; }
+.dash.s3 .d-btn.p { border-color:var(--text); } .dash.s3 .d-in.err { border-color:var(--text); }
+/* la version sans traits : construite au fond seulement */
+.dash.bare, .dash.bare .d-nav, .dash.bare .d-kpi, .dash.bare .d-card, .dash.bare .d-btn, .dash.bare .d-in, .dash.bare .d-in.err { border-color:transparent; }
+.dash.bare .d-in { background:var(--surface); } .dash.bare .d-in.err { background:var(--danger-subtle); }
+.dash.bare .d-btn { background:var(--surface); }
+.dash.bare .d-kpi, .dash.bare .d-card { background:var(--surface); box-shadow:none; }
+.dash.bare.s2 .d-in, .dash.bare.s2 .d-btn, .dash.bare.s2 .d-kpi, .dash.bare.s2 .d-card, .dash.bare.s2 .d-in.err { background:var(--bg); }
+.dash.bare.s2 .d-card i { border-color:transparent; }
+.dash.bare.s3 .d-btn.p, .dash.bare.s3 .d-in.err { border-color:transparent; }
+.layers { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+.layer { font:600 12px var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); padding:6px 10px; border:1px solid var(--border); border-radius:99px; transition:opacity var(--m-slow) var(--e-out); }
+.layer.off { opacity:.3; text-decoration:line-through; }
+.which { font:600 12px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin:0 0 12px; }
+
+/* ── 03 · l'anneau ── */
+.rowc { display:flex; flex-wrap:wrap; gap:14px; align-items:center; background:var(--bg); border-radius:var(--r-2); padding:28px; }
+.c { --halo-band:var(--surface); --halo-stroke:var(--focus-ring-neutral); font:inherit; font-size:15px; color:var(--text); }
+.c:focus-visible { outline:var(--focus-line) solid var(--halo-stroke); outline-offset:var(--focus-band); box-shadow:0 0 0 var(--focus-band) var(--halo-band); }
+.c:focus { outline:none; } .c:focus-visible { outline:var(--focus-line) solid var(--halo-stroke); }
+.c-btn { height:2.75rem; padding:0 16px; border:1px solid var(--border); border-radius:var(--r-3); background:var(--bg); cursor:pointer; transition:background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out); }
+.c-btn:hover { background:var(--surface-hover); }
+.c-btn.p { background:var(--primary); border-color:var(--primary); color:var(--on-primary); --halo-band:var(--primary-subtle); --halo-stroke:var(--focus-ring); }
+.c-in { height:2.75rem; width:12rem; padding:0 12px; border:1px solid var(--border-strong); border-radius:var(--r-3); background:var(--bg); transition:border-color var(--m-fast) var(--e-out); }
+.c-in[aria-invalid="true"] { border-color:var(--danger); --halo-band:var(--danger-subtle); --halo-stroke:var(--focus-ring-danger); }
+.c-link { color:var(--primary); text-decoration:underline; text-underline-offset:3px; border-radius:2px; --halo-band:var(--primary-subtle); --halo-stroke:var(--focus-ring); padding:2px 3px; }
+.tabs { display:flex; gap:4px; background:var(--surface); padding:4px; border-radius:99px; }
+.tab { height:2.25rem; padding:0 14px; border:0; border-radius:99px; background:transparent; cursor:pointer; }
+.tab[aria-selected="true"] { background:var(--bg); font-weight:600; --halo-band:var(--primary-subtle); --halo-stroke:var(--focus-ring); }
+.tab:focus-visible { outline-offset:2px; }
+.read { margin-top:14px; display:grid; gap:4px; font:600 13px/1.6 var(--mono); color:var(--text-2); min-height:4.8rem; }
+.read b { color:var(--text); }
+
+@media (max-width:48rem) { .dossier { grid-template-columns:1fr; } .dash { grid-template-columns:1fr; } .d-nav { display:none; } .d-kpis { grid-template-columns:1fr 1fr; } .stage { padding:18px; } }
+@media (prefers-reduced-motion: reduce) { .dash, .dash * { transition:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Fondation · Bordures</p>
+  <h1>Le rôle du trait décide de tout<span class="pt"></span></h1>
+  <p class="lede">Un même gris n'a ni la même couleur, ni le même seuil, ni le même droit au retrait, selon qu'il délimite, marque un état, groupe ou sépare. La valeur ne dit rien ; l'usage dit tout.</p>
+
+  <!-- ═══════════ 01 ═══════════ -->
+  <section class="proof" id="p1">
+    <p class="kicker">01 · Le même gris, quatre rôles</p>
+    <h2>Un champ qu'on ne voit pas est un champ qu'on ne remplit pas</h2>
+    <p class="obs">Sur cet écran, tous les traits sont exactement le même gris. Quand il pâlit, ils ne meurent pas ensemble.</p>
+    <div class="stage">
+      <div class="demo-head"><b>Un dossier : deux champs, un choix, une carte, un tableau — un seul gris pour tous les traits</b></div>
+      <div class="dossier" id="dossier">
+        <div>
+          <h4>Dossier n° 4 218</h4>
+          <p class="role"><i></i>Délimiter</p>
+          <label>Nom du requérant</label><div class="field filled">Marchand, Léa</div>
+          <label>Adresse</label><div class="field">12 rue des Lices…</div>
+          <p class="role"><i></i>Marquer un état</p>
+          <div class="choices">
+            <div class="choice">Audience publique <small>salle 2</small></div>
+            <div class="choice picked">Audience à huis clos <small>choisi</small></div>
+            <div class="choice">Sur pièces <small>sans audience</small></div>
+          </div>
+        </div>
+        <div>
+          <p class="role"><i></i>Grouper</p>
+          <div class="cardo"><b>Prochaine échéance</b><p>Mémoire en réponse attendu avant le 3 octobre. Deux pièces manquent au dossier.</p></div>
+          <p class="role"><i></i>Séparer</p>
+          <table class="tbl"><thead><tr><th>Pièce</th><th>Déposée</th></tr></thead><tbody>
+            <tr><td>Assignation</td><td>12 août</td></tr><tr><td>Conclusions</td><td>29 août</td></tr><tr><td>Bordereau</td><td>—</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <div class="dial"><label for="grey">Le gris du trait</label><input id="grey" type="range" min="0" max="100" value="0"><span id="greyv"></span></div>
+      <p class="verdict" id="v1"></p>
+    </div>
+    <details class="prov"><summary>Règles &amp; sources</summary>
+      <p><b>Observation.</b> Quatre traits du même gris ne rendent pas le même service. La carte et le tableau restent lisibles quand leur trait s'efface : l'espace et le fond faisaient déjà le travail. Le champ, lui, n'existe que par son trait ; l'état choisi aussi.</p>
+      <p><b>Règle.</b> Le rôle du trait décide de son seuil. Un trait qui <i>délimite</i> ou qui <i>marque un état</i> atteint la lisibilité sur son fond, vérifiée ; un trait qui <i>groupe</i> ou <i>sépare</i> en est exempté — et le séparateur vient en dernier, après l'espace et le fond. Le rôle se déclare au registre, il ne se devine pas à l'écran. (B1, B2, principe de tête)</p>
+      <p><b>Réglage FILI.</b> Deux gris : le trait courant (grouper, séparer) et le trait fort (délimiter). Les paires trait / fond sont déclarées ; un fond non déclaré est interdit — réserve d'Auteur, à repeser à l'ouverture du contrat.</p>
+    </details>
+  </section>
+
+  <!-- ═══════════ 02 ═══════════ -->
+  <section class="proof" id="p2">
+    <p class="kicker">02 · Ce qui reste quand tout tombe</p>
+    <h2>Le trait vient en dernier — et c'est lui qui reste</h2>
+    <p class="obs">En contraste forcé, le système retire les ombres, les fonds, les couleurs. Il garde les traits, et les recolore.</p>
+    <div class="stage">
+      <div class="demo-head"><b>Un tableau de bord, puis le même construit au fond seulement</b><button class="btn" id="p2go">Rejouer</button></div>
+      <p class="which" id="which">Avec ses traits</p>
+      <div class="dash" id="dash">
+        <nav class="d-nav"><span class="on">Dossiers</span><span>Audiences</span><span>Pièces</span><span>Équipe</span></nav>
+        <div class="d-main">
+          <div class="d-bar"><b>Dossiers en cours</b><div><button class="d-btn">Filtrer</button> <button class="d-btn p">Nouveau dossier</button></div></div>
+          <div class="d-kpis">
+            <div class="d-kpi"><small>Ouverts</small><strong>42</strong></div>
+            <div class="d-kpi"><small>En retard</small><strong>3</strong></div>
+            <div class="d-kpi"><small>Clos ce mois</small><strong class="g">17</strong></div>
+          </div>
+          <div class="d-row">
+            <div class="d-in">Rechercher un dossier…</div>
+            <div class="d-in err">4 218 — numéro inconnu</div>
+          </div>
+          <div class="d-row">
+            <div class="d-card"><b>Marchand c/ Ville</b><span class="d-tag">à jour</span><i></i><i></i></div>
+            <div class="d-card"><b>Succession Aubry</b><span class="d-tag">à jour</span><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="layers"><span class="layer" id="l1">Ombres</span><span class="layer" id="l2">Fonds</span><span class="layer" id="l3">Couleurs</span><span class="layer" id="l4">Traits</span></div>
+    </div>
+    <details class="prov"><summary>Règles &amp; sources</summary>
+      <p><b>Observation.</b> Privée de ses ombres, de ses fonds et de ses couleurs, une interface tracée se lit encore : on trouve les champs, les boutons, les cartes. La même interface construite au fond seulement devient une page blanche où du texte flotte.</p>
+      <p><b>Règle.</b> Le trait vient en dernier — l'espace d'abord, le fond ensuite — mais tout composant interactif garde un trait qui le délimite, parce que c'est ce qui survit dans l'environnement le plus dégradé. Le mode contraste forcé ne se neutralise jamais (règle C16, chez Couleur).</p>
+      <p><b>Réglage FILI.</b> Un champ et un bouton secondaire portent toujours leur trait, au gris fort. Une carte peut n'en porter qu'un pâle, ou aucun.</p>
+    </details>
+  </section>
+
+  <!-- ═══════════ 03 ═══════════ -->
+  <section class="proof" id="p3">
+    <p class="kicker">03 · L'anneau, au clavier</p>
+    <h2>L'anneau est un signal de clavier</h2>
+    <p class="obs">Cinq vraies commandes. Le halo apparaît d'un coup, dehors, sans rien déplacer — et le clic ne montre rien.</p>
+    <div class="stage">
+      <div class="demo-head"><b>Une rangée de commandes — à parcourir au clavier (Tab), puis à la souris</b></div>
+      <div class="rowc" id="rowc">
+        <button class="c c-btn" type="button">Filtrer</button>
+        <button class="c c-btn p" type="button">Nouveau dossier</button>
+        <input class="c c-in" type="text" placeholder="Rechercher…" aria-label="Rechercher">
+        <input class="c c-in" type="text" value="4 218 — inconnu" aria-invalid="true" aria-label="Numéro de dossier">
+        <a class="c c-link" href="#p3">Voir les pièces</a>
+        <div class="tabs" role="tablist"><button class="c tab" role="tab" aria-selected="true">Ouverts</button><button class="c tab" role="tab" aria-selected="false">Clos</button></div>
+      </div>
+      <div class="read" id="read"><span>Rien n'a le focus.</span></div>
+    </div>
+    <details class="prov"><summary>Règles &amp; sources</summary>
+      <p><b>Observation.</b> Au clavier, on ne sait où l'on est que par ce que l'écran montre. À la souris, le geste se commente lui-même : l'objet cliqué répond, et le focus qu'elle laisse derrière elle ne marque rien.</p>
+      <p><b>Règle.</b> L'anneau se pose dehors, s'ajoute à la bordure d'état sans la remplacer, garde la même largeur partout, apparaît sans délai ni animation, et ne se montre qu'au clavier. Il n'est jamais supprimé sans remplacement ; une seule exception, déclarée. La couleur d'un trait, elle, peut s'animer au cran rapide. (B5 à B12)</p>
+      <p><b>Réglage FILI.</b> Un halo : une bande de 3 px collée à l'objet, fermée par un trait de 1 px, de la famille de l'objet — neutre, marque ou danger. Dette ouverte : l'anneau est d'une seule couleur ; sur un fond imprévisible, la question de l'anneau bicolore se rouvre.</p>
+    </details>
+  </section>
+</div>
+
+<script>
+/* ── 01 · le gris du trait, et le contraste lu sur le rendu ── */
+(() => {
+  const d = document.getElementById("dossier"), r = document.getElementById("grey"), v = document.getElementById("v1"), gv = document.getElementById("greyv");
+  const hex = (h) => [1,3,5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+  const lin = (c) => c <= .03928 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4;
+  const lum = (rgb) => .2126 * lin(rgb[0]) + .7152 * lin(rgb[1]) + .0722 * lin(rgb[2]);
+  const strong = hex("#6E717F"), bg = [1, 1, 1];
+  const say = () => {
+    const t = r.value / 100;
+    const mix = strong.map((c, i) => c + (bg[i] - c) * t);
+    const col = `rgb(${mix.map((c) => Math.round(c * 255)).join(",")})`;
+    d.style.setProperty("--t", col);
+    const cr = (lum(bg) + .05) / (lum(mix) + .05);
+    gv.textContent = `${cr.toFixed(1).replace(".", ",")}:1 sur le fond`;
+    const ok = cr >= 3;
+    v.innerHTML = `<span class="${ok ? "ok" : "ko"}">Délimiter — ${ok ? "le champ se voit" : "le champ a disparu"}</span><span class="${ok ? "ok" : "ko"}">Marquer un état — ${ok ? "le choix se lit" : "le choix ne se lit plus"}</span><span>Grouper — exempté, la carte se lit</span><span>Séparer — exempté, le tableau se lit</span>`;
+  };
+  r.addEventListener("input", say); say();
+})();
+
+/* ── 02 · les couches tombent, deux fois ── */
+(() => {
+  const dash = document.getElementById("dash"), which = document.getElementById("which"), L = [1,2,3,4].map((i) => document.getElementById("l" + i));
+  let timers = [];
+  const wait = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const set = (bare, s) => { dash.className = "dash" + (bare ? " bare" : "") + (s >= 1 ? " s1" : "") + (s >= 2 ? " s2" : "") + (s >= 3 ? " s3" : "");
+    L.forEach((l, i) => l.classList.toggle("off", i < s || (bare && i === 3))); };
+  function play() {
+    timers.forEach(clearTimeout); timers = [];
+    set(false, 0); which.textContent = "Avec ses traits";
+    wait(1400, () => set(false, 1)); wait(2600, () => set(false, 2)); wait(3800, () => set(false, 3));
+    wait(6400, () => { set(true, 0); which.textContent = "Le même, construit au fond seulement"; });
+    wait(7800, () => set(true, 1)); wait(9000, () => set(true, 2)); wait(10200, () => set(true, 3));
+    wait(13000, () => { which.textContent = "Il ne reste rien qui délimite"; });
+  }
+  document.getElementById("p2go").addEventListener("click", play);
+  new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { play(); o.disconnect(); } }, { threshold: .5 }).observe(dash);
+})();
+
+/* ── 03 · l'anneau, lu sur le rendu ── */
+(() => {
+  const row = document.getElementById("rowc"), read = document.getElementById("read");
+  let pointer = false;
+  row.addEventListener("pointerdown", () => { pointer = true; });
+  row.addEventListener("keydown", () => { pointer = false; });
+  const name = (el) => el.getAttribute("aria-label") || el.textContent.trim() || el.placeholder;
+  row.addEventListener("focusin", (e) => {
+    const el = e.target, before = el.getBoundingClientRect();
+    requestAnimationFrame(() => {
+      const cs = getComputedStyle(el), after = el.getBoundingClientRect();
+      const visible = el.matches(":focus-visible");
+      if (!visible) { read.innerHTML = `<span><b>${name(el)}</b> — au clic : rien. L'objet a répondu, le focus ne se montre pas.</span>`; return; }
+      const stroke = parseFloat(cs.outlineWidth), band = parseFloat(cs.outlineOffset);
+      const moved = Math.abs(before.width - after.width) + Math.abs(before.left - after.left);
+      const family = el.matches("[aria-invalid=true]") ? "danger" : el.matches(".p, .c-link, [aria-selected=true]") ? "marque" : "neutre";
+      read.innerHTML = `<span><b>${name(el)}</b> — halo lu sur le rendu : bande ${band} px + trait ${stroke} px, dehors · famille ${family} · anneau sans transition : ${/outline|box-shadow|all/.test(cs.transitionProperty) ? "NON — il s'anime" : "0 ms"} · l'objet n'a pas bougé (${moved.toFixed(0)} px)</span>` +
+        (el.matches("[aria-invalid=true]") ? `<span>La bordure rouge est restée : l'anneau s'ajoute, il ne remplace pas.</span>` : "");
+    });
+  });
+  row.addEventListener("focusout", () => { setTimeout(() => { if (!row.contains(document.activeElement)) read.innerHTML = "<span>Rien n'a le focus.</span>"; }, 10); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Témoin — la page Adaptation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Témoin — 9 septembre 2026. La page Adaptation : trois preuves retenues sur
+   les six scènes de la doctrine du jour (le seuil · la hauteur · le pli), puis
+   le registre entier. Les scènes sont celles de la doctrine, reprises telles
+   quelles ; l'habillage prend les jetons du kit. Décor de scène hors chaîne :
+   les couleurs et rayons des maquettes d'application ne font pas foi. */
+:root{
+  --bg:#FFFFFF; --surface:#F3F4F6; --surface-2:#E6E7EB;
+  --border:#E6E7EB; --border-strong:#6E717F;
+  --text:#151725; --text-2:#505362; --text-3:#8A8C9B;
+  --primary:#4F46E5; --primary-subtle:#E2E6FF; --on-primary:#F9FAFF; --accent:#75E242;
+  --ok:#15803D; --warn:#B91C1C;
+  --sans:"Geist",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --m-fast:100ms; --m-base:200ms; --m-slow:300ms; --m-expressive:700ms;
+  --e-out:cubic-bezier(0.23,1,0.32,1);
+  --r-1:16px; --r-2:8px; --r-3:4px; --r-4:4px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--text); font:400 16px/1.5 var(--sans); -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px; margin:0 auto; padding:56px 32px 120px}
+.kicker{font:600 12px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin:0 0 12px}
+h1{font-size:clamp(40px,6vw,64px); font-weight:600; letter-spacing:-.03em; line-height:1.05; margin:0 0 20px; max-width:16ch; text-wrap:balance}
+h1 .pt{display:inline-block; width:.26em; height:.26em; background:var(--accent); border-radius:50%; margin-left:.12em}
+.lede{color:var(--text-2); margin:0; max-width:56ch; font-size:20px}
+.lede b{color:var(--text); font-weight:600}
+.note{font:400 13px/1.6 var(--mono); color:var(--text-3); max-width:60ch; margin:24px 0 0}
+section.proof{margin-top:104px}
+.proof h2{font-size:30px; font-weight:600; letter-spacing:-.02em; margin:0 0 8px; max-width:24ch; text-wrap:balance}
+.proof .obs{color:var(--text-2); margin:0 0 28px; max-width:60ch}
+.proof .obs b{color:var(--text); font-weight:600}
+.after{color:var(--text-2); margin:24px 0 0; max-width:60ch}
+.after b{color:var(--text); font-weight:600}
+p{margin:0}
+strong{font-weight:600; color:var(--text)}
+.btn{font:600 13px var(--sans); color:var(--text); background:var(--bg); border:1px solid var(--border-strong); border-radius:var(--r-3); padding:0 14px; height:36px; display:inline-flex; align-items:center; cursor:default}
+.btn.p{background:var(--primary); border-color:var(--primary); color:var(--on-primary)}
+:focus-visible{outline:2px solid var(--primary); outline-offset:2px}
+details.prov{margin-top:28px; border-top:1px solid var(--border); max-width:60ch}
+details.prov summary{cursor:pointer; padding:14px 0; font-weight:600; list-style:none; display:flex; justify-content:space-between}
+details.prov summary::after{content:"+"; color:var(--text-3)}
+details.prov[open] summary::after{content:"–"}
+details.prov .body{padding-bottom:20px; display:grid; gap:12px; color:var(--text-2); font-size:15px; line-height:1.6}
+details.prov .id{font:600 11px/1 var(--mono); color:var(--primary); letter-spacing:.06em; margin-right:6px}
+details.prov .tag{font:600 11px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-right:6px}
+
+/* ── maquette d'application (décor) ── */
+.app{display:flex; flex-direction:column; height:100%; background:var(--bg); font-size:14px}
+.app-bar{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border-bottom:1px solid var(--border); background:var(--bg)}
+.app-bar .titre{font-weight:600; font-size:15px}
+.app-corps{flex:1; min-height:0; display:flex}
+.liste{border-right:1px solid var(--border); background:var(--surface); overflow:hidden; min-width:0}
+.l-item{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); cursor:default; min-width:0}
+.l-item.on{background:var(--primary-subtle); box-shadow:inset 3px 0 0 var(--primary)}
+.l-item .pastille{width:8px; height:8px; border-radius:99px; background:var(--border-strong)}
+.l-item.urgent .pastille{background:var(--warn)}
+.l-item.fait .pastille{background:var(--ok)}
+.l-item .nom{font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.l-item .meta{font:400 12px var(--mono); color:var(--text-3); white-space:nowrap}
+.fiche{padding:18px 20px; overflow:hidden; min-width:0; background:var(--bg)}
+.fiche h4{margin:0 0 2px; font-size:17px; font-weight:600; letter-spacing:-.01em}
+.fiche .sur{font:400 12.5px var(--mono); color:var(--text-3); margin-bottom:16px}
+.champs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 18px; margin-bottom:18px}
+.champ{min-width:0}
+.champ small{display:block; font:500 10.5px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px}
+.champ span{font-size:13.5px; color:var(--text)}
+.fiche .corps{font-size:13.5px; color:var(--text-2); line-height:1.55; margin:0 0 18px; max-width:34rem}
+.actions{display:flex; gap:8px; flex-wrap:wrap}
+.retour{display:inline-flex; align-items:center; gap:6px; font:500 13px var(--sans); color:var(--primary); border:0; background:none; padding:0; cursor:default}
+
+/* ── le banc : surface d'essai + poignée ── */
+.banc-wrap{display:flex; align-items:stretch; gap:0; margin:0 0 12px}
+.banc{
+  position:relative;
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-1);
+  background:var(--bg);
+  overflow:hidden;
+  flex:0 0 auto;
+  box-shadow:0 24px 48px -36px rgba(10,12,25,.35);
+}
+.scene{container-type:inline-size; width:100%; height:100%}
+.poignee{
+  flex:0 0 auto; width:26px; align-self:stretch;
+  display:flex; align-items:center; justify-content:center;
+  cursor:ew-resize; touch-action:none; background:none; border:0; padding:0;
+  color:var(--border-strong);
+}
+.poignee:hover,.poignee:focus-visible{color:var(--primary)}
+.poignee:focus-visible{outline:2px solid var(--primary); outline-offset:2px; border-radius:var(--r-4)}
+.poignee i{display:block; width:4px; height:56px; border-radius:99px; background:currentColor; transition:height .18s var(--e-out)}
+.poignee:hover i{height:76px}
+.poignee-v{
+  height:26px; width:100%; cursor:ns-resize; touch-action:none; background:none; border:0;
+  display:flex; align-items:center; justify-content:center; color:var(--border-strong);
+}
+.poignee-v:hover,.poignee-v:focus-visible{color:var(--primary)}
+.poignee-v i{display:block; height:4px; width:56px; border-radius:99px; background:currentColor}
+
+.jauge{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 18px;
+  font:400 12.5px/1.5 var(--mono); color:var(--text-3);
+  padding-top:2px;
+}
+.jauge b{font-weight:600; color:var(--text); font-variant-numeric:tabular-nums}
+.jauge .verdict{color:var(--primary); font-weight:600}
+.jauge .verdict.deux{color:var(--ok)}
+
+/* ── maquette d'application (décor) ── */
+.app{display:flex; flex-direction:column; height:100%; background:var(--bg); font-size:14px}
+.app-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 14px; border-bottom:1px solid var(--border); background:var(--bg);
+}
+.app-bar .titre{font-weight:600; font-size:15px}
+.app-corps{flex:1; min-height:0; display:flex}
+
+/* liste */
+.liste{border-right:1px solid var(--border); background:var(--surface); overflow:hidden; min-width:0}
+.l-item{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px;
+  padding:10px 14px; border-bottom:1px solid var(--border); cursor:default; min-width:0;
+}
+.l-item.on{background:var(--primary-subtle); box-shadow:inset 3px 0 0 var(--primary)}
+.l-item .pastille{width:8px; height:8px; border-radius:99px; background:var(--border-strong)}
+.l-item.urgent .pastille{background:var(--warn)}
+.l-item.fait .pastille{background:var(--ok)}
+.l-item .nom{font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.l-item .meta{font:400 12px var(--mono); color:var(--text-3); white-space:nowrap}
+.l-item .sous{grid-column:2; font-size:12.5px; color:var(--text-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+/* fiche */
+.fiche{padding:18px 20px; overflow:hidden; min-width:0; background:var(--bg)}
+.fiche h4{margin:0 0 2px; font-size:17px; font-weight:600; letter-spacing:-.01em}
+.fiche .sur{font:400 12.5px var(--mono); color:var(--text-3); margin-bottom:16px}
+.champs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 18px; margin-bottom:18px}
+.champ{min-width:0}
+.champ small{display:block; font:500 10.5px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px}
+.champ span{font-size:13.5px; color:var(--text)}
+.fiche .corps{font-size:13.5px; color:var(--text-2); line-height:1.55; margin:0 0 18px; max-width:34rem}
+.actions{display:flex; gap:8px; flex-wrap:wrap}
+.btn{
+  font:600 13px var(--sans); border:1px solid var(--border-strong); background:var(--bg); color:var(--text);
+  border-radius:var(--r-3); padding:0 14px; height:36px; display:inline-flex; align-items:center; cursor:default;
+}
+.btn.p{background:var(--primary); border-color:var(--primary); color:var(--on-primary)}
+.retour{
+  display:inline-flex; align-items:center; gap:6px; font:500 13px var(--sans); color:var(--primary);
+  border:0; background:none; padding:0; cursor:default;
+}
+
+/* ═══ 02 · le seuil ═══ */
+#banc-seuil{height:420px}
+#banc-seuil .vue{display:grid; grid-template-columns:1fr 26rem; height:100%; min-height:0}
+#banc-seuil .zone-gauche{position:relative; min-width:0; overflow:hidden; border-right:1px solid var(--border)}
+#banc-seuil .liste{border-right:0; height:100%; display:none}
+#banc-seuil .fantome{
+  position:absolute; inset:10px; border:1px dashed var(--border-strong); border-radius:var(--r-2);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  color:var(--text-3); text-align:center; padding:12px; background:
+    repeating-linear-gradient(135deg,transparent 0 9px,var(--surface) 9px 10px);
+}
+#banc-seuil .fantome .t{font:500 11px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase}
+#banc-seuil .fantome .m{font:400 12.5px var(--mono); color:var(--warn)}
+#banc-seuil .fiche{height:100%; overflow:hidden}
+#banc-seuil .retour-ligne{margin-bottom:14px}
+@container (min-width:44.5rem){
+  #banc-seuil .vue{grid-template-columns:minmax(17rem,20rem) minmax(0,1fr)} /* la liste à sa largeur de travail, la place gagnée à la fiche (10 sept.) */
+  #banc-seuil .liste{display:block}
+  #banc-seuil .fantome{display:none}
+  #banc-seuil .retour-ligne{display:none}
+}
+.rappel{
+  display:flex; gap:10px; align-items:flex-start; margin-top:20px; padding:14px 16px;
+  background:var(--surface); border-radius:var(--r-2); max-width:44rem;
+}
+.rappel .n{font:600 11px/1.6 var(--mono); color:var(--primary); letter-spacing:.08em}
+.rappel p{margin:0; font-size:14px}
+
+/* ═══ 04 · la hauteur ═══ */
+#banc-haut{width:100%; max-width:520px; height:420px}
+#banc-haut .scene{container-type:size}
+#banc-haut .app-corps{position:relative; overflow:hidden}
+#banc-haut .fond{padding:14px; flex:1}
+#banc-haut .voile{position:absolute; inset:0; background:rgba(15,17,26,.28)}
+#banc-haut .feuille{
+  position:absolute; left:0; right:0; bottom:0; background:var(--bg);
+  border-top-left-radius:var(--r-1); border-top-right-radius:var(--r-1);
+  padding:16px 18px 18px; box-shadow:0 -18px 40px -30px rgba(10,12,25,.6);
+}
+#banc-haut .feuille .poig{width:36px; height:4px; border-radius:99px; background:var(--border-strong); margin:0 auto 12px}
+#banc-haut .etat{font:500 11px var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3)}
+@container (max-height:34rem){
+  #banc-haut .voile{display:none}
+  #banc-haut .feuille{top:0; border-radius:0; box-shadow:none; padding-top:14px}
+  #banc-haut .feuille .poig{display:none}
+}
+
+/* ═══ 06 · les plans ═══ */
+.pupitre{
+  padding:48px 0; display:flex; justify-content:center; align-items:center;
+  min-height:840px; background:var(--surface); border-radius:var(--r-1); overflow:hidden;
+}
+.livre{
+  /* perspective sur le parent direct des plans. 1500 / 32° : le bord proche gagne
+     16 %, assez pour lire le biseau, pas assez pour que l'appareil se déforme */
+  position:relative; display:flex; perspective:1500px; perspective-origin:50% 50%;
+  transition:width .34s var(--e-out), height .34s var(--e-out);
+}
+.livre[data-sens="col"]{flex-direction:column}
+.livre::after{
+  content:''; position:absolute; left:4%; right:4%; bottom:-26px; height:32px;
+  background:radial-gradient(ellipse at center,rgba(10,12,25,.24),rgba(10,12,25,0) 72%);
+  filter:blur(6px); pointer-events:none;
+}
+.pan{
+  position:relative; background:var(--bg); overflow:hidden; z-index:1;
+  border:1px solid var(--border-strong);
+  box-shadow:0 18px 40px -30px rgba(10,12,25,.45);
+  transition:transform .34s var(--e-out), flex-basis .34s var(--e-out);
+  backface-visibility:hidden; flex:0 0 auto;
+}
+.livre[data-sens="row"] .pan{height:100%}
+.livre[data-sens="col"] .pan{width:100%}
+/* un plan reste face à l'œil, l'autre part en biseau : la référence plate rend le pli lisible */
+.livre[data-sens="row"] .pan.a{transform-origin:right center; transform:rotateY(var(--a,0deg)); border-radius:var(--r-1) 0 0 var(--r-1)}
+.livre[data-sens="row"] .pan.b{border-left:0; border-radius:0 var(--r-1) var(--r-1) 0}
+.livre[data-sens="col"] .pan.a{transform-origin:center bottom; transform:rotateX(calc(-1 * var(--a,0deg))); border-radius:var(--r-1) var(--r-1) 0 0}
+.livre[data-sens="col"] .pan.b{border-top:0; border-radius:0 0 var(--r-1) var(--r-1)}
+.livre.seul .pan.b{display:none}
+.livre.seul .pan.a{border-radius:var(--r-1)}
+.volume{position:absolute; pointer-events:none; z-index:9; opacity:var(--vol,0); transition:opacity .34s var(--e-out)}
+.livre[data-sens="row"] .pan.a .volume{top:0; bottom:0; right:0; width:52px; background:linear-gradient(90deg,rgba(10,12,25,0),rgba(10,12,25,.13))}
+.livre[data-sens="row"] .pan.b .volume{top:0; bottom:0; left:0;  width:30px; background:linear-gradient(-90deg,rgba(10,12,25,0),rgba(10,12,25,.07))}
+.livre[data-sens="col"] .pan.a .volume{left:0; right:0; bottom:0; height:46px; background:linear-gradient(180deg,rgba(10,12,25,0),rgba(10,12,25,.13))}
+.livre[data-sens="col"] .pan.b .volume{left:0; right:0; top:0;    height:26px; background:linear-gradient(0deg,rgba(10,12,25,0),rgba(10,12,25,.07))}
+.frontiere{
+  position:absolute; z-index:8; pointer-events:none; opacity:0; transition:opacity .3s;
+  font:600 9px var(--mono); letter-spacing:.08em; text-transform:uppercase;
+}
+.livre.choisie .frontiere{opacity:1}
+
+/* contenus */
+.vue{position:absolute; inset:0; display:flex; flex-direction:column; padding:18px 20px; overflow:hidden}
+.vue .tete{font:500 9.5px var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:7px}
+.vue .exp{font:400 10.5px var(--mono); color:var(--text-3); margin-bottom:4px}
+.vue h5{margin:0 0 8px; font-size:16px; font-weight:600; letter-spacing:-.01em; line-height:1.25}
+.vue .texte{font-size:13px; line-height:1.55; color:var(--text-2); margin:0}
+.vue .brouillon{font-size:13px; line-height:1.55; color:var(--text-2); margin:0}
+.curseur{display:inline-block; width:1px; height:11px; background:var(--primary); vertical-align:-1px; animation:cli 1.1s steps(2) infinite}
+@keyframes cli{50%{opacity:0}}
+.vue .l-item{padding:7px 8px; font-size:11px; grid-template-columns:auto 1fr; gap:7px}
+.vue .l-item .nom{font-size:11px}
+.vue .repondre{
+  display:flex; align-items:center; gap:8px; border-top:1px solid var(--border);
+  margin-top:auto; padding-top:9px; font-size:11px; color:var(--text-3);
+}
+.rond{width:26px; height:26px; border-radius:99px; background:var(--primary); color:var(--on-primary);
+  display:flex; align-items:center; justify-content:center; font-size:12px; flex:0 0 auto}
+.clavier-couche{
+  position:absolute; left:0; right:0; bottom:0; z-index:7; padding:0 16px 16px;
+  pointer-events:none; display:none;
+}
+.clavier-couche.plein{display:flex; justify-content:center; gap:5px}
+.clavier-couche.scinde{display:grid; grid-template-columns:1fr 1fr}
+.clavier-couche.scinde > div{display:flex; justify-content:center; gap:5px}
+.clav-fixe{position:absolute; left:0; right:0; bottom:16px; padding:0 16px; display:flex; justify-content:center; gap:5px; z-index:7}
+.vue.recouverte{padding-bottom:104px}
+.moitie{
+  flex:1 1 0; min-width:0; max-width:15rem;          /* largeur de travail du demi-clavier */
+  display:flex; flex-direction:column; gap:3px; padding:6px 5px;
+  background:var(--surface); border-radius:var(--r-3);
+  box-shadow:0 8px 20px -14px rgba(10,12,25,.55);
+}
+.rang{display:flex; gap:3px; justify-content:center}
+.touche{flex:1 1 0; min-width:0; height:26px; border-radius:var(--r-4); background:var(--bg);
+  border:1px solid var(--border); font:500 10px/24px var(--sans); text-align:center; color:var(--text-2)}
+
+.reglages{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px}
+.groupe{display:flex; border:1px solid var(--border); border-radius:var(--r-3); overflow:hidden}
+.groupe button{
+  font:500 12.5px var(--sans); color:var(--text-2); background:var(--bg); border:0;
+  border-right:1px solid var(--border); padding:9px 15px; cursor:pointer; min-height:38px;
+}
+.groupe button:last-child{border-right:0}
+.groupe button[aria-pressed="true"]{background:var(--primary-subtle); color:var(--primary); font-weight:600}
+.groupe button:focus-visible{outline:2px solid var(--primary); outline-offset:-2px}
+
+
+.pupitre-wrap{overflow-x:auto; padding-bottom:8px}
+@media (prefers-reduced-motion:reduce){ .chassis,.zone-app,.livre,.pan,.volume{transition:none} .curseur{animation:none} }
+
+/* ── le registre ── */
+section.reg{margin-top:120px}
+.reg h2{font-size:30px; font-weight:600; letter-spacing:-.02em; margin:0 0 8px}
+.reg .obs{color:var(--text-2); margin:0 0 32px; max-width:60ch}
+.reg h3{font-size:17px; font-weight:600; margin:40px 0 12px}
+.grille-3{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px}
+.fiche-g{border-top:2px solid var(--text); padding-top:12px}
+.fiche-g h4{font-size:16px; font-weight:600; margin:0 0 6px}
+.fiche-g p{font-size:14.5px; color:var(--text-2); line-height:1.55}
+.fiche-g .val{font:600 12px var(--mono); color:var(--primary); display:block; margin-top:10px}
+.tw{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:14px}
+th,td{text-align:left; padding:9px 12px 9px 0; border-bottom:1px solid var(--border); vertical-align:top}
+th{font:600 10.5px var(--mono); letter-spacing:.09em; text-transform:uppercase; color:var(--text-3)}
+td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--text-2); white-space:nowrap}
+td .z{font-weight:600}
+tr.souligne td{background:var(--primary-subtle)}
+.legende-t{font:400 12.5px/1.6 var(--mono); color:var(--text-3); margin-top:8px; max-width:70ch}
+ol.regles{counter-reset:r; list-style:none; padding:0; margin:0; max-width:60ch; display:grid; gap:14px}
+ol.regles li{counter-increment:r; position:relative; padding-left:38px; color:var(--text-2); font-size:15.5px; line-height:1.55}
+ol.regles li::before{content:counter(r); position:absolute; left:0; top:1px; width:24px; height:24px; border-radius:99px; background:var(--surface-2); font:600 12px/24px var(--mono); text-align:center; color:var(--text)}
+ol.regles b{color:var(--text); font-weight:600}
+footer{margin-top:104px; padding-top:20px; border-top:1px solid var(--border); color:var(--text-3); font:400 13px/1.7 var(--mono)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="kicker">Témoin · Fondation · Adaptation · 9 septembre 2026</p>
+<h1>L'adaptation ne se décide plus par la largeur de l'écran<span class="pt" aria-hidden="true"></span></h1>
+<p class="lede">Le breakpoint répond à « quel appareil ? ». La question utile est <b>combien de choses peut-on faire
+  tenir ici en même temps, et la tâche y gagne-t-elle une étape ?</b> L'unité n'est plus le palier : c'est la zone —
+  une chose sur laquelle on travaille sans en perdre une autre de vue. Une zone ne connaît que trois grandeurs :
+  la place, la hauteur, la visée.</p>
+<p class="note">Les surfaces de cette page ne suivent pas la fenêtre. Chacune a sa propre largeur, et l'interface
+  qu'elle contient ne connaît qu'elle. C'est la seule façon d'essayer le modèle : sur un banc, pas sur un navigateur
+  qu'on étire.</p>
+
+<!-- ══════════ 1 · le seuil ══════════ -->
+<section class="proof" id="p1">
+  <p class="kicker">Preuve 1 · La place</p>
+  <h2>La deuxième zone n'arrive pas quand il y a plus de place — elle arrive quand il y en a assez</h2>
+  <p class="obs">La liste a besoin de 17 rem pour faire son travail, la fiche de 26. Tant que la place gagnée reste
+    en dessous de leur somme, elle ne sert à rien et le montre. Personne n'a écrit 712 px : c'est une addition.
+    Au-delà, la place gagnée va à la liste, jamais à la taille — <b>la fiche garde ses 26 rem</b>.</p>
+
+  <div class="banc-wrap" data-banc="seuil">
+    <div class="banc" id="banc-seuil" style="width:560px">
+      <div class="scene">
+        <div class="vue">
+          <div class="zone-gauche">
+            <div class="fantome">
+              <span class="t">Zone liste</span>
+              <span class="m" data-manque>manque 12,5 rem</span>
+            </div>
+            <div class="liste">
+              <div class="l-item urgent on"><span class="pastille"></span><span class="nom">Chaufferie B — fuite circuit</span><span class="meta">08:30</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">Ascenseur 2 — visite</span><span class="meta">10:15</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">Groupe froid — filtre</span><span class="meta">11:00</span></div>
+              <div class="l-item fait"><span class="pastille"></span><span class="nom">Éclairage parking -2</span><span class="meta">13:45</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">Portail livraison</span><span class="meta">15:00</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">CTA hall — courroie</span><span class="meta">16:20</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">Détection incendie</span><span class="meta">17:00</span></div>
+              <div class="l-item"><span class="pastille"></span><span class="nom">Adoucisseur — sel</span><span class="meta">17:30</span></div>
+            </div>
+          </div>
+
+          <div class="fiche">
+            <div class="retour-ligne"><button class="retour" type="button" tabindex="-1">← Toutes les interventions</button></div>
+            <h4>Chaufferie B — fuite circuit primaire</h4>
+            <p class="sur">INT-2418 · signalée 07:52 · urgente</p>
+            <div class="champs">
+              <div class="champ"><small>Site</small><span>Nord — sous-sol 1</span></div>
+              <div class="champ"><small>Créneau</small><span>08:30 – 10:00</span></div>
+              <div class="champ"><small>Technicien</small><span>L. Meyer</span></div>
+              <div class="champ"><small>Pièce</small><span>Vanne 3 voies DN40</span></div>
+            </div>
+            <p class="corps">Perte de pression relevée sur le circuit primaire depuis la nuit.
+              Appoint automatique déclenché quatre fois. Isoler le circuit avant intervention,
+              le secours reste sur la chaufferie A.</p>
+            <div class="actions">
+              <button class="btn p" type="button" tabindex="-1">Démarrer</button>
+              <button class="btn" type="button" tabindex="-1">Réassigner</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="poignee" type="button" aria-label="Largeur de la surface d'essai" role="separator" aria-orientation="vertical"><i></i></button>
+  </div>
+
+  <div class="jauge">
+    <span>place <b data-jauge="rem">—</b> <span data-jauge="px">—</span></span>
+    <span>liste 17 <span style="color:var(--border-strong)">+</span> gouttière 1,5 <span style="color:var(--border-strong)">+</span> fiche 26 <span style="color:var(--border-strong)">=</span> <b>44,5 rem</b> · au-delà, la place va à la fiche</span>
+    <span class="verdict" data-jauge="verdict">une zone</span>
+  </div>
+
+
+  <p class="after">Une zone existe quand elle atteint sa largeur de travail — sinon elle n'existe pas du tout. C'est ce
+    qui rend la colonne étranglée structurellement impossible, sans qu'aucune règle n'ait à l'interdire. Et la fiche ne
+    bouge pas d'un pixel au passage du seuil : la liste s'installe dans la place qui vient d'être gagnée, exactement
+    celle qui lui manquait. <b>Gagner une zone ne fait jamais reculer quelqu'un qui était en train de lire.</b></p>
+
+  <details class="prov">
+    <summary>Règles &amp; sources</summary>
+    <div class="body">
+      <p><span class="id">I3</span>Une zone existe quand elle atteint sa largeur de travail. Le seuil est calculé depuis le contenu, jamais décrété. Pas de demi-zone.</p>
+      <p><span class="id">I1 · I2</span>Plus de place ne donne jamais plus grand. La place gagnée a trois emplois : montrer plus de contenu, rapprocher deux étapes, ou rester blanche. Le texte ne dépasse jamais sa mesure.</p>
+      <p><span class="id">C2</span>Une zone qui apparaît ne fait jamais reculer. Ce que l'utilisateur regardait reste, et une seule chose change de structure à la fois.</p>
+      <p><span class="tag">Observation</span>une colonne sous sa largeur de travail tronque les titres et casse les champs. <span class="tag">Règle</span>le seuil est une somme. <span class="tag">Réglage</span>liste 17 · gouttière 1,5 · fiche 26 → 44,5 rem, recalculé, jamais écrit.</p>
+      <p>Sources : doctrine d'adaptation du 9 septembre 2026 (scènes 02 et 03, fondues) · V1 « seuil dérivé du contenu, jamais un breakpoint d'appareil copié » · décision d'Auteur #120 (un régime est une mise en page — la page a un seuil, la zone en a autant que de sommes).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════ 2 · la hauteur ══════════ -->
+<section class="proof" id="p2">
+  <p class="kicker">Preuve 2 · La grandeur oubliée</p>
+  <h2>La hauteur décide du sort des panneaux</h2>
+  <p class="obs">Un écran partagé, un pliable ouvert, une fenêtre écrasée : la largeur ne bouge pas, la hauteur
+    s'effondre. Une feuille de 300 px dans 340 px de haut n'est plus une feuille.</p>
+
+  <div style="max-width:520px">
+    <div class="banc" id="banc-haut">
+      <div class="scene">
+        <div class="app">
+          <div class="app-bar"><span class="titre">Interventions</span><span class="etat" data-etat>feuille</span></div>
+          <div class="app-corps">
+            <div class="fond">
+              <div class="l-item" style="border:0"><span class="pastille"></span><span class="nom">Ascenseur 2 — visite</span><span class="meta">10:15</span></div>
+              <div class="l-item" style="border:0"><span class="pastille"></span><span class="nom">Groupe froid — filtre</span><span class="meta">11:00</span></div>
+              <div class="l-item" style="border:0"><span class="pastille"></span><span class="nom">Portail livraison</span><span class="meta">15:00</span></div>
+            </div>
+            <div class="voile"></div>
+            <div class="feuille">
+              <div class="poig"></div>
+              <h4 style="margin:0 0 2px; font-size:16px; font-weight:600">Réassigner l'intervention</h4>
+              <p class="sur" style="margin-bottom:14px">INT-2418 · Chaufferie B</p>
+              <div class="champs" style="grid-template-columns:1fr">
+                <div class="champ"><small>Technicien actuel</small><span>L. Meyer</span></div>
+                <div class="champ"><small>Disponible</small><span>R. Diaz — 09:00</span></div>
+              </div>
+              <div class="actions"><button class="btn p" type="button" tabindex="-1">Confirmer</button><button class="btn" type="button" tabindex="-1">Annuler</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="poignee-v" type="button" aria-label="Hauteur de la surface d'essai" role="separator" aria-orientation="horizontal"><i></i></button>
+    <div class="jauge"><span>hauteur <b data-jauge3="rem">—</b> <span data-jauge3="px">—</span></span><span class="verdict" data-jauge3="verdict">feuille</span></div>
+  </div>
+
+
+  <p class="after">Une feuille et une modale sont des aveux de manque de place : elles suivent la hauteur, et sous
+    le plancher elles redeviennent une page. Une confirmation destructive, elle, reste bloquante quelle que soit la
+    place — <b>elle n'était pas là pour économiser de l'espace</b>.</p>
+
+  <details class="prov">
+    <summary>Règles &amp; sources</summary>
+    <div class="body">
+      <p><span class="id">C5</span>Un panneau suit la hauteur : feuille au-dessus du plancher, page pleine en dessous. Ce qui est bloquant par nature (confirmation destructive) ne suit pas la place.</p>
+      <p><span class="tag">Réglage</span>plancher 34 rem. <span class="tag">À sourcer</span>le protocole K4 pose 568 px (35,5 rem) en hauteur de référence ; les deux valeurs doivent se rejoindre ou se dire.</p>
+      <p><span class="tag">Frontière</span>un clavier ouvert retire 15 rem (le demi-clavier) : il recouvre, il ne prend pas de place — voir la preuve 3.</p>
+      <p>Sources : doctrine d'adaptation du 9 septembre 2026 (scène 04) · protocole K4, hauteur de référence.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════ 3 · le pli ══════════ -->
+<section class="proof" id="p3">
+  <p class="kicker">Preuve 3 · Les segments et les plans</p>
+  <h2>Le même appareil, trois postures — et une place qui n'est pas continue</h2>
+  <p class="obs">Fermé, ouvert à plat, entrouvert. Aucune n'est un appareil différent ; ce qui change est la place.
+    À plat, l'écran est continu : si l'interface se divise, elle <b>choisit</b> où — là où les largeurs de travail
+    tombent. Entrouvert, la division est <b>imposée</b> : au milieu, orientée par la tenue — et chaque moitié retombe
+    exactement sur le format de l'écran fermé.</p>
+
+  <div class="pupitre-wrap">
+  <div class="pupitre">
+    <div class="livre" id="livre" data-sens="row" style="--a:0deg">
+      <div class="pan a"><div class="vue"></div><div class="volume"></div></div>
+      <div class="pan b"><div class="vue"></div><div class="volume"></div></div>
+      <div class="clavier-couche" id="clav-couche"></div>
+    </div>
+  </div>
+
+  <div class="reglages">
+    <div class="groupe" role="group" aria-label="Tenue">
+      <button type="button" data-tenue="portrait" aria-pressed="true">Tenue portrait</button>
+      <button type="button" data-tenue="paysage" aria-pressed="false">Tenue paysage</button>
+    </div>
+    <div class="groupe" role="group" aria-label="État de l'appareil">
+      <button type="button" data-etat="ferme" aria-pressed="false">Fermé</button>
+      <button type="button" data-etat="plat" aria-pressed="true">Ouvert à plat</button>
+      <button type="button" data-etat="plie" aria-pressed="false">Entrouvert</button>
+    </div>
+    <button type="button" id="btn-brut" class="btn" style="cursor:pointer">Ignorer la frontière</button>
+  </div>
+
+  <div class="jauge">
+    <span>place <b data-pl="place">—</b></span>
+    <span data-pl="frontiere">—</span>
+    <span class="verdict" data-pl="verdict">—</span>
+  </div>
+  <p class="legende-t" data-pl="note">—</p>
+
+  </div>
+
+  <p class="after">Le pli ne retire pas de place, il la <b>divise en plans</b> : entrouvert, la liste reste sous les
+    yeux pendant qu'on travaille le message — un aller-retour en moins, sans un pixel de plus. Chaque plan a le format
+    de l'écran fermé : le pliable ne réclame pas un troisième gabarit, il en réclame deux qu'on a déjà. Et le clavier
+    n'est pas dans la composition : c'est une couche au-dessus, ancrée aux mains — entier tant que le segment tient
+    dans la portée des pouces, scindé au-delà, seul objet qui ait le droit de traverser une frontière.</p>
+
+  <details class="prov">
+    <summary>Règles &amp; sources</summary>
+    <div class="body">
+      <p><span class="id">P1</span>La place se mesure par segments continus, pas en largeur totale. Un pli, une barre système, une découpe coupent la place. Une zone ne traverse jamais une coupure.</p>
+      <p><span class="id">P2</span>Le pli divise la place en plans. Deux plans autorisent deux zones que la largeur seule ne justifiait pas.</p>
+      <p><span class="id">P3</span>Une frontière choisie se place où les largeurs de travail la font tomber, et peut être décentrée. Une frontière imposée est médiane, orientée par la tenue, et elle prime : la composition se recale dessus.</p>
+      <p><span class="id">P4</span>Chaque plan de l'appareil entrouvert a le format de l'écran fermé (1 / 1,4) : un plan est la composition à une zone, replacée telle quelle.</p>
+      <p><span class="id">V2</span>Le premier plan porte le contexte, le second le travail et la saisie. Le contenu ne change pas de plan quand la frontière se recale : elle glisse, il reste.</p>
+      <p><span class="id">V3 · V4</span>Un composant de saisie suit les mains, pas la place : entier sous la portée des pouces, scindé au-delà. Le clavier est une couche, pas une zone ; chaque moitié s'étire jusqu'à sa largeur de travail (15 rem) puis se centre.</p>
+      <p><span class="id">C7</span>Les postures s'enchaînent plusieurs fois par heure : revenir à une posture rend exactement ce qu'on y avait laissé. La bascule n'est pas une navigation.</p>
+      <p><span class="tag">Observation</span>portée des pouces ≈ 40 rem — deux observations à nommer avant d'en faire une règle (la reprise tactile avait rétrogradé la zone d'atteinte).</p>
+      <p>Sources : doctrine d'adaptation du 9 septembre 2026 (scènes 05 et 06, fondues) · formats de pliables courants (fermé ≈ 1 / 1,4, ouvert ≈ 1,4 / 1).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════ le registre ══════════ -->
+<section class="reg" id="registre">
+  <p class="kicker">Répertoire</p>
+  <h2>Trois grandeurs, des largeurs de travail, aucun palier</h2>
+  <p class="obs">Ce qui a été coupé des preuves reste ici : la visée (elle appartient au tactile pour sa moitié précision),
+    et la table des surfaces, qui dit la même chose que les scènes en une ligne chacune.</p>
+
+  <div class="grille-3">
+    <div class="fiche-g"><h4>La place</h4><p>La largeur utile du conteneur, jamais celle de l'écran — mesurée par segments continus. Elle dit combien de zones tiennent.</p><span class="val">mesurée sur le conteneur</span></div>
+    <div class="fiche-g"><h4>La hauteur</h4><p>Elle dit si une zone est consultable ou seulement présente, et décide du sort des panneaux.</p><span class="val">plancher 34 rem · demi-clavier 15 rem</span></div>
+    <div class="fiche-g"><h4>La visée</h4><p>Deux moitiés. La <strong>précision</strong> — doigt ou pointeur — décide des cibles et de la densité (famille tactile, T6). La <strong>portée</strong> — où la main arrive — décide de quel segment reçoit l'action.</p><span class="val">cibles 48 / 32 px · portée ≈ 40 rem (observation)</span></div>
+  </div>
+
+  <h3>Les largeurs de travail</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Zone</th><th>Largeur de travail</th><th>Ce qu'elle protège</th></tr></thead>
+    <tbody>
+      <tr><td>Texte courant</td><td class="num">la mesure de lecture</td><td>bloquée : trois mesures en concurrence (16 px / 70, 17 px / 62, moteur 65ch)</td></tr>
+      <tr><td>Liste (titre + méta)</td><td class="num">17 – 20 rem</td><td>le titre ne se tronque pas</td></tr>
+      <tr><td>Fiche de détail</td><td class="num">26 rem</td><td>deux colonnes de champs sans repli</td></tr>
+      <tr><td>Détail rédigé</td><td class="num">34 rem</td><td>la mesure de lecture plus ses marges</td></tr>
+      <tr><td>Formulaire</td><td class="num">20 rem (confort 26)</td><td>étiquette et champ sur la même ligne</td></tr>
+      <tr><td>Navigation persistante</td><td class="num">15 rem · rail 4,5</td><td>le libellé le plus long, entier</td></tr>
+      <tr><td>Contexte / filtres</td><td class="num">16 rem</td><td>une valeur reste lisible avec son libellé</td></tr>
+      <tr><td>Saisie tenue à deux mains</td><td class="num">≤ 40 rem</td><td>au-delà, le centre est hors de portée : le composant se scinde</td></tr>
+      <tr><td>Demi-clavier</td><td class="num">15 rem</td><td>il s'étire jusque-là puis se centre — un clavier ne grandit pas</td></tr>
+    </tbody>
+  </table></div>
+  <p class="legende-t">Les seuils qui en découlent — 44,5 rem pour liste + fiche, ≈ 56 rem pour liste + détail rédigé, ≈ 71 rem pour
+    trois zones — ne s'écrivent nulle part. Ils se recalculent, comme les rayons descendent du rayon racine.</p>
+
+  <h3>Onze surfaces au banc</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Surface</th><th>Place</th><th>Hauteur</th><th>Visée</th><th>Zones</th></tr></thead>
+    <tbody>
+      <tr><td>Téléphone compact</td><td class="num">360</td><td class="num">haute</td><td class="num">doigt</td><td class="z">1</td></tr>
+      <tr><td>Grand téléphone</td><td class="num">430</td><td class="num">haute</td><td class="num">doigt</td><td class="z">1</td></tr>
+      <tr><td>Pliable fermé</td><td class="num">340</td><td class="num">haute</td><td class="num">doigt</td><td class="z">1</td></tr>
+      <tr><td>Pliable ouvert</td><td class="num">2 × 400</td><td class="num">moyenne</td><td class="num">doigt</td><td class="z">2, pli en gouttière</td></tr>
+      <tr><td>Pliable ouvert, partagé</td><td class="num">400</td><td class="num">moyenne</td><td class="num">doigt</td><td class="z">1</td></tr>
+      <tr><td>Pliable entrouvert</td><td class="num">800 (inchangée)</td><td class="num">moyenne</td><td class="num">doigt, 2 portées</td><td class="z">2, un plan chacune</td></tr>
+      <tr><td>Tablette portrait</td><td class="num">820</td><td class="num">haute</td><td class="num">doigt</td><td class="z">2</td></tr>
+      <tr class="souligne"><td>Tablette paysage</td><td class="num">1180</td><td class="num">moyenne</td><td class="num">doigt</td><td class="z">2 – 3</td></tr>
+      <tr><td>Fenêtre desktop étroite</td><td class="num">520</td><td class="num">haute</td><td class="num">pointeur</td><td class="z">1</td></tr>
+      <tr><td>Desktop plein écran</td><td class="num">1600</td><td class="num">haute</td><td class="num">pointeur</td><td class="z">3</td></tr>
+      <tr class="souligne"><td>Écran partagé</td><td class="num">1180</td><td class="num">basse</td><td class="num">doigt</td><td class="z">2, sans panneau</td></tr>
+    </tbody>
+  </table></div>
+  <p class="legende-t">Les deux lignes soulignées ont la même largeur et pas la même interface. Le téléphone compact et la
+    fenêtre desktop étroite ont le même nombre de zones et pas la même densité. Le pliable entrouvert mesure 800 px et n'en
+    offre jamais plus de 400 d'un seul tenant. Aucun palier de largeur ne sait dire l'un ni l'autre.</p>
+
+  <h3>Six règles</h3>
+  <p class="obs" style="margin-bottom:20px">Une interface ne s'adapte pas à un appareil. Elle s'adapte au nombre de choses qu'on peut y faire tenir
+    en même temps — et n'en fait tenir plus que si la tâche y gagne une étape.</p>
+  <ol class="regles">
+    <li><b>On compte des zones, pas des pixels.</b> Une zone est une chose sur laquelle on travaille sans en perdre une autre de vue.</li>
+    <li><b>Une zone existe quand elle atteint sa largeur de travail.</b> Le seuil est calculé depuis le contenu, jamais décrété. Pas de demi-zone.</li>
+    <li><b>Plus de place ne donne jamais plus grand.</b> Elle donne plus de contenu, moins d'étapes, ou du blanc assumé.</li>
+    <li><b>La visée décide des cibles, la place décide de la structure.</b> Deux décisions séparées ; rien d'essentiel derrière le survol.</li>
+    <li><b>Une zone qui apparaît ne fait jamais reculer.</b> Ce que l'utilisateur regardait reste, et une seule chose change de structure à la fois.</li>
+    <li><b>On ne change de structure que pour supprimer une étape.</b> Le reste est un changement gratuit, payé en apprentissage.</li>
+  </ol>
+
+  <h3>Ce qui tombe de la V1</h3>
+  <p class="obs"><b>compact / regular / expanded</b> — trois paliers nommés pour toute l'interface. L'unité n'est plus globale :
+    les états d'une zone se nomment par ce qui change, par pattern. Survit mot pour mot : « le composant répond à l'espace réel
+    de son conteneur ».</p>
+</section>
+
+<footer>
+  Témoin — 9 septembre 2026. Trois preuves retenues sur six scènes (visée → tactile ; étirement → fondu dans le seuil ;
+  pli → fondu dans les frontières). Aucune règle n'est acquise : ni mesure décidable au banc, ni piégée, ni séance de passage.
+  Y7 reste à la page (un seuil, décision #120) ; la zone est au composant.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var REM = 16;
+  var fmt = function(px){ return (px/REM).toFixed(1).replace('.',',') + ' rem'; };
+  /* ── poignée horizontale générique ── */
+  function poigneeH(wrap, onChange, min){
+    var banc = wrap.querySelector('.banc');
+    var poi  = wrap.querySelector('.poignee');
+    var MIN = min || 320;
+    function maxW(){ return wrap.clientWidth - poi.offsetWidth - 2; }
+    function set(w){
+      var m = maxW();
+      banc.style.width = Math.max(MIN, Math.min(w, m)) + 'px';
+      onChange(banc);
+    }
+    var startX=0, startW=0, dragging=false;
+    poi.addEventListener('pointerdown', function(e){
+      dragging=true; startX=e.clientX; startW=banc.offsetWidth;
+      poi.setPointerCapture(e.pointerId); e.preventDefault();
+    });
+    poi.addEventListener('pointermove', function(e){
+      if(!dragging) return;
+      set(startW + (e.clientX - startX));
+    });
+    poi.addEventListener('pointerup', function(){ dragging=false; });
+    poi.addEventListener('pointercancel', function(){ dragging=false; });
+    poi.setAttribute('tabindex','0');
+    poi.addEventListener('keydown', function(e){
+      var w = banc.offsetWidth, step = e.shiftKey ? 48 : 16;
+      if(e.key==='ArrowLeft'){ set(w-step); e.preventDefault(); }
+      if(e.key==='ArrowRight'){ set(w+step); e.preventDefault(); }
+      if(e.key==='Home'){ set(MIN); e.preventDefault(); }
+      if(e.key==='End'){ set(maxW()); e.preventDefault(); }
+    });
+    window.addEventListener('resize', function(){ set(banc.offsetWidth); });
+    set(banc.offsetWidth);
+  }
+
+  /* ── 02 · le seuil ── */
+  var wrapSeuil = document.querySelector('[data-banc="seuil"]');
+  if(wrapSeuil){
+    var SEUIL = 44.5 * REM; // 17 + 1,5 + 26
+    var jRem = document.querySelector('[data-jauge="rem"]');
+    var jPx  = document.querySelector('[data-jauge="px"]');
+    var jV   = document.querySelector('[data-jauge="verdict"]');
+    var manque = document.querySelector('[data-manque]');
+    poigneeH(wrapSeuil, function(banc){
+      var w = banc.querySelector('.scene').clientWidth;
+      jRem.textContent = fmt(w);
+      jPx.textContent = '· ' + Math.round(w) + ' px';
+      var deux = w >= SEUIL;
+      jV.textContent = deux ? 'deux zones' : 'une zone';
+      jV.classList.toggle('deux', deux);
+      if(!deux) manque.textContent = 'manque ' + ((SEUIL-w)/REM).toFixed(1).replace('.',',') + ' rem';
+    }, 360);
+  }
+
+  /* ── 04 · la hauteur ── */
+  var bancHaut = document.getElementById('banc-haut');
+  if(bancHaut){
+    var poiV = document.querySelector('.poignee-v');
+    var j3r = document.querySelector('[data-jauge3="rem"]');
+    var j3p = document.querySelector('[data-jauge3="px"]');
+    var j3v = document.querySelector('[data-jauge3="verdict"]');
+    var etat = document.querySelector('[data-etat]');
+    var MINH = 220, MAXH = 560;
+    function setH(h){
+      h = Math.max(MINH, Math.min(h, MAXH));
+      bancHaut.style.height = h + 'px';
+      j3r.textContent = fmt(h);
+      j3p.textContent = '· ' + Math.round(h) + ' px';
+      var plein = h <= 34*REM;
+      j3v.textContent = plein ? 'page pleine' : 'feuille';
+      j3v.classList.toggle('deux', plein);
+      etat.textContent = plein ? 'page pleine' : 'feuille';
+    }
+    var sy=0, sh=0, dg=false;
+    poiV.addEventListener('pointerdown', function(e){ dg=true; sy=e.clientY; sh=bancHaut.offsetHeight; poiV.setPointerCapture(e.pointerId); e.preventDefault(); });
+    poiV.addEventListener('pointermove', function(e){ if(dg) setH(sh + (e.clientY - sy)); });
+    poiV.addEventListener('pointerup', function(){ dg=false; });
+    poiV.setAttribute('tabindex','0');
+    poiV.addEventListener('keydown', function(e){
+      var h = bancHaut.offsetHeight, step = e.shiftKey ? 48 : 16;
+      if(e.key==='ArrowUp'){ setH(h-step); e.preventDefault(); }
+      if(e.key==='ArrowDown'){ setH(h+step); e.preventDefault(); }
+    });
+    setH(420);
+  }
+
+  /* ── 06 · les frontières ── */
+  var livre = document.getElementById('livre');
+  if(livre){
+    var ANGLE = 32;
+    var tenue = 'portrait', etat = 'plat', brut = false;
+    var jPlace = document.querySelector('[data-pl="place"]');
+    var jFront = document.querySelector('[data-pl="frontiere"]');
+    var jVerd  = document.querySelector('[data-pl="verdict"]');
+    var jNote  = document.querySelector('[data-pl="note"]');
+    var btnBrut = document.getElementById('btn-brut');
+    var panA = livre.querySelector('.pan.a .vue');
+    var panB = livre.querySelector('.pan.b .vue');
+    var couche = document.getElementById('clav-couche');
+
+    var T = {
+      clavG:'<div class="moitie"><div class="rang"><i class="touche">A</i><i class="touche">Z</i><i class="touche">E</i><i class="touche">R</i><i class="touche">T</i></div><div class="rang"><i class="touche">Q</i><i class="touche">S</i><i class="touche">D</i><i class="touche">F</i><i class="touche">G</i></div><div class="rang"><i class="touche">W</i><i class="touche">X</i><i class="touche">C</i><i class="touche">V</i></div></div>',
+      clavD:'<div class="moitie"><div class="rang"><i class="touche">Y</i><i class="touche">U</i><i class="touche">I</i><i class="touche">O</i><i class="touche">P</i></div><div class="rang"><i class="touche">H</i><i class="touche">J</i><i class="touche">K</i><i class="touche">L</i><i class="touche">M</i></div><div class="rang"><i class="touche">B</i><i class="touche">N</i><i class="touche">⌫</i><i class="touche">↵</i></div></div>'
+    };
+    T.clavPlein = T.clavG + T.clavD;
+
+    var msg = function(court){
+      return '<p class="exp">Aliya Reynolds · 9:41</p><h5>Relevés de mars</h5>' +
+        '<p class="texte">Abonnés en hausse de 18 % — ralentissement attendu après le pic de février.' +
+        (court ? '' : ' L\'engagement tient, la durée moyenne de lecture progresse pour le troisième mois. Je te mets le détail par canal en pièce jointe.') + '</p>';
+    };
+    var liste = function(n){
+      var v = ['Relevés de mars','Contrat P2 — avenant','Réunion jeudi 14 h','Facture 2418','Congés d\'été','Astreinte week-end'];
+      var h = '';
+      for(var i=0;i<n;i++) h += '<div class="l-item'+(i===0?' on':'')+'"><span class="pastille"></span><span class="nom">'+v[i]+'</span></div>';
+      return h;
+    };
+    var champ = '<div class="repondre"><span style="flex:1">Répondre à Aliya…</span><span class="rond">↑</span></div>';
+
+    function rendre(){
+      var ouvert = (etat !== 'ferme');
+      var sens = (tenue === 'portrait') ? 'row' : 'col';
+      var W, H, a, b;
+
+      if(tenue === 'portrait'){ W = ouvert ? 800 : 400; H = 571; }
+      else { W = 571; H = ouvert ? 800 : 400; }
+
+      livre.setAttribute('data-sens', sens);
+      livre.style.width = W + 'px';
+      livre.style.height = H + 'px';
+      livre.classList.toggle('seul', !ouvert);
+
+      var plie = (etat === 'plie');
+      livre.style.setProperty('--a', plie ? ANGLE + 'deg' : '0deg');
+      livre.style.setProperty('--vol', plie ? 1 : 0);
+
+      // répartition des deux panneaux
+      if(!ouvert){
+        a = 100; b = 0;                                  // un seul plan, il prend tout
+      } else if(plie && !brut){
+        a = 50; b = 50;                                  // frontière imposée : médiane
+      } else if(tenue === 'portrait'){
+        a = 34; b = 66;                                  // frontière choisie : liste étroite | message
+      } else {
+        a = 26; b = 74;                                  // frontière choisie : bandeau | message
+      }
+      var pa = livre.querySelector('.pan.a'), pb = livre.querySelector('.pan.b');
+      if(sens === 'row'){ pa.style.width = a+'%'; pb.style.width = b+'%'; pa.style.height=''; pb.style.height=''; }
+      else { pa.style.height = a+'%'; pb.style.height = b+'%'; pa.style.width=''; pb.style.width=''; }
+
+      // contenus — le clavier suit la portée : entier sous le seuil, scindé au-delà
+      var PORTEE = 640;                                     // 40 rem — seuil d'atteinte à deux mains
+      var segW = (plie && !brut && sens === 'row') ? W/2 : W;
+      var scinde = segW >= PORTEE;                          // le clavier suit la largeur du segment
+      // le contenu ne change jamais de plan : seule la frontière se déplace
+      if(!ouvert){
+        panA.innerHTML = msg(tenue === 'paysage') + champ;
+      } else {
+        var n = (sens === 'row') ? 6 : (plie && !brut ? 5 : 3);
+        panA.innerHTML = '<p class="tete">Boîte de réception</p>' + liste(n);
+        panB.innerHTML = msg(false) + champ;
+      }
+
+      // le clavier n'est pas dans le contenu : c'est une couche au-dessus, ancrée aux mains
+      couche.className = 'clavier-couche';
+      couche.innerHTML = '';
+      panA.classList.remove('recouverte'); panB.classList.remove('recouverte');
+      if(plie && !brut){
+        panB.innerHTML += '<div class="clav-fixe">' + T.clavPlein + '</div>';
+        panB.classList.add('recouverte');
+      } else if(scinde){
+        couche.className = 'clavier-couche scinde';
+        couche.innerHTML = '<div>' + T.clavG + '</div><div>' + T.clavD + '</div>';
+        panA.classList.add('recouverte'); panB.classList.add('recouverte');
+      } else {
+        couche.className = 'clavier-couche plein';
+        couche.innerHTML = T.clavPlein;
+        panA.classList.add('recouverte');
+        if(ouvert) panB.classList.add('recouverte');
+      }
+
+      // jauge
+      var pw = (sens === 'row') ? W/2 : W;
+      var ph = (sens === 'row') ? H : H/2;
+      jPlace.textContent = W + ' × ' + H + ' px'
+        + (plie && !brut ? '  ·  chaque plan ' + pw + ' × ' + ph + ' — le format fermé' : '');
+      jVerd.classList.toggle('deux', ouvert);
+      btnBrut.style.display = plie ? '' : 'none';
+      btnBrut.textContent = brut ? 'Suivre la frontière' : 'Ignorer la frontière';
+
+      if(!ouvert){
+        jFront.textContent = 'aucune frontière';
+        jVerd.textContent = 'un plan, une zone';
+        jNote.textContent = tenue === 'portrait'
+          ? 'Fermé, 250 px de large : une seule zone, le message et son clavier entier.'
+          : 'Fermé et tenu à plat, la hauteur manque avant la largeur : le message se coupe, le clavier tient toute la largeur.';
+      } else if(plie && !brut){
+        jFront.textContent = 'frontière imposée · médiane · ' + (sens==='row' ? 'verticale' : 'horizontale');
+        jVerd.textContent = 'deux plans, deux zones';
+        jNote.textContent = tenue === 'portrait'
+          ? 'Rien n\'a changé de plan : la frontière s\'est recalée de 34 / 66 à 50 / 50. Et chaque plan retombe sur 400 px, le format fermé — le clavier y tient entier, alors qu\'il devait se scindre à plat. C\'était la largeur, pas le pli.'
+          : 'Rien n\'a changé de plan : la frontière s\'est recalée de 26 / 74 à 50 / 50. La liste reste dans le plan relevé où l\'œil la parcourt, le message dans le plan proche où la main travaille.';
+      } else if(plie && brut){
+        jFront.textContent = 'frontière imposée · ignorée';
+        jVerd.textContent = 'une zone à cheval';
+        jNote.textContent = 'La composition a gardé sa frontière choisie, décentrée : elle ne tombe pas sur le pli. Une zone traverse la charnière et se casse en deux, sans qu\'un seul pixel ait été perdu.';
+      } else {
+        jFront.textContent = 'frontière choisie · ' + a + ' / ' + b + ' · ' + (sens==='row' ? 'verticale' : 'horizontale');
+        jVerd.textContent = 'un plan continu, deux zones';
+        jNote.textContent = tenue === 'portrait'
+          ? 'À plat, la division n\'est pas au milieu : elle tombe là où la liste atteint sa largeur de travail. Et 800 px d\'un seul tenant mettent le centre du clavier hors de portée — il se scinde et traverse la frontière, seule chose qui en ait le droit.'
+          : 'À plat en hauteur, la division est horizontale et décentrée : un bandeau de liste suffit. 571 px de large restent sous la portée : le clavier tient entier.';
+      }
+    }
+
+    document.querySelectorAll('.reglages [data-tenue]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.reglages [data-tenue]').forEach(function(o){o.setAttribute('aria-pressed','false')});
+        btn.setAttribute('aria-pressed','true'); tenue = btn.getAttribute('data-tenue'); brut = false; rendre();
+      });
+    });
+    document.querySelectorAll('.reglages [data-etat]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.reglages [data-etat]').forEach(function(o){o.setAttribute('aria-pressed','false')});
+        btn.setAttribute('aria-pressed','true'); etat = btn.getAttribute('data-etat'); brut = false; rendre();
+      });
+    });
+    btnBrut.addEventListener('click', function(){ brut = !brut; rendre(); });
+    rendre();
+  }
+
+})();
+</script>
+</body>
+</html>

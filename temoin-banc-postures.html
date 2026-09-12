@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Témoin — le banc des postures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Témoin — 10 septembre 2026. Le banc des postures : deux applications, une
+   seule mise en page écrite chacune, passées dans quatre appareils — Mobile,
+   Tablette, Desktop, Pliable. Aucun écran dessiné par appareil : le banc lit
+   la surface (posture, segments, largeur), applique les règles d'adaptation
+   et pose la composition. C'est le test du principe « Fili conçoit pour des
+   postures, pas pour des tailles d'écran ». Habillage aux jetons du kit ;
+   décor des maquettes hors chaîne. */
+:root{
+  --bg:#FFFFFF; --surface:#F3F4F6; --surface-2:#E6E7EB;
+  --border:#E6E7EB; --border-strong:#6E717F;
+  --text:#151725; --text-2:#505362; --text-3:#8A8C9B;
+  --primary:#4F46E5; --primary-subtle:#E2E6FF; --on-primary:#F9FAFF; --accent:#75E242;
+  --ok:#15803D; --warn:#B91C1C;
+  --sans:"Geist",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --m-fast:100ms; --m-base:200ms; --m-slow:300ms; --m-expressive:700ms;
+  --e-out:cubic-bezier(0.23,1,0.32,1);
+  --r-1:16px; --r-2:8px; --r-3:4px;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--text); font:400 16px/1.5 var(--sans); -webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px; margin:0 auto; padding:56px 32px 120px}
+.kicker{font:600 12px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin:0 0 12px}
+h1{font-size:clamp(36px,5vw,56px); font-weight:600; letter-spacing:-.03em; line-height:1.05; margin:0 0 20px; max-width:18ch; text-wrap:balance}
+h1 .pt{display:inline-block; width:.26em; height:.26em; background:var(--accent); border-radius:50%; margin-left:.12em}
+.lede{color:var(--text-2); margin:0; max-width:60ch; font-size:19px}
+.lede b{color:var(--text); font-weight:600}
+.note{font:400 13px/1.6 var(--mono); color:var(--text-3); max-width:70ch; margin:20px 0 0}
+p{margin:0}
+:focus-visible{outline:2px solid var(--primary); outline-offset:2px}
+
+/* ── la barre du banc ── */
+.bench{margin-top:48px; border:1px solid var(--border); border-radius:var(--r-1); overflow:hidden}
+.bar{display:flex; flex-wrap:wrap; gap:20px 32px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); background:var(--bg)}
+.grp{display:inline-flex; align-items:center; gap:8px; font:400 12px var(--mono); color:var(--text-3)}
+.grp .lab{letter-spacing:.08em; text-transform:uppercase; margin-right:4px}
+.btn{font:600 13px var(--sans); color:var(--text); background:var(--bg); border:1px solid var(--border); border-radius:var(--r-3); padding:0 12px; height:32px; display:inline-flex; align-items:center; cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--text); border-color:var(--text); color:var(--bg)}
+.btn:disabled{color:var(--text-3); cursor:default}
+.grp[hidden]{display:none}
+
+/* ── la scène ── */
+.stage{position:relative; background:var(--surface); min-height:700px; display:flex; align-items:center; justify-content:center; padding:56px 32px 64px; overflow:hidden}
+.readout{display:flex; justify-content:space-between; gap:24px; align-items:start; padding:14px 20px; border-bottom:1px solid var(--border); background:var(--bg)}
+.hud{display:grid; gap:4px; font:400 12px/1.5 var(--mono); color:var(--text-3); max-width:80ch}
+.hud b{font-weight:600; color:var(--text)}
+.hud em{font-style:normal; color:var(--primary)}
+.hud .why{color:var(--text-2)}
+.verdict{flex:none; font:600 12px/1.5 var(--mono); color:var(--ok); max-width:34ch; text-align:right; padding-top:2px}
+.verdict.leak{color:var(--warn)}
+
+/* l'appareil : une boîte en px, réduite à l'échelle pour tenir dans la scène */
+.holder{position:relative; transition:width var(--m-slow) var(--e-out), height var(--m-slow) var(--e-out)}
+.holder .device{position:absolute; left:0; top:0; transform-origin:left top}
+.device{position:relative; background:var(--bg); border:1px solid var(--border-strong); border-radius:18px; overflow:hidden;
+  box-shadow:0 34px 60px -40px rgba(10,12,25,.5); display:flex}
+.device .seg{position:relative; overflow:hidden; min-width:0; min-height:0}
+.device.fold .hinge{position:absolute; z-index:5; pointer-events:none; background:var(--border-strong); opacity:.35}
+.device.fold[data-hinge="vertical"] .hinge{top:0; bottom:0; left:50%; width:2px; margin-left:-1px}
+.device.fold[data-hinge="horizontal"] .hinge{left:0; right:0; top:50%; height:2px; margin-top:-1px}
+.device.fold[data-hinge="horizontal"]{flex-direction:column}
+.device.fold .seg.a::after{content:""; position:absolute; inset:0; pointer-events:none; opacity:var(--vol,0); transition:opacity var(--m-slow)}
+.device.fold[data-hinge="vertical"] .seg.a::after{background:linear-gradient(90deg,rgba(5,6,17,0) 70%,rgba(5,6,17,.12))}
+.device.fold[data-hinge="horizontal"] .seg.a::after{background:linear-gradient(180deg,rgba(5,6,17,0) 70%,rgba(5,6,17,.12))}
+.device.fold .seg.b::before{content:""; position:absolute; inset:0; pointer-events:none; opacity:var(--vol,0); transition:opacity var(--m-slow); z-index:4}
+.device.fold[data-hinge="vertical"] .seg.b::before{background:linear-gradient(-90deg,rgba(5,6,17,0) 80%,rgba(5,6,17,.07))}
+.device.fold[data-hinge="horizontal"] .seg.b::before{background:linear-gradient(0deg,rgba(5,6,17,0) 80%,rgba(5,6,17,.07))}
+.shadow{position:absolute; left:50%; bottom:22px; translate:-50% 0; width:var(--sw,600px); height:28px; border-radius:50%;
+  background:radial-gradient(ellipse at center, rgba(5,6,17,.22), rgba(5,6,17,0) 72%); filter:blur(6px); transition:width var(--m-slow)}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES DEUX APPLICATIONS — une seule mise en page écrite chacune.
+   Ce qui pilote la composition : trois attributs posés par le moteur du banc
+   sur la racine de l'app —
+     data-zones    1 · 2 · 3   combien de zones tiennent (somme des largeurs de travail)
+     data-posture  mobile · book · laptop · tablet · window
+     data-segments 1 · 2       la surface est-elle coupée par une frontière physique
+   En production, ces trois faits viendraient des requêtes de conteneur,
+   de device-posture et des segments de viewport. Jamais d'une largeur d'appareil.
+   ═══════════════════════════════════════════════════════════════════════ */
+.app{position:absolute; inset:0; display:grid; grid-template-columns:minmax(0,1fr); background:var(--bg); font-size:14px; color:var(--text); overflow:hidden; container-type:size}
+.app .zone{min-width:0; min-height:0; overflow:hidden; position:relative}
+.app .zone-head{font:600 10.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); padding:14px 16px 8px}
+.app .top{grid-area:top; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 16px; height:48px; border-bottom:1px solid var(--border); background:var(--bg)}
+.app .top .t{font-weight:600; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+.app .top .tabs,.app .top .ic{flex:none}
+.app .top .tabs{display:none; gap:4px}
+.app .top .tabs b{font:600 12px var(--sans); padding:6px 10px; border-radius:99px; background:var(--surface)}
+.app .top .tabs b.on{background:var(--text); color:var(--bg)}
+.app .top .ic{width:28px; height:28px; border-radius:99px; background:var(--primary-subtle)}
+/* commandes en bas : une couche, ancrée aux mains */
+.app .cmd{grid-area:cmd; display:flex; gap:8px; padding:10px 14px; border-top:1px solid var(--border); background:var(--bg); justify-content:center}
+.app .cmd .b{font:600 12px var(--sans); border:1px solid var(--border-strong); border-radius:var(--r-3); padding:6px 12px; background:var(--bg)}
+.app .cmd .b.p{background:var(--primary); border-color:var(--primary); color:var(--on-primary)}
+
+/* ── App 1 : le tableau de bord santé — quatre zones ──
+   rendez-vous (liste 17 rem) · patient (fiche 24 rem) · constantes (contexte 16 rem) · la courbe vit dans la fiche */
+.health{grid-template-areas:"top" "main" "cmd"; grid-template-rows:auto 1fr auto}
+.health .main{grid-area:main; display:grid; min-height:0; min-width:0; grid-template-columns:minmax(0,1fr); grid-template-areas:"sheet"}
+.health .list{grid-area:list; background:var(--surface); border-right:1px solid var(--border); display:none}
+.health .sheet{grid-area:sheet; overflow:hidden}
+.health .ctx{grid-area:ctx; background:var(--surface); border-left:1px solid var(--border); display:none}
+.health[data-zones="1"] .top .tabs{display:flex}
+.health[data-zones="2"] .main{grid-template-columns:17rem minmax(0,1fr); grid-template-areas:"list sheet"}
+.health[data-zones="2"] .list{display:block}
+.health[data-zones="3"] .main{grid-template-columns:17rem minmax(0,1fr) 16rem; grid-template-areas:"list sheet ctx"}
+.health[data-zones="3"] .list,.health[data-zones="3"] .ctx{display:block}
+/* la frontière physique verticale : liste d'un côté, fiche de l'autre — la frontière prime, elle est médiane */
+.health[data-segments="2"][data-posture="book"] .main{grid-template-columns:50% 50%; grid-template-areas:"list sheet"}
+.health[data-segments="2"][data-posture="book"] .list{display:block}
+.health[data-segments="2"][data-posture="book"] .ctx{display:none}
+/* la frontière horizontale : contenu en haut, commandes et liste en bas (Laptop) */
+.health[data-segments="2"][data-posture="laptop"]{grid-template-areas:"top" "main" "low"; grid-template-rows:auto minmax(0,1fr) 50%} /* le bas est le second segment : exactement la moitié */
+.health[data-segments="2"][data-posture="laptop"] .main{grid-template-columns:minmax(0,1fr); grid-template-areas:"sheet"}
+.health[data-segments="2"][data-posture="laptop"][data-aside="1"] .main{grid-template-columns:minmax(0,1fr) 16rem; grid-template-areas:"sheet ctx"}
+.health[data-segments="2"][data-posture="laptop"][data-aside="1"] .ctx{display:block}
+.health[data-posture="laptop"]:not([data-aside="1"]) .inline-ctx{display:grid}
+.health[data-segments="2"][data-posture="laptop"] .low{display:grid; grid-template-rows:minmax(0,1fr) auto; grid-template-columns:minmax(0,1fr)}
+.health[data-segments="2"][data-posture="laptop"] .low .list{display:block; border:0; grid-area:auto}
+.health .low{grid-area:low; display:none}
+.health .cmd{display:flex}
+.health[data-segments="2"][data-posture="laptop"] .main + .cmd{display:none}
+.health[data-segments="2"][data-posture="laptop"] .low .cmd{display:flex}
+.health .low .cmd{display:none; grid-area:auto}
+/* en Laptop, la liste ne vit qu'en bas */
+.health[data-posture="laptop"] .main .list{display:none}
+/* le contenu */
+.r{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:10px 16px; border-bottom:1px solid var(--border); min-width:0}
+.r.on{background:var(--primary-subtle); box-shadow:inset 3px 0 0 var(--primary)}
+.r .dot{width:8px; height:8px; border-radius:99px; background:var(--border-strong)}
+.r.u .dot{background:var(--warn)} .r.ok .dot{background:var(--ok)}
+.r .n{font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.r .m{font:400 12px var(--mono); color:var(--text-3); white-space:nowrap}
+.sheet-in{padding:16px 18px; display:grid; gap:14px; align-content:start}
+.sheet-in h4{margin:0; font-size:17px; font-weight:600; letter-spacing:-.01em}
+.sheet-in .sub{font:400 12px var(--mono); color:var(--text-3); margin-top:-10px}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(6.5rem,100%),1fr)); gap:10px; min-width:0}
+.kpi{border:1px solid var(--border); border-radius:var(--r-2); padding:10px 12px; min-width:0}
+.kpi small{display:block; font:500 10px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:6px}
+.kpi b{font-size:18px; font-weight:600; letter-spacing:-.02em}
+.kpi b i{font:400 11px var(--mono); color:var(--text-3); margin-left:3px}
+.chart{border:1px solid var(--border); border-radius:var(--r-2); padding:12px 12px 8px; min-width:0}
+.chart small{display:block; font:500 10px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px}
+.chart svg{width:100%; height:96px; display:block}
+.chart .ln{fill:none; stroke:var(--primary); stroke-width:2; stroke-linejoin:round}
+.chart .ar{fill:var(--primary-subtle)}
+.chart .g{stroke:var(--border); stroke-width:1}
+.chart .d{fill:var(--bg); stroke:var(--primary); stroke-width:2}
+.txt{font-size:13.5px; color:var(--text-2); line-height:1.55; max-width:34rem}
+.ctx-in{padding:0 16px 16px; display:grid; gap:10px}
+.cst{display:flex; justify-content:space-between; gap:8px; font-size:13px; border-bottom:1px solid var(--border); padding:8px 0}
+.cst b{font-family:var(--mono); font-weight:600}
+.cst.w b{color:var(--warn)}
+/* à une zone, les onglets décident quel panneau est visible ; le banc montre la fiche */
+.health[data-zones="1"] .list,.health[data-zones="1"] .ctx{display:none}
+/* les constantes remontent dans la fiche quand la colonne de contexte n'existe pas */
+.health .inline-ctx{display:none}
+.health:not([data-zones="3"]):not([data-posture="laptop"]) .inline-ctx{display:grid}
+
+/* ── App 2 : la page du kit — trois zones ──
+   rail (navigation 15 rem) · lecture (détail rédigé 20 → 34 rem) · repères (contexte 16 rem) */
+.kit{grid-template-areas:"top" "main" "cmd"; grid-template-rows:auto 1fr auto}
+.kit .main{grid-area:main; display:grid; min-height:0; min-width:0; grid-template-columns:minmax(0,1fr); grid-template-areas:"read"}
+.kit .rail{grid-area:rail; display:none; background:var(--surface); border-right:1px solid var(--border); padding:16px 0}
+.kit .rail a{display:block; padding:7px 18px; font-size:13px; color:var(--text-2); text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.kit .rail a.on{color:var(--text); font-weight:600; box-shadow:inset 3px 0 0 var(--primary); background:var(--primary-subtle)}
+.kit .rail .h{font:600 10.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); padding:8px 18px 10px}
+.kit .read{grid-area:read; overflow:hidden; padding:22px 24px; display:grid; gap:14px; align-content:start}
+.kit .read .k{font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3)}
+.kit .read h3{margin:0; font-size:24px; font-weight:600; letter-spacing:-.025em; line-height:1.15; max-width:22ch; text-wrap:balance}
+.kit .read p{font-size:14px; line-height:1.6; color:var(--text-2); max-width:34rem}
+.kit .read p b{color:var(--text)}
+.kit .proof{border:1px solid var(--border); border-radius:var(--r-2); background:var(--surface); height:150px; display:grid; place-items:center; position:relative; overflow:hidden; max-width:44rem}
+.kit .proof .bx{position:absolute; border-radius:var(--r-3); background:var(--primary)}
+.kit .proof .lg{font:400 11px var(--mono); color:var(--text-3); position:absolute; left:12px; bottom:10px}
+.kit .aside{grid-area:aside; display:none; background:var(--surface); border-left:1px solid var(--border); padding:16px; font-size:12.5px; color:var(--text-2)}
+.kit .aside .h{font:600 10.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px}
+.kit .aside dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 10px}
+.kit .aside dt{font-family:var(--mono); color:var(--text-3)} .kit .aside dd{margin:0; color:var(--text)}
+.kit .cmd{display:none}
+.kit[data-zones="1"] .top .menu{display:inline-flex}
+.kit .top .menu{display:none; font:600 12px var(--sans); border:1px solid var(--border); border-radius:var(--r-3); padding:5px 10px}
+.kit[data-zones="2"] .main{grid-template-columns:15rem minmax(0,1fr); grid-template-areas:"rail read"}
+.kit[data-zones="2"] .rail{display:block}
+.kit[data-zones="3"] .main{grid-template-columns:15rem minmax(0,1fr) 16rem; grid-template-areas:"rail read aside"}
+.kit[data-zones="3"] .rail,.kit[data-zones="3"] .aside{display:block}
+/* frontière verticale : le rail et les repères d'un côté, la lecture de l'autre — la lecture ne traverse jamais le pli */
+.kit[data-segments="2"][data-posture="book"] .main{grid-template-columns:50% 50%; grid-template-areas:"rail read"}
+.kit[data-segments="2"][data-posture="book"] .rail{display:block}
+.kit[data-segments="2"][data-posture="book"] .aside{display:none}
+.kit[data-segments="2"][data-posture="book"] .rail .inline-aside{display:block; padding:16px 18px 0; border-top:1px solid var(--border); margin-top:12px}
+.kit .rail .inline-aside{display:none}
+/* frontière horizontale : la lecture en haut, la navigation en bas */
+.kit[data-segments="2"][data-posture="laptop"]{grid-template-areas:"top" "main" "low"; grid-template-rows:auto minmax(0,1fr) 50%}
+.kit[data-segments="2"][data-posture="laptop"] .main{grid-template-columns:minmax(0,1fr); grid-template-areas:"read"}
+.kit[data-segments="2"][data-posture="laptop"][data-aside="1"] .main{grid-template-columns:minmax(0,1fr) 16rem; grid-template-areas:"read aside"}
+.kit[data-segments="2"][data-posture="laptop"][data-aside="1"] .aside{display:block}
+.kit[data-posture="laptop"] .main .rail{display:none}
+.kit .low{grid-area:low; display:none; border-top:1px solid var(--border); background:var(--surface)}
+.kit[data-segments="2"][data-posture="laptop"] .low{display:grid; grid-template-columns:repeat(3,1fr); gap:0}
+.kit .low .col{padding:14px 0} .kit .low .col a{display:block; padding:6px 18px; font-size:13px; color:var(--text-2); text-decoration:none}
+.kit .low .col a.on{color:var(--text); font-weight:600}
+.kit .low .col .h{font:600 10.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); padding:0 18px 8px}
+
+/* ── le registre du banc ── */
+.reg{margin-top:56px; display:grid; gap:12px; max-width:70ch}
+.reg h2{font-size:24px; font-weight:600; letter-spacing:-.02em; margin:0 0 4px}
+.reg p{color:var(--text-2); font-size:15px; line-height:1.6}
+.reg table{border-collapse:collapse; font-size:13px; width:100%; margin-top:8px}
+.reg th{font:600 10.5px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); text-align:left; padding:8px 10px 8px 0; border-bottom:1px solid var(--border-strong)}
+.reg td{padding:9px 10px 9px 0; border-bottom:1px solid var(--border); vertical-align:top; color:var(--text-2)}
+.reg td:first-child{color:var(--text); font-weight:500}
+.reg td.m{font-family:var(--mono); white-space:nowrap}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">Témoin · 10 septembre 2026 · le banc des postures</p>
+  <h1>Deux applications, une mise en page chacune, quatre appareils<span class="pt"></span></h1>
+  <p class="lede">Aucun écran n&rsquo;a été dessiné par appareil. Chaque app déclare <b>ses zones et leurs largeurs de travail</b> ; le banc lit la surface — posture, segments, place — et pose la composition. Si une app tient partout sans frame dédiée, le principe tient. Si elle réclame un écran quelque part, le banc le dit en rouge, et c&rsquo;est là que le modèle fuit.</p>
+  <p class="note">état physique → orientation → posture → règles → composition. Le banc joue le rôle que tiendraient, en production, les requêtes de conteneur, <code>device-posture</code> et les segments de viewport. Décor des maquettes hors chaîne.</p>
+
+  <div class="bench">
+    <div class="bar">
+      <span class="grp" role="group" aria-label="Application"><span class="lab">App</span>
+        <button class="btn" data-app="health" aria-pressed="true">Tableau de bord santé</button>
+        <button class="btn" data-app="kit" aria-pressed="false">Page du kit</button>
+      </span>
+      <span class="grp" role="group" aria-label="Appareil"><span class="lab">Appareil</span>
+        <button class="btn" data-dev="mobile" aria-pressed="false">Mobile</button>
+        <button class="btn" data-dev="tablet" aria-pressed="false">Tablette</button>
+        <button class="btn" data-dev="desktop" aria-pressed="false">Desktop</button>
+        <button class="btn" data-dev="fold" aria-pressed="true">Pliable</button>
+      </span>
+      <span class="grp" id="g-open" role="group" aria-label="Ouverture"><span class="lab">Ouverture</span>
+        <button class="btn" data-open="0" aria-pressed="false">0°</button>
+        <button class="btn" data-open="125" aria-pressed="true">125°</button>
+        <button class="btn" data-open="180" aria-pressed="false">180°</button>
+      </span>
+      <span class="grp" id="g-win" role="group" aria-label="Fenêtre" hidden><span class="lab">Fenêtre</span>
+        <button class="btn" data-win="1440" aria-pressed="true">1440</button>
+        <button class="btn" data-win="1024" aria-pressed="false">1024</button>
+        <button class="btn" data-win="720" aria-pressed="false">720</button>
+      </span>
+      <span class="grp"><button class="btn" id="turn" aria-pressed="false">Retourner</button></span>
+    </div>
+    <div class="readout"><div class="hud" id="hud" aria-live="polite"></div><div class="verdict" id="verdict"></div></div>
+    <div class="stage" id="stage">
+      <div class="shadow" id="shadow"></div>
+      <div class="holder" id="holder"><div class="device" id="device"></div></div>
+    </div>
+  </div>
+
+  <div class="reg">
+    <h2>Ce que chaque app déclare</h2>
+    <p>Pas des écrans : des zones, leur largeur de travail, et ce qui ne traverse jamais une frontière physique. Le reste se calcule.</p>
+    <table>
+      <thead><tr><th>Zone</th><th>Largeur de travail</th><th>Règle qui survit aux postures</th></tr></thead>
+      <tbody>
+        <tr><td>Santé · Rendez-vous (liste)</td><td class="m">17 rem</td><td>Existe dès qu&rsquo;elle tient à côté du patient ; en Laptop, elle descend avec les commandes.</td></tr>
+        <tr><td>Santé · Patient (fiche)</td><td class="m">24 rem</td><td>Toujours présente, jamais coupée par une frontière ; porte la courbe.</td></tr>
+        <tr><td>Santé · Constantes (contexte)</td><td class="m">16 rem</td><td>Colonne quand trois zones tiennent, sinon elles remontent dans la fiche.</td></tr>
+        <tr><td>Kit · Rail (navigation)</td><td class="m">15 rem</td><td>Colonne à deux zones ; menu à une ; sous la lecture en Laptop.</td></tr>
+        <tr><td>Kit · Lecture (détail rédigé)</td><td class="m">20 → 34 rem</td><td>Jamais scindée par un pli ; sa mesure ne dépasse pas 34 rem.</td></tr>
+        <tr><td>Kit · Repères (contexte)</td><td class="m">16 rem</td><td>Colonne à trois zones ; rejoint le rail en Livre.</td></tr>
+        <tr><td>Gouttière</td><td class="m">1,5 rem</td><td>Entre dans chaque somme : liste + fiche = 17 + 1,5 + 24 = 42,5 rem.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/* ── le moteur du banc : une copie de POSTURE (kit/derivation.mjs) et du seuil-somme ── */
+const REM = 16, GUTTER = 1.5;
+const POSTURE = {
+  states: [
+    { key: 'closed', from: 0, to: 0, name: 'fermé', surface: 'outer' },
+    { key: 'acute', from: 1, to: 90, name: 'semi-ouvert', surface: 'inner' },
+    { key: 'wide', from: 91, to: 179, name: 'largement ouvert', surface: 'inner' },
+    { key: 'flat', from: 180, to: 180, name: 'à plat', surface: 'inner' },
+  ],
+  state(o) { return this.states.find(s => o >= s.from && o <= s.to) },
+  of(o, hinge) { const s = this.state(o); if (s.key === 'closed') return 'mobile'; if (s.key === 'flat') return 'tablet'; return hinge === 'horizontal' ? 'laptop' : 'book' },
+};
+const NAMES = { mobile: 'Mobile', book: 'Livre', laptop: 'Laptop', tablet: 'Tablet', window: 'Fenêtre', slate: 'Tablette' };
+const threshold = (...z) => z.reduce((a, b) => a + b, 0) + GUTTER * (z.length - 1);
+
+/* les appareils : des surfaces, pas des tailles d'écran à viser */
+const DEVICES = {
+  mobile: { w: 390, h: 844, name: 'Mobile', posture: 'mobile' },
+  tablet: { w: 820, h: 1180, name: 'Tablette', posture: 'slate' },
+  desktop: { w: 1440, h: 900, name: 'Desktop', posture: 'window' },
+  fold: { side: 400, long: 571, name: 'Pliable' },
+};
+/* les apps : leurs zones (largeur de travail en rem), dans l'ordre où elles arrivent */
+const APPS = {
+  health: { name: 'Tableau de bord santé', zones: [{ n: 'patient', w: 24 }, { n: 'rendez-vous', w: 17 }, { n: 'constantes', w: 16 }] },
+  kit: { name: 'Page du kit', zones: [{ n: 'lecture', w: 20 }, { n: 'rail', w: 15 }, { n: 'repères', w: 16 }] },
+};
+
+const S = { app: 'health', dev: 'fold', open: 125, win: 1440, rotated: false };
+
+/* combien de zones tiennent dans une place donnée : on ajoute les zones dans l'ordre tant que la somme tient */
+function zonesFor(app, placeRem) {
+  const z = APPS[app].zones; let n = 0, why = '';
+  for (let i = 1; i <= z.length; i++) {
+    const t = threshold(...z.slice(0, i).map(x => x.w));
+    if (placeRem + 1e-9 >= t) { n = i; why = `${z.slice(0, i).map(x => x.w).join(' + ')}${i > 1 ? ` + ${(i - 1) * GUTTER} de gouttière` : ''} = ${t} rem ≤ ${placeRem} rem` }
+    else { why += `${why ? ' · ' : ''}${z.slice(0, i).map(x => x.w).join(' + ')}${i > 1 ? ` + ${(i - 1) * GUTTER}` : ''} = ${t} rem > ${placeRem} rem` ; break }
+  }
+  return { n, why };
+}
+const dec = v => String(Math.round(v * 10) / 10).replace('.', ',');
+
+function situation() {
+  const d = DEVICES[S.dev];
+  if (S.dev === 'fold') {
+    const st = POSTURE.state(S.open), hinge = S.rotated ? 'horizontal' : 'vertical';
+    const posture = POSTURE.of(S.open, hinge);
+    if (st.surface === 'outer') {
+      const w = S.rotated ? d.long : d.side, h = S.rotated ? d.side : d.long;
+      return { posture, state: st, hinge, w, h, segments: 1, segW: w, segH: h, surface: 'extérieure', vol: 0 };
+    }
+    const flat = st.key === 'flat';
+    const w = S.rotated ? d.long : 2 * d.side, h = S.rotated ? 2 * d.side : d.long;
+    return { posture, state: st, hinge, w, h, segments: flat ? 1 : 2, segW: flat ? w : (S.rotated ? d.long : d.side), segH: flat ? h : (S.rotated ? d.side : d.long), surface: 'intérieure', vol: flat ? 0 : 1 };
+  }
+  let w = d.w, h = d.h;
+  if (S.dev === 'desktop') { w = S.win; h = Math.round(S.win * 900 / 1440) + (S.win < 1440 ? 120 : 0); }
+  if (S.rotated) [w, h] = [h, w];
+  return { posture: d.posture, state: null, hinge: null, w, h, segments: 1, segW: w, segH: h, surface: '', vol: 0 };
+}
+
+function decide(sit) {
+  /* la règle : une zone tient dans un segment, jamais à travers la frontière — la place, c'est la largeur d'un segment */
+  const placeRem = sit.segW / REM;
+  const z = zonesFor(S.app, placeRem);
+  let zones = z.n, note = '';
+  let posture = sit.posture;
+  if (sit.segments === 2 && posture === 'book') {
+    /* Livre : la frontière est médiane ; chaque panneau prend ce qui tient chez lui — la lecture / la fiche d'un côté, le reste de l'autre */
+    zones = Math.max(zones, 2); note = 'frontière verticale imposée : une zone par panneau, la frontière prime sur la somme';
+  }
+  let aside = 0;
+  if (sit.segments === 2 && posture === 'laptop') {
+    /* Laptop : le segment du haut porte le contenu, celui du bas la navigation et les commandes ; la colonne de contexte n'existe en haut que si elle y tient à côté de la zone principale */
+    const z = APPS[S.app].zones; const t = threshold(z[0].w, z[2].w);
+    aside = placeRem + 1e-9 >= t ? 1 : 0; zones = 2;
+    note = `frontière horizontale : contenu en haut, navigation et commandes en bas · contexte à côté du contenu si ${z[0].w} + ${GUTTER} + ${z[2].w} = ${t} rem ≤ ${dec(placeRem)} rem → ${aside ? 'oui' : 'non, il remonte dans le contenu'}`;
+  }
+  const leak = zones === 0;
+  return { zones: Math.max(zones, 1), why: z.why, note, leak, placeRem, aside };
+}
+
+function render() {
+  const sit = situation(), dec_ = decide(sit);
+  const device = document.getElementById('device');
+  device.className = 'device' + (S.dev === 'fold' ? ' fold' : '');
+  device.style.width = sit.w + 'px'; device.style.height = sit.h + 'px';
+  device.style.setProperty('--vol', sit.vol);
+  device.style.borderRadius = S.dev === 'desktop' ? '10px' : '18px';
+  if (S.dev === 'fold') device.dataset.hinge = sit.hinge; else delete device.dataset.hinge;
+  /* la ou les surfaces : en Livre / Laptop, deux segments ; l'app vit sur la surface entière et ses zones se posent par segment */
+  device.innerHTML = (sit.segments === 2 ? '<div class="hinge"></div>' : '') + `<div class="seg a" style="flex:1"></div>` + (sit.segments === 2 ? `<div class="seg b" style="flex:1"></div>` : '');
+  const app = document.createElement('div');
+  app.className = 'app ' + S.app; app.dataset.zones = dec_.zones; app.dataset.posture = sit.posture; app.dataset.segments = sit.segments; app.dataset.aside = dec_.aside;
+  app.innerHTML = S.app === 'health' ? HEALTH : KIT;
+  device.appendChild(app); /* l'app couvre l'appareil ; la frontière est dessinée par-dessus */
+  /* l'échelle : l'appareil tient dans la scène */
+  const stage = document.getElementById('stage');
+  const maxW = stage.clientWidth - 64, maxH = 600;
+  const k = Math.min(1, maxW / sit.w, maxH / sit.h);
+  const holder = document.getElementById('holder'); holder.style.width = (sit.w * k) + 'px'; holder.style.height = (sit.h * k) + 'px'; device.style.transform = `scale(${k})`;
+  stage.style.minHeight = Math.max(700, sit.h * k + 140) + 'px';
+  document.getElementById('shadow').style.setProperty('--sw', (sit.w * k * .9) + 'px');
+  document.getElementById('shadow').style.bottom = ((stage.clientHeight - sit.h * k + 8) / 2 - 18) + 'px';
+  /* le HUD */
+  const d = DEVICES[S.dev];
+  const seg = sit.segments === 2 ? `2 segments de ${sit.segW} × ${sit.segH}` : `1 segment, ${sit.segW} × ${sit.segH}`;
+  document.getElementById('hud').innerHTML = `
+    <span>${d.name}${S.dev === 'fold' ? ` · ${sit.state.name} · ${S.open}°` : ''}${S.rotated ? ' · tourné' : ''}</span>
+    <span>Surface ${sit.surface} <b>${sit.w} × ${sit.h}</b> · ${seg}</span>
+    <span>Posture <b>${NAMES[sit.posture]}</b>${sit.hinge ? ` · charnière ${sit.hinge === 'vertical' ? 'verticale' : 'horizontale'}` : ''}</span>
+    <span>Place <b>${dec(dec_.placeRem)} rem</b> → <em>${dec_.zones} zone${dec_.zones > 1 ? 's' : ''}</em></span>
+    <span class="why">${dec_.why}${dec_.note ? ' · ' + dec_.note : ''}</span>`;
+  const v = document.getElementById('verdict');
+  v.className = 'verdict' + (dec_.leak ? ' leak' : '');
+  v.textContent = dec_.leak ? '✗ aucune zone ne tient : cette app réclamerait un écran dédié ici — le modèle fuit' : '✓ une seule mise en page, posée par les règles';
+  /* la barre */
+  document.querySelectorAll('[data-app]').forEach(b => b.setAttribute('aria-pressed', b.dataset.app === S.app));
+  document.querySelectorAll('[data-dev]').forEach(b => b.setAttribute('aria-pressed', b.dataset.dev === S.dev));
+  document.querySelectorAll('[data-open]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.open === S.open));
+  document.querySelectorAll('[data-win]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.win === S.win));
+  document.getElementById('g-open').hidden = S.dev !== 'fold';
+  document.getElementById('g-win').hidden = S.dev !== 'desktop';
+  document.getElementById('turn').setAttribute('aria-pressed', S.rotated);
+  document.getElementById('turn').disabled = S.dev === 'desktop';
+}
+
+/* ── les deux apps : une seule structure chacune, la composition vient des attributs ── */
+const ROWS = [['Aliya Reynolds', '9:40', 'on'], ['Marc Delorme', '10:15', 'u'], ['Inès Carvalho', '11:00', ''], ['Théo Lambert', '11:30', 'ok'], ['Nadia Okafor', '14:00', ''], ['Paul Verger', '15:15', ''], ['Léa Fontaine', '16:00', 'ok']];
+const rows = () => ROWS.map(([n, t, c]) => `<div class="r ${c}"><span class="dot"></span><span class="n">${n}</span><span class="m">${t}</span></div>`).join('');
+const CST = () => `<div class="cst"><span>Tension</span><b>12,8 / 8,1</b></div><div class="cst w"><span>Fréquence</span><b>96 bpm</b></div><div class="cst"><span>Saturation</span><b>97 %</b></div><div class="cst"><span>Température</span><b>37,2 °C</b></div><div class="cst"><span>Poids</span><b>71,4 kg</b></div>`;
+const CHART = `<div class="chart"><small>Fréquence cardiaque · 7 jours</small><svg viewBox="0 0 320 96" preserveAspectRatio="none" aria-hidden="true">
+  <line class="g" x1="0" y1="24" x2="320" y2="24"/><line class="g" x1="0" y1="48" x2="320" y2="48"/><line class="g" x1="0" y1="72" x2="320" y2="72"/>
+  <path class="ar" d="M0,60 L53,52 L107,58 L160,40 L213,46 L267,30 L320,36 L320,96 L0,96 Z"/>
+  <path class="ln" d="M0,60 L53,52 L107,58 L160,40 L213,46 L267,30 L320,36"/>
+  <circle class="d" cx="267" cy="30" r="3.5"/></svg></div>`;
+const HEALTH = `
+  <div class="top"><span class="t">Suivi · Cabinet Nord</span><span class="tabs"><b>Rendez-vous</b><b class="on">Patient</b><b>Constantes</b></span><span class="ic"></span></div>
+  <div class="main">
+    <div class="zone list"><div class="zone-head">Rendez-vous · aujourd'hui</div>${rows()}</div>
+    <div class="zone sheet"><div class="sheet-in">
+      <h4>Aliya Reynolds</h4><p class="sub">42 ans · suivi hypertension · dernier passage 3 sept.</p>
+      <div class="kpis"><div class="kpi"><small>Tension</small><b>12,8<i>/ 8,1</i></b></div><div class="kpi"><small>Fréquence</small><b>96<i>bpm</i></b></div><div class="kpi"><small>Saturation</small><b>97<i>%</i></b></div></div>
+      ${CHART}
+      <p class="txt">Fréquence en hausse depuis mardi, sans symptôme rapporté. Traitement inchangé ; contrôle de la tension à domicile matin et soir jusqu'au prochain rendez-vous.</p>
+      <div class="inline-ctx"><div class="zone-head" style="padding-left:0">Constantes</div>${CST()}</div>
+    </div></div>
+    <div class="zone ctx"><div class="zone-head">Constantes</div><div class="ctx-in">${CST()}</div></div>
+  </div>
+  <div class="cmd"><span class="b">Reporter</span><span class="b">Ordonnance</span><span class="b p">Consulter</span></div>
+  <div class="low"><div class="zone list"><div class="zone-head">Rendez-vous · aujourd'hui</div>${rows()}</div><div class="cmd"><span class="b">Reporter</span><span class="b">Ordonnance</span><span class="b p">Consulter</span></div></div>`;
+const NAV = (cls) => `<div class="${cls}"><div class="h">Fondations</div><a>Rythme</a><a>Composition</a><a>Couleur</a><a>Arrondis</a><a class="on">Typographie</a><a>Mouvement</a><div class="h" style="padding-top:14px">Principes</div><a>Accessibilité</a><a>Adaptation</a></div>`;
+const ASIDE = `<div class="h">Repères</div><dl><dt>T13</dt><dd>une seule taille</dd><dt>T14</dt><dd>deux fonds, deux graisses</dd><dt>T12</dt><dd>le calage vertical</dd><dt>corps</dt><dd>16 · 1,5</dd><dt>mesure</dt><dd>34 rem</dd></dl>`;
+const KIT = `
+  <div class="top"><span class="t">Fili · Typographie</span><span class="menu">Menu</span></div>
+  <div class="main">
+    <div class="zone rail">${NAV('')}<div class="inline-aside">${ASIDE}</div></div>
+    <div class="zone read">
+      <span class="k">Fondation · 03</span>
+      <h3>La taille est le levier qu'on attrape en premier ; c'est rarement celui qu'il faut</h3>
+      <p>Une hiérarchie se construit d'abord par la <b>graisse</b>, la <b>couleur</b> et l'<b>espace</b>. La taille vient ensuite, et elle bouge peu : un corps, un cran d'étiquette, des titres qui descendent d'un intervalle unique.</p>
+      <div class="proof"><span class="bx" style="left:10%;top:28%;width:12%;height:44%"></span><span class="bx" style="left:26%;top:40%;width:8%;height:32%;opacity:.7"></span><span class="bx" style="left:38%;top:48%;width:6%;height:24%;opacity:.5"></span><span class="bx" style="left:48%;top:54%;width:4%;height:18%;opacity:.35"></span><span class="lg">une seule taille, quatre graisses</span></div>
+      <p>Sur fond sombre, chaque rôle s'allège du même écart : le blanc sur noir paraît plus gros que le noir sur blanc. La sombre n'est jamais plus lourde que la claire.</p>
+    </div>
+    <div class="zone aside">${ASIDE}</div>
+  </div>
+  <div class="cmd"></div>
+  <div class="low"><div class="col"><div class="h">Fondations</div><a>Rythme</a><a>Composition</a><a>Couleur</a></div><div class="col"><div class="h">&nbsp;</div><a>Arrondis</a><a class="on">Typographie</a><a>Mouvement</a></div><div class="col"><div class="h">Principes</div><a>Accessibilité</a><a>Adaptation</a></div></div>`;
+
+document.querySelectorAll('[data-app]').forEach(b => b.addEventListener('click', () => { S.app = b.dataset.app; render() }));
+document.querySelectorAll('[data-dev]').forEach(b => b.addEventListener('click', () => { S.dev = b.dataset.dev; render() }));
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => { S.open = +b.dataset.open; render() }));
+document.querySelectorAll('[data-win]').forEach(b => b.addEventListener('click', () => { S.win = +b.dataset.win; render() }));
+document.getElementById('turn').addEventListener('click', () => { S.rotated = !S.rotated; render() });
+window.addEventListener('resize', render);
+render();
+</script>
+</body>
+</html>
