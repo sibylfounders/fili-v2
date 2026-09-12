@@ -49,6 +49,342 @@ pièce**, à 15 entrées (`#043`–`#051`, `#058`–`#063`). Plan et inventaire 
 
 ---
 
+## #143 — Une épreuve qui ne peut pas échouer ne prouve rien : la marge d'une mutation se mesure en lignes
+
+*2026-09-12 (soir) · Statut : 🟢 mesuré et tenu (moteur 35/35, pages 92/92, plomb 6/6 pages, preuve 11/11 sur deux machines) · Applique : `#142` · Révise le dispositif de preuve posé le 11 septembre (3)*
+
+**Contexte** — Le banc du 11 septembre refusait de statuer : la fixture
+« a · la rangée se ferme » ne rougissait pas, sur le Mac d'Auteur, quand on
+retirait la hauteur de son image. Le réflexe aurait été de corriger la loi ou
+d'abaisser le seuil. C'eût été traiter le symptôme : la loi était juste, et
+c'est la PREUVE qui était faible.
+
+**Ce qui n'allait pas** — Une mutation était jugée en booléen : elle rougit, ou
+elle ne rougit pas. Or celle-ci ne franchissait le seuil que de 33 px, et cette
+marge n'était posée nulle part — elle sortait du rendu du texte. Une police plus
+étroite fait perdre deux lignes au paragraphe, l'image reprend sa place, et la
+mutation repasse au vert. La même liste disait donc rouge dans un Chromium et
+vert dans l'autre, et personne ne pouvait le voir : la sortie ne disait que la
+couleur. Vérifié en le mesurant sur deux machines — trois mutations sur onze
+tenaient à moins de trois lignes, dont une à **2,5 px**, et celle-là ne prouvait
+même pas ce qu'elle annonçait (l'image étant élastique, elle suivait le texte et
+la rangée se refermait ; ce qui rougissait était le demi-pas de la fixture, pas
+la faute visée).
+
+**Décision** — Une faute n'est pas un booléen, c'est une distance. Trois pièces :
+
+1. **Chaque faute dit sa marge en lignes** (`marginLines`), dans la même unité
+   pour les quatre cas — le solde compris, où l'excès se lit aussi en lignes
+   (combien de lignes il faudrait rendre à la colonne pour repasser sous le
+   rapport). Une faute qui ne dit pas de combien elle est une faute laisse le
+   banc aveugle à sa propre fragilité.
+2. **Une mutation doit prendre au moins trois lignes sur son seuil**, sinon
+   l'épreuve refuse de statuer — au même titre qu'une mutation qui ne rougit
+   pas. Une preuve qui tient à un cheveu ne dit pas la loi, elle dit la police
+   de la machine.
+3. **L'effet d'une mutation doit être POSÉ, jamais déduit d'un rendu.** Les
+   quatre mutations fragiles sont refaites en conséquence : l'image de la
+   fixture devient une bande, dont le format rendu retombe loin sous le texte ;
+   le paragraphe masqué laisse place à une image qui court quatre lignes sous
+   le texte (96 px posés) ; les deux déports du filet passent de 96 px et 0 à
+   160 px, et dans les deux sens ; la courte du solde tombe à une seule ligne
+   au lieu de perdre deux lignes de police.
+
+**Mesure** — 11/11 sur le Mac d'Auteur et dans un Chromium étranger, avec la
+**même** marge la plus courte : 3,6 lignes, et c'est une valeur posée. La preuve
+ne dépend plus de la machine qui la rend. L'épreuve statue de nouveau.
+
+**Alternative écartée** — abaisser le seuil de la loi (la tolérance d'une ligne)
+pour que la mutation rougisse. Écartée : le seuil est un réglage de la loi, jugé
+à l'œil (⚪) ; le tordre pour faire passer une preuve, c'est accorder
+l'instrument sur la mesure qu'on veut lire.
+
+**Deux dettes dites, non traitées ce soir** (hors périmètre : remise au vert) :
+
+- **`verify.mjs` sur une page du kit refuse la page** — 27 textes sous le seuil
+  de contraste, dont le tertiaire du rail et des kickers à 3,33:1 (il en faut
+  4,5), et une soixantaine de valeurs hors chaîne au rendu (les compensations
+  optiques négatives des titres). Ce n'est pas une panne du banc : l'épreuve
+  fait son travail et désigne une dette de la page.
+- **La course de nuit ne lance rien de ce qu'on croit** — `PAGES` nomme les
+  pages par leur slug français (`rythme`, `arrondis`, `couleur`, `mouvement`)
+  alors que les épreuves portent des noms anglais (`rhythm`, `rounded`,
+  `color`, `motion`) : quatre des six pointent vers un fichier qui n'existe
+  pas. `postures`, `adaptive`, `weight` et `frontiere` n'y sont pas du tout, et
+  le bulletin s'écrit dans `docs/bench-of-day.md` quand la console annonce
+  `docs/banc-du-jour.md`. À reprendre en propre.
+
+**Au passage** — le bouton de la fiche Arrondis avait perdu sa marge et son coin
+depuis la séparation des feuilles (`#142`) : `demo.css` pose `.tr-btn` et
+`rounded.css` pose `.ar-btn` au même poids, et la feuille d'atelier est rangée
+après celles des pages quel que soit l'ordre des imports (les deux ordres
+essayés, aucun ne tranche). Le complément dit désormais ses deux classes
+(`.tr-btn.ar-btn`) : « ar-btn complète tr-btn » redevient vrai sans dépendre
+d'un ordre. Alternative écartée : mettre `.tr-btn` en `@layer` dans `demo.css`,
+ce qui aurait aussi réparé le même défaut latent sur `/rythme` — mais en
+changeant l'aspect d'un bouton, donc du design, hors périmètre ce soir.
+
+---
+
+## #142 — Le kit, la coque et les démos : trois feuilles, une frontière gravée
+
+*2026-09-12 · Statut : 🟢 mesuré et tenu (suite d'épreuves au vert + `tests/frontiere.test.mjs`) · Applique : `#141` · Thread « perfs au redimensionnement » (continuité)*
+
+**Contexte** — `#141` avait sorti le décor de chaque page de `globals.css`. Restait
+un fichier fourre-tout : socle du kit, coque du site de doc et outillage des démos
+mêlés, chargés partout. Décision d'Auteur : séparer nommément, et **écrire dans le
+marbre** que le front s'écrit désormais ainsi.
+
+**Décision** — `globals.css` (1 259 lignes) éclate en trois, plus le CSS de page :
+
+- **`kit.css`** — le socle livrable : primitives, patterns, halo de focus. Neutre
+  en mise en page (aucune requête de fenêtre ni de conteneur). Chargé partout.
+- **`app.css`** — la coque du site de doc : en-tête, rail, feuille, mega-menu,
+  gabarit, paliers, et en fin de feuille les lois de survie (postures divisées) et
+  le plomb, qui doivent primer. Chargé partout, après `kit.css`. Ce n'est pas le kit.
+- **`demo.css`** — l'outillage commun des démonstrations (aperçu, espaces, cadre,
+  étages), chargé UNIQUEMENT par les huit pages de Fondations, jamais par l'accueil
+  ni le socle.
+- **`<page>.css`** — le décor propre à une page (déjà sorti en `#141`).
+
+**L'ordre du cascade, tenu par la place et la spécificité** — `kit.css` avant
+`app.css` (la coque affine le socle par des sélecteurs plus spécifiques, jamais par
+l'ordre) ; les lois de survie en fin de `app.css`, donc après la mise en page
+qu'elles corrigent et avant le décor de page ; la seule collision de même
+spécificité (`.acc-column`) gagnée par un sélecteur plus précis (`#141`).
+
+**La frontière est gravée, pas seulement dite** — `tests/frontiere.test.mjs`
+refuse quatre choses : que le socle charge une démo ou un décor de page ; que
+`demo.css` manque à une page de Fondations ou charge sur l'accueil ; que `kit.css`
+porte une requête de mise en page ; qu'une règle de `kit.css` style l'apparence
+d'une démo (le halo de focus excepté — la loi d'accessibilité atteint tout ce qui
+est focusable). La règle est aussi écrite dans `REGLES.md` (section 9), le fichier
+que l'IA lit avant d'écrire une interface.
+
+**Sens produit / UX** — Un design system se vend sur une promesse : léger,
+réutilisable, sans dette cachée. Tant que le décor des démonstrations voyageait
+avec le kit, la promesse était fausse. Désormais `kit.css` se montre seul : voilà
+le livrable, il ne contient rien du site qui le documente. Et un robot tient la
+frontière, donc elle ne s'effacera pas à la prochaine démo pressée.
+
+**Alternatives écartées** — Fondre la coque dans le kit (plus simple, mais « le
+kit » contiendrait alors le rail et le mega-menu — la promesse redevient floue) ;
+tenir la frontière par des couches CSS `@layer` (robuste à l'ordre, mais mélanger
+couches et non-couches inverse des priorités sur tout l'existant — trop risqué pour
+un gain que la spécificité donne déjà).
+
+
+
+---
+
+## #141 — Le décor des démos sort du kit : une page ne paie plus le décor d'une autre
+
+*2026-09-12 · Statut : 🟢 mesuré (banc weight + suite d'épreuves au vert) · Applique : décision d'Auteur du 12 septembre (séparer kit et démos) · Thread « perfs au redimensionnement » (continuité)*
+
+**Contexte** — `globals.css` faisait 1 973 lignes, chargées sur *chaque* page, dont
+à peu près la moitié était du décor de démo propre à une seule page : Arrondis
+téléchargeait le bento de Couleur, les objets de Composition, les tuiles de
+l'Accueil — qu'elle n'affiche jamais.
+
+**Décision** — Le décor de chaque page rejoint le CSS de sa page (déjà chargé par
+route) : Couleur dans `color.css`, Composition dans `composition.css`, Accueil dans
+un nouveau `accueil.css`. `globals.css` retombe à 1 260 lignes : socle du kit +
+coque du site de doc + outillage commun des démos. Le JS était déjà découpé par
+route par Next — rien à faire de ce côté.
+
+**Deux pièges traités, dits ici parce qu'ils reviendront à pass 2 :**
+1. **Le contrat des épreuves.** Plusieurs tests lisaient `globals.css` en dur pour
+   y vérifier des règles de démo. Ils lisent maintenant la feuille où la règle a
+   déménagé — même assertion, nouvelle adresse. La liste figée des seuils de scène
+   (`sceneThresholds`) suit les feuilles : mêmes valeurs, re-classées, jamais une de plus.
+2. **L'ordre du cascade.** La règle de survie « en Livre, la colonne de l'accueil
+   tient dans le premier panneau » (`.acc-column`, postures divisées, dans
+   `globals.css`) était battue par la mesure de base une fois celle-ci passée dans
+   `accueil.css`, chargé après. Corrigé par la **spécificité** (`.accueil .acc-column`),
+   pas par l'ordre : une loi de survie prime par son rang, pas par sa place dans le fichier.
+
+**Résultat** — CSS transféré par page : Arrondis et Typo 20,4 → 14,4 K ; Couleur
+18,0 → 15,7 K ; Accueil 17,4 → 14,5 K. Le gain d'octets est modéré (le gzip
+compressait le décor répété) ; le vrai acquis est le principe tenu : le kit ne
+charge plus le décor d'une démo hors de sa page. Suite d'épreuves au vert (les deux
+rouges de `derivation.test` préexistent, hors de ce chantier).
+
+**Reste ouvert (pass 2, à décider)** — la séparation nominale `kit.css` (le
+livrable) / `app.css` (la coque de doc) / `demo.css` (l'outillage commun) : de la
+clarté d'architecture, peu d'octets de plus, et le même travail sur le contrat des
+épreuves et l'ordre du cascade. À trancher au vu du rapport coût / bénéfice.
+
+---
+
+## #140 — Le redimensionnement redevient fluide : le moteur cesse de recalculer ce qu'il sait déjà
+
+*2026-09-12 · Statut : 🟢 mesuré (banc `tests/bench-resize.mjs`, huit pages, balayage 1440 → 900 → 1440) · Thread « perfs au redimensionnement »*
+
+**Contexte** — Le site saccadait quand on tirait la fenêtre, sur toutes les pages.
+La mesure a nommé le coupable sans ambiguïté : **plus de 6 secondes de script pour
+un seul balayage de largeur**, soit ~100 ms par image, et une soixantaine de
+tâches de plus de 50 ms par page — chacune un blocage visible du fil principal.
+Deux sources, une par cause.
+
+**(1) Le moteur refaisait le même calcul des milliers de fois.** La couche
+d'adaptation (`adaptive.tsx`) demande à chaque image le palier du rail
+(`LAYOUTS.doc.sums.rail`). Ce palier est cherché par balayage — 3 600 pas — et
+chaque pas relisait tout le registre de la charte (`tokens(chain())`). Le registre
+est **pur** : mêmes entrées, mêmes sorties. On le lit donc une fois et on le garde
+(`register()`), et le palier une fois par largeur de lecture (une petite mémoire).
+Le moteur ne change pas de réponse ; il cesse de la refaire. `twoZones` passe de
+**60 ms à moins de 2 ms**.
+
+**(2) La couche d'adaptation réécrivait `<html>` à chaque image, à l'identique.**
+Poser un attribut à la valeur qu'il a déjà **invalide quand même le style de toute
+la page**. Désormais un attribut n'est réécrit que s'il change, et hors du mode
+banc les faits ne repassent plus par React (rien à redessiner). Même geste sur la
+bande d'atelier (`workbench.tsx`), qui écoutait la largeur au pixel pour un état
+qui ne change qu'à trois largeurs : elle écoute maintenant la **réponse** (quelle
+surface), pas la mesure.
+
+**(3) Un fond décoratif refait à chaque pixel.** Sur `/couleur` seule, l'aurore —
+un SVG à flous — voyait sa taille suivre celle de sa tuile : ses flous étaient
+donc **recalculés à chaque largeur**, seule page à payer deux fois le prix des
+autres. Le dessin est désormais posé à sa taille de rendu (le ciel, 944 × 1150),
+recadré par la tuile comme une image « cover », sur son propre calque : ses flous
+ne sont plus rendus qu'une fois. Correction en CSS seule.
+
+**Résultat** — Le script tombe de **~6 300 ms à 11–250 ms** par balayage selon la
+page, et il n'y a **plus une seule tâche de plus de 50 ms** sur aucune page (avant :
+65 par page). Ce qui reste — mise en page et rastérisation — est le travail natif
+du navigateur, réparti hors du fil principal ; c'est le prix, assumé, de la
+typographie fluide (jetons en `vw`). Les huit épreuves de page passent au vert,
+la charte est inchangée.
+
+**Sens produit / UX** — Un design system se juge d'abord à la main : on tire la
+fenêtre pour voir la mise en page se réorganiser. Si ce geste saccade, c'est la
+première impression qui saccade. La fluidité retrouvée ne change rien à ce que le
+kit affirme — elle rend seulement crédible sa promesse d'être un système vivant
+qu'on manipule.
+
+**Alternatives écartées** — Mettre l'aurore à l'échelle par une transformation
+qui suit la tuile (juste visuellement, mais React efface tout style écrit à la
+main sur un nœud qu'il possède, et la transformation d'un flou le re-rastérise
+quand même) ; réduire ou retirer les flous du dessin (gain réel mais au prix de
+l'œuvre — une négligence, pas une rupture d'auteur) ; figer l'animation de
+l'aurore pendant le geste (sans effet mesurable : le coût est la rastérisation au
+redimensionnement, pas l'animation).
+
+---
+
+## #139 — La loi de la frontière descend dans les six pages du kit
+
+*2026-09-12 · Statut : 🟢 porté et mesuré (relevé du plomb vert sur les six pages, sept largeurs ; banc 88/88) · Applique : `#138` · Thread « adapter jeuxvideo.com aux règles de Fili »*
+
+**Contexte** — `#138` a été tranchée sur une pièce extérieure. Avant de la porter,
+la mesure : dans le corps du gabarit, **un même écart réglé — 19,7 px — se voyait
+entre 19,7 et 28,5** selon ce qu'il séparait (deux scènes, une scène et un texte,
+deux textes). Sur `/rythme`, l'écart *intérieur* d'une figure (22,7 vu) dépassait
+la frontière qui la sépare de la pièce suivante (19,7 vu) : le groupe ne se lisait
+plus comme un groupe. La faute était dans les six pages, pas dans l'une d'elles.
+
+**Décision** — La loi descend telle quelle, en trois gestes.
+
+**(1) Le gabarit rend son plomb.** Chaque rôle de texte déclare son interligne une
+fois (`--lh`) et la coupe s'en déduit. L'encre revient là où le chiffre la met.
+
+**(2) La frontière du corps passe de un cran à deux** (`--pad-1-block`) au-dessus
+de l'écart intérieur, **et à trois** (`--page-1-block`) quand elle bute sur une
+scène. Même geste d'un cran à l'intérieur d'une figure, entre la scène et sa
+légende. Les deux rapports valent alors deux crans : la frontière reste deux fois
+l'écart intérieur **de même nature**.
+
+**(3) Le premier cran de page entre dans la chaîne.** Il était calculé depuis le
+25 août et n'était pas émis, faute de consommateur. Il en a un : la frontière à
+trois crans. Aucune valeur nouvelle — un cran qui existait et qu'on ne dépensait pas.
+
+**Sens produit / UX** — Une page Fondations se parcourt avant de se lire. Ce
+parcours repose entièrement sur les silences : ce qui tient ensemble, ce qui est
+une autre affaire. Quand le même silence se voit à trois valeurs, la structure
+qu'on croit poser n'est pas celle qu'on donne à lire.
+
+**Alternatives écartées** — Laisser la coupe aux textes enfouis (sans effet : la
+coupe d'un texte au fond d'une pièce ne remonte pas jusqu'au bord de cette pièce,
+une `<details>` ferme son contexte) ; `text-box-trim`, exacte et sans
+comptabilité, mais qui ne mord aujourd'hui que sur un moteur — un kit ne peut pas
+composer autrement selon le navigateur ; compter une **commande** comme une
+scène : un bouton peint, mais il est second par rapport au phénomène, et sa place
+change avec la largeur — aucune règle écrite ne saurait dire d'avance s'il forme
+le bord. **Une commande n'est pas une scène.**
+
+**Conséquences** — Trois lignes de `rythme.css` qui redisaient le gabarit
+(`.gd-figure`, `.gdoc-sec-head`, `.gdoc-body`) sont sorties : une valeur redite
+est une valeur qui se contredira, et celle-là venait de changer de cran. Un
+relevé outille la loi côté kit — `kit/tests/plomb.mjs` (`npm run plomb`) : il
+vérifie séparément **la coupe** (un texte au bord d'une pièce rend-il son plomb)
+et **l'écart** (l'espace posé est-il celui que la loi prescrit, vu la nature des
+deux bords), et refuse de statuer tant que deux mutations ne l'ont pas fait
+rougir. Les deux mutations doivent être jouées **séparément** : cumulées elles se
+compensent, ce qui est précisément le sujet de `#138`. Reste ouvert : le seuil
+d'1,5 px du relevé, et son entrée dans `/audit` ⚪.
+
+**Impact carte** — Les six Fondations : leur rythme vertical est repris.
+Rythme : la chaîne émet son premier cran de page.
+
+---
+
+## #138 — Une frontière qui bute sur une image vaut trois crans, pas deux
+
+*2026-09-11 · Statut : 🟢 décidé sur pièce (jeuxvideo.com relu par Fili, mesuré sur quatre largeurs) · Précise : `#074` (la frontière vaut deux crans) sans le réviser · Thread « adapter jeuxvideo.com aux règles de Fili »*
+
+**Contexte** — Sur la page d'accueil de JV refaite aux règles du kit, l'Auteur a
+signalé trois fois de suite, sur trois formes différentes, que le titre d'un
+item semblait appartenir à l'image de l'item **suivant**. Les chiffres disaient
+l'inverse : écart intérieur 8, frontière 22, rapport de 2 — la règle était
+tenue. La mesure a fini par donner la cause. Une ligne de texte porte la moitié
+de son interligne au-dessus et au-dessous de ses lettres ; entre deux textes ce
+plomb s'ajoute deux fois (8 réglés se voient 15), contre le bord franc d'une
+image il ne s'ajoute qu'une (8 réglés se voient 8). La frontière était la seule
+distance à ne pas grossir : elle tombait de 2 à 1,5 fois l'écart intérieur sans
+que personne l'écrive nulle part.
+
+**Décision** — Deux gestes, pris ensemble.
+
+**(1) Les blocs de texte d'un item reprennent leur demi-plomb**, calculé sur
+l'interligne du rôle. L'écart vu redevient l'écart réglé, et un chiffre veut de
+nouveau dire quelque chose.
+
+**(2) Une frontière qui vient buter sur une image vaut trois crans** au-dessus
+de l'écart intérieur, contre deux entre deux textes. `#074` reste vrai là où il
+a été éprouvé — entre deux textes ; il est précisé, pas révisé.
+
+**Sens produit / UX** — Un lecteur qui parcourt une liste d'articles ne lit pas
+un titre puis un autre : il lit un bloc, puis un bloc. Quand la frontière ne se
+voit pas, le titre du premier article se rattache à la photo du second, et il
+faut revenir en arrière pour comprendre ce qui va avec quoi. C'est exactement ce
+que l'Auteur a ressenti trois fois sans pouvoir le chiffrer — et c'est le signe
+que la faute était dans la règle, pas dans son application.
+
+**Alternatives écartées** — Corriger section par section sans toucher au corpus
+(la faute revenait à chaque nouvelle composition : trois formes touchées sur la
+même page) ; `text-box-trim`, la coupe native du navigateur (plus exacte que le
+calcul, mais sans effet ici — nos titres portent leur texte dans un lien en
+bloc, la coupe n'a aucune ligne à mordre ; à reprendre le jour où les titres
+seront des lignes nues) ; monter d'un cran de plus (cinq fois l'écart intérieur :
+la section se casse en cartes isolées).
+
+**Conséquences** — La reprise du plomb consomme environ un cran : entre deux
+textes, un écart part désormais au minimum du cran d'item, le plus fin ne suffit
+plus. Reste ouvert : la chaîne gagne-t-elle un cran par le bas, ou pose-t-on la
+règle « deux textes ne se touchent jamais sous le cran d'item » ⚪. Corollaire
+trouvé en chemin et appliqué : la correction d'arête vaut des deux côtés de
+l'image, puisque la frontière d'un item bute sur l'image du suivant. Trois
+relevés outillent la loi (`claude/outils/releve.py`) — les vides d'une rangée,
+les écarts d'un titre, les écarts d'une liste ; ils mesurent les boîtes, ce qui
+n'est honnête que si la page reprend son plomb, et c'est écrit en tête de
+l'outil.
+
+**Impact carte** — Composition : la loi de la frontière reçoit sa nuance.
+Rythme : l'écart minimal entre deux textes s'ouvre (⚪).
+
+---
+
 ## #137 — /mouvement s'ouvre sur une interface qui vit : en mettre plein la vue avant d'expliquer
 
 *2026-09-09 · Statut : 🟢 décidé sur pièce (témoin à trois ouvertures), porté dans le kit, banc 13/13 · Complète : `#135` (le cadre des démonstrations) · Thread « la page Mouvement »*
@@ -6732,3 +7068,788 @@ que la feuille déclare. C17 lit désormais le rôle titre et non « 600 au
 moins ». Course complète sur le Mac : 74 vertes. Rien n'est commité : l'arbre
 porte le travail d'autres fils.
 
+
+## 9 septembre 2026 (6) — La famille Adaptation entre au moule V2 : quatre décisions, quatorze règles ⚪
+
+**Le contexte.** La doctrine d'adaptation du jour (unité = la zone, seuil
+calculé sur des largeurs de travail, trois grandeurs) devait passer au moule
+V2. Ses deux fichiers sont introuvables ; le travail repart du brief, de la
+V1 (19 règles) et du pliable du kit. L'Auteur a laissé les décisions ouvertes
+(« je te laisse décider »).
+
+**Les décisions.** ① Y7 reste à la page — #120 l'avait dit : un régime est
+une mise en page. La zone va au composant. Frontières : la grille décide
+combien de colonnes la page donne ; l'adaptation décide ce qu'une zone fait de
+la place mesurée dans son conteneur ; le tactile garde la précision (T6).
+② « Zone » est un seul objet : un conteneur qui a ses règles — densité par
+déclaration, adaptation par mesure. Le tactile dit « cible ». ③ La portée
+(40 rem) reste une observation tant que ses deux observations ne sont pas
+nommées — la reprise tactile avait déjà rétrogradé la zone d'atteinte.
+④ `data-adaptation` (géométrie de stack) porte le nom de la famille : le
+réglage de stack changera de nom, pas la famille — thread à part.
+
+**Ce qui est écrit.** Quatorze règles A1–A14, préfixe A : trois de mesure
+(conteneur jamais fenêtre ; seuil = somme de largeurs de travail, jamais une
+largeur d'appareil ; place = segment continu ; hauteur avec plancher 34 rem et
+demi-clavier 15 rem), six de continuité au changement de format, mesurées sur
+l'arbre accessible de part et d'autre du seuil, quatre de plans et frontières
+**reconstruites** faute de doctrine. `compact / regular / expanded` tombe.
+
+**Ce qui bloque.** La mesure du texte a trois valeurs (16 px/70, 17 px/62,
+`--measure: 65ch`) : A2 est incalculable pour toute zone qui contient du texte
+courant. Les neuf seuils du site (dette du 25 août) empêchent de prouver que
+l'adaptation ne double pas la grille. Pièce :
+`claude/reprise-adaptation-regles-2026-09-09.md`. Rien n'est verrouillé,
+aucune piégée au banc, pas de séance.
+
+## 9 septembre 2026 (7) — Le témoin Adaptation : trois preuves sur six scènes
+
+**Le contexte.** La doctrine du jour est revenue (le fichier manquait à
+l'entrée (6)). Elle porte six scènes ; la page nue du kit écrite sans elle
+superposait des objets et ne lui ressemblait pas. L'Auteur : « je te laisse
+trancher, voir ce qui est redondant ou pas assez pertinent ».
+
+**Ce qui est retenu.** Trois preuves de natures différentes, scènes de la
+doctrine reprises telles quelles, habillage aux jetons du témoin :
+le seuil (la place — 17 + 1,5 + 26 = 44,5, la zone fantôme qui dit ce qui
+manque, la fiche qui garde ses 26 rem au-delà), la hauteur (la feuille qui
+redevient page sous 34 rem), le pli (segments, plans, frontière choisie ou
+imposée, clavier en couche). Le registre entier suit.
+
+**Retour d'Auteur, aussitôt.** « 3 c'est le minimum » — trois preuves
+sont un plancher, pas un plafond, pour un sujet de cette taille. Les trois
+scènes coupées (visée, étirement, segments) sont remises : le témoin porte
+les six, dans l'ordre de la doctrine, chacune avec ses règles et sources. La
+visée reste dite « frontière avec le tactile » sur sa ligne, pas retirée.
+
+**À faire.** Les règles A1–A14 de l'entrée (6) avaient été reconstruites
+sans la doctrine : les réaligner sur ses identifiants (I1–I4, C2, C5, C7,
+P1–P4, V2–V4) et ses six règles. La page nue du kit repart du témoin, pas
+l'inverse. Pièces : `claude/livrables/temoin-adaptation-2026-09-09.html`,
+`fili-v2/temoin-adaptation.html`.
+
+## 9 septembre 2026 (8) — La page Adaptation entre au kit : six preuves sur le banc, huit épreuves vertes
+
+**La décision.** « Verse sur le kit en prenant bien soin de respecter le
+gabarit décidé pour les autres pages, ainsi que la tonalité du texte. » La
+page `/adaptation` prend le gabarit documentaire entier — rail, hero,
+sections, cadre des démonstrations, un répertoire, le code à part — et rien
+d'autre : le banc à poignée du kit (`Preview`) porte le seuil et l'étirement,
+le cadre (`Demo`, `DemoScene`) porte la visée, la hauteur, les segments et les
+plans, avec le choix sous la tête et l'action qui se retourne (« Ignorer le
+pli » / « Respecter le pli »). Les scènes sont celles du témoin ; les
+distances des maquettes prennent les crans du kit, les dimensions d'écran se
+disent hors chaîne. Le texte passe à la voix du kit : aucun mot qui commande,
+des situations en une phrase, des verdicts lus sur le rendu.
+
+**Le moteur.** `ADAPTATION` entre dans `derivation.mjs` : les largeurs de
+travail, la gouttière, le plancher de hauteur, le demi-clavier, la portée
+(observation) et la somme qui fait un seuil. La page et son code les lisent ;
+rien n'est recopié. Ces valeurs sont posées, pas encore dérivées de la
+chaîne — dit sur place.
+
+**Le rangement.** `Adaptatif` (Principes, sans chemin) devient `Adaptation`,
+`/adaptation`, 🟡. Le réglage de stack quitte `adaptation.tsx` pour
+`stack.tsx` (le fichier portait le nom de la famille) ; son attribut
+`data-adaptation` reste, à renommer dans son propre thread.
+
+**Au banc.** `tests/adaptive.test.mjs`, huit épreuves : le seuil (sous la
+somme, pas de liste et le fantôme dit le manque ; au-dessus, la liste et la
+fiche qui n'a pas bougé), la hauteur (feuille puis page pleine, lu au
+verdict), les segments et les plans (les casses déclarées, la frontière
+médiane entrouvert, le clavier scindé à plat), C17 dans les deux thèmes, rien
+en dur hors l'appareil imité, zéro débord, zéro erreur, l'écriture d'Auteur,
+quatre pièces au répertoire. Vertes sur le Mac, après `next build`. Rien n'est
+commité : l'arbre porte le travail d'autres fils.
+
+**Ce qui reste.** Les règles A1–A14 à réaligner sur la doctrine (I, C, P, V)
+et à doter d'une mesure décidable ; la séance de passage ; la mesure du texte
+(trois valeurs) ; le rename de `data-adaptation`.
+
+## 10 septembre 2026 — Le seuil : la place gagnée va à la fiche, pas à la liste
+
+**Retour d'Auteur** sur la scène 02 : « le ratio devrait plus être inversé,
+la liste prend trop de place ». Juste — la place gagnée a trois emplois, et
+le premier est le contenu ; le contenu, ici, c'est la fiche. Au-delà de la
+somme, la liste tient sa largeur de travail (17 à 20 rem) et la fiche prend
+le reste ; sous la somme, rien ne change. Corrigé dans le kit, le témoin et
+l'épreuve (la fiche ne descend jamais sous 26, la liste ne dépasse jamais 20).
+
+## 10 septembre 2026 (2) — Retours d'Auteur sur /adaptation : la charnière au milieu, l'étirement à 780, la fenêtre qu'on écrase
+
+**La charnière.** « La frontière est toujours la moitié de l'écran ouvert. »
+La scène des plans pliait l'appareil là où l'interface se divisait — faux
+dès qu'on ignore la frontière. Désormais les deux plans physiques font
+moitié-moitié (biseau et ombre au milieu), et la composition est une couche
+d'écran vue à travers chaque plan, le second la décalant d'une moitié : quand
+elle ignore la frontière, la liste traverse la charnière et se casse — c'est
+la faute, visible. Le pupitre prend toute la largeur de la scène : en paysage
+il se resserrait à l'appareil et coupait le biseau.
+
+**L'étirement** part à 780 px (le banc gagne une largeur de départ déclarée,
+`start`) et sa marge prend le damier.
+
+**La hauteur** : plus de poignée — un bouton, « Écraser » / « Rétablir »,
+560 puis 300 px, au cran du panneau (chorégraphie de banc, dite).
+
+**Le seuil** : la place gagnée va à la fiche (entrée précédente).
+Huit épreuves vertes après chaque passe.
+
+## 10 septembre 2026 (3) — Le biseau du pliable : une projection, pas un réglage
+
+**Retour d'Auteur** : « le biseautage est assez aléatoire — une règle de
+calcul hauteur/largeur relative à l'angle ». La règle retenue est la
+projection orthographique, cos θ : pas de perspective, le plan relevé garde
+ses bords parallèles et se raccourcit de cos θ ; la dimension apparente est
+une addition — plan à plat + plan relevé × cos θ (en format fermé : 0,7 +
+0,7·cos θ → 1,4 à 0°, 1,195 à 45°, 0,7 à 90°). L'ombre de la charnière est
+la profondeur perdue, D·(1 − cos θ), la moitié côté plat ; l'appareil est
+recentré de la moitié perdue. La légende dit le calcul quand l'appareil est
+entrouvert (400 + 400 × cos 32° = 739 px). Portrait et paysage suivent la
+même règle. Une première version à perspective calculée (gain du bord proche)
+a été écartée dans l'heure : moins lisible, et une constante de plus.
+
+## 10 septembre 2026 (4) — Les plans : un appareil qui se plie dans l'espace, pas quatre paliers
+
+**Spécification d'Auteur.** L'appareil est deux surfaces physiques
+identiques 0,7 × 1 sur une charnière ; à 180° un écran 1,4 × 1. Quand il se
+plie, une moitié reste face à la caméra, l'autre tourne autour de la
+charnière — une vraie transformation 3D dont le contenu est solidaire :
+largeur projetée 0,7 × cos(rotation), apparente 0,7 + 0,7 × cos, aucun
+reflow dû à la projection. L'adaptation est un autre phénomène : seule une
+règle UX explicite recompose l'interface selon la posture.
+
+**Ce qui change.** La scène 06 perd ses trois boutons d'état pour une
+molette d'ouverture continue (180 → 45°, repères 180 / 135 / 90 / 45), sous
+le phénomène. Le plan mobile tourne autour de la charnière (transform-origin),
+dans un espace à profondeur (preserve-3d, caméra lointaine : la projection
+reste à cos θ près) ; l'écran de composition est solidaire de chaque surface
+et ne se remet jamais en page pour la projection. La règle de posture est
+dite : entrouvert sous 170°, la frontière imposée est médiane. Au-delà de 90°
+de rotation, le plan montre son dos et recouvre l'autre. La légende sépare
+« projection » et « adaptation » et donne le calcul (0,7 × cos 45° = 0,495 ;
+apparente 1,195). L'épreuve vérifie la rotation (cos dans la matrice), la
+charnière comme origine, l'absence de transformation propre du contenu, la
+règle imposée à 135°, la casse déclarée, le dos à 45°. Huit vertes.
+
+## 10 septembre 2026 (5) — Deux écrans, pas un : l'extérieur et l'intérieur du pliable
+
+**Correction de modèle matériel (Auteur).** L'appareil a deux systèmes
+d'affichage : l'écran extérieur, quand il est fermé — son propre viewport,
+sa propre composition — et l'écran intérieur, quand il est ouvert — deux
+panneaux physiques sur une charnière. L'ouverture n'agrandit, ne déforme, ne
+découpe jamais l'écran extérieur : c'est un changement de display.
+
+**Dans le code.** `OuterDisplay` et `InnerDisplay` sont deux composants,
+deux surfaces ; la scène bascule de l'un à l'autre. À l'ouverture, l'écran
+extérieur pivote autour de son bord et s'efface, l'écran intérieur apparaît
+(au cran du panneau ; sous mouvement réduit, la bascule est sèche). L'angle
+ne vit que sur l'écran intérieur ; « Fermé / Ouvert » revient dans la tête.
+La légende nomme l'écran actif. L'épreuve vérifie qu'un seul display existe
+à la fois. Huit vertes.
+
+## 10 septembre 2026 (6) — Les plans : l'appareil devient le contrôleur, la posture devient le sujet
+
+**Direction d'Auteur.** Le modèle physique est acquis (écran extérieur fermé,
+écran intérieur ouvert, charnière) ; la démonstration doit faire comprendre
+pourquoi l'adaptatif va plus loin que le responsive — en manipulant, sans
+lire.
+
+**Ce qui change.** Le panneau mobile se saisit à la souris (un côté de
+panneau parcouru vaut 90°, la valeur suit le geste sans transition) ; la
+molette d'angle reste un contrôle secondaire. Portrait / Paysage disparaît
+au profit de deux réglages nommés — Surface : Extérieur / Intérieur ;
+Posture : Fermé / Livre / Laptop / À plat — où la posture est DÉTECTÉE
+(surface, angle, orientation de la charnière) et les boutons sont des
+presets. Sur l'objet, deux lignes discrètes portent la preuve centrale :
+« Surface disponible 800 × 571 · inchangée » et « Posture À plat → Livre »
+— la surface logique ne bouge pas, la posture si, et l'interface s'adapte ;
+une annotation brève près de la charnière dit la décision (« Posture Livre
+détectée — la charnière devient une frontière »). La phrase verte devient un
+verdict d'une ligne. « Ignorer la charnière » montre l'interface naïve — la
+division ne connaît que la largeur : titre du message, zone de saisie et
+clavier entier tombent sur le pli, marqués en rouge — et « Respecter la
+charnière » corrige sous les yeux. La géométrie ne provoque jamais de reflow
+continu : l'interface ne change qu'au changement de posture.
+
+**Au banc.** L'épreuve des plans vérifie la posture lue, la rotation et la
+charnière, le contenu solidaire, la surface inchangée et la posture changée
+dans les deux lignes, l'annotation, le geste à la souris qui déplie, la casse
+marquée (pli, clavier entier), la correction, le dos, l'écran extérieur,
+Laptop à charnière horizontale. Huit vertes.
+
+## 10 septembre 2026 (7) — Quatre postures, et l'orientation seulement là où elle a un sens
+
+**Auteur** : « je ne vois que des postures — Mobile (vertical, horizontal),
+Livre (semi-ouvert vertical), Laptop (semi-ouvert horizontal), Tablet
+(ouvert, vertical ou horizontal) ». La tête de la scène ne porte plus que
+ça : Posture Mobile / Livre / Laptop / Tablet, et Orientation Vertical /
+Horizontal, qui n'apparaît que pour Mobile et Tablet — Livre et Laptop
+fixent l'orientation par leur charnière. Le réglage Surface disparaît de la
+tête ; la surface active reste lue sur l'objet (« Surface extérieure 400 ×
+571 », « Surface intérieure 800 × 571 · inchangée »). La posture est
+toujours détectée depuis la surface, l'angle et la charnière ; plier une
+Tablet horizontale donne un Livre, une Tablet verticale un Laptop. Huit vertes.
+
+## 10 septembre 2026 (8) — Un seul appareil : les postures se rejoignent par une rotation ou un pli, jamais par une autre vue
+
+**Auteur** : « dommage que ce soit une autre vue qui se charge à chaque
+posture — j'aurais vu des transitions 3D, un flip pour l'orientation ; c'est
+peut-être trop ? ». Ce n'est pas trop, c'est le bon modèle : un seul objet.
+L'appareil vit dans son repère (charnière verticale, panneau mobile à
+gauche) ; Laptop, Mobile horizontal et Tablet verticale sont le même
+appareil tourné de 90° dans l'espace, au cran d'une arrivée ; le contenu
+reste droit parce que la composition est une toile tournée en sens inverse
+dans chaque écran. Un preset anime le pli au cran du panneau ; le geste, lui,
+reste sans transition. Mobile ⇄ Tablet garde le retournement entre les deux
+écrans. L'ombre au sol appartient à la scène et ne tourne pas. Huit vertes.
+
+## 10 septembre 2026 (9) — 0° = Mobile sur le curseur, et l'écran intérieur ne s'allume qu'à 90°
+
+**Auteur** : « sur le slider, Mobile = 0° », puis une vidéo : à 10°, un dos
+gris plein écran et « Posture Livre détectée » ; une projection à cosinus
+négatif. Cause : l'écran intérieur s'allumait dès 1°. Règle de posture posée :
+sous 90°, l'appareil est Mobile et l'écran extérieur reste le seul allumé ; à
+90° l'écran intérieur s'allume, le panneau mobile part de la tranche et se
+déplie. Le curseur va de 0 à 180 (repères 0 · 90 · 135 · 180), fermer à la
+main ou au curseur ramène l'écran extérieur en se retournant. Plus de dos,
+plus de cosinus négatif. Ordre des postures : Mobile › Laptop › Livre ›
+Tablet. Huit vertes.
+
+## 10 septembre 2026 (10) — Le pliable est un livre qui s'ouvre : une couverture à deux faces, plus de menu
+
+**Auteur** : « sur le net j'ai vu plein d'exemples d'ouverture qui imitent
+un livre — c'est exactement le même problème ; et on n'a pas besoin de ce
+menu : le slider et un bouton flip, c'est mieux ; là c'est broken ». Nouveau
+modèle matériel, le dernier : un panneau fixe (l'écran intérieur droit) et
+une couverture qui tourne autour de la charnière, avec l'écran extérieur sur
+sa face externe et l'écran intérieur gauche sur sa face interne. Une seule
+rotation 3D fait tout : à plat, l'intérieur ; sous 90°, le dos de la
+couverture — l'écran extérieur, seul allumé. Plus de vue chargée, plus de
+dos gris, plus de cosinus négatif : c'est une face cachée, comme sur un
+livre. Les postures ne sont plus un menu mais une lecture de l'objet :
+l'angle (curseur 0–180, ou la couverture tirée à la main) et Retourner, qui
+tourne l'appareil de 90°. Corrigés au passage : le clavier posé recouvrait
+la ligne de réponse en Livre et en Laptop ; l'ombre au sol suit maintenant
+l'appareil (recentrage et rotation). Huit vertes.
+
+## 10 septembre 2026 (11) — Sur les plans, rien d'écrit par-dessus l'objet ; quatre paliers d'ouverture
+
+**Auteur** : « enlève les textes par-dessus et dans la box », « la box
+toujours de la même hauteur », « on a quatre breakpoints : 0°, 1 à 90°,
+91 à 179°, 180° ». L'annotation flottante et les deux lignes d'écran
+disparaissent : la posture se lit au curseur (« Ouverture 120° · Tablet →
+Livre »), « inchangé » passe dans la légende. La tête de la démo garde sa
+hauteur : l'action « Ignorer la charnière » reste en place et se désactive
+hors du palier entrouvert (le composant Demo gagne `disabled`). Les paliers :
+0° fermé, 1–90° entrouvert (extérieur seul allumé, Mobile), 91–179° Livre ou
+Laptop, 180° Tablet — l'intérieur s'allume au-delà de 90°, Tablet n'est plus
+« au-delà de 170 » mais à plat. Huit vertes.
+
+## 10 septembre 2026 (12) — La posture entre dans l'ADN : Fili conçoit pour des postures, pas pour des tailles d'écran
+
+**Auteur** : un principe à inscrire dans la constitution, sans appauvrir les
+autres. *Une interface Fili s'adapte à la situation d'usage de sa surface, pas
+simplement à sa taille.* Corollaire : *le designer conçoit les règles qui
+survivent aux changements de posture, pas une collection exhaustive
+d'écrans.* Le raisonnement : état physique → orientation → posture → règles
+d'adaptation → composition — jamais angle → layout. Quatre états pour une
+charnière — fermé 0°, semi-ouvert 1–90°, largement ouvert 91–179°, à plat
+180° — ce sont des seuils d'état, pas des points de rupture ; les deux états
+entrouverts restent distincts (relation entre les surfaces, visibilité,
+usages), la posture y est la même. Quatre postures aujourd'hui, un
+vocabulaire ouvert : Mobile, Livre, Laptop, Tablet. Fermé et ouvert
+n'utilisent pas le même écran : changement de surface active, jamais un
+écran qui grandit. Le responsive ne disparaît pas : la taille devient une
+variable parmi d'autres. Où ça vit : `POSTURE` au moteur (états, postures,
+`state()`, `of()` — une posture s'ajoute sans toucher au principe), le
+contrat S7 ⚪ sur la carte, la scène 06 qui lit l'état au moteur (à 1°
+l'écran intérieur est la surface active, l'extérieur s'éteint), une pièce
+« états et postures » au registre, deux règles S1/S2, trois lignes de code
+(`POSTURE.of`, `device-posture`, `viewport-segments`), le lexique. Et des
+sources, qui manquaient — l'Auteur les a réclamées : Apple (HIG « Designing
+for iPhone Duo », Tech Talk « Strike a pose » : poses, régions réservées,
+classes de taille plutôt que mises en page dédiées), Android (FoldingFeature
+: état, orientation, occlusion ; postures tabletop / book ; continuité ;
+classes de fenêtre « pas pour une logique isTablet »), Samsung (Flex mode :
+contenu en haut, commandes en bas ; App continuity), W3C (Device Posture API
+: folded / continuous), MDN (Viewport Segments), Microsoft (Surface Duo : la
+couture). Réponse à la question d'Auteur « y a-t-il des directives autres que
+le viewport ? » : oui, sur toutes les plateformes — la posture (web
+`device-posture`, Android `FoldingFeature.state`), l'orientation de la
+charnière, l'occlusion, les segments de viewport (`env(viewport-segment-*)`),
+et chez Apple les régions réservées et les vues d'arrangement (split /
+overlay) ; aucune ne se déduit d'une largeur. Le banc : le port du serveur
+d'épreuve se prend sur toutes interfaces (un port libre en v4 était refusé en
+v6). Huit vertes.
+
+## 10 septembre 2026 (13) — Deux fuites vues à la vidéo : la liste à travers la couverture, la ligne de réponse sous les touches
+
+**Auteur** : « bug land ». En Laptop presque fermé, la liste intérieure
+apparaissait à l'envers à travers le dos de la couverture : la toile tournée
+porte sa propre transformation et n'héritait pas du dos caché — elle cache
+maintenant le sien, et la face extérieure passe un cran devant. Sur les
+écrans larges, la ligne de réponse passait sous le clavier : la réserve
+sous la vue était un nombre (8 rem) alors que la hauteur du clavier est faite
+d'écarts qui bougent avec la largeur — la réserve est désormais la même
+somme que le clavier. Huit vertes.
+
+## 10 septembre 2026 (14) — Plus de curseur : trois positions, 0° · 125° · 180°, et l'ouverture s'anime
+
+**Auteur** : « on va enlever l'idée de slider, ça fait bugger visuellement ;
+0°, 125°, 180° ça suffit — garde l'animation d'ouverture ». Le curseur et
+le geste sur la couverture disparaissent : les angles intermédiaires sont
+un état de l'appareil, pas un réglage qu'on fait glisser. Trois positions —
+fermé, largement ouvert, à plat — et la couverture tourne d'une position à
+l'autre au cran expressif ; sa face intérieure ne se redessine qu'une fois la
+couverture passée devant. La posture reste lue à côté des positions. Huit
+vertes.
+
+## 10 septembre 2026 (15) — Le banc des postures : deux apps, une mise en page chacune, quatre appareils
+
+**Auteur** : « un test HTML de deux types de pages — une page de kit, un
+tableau de bord santé — et un outil où je puisse tout tester : mobile,
+desktop, tablette traditionnelle et pliable ». Le témoin
+`temoin-banc-postures.html` (dépôt et projet). Deux applications qui ne
+dessinent aucun écran par appareil : chacune déclare ses zones et leurs
+largeurs de travail (santé : patient 24, rendez-vous 17, constantes 16 ; kit :
+lecture 20 → 34, rail 15, repères 16), et le banc pose trois faits sur sa
+racine — combien de zones tiennent (la somme), la posture, le nombre de
+segments — que la mise en page lit. Quatre appareils : Mobile 390 × 844,
+Tablette 820 × 1180, Desktop 1440 / 1024 / 720, Pliable (le livre de la page,
+0° · 125° · 180°, Retourner). Le HUD dit la surface, la posture, la place et
+la somme qui décide ; un verdict rouge signalerait une app qui réclame un
+écran dédié — aucune des deux ne le fait. Deux règles nées au banc : en
+Livre la frontière prime sur la somme (une zone par panneau, même si la somme
+ne tient pas) ; en Laptop le contexte ne monte à côté du contenu que s'il y
+tient (24 + 1,5 + 16 = 41,5 rem > 35,7 : il redescend dans la fiche). Le
+moteur du banc est une copie de `POSTURE` et du seuil-somme ; en production
+ces faits viendraient des requêtes de conteneur, de `device-posture` et des
+segments de viewport.
+
+## 10 septembre 2026 (16) — La porte d'émulation est vérifiée : les segments, oui ; la posture, à dériver
+
+**Auteur** : « comment tester ? il faut un outil, comme dans les navigateurs ».
+Vérifié au banc, sur Chrome 152 (Mac) et Chromium 141 (Linux) : Playwright
+peut imposer une pliure au navigateur par l'émulation (une charnière
+verticale à 398 px sur 800), et la vraie page voit alors deux segments de
+viewport — la requête `horizontal-viewport-segments: 2` est vraie,
+`window.viewport.segments` en compte deux. C'est ce que DevTools fait avec un
+Galaxy Fold en « écran double ». Limite : l'API Device Posture n'existe pas
+sur Chrome de bureau, drapeaux ou pas. Décision : sur le web, la posture se
+dérive des segments et de l'orientation du pli (deux segments à pli vertical
+→ Livre, horizontal → Laptop ; un segment → Tablet ou Mobile selon la
+surface), ce qui est déjà le raisonnement de `POSTURE` ; `device-posture`
+reste un bonus. La stratégie de production et de test (quatre niveaux N0–N3,
+épreuves de déclaration, de passage et de fuite, mode banc du kit) est posée
+dans le projet, à instruire dans son thread.
+
+## 11 septembre 2026 (1) — Le gabarit déclare ses zones, ses seuils deviennent des sommes, une épreuve passe huit pages dans la matrice N2
+
+**Auteur** : le thread « Stratégie postures : production et test », dans l'ordre
+du cadrage de la veille. Le kit devient le premier cas « Fili par Fili ».
+Décision de construction : **le CSS compose, le JS lit et dit**. Le gabarit
+documentaire déclare trois zones au moteur (`LAYOUTS`, kit/derivation.mjs) —
+lecture 17 → 34 rem, rail et repères sur le cran `doc-rail` de la chaîne (le
+🟢 #123 tient : leur protection se mesure sur le rendu, aucun libellé coupé,
+pas contre un nombre) — et son niveau, N2, dit au produit et à la zone. Le
+palier du rail n'est plus un nombre posé (69 rem, dette du 25 août) mais une
+somme résolue par le moteur : marge + rail + gouttière + lecture 34 + marge =
+**58 rem** de fenêtre, écrite dans tokens.css (`--doc-zones`) et reprise dans
+globals.css ; entre 58 et 69 rem, le rail est désormais là et la lecture y
+garde exactement son confort. Les seuils intérieurs au gabarit se lisent sur
+la **zone de lecture** (requêtes de conteneur `reading`), jamais sur la
+fenêtre : bande 47,6 (parole 18 + gouttière + scène 26), tables 48,1, liste
+28,3 — six colonnes déclarées avec leur protection, réglages ⚪ à valider à
+l'œil. La tranche de /rythme suit (menu 9,5 + gouttière + carte 26 = 39,1) :
+son seuil de fenêtre mentait en Livre, la carte débordait de 7 px. Les 26
+seuils de scène qui restent sont figés feuille par feuille
+(`LAYOUTS.sceneThresholds`) ; l'épreuve refuse tout seuil de plus.
+
+**Les postures divisées** (règle de survie 2), en CSS : Livre — le rail dans le
+panneau gauche, la lecture dans le droit, la gouttière du gabarit devient la
+charnière (`env(viewport-segment-*)`) ; Laptop — la lecture en haut dans son
+propre défilement, le rail en bas, nav et repères côte à côte. Sur le web la
+posture se dérive (`POSTURE.derive`) : deux segments → Livre ou Laptop ; un
+segment → Mobile tant qu'une seule zone tient (sous 58 rem), Tablet dès que deux
+tiennent — un écran de bureau est une surface plane.
+
+**La couche** `kit/app/adaptive.tsx` ne décide rien : elle pose sur `<html>`
+ce qu'elle lit (gabarit, niveau, zones, segments, posture). `data-adaptation`
+devient `data-stack` (`useStack`, `<Stack />`) : le mot est rendu. **Le mode
+banc** (drawer, mémorisé comme le thème) cerne chaque zone avec son nom et sa
+mesure, hors du flux — la première version posait l'étiquette dans la zone et
+changeait la composition qu'elle mesurait (la lecture en Laptop perdait sa
+position) — et un panneau dit surface, segments, posture, la somme qui a
+décidé, le verdict.
+
+**L'épreuve** `kit/tests/postures.test.mjs` : treize situations × huit pages
+par l'émulation (surface et pliure imposées avant le chargement) ; refus de
+statuer sans déclaration (éprouvé sur une page qui n'existe pas) ; chaque zone
+à sa largeur, aucune à cheval sur une frontière, la couche dit ce que
+l'épreuve mesure ; les seuils figés ; mêmes ancres de part et d'autre du seuil ;
+le banc dit vrai. **88 vertes** (82 + 6), moteur 34/36 — les deux rouges du
+moteur (C17 sur globals.css, « pas de nombre » sur adaptive.css) précèdent ce
+thread. Cas charnières à dessiner : l'accueil en Livre (dans un panneau, son
+affiche glisse avec la fenêtre) et en Laptop (le bas reste vide). Pièce :
+`claude/strategie-postures-production-2026-09-11.md`.
+
+## 11 septembre 2026 (2) — La bande d'atelier : trois réglages dans l'en-tête, et la surface devient une fenêtre
+
+**Auteur** : « je gagnerais du temps avec une toolbar en haut du site sans ouvrir
+le dev mode — color / dark / device / … (dropdown pour le reste) », « prends des
+icônes chez Lucide », « tout le temps pour le moment ».
+
+**La surface, sans maquette.** Une page ne peut pas redimensionner la fenêtre où
+elle vit ; elle peut redimensionner CELLE QU'ELLE A OUVERTE. Vérifié avant de
+construire (Chrome, fenêtre ouverte par le script) : ouverture à 390 × 844 exacts
+— le rail cède, la posture passe à Mobile —, puis passage à 1 440 d'un clic, à
+chaud, sans rechargement. Les trois boutons ouvrent donc une seule fenêtre — le
+banc, `window.name = "fili-banc"` — et la reposent au clic suivant : vraie
+surface, vraies requêtes de média et de conteneur, vraie posture. La fenêtre du
+banc se reconnaît et se repose elle-même : on pilote de là où on regarde. Les
+dimensions demandées sont INTÉRIEURES (l'habillage du navigateur est ajouté,
+l'écran borne). Trois surfaces au moteur (`LAYOUTS.surfaces` : Mobile 390 × 844,
+Tablette 820 × 1180, Bureau 1440 × 900) — l'épreuve des postures y lit désormais
+les siennes : une seule liste.
+
+**Ce qu'elle ne fait pas : le pli.** Les segments de viewport viennent du
+navigateur, jamais d'une page. Un quatrième bouton « pliable » donnerait les
+dimensions d'un Fold sans sa frontière — une posture fausse. Le pli reste à
+DevTools pour l'œil (Galaxy Fold · écran double) et à `tests/postures.test.mjs`
+pour la mesure, qui le passe à chaque course. Vérifié aussi : un cadre (iframe)
+ne reçoit pas de segments propres ; il hérite de ceux de la fenêtre du haut —
+donc il ne peut pas non plus jouer un pliable, et il mentirait dans l'autre sens.
+
+**La bande.** Dans `.chrome`, à droite : la couleur (une pastille qui EST la
+primaire, le sélecteur du système dessous), le fond (clair ↔ sombre, le signe dit
+où l'on est, l'étiquette où l'on va — pas d'état plein : il n'y a pas de « fond
+actif » à opposer), les trois appareils, puis « ⋯ ». La poignée du drawer a perdu
+son mot « Réglages › » et porte les trois points : le reste — densité, stack,
+banc des postures, et les trois choix de thème, dont Système, que la bande ne
+porte pas — est resté où il était. Les signes viennent de Lucide (ISC), recopiés
+dans `app/icons.tsx` : le kit dessine déjà ses signes à la main (le burger, la
+croix), un paquet d'icônes pour cinq tracés serait une dette pour rien.
+
+**Le seuil de la bande est une somme, lue sur l'en-tête.** À 320 px, cinq
+commandes plus la marque poussaient la page hors de l'écran (16 px de débord, sept
+épreuves rouges — l'invariant d'audit a fait son travail). Les appareils se
+retirent donc sous marque 15 + outils 7,5 + appareils 8,1 = **30,6 rem**, où les
+deux dernières descendent de la chaîne (cible compacte et écart, à leur borne
+haute) : `.chrome` devient un conteneur nommé, la bande lit SA place, jamais la
+fenêtre. Choisir une surface depuis la petite surface n'a de toute façon pas de
+sens. L'épreuve des postures vérifie maintenant TOUT `@container`, plus seulement
+celui de la lecture.
+
+**88 vertes**, moteur 32/34 (les deux rouges précèdent le thread des postures).
+Pièce : `claude/bande-atelier-2026-09-11.md`.
+
+
+## 11 septembre 2026 (3) — Composition rouverte pour une seule loi : le solde, et l'épreuve des voisins
+
+**Auteur** : « Composition est 🟢 depuis le 7 septembre : rouvre-la par une
+entrée de journal, pour une seule loi. » Puis, pour l'épreuve : « Rien n'est
+vert tant que la capacité à échouer n'est pas prouvée. »
+
+**Pourquoi rouvrir.** La Une de jeuxvideo.com relue par Fili le matin a montré
+un trou dans les quinze lois : aucune ne dit ce qui se passe **entre voisins**
+— une colonne qui finit trois lignes avant l'autre, un bouton tiré à la
+hauteur d'une carte, un filet plus près du haut que du bas. Les quinze lois
+parlent d'alignement, de groupe, de bord, de blanc ; aucune de **masse**.
+Composition passe 🟡, rouverte pour cette loi et rien d'autre ; les quinze
+autres ne bougent pas.
+
+**La loi 16, au moule.** *Observation* : l'œil pèse les masses avant de lire ;
+un bas qui traîne, un vide sous une colonne se voient de loin. *Règle* : une
+rangée à colonnes **se ferme** quand elle le peut — elle porte un élément
+élastique, l'image, qui prend la hauteur que le texte impose — et **se
+solde** sinon, les hauteurs de contenu restant proches ; l'empilement n'est
+jamais une réponse, on répond par la forme des items ; un contrôle n'est
+jamais élastique ; un filet se tient à égale distance de ses voisins ; la
+règle ne vaut que pour une rangée effectivement à colonnes ; les hauteurs se
+mesurent sur le contenu, jamais sur la boîte. *Réglage* (⚪, à valider à
+l'œil) : bas alignés à une ligne près, rapport des hauteurs ≤ 1,5, filet à
+une ligne près. La ligne est dans `docs/REGLES.md` § 1 (et dans son
+producteur, pour survivre à la régénération) ; solde, se fermer, élastique
+sont au lexique.
+
+**L'épreuve des voisins.** `node kit/tests/verify.mjs <fichier.html>` — sur
+n'importe quel HTML, pas seulement les pages du kit : les quatre cas (a se
+fermer · b se solder · c contrôle jamais étiré · d filet), « pas de nombre »
+au rendu, le contraste de chaque texte contre son vrai fond, et les débords
+aux treize situations de la matrice N2 (sortie de `postures.test.mjs` dans
+`tests/situations.mjs`, partagée). La hauteur d'une colonne est l'union de
+ses textes rendus et de ses images, pas son rectangle : une boîte étirée par
+la grille n'a rien fermé. **La preuve d'abord** : quatre fixtures piégées
+(chacune passe de justesse, et seulement sur le contenu — les boîtes y sont
+égales, les contenus non) et sept mutations (une feuille injectée après le
+rendu) ; l'épreuve rejoue les onze avant de juger quoi que ce soit et refuse
+de statuer si une mutation ne rougit pas exactement le cas visé. 11/11. Sur
+la page JV du matin (`jv-etabli.html`) : 14 rangées à image qui ne se ferment
+pas, 26 rangées sans image qui ne se soldent pas, 0 contrôle étiré, 0 filet,
+15 valeurs hors chaîne, 115 textes sous le seuil de contraste, zéro débord
+sur treize situations.
+
+**Ce que l'épreuve lit pour « élastique »** : `data-elastic` quand la forme
+le déclare (chantier des formes d'item, en plan), sinon une image d'au moins
+trois lignes de la rangée. Deux garde-fous dits : une rangée dont la plus
+haute colonne fait moins de trois lignes n'a pas de solde à faire (badges,
+menus) ; une rangée plus haute qu'un écran et demi est une mise en page
+(rail, panneau), pas une rangée que l'œil pèse d'un coup.
+
+**Alternative écartée** — écrire la loi sans épreuve, comme les quatre
+« lois qui vivent chez les autres familles ». Écartée : cette loi-là se
+mesure, et la faute qui l'a fait naître était mesurable.
+
+**La preuve de page — proposée, pas construite.** Une cinquième paire dans
+« Le même objet, deux fois » : la Une de JV deux fois côte à côte, onze
+titres empilés / deux cartes et neuf vignettes, une seule chose change ; le
+relevé du soir ajoute une troisième réponse, celle du site lui-même — un
+carrousel qui cache sept items sur onze. En attente du verdict d'Auteur.
+Pièce : `claude/composition-loi-16-le-solde-2026-09-11.md`.
+
+**Limite** : l'épreuve a tourné dans un Chromium hors de la machine d'Auteur
+(le bac local n'a pas de navigateur) ; `npm run verify` reste à passer sur le
+Mac, où le banc de nuit tourne.
+
+## 11 septembre 2026 (4) — Post-mortem JV : une page construite hors stack, et ce que ça a révélé
+
+**Auteur** : « Traite ces sept éléments dans un seul thread, et j'assume. »
+
+**Ce qui s'est passé.** La Une de jeuxvideo.com relue par Fili (`claude/livrables/jv-fili/`)
+a été construite hors de la stack alors que le prompt du projet faisait 38
+sections : la palette du kit à la place de celle de JV, des compteurs de
+commentaires lus dans le HTML servi mais absents de l'écran, onze titres
+empilés à côté de la Une, des titres coupés à des longueurs différentes d'une
+forme à l'autre. Aucune règle n'a été enfreinte de front ; toutes ont été
+contournées par une page qui n'est passée par aucune porte.
+
+**Ce que ça révèle, et ce qui est décidé.**
+
+1. **Un prompt long ne protège pas ; une porte, oui.** Le prompt du projet
+   rétrécit : il garde la langue, la posture, la restitution, la Definition
+   of Done et la clôture des threads, et il **route** — tout ce qui s'affiche
+   passe par `/audit`, toute page du kit par `/fondations`, toute décision
+   par `/journal`. Les §9–35 (le protocole des pages et le checkpoint des
+   trois preuves) deviennent `/fondations` ; l'entrée, la carte et le lexique
+   deviennent `/journal` ; `/audit` gagne le relevé au rendu, le rituel des
+   trois questions sur capture (où est le vide ? qu'est-ce qui se lit en
+   premier ? qu'est-ce qui se répète sans raison ?) et une Definition of Done
+   : « montre le rapport, pas seulement le rendu ». Les trois skills sont
+   proposés à l'enregistrement ; le texte du prompt est prêt à coller
+   (`claude/instructions-projet-2026-09-11.md`).
+2. **Le relevé lit le rendu, pas le DOM.** Un script dans Chrome
+   (`claude/outils/releve-rendu.js`) ne garde que ce qui est rendu visible à
+   la largeur de référence, lit les images aux tailles servies, les badges,
+   dates et plateformes tels qu'affichés, marque ce qui est hors champ,
+   identifie pubs et bandeaux et relève l'identité. Éprouvé sur JV le soir
+   (1491 px, thème sombre) : 14 sections, 101 items, huit hors champ — la Une
+   du vrai site est un carrousel qui cache sept items sur onze —, zéro texte
+   masqué dans le DOM rendu : les compteurs du matin venaient du HTML servi,
+   pas de l'écran. Données `claude/livrables/jeuxvideo.com/releve-2026-09-11.json`,
+   exclusions mémorisées dans `audit.md` du site. Le relevé du matin ne fait
+   plus foi.
+3. **La loi du solde est en instruction** (entrée 3) : rédigée, éprouvée,
+   sa preuve de page attend le verdict.
+4. **La greffe est instruite** — Phase 2, adoptabilité, ouverte depuis août
+   et jamais cadrée : trois colonnes (ce qu'on garde d'une identité —
+   primaire, sombre, accent, formes, voix, polices, contenu ; ce que le moteur
+   dérive — la famille entière par `derived(primary, accent)`, le focus, le
+   rythme, les crans, le mouvement ; ce qui reste au kit quoi qu'il arrive —
+   accessibilité, chaîne, états, lois). Cas d'épreuve JV en trois temps, aucune
+   page avant le verdict. Pièce : `claude/greffe-fili-sur-une-identite-tierce-2026-09-11.md`.
+5. **Les formes d'item sont en plan** — une, carte, vignette, ligne, titre ;
+   ce que chacune déclare (élastique : l'image bornée 16/9 → 4/3 ; borné à
+   l'affichage : le titre en lignes ∞ · 3 · 3 · 2 · 2 ; intouchable : le
+   texte) ; la règle de densité de contenu (une section déclare ce qu'elle
+   protège et la forme de ses items par posture) ; la Une de JV par posture.
+   Rien ne se code avant le plan validé. Pièce :
+   `claude/formes-d-item-et-densite-de-contenu-2026-09-11.md`.
+
+**Les dettes dites**, versées à la carte :
+- **polices Google sur les artefacts** — les pages livrées chargent une
+  police distante ; hors réseau, le rendu mesuré est celui de repli (vu par
+  `verify.mjs` : une ressource non chargée sur `jv-etabli.html`) ;
+- **la mesure du texte non arrêtée** — trois valeurs (16/70, 17/62, 65ch),
+  aucune tranchée ; la forme « ligne » et la loi du solde en dépendent ;
+- **les postures pliées non mesurables hors banc** — les segments de
+  viewport viennent du navigateur, jamais d'une page ni d'un cadre ; Livre et
+  Laptop ne se voient qu'à DevTools et ne se mesurent qu'à l'émulation
+  (`tests/situations.mjs`) ;
+- **l'échelle d'images absente du kit** — ni rapports, ni largeurs servies,
+  ni règle de recadrage ; les formes d'item ne peuvent pas se coder sans.
+
+**Alternative écartée** — reprendre la page JV tout de suite, dans la stack,
+avec la palette de JV. Écartée : sans la greffe instruite, sans les formes
+d'item, sans l'échelle d'images, ce serait une deuxième page hors stack avec
+de meilleures couleurs. Le cadre d'abord.
+
+**Impact carte** — Composition 🟡 rouverte pour une loi ; S7 gagne sa limite
+de mesure ; la greffe (Phase 2) entre au § 3.7 en 🟡 ; l'épreuve des voisins
+entre au § 3.7 ; quatre dettes au § 5.
+
+## 11 septembre 2026 (5) — Les quatre verdicts, délégués : la preuve devient un trio, les formes attendent l'échelle d'images
+
+**Auteur** : « Je te laisse décider. »
+
+**La preuve de la loi 16 devient un trio.** Le relevé du soir a changé la
+question : le vrai site n'empile pas onze titres à côté de sa Une, il en cache
+sept dans un carrousel. La paire proposée le matin — empiler contre donner une
+forme — prouvait donc la loi contre un adversaire que personne ne construit :
+ma propre page du matin. La scène devient trois panneaux, même largeur, même
+Une, mêmes onze items ; une seule chose change à chaque fois. **Empiler** : la
+colonne descend loin sous la Une, la rangée reste ouverte, le vide se voit
+avant qu'on lise. **Cacher** : quatre vignettes, sept sorties de l'écran — les
+bas s'alignent enfin, et sept items ont disparu ; la rangée s'est fermée en
+soustrayant. **Donner une forme** : deux cartes et neuf vignettes, les bas
+arrivent ensemble, les onze items sont là. Sous chaque panneau, deux mesures
+lues sur le rendu : l'écart des bas en lignes, et le nombre d'items visibles
+sur onze. Une seule idée, trois réponses : une rangée doit se fermer **sans
+perdre de contenu**. La loi gagne au passage une phrase : *cacher n'est pas
+une réponse non plus ; un carrousel répond à la place, jamais à la masse.*
+
+Les réglages ne bougent pas — 1,5 et une ligne restent ⚪, à juger à l'œil sur
+la scène une fois construite. **Construction : pas dans ce thread.** Une page
+ne passe que par le banc, et le banc tourne sur la machine d'Auteur ; c'est le
+premier travail du thread suivant, entièrement spécifié, en objets imités
+(réduction déclarée) — il ne dépend donc pas de l'échelle d'images.
+
+**Les formes d'item gardent leurs valeurs, et attendent l'échelle d'images.**
+Titres bornés à l'affichage : une ∞ · carte 3 · vignette 3 · ligne 2 · titre
+2. Recadrage borné 16/9 → 4/3 (⚪). La **Ligne prend un rapport fixe 1/1** :
+c'est ce que le relevé mesure sur JV (82 × 82), et un carré se lit comme un
+repère — un marqueur qui aide à retrouver l'item — quand un 4/3 à cette taille
+promet une image et n'en montre pas. Mais **rien ne se code avant l'échelle
+d'images** : une image élastique sans registre de rapports ni largeurs
+servies, ce sont des nombres d'image écrits à la main — la faute que la chaîne
+interdit partout ailleurs. L'échelle d'images est le thread qui suit le trio.
+
+**La greffe, trois questions fermées.** Les **polices sont gardées — la
+famille, pas l'échelle** : un site se reconnaît d'abord à sa couleur et à sa
+typographie, imposer la nôtre referait la faute de la palette ; le corps reste
+borné à 16, les crans descendent de l'intervalle, les graisses sont des rôles.
+Deux conditions : la police doit être servie (pas une police distante que le
+rendu ne charge pas) et lisible, sinon on tombe sur la pile système **et c'est
+dit**. Un site **sans thème sombre n'en reçoit pas** : le moteur dérive
+toujours les deux, le sombre existe et reste disponible, mais on ne livre pas
+un thème que personne n'a dessiné — c'est une décision d'identité, pas une
+conséquence mécanique ; le rapport dit qu'il est prêt. Le **rythme** : la base
+se relève sur le site et se cale au cran le plus proche — un portail dense ne
+devient pas une plaquette —, l'intervalle √2 reste au kit, c'est lui qui fait
+qu'une échelle tient. Rien d'autre ne change de colonne.
+
+**Alternative écartée** — construire le trio dans ce thread, en le regardant
+dans le navigateur. Écartée : regarder n'est pas mesurer, et une page qui
+entre sans le banc est exactement ce que ce thread a passé la journée à
+instruire.
+
+**Ce qui reste à la main d'Auteur** : enregistrer les trois skills
+(`/fondations`, `/journal`, `/audit` complété) depuis la carte de revue, et
+coller le prompt rétréci dans les instructions du projet
+(`claude/instructions-projet-2026-09-11.md`).
+
+**Impact carte** — la cellule /composition dit le trio ; rien d'autre ne bouge.
+
+## 11 septembre 2026 (6) — La greffe prend la primaire du site et ses deux polices
+
+*Révise l'entrée du 11 septembre (5) sur le seul point des polices.*
+
+**Auteur** : « Pour moi on prend le primary du site et on adapte. On prend ses
+polices principales pour titres et texte. »
+
+**Ce que ça change.** L'entrée (5) gardait « la famille » au singulier — une
+police, celle du site. Un site en a deux : celle de ses titres et celle de son
+texte courant. Elles peuvent être la même (JV : Roboto des deux côtés), et
+c'est justement pour ça qu'il ne faut pas les confondre — un site qui les
+distingue perdrait la moitié de sa signature typographique en entrant chez
+Fili. **Deux décisions d'entrée, donc : `fontText` et `fontHeading`**, à côté
+de la primaire, de la base et de la racine des coins.
+
+**Ce qui reste au kit** : la **mécanique** — la troisième police, celle des
+mesures, des jetons et des annotations (`--font-mono`). C'est la voix de
+l'instrument qui mesure, pas celle du site mesuré ; un chiffre de banc écrit
+dans la police d'un portail de jeux vidéo dirait le contraire de ce qu'il
+mesure. Restent au kit aussi **l'échelle et les graisses** : le corps borné à
+16, les crans sur l'intervalle 1,25, les trois rôles. Un site qui empile sept
+tailles n'en reçoit pas sept — c'est la discipline qu'il vient chercher.
+
+**Conséquence sur le moteur, dite d'avance.** Le kit n'a aujourd'hui qu'une
+famille pour le texte et les titres (`--font-sans`, plus `--font-mono` et
+`--font-serif`). La greffe demande donc **un token de plus**, `--font-heading`,
+qui vaut la famille de texte quand le site n'en a qu'une. C'est le seul
+endroit où la greffe touche le moteur, et elle ne le touchera qu'au moment
+d'être construite : rien n'est écrit dans `derivation.mjs` ce soir.
+
+**La primaire : on adapte, et c'est déjà ce que le moteur sait faire.**
+`derived(primary, accent)` dérive la famille entière des deux thèmes depuis
+une seule couleur saisie, la pose sur le cran de sa clarté (#113) et tient les
+paires par construction. « On adapte » ne veut pas dire « on retouche » : la
+couleur du site entre une fois, tout le reste en descend, et `tokens.css`
+reste un fichier généré.
+
+**Le relevé sait déjà lire les deux** (`claude/outils/releve-rendu.js` :
+`polices: { corps, titres }`) — rien à changer de ce côté.
+
+**Impact carte** — aucun : la greffe est 🟡 instruite, elle le reste.
+
+## 12 septembre 2026 — La greffe, temps 1 : le moteur reçoit les deux polices, et la primaire de JV tient
+
+*Thread « adapter jeuxvideo.com aux règles de Fili ». Applique l'entrée du 11 septembre (6).*
+
+**Ce qui a été fait.** Le moteur accepte deux décisions d'entrée de plus,
+`fontText` et `fontHeading` (`fonts(entries)` dans `derivation.mjs`), et émet
+un token de plus, `--font-heading`, qui vaut `var(--font-sans)` quand le site
+n'a qu'une famille. Il a un consommateur dès aujourd'hui : les titres du kit
+(`kit.css`, h1 à h6). Le kit ne change pas d'un pixel — ses titres prenaient
+déjà la famille du texte, ils la prennent maintenant par leur propre token.
+La mécanique (`--font-mono`) ne se paramètre pas : elle reste au kit.
+
+**La feuille de JV** (`claude/livrables/jeuxvideo.com/entrees.json`) tient
+en six valeurs : primaire #3d87f5, accent non tranché (repli du moteur), base
+24, racine 12, Roboto pour le texte et les titres. La base vient de l'écart
+entre cartes relevé (15 px → 15 × √2 = 21,2 → cran 24). Le corps relevé (15)
+est borné à 16 par le moteur, pas par la feuille.
+
+**Le verdict du temps 1 : 🟢 64 paires, deux thèmes, toutes au seuil.**
+Généré par `claude/outils/greffe-tokens.mjs` dans le dossier du site
+(`tokens.css`, `derivation.md`) — le `tokens.css` du kit reste celui de la
+charte.
+
+**Ce que le moteur a fait du bleu de JV, à regarder au temps 2.** L'aplat
+d'action glisse de #3d87f5 à #206bd7 dans les deux thèmes : l'encre blanche
+ne tient pas 4,5:1 sur la saisie. Le bleu de JV survit tel quel comme lien en
+thème sombre (#3d87f5) ; en clair, le lien se recale à #216cd8. Autrement dit
+: sur le vrai site, le bouton bleu à texte blanc ne tient pas le contraste, et
+Fili le dit en le corrigeant. C'est la première chose que l'œil devra juger
+face à la capture : le site reste-t-il reconnaissable avec un bleu d'action un
+cran plus profond ?
+
+**Non tranché, à la main d'Auteur** — l'accent : l'orange #f66031 (18
+emplois) est-il voulu ? S'il l'est, il entre souverain dans la feuille ; sinon
+le repli du moteur (#0a949e) reste.
+
+**Banc** — moteur 33/35 : une épreuve de plus (la greffe), les deux rouges
+antérieurs inchangés (tertiaire de `demo.css:271`, `calc` de
+`adaptive.css:223`).
+
+**Impact carte** — la greffe passe de « instruite » à « temps 1 tenu » ; le
+kit gagne `--font-heading` au registre.
+
+## 12 septembre 2026 (2) — JV s'arrête au temps 1 : c'était un test
+
+**Auteur** : « JV c'était un test… on va arrêter d'aller plus loin. »
+
+**Ce qui est acquis et reste** : le moteur reçoit `fontText` / `fontHeading`,
+le kit émet `--font-heading` (consommé par ses titres), et
+`claude/outils/greffe-tokens.mjs` dérive les tokens d'un site depuis sa
+feuille d'entrées. Le mécanisme de greffe est prouvé sur une primaire tierce
+(64 paires au seuil).
+
+**Ce qui s'arrête** : les temps 2 et 3 de l'épreuve JV (la Une reconstruite,
+les invariants). Les deux questions laissées à l'Auteur (l'accent orange, le
+fond sombre relevé contre dérivé) tombent avec elles — sans objet. Le dossier
+`claude/livrables/jeuxvideo.com/` reste comme pièce de test, il ne fait pas
+foi.
+
+**Impact carte** — la greffe reste 🟡 : mécanisme construit, non éprouvé sur
+une page.

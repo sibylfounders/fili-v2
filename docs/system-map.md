@@ -8,7 +8,9 @@
 > concurrente le 7 août à 08h37 ; une carte décrit le présent, elle se réécrit
 > donc plutôt qu'elle ne se restaure. L'incident est tracé en `#049`.
 >
-> **Dernière décision au journal** : `#135` — 84 entrées scellées
+> **Dernière décision au journal** : `#143` — 94 entrées au journal, **84 scellées** ;
+> `#134` → `#143` attendent le sceau, et `#050` et `#112` sont signalées réécrites
+> par `immutable.mjs` (atteinte antérieure, non traitée).
 
 **Légende des statuts**
 
@@ -52,6 +54,7 @@
 | S4 · Rythme de composition | 🟢 | La page est une suite de sections, densités et titres compris | 7 |
 | S5 · Arbitrage de lecture | 🟢 | Une page déclare ce qui compte d'abord, une seule fois, en tête | 4 |
 | S6 · Provenance de l'expression | ⚪ | D'où viennent couleur, typographie, iconographie, mouvement, libellés | 0 — exigible avant K6 |
+| S7 · Posture | ⚪ | Une interface s'adapte à la situation d'usage de sa surface, pas simplement à sa taille : état physique → orientation → posture → règles → composition ; le designer écrit les règles qui survivent aux changements de posture, pas une collection d'écrans (principe d'Auteur, 10 septembre 2026 ; `POSTURE` au moteur, page `/adaptation`). Le kit le pratique depuis le 11 septembre : `LAYOUTS` déclare les zones du gabarit, les seuils sont des sommes, `adaptive.tsx` lit et dit, le banc se regarde sur les vraies pages | 6 — `tests/postures.test.mjs`, huit pages dans la matrice N2 (11 septembre, matrice sortie dans `tests/situations.mjs`, partagée avec `verify.mjs`) ; ⚪ tant que les largeurs de travail ne sont pas jugées à l'œil. **Limite dite le 11 septembre (soir) : les postures pliées — Livre, Laptop — ne se mesurent qu'au banc, par l'émulation ; ni une page ni un cadre ne peuvent les jouer** |
 
 **Total porté et actif : 30 assertions.** Batterie : 80 fixtures à 100 %.
 Mutations : 46 sabotages sur 46 produisent l'écart attendu, **remesurés le
@@ -106,11 +109,12 @@ Rendu, Prose — plus Icone, interne et non exporté.
 |---|---|---|---|
 | `/` · La porte | 🟡 | Couverture de charte, l'accès direct aux six familles (7 septembre), le moteur en objet vivant, une carte et un spécimen par page ouverte, la carte du système par famille — tout lu dans la liste unique des pages (`kit/app/pages.ts`) | Rouverte le 7 septembre : réécrite sur la liste unique, rendu vérifié sur capture, en attente de l'œil d'Auteur (`#111`) |
 | `/typo` · Typographie | 🟡 | Quatorze règles (T13 une seule taille, T14 deux fonds deux graisses, depuis le 8 septembre ; T12 le calage depuis le 4), huit crans et un seul rapport, la mesure dans son cadre au verdict lu, la gazette, la section Graisse (liste au corps unique, deux fonds à l'écart réglable — l'écart de 20 posé à l'œil par l'Auteur le 9 septembre), six bandes dont la carte calée — passée à la voix et aux quatre étages le 2 septembre | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **8 septembre : section Graisse, deux épreuves neuves, quatorze vertes sur la machine d'Auteur ; les tokens de graisse (`--weight-*`) ont une valeur claire et une sombre.** **Reverrouillée le 7 septembre : sept épreuves réécrites sur la page d'aujourd'hui (bandes, fonts, mesure lue, calage mesuré), le banc repassé vert de bout en bout.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, douze épreuves (`#127`) ; la carte du zoom s'ouvre au ×2 depuis le 31 août, l'épreuve décrivait encore l'état de repos — remise au niveau le 1er septembre (elle éprouve maintenant les trois états). |
-| `/rythme` · Rythme | 🟡 | Le moteur en ouverture (le scénario, douze slides, depuis le 2 septembre) ; la descente : coque, carte, ligne, marge et coin ensemble (chaîne et profondeur fondues le 8 septembre) ; la densité qui change la base ; l'intervalle des titres ; le registre — réécrite sur les huit décisions le 25 août | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **Reverrouillée le 7 septembre : le film déclare ses valeurs écrites à la main, le couple chiffre-légende est mesuré, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
+| `/rythme` · Rythme | 🟡 | Le moteur en ouverture (le scénario, douze slides, depuis le 2 septembre) ; la descente : coque, carte, ligne, marge et coin ensemble (chaîne et profondeur fondues le 8 septembre) ; la densité qui change la base ; l'intervalle des titres ; le registre — réécrite sur les huit décisions le 25 août **12 septembre (`#139`) : la chaîne émet son premier cran de page — il a désormais un consommateur, la frontière à trois crans ; trois lignes de `rythme.css` qui redisaient le gabarit sont sorties.** | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Rabattue par le banc : le banc l'a refusée le 8 septembre.** **Reverrouillée le 7 septembre : le film déclare ses valeurs écrites à la main, le couple chiffre-légende est mesuré, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, quinze épreuves (`#126`) ; réglette de la chaîne et quatre couleurs de crans posées le 31 août — vert, bleu, jaune, rouge (rupture déclarée : ici la couleur dit la profondeur, pas la nature ni l'état) — à repasser au crash-test ; le laboratoire remis au niveau le 1er septembre (l'amorce « deux fois le même geste » portée de la pièce libre à la place des pastilles ; chiffres de légende alignés sur la densité du site). Épreuves remises au niveau le 1er septembre : l'amorce, l'anneau de marge, la carte devenue rangée, le menu devenu contrôle, la réglette. Deux fautes corrigées au passage — l'écart de la réglette, qui n'était pas dit, et la réglette qui écrasait l'affiche du bon cran. |
 | `/couleur` · Couleur | 🟡 | Dix-sept règles ; la marque rare (palette et situation fondues le 8 septembre : le tableau de bord, la mosaïque), le nuancier en six lignes signées, le moteur ; le registre : les rôles dans les deux thèmes, les six gammes ouvertes, cinq bandes (dont « teinter ne coûte rien ») | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Reverrouillée le 7 septembre : cinq épreuves réécrites (un seul panneau mesuré dans les deux thèmes, la casse de la teinte entre à l'épreuve), une faute corrigée (la marque du panneau de code écrite à la main, lue au moteur), le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, huit épreuves (`#128`) ; le nuancier est passé en deux groupes et la démo du moteur ne pilote plus la page (31 août) — épreuves remises au niveau le 1er septembre. Une faute corrigée : les 5,5 rem que le fond doux réservait à la lane du ton, écrits à la main, sont maintenant nommés et dits. |
-| `/composition` · Composition | 🟡 | Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré — et, depuis le 7 septembre, les deux étages du bas : quatre paires (le bon et le mauvais côte à côte, le même objet deux fois, une seule chose change — un habit, un trait, un cadre, un bord) et quatre lois en liste ; la table des quinze lois a disparu, les quinze sont toutes là | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Verrouillée le 7 septembre : dix épreuves écrites au niveau des quatre autres pages, le banc passé vert (course complète), la dette des treize valeurs fermée — quatre sur la chaîne, neuf déclarées réductions de l'objet imité.** Réserve d'Auteur consignée : les textes des paires ne le convainquent pas encore. |
+| `/composition` · Composition | 🟡 | **Seize lois depuis le 11 septembre : la 16, le solde, rouverte pour elle seule (journal 11 sept. (3)) — l'œil pèse les masses avant de lire ; une rangée se ferme ou se solde, l'empilement n'est jamais une réponse, un contrôle n'est jamais élastique ; réglages ⚪ seuil 1,5, une ligne ; sa preuve de page est tranchée le 11 septembre au soir (journal 11 sept. (5)) et reste à construire, par le banc : un trio — la même Une et les mêmes onze items trois fois, empiler (la rangée reste ouverte) · cacher, ce que fait le vrai site avec son carrousel (la rangée se ferme en soustrayant sept items) · donner une forme (elle se ferme et tout reste) ; une rangée doit se fermer sans perdre de contenu.** Le regard : l'écran qu'on casse (le vocabulaire EST la légende, relié par filets, 31 août), le chemin de l'œil (F et Z), l'espace blanc mesuré — et, depuis le 7 septembre, les deux étages du bas : quatre paires (le bon et le mauvais côte à côte, le même objet deux fois, une seule chose change — un habit, un trait, un cadre, un bord) et quatre lois en liste ; la table des quinze lois a disparu, les quinze sont toutes là. **La loi de la frontière reçoit sa nuance le 11 septembre (`#138`) : trois crans quand elle bute sur une image, deux entre deux textes — et les blocs de texte d'un item reprennent leur demi-plomb, sans quoi l'écart réglé n'est pas l'écart vu.** **Portée dans les six Fondations le 12 septembre (`#139`) : le gabarit rend son plomb (chaque rôle déclare son interligne en `--lh`), la frontière du corps passe à deux crans et à trois contre une scène, le premier cran de page entre dans la chaîne — relevé `npm run plomb` vert sur les six pages à sept largeurs, et une commande n'est pas une scène.** | **Rouverte le 11 septembre pour une seule loi (la 16, le solde) : rédigée au moule, éprouvée par `tests/verify.mjs`, sa paire attend le verdict d'Auteur avant de s'écrire sur la page ; les quinze autres lois ne bougent pas.** **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Verrouillée le 7 septembre : dix épreuves écrites au niveau des quatre autres pages, le banc passé vert (course complète), la dette des treize valeurs fermée — quatre sur la chaîne, neuf déclarées réductions de l'objet imité.** Réserve d'Auteur consignée : les textes des paires ne le convainquent pas encore. |
 | `/arrondis` · Arrondis | 🟡 | La profondeur choisit le coin ; le coin intérieur ; la pilule ; six pièges révélés par leur curseur (2 septembre) — racine 16, bouton = coin de la ligne ; le répertoire des intentions a quitté la page | **Rééquilibrée le 8 septembre (nuit) : la queue commune a disparu, un répertoire au titre de la page, l'écriture éprouvée, le banc repassé vert — en attente de l'œil d'Auteur.** **Reverrouillée le 7 septembre : deux épreuves réécrites sur les pièges, le banc repassé vert.** Reverrouillée le 1er septembre : le banc est repassé vert de bout en bout.** Verrouillée le 26 août, neuf épreuves (`#129`) ; le bouton en pilule n'est plus un recalé depuis le 31 août — l'épreuve comptait encore deux recalés. Remise au niveau le 1er septembre : elle mesure désormais que les deux boutons de la paire sont le même objet à un fond près. |
 | `/mouvement` · Mouvement | 🟡 | Fondation (sous Geste). **Une ouverture sous l'accroche (9 septembre, #137) : une interface qui vit toute seule, sans légende — carte, menu, notification, donnée, tiroir, chacun à son cran ; un bouton l'arrête.** Trois règles en trois comparaisons, le mauvais et le bon côte à côte, un seul bouton joue les deux — la trace (une carte de tâche glisse, ou disparaît et reparaît), la cause (le même menu depuis son bouton ou depuis nulle part), le regard (une carte bouge, ou les huit) — chacune avec son observation, sa légende lue sur le rendu et ses règles-sources (observation / règle / réglage) ; puis le gabarit des autres pages : quatre paires qu'on peut casser — un seul geste joue les deux côtés au même instant, ralenti ×3 écrit (le survol qui poursuit, le menu qui traîne, le néant, tout couper), huit règles en liste, neuf lignes de code lues au moteur | **Alignée le 8 septembre (nuit, 3) sur le verdict « aligne » : la queue en trois sections devient un répertoire au titre de la page (moteur, quatre paires, liste), banc 71/71.** **Verrouillée le 8 septembre (soir) : douze épreuves écrites avec la page, dont l'écriture d'Auteur mesurée ; trois courses vertes, course complète sur la machine d'Auteur — six pages vertes.** |
+| `/adaptation` · Adaptation | 🟡 | Principe (sous Principes, depuis le 9 septembre). Six preuves : la visée, le seuil (une somme, 44,5 rem), l'étirement, la hauteur (plancher 34 rem), les segments, les plans — un livre qui s'ouvre, trois positions 0° · 125° · 180° et Retourner, la posture lue au moteur (`POSTURE`, S7). Registre : huit règles, trois grandeurs, les états et postures, les largeurs de travail, onze surfaces ; dix lignes de code. Sources Apple / Android / Samsung / W3C. Huit épreuves vertes (10 septembre). | Aucune règle au banc (⚪) ; la mesure du texte à trois valeurs ; A1–A14 à réaligner |
 | Composants & patterns | 💤 | — | Gelés jusqu'au verrou des fondations (`#102`) |
 
 **Le moteur du kit** (`kit/derivation.mjs`) — 🟢 pour la couleur, 🟢 pour le
@@ -132,6 +136,58 @@ la tête, à la place d'une ligne de verdict ; une molette (`tools`) vit sous la
 scène ; la scène ne commente pas, elle mesure. Le banc à poignée (`Preview`)
 sait vivre dans le cadre, bord à bord. Posé sur les six pages, plus aucun banc
 nu ; `Band` n'a plus de bouton « Casser ». La tête dit l'enjeu, pas le décor.
+
+**La bande d'atelier** (11 septembre, journal 11 sept. (2)) — 🟡 dans l'en-tête,
+à droite : la couleur, le fond (clair ↔ sombre) et trois surfaces — Mobile,
+Tablette, Bureau (`LAYOUTS.surfaces`, partagées avec l'épreuve des postures) ;
+« ⋯ » ouvre le drawer, qui garde le reste. Les appareils ouvrent UNE fenêtre — le
+banc — et la reposent à chaud : vraie surface, vraie posture, sans rechargement ;
+le pli, lui, n'est pas simulable depuis une page et reste à DevTools. Les
+appareils se retirent sous une somme lue sur l'en-tête (30,6 rem, conteneur
+`chrome`). Signes d'après Lucide, recopiés (`app/icons.tsx`). Pièce :
+`claude/bande-atelier-2026-09-11.md`.
+
+**L'épreuve des voisins** (11 septembre (soir), journal 11 sept. (3)) — 🟡
+`node kit/tests/verify.mjs <fichier.html | URL>` (`npm run verify`) : sur
+n'importe quel HTML, les quatre cas de la loi 16 — a se fermer, b se solder,
+c contrôle jamais étiré, d filet à égale distance — mesurés sur le contenu,
+jamais sur la boîte ; plus « pas de nombre » au rendu, le contraste de chaque
+texte contre son vrai fond, et les débords aux treize situations
+(`tests/situations.mjs`). Elle rejoue ses quatre fixtures piégées et sept
+mutations (`tests/fixtures/voisins/`) avant chaque jugement et refuse de
+statuer si une mutation ne rougit pas le cas visé : 11/11. Réglages ⚪ (seuil
+1,5, tolérance d'une ligne, trois lignes minimum, un écran et demi maximum)
+dans `tests/neighbors.mjs`, à valider à l'œil. Passée dans un Chromium hors
+de la machine d'Auteur ; à repasser sur le Mac.
+
+**La greffe — Phase 2, adoptabilité** (11 septembre (soir), journal 11 sept.
+(4) ; **temps 1 tenu le 12 septembre**) — 🟡 instruite, temps 1 🟢 (64 paires
+au seuil sur la primaire de JV ; le moteur reçoit `fontText` / `fontHeading`,
+le kit gagne `--font-heading`). **JV était un test : arrêté au temps 1 par
+l'Auteur le 12 septembre**, temps 2 et 3 non ouverts — le mécanisme est
+construit, pas encore éprouvé sur une page : trois colonnes — ce qu'on garde
+d'une identité tierce (primaire, sombre, accent, formes, voix, polices,
+contenu), ce que le moteur dérive (`derived(primary, accent)` : la famille
+entière, le focus, le rythme, les crans, le mouvement), ce qui reste au kit
+quoi qu'il arrive (accessibilité, chaîne, états, lois). Cas d'épreuve JV en
+trois temps, aucune page avant le verdict. Le relevé d'identité vient du
+script de relevé au rendu (`claude/outils/releve-rendu.js`). Pièce :
+`claude/greffe-fili-sur-une-identite-tierce-2026-09-11.md`. Les formes d'item
+(une · carte · vignette · ligne · titre) et la règle de densité de contenu
+sont en plan (`claude/formes-d-item-et-densite-de-contenu-2026-09-11.md`),
+rien ne se code avant le verdict.
+
+**Les postures du kit** (11 septembre, journal 11 sept. (1)) — 🟡 le gabarit
+déclare ses zones au moteur (`LAYOUTS` : lecture 17 → 34 rem, rail et repères
+sur le cran `doc-rail`, niveau N2 au produit et à la zone). Le palier du rail
+est une somme résolue par le moteur (58 rem, écrite dans tokens.css) ; bande,
+tables et liste se lisent sur la zone de lecture (`@container reading`) ; les
+26 seuils de scène restants sont figés feuille par feuille et l'épreuve refuse
+tout seuil de plus. Livre et Laptop en CSS (segments de viewport). La couche
+`kit/app/adaptive.tsx` pose sur `<html>` gabarit, zones, segments et posture ;
+`data-adaptation` est devenu `data-stack`. Le mode banc (drawer) cerne les
+zones et rend le verdict. `tests/postures.test.mjs` : 13 situations × 8 pages,
+6 épreuves vertes. Pièce : `claude/strategie-postures-production-2026-09-11.md`.
 
 **Le lexique et la langue du code** (8 septembre, `#134`) — 🟢 `docs/lexique.md`
 fait foi : prose française, code anglais. Tout identifiant du kit et du témoin
@@ -208,9 +264,32 @@ reste une décision d'Auteur, écrite au journal (garde-fou 2).
 `kit/tests/night-run.mjs` lance le banc chaque nuit à 3 h 30
 (`npm run bench:night`), écrit son verdict en clair dans `docs/banc-du-jour.md` et
 remet cette table au vrai. Une nuit où le site ne se construit pas ne rabat
-rien : rien n'a été mesuré, la dernière mesure connue tient. Le verrou au commit
+rien : rien n'a été mesuré, la dernière mesure connue tient.
+**🔴 La course de nuit ne mesure pas ce qu'elle annonce (dette dite le 12
+septembre, `#143`)** : sa liste `PAGES` nomme les pages par leur slug français
+(`rythme`, `arrondis`, `couleur`, `mouvement`) quand les épreuves portent des
+noms anglais (`rhythm`, `rounded`, `color`, `motion`) — quatre des six pointent
+vers un fichier absent. `postures`, `adaptive`, `weight` et `frontiere` n'y
+figurent pas, et le bulletin s'écrit dans `docs/bench-of-day.md` quand la
+console annonce `docs/banc-du-jour.md`. Tant que ce n'est pas repris, le vert
+de la nuit ne vaut rien et cette table se lit à la main. Le verrou au commit
 a été examiné et **écarté** : deux minutes d'attente à chaque enregistrement
 pousseraient à grouper les commits, et le journal vit de leur finesse.
+
+**L'épreuve d'un fichier prouve d'abord qu'elle peut échouer** (11 septembre,
+durcie le 12 — `#143`). `kit/tests/verify.mjs` rejoue ses quatre fixtures
+piégées et leurs mutations avant de juger quoi que ce soit. Depuis le 12
+septembre, une mutation ne suffit plus à rougir : elle doit prendre **au moins
+trois lignes** sur son seuil, et par une quantité qu'elle pose elle-même — les
+fautes disent désormais leur marge en lignes (`marginLines`), dans la même unité
+pour les quatre cas. Une preuve qui tient à un cheveu dit la police de la
+machine, pas la loi : trois mutations sur onze étaient dans ce cas, dont une à
+2,5 px, et l'épreuve refusait de statuer sur le Mac tout en passant ailleurs.
+11/11 sur deux machines, marge la plus courte 3,6 lignes, posée. **Ce que
+l'épreuve dit d'une page du kit reste rouge et non traité** : 27 textes sous le
+seuil de contraste (le tertiaire du rail et des kickers à 3,33:1 pour 4,5 exigés)
+et une soixantaine de valeurs hors chaîne au rendu — dette de la page, pas du
+banc.
 
 **Le kit est jugé par ses propres règles, au commit et au push** (9 septembre,
 décision d'Auteur — voie B). Le linter FILI de `temoin/` ne sait pas lire le kit
@@ -319,6 +398,11 @@ le 9 septembre ; « 600 au moins » avant). Le vérificateur éprouve les trois 
 | La page Accueil hors chaîne | 🔴 | 25 août 2026 | Ses anciens tokens sont rabattus sur la chaîne pour que la page tienne ; ses valeurs propres (`--acc-*`) restent posées en dur, bloc marqué « dette déclarée » et borné dans globals.css. À dériver quand la page sera reprise. |
 | Le journal en retard de onze entrées | 🟢 | 25 → 26 août 2026 | Fermée : les huit décisions et les trois entrées du thread « Le kit passe sur la chaîne » sont versées (`#114` → `#124`) et scellées (75 entrées). |
 | Les sept témoins non jugés après migration | 🔴 | `#059` | Tous les nombres des sept écrans ont changé. Le verdict mécanique est vert des deux côtés ; l'œil n'a pas parlé. La planche de comparaison existe, la séance non. |
+| Les polices Google sur les artefacts | 🔴 | 11 septembre 2026 | Les pages livrées (`claude/livrables/jv-fili/`) chargent une police distante ; hors réseau, le rendu mesuré est celui de repli (`verify.mjs` : une ressource non chargée). Une pièce qui dépend du réseau pour sa typographie n'est pas une pièce. |
+| La mesure du texte non arrêtée | 🔴 | 11 septembre 2026 | Trois valeurs en circulation (16/70, 17/62, 65ch), aucune tranchée. La forme « ligne » des items et la tolérance « d'une ligne » de la loi 16 en dépendent. |
+| Les postures pliées non mesurables hors banc | 🔴 | 11 septembre 2026 | Les segments de viewport viennent du navigateur ; ni une page (la bande d'atelier) ni un cadre ne peuvent jouer un pliable. Livre et Laptop se voient à DevTools et se mesurent à l'émulation seule (`tests/situations.mjs`). Un défaut de posture pliée ne se verra donc jamais à l'œil sur le site. |
+| L'échelle d'images absente | 🔴 | 11 septembre 2026 | Le kit n'a ni rapports (16/9 · 3/2 · 4/3 · 1/1), ni largeurs servies, ni règle de recadrage. Les formes d'item (l'image élastique bornée) et la greffe ne peuvent pas se coder sans : ce serait écrire des nombres d'image à la main. À instruire dans un thread à part. |
+| La famille Adaptation ⚪ | 🔴 | 9 septembre 2026 | La doctrine est revenue (six scènes) ; le témoin et la page du kit (`/adaptation`, 🟡, huit épreuves vertes) la portent. Le 10 septembre, la posture est entrée dans l'ADN (S7 ⚪, `POSTURE` au moteur : quatre états physiques, quatre postures, sources Apple / Android / Samsung / W3C sur la page). Aucune règle au banc : les A1–A14 écrites sans la doctrine sont à réaligner sur ses identifiants (I, C, P, V, S). Bloquée sur la mesure du texte à trois valeurs (16/70, 17/62, 65ch). Les seuils du site : le gabarit est passé aux sommes le 11 septembre (rail 58 rem, bande, tables, liste, la tranche de /rythme) ; 26 seuils de scène restent, figés dans `LAYOUTS.sceneThresholds`, à résorber page par page. `data-adaptation` est devenu `data-stack` (11 septembre). |
 
 ---
 
