@@ -35,7 +35,7 @@ import { KIT, WIDTHS, TOL, openSite, openBrowser, expected, near, calcPx, calc, 
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && near(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const CSS = () => fs.readFileSync(path.join(KIT, 'app/mouvement/motion.css'), 'utf8')
-const GLOBAL = () => fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+const GLOBAL = () => ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n')
 const MS = Object.values(MOTION.durations).map((d) => d.ms)
 const EXPRESSIVE = MOTION.durations.expressive.ms, SLOW = MOTION.durations.slow.ms
 const inMs = (s) => { const v = parseFloat(s); return s.trim().endsWith('ms') ? v : v * 1000 }

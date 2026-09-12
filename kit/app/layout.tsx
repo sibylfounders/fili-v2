@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "./tokens.css";
 import "./fonts.css";
-import "./globals.css";
-import { Drawer } from "./drawer";
+import "./kit.css";
+import "./app.css";
+import { Workbench } from "./workbench";
 import { Brand } from "./brand";
+import { Adaptive } from "./adaptive";
 
 export const metadata: Metadata = {
   title: "Kit",
@@ -22,15 +24,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <link rel="preload" href="/fontes/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fontes/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html:
-          `try{var d=localStorage.getItem("kit-density");if(d==="compact"||d==="airy")document.documentElement.dataset.density=d;var a=localStorage.getItem("kit-adaptation");if(a==="shadcn"||a==="html")document.documentElement.dataset.adaptation=a;var t=localStorage.getItem("kit-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;var p=localStorage.getItem("kit-primary"),pc=localStorage.getItem("kit-primary-css");if(p&&pc){var s=document.createElement("style");s.id="kit-primaire";s.textContent=pc;document.head.appendChild(s);document.documentElement.dataset.primary=p}}catch(e){}` }} />
+          `try{var d=localStorage.getItem("kit-density");if(d==="compact"||d==="airy")document.documentElement.dataset.density=d;var a=localStorage.getItem("kit-stack");if(a==="shadcn"||a==="html")document.documentElement.dataset.stack=a;var b=localStorage.getItem("kit-bench");if(b==="oui")document.documentElement.dataset.bench="oui";var t=localStorage.getItem("kit-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;var p=localStorage.getItem("kit-primary"),pc=localStorage.getItem("kit-primary-css");if(p&&pc){var s=document.createElement("style");s.id="kit-primaire";s.textContent=pc;document.head.appendChild(s);document.documentElement.dataset.primary=p}}catch(e){}` }} />
         <header className="chrome">
           {/* La marque mène à l'accueil (8 septembre 2026). */}
           <Brand />
-          {/* Le drawer de réglages du gabarit documentaire nu — ne rend
-              rien sur les pages qui gardent leur panneau permanent. */}
-          <Drawer />
+          {/* La bande d'atelier : couleur, fond, surface — et « ⋯ » pour le
+              drawer, qui ne rend rien sur les pages qui gardent leur
+              panneau permanent. */}
+          <Workbench />
         </header>
         {children}
+        {/* La couche d'adaptation lit ce que la page a composé — zones,
+            segments, posture — et le dit sur <html> ; le banc, quand il est
+            allumé, le montre (adaptive.tsx). */}
+        <Adaptive />
       </body>
     </html>
   );

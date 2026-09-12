@@ -30,10 +30,12 @@
   --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
   --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
   /* les crans de page — la chaîne continuée au-dessus de la coque (× √2 à chaque cran) ; seuls les crans consommés sont émis */
+  --page-1-inline: clamp(1.6971rem, 1.4546rem + 1.2122vw, 2.5456rem);
   --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
   --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
   --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
   --page-6-inline: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
+  --page-1-block: clamp(1.9092rem, 1.7516rem + 0.7879vw, 2.4607rem);
   --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
   --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
   --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
@@ -71,6 +73,7 @@
   --gap-3-inline: clamp(0.2828rem, 0.2424rem + 0.202vw, 0.4243rem);
   --gap-4-inline: clamp(0.2rem, 0.1714rem + 0.1429vw, 0.3rem);
   --edge-inline: clamp(0.8rem, 0.6857rem + 0.5714vw, 1.2rem);
+  --page-1-inline: clamp(1.1314rem, 0.9697rem + 0.8081vw, 1.6971rem);
   --page-2-inline: clamp(1.6rem, 1.3714rem + 1.1429vw, 2.4rem);
   --page-3-inline: clamp(2.2627rem, 1.9395rem + 1.6162vw, 3.3941rem);
   --page-4-inline: clamp(3.2rem, 2.7429rem + 2.2857vw, 4.8rem);
@@ -83,6 +86,7 @@
   --gap-3-block: clamp(0.3182rem, 0.2919rem + 0.1313vw, 0.4101rem);
   --gap-4-block: clamp(0.225rem, 0.2064rem + 0.0929vw, 0.29rem);
   --edge-block: clamp(0.9rem, 0.8257rem + 0.3714vw, 1.16rem);
+  --page-1-block: clamp(1.2728rem, 1.1677rem + 0.5253vw, 1.6405rem);
   --page-2-block: clamp(1.8rem, 1.6514rem + 0.7429vw, 2.32rem);
   --page-3-block: clamp(2.5456rem, 2.3355rem + 1.0506vw, 3.281rem);
   --page-4-block: clamp(3.6rem, 3.3029rem + 1.4857vw, 4.64rem);
@@ -97,6 +101,7 @@
   --gap-3-inline: clamp(0.5657rem, 0.4849rem + 0.4041vw, 0.8485rem);
   --gap-4-inline: clamp(0.4rem, 0.3429rem + 0.2857vw, 0.6rem);
   --edge-inline: clamp(1.6rem, 1.3714rem + 1.1429vw, 2.4rem);
+  --page-1-inline: clamp(2.2627rem, 1.9395rem + 1.6162vw, 3.3941rem);
   --page-2-inline: clamp(3.2rem, 2.7429rem + 2.2857vw, 4.8rem);
   --page-3-inline: clamp(4.5255rem, 3.879rem + 3.2325vw, 6.7882rem);
   --page-4-inline: clamp(6.4rem, 5.4857rem + 4.5714vw, 9.6rem);
@@ -109,6 +114,7 @@
   --gap-3-block: clamp(0.6364rem, 0.5839rem + 0.2626vw, 0.8202rem);
   --gap-4-block: clamp(0.45rem, 0.4129rem + 0.1857vw, 0.58rem);
   --edge-block: clamp(1.8rem, 1.6514rem + 0.7429vw, 2.32rem);
+  --page-1-block: clamp(2.5456rem, 2.3355rem + 1.0506vw, 3.281rem);
   --page-2-block: clamp(3.6rem, 3.3029rem + 1.4857vw, 4.64rem);
   --page-3-block: clamp(5.0912rem, 4.6709rem + 2.1011vw, 6.562rem);
   --page-4-block: clamp(7.2rem, 6.6057rem + 2.9714vw, 9.28rem);
@@ -123,6 +129,7 @@
   --gap-3-inline: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
   --gap-4-inline: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
   --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --page-1-inline: clamp(1.6971rem, 1.4546rem + 1.2122vw, 2.5456rem);
   --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
   --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
   --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
@@ -135,6 +142,7 @@
   --gap-3-block: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
   --gap-4-block: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
   --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --page-1-block: clamp(1.9092rem, 1.7516rem + 0.7879vw, 2.4607rem);
   --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
   --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
   --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
@@ -146,6 +154,7 @@
   --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, Menlo, monospace;
   --font-serif: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, "Times New Roman", ui-serif, serif;
+  --font-heading: var(--font-sans);
   --leading-body: 1.6;
   --leading-heading: 1.2;
   --measure: 65ch;
@@ -183,6 +192,7 @@
   --gap-3-inline: clamp(0.4243rem, 0.3637rem + 0.303vw, 0.6364rem);
   --gap-4-inline: clamp(0.3rem, 0.2571rem + 0.2143vw, 0.45rem);
   --edge-inline: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
+  --page-1-inline: clamp(1.6971rem, 1.4546rem + 1.2122vw, 2.5456rem);
   --page-2-inline: clamp(2.4rem, 2.0571rem + 1.7143vw, 3.6rem);
   --page-3-inline: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
   --page-4-inline: clamp(4.8rem, 4.1143rem + 3.4286vw, 7.2rem);
@@ -195,14 +205,15 @@
   --gap-3-block: clamp(0.4773rem, 0.4379rem + 0.197vw, 0.6152rem);
   --gap-4-block: clamp(0.3375rem, 0.3096rem + 0.1393vw, 0.435rem);
   --edge-block: clamp(1.35rem, 1.2386rem + 0.5571vw, 1.74rem);
+  --page-1-block: clamp(1.9092rem, 1.7516rem + 0.7879vw, 2.4607rem);
   --page-2-block: clamp(2.7rem, 2.4771rem + 1.1143vw, 3.48rem);
   --page-3-block: clamp(3.8184rem, 3.5032rem + 1.5758vw, 4.9215rem);
   --page-4-block: clamp(5.4rem, 4.9543rem + 2.2286vw, 6.96rem);
   --page-6-block: clamp(10.8rem, 9.9086rem + 4.4571vw, 13.92rem);
 }
 
-/* Adaptation shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */
-[data-adaptation="shadcn"] {
+/* Stack shadcn — géométrie seule, coins md fixes et contrôles h-9 ; la couleur vient de la famille. */
+[data-stack="shadcn"] {
   --r-1: 0.75rem;
   --r-2: 0.5rem;
   --r-3: 0.375rem;
@@ -227,8 +238,14 @@
   --doc-rail: clamp(9.6rem, 8.2286rem + 6.8571vw, 14.4rem);
   --doc-margin: clamp(1.2rem, 1.0286rem + 0.8571vw, 1.8rem);
 }
-@media (min-width: 69rem) {
+/* Le palier du rail est une SOMME (11 septembre 2026) : marge + rail + gouttière + lecture 34 rem + marge, résolue
+   sur la chaîne confortable = 58 rem de fenêtre. Sous elle, une zone (--doc-zones: 1) : le rail cède la colonne ;
+   dès elle, deux zones. Les seuils intérieurs à la lecture sont des sommes de colonnes (LAYOUTS.doc.sums), lus en requêtes
+   de conteneur dans globals.css — jamais sur la fenêtre. */
+:root { --doc-zones: 1; }
+@media (min-width: 58rem) {
   :root {
+    --doc-zones: 2;
     --doc-margin: clamp(3.3941rem, 2.9092rem + 2.4244vw, 5.0912rem);
   }
 }

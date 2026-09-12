@@ -21,7 +21,7 @@ const INCREMENT_WIDE = 64;
    la mise en page se réorganiser en continu, ce qui est le sujet. Le
    double-clic sur la poignée ramène à la largeur de départ. */
 
-export function Preview({ children, situation, tools, foot, ceiling, onWidth, background }: {
+export function Preview({ children, situation, tools, foot, ceiling, onWidth, background, start }: {
   children: (width: number) => React.ReactNode;
   /* Dans le cadre des démonstrations (9 septembre) : la situation en tête,
      les outils sous la tête (le choix), la légende sous le cadre. */
@@ -36,12 +36,16 @@ export function Preview({ children, situation, tools, foot, ceiling, onWidth, ba
   background?: "damier" | "plain";
   /* largeur maximale du cadre — le damier reprend le reste (24 août) */
   ceiling?: number;
+  /* la largeur de départ, quand la scène a besoin de commencer ailleurs qu'à 1024
+     (retour d'Auteur, 10 septembre : l'étirement part à 780) ; le double-clic y revient */
+  start?: number;
   /* La largeur simulée, dite à l'appelant : une légende posée SOUS le cadre
      doit pouvoir parler de ce que le cadre montre (1er septembre). */
   onWidth?: (width: number) => void;
 }) {
   const wrapRef = React.useRef<HTMLDivElement>(null);
-  const [w, setW] = React.useState(ceiling ? Math.min(DEFAULTS, ceiling) : DEFAULTS);
+  const origin = start ?? DEFAULTS;
+  const [w, setW] = React.useState(ceiling ? Math.min(origin, ceiling) : origin);
   const [max, setMax] = React.useState(0);
   const [drag, setDrag] = React.useState(false);
 
@@ -79,7 +83,7 @@ export function Preview({ children, situation, tools, foot, ceiling, onWidth, ba
     if (e.key === "ArrowLeft") { e.preventDefault(); setW(bound(w - increment)); }
     else if (e.key === "ArrowRight") { e.preventDefault(); setW(bound(w + increment)); }
     else if (e.key === "Home") { e.preventDefault(); setW(MIN); }
-    else if (e.key === "End") { e.preventDefault(); setW(bound(DEFAULTS)); }
+    else if (e.key === "End") { e.preventDefault(); setW(bound(origin)); }
   };
 
   const track = (
@@ -91,8 +95,8 @@ export function Preview({ children, situation, tools, foot, ceiling, onWidth, ba
         <div role="separator" tabIndex={0} aria-orientation="vertical"
           aria-label="Largeur de l'aperçu" aria-valuemin={MIN}
           aria-valuemax={Math.round(Math.min(ceiling ?? Infinity, max)) || MIN} aria-valuenow={current || MIN}
-          onPointerDown={onDown} onKeyDown={onKeyHandle} onDoubleClick={() => setW(bound(ceiling ? Math.min(DEFAULTS, ceiling) : DEFAULTS))}
-          title="Glisser, ou flèches gauche/droite · double-clic : 1024 px"
+          onPointerDown={onDown} onKeyDown={onKeyHandle} onDoubleClick={() => setW(bound(ceiling ? Math.min(origin, ceiling) : origin))}
+          title={`Glisser, ou flèches gauche/droite · double-clic : ${origin} px`}
           className={`handle ${drag ? "engaged" : ""}`}
           style={{ left: `${current}px` }}>
           <span className="handle-stroke" />

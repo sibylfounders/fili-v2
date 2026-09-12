@@ -369,7 +369,7 @@ test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au m
 
 /* ── 6 · Rien en dur ── */
 test('6 · marges, espaces, coins ET tailles de texte : chaque valeur calculée est une valeur du moteur à cette largeur (déclarées exceptées) ; zéro débord ; zéro erreur', async () => {
-  const css = fs.readFileSync(path.join(KIT, 'app/typo/typo.css'), 'utf8') + fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+  const css = fs.readFileSync(path.join(KIT, 'app/typo/typo.css'), 'utf8') + ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n')
   const exclusions = selectorsDeclaredAll(css, 'font-size')
   for (const W of WIDTHS) {
     const { p, close, errors } = await nav.page(URL(), { width: W })

@@ -225,7 +225,7 @@ test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au m
 
 /* ── 6 · Rien en dur ── */
 test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une valeur du moteur, hors des lignes qui disent « hors chaîne » ou « casse » ; zéro débord ; zéro erreur', async () => {
-  const css = CSS(), global = fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+  const css = CSS(), global = ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n')
   const exclusions = ['padding', 'gap', 'border-radius', 'margin'].flatMap((prop) => [...selectorsDeclaredAll(css, prop), ...selectorsInEm(css, prop), ...selectorsInEm(global, prop)])
   /* le dessin du labo (svg) parle en unités de viewBox, dites hors chaîne dans la vue */
   const sizes = ['svg *', ...selectorsDeclaredAll(css, 'font-size'), ...selectorsDeclaredAll(global, 'font-size'), ...selectorsInEm(css), ...selectorsInEm(global)]

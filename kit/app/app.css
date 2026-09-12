@@ -1,0 +1,729 @@
+/* app.css — LA COQUE DU SITE DE DOCUMENTATION (partagée, chargée partout par layout.tsx, APRÈS kit.css).
+   En-tête, gabarit documentaire, rail, feuille, mega-menu, index, mouvement du site, drawer, paliers,
+   banc et bande des postures, et — en fin de feuille — les lois de survie (postures divisées) et le plomb,
+   qui doivent primer sur toute composition posée plus haut. N'est PAS le kit livrable. */
+
+.chrome {
+  position: sticky; top: 0; z-index: 30; min-height: 3.5rem;
+  container: chrome / inline-size; /* la bande d'atelier lit SA place, jamais la fenêtre */
+  display: flex; align-items: center; gap: var(--gap-2-inline);
+  padding: 0 var(--edge-inline);
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.chrome b { letter-spacing: -0.02em; }
+/* La marque est un lien vers l'accueil : elle garde son habit (aucun soulignement,
+   l'encre de la page), la cible déborde les mots, et le survol se dit par le
+   fond comme dans l'index — jamais par l'accent. Sur l'accueil, elle est inerte. */
+.chrome-brand { display: inline-flex; align-items: baseline; gap: var(--gap-2-inline);
+  color: inherit; text-decoration: none; padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline-start: calc(-1 * var(--gap-3-inline)); border-radius: var(--r-3);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+a.chrome-brand:hover { background: var(--surface-hover); }
+.chrome nav { display: flex; gap: var(--gap-2-inline); margin-left: auto; }
+
+/* ── Le gabarit trois colonnes : navigation · contenu (doc|sources) · réglages ── */
+.typo {
+  display: grid; grid-template-columns: 13rem minmax(0, 1fr) 16rem;
+  grid-template-areas: "nav main regl";
+  min-height: calc(100vh - 3.5rem); align-items: stretch;
+}
+.navigation {
+  grid-area: nav; position: sticky; top: 3.5rem;
+  max-height: calc(100vh - 3.5rem); overflow-y: auto;
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-3-block); align-content: start;
+}
+.navigation .group { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+  margin-top: var(--gap-2-block); }
+.navigation a { text-decoration: none; color: var(--text-primary);
+  padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-3); min-height: var(--target-min); }
+.navigation a.active { background: var(--primary-subtle); color: var(--primary-text); font-weight: var(--weight-heading); }
+.navigation .upcoming { color: var(--text-secondary); padding: var(--gap-4-block) var(--gap-3-inline); min-height: var(--target-min); }
+.content { grid-area: main; min-width: 0;
+  background: var(--bg); border-inline: 1px solid var(--border);
+  padding: var(--page-3-block) var(--page-2-inline) var(--page-3-block);
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: var(--doc-silence); align-content: start; }
+.content > * { width: 100%; max-width: 64rem; margin-inline: auto; min-width: 0; }
+.head-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); padding-bottom: var(--page-2-block); }
+.head-page h1 { margin-block: var(--gap-3-block); }
+.lede { font-size: var(--font-size-h3); line-height: 1.55; color: var(--text-secondary); max-width: var(--measure); }
+.lede b { color: var(--text-primary); }
+.kicker { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--primary-text); }
+.block-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
+.block-section > p.muted { max-width: var(--measure); }
+.settings {
+  grid-area: regl; position: sticky; top: 3.5rem;
+  max-height: calc(100vh - 3.5rem); overflow-y: auto;
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-1-block); align-content: start;
+}
+.settings h3 { margin: 0; font-size: var(--font-size-small); font-weight: var(--weight-heading); }
+/* Le bouton actif d'un réglage se dessine depuis l'attribut de <html>,
+   jamais depuis l'état React : l'attribut est posé avant la première
+   peinture (script de layout.tsx), le bon bouton est donc juste dès la
+   première image — React n'intervient qu'au clic. */
+html:not([data-theme]) [data-choice-theme="system"],
+html[data-theme="light"] [data-choice-theme="light"],
+html[data-theme="dark"] [data-choice-theme="dark"],
+html:not([data-density]) [data-choice-density="comfortable"],
+html[data-density="airy"] [data-choice-density="airy"],
+html[data-density="compact"] [data-choice-density="compact"],
+html:not([data-stack]) [data-choice-stack="tailwind"],
+html[data-stack="shadcn"] [data-choice-stack="shadcn"],
+html[data-stack="html"] [data-choice-stack="html"] {
+  background: var(--primary); border-color: var(--primary); color: var(--on-primary);
+}
+.settings .block { display: grid; gap: var(--gap-3-block); }
+.settings .button { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+.settings input[type="range"] { width: 100%; accent-color: var(--primary); }
+
+/* Une section = la doc à gauche, les sources à droite */
+.section { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--page-2-inline); align-items: start; }
+.doc { display: grid; gap: var(--gap-2-block); min-width: 0; }
+.sources-col { display: grid; gap: var(--gap-2-block); min-width: 0;
+  border-left: 2px solid var(--border); padding-left: var(--pad-3-inline);
+  font-size: var(--font-size-small); color: var(--text-secondary); }
+.sources-col h4 { margin: 0; font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+.sources-col b { color: var(--text-primary); }
+.divergence { background: var(--primary-subtle); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline); color: var(--text-primary); }
+.scene { border: 1px dashed var(--border); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline); background: var(--surface);
+  overflow: hidden; }
+/* Palier 2 — la colonne de réglages n'a plus sa place : elle devient une
+   bande au-dessus du contenu, la navigation reste à gauche. */
+@media (max-width: 80rem) {
+  .typo { grid-template-columns: 13rem minmax(0, 1fr); grid-template-areas: "nav regl" "nav main"; }
+  .settings { position: static; max-height: none;
+    display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--gap-1-inline);
+    background: var(--bg); border-inline: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: var(--pad-3-block) var(--edge-inline); }
+  .settings h3 { width: 100%; }
+}
+
+/* Palier 3 — une seule colonne : la navigation devient une rangée. */
+@media (max-width: 56rem) {
+  .typo { grid-template-columns: minmax(0, 1fr); grid-template-areas: "nav" "regl" "main"; }
+  .navigation { position: static; max-height: none;
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3-inline);
+    padding: var(--pad-3-block) var(--edge-inline);
+    background: var(--bg); border-bottom: 1px solid var(--border); }
+  .navigation .group { margin-top: 0; }
+  .navigation .upcoming { display: none; }
+  .content, .settings { border-inline: 0; }
+}
+
+
+/* ═══════════ Le gabarit « documentaire nu » — CG1-CG5, 24 août 2026 ═══════════
+   Relevé : claude/releve-gabarits-2026-08-24.md · pièce de référence :
+   kit-rythme-nu.html (verdict PARFAIT). Porté d'abord par la page Rythme ;
+   Typographie et Couleur suivront, une page à la fois.
+   · CG1 — le BLANC est le seul séparateur : aucune cloison, aucun filet de
+     structure ; une surface n'apparaît que méritée (CP2).
+   · CG2 — rails nus : navigation et sommaire sans fond ni bordure.
+   · CG3 — un geste de couleur par écran : ici, l'état actif d'une commande
+     est ENCRE, jamais accent — l'accent se dépense en un seul moment.
+   · CG4 — les tranches d'application emboîtent leurs fonds en cascade.
+   · CG5 — l'échelle de titres du gabarit est déclarée (tokens.css). */
+/* La rive : la marge de page, ou ce qu'il faut pour que le contenu reste
+   dans ses 90 rem. Le fond va d'un bord à l'autre, le texte jamais. */
+:root { --doc-bank: max(var(--doc-margin), calc((100% - 90rem) / 2 + var(--doc-margin))); }
+.gdoc-background { background: var(--bg); }
+.gdoc {
+  display: grid; grid-template-columns: var(--doc-rail) minmax(0, 1fr);
+  gap: var(--doc-gutter); padding: 0 var(--doc-margin);
+  max-width: 90rem; margin: 0 auto;
+}
+/* Sur ce gabarit : l'œil-de-section est sourd (le kicker primaire serait un
+   confetti — CG3), l'état actif des commandes est encre, les barres du labo
+   aussi, et les dépliants perdent leur filet de rive (CG1). */
+.gdoc .kicker { color: var(--text-tertiary); font-weight: var(--weight-heading); } /* tertiaire : le kicker de section — en petit, un cran de graisse au-dessus (C17) */
+.gdoc .button.on { background: var(--text-primary); border-color: var(--text-primary); color: var(--bg); }
+.gdoc .bar { background: var(--text-primary); }
+.gdoc .badge:not(.ko):not(.good) { color: var(--text-primary); background: var(--surface-hover); }
+.gdoc details.prov { border-left: 0; padding-left: 0; }
+
+/* ── Le rail nu (CG2) : il garde la PAGE, plus le site (2 septembre 2026).
+      UNE ligne pour la famille en cours — sa hauteur ne dépend plus du
+      nombre de pages du kit — et la colonne entière pour le sommaire.
+      Aucun fond, aucune bordure : l'alignement et le blanc le portent. ── */
+.gdoc-rail { min-width: 0; }
+.rail-fixed {
+  position: sticky; top: 5.5rem; max-height: calc(100vh - 5.5rem);
+  overflow-y: auto; padding: var(--page-2-block) 0;
+  display: flex; flex-direction: column; gap: var(--page-2-block);
+}
+.rail-block { display: grid; gap: var(--gap-3-block); align-content: start; }
+.rail-heading {
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); /* tertiaire : le titre du rail */
+}
+.rail-list { display: flex; flex-direction: column; }
+.rail-link {
+  display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: baseline; gap: var(--gap-3-inline);
+  padding: var(--gap-3-block) 0; min-height: var(--target-min); text-decoration: none;
+  color: var(--text-secondary); font-size: var(--font-size-body); line-height: 1.35;
+  transition: color var(--m-fast) var(--e-out); /* survol : le sommaire suit le curseur, il ne le poursuit pas (relevé du 3 septembre : 300 → 100) */
+}
+.rail-link.simple { grid-template-columns: minmax(0, 1fr) auto; }
+.rail-index {
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary); transition: color var(--m-fast) var(--e-out); /* tertiaire : l'index du menu */
+}
+.rail-brand { align-self: center; width: 1.25rem; height: 1px; background: var(--text-primary);
+  scale: 0 1; transform-origin: left center; } /* le trait se déploie par mise à l'échelle, jamais par sa largeur (relevé du 3 septembre : la largeur remet en page) */
+.rail-link:hover, .rail-link.active { color: var(--text-primary); }
+.rail-link.active { font-weight: var(--weight-heading); }
+.rail-link.active .rail-index { color: var(--text-primary); }
+.rail-link.active .rail-brand { scale: 1 1; }
+@media (prefers-reduced-motion: no-preference) { .rail-brand { transition: scale var(--m-base) var(--e-out); } } /* la marque suit la section : le cran du menu */
+/* Le pied porte une phrase, plus une fiche : il perd sa graisse et gagne de
+   l'interligne — on le lit, on ne le consulte pas. */
+.rail-foot { margin-top: auto; font: var(--weight-body) var(--font-size-label)/1.6 var(--font-mono);
+  color: var(--text-secondary); max-width: 24ch; } /* une phrase qu'on lit n'est pas un tertiaire (C17) : l'encre seconde, sans graisse */
+
+/* L'étage du site : un bouton qui dit son métier — trois traits et le mot
+   « Menu ». Un chevron gris de huit pixels ne se voyait pas (verdict du
+   2 septembre) ; un mot, si. Sous lui, la famille en cours dit où l'on est. */
+.rail-opens {
+  appearance: none; background: none; border: 0; padding: var(--gap-4-block) 0; margin: 0;
+  width: 100%; display: grid; justify-items: start;
+  min-height: var(--target-min); cursor: pointer; text-align: left;
+  font-family: inherit; border-radius: var(--r-3);
+}
+/* L'étiquette est un repère, pas une destination : trois traits et un mot,
+   en mono capitales et en gris clair, comme tous les repères du rail. */
+.rail-opens-says {
+  display: flex; align-items: center; gap: var(--gap-4-inline);
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); transition: color var(--m-fast) var(--e-out); /* survol · tertiaire : la mention « où suis-je » qui ouvre la feuille */
+}
+/* La boîte est réglée sur l'ENCRE, épaisseur du trait comprise : les traits
+   vont de 3 à 13 sur 16, plus un demi-trait de chaque côté, soit 12/16 de la
+   boîte. Pour que cette encre fasse la hauteur des capitales (0,73 em),
+   la boîte vaut 0,73 ÷ 0,75 ≈ 0,97 em. */
+.rail-burger { display: block; width: .97em; height: .97em; flex: none; }
+/* Les pages de la famille reprennent exactement le type des ancres : même
+   corps, même marque qui glisse. Le rail retrouve ainsi sa hiérarchie
+   d'origine — une étiquette mono, puis une liste, deux fois. */
+/* Seule l'étiquette répond au survol : elle passe à l'encre. La famille en
+   cours ne bouge pas — c'est une information, pas une commande, et le rail
+   est nu (verdict d'Auteur, 2 septembre). La cible, elle, reste le bouton
+   entier : les deux lignes se cliquent, une seule s'allume. */
+.rail-opens:hover .rail-opens-says,
+.rail-opens[aria-expanded="true"] .rail-opens-says { color: var(--text-primary); }
+
+/* La barre du petit écran : deux boutons là où le sommaire disparaissait. */
+.nav-bar { display: none; }
+.dot {
+  appearance: none; background: none; border: 0; border-top: 1px solid var(--border);
+  padding: var(--gap-3-block) 0 0; margin: 0; text-align: left; cursor: pointer;
+  display: grid; gap: var(--gap-4-block); min-height: var(--target-min);
+  border-radius: 0 0 var(--r-3) var(--r-3);
+}
+.dot-or { display: flex; align-items: center; gap: var(--gap-4-inline);
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-tertiary); } /* tertiaire : la pastille « où suis-je » du petit écran */
+.dot-or .rail-burger { width: .85rem; height: .85rem; }
+.dot b { font-weight: var(--weight-heading); font-size: var(--font-size-small); color: var(--text-primary);
+  line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dot[aria-expanded="true"] { border-top-color: var(--text-primary); }
+
+/* ── La feuille : tout le site, sans coûter une ligne au rail ── */
+.sheet { position: fixed; inset: 0; z-index: 200; }
+.sheet[hidden] { display: none; }
+.sheet-veil { position: absolute; inset: 0; background: color-mix(in srgb, var(--text-primary) 18%, transparent); }
+.sheet-held {
+  position: absolute; inset: 0 0 auto; background: var(--bg);
+  border-bottom: 1px solid var(--border); max-height: 100%; overflow-y: auto;
+  padding: var(--page-2-block) var(--doc-bank);
+}
+.sheet.from-below .sheet-held {
+  inset: auto 0 0; border-bottom: 0; border-top: 1px solid var(--border);
+  max-height: 82%; border-radius: var(--r-1) var(--r-1) 0 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sheet.open .sheet-held { animation: sheet-set var(--m-slow) var(--e-out); } /* panneau */
+  .sheet.from-below.open .sheet-held { animation: sheet-rises var(--m-slow) var(--e-out); }
+}
+@keyframes sheet-set { from { transform: translateY(-1.25rem); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes sheet-rises { from { transform: translateY(1.5rem); opacity: 0 } to { transform: none; opacity: 1 } }
+.sheet-head { display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--gap-1-inline); margin-bottom: var(--page-2-block); }
+/* La tête de la feuille : « Accueil » à gauche, qui mène à l'accueil, et la
+   version du kit à droite. Les deux parlent mono capitales — ce sont des
+   repères ; seul le premier est une destination. */
+.sheet-home, .sheet-version {
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; }
+.sheet-home { color: var(--text-secondary); text-decoration: none;
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline: calc(var(--gap-3-inline) * -1);
+  border-radius: var(--r-3); transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+.sheet-home:hover { color: var(--text-primary); background: var(--surface-hover); }
+/* Un numéro de version ne se met pas en capitales : « v1.5 » s'écrit
+   comme il se dit. */
+.sheet-version { color: var(--text-tertiary); font-weight: var(--weight-heading); text-transform: none; } /* tertiaire : le numéro de version, une méta */
+
+/* ── Le mega-menu : une rangée d'onglets, un panneau à la fois. Chaque
+      panneau tient d'un regard — c'est ce qui règle l'équilibre. ── */
+/* La cale qui pose la croix exactement là où était le burger. Le rail part de
+   5,5 rem sous le haut de l'écran ; la feuille, elle, part de sa propre marge
+   — laquelle glisse avec la largeur. L'écart mesuré n'est donc pas constant :
+   il vaut 4 rem MOINS ce cran de page, ce qui le rend juste de 1 200 à
+   1 900 px. En marge il aurait été avalé (fusion avec la marge du titre) —
+   c'est un retrait. */
+.mega { display: grid; gap: var(--page-2-block);
+  padding-top: calc(4rem - var(--page-2-block)); } /* hors chaîne : 4 rem est la cale du rail (5,5 rem moins sa marge), pas un espace de la chaîne */
+.mega-tabs { display: flex; align-items: stretch; flex-wrap: wrap;
+  gap: 0 var(--page-2-inline); border-bottom: 1px solid var(--border); }
+.mega-row { display: flex; align-items: stretch; flex-wrap: wrap;
+  gap: 0 var(--page-2-inline); }
+/* La croix ouvre la rangée : fermer se fait là où l'œil arrive, pas à
+   l'autre bout de la feuille. */
+.mega-close { appearance: none; background: none; border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; padding: 0 0 var(--gap-2-block);
+  margin-bottom: -1px; color: var(--text-secondary);
+  border-radius: var(--r-3) var(--r-3) 0 0; transition: color var(--m-fast) var(--e-out); } /* survol */
+.mega-close:hover { color: var(--text-primary); }
+/* La croix reprend exactement la boîte du burger — même taille, même bord
+   gauche : en s'ouvrant, la feuille pose sa croix là où était le signe. */
+.mega-close svg { display: block;
+  width: calc(var(--font-size-label) * .97); height: calc(var(--font-size-label) * .97); }
+.mega-tab { appearance: none; background: none; border: 0; cursor: pointer;
+  font-family: inherit; font-size: var(--font-size-body); font-weight: var(--weight-label); line-height: 1.25;
+  color: var(--text-secondary); padding: 0 0 var(--gap-2-block); margin-bottom: -1px;
+  border-bottom: 1px solid transparent; border-radius: var(--r-3) var(--r-3) 0 0;
+  transition: color var(--m-fast) var(--e-out); } /* survol */
+.mega-tab:hover { color: var(--text-primary); }
+.mega-tab[aria-selected="true"] { color: var(--text-primary); font-weight: var(--weight-heading);
+  border-bottom-color: var(--text-primary); }
+.mega-panel[hidden] { display: none; }
+.mega-info { max-width: 46ch; display: grid; gap: var(--gap-2-block); }
+.mega-info p:last-child { margin: 0; color: var(--text-secondary); }
+
+/* Les niveaux, tenus par la nature du signe et non par le poids : la
+   FAMILLE est une étiquette capitale en mono, la PAGE parle en sans. On ne
+   peut pas confondre un repère avec une destination (verdicts du
+   2 septembre — les paquets ont cessé de se nommer, la famille a pris le
+   traitement du titre du rail). */
+.index-families { display: grid; align-items: start;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--page-2-block) var(--doc-gutter); }
+/* Le nombre de colonnes d'un panneau est écrit en clair : une longueur de
+   grille ne peut pas venir d'une variable — repeat() veut un entier au
+   moment de l'analyse, et var() arrive trop tard. */
+.index-families[data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.index-families[data-cols="5"] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.index-families[data-cols="6"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.index-families[data-cols="7"] { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.index-families[data-cols="8"] { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+.index-family { display: grid; align-content: start; gap: var(--gap-2-block); }
+.index-family[data-wide="2"] { grid-column: span 2; }
+.index-family[data-wide="3"] { grid-column: span 3; }
+.index-family[data-wide="4"] { grid-column: span 4; }
+/* Le nom de famille est un repère : il reste en gris. Les pages, elles,
+   sont des destinations — elles prennent l'encre, et celle où l'on se
+   trouve prend la graisse (verdict d'Auteur, 2 septembre). */
+/* Le nom d'une famille est un REPÈRE, pas une destination : il prend donc
+   le même traitement que « Toutes les pages » dans le rail — capitales,
+   mono, tertiaire (verdict d'Auteur, 2 septembre). Le menu n'a plus que
+   deux niveaux depuis que les paquets ne se nomment plus, et deux niveaux
+   se distinguent par la NATURE du signe, jamais par le poids : le repère
+   parle en capitales mono, la page parle en sans. */
+.index-fam { margin: 0;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : le repère d'une famille */ }
+/* Les paquets d'une famille sont une GRILLE, pas un flux de colonnes.
+   En colonnes (columns: 4), le navigateur équilibre les hauteurs et pose
+   chaque paquet où ça l'arrange : les étiquettes ne commencent jamais à la
+   même ligne, et le panneau se lit en escalier sur un large écran (verdict
+   d'Auteur, 2 septembre : « bof sur desktop »). En grille, chaque paquet
+   part du même bord haut, et les colonnes se lisent d'un regard. */
+.index-batches { display: grid; align-items: start;
+  gap: var(--page-2-block) var(--doc-gutter); }
+.index-family[data-wide="2"] .index-batches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.index-family[data-wide="3"] .index-batches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.index-family[data-wide="4"] .index-batches { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Les colonnes d'une famille ne portent plus d'étiquette : le groupement se
+   voit à la colonne, il ne se dit pas. Une étiquette de catégorie posée
+   au-dessus d'une liste de pages se confondait avec les pages (2 septembre). */
+.index-list { display: grid; gap: var(--gap-4-block); }
+/* La cible déborde le mot : une entrée occupe toute la largeur de sa
+   colonne, avec sa marge intérieure, et se décale de la même marge vers la
+   gauche pour que le texte reste aligné sur le nom de la famille. On vise
+   une ligne, pas un mot (verdict d'Auteur, 2 septembre). */
+.index-link { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  gap: var(--gap-3-inline); min-height: var(--control-height-compact); text-decoration: none;
+  padding: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline: calc(var(--gap-3-inline) * -1);
+  color: var(--text-primary); font-size: var(--font-size-small); line-height: 1.3;
+  border-radius: var(--r-3); transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+/* Le survol se voit : la couleur seule ne disait rien sur une ligne isolée.
+   Le fond de survol des listes existait déjà dans la famille — il sert ici. */
+/* La couleur de survol des liens du site (a:hover, indigo) est reprise ici :
+   dans l'index, le survol se dit par le fond, jamais par l'accent — celui-ci
+   se dépense en un seul moment par écran (CG3). */
+a.index-link:hover { background: var(--surface-hover); color: var(--text-primary); }
+/* La page où l'on est se lit d'un regard : elle prend l'encre en fond et
+   rend sa couleur au texte. Une graisse de plus ne suffisait pas — dans un
+   panneau de quarante liens, le lecteur perdait sa position (verdict
+   d'Auteur, 2 septembre). C'est déjà la façon dont ce kit dit « actif » :
+   la commande en cours du gabarit documentaire est en encre renversée.
+   Aucune couleur nouvelle, et le neutre reste au rédactionnel. La pastille
+   pose son fond ET son encre, comme toute surface qui peint. */
+.index-link.on { background: var(--text-primary); color: var(--bg); font-weight: var(--weight-heading); }
+/* Le survol ne reprend pas la main sur la page en cours : on est déjà dessus. */
+a.index-link.on:hover { background: var(--text-primary); color: var(--bg); }
+.index-link .rail-brand { width: 0; }
+.index-link.on .rail-brand { width: 1rem; }
+/* Une page à faire porte son état sur elle : barrée, elle ne se confond plus
+   avec une page qu'on peut ouvrir — et le gris seul ne suffisait pas à le
+   dire (il ne dit rien à qui ne distingue pas les gris). */
+.index-link.upcoming { color: var(--danger);
+  text-decoration: line-through; text-decoration-thickness: 1px;
+  text-decoration-color: var(--danger); }
+
+/* ── Le contenu : héros à titre-affiche (CG5), sections séparées par le
+      grand silence (CG1) — jamais par un trait. ── */
+.gdoc-content { min-width: 0; padding-bottom: var(--doc-silence);
+  container: reading / inline-size; } /* la zone de lecture : les seuils intérieurs se lisent sur elle, jamais sur la fenêtre */
+.gdoc-hero { padding-top: var(--doc-silence); }
+.gdoc-hero h1 {
+  margin-top: var(--gap-1-block); font-size: var(--doc-cover);
+  line-height: 1.04; font-weight: var(--weight-label); letter-spacing: -0.035em; /* le h1 du site porte sa hiérarchie par le corps (T13) : la graisse reste celle de l'étiquette — décision d'Auteur du 7 sept. */
+  max-width: 18ch; text-wrap: balance;
+}
+/* Le point final — l'unique geste de couleur de cet écran (CG3) */
+/* Le point vit SOUS le titre, sur sa propre ligne — c'est sa place
+   (verdict d'Auré, 24 août), pas un accident de retour à la ligne. */
+.gdoc-hero .point {
+  display: block; width: 0.38em; height: 0.38em;
+  border-radius: var(--r-pill); background: var(--primary); margin-top: 0.22em;
+}
+.gdoc-hero .lede { margin-top: var(--doc-head); }
+.gdoc-sec { padding-top: var(--doc-silence); }
+.gdoc-sec-head { max-width: var(--measure); display: grid; gap: var(--gap-2-block); }
+.gdoc-sec-head h2 {
+  font-size: var(--doc-section); line-height: 1.1; font-weight: var(--weight-body); /* le h2 du site : un cran sous le h1, la graisse du courant (T13) */
+  letter-spacing: -0.03em; text-wrap: balance;
+}
+.gdoc-sec-head .muted { line-height: 1.65; }
+.gdoc h3 { font-weight: var(--weight-label); } /* les intertitres du site, la graisse de l'étiquette (T13) ; les démos produit gardent la leur */
+/* Une seule colonne, qui ne s'élargit jamais au-delà de la page : une démo trop
+   large pour l'écran se replie ou défile dans sa scène, elle ne pousse pas la
+   page (zéro débord à la largeur minimale — invariant d'audit, attrapé par le
+   crash-test de page le 26 août). */
+.gdoc-body { margin-top: var(--doc-head); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
+/* ── Le répertoire (8 septembre 2026) : une seule section par page, sous un
+   titre à elle, qui range plusieurs PIÈCES — les dérives en bandes, les
+   règles en liste, les tokens en panneau, une table de valeurs — chacune
+   sous son sous-titre. Le sous-titre est un h3 ; les bandes qu'il abrite
+   descendent en h4 (jamais un saut de niveau). ── */
+.doc-piece { display: grid; gap: var(--gap-1-block); }
+.doc-piece-head { max-width: var(--measure); display: grid; gap: var(--gap-2-block); }
+.doc-piece-head h3 { margin: 0; font-size: var(--font-size-h3); line-height: var(--leading-heading); letter-spacing: -0.01em; text-wrap: balance; }
+.doc-piece-head .muted { line-height: 1.65; }
+.doc-piece + .doc-piece { padding-top: var(--pad-1-block); border-top: 1px solid var(--border); }
+.gd-foot {
+  margin-top: var(--doc-silence); padding-top: var(--pad-2-block);
+  border-top: 1px solid var(--border);
+  font: var(--weight-heading) var(--font-size-label)/1.6 var(--font-mono); color: var(--text-tertiary); /* tertiaire : le pied de page */
+  display: flex; justify-content: space-between; gap: var(--gap-2-inline); flex-wrap: wrap;
+}
+
+
+/* ── LE MOUVEMENT DU SITE (décisions d'Auteur du 3 septembre 2026) ──────────
+      Quatre durées, chacune avec son emploi (tokens.css) ; la courbe du kit.
+      Moins de mouvement ne veut plus dire aucun mouvement : sous
+      prefers-reduced-motion, les DÉPLACEMENTS partent (transform, translate,
+      scale, rotate, défilement doux) et les FONDUS restent (opacité, couleur).
+      La règle s'écrit par construction : un déplacement n'existe que sous
+      « (prefers-reduced-motion: no-preference) », un fondu s'écrit nu. Le
+      crash-test du moteur le vérifie ligne à ligne. Une valeur qu'on fait
+      glisser ne s'anime pas. Une commande répond à l'appui. ── */
+/* ── Le retour à l'appui : une vraie commande s'enfonce, légèrement et
+      brièvement, pendant qu'on la tient — le mouvement le plus rentable qui
+      existe (relevé du 3 septembre : rien ne répondait nulle part). Par
+      ANIMATION, pas par transition : elle s'ajoute à ce que chaque commande
+      anime déjà sans l'écraser ; l'enfoncement prend le cran rapide, le
+      relâchement est immédiat. C'est un déplacement : sous son portillon. ── */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.button, .ar-tabs button, .ar-inter, .drawer-handle, .mo-intents button, .mk-chip,
+      .doc-unfold, .rail-opens, .dot, .mega-tab, .mega-close, .sheet-home,
+      .cp-col, .index-link, details.prov summary):active:not([disabled]) {
+    animation: press var(--m-fast) var(--e-out) both; }
+}
+@keyframes press { to { scale: 0.97; } }
+
+/* ── L'entrée en scène : la section se pose au moment où on la découvre.
+      Jamais si le système demande moins de mouvement. ── */
+@media (prefers-reduced-motion: no-preference) {
+  .gdoc .set { opacity: 0; transform: translateY(0.875rem); transition: opacity var(--m-expressive) var(--e-out), transform var(--m-expressive) var(--e-out); } /* l'arrivée d'une section */
+  .gdoc .set.set { opacity: 1; transform: none; }
+}
+
+/* ── Le drawer de réglages : l'ancien panneau permanent, replié derrière
+      une poignée — un outil qui ne sert qu'une fois n'occupe pas l'écran. ── */
+.drawer-handle {
+  margin-left: auto; background: none; border: 0; cursor: pointer;
+  color: var(--text-secondary); font: var(--weight-label) var(--font-size-small)/1 var(--font-sans);
+  display: inline-flex; align-items: center; gap: var(--gap-3-inline);
+  transition: color var(--m-fast) var(--e-out); padding: var(--gap-3-block) 0; /* survol */
+}
+.drawer-handle:hover { color: var(--text-primary); }
+.drawer {
+  position: fixed; top: 3.5rem; right: 0; z-index: 40;
+  width: min(21rem, 100vw); max-height: calc(100vh - 3.5rem); overflow-y: auto;
+  background: var(--bg); border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); border-radius: 0 0 0 var(--r-1);
+  padding: var(--page-2-block) var(--edge-inline);
+  display: grid; gap: var(--gap-1-block); align-content: start;
+}
+.drawer-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-2-inline); }
+.drawer-head h3 { margin: 0; font-size: var(--font-size-small); font-weight: var(--weight-heading); }
+.drawer .block { display: grid; gap: var(--gap-3-block); }
+.drawer .button { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+
+/* ── Palier unique du gabarit : sous 69rem, le rail cède la colonne — la
+      navigation devient une rangée nue, le sommaire s'efface. ── */
+/* Sous 75 rem la feuille passe à trois colonnes ; sous 52 rem elle n'en
+   garde qu'une. Deux colonnes, c'est là que les trous se creusent : des
+   familles de longueurs très différentes côte à côte ne se rattrapent pas. */
+@media (max-width: 75rem) {
+  .index-families, .index-families[data-cols] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .index-family[data-wide] { grid-column: 1 / -1; }
+  .index-family[data-wide] .index-batches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Sur petit écran, les familles se posent l'une sous l'autre — deux familles
+   côte à côte ne se rattrapent pas, leurs longueurs sont trop différentes.
+   Mais À L'INTÉRIEUR d'une famille, les pages passent sur deux colonnes :
+   la hauteur est divisée par deux et aucun trou ne s'ouvre, puisque ce sont
+   les mêmes pages qui se répartissent (verdict d'Auteur, 2 septembre). */
+@media (max-width: 52rem) {
+  .index-families, .index-families[data-cols] { grid-template-columns: minmax(0, 1fr); }
+  .index-family[data-wide] { grid-column: auto; }
+  .index-family[data-wide] .index-batches,
+  .index-family > .index-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap-1-inline); }
+  /* Le rang d'onglets ne tient plus sur une ligne : il s'enroule. Le filet
+     sous l'onglet actif, lui, ne peut pas suivre — il se retrouverait au
+     milieu du bloc. Sur deux lignes, l'onglet actif se dit donc par l'encre
+     et la graisse seules ; le filet du bas ferme le bloc entier. */
+  .mega-tabs { gap: var(--gap-2-block) var(--gap-1-inline); }
+  .mega-row { gap: var(--gap-2-block) var(--gap-1-inline); }
+  .mega-tab, .mega-close { padding-bottom: 0; margin-bottom: 0; }
+  .mega-tab, .mega-tab[aria-selected="true"] { border-bottom: 0; }
+  .mega-tabs { padding-bottom: var(--gap-2-block); }
+}
+
+/* ── Le palier du gabarit est une SOMME (11 septembre 2026, LAYOUTS.doc.sums.rail) :
+      marge + rail + gouttière + lecture 34 rem + marge, résolue par le moteur sur
+      la chaîne confortable = 58 rem de fenêtre (tokens.css pose --doc-zones sur
+      le même nombre ; l'épreuve postures vérifie que les deux disent la même
+      somme). Sous elle, le rail cède la colonne. Les ancres ne disparaissent
+      pas : une barre à deux boutons les reprend, et chacun ouvre sa feuille
+      — mêmes commandes, même ordre, de part et d'autre du seuil. ── */
+@media (width < 58rem) {
+  .gdoc { grid-template-columns: minmax(0, 1fr); }
+  .gdoc-rail { display: none; }
+  .nav-bar { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-2-inline);
+    position: sticky; top: 3.5rem; z-index: 20; background: var(--bg);
+    padding: var(--gap-3-block) 0 var(--pad-3-block); border-bottom: 1px solid var(--border); }
+}
+
+/* le banc neutre : une scène qui n'est pas un geste de couleur */
+
+/* ── LES POSTURES DIVISÉES (en fin de feuille : ces règles priment sur toute composition posée plus haut)
+      — une zone ne traverse jamais une frontière physique
+      (règle de survie 2, stratégie postures). Les segments de viewport disent
+      où est la charnière ; la frontière prime sur la somme.
+      LIVRE (deux segments côte à côte) : le rail dans le panneau gauche, la
+      lecture dans le droit — la gouttière du gabarit devient la charnière.
+      LAPTOP (deux segments l'un sur l'autre) : la lecture en haut, dans son
+      propre défilement ; le rail en bas, nav et repères côte à côte. ── */
+@media (horizontal-viewport-segments: 2) {
+  .gdoc { grid-template-columns: calc(env(viewport-segment-right 0 0) - var(--doc-margin)) minmax(0, 1fr);
+    column-gap: calc(env(viewport-segment-left 1 0) - env(viewport-segment-right 0 0) + var(--doc-margin));
+    max-width: none; }
+  .gdoc-rail { display: block; }
+  .nav-bar { display: none; }
+  /* l'accueil : une seule zone — elle se lit dans le premier panneau */
+  .accueil .acc-column { max-width: env(viewport-segment-right 0 0); margin-inline: 0; } /* survie : prime sur la mesure de base par la spécificité, pas par l'ordre — le décor de l'accueil vit maintenant dans accueil.css, chargé après */
+}
+@media (vertical-viewport-segments: 2) {
+  .gdoc { grid-template-columns: minmax(0, 1fr); min-height: env(viewport-segment-height 0 0); }
+  .gdoc-content { position: fixed; inset: 3.5rem 0 auto 0; height: calc(env(viewport-segment-height 0 0) - 3.5rem);
+    overflow-y: auto; padding-inline: var(--doc-margin); }
+  .gdoc-rail { display: block; position: fixed; left: 0; right: 0; top: env(viewport-segment-top 0 1); bottom: 0;
+    overflow-y: auto; padding: var(--doc-margin); background: var(--bg); border-top: 1px solid var(--border); z-index: 20; }
+  .gdoc-rail .rail-fixed { position: static; max-height: none; display: grid; grid-template-columns: auto 1fr 1fr; gap: var(--gap-1-block) var(--doc-gutter); align-items: start; }
+  .gdoc-rail .rail-foot { grid-column: 1 / -1; }
+  .nav-bar { display: none; }
+  /* l'accueil : sa zone unique vit dans le segment du haut, dans son propre défilement — le bas reste vide (cas charnière, à dessiner) */
+  .accueil { position: fixed; inset: 3.5rem 0 auto 0; height: calc(env(viewport-segment-height 0 0) - 3.5rem); overflow-y: auto; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LE BANC DES POSTURES (11 septembre 2026, adaptive.tsx) — un mode du kit,
+   comme le thème sombre : <html data-bench>. Chaque zone est cernée et dit
+   son nom, sa largeur mesurée et sa largeur de travail ; un panneau en bas
+   à gauche dit la surface, la posture, la somme qui a décidé, le verdict.
+   Un outil de mesure : ses traits sont en px, comme les traits (B3) ; sa
+   voix est l'étiquette mono. Rien de tout cela n'existe hors du banc.
+   ═══════════════════════════════════════════════════════════════════════ */
+html[data-bench] [data-zone] { outline: 2px dashed var(--primary); outline-offset: -2px; } /* un contour, rien qui change la composition mesurée */
+html[data-bench] [data-zone][data-zone-ok="non"] { outline-color: var(--danger); }
+.bench-tag { position: fixed; z-index: 205; font-family: var(--font-mono); font-size: var(--font-size-label); letter-spacing: var(--tracking-label); line-height: 1.2;
+  padding: var(--gap-4-block) var(--gap-3-inline); background: var(--primary); color: var(--on-primary); pointer-events: none; max-width: 100vw; }
+.bench-tag[data-ok="non"] { background: var(--danger); color: var(--on-danger); }
+.bench-hud { position: fixed; left: 0; bottom: 0; z-index: 210; display: grid; gap: var(--gap-4-block);
+  max-width: min(36rem, 100vw); padding: var(--pad-3-block) var(--pad-3-inline);
+  background: var(--text-primary); color: var(--bg); font-family: var(--font-mono); font-size: var(--font-size-label); line-height: 1.4;
+  border-top-right-radius: var(--r-2); }
+.bench-hud b { color: inherit; }
+.bench-hud-head { font-weight: var(--weight-heading); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.bench-hud-why { opacity: 0.8; }
+.bench-hud-verdict { font-weight: var(--weight-heading); }
+.bench-hud[data-ok="non"] .bench-hud-verdict { color: var(--danger); }
+html[data-bench] [data-choice-bench="oui"], html:not([data-bench]) [data-choice-bench="non"] {
+  background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LA BANDE D'ATELIER (11 septembre 2026, workbench.tsx) — trois réglages
+   dans l'en-tête : la couleur, le fond, la surface ; le reste derrière « ⋯ »
+   (la poignée du drawer, qui perd son mot et rejoint la bande). Des commandes
+   au cran secondaire : la cible du bouton compact, le coin du contrôle, et le
+   survol qui se dit par le fond comme dans l'index. Les signes viennent de
+   Lucide, recopiés (workbench.tsx).
+   ═══════════════════════════════════════════════════════════════════════ */
+.wb { margin-left: auto; display: flex; align-items: center; gap: var(--gap-3-inline); }
+.wb-btn, .wb-swatch, .wb .drawer-handle {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--control-height-compact); min-height: var(--control-height-compact);
+  margin-left: 0; padding: 0; border: 0; border-radius: var(--r-ctl);
+  background: none; color: var(--text-secondary); cursor: pointer;
+  transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); /* survol */
+}
+.wb-btn:hover, .wb-swatch:hover, .wb .drawer-handle:hover { color: var(--text-primary); background: var(--surface-hover); }
+/* la surface en cours, ou le fond en place : l'état actif est encre pleine, comme partout dans le kit */
+.wb-btn[aria-pressed="true"] { color: var(--on-primary); background: var(--primary); }
+.wb-icon { display: block; width: 1.15em; height: 1.15em; }
+/* le filet entre les réglages du site et ceux de la surface — un trait (B3), à la hauteur du signe */
+.wb-sep { width: 1px; height: 1.15em; background: var(--border); flex: none; }
+/* la couleur : une pastille qui EST la primaire, et le sélecteur du système dessous, invisible */
+.wb-swatch { position: relative; }
+.wb-chip { display: block; width: 1.15em; height: 1.15em; border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px var(--border-strong); }
+/* les appareils se retirent sous la somme marque 15 + outils 7,5 + appareils 8,1 = 30,6 rem
+   (LAYOUTS.scenes["bande d'atelier"]) : choisir une surface depuis la petite surface n'a pas de sens,
+   et la bande ne doit jamais pousser la page hors de l'écran */
+.wb-devices { display: contents; } /* un groupe qui ne dessine rien : les boutons restent des enfants de la bande */
+@container chrome (width < 30.6rem) { .wb-devices { display: none; } }
+.wb-swatch input[type="color"] { position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; border: 0; padding: 0; cursor: pointer; }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LE PLOMB ET LA FRONTIÈRE — 11 septembre 2026, journal #138
+   ═══════════════════════════════════════════════════════════════════════
+   Une ligne de texte porte la moitié de son interligne au-dessus et au-dessous
+   de ses lettres. Entre deux textes ce plomb s'ajoute deux fois ; contre le bord
+   franc d'une scène, une seule. Un même écart réglé se voyait donc à trois
+   valeurs — relevé du 11 septembre sur le corps du gabarit, 1440 px : 19,7
+   réglé, vu 19,7 entre deux scènes, 23,8 contre une, 28,5 entre deux textes. Sur
+   /rythme l'écart INTÉRIEUR d'une figure (22,7 vu) dépassait la frontière qui la
+   sépare de la pièce suivante (19,7 vu) : le groupe ne se lisait plus comme un
+   groupe.
+
+   Deux gestes, pris ensemble.
+
+   1 · Les rôles de texte du gabarit rendent leur plomb : la boîte redevient
+       l'encre, et un chiffre veut de nouveau dire quelque chose. Chaque rôle
+       déclare son interligne en --lh, une seule fois, et la coupe s'en déduit.
+       (text-box-trim fera ce calcul nativement le jour où la coupe mordra
+       partout ; elle n'a aucune ligne à mordre quand le texte vit dans un lien
+       en bloc — d'où le calcul, qui marche aujourd'hui.)
+
+   2 · Un bord franc attire plus qu'une ligne de texte : à encre égale, une
+       distance contre une scène se voit plus courte. Chaque distance gagne donc
+       un cran quand elle bute sur une scène —
+
+         écart intérieur   texte ↔ texte   gap-2   ·   texte ↔ scène   gap-1
+         frontière         texte ↔ texte   pad-1   ·   contre une scène  page-1
+
+       Les deux rapports valent deux crans : la frontière reste deux fois
+       l'écart intérieur DE MÊME NATURE (#074 précisé, pas révisé).
+
+   LE REGISTRE DES SCÈNES — ce qui pose une surface pleine, et présente donc un
+   bord franc à son voisin. Un filet d'un pixel n'en est pas une : il sépare déjà,
+   et la loi l'exempte. Une COMMANDE non plus : un bouton peint, mais il est
+   second par rapport au phénomène — et sa place change avec la largeur, si bien
+   qu'aucune règle écrite ne saurait dire d'avance s'il forme le bord. Toute scène neuve entre ici ; le relevé (kit/tests/plomb.mjs)
+   mesure les bords réels et dit lesquels manquent au registre. */
+
+.gdoc-hero h1 { --lh: 1.04; }
+.gdoc-hero .lede, .lede { --lh: 1.55; }
+.gdoc-sec-head h2 { --lh: 1.1; }
+.gdoc-sec-head .muted, .doc-piece-head .muted { --lh: 1.65; }
+.doc-piece-head h3 { --lh: var(--leading-heading); }
+.gdoc .kicker { --lh: 1; }
+.gd-caption { --lh: 1.6; }
+.gd-lng-record { --lh: 1.4; }
+.gdoc-content :is(p, li, blockquote, figcaption) { --lh: var(--leading-body); }
+
+/* La coupe porte sur le texte du GABARIT, partout où il vit — pas seulement sur
+   les enfants directs d'une tête de section : un texte au bord d'une pièce
+   (le résumé d'un dépliant, la légende d'une figure, la dernière ligne d'une
+   paire) décide de la frontière autant qu'un titre. Ce qui vit DANS une scène
+   en est exclu : une démo produit porte le rythme de son objet, pas celui du
+   document. */
+details.prov summary { --lh: 1.6; }
+.gdoc-content :is(h1, h2, h3, h4, p, li, summary, figcaption, blockquote, .kicker, .lede, .muted, .gd-caption, .gd-lng-record):not(
+  :where(.bench, .demo, .doc-panel, .doc-band, .panel-code, .cm-props, .preview-frame, .preview-scene, .table) *
+) {
+  margin-block: calc((1 - var(--lh, 1)) * 0.5em);
+}
+/* Le héros compose à la marge, pas au gap : sa coupe s'ajoute au silence
+   au lieu de le remplacer. */
+.gdoc-hero > :is(h1, .lede) { margin-block: calc((1 - var(--lh)) * 0.5em); }
+.gdoc-hero h1 { margin-top: calc(var(--gap-1-block) + (1 - var(--lh)) * 0.5em); }
+.gdoc-hero .lede { margin-top: calc(var(--doc-head) + (1 - var(--lh)) * 0.5em); }
+
+/* La frontière entre deux pièces du corps : deux crans au-dessus de l'écart
+   intérieur. */
+.gdoc-body { gap: var(--pad-1-block); }
+/* le drapeau ne se transmet pas : chaque élément dit pour lui-même s'il porte un supplément */
+.gdoc-content * { --supplement: 0; }
+/* Trois crans quand elle bute sur une scène — que la scène ouvre la pièce qui
+   suit, ou ferme celle qui précède. */
+.gdoc-body > * + :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video),
+.gdoc-body > * + :has(> :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):first-child),
+.gdoc-body > * + :has(> * > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):first-child),
+.gdoc-body > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video) + *,
+.gdoc-body > :has(> :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):last-child) + *,
+.gdoc-body > :has(> * > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):last-child) + * {
+  --supplement: 1; /* le relevé lit ce drapeau : la marge porte un supplément, pas seulement une coupe */
+  margin-top: calc(var(--page-1-block) - var(--pad-1-block) + (1 - var(--lh, 1)) * 0.5em);
+}
+
+/* Même geste à l'intérieur d'une figure : sa légende bute sur le bord franc de
+   la scène — un cran de plus que deux textes. */
+.gd-figure > * + :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video),
+.gd-figure > * + :has(> :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):first-child),
+.gd-figure > * + :has(> * > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):first-child),
+.gd-figure > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video) + *,
+.gd-figure > :has(> :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):last-child) + *,
+.gd-figure > :has(> * > :is(.bench, .demo, .doc-panel, .doc-band, .panel-code, .preview-frame, img, canvas, video):last-child) + * {
+  --supplement: 1;
+  margin-top: calc(var(--gap-1-block) - var(--gap-2-block) + (1 - var(--lh, 1)) * 0.5em);
+}

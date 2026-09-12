@@ -295,7 +295,8 @@ test('5 · dans les deux thèmes, tout tertiaire rendu porte le rôle titre au m
 
 /* ── 6 · Rien en dur ── */
 test('6 · marges, espaces, coins, tailles : chaque valeur calculée est une valeur du moteur (déclarées exceptées) ; les titres glissent ; la densité règle les coques ; zéro débord ; zéro erreur', async () => {
-  const css = fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+  /* le décor de la page vit dans color.css depuis le 12 sept. 2026 (séparation kit / démos) : le scan « rien en dur » couvre les deux */
+  const css = ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n') + '\n' + fs.readFileSync(path.join(KIT, 'app/couleur/color.css'), 'utf8')
   const exclusions = [...selectorsDeclaredAll(css, 'font-size'), ...selectorsInEm(css)]
   /* les espaces en em (une flèche et son chiffre, la pastille d'un statut) : des proportions
      typographiques, comme le vérificateur du site l'admet — et, comme sur /arrondis, les

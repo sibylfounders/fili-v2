@@ -248,3 +248,9 @@
   color: var(--bg); background: var(--text-secondary); border-radius: var(--r-ctl);
   padding: 0.15rem 0.4rem; /* hors chaîne : la pastille d'une cote, à l'échelle du repère (comme .co-r-label) */ }
 .tp-cote-v .tp-cote-label { right: var(--gap-3-inline); top: 50%; transform: translateY(-50%); }
+
+/* ── La coupe du plomb pour les rôles propres à cette page (#138, 11 septembre
+      2026) : chaque rôle dit son interligne une fois, la coupe s'en déduit. ── */
+.tp-sub-heading { --lh: var(--leading-heading); }
+.gd-range .record { --lh: 1.5; margin-block: calc((1 - var(--lh)) * 0.5em); }
+.spec { --lh: var(--leading-body); margin-block: calc((1 - var(--lh)) * 0.5em); }

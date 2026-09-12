@@ -20,8 +20,8 @@ import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
-import { chain, tokens, INTENTS, DENSITIES, AXES, WIDTH_MIN, WIDTH_MAX } from '../derivation.mjs'
-import { KIT, WIDTHS, DENSITIES_SITE, TOL, openSite, openBrowser, expected, near, numbers, calcPx, calc, text, texts, faultsC17, faultsInHard, selectorsDeclaredAll, selectorsInEm, overflow, rgb, inks , faultsWriting } from './bench.mjs'
+import { LAYOUTS, chain, tokens, INTENTS, DENSITIES, AXES, WIDTH_MIN, WIDTH_MAX } from '../derivation.mjs'
+import { readingWidth, KIT, WIDTHS, DENSITIES_SITE, TOL, openSite, openBrowser, expected, near, numbers, calcPx, calc, text, texts, faultsC17, faultsInHard, selectorsDeclaredAll, selectorsInEm, overflow, rgb, inks , faultsWriting } from './bench.mjs'
 
 const FOUNDATION = chain(), J = tokens(FOUNDATION)
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && near(a, b, tol), `${msg} : ${a} attendu ${b}`)
@@ -159,10 +159,11 @@ test('2 · la tranche, la profondeur, la proximité, la densité et le vocabulai
        et elle est dite sur sa ligne */
     const increment = await p.evaluate(() => { const cs = getComputedStyle(document.querySelector('#scale .ry-ruler')); return [parseFloat(cs.rowGap), parseFloat(cs.columnGap)] })
     ok(increment[0], W >= 56 * 16 ? expected('gap-1-block', W) : increment[1], `${W} px — l’écart vertical de la réglette`)
-    /* la bande se replie sous 62 rem : la scène passe sous la parole, et l'écart
-       des colonnes devient l'écart des rangs — les deux sont des tokens */
-    ok(await calcPx(p, '#bands .doc-band', W >= 62 * 16 ? 'columnGap' : 'rowGap'),
-       expected(W >= 62 * 16 ? 'doc-gutter' : 'gap-1-block', W), `${W} px — l’écart de la bande`)
+    /* la bande se replie sous la somme (LAYOUTS.doc.sums.band) : la scène passe sous la parole,
+       et l'écart des colonnes devient l'écart des rangs — les deux sont des tokens */
+    const wide = readingWidth(W) >= LAYOUTS.doc.sums.band /* la bande se replie sous la somme parole + gouttière + scène, lue sur la lecture */
+    ok(await calcPx(p, '#bands .doc-band', wide ? 'columnGap' : 'rowGap'),
+       expected(wide ? 'doc-gutter' : 'gap-1-block', W), `${W} px — l’écart de la bande`)
     /* la règle 1, mesurée pour elle-même : l'écart entre deux sœurs EST leur marge,
        au même pixel — c'est le même chiffre, pas deux réglages qui se ressemblent */
     const sisters = await p.evaluate(() => {
@@ -399,7 +400,7 @@ test('6 · dans les corps de sections, chaque marge, espace et coin calculé est
      rend plus haut : chacun des sélecteurs ainsi dispensés est mesuré nommément,
      token par token, dans l'épreuve 2. */
   const css = fs.readFileSync(path.join(KIT, 'app/rythme/rhythm.css'), 'utf8')
-  const global = fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+  const global = ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n')
   const exclusions = ['padding', 'padding-inline', 'padding-block', 'padding-inline-end', 'gap', 'row-gap', 'column-gap', 'border-radius', 'margin']
     .flatMap((prop) => [...selectorsDeclaredAll(css, prop), ...selectorsDeclaredAll(global, prop), ...selectorsInEm(css, prop), ...selectorsInEm(global, prop)])
   for (const W of WIDTHS) {

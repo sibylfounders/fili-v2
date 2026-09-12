@@ -1,0 +1,207 @@
+/* ═══ DÉCOR DE LA PAGE ACCUEIL — sorti de globals.css le 12 septembre 2026 (séparation kit / démos).
+   Le kit (socle) ne charge plus ce décor : il ne vit que sur /accueil. ═══ */
+/* NB : le bloc .tiles/.tile ci-dessous est une dette dite — plus aucun composant ne l'emploie (candidat à suppression). */
+/* ── L'accueil : tuiles de fondations et étapes de méthode ── */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--gap-1-block) var(--gap-1-inline); }
+.tile { display: grid; gap: var(--gap-3-block); align-content: start;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  text-decoration: none; color: var(--text-primary);
+  transition: border-color var(--m-fast) var(--e-out), box-shadow var(--m-fast) var(--e-out); } /* survol */
+.tile:hover, .tile:focus-visible { border-color: var(--primary);
+  box-shadow: 0 12px 32px -24px color-mix(in srgb, var(--primary) 50%, transparent); }
+.tile-heading { font-size: var(--font-size-h2); font-weight: var(--weight-heading); letter-spacing: -0.015em; }
+.tile-specimen { display: flex; flex-direction: column; gap: var(--gap-4-block);
+  padding: var(--pad-3-block) 0; color: var(--text-primary); }
+.tile-call { color: var(--primary-text); font-weight: var(--weight-heading); font-size: var(--font-size-small); }
+.steps { display: grid; gap: var(--gap-2-block); max-width: var(--measure); }
+.steps .rule { display: grid; gap: var(--gap-4-block); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE ACCUEIL — la porte (proposition HTML validée le 24 août).
+   Emprunts dits : la couverture de la charte (dévoilement rise-mask,
+   monogramme) ; le générateur Semantic Rhythm (une entrée, tout
+   recalcule). Un principe porteur : le kit se prouve. ═══ */
+/* HORS CHAÎNE — dette déclarée le 25 août 2026 : à dériver quand la page sera reprise.
+   Registre parallèle en dur ; seuls les anciens tokens et les rayons ont été rabattus. */
+.home { --acc-silence: clamp(6rem, 4.8rem + 5vw, 10rem);
+  --acc-head: clamp(2.2rem, 1.9rem + 1.8vw, 3.4rem); }
+.acc-column { max-width: 66rem; margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem); }
+
+/* La couverture — l'entrée en scène de la charte, réservée à la porte */
+.acc-cover { min-height: calc(88svh); display: flex; flex-direction: column; }
+.acc-cover-head { display: flex; align-items: center; gap: 0.7rem;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.acc-cover-head b { font-weight: var(--weight-heading); letter-spacing: 0.26em; font-size: 0.9rem; }
+.acc-cover-body { flex: 1; display: flex; flex-direction: column;
+  justify-content: center; padding-block: var(--acc-head); }
+.acc-cover h1 { font-size: clamp(2.6rem, 1.2rem + 6.4vw, 5.6rem); line-height: 1.04;
+  letter-spacing: -0.028em; font-weight: var(--weight-heading); max-width: 15ch; margin-top: var(--pad-3-block); } /* le titre de l'accueil au rôle titre (9 sept.) : la taille porte le reste */
+.acc-point { display: block; width: 0.38em; height: 0.38em; border-radius: var(--r-pill);
+  background: var(--primary); margin-top: 0.24em;
+  font-size: clamp(2.6rem, 1.2rem + 6.4vw, 5.6rem); }
+.acc-lede { margin-top: var(--acc-head); max-width: var(--measure);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem); color: var(--text-secondary); }
+.acc-lede b { color: var(--text-primary); font-weight: var(--weight-heading); }
+.acc-cover-foot { padding-bottom: 1.4rem; }
+
+/* L'accès direct au reste de la doc (verdict d'Auteur, 7 septembre) : sous le
+   chapo, avant tout scroll. Une GRILLE à deux colonnes — le repère, puis les
+   familles — alignée par construction, pas par la largeur des mots. Dehors
+   plus large que dedans, mesuré : deux catégories sont séparées du cran de
+   groupe (gap-2), deux familles d'une même ligne du cran de frères (gap-3).
+   Même règle que le menu — les repères parlent mono, les destinations parlent
+   sans. Aucune mention répétée : la famille qui a une page est en encre
+   pleine ; celle qui n'en a pas est en encre seconde, c'est un bouton qui
+   ouvre le menu sur sa catégorie. Une seule légende, une seule ligne.
+   (Première version relue contre /composition le 7 septembre : « à venir »
+   cinq fois, en habit de repère, à l'écart du frère — trois lois cassées.) */
+.acc-access { margin-top: var(--acc-head); display: grid;
+  grid-template-columns: max-content minmax(0, 1fr); align-items: baseline;
+  gap: var(--gap-2-block) var(--doc-gutter); }
+.acc-access-cat { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : le repère d'une catégorie */ }
+/* La cible déborde le mot (comme dans l'index) ; la liste se décale d'autant
+   pour que le premier mot reste sur la colonne de la grille. */
+.acc-access-list { display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: var(--gap-4-block) var(--gap-3-inline);
+  margin-inline-start: calc(-1 * var(--gap-3-inline)); }
+.acc-access-link { appearance: none; background: none; border: 0; cursor: pointer;
+  font: var(--weight-label) var(--font-size-small)/1.3 var(--font-sans); color: var(--text-primary);
+  text-decoration: none; padding: var(--gap-4-block) var(--gap-3-inline);
+  border-radius: var(--r-3);
+  transition: color var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out); } /* survol */
+.acc-access-link:hover { background: var(--surface-hover); color: var(--text-primary); }
+button.acc-access-link { color: var(--text-secondary); }
+/* La légende est d'une autre nature que les lignes : elle s'écarte d'un cran
+   de plus, pour ne pas lire comme une troisième ligne de la grille. */
+.acc-access-caption { grid-column: 1 / -1; margin: var(--gap-2-block) 0 0;
+  font-size: var(--font-size-small); color: var(--text-secondary); }
+
+/* Le dévoilement (rise-mask de la charte) — l'entrée en scène de l'accueil est une
+   CHORÉGRAPHIE déclarée (verdict d'Auteur, 4 septembre) : ses durées ne sont pas des
+   réponses d'interface, elles sont dites sur leur ligne. Les déplacements ne jouent
+   que si le système ne demande pas moins de mouvement ; le fondu joue toujours. */
+.acc-rise { overflow: hidden; display: block; }
+.acc-fade { opacity: 0; animation: acc-fade 0.8s ease forwards; /* chorégraphie : le fondu de l'accueil */
+  animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
+@keyframes acc-fade { to { opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .acc-rise > span { display: block; transform: translateY(118%);
+    animation: acc-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* chorégraphie : la levée de l'accueil */
+    animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
+  .acc-pop { transform: scale(0); animation: acc-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* chorégraphie : le rebond de l'accueil */
+    animation-delay: calc(var(--i, 0) * 130ms + 120ms); } /* chorégraphie : la cascade de l'accueil */
+}
+@keyframes acc-rise { to { transform: translateY(0); } }
+@keyframes acc-pop { to { transform: scale(1); } }
+
+/* Sections documentaires de la porte */
+.acc-sec { padding-top: var(--acc-silence); }
+.acc-sec:last-of-type { padding-bottom: var(--acc-silence); }
+.acc-sec-head { max-width: var(--measure); display: grid; gap: var(--gap-3-block); }
+.acc-sec h2 { font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.4rem); line-height: 1.15;
+  letter-spacing: -0.02em; font-weight: var(--weight-heading); }
+.acc-sec-body { margin-top: var(--acc-head); display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
+
+/* 01 · Le moteur — l'objet vivant */
+.acc-mo { display: grid; grid-template-columns: auto 1fr;
+  gap: clamp(1rem, 2.5vw, 2rem); align-items: start; }
+.acc-mo-rail { display: flex; flex-direction: column; gap: 0.6rem; }
+.acc-mo-chip { width: 3rem; height: 3rem; border-radius: var(--r-1);
+  border: 1px solid var(--border); background: var(--surface); display: grid;
+  place-items: center; cursor: pointer; font: inherit; padding: 0; position: relative; }
+.acc-mo-chip[aria-pressed="true"] { border-color: var(--border-strong); }
+.acc-dot { width: 1.35rem; height: 1.35rem; border-radius: var(--r-pill); display: block; }
+.acc-mo-chip input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.acc-mo-scene { display: grid; gap: 0.9rem; }
+.acc-mo-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.acc-mo-card { border-radius: var(--r-2);
+  min-height: clamp(11rem, 22vw, 16rem); display: grid; place-content: center;
+  justify-items: center; gap: 0.7rem; text-align: center; padding: 1.2rem; }
+.acc-mo-card b { font-size: 0.95rem; letter-spacing: 0.02em; }
+.acc-mo-measures { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.acc-bullet { width: 0.6em; height: 0.6em; border-radius: var(--r-pill); display: inline-block;
+  margin-right: 0.45em; box-shadow: inset 0 0 0 1px var(--border); vertical-align: 0; }
+.home .badge.acc-says { color: var(--on-primary-subtle);
+  background: var(--primary-subtle); }
+
+/* 02 · Trois fondations — les spécimens */
+.acc-backgrounds { display: grid; gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.acc-background { border: 1px solid var(--border); border-radius: var(--r-2);
+  padding: clamp(1.2rem, 2.4vw, 1.8rem); display: grid; gap: 1.1rem;
+  align-content: start; text-decoration: none; color: inherit;
+  transition: border-color var(--m-fast) var(--e-out); } /* survol */
+.acc-background:hover { border-color: var(--border-strong); }
+.acc-background .kicker { color: var(--primary-text); }
+.acc-background h3 { font-size: 1.25rem; letter-spacing: -0.015em; }
+.acc-background > p { font-size: 0.875rem; color: var(--text-secondary); }
+.acc-background-specimen { min-height: 5.6rem; display: grid; align-items: end; }
+.acc-background-link { font: var(--weight-label) 0.8125rem/1 var(--font-sans); color: var(--primary-text); }
+.acc-sp-typo { display: flex; align-items: baseline; gap: 0.55em; }
+.acc-sp-typo span { font-weight: var(--weight-heading); letter-spacing: -0.02em; line-height: 1; }
+.acc-sp-rhythm { display: grid; gap: 0.45rem; align-content: end; }
+.acc-sp-rhythm i { display: block; height: 0.62rem; border-radius: var(--r-pill);
+  background: var(--primary-subtle);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); }
+.acc-sp-color { display: grid; gap: 0.45rem; align-content: end; }
+.acc-sp-color i { display: grid; grid-template-columns: 2.2rem 1fr; height: 1.5rem;
+  border-radius: var(--r-2); overflow: hidden; border: 1px solid var(--border); }
+.acc-sp-color i b { display: block; }
+/* L'arrondi : trois boîtes emboîtées, le coin de chacune déduit de celui de
+   son parent — la cascade des rayons du kit, r-1 puis r-2 puis r-3. */
+.acc-sp-rounded { display: grid; align-content: end; justify-content: start; }
+.acc-sp-rounded > i { display: block; width: 7.5rem; height: 4.8rem; border-radius: var(--r-1);
+  border: 1px solid var(--border-strong); padding: var(--gap-3-block); }
+.acc-sp-rounded > i > i { display: block; height: 100%; border-radius: var(--r-2);
+  border: 1px solid var(--border); background: var(--surface); padding: var(--gap-4-block); }
+.acc-sp-rounded > i > i > i { display: block; height: 100%; border-radius: var(--r-3);
+  background: var(--primary-subtle); }
+/* La composition : trois blocs et le tracé en F que l'œil suit dessus. */
+.acc-sp-compo { position: relative; display: grid; align-content: space-between;
+  height: 5rem; color: var(--primary); }
+.acc-sp-compo-block { display: block; height: 0.9rem; border-radius: var(--r-3);
+  background: var(--surface-hover); border: 1px solid var(--border); }
+.acc-sp-compo-trace { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Le mouvement : la courbe du kit, un seul trait, quatre repères. */
+.acc-sp-motion { height: 5rem; color: var(--primary); }
+.acc-sp-motion svg { display: block; width: 100%; height: 100%; }
+/* Une page ouverte sans spécimen le dit, elle ne fait pas semblant. */
+.acc-sp-missing { font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase;
+  color: var(--text-tertiary); /* tertiaire : une mention d'attente */ }
+
+/* 03 · La carte du système */
+.acc-card { border: 1px solid var(--border); border-radius: var(--r-1);
+  overflow: hidden; }
+.acc-card table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.acc-card th { text-align: left; font: var(--weight-label) 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+  padding: var(--pad-3-block) var(--pad-3-inline);
+  border-bottom: 1px solid var(--border); background: var(--surface); }
+.acc-card td { padding: var(--pad-3-block) var(--pad-3-inline);
+  border-bottom: 1px solid var(--border); }
+.acc-card tr:last-child td { border-bottom: 0; }
+.acc-card td:first-child { font-weight: var(--weight-heading); white-space: nowrap; }
+.acc-card td:first-child a { color: var(--primary-text); text-decoration: none; }
+.acc-card td:last-child { color: var(--text-secondary); }
+.acc-card-pages { display: flex; flex-wrap: wrap; gap: var(--gap-4-block) var(--gap-2-inline); }
+.acc-card-pages a { color: var(--primary-text); text-decoration: none; font-weight: var(--weight-heading); white-space: nowrap; }
+.acc-state { white-space: nowrap; font-size: 0.8125rem; }
+.home details.prov { max-width: var(--measure); }
+
+@media (max-width: 44rem) {
+  .acc-mo { grid-template-columns: 1fr; }
+  .acc-mo-rail { flex-direction: row; flex-wrap: wrap; }
+  .acc-mo-duo { grid-template-columns: 1fr; }
+}
+
+/* FIN DE LA DETTE — .accueil (borne posée le 7 septembre 2026 : la dette
+   exemptait tout ce qui suivait dans la feuille, Composition comprise) */
+

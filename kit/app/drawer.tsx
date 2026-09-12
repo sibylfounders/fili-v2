@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 import { Primary } from "./primary";
 import { Theme } from "./theme";
 import { Density } from "./density";
-import { Adaptation } from "./adaptation";
+import { Stack } from "./stack";
+import { ELLIPSIS } from "./icons";
+import { Bench } from "./adaptive";
 import { OPEN } from "./pages";
 
 /* Le drawer de réglages — l'ancien panneau « Theming & playground »,
@@ -45,10 +47,13 @@ export function Drawer() {
   if (!path || !PAGES.includes(path)) return null;
   return (
     <>
+      {/* La poignée a rejoint la bande d'atelier (11 septembre 2026) : elle ne dit
+          plus « Réglages › », elle porte les trois points du reste — densité,
+          stack, banc des postures. Son nom vit dans l'étiquette. */}
       <button ref={handle} type="button" className="drawer-handle"
         aria-expanded={open} aria-controls="drawer-settings"
-        onClick={() => setOpen(!open)}>
-        Réglages <span aria-hidden="true">{open ? "×" : "›"}</span>
+        aria-label="Réglages" title="Réglages" onClick={() => setOpen(!open)}>
+        {ELLIPSIS}
       </button>
       {open && (
         <div id="drawer-settings" ref={panel} tabIndex={-1} role="dialog"
@@ -60,7 +65,8 @@ export function Drawer() {
           <Primary />
           <Theme />
           <Density />
-          <Adaptation />
+          <Stack />
+          <Bench />
           <p className="muted" style={{ fontSize: "var(--font-size-small)" }}>
             Chaque réglage porte le site entier, cette page comprise, et se
             souvient de votre choix.

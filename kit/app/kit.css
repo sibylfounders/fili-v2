@@ -1,0 +1,135 @@
+/* kit.css — LE SOCLE DU KIT (livrable). Fondations rendues (primitives, patterns) + le halo de focus.
+   Ne contient JAMAIS le décor d'une démo ni la coque du site de doc (frontière du 12 sept. 2026, journal #142).
+   Ne consomme que les tokens (tokens.css). Tenu par tests/frontiere.test.mjs. */
+
+/* Styles du kit — ne consomment QUE les tokens (tokens.css), migrés sur la chaîne du 25 août 2026.
+   Aucune valeur d'espace, de rayon ou de taille en dur hors des lignes qui le disent (« hors chaîne », « casse »)
+   et des deux blocs de dette déclarée (.accueil, .co-*). */
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--surface); color: var(--text-primary);
+  font: var(--weight-body) var(--font-size-body)/var(--leading-body) var(--font-sans);
+}
+a { color: var(--primary-text); }
+a:hover { color: var(--primary-text-hover); }
+
+.page {
+  max-width: 46rem; margin: 0 auto;
+  padding: var(--page-2-block) var(--edge-inline) var(--page-3-block);
+  display: grid; gap: var(--page-2-block);
+}
+/* les titres portent leur famille (--font-heading) : celle du texte au kit, celle du site en greffe */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+h1 { font-weight: var(--weight-heading); font-size: var(--font-size-display); letter-spacing: -0.025em; margin: 0; line-height: 1.08; text-wrap: balance; }
+h2 { font-weight: var(--weight-heading); font-size: var(--font-size-h2); letter-spacing: -0.015em; margin: 0; line-height: var(--leading-heading); text-wrap: balance; }
+/* T13 : ce que le navigateur met en gras de lui-même (b, strong, th, h3 à h6) prend le rôle titre — jamais le 700 du navigateur */
+h3, h4, h5, h6, b, strong, th { font-weight: var(--weight-heading); }
+/* T14 : un champ ou un bouton ne garde pas le 400 du navigateur — il prend la graisse de son rôle, dans les deux thèmes */
+input, button, select, textarea { font-weight: inherit; }
+/* T14 : une scène qui déclare son thème (data-theme) repart de la graisse du courant de CE thème, au lieu d'hériter celle de la page */
+[data-theme] { font-weight: var(--weight-body); }
+p { margin: 0; }
+.muted { color: var(--text-secondary); }
+.card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-2-block);
+}
+.badge {
+  display: inline-block; font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono);
+  color: var(--primary-text); background: var(--primary-subtle);
+  border-radius: var(--r-3); padding: var(--gap-4-block) var(--gap-3-inline);
+  text-decoration: none;
+}
+.badge.ko { color: var(--danger); background: var(--danger-subtle); }
+.button {
+  /* Le texte est centré dans le bouton, toujours — quel que soit l'élément qui porte la classe (verdict d'Auteur, 7 septembre) */
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--control-height); padding: 0 var(--pad-3-inline);
+  border: 1px solid var(--border); border-radius: var(--r-ctl);
+  background: var(--bg); font: var(--weight-heading) var(--font-size-small)/1 inherit; cursor: pointer;
+  transition: background-color var(--m-fast) var(--e-out), border-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); /* survol */
+}
+.button.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.button:hover:not(.on):not(.broken) { background: var(--surface-hover); }
+.rank { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; align-items: center; }
+.mono { font: var(--weight-heading) var(--font-size-small)/1.5 var(--font-mono); }
+.measure { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.bar { background: var(--primary); border-radius: var(--r-4); height: 0.75rem; /* hors chaîne : la barre-témoin, un objet décoratif — pas un espace */ }
+.rule { border-left: 3px solid var(--border); padding-left: var(--pad-3-inline); }
+.rule b { display: block; }
+.field { display: grid; gap: var(--gap-3-block); }
+.field input {
+  height: var(--control-height); border: 1px solid var(--border-strong);
+  border-radius: var(--r-ctl); padding: 0 var(--pad-3-inline);
+  font: inherit; background: var(--surface);
+}
+.broken .label-liar { margin-bottom: var(--gap-1-block); margin-top: var(--gap-1-block); }
+pre.code {
+  margin: 0; padding: var(--pad-3-block) var(--pad-3-inline);
+  background: var(--code-bg); color: var(--code-text); border-radius: var(--r-2);
+  font: var(--weight-label) var(--font-size-small)/1.7 var(--font-mono); overflow-x: auto;
+}
+
+
+/* ── Le halo de focus (décision d'Auteur, 31 août 2026, sur pièce Figma puis anneau-halo.html — révise la forme de C18) ──
+   Plus d'anneau détaché : un HALO collé à l'objet — une bande (le fond doux de la famille) fermée par un trait
+   fin — qui part du bord EXTÉRIEUR de la bordure et ne la touche jamais. Il ne se montre QU'AU CLAVIER
+   (:focus-visible) : le trait est calé (focus-ring, focus-ring-danger, focus-ring-neutral), c'est l'indicateur
+   de focus au sens de la norme, sous contrat 3:1. Le clic ne montre rien — un geste n'a pas besoin d'être
+   commenté, l'objet cliqué répond déjà par lui-même, et le focus que la souris laisse derrière elle ne marque
+   rien (verdict d'Auteur du 31 août, sur le site). Trois
+   familles, celle de l'objet : neutre par défaut, marque pour ce que la marque colore (l'action pleine, le lien
+   actif, l'onglet choisi, la tuile d'accueil qui vire à la marque au survol), rouge pour le danger et l'erreur.
+   La forme est posée une fois (tokens.css : --focus-band 3 px, --focus-line 1 px = le coin du composant) ;
+   le coin de chaque calque suit la chaîne : le coin de l'objet + la bande, + la bande + le trait.
+   Deux calques creux, JAMAIS une ombre : Safari ne gonfle pas le coin d'une ombre étalée. */
+:root { --halo-r: var(--r-ctl); --halo-band: var(--surface); --halo-stroke: var(--focus-ring-neutral); }
+/* la famille de l'objet */
+.button.on, .button.demo-full, .tile, .navigation a.active, .ar-tabs button[aria-selected="true"] {
+  --halo-band: var(--primary-subtle); --halo-stroke: var(--focus-ring); }
+.button.broken, .field-box:has([aria-invalid="true"]) {
+  --halo-band: var(--danger-subtle); --halo-stroke: var(--focus-ring-danger); }
+/* le coin de l'objet, quand ce n'est pas celui du composant */
+.tile { --halo-r: var(--r-1); } .bn-tile { --halo-r: var(--r-2); }
+.navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .wb-swatch, .acc-access-link, .chrome-brand { --halo-r: var(--r-3); }
+.ar-tabs button, .ar-inter, .ar-dial input[type=range] { --halo-r: var(--r-pill); }
+/* Les porteurs à deux calques (leurs pseudo-éléments sont libres) — un champ de saisie le reçoit par son enveloppe. */
+.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button, .field-box { position: relative; }
+:is(.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button):focus-visible::before,
+:is(.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button):focus-visible::after,
+.field-box:has(:focus-visible)::before, .field-box:has(:focus-visible)::after,
+.wb-swatch:has(:focus-visible)::before, .wb-swatch:has(:focus-visible)::after {
+  content: ""; position: absolute; pointer-events: none; }
+/* le trait : au bord extérieur de la bordure (1 px, B3) + la bande */
+:is(.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button):focus-visible::before,
+.field-box:has(:focus-visible)::before, .wb-swatch:has(:focus-visible)::before {
+  inset: calc(-1px - var(--focus-band) - var(--focus-line)); border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
+  border: var(--focus-line) solid var(--halo-stroke); }
+/* la bande : au bord extérieur de la bordure, creuse — son coin intérieur retombe sur celui de l'objet */
+:is(.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button):focus-visible::after,
+.field-box:has(:focus-visible)::after, .wb-swatch:has(:focus-visible)::after {
+  inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-band); }
+.field-box { display: block; border-radius: var(--r-ctl); }
+.field-box > input { width: 100%; }
+/* Les porteurs à un calque (l'autre pseudo-élément est pris : la flèche du dépliant, l'étiquette de la poignée,
+   le bouton de l'interrupteur) : un seul calque, bande en bordure et trait en outline — même géométrie. */
+details.prov summary { position: relative; }
+details.prov summary:focus-visible::after, .handle:focus-visible::before, .ar-inter:focus-visible::before {
+  content: ""; position: absolute; pointer-events: none;
+  inset: calc(-1px - var(--focus-band)); border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-band); outline: var(--focus-line) solid var(--halo-stroke); }
+details.prov summary { --halo-r: var(--r-3); }
+/* Le porteur sans pseudo-élément (un curseur natif) : bande en ombre, trait en outline — une pilule, son coin ne se voit pas. */
+.ar-dial input[type=range]:focus-visible {
+  box-shadow: 0 0 0 var(--focus-band) var(--halo-band); outline: var(--focus-line) solid var(--halo-stroke); outline-offset: var(--focus-band); }
+/* Les cellules d'une mosaïque fermée (débord caché) : le halo se dessine DEDANS, coin nul. */
+.cm-tile, .cp-col { position: relative; --halo-r: 0px; }
+:is(.cm-tile, .cp-col):focus-visible::before { content: ""; position: absolute; pointer-events: none; inset: 0; border: var(--focus-line) solid var(--halo-stroke); }
+:is(.cm-tile, .cp-col):focus-visible::after { content: ""; position: absolute; pointer-events: none; inset: var(--focus-line); border: var(--focus-band) solid var(--halo-band); }
+/* Le contour natif du navigateur se tait : le halo le remplace. */
+:is(.button, .tile, .navigation a, .rail-link, .rail-opens, .dot, .index-link, .mega-tab, .mega-close, .sheet-home, .drawer-handle, .wb-btn, .acc-access-link, .chrome-brand, .bn-tile[tabindex], .ar-tabs button, .field-box input, details.prov summary, .handle, .ar-inter, .cm-tile, .cp-col):focus { outline: none; }
+details.prov summary:hover { color: var(--text-primary); }
+::selection { background: var(--primary-subtle); color: var(--text-primary); }

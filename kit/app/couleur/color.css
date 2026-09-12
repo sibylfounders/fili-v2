@@ -60,3 +60,312 @@
   gap: var(--gap-3-inline);
   font-size: var(--font-size-small); color: var(--text-secondary);
 }
+
+/* ═══ DÉCOR DE LA PAGE COULEUR — sorti de globals.css le 12 septembre 2026 (séparation kit / démos).
+   Le kit (socle) ne charge plus ce décor : il ne vit que sur /couleur. ═══ */
+/* ── Theming global — la famille couleur porte tout le site ──────────
+   Décision d'Auteur (23 août) : un design system ne fait pas du theming
+   page par page. Le pont provisoire de la page Couleur est mort ici,
+   avec la palette de travail. */
+/* Le banc des états de la page Couleur — le survol par token (C10),
+   et la casse qui le remplace par un filtre pour le voir échouer */
+.demo-full { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+/* Le survol gris du bouton d'outil (.bouton:hover) l'emportait sur ces deux règles et la démo
+   mentait — le bouton plein grisait au survol. Attrapé par le crash-test de page, 26 août :
+   les deux règles pèsent désormais autant que le survol d'outil, et disent leur fond. */
+.button.demo-full.token:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+.button.demo-full.filter:hover { background: var(--primary); border-color: var(--primary); filter: brightness(0.72); } /* casse : le survol par un filtre, une couleur qu'aucun registre ne connaît */
+/* Une ligne de liste survolée prend surface-hover — le survol est un token */
+.demo-line:hover { background: var(--surface-hover); }
+
+
+/* ═══ PAGE COULEUR — preuves natives et mosaïque de la charte (24 août) ═══ */
+
+/* La mosaïque, au graphisme exact de la charte : tuiles pleines, sans
+   écart ; nom en haut à gauche, specs mono en bas à droite. */
+.cm-mos { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(9rem, 20vh, 12rem); gap: 0; width: 100%;
+  border-radius: var(--r-1); overflow: hidden; border: 1px solid var(--border); }
+.cm-tile { display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; padding: var(--pad-2-block) var(--pad-3-inline);
+  border: 0; text-align: left; cursor: pointer; font: inherit; min-width: 0; overflow: hidden; }
+.cm-name { font-size: var(--font-size-small); font-weight: var(--weight-label); letter-spacing: 0.01em; }
+.cm-specs { display: flex; flex-direction: column; align-self: flex-end; align-items: flex-end;
+  gap: 2px; font: var(--weight-body) var(--font-size-label)/1.4 var(--font-mono); }
+/* La bande des proportions vit seule sous le tableau de bord depuis le 9 septembre :
+   c'est la mesure de la preuve, pas une seconde scène — une bande, plus la hauteur
+   de la mosaïque qu'elle remplaçait (le × 2,2 est tombé avec la bascule). */
+.cm-props { display: flex; width: 100%; height: clamp(9rem, 20vh, 12rem); /* hors chaîne : la hauteur d'une bande de mesure */
+  border: 1px solid var(--border); border-radius: var(--r-1); overflow: hidden; }
+.cp-col { display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: space-between; flex-grow: 1; min-width: 0; overflow: hidden;
+  padding: var(--pad-2-block) var(--pad-3-inline);
+  border: 0; text-align: left; cursor: pointer; font: inherit;
+  transition: min-width var(--m-base) var(--e-out); } /* la colonne se déplie : le cran du dépliant */
+.cp-meta { display: flex; flex-direction: column; gap: var(--gap-4-block); white-space: nowrap; }
+.cp-name { font-size: var(--font-size-small); font-weight: var(--weight-label); }
+.cp-hex { font: var(--weight-body) var(--font-size-small)/1.4 var(--font-mono); }
+.cp-pct { align-self: flex-end; font: var(--weight-body) var(--font-size-small)/1 var(--font-mono); white-space: nowrap; }
+.cp-col.narrow .cp-meta, .cp-col.narrow .cp-pct { opacity: 0; transition: opacity var(--m-base) var(--e-out); }
+.cp-col.narrow:hover, .cp-col.narrow:focus-visible { min-width: 13rem; }
+.cp-col.narrow:hover .cp-meta, .cp-col.narrow:focus-visible .cp-meta,
+.cp-col.narrow:hover .cp-pct, .cp-col.narrow:focus-visible .cp-pct { opacity: 1; }
+@media (max-width: 48rem) {
+  .cm-mos { grid-template-columns: 1fr; grid-auto-rows: clamp(8rem, 18vh, 10rem); }
+  .cm-tile { grid-area: auto !important; }
+  .cm-props { flex-direction: column; height: auto; }
+  .cp-col { min-height: 3.5rem; flex-basis: auto !important; }
+}
+
+/* ── Le nuancier des métiers (9 septembre 2026). Six couples, deux groupes,
+   et plus une languette : chaque couple joue son métier, nu sur le blanc de
+   la page — un bouton, une étiquette, une bannière, un message sous un
+   champ. Le ton et le fond doux sont là, à la place qu'ils ont dans un
+   produit. Les objets sont dessinés (des span), pas des commandes. ── */
+/* Deux groupes côte à côte dès qu'il y a la place pour deux colonnes
+   lisibles, empilés sinon — aucun palier écrit à la main : c'est la
+   largeur d'une colonne lisible qui décide. */
+/* Dedans plus serré que dehors : deux groupes de trois doivent se lire comme
+   deux colonnes, pas comme six blocs. L'écart entre les colonnes prend donc
+   le cran de la page, au-dessus de tout ce qui sépare deux métiers dans une
+   colonne (deux marges de card et un filet) — retour d'Auteur, 9 septembre. */
+.gd-swatches { display: grid; width: 100%; align-items: start;
+  gap: var(--page-2-block) var(--page-2-inline);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); }
+.gd-nfam { display: grid; gap: var(--gap-3-block); min-width: 0; }
+.gd-nfam-heading { letter-spacing: 0.05em; text-transform: uppercase; }
+.gd-nfam-lines { display: grid; grid-template-columns: 1fr; }
+/* Un métier par ligne, séparé du suivant par un filet : le cran de la
+   ligne pour ses marges et ses écarts — ce sont de petits objets. */
+.gd-lng { display: grid; gap: var(--gap-3-block); padding-block: var(--pad-2-block); border-top: 1px solid var(--border); }
+.gd-lng:first-child { border-top: 0; padding-top: 0; }
+.gd-lng:last-child { padding-bottom: 0; }
+.gd-lng-heading { margin: 0; }
+.gd-lng-heading b { font-size: var(--font-size-body); font-weight: var(--weight-heading); letter-spacing: -0.01em; text-transform: capitalize; }
+/* Deux lignes, toujours : la version claire (le fond doux) puis la version
+   pleine (le ton) — le même métier dans ses deux régimes (verdict d'Auteur,
+   9 septembre). */
+.gd-lng-scene { display: grid; justify-items: start; align-items: center; gap: var(--gap-3-block) var(--gap-3-inline);
+  grid-auto-rows: var(--control-height); } /* chaque ligne a la hauteur d'une commande : six blocs de même taille, quel que soit l'objet */
+.gd-lng-record { font: var(--weight-heading) var(--font-size-label)/1.4 var(--font-mono); color: var(--text-tertiary); } /* tertiaire : la fiche d'un métier */
+/* Les objets : un bouton (la cible et le coin du composant), une étiquette
+   (le cran de la ligne), une bannière (une ligne pleine largeur au cran de
+   la ligne), un message sous un champ (une bannière avec son filet), un
+   compteur (une pastille à la hauteur compacte). */
+.gd-obj-button { display: inline-flex; align-items: center; min-height: var(--control-height);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-ctl); font-weight: var(--weight-label); font-size: var(--font-size-body); }
+.gd-obj-tag { display: inline-flex; align-items: center; min-height: var(--control-height-compact);
+  padding: 0 var(--pad-3-inline); border-radius: var(--r-pill); font-weight: var(--weight-heading); font-size: var(--font-size-small); }
+.gd-obj-banner, .gd-obj-field { justify-self: stretch; align-self: stretch; display: flex; align-items: center; padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-3); font-size: var(--font-size-small); }
+.gd-obj-field { border-inline-start: var(--focus-band) solid currentColor; } /* le message d'un champ : un trait à la couleur de l'encre, l'épaisseur de la bande de focus */
+.gd-obj-count { display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--control-height-compact); height: var(--control-height-compact); padding: 0 var(--pad-3-inline);
+  border-radius: var(--r-pill); font: var(--weight-heading) var(--font-size-small)/1 var(--font-mono); }
+/* L'ouverture : chaque métier se pose, en cascade d'un cran rapide.
+   Accroché au dévoilement de section déjà en place. */
+@keyframes gd-lng-set { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .gdoc .set .gd-lng { opacity: 0; }
+  .gdoc .set.set .gd-lng {
+    animation: gd-lng-set var(--m-slow) var(--e-out) both; /* chaque ligne se pose au cran du panneau, en cascade d'un cran rapide */
+    animation-delay: calc(var(--rank, 0) * var(--m-fast)); }
+}
+
+/* ═══════════ Le bento — l'objet en situation de la page Couleur (25 août 2026) ═══════════
+   Tranche applicative en cascade (CG4) : scène = surface, tuile = bg + border,
+   rayon carte ; contrôles au rayon simple ; un gap unique. Aucune couleur hors
+   rôle. La fiche des rôles se pose sur la tuile au survol ou au focus. */
+.bn { display: grid; gap: var(--gap-1-block) var(--gap-1-inline); width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas: "photo photo stat tags" "photo photo list list" "form form empty session";
+  color: var(--text-primary); }
+@media (width < 900px) { .bn { grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "photo photo" "stat tags" "list list" "form form" "empty session"; } }
+@media (width < 560px) { .bn { grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "photo" "stat" "tags" "list" "form" "empty" "session"; } }
+.bn-tile { position: relative; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-2); padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-2-block); align-content: start; min-width: 0;
+  transition: border-color var(--m-fast) var(--e-out); } /* survol */
+.bn-tile:hover, .bn-tile:focus-within { border-color: var(--border-strong); }
+.bn-photo { grid-area: photo; } .bn-stat { grid-area: stat; } .bn-tags { grid-area: tags; }
+.bn-list { grid-area: list; } .bn-word { grid-area: form; } .bn-empty { grid-area: empty; } .bn-session { grid-area: session; }
+.bn-heading { font-size: var(--font-size-h3); font-weight: var(--weight-heading); letter-spacing: -0.015em; line-height: var(--leading-heading); }
+.bn-sub { color: var(--text-secondary); font-size: var(--font-size-small); }
+.bn-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap-2-inline); }
+.bn-head a { font-size: var(--font-size-small); font-weight: var(--weight-label); text-decoration: none; color: var(--primary-text); }
+.bn-head a:hover { text-decoration: underline; color: var(--primary-text-hover); }
+.bn .button.on:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+/* le gabarit documentaire grise les badges (.gdoc .badge…) ; dans le bento
+   ils sont des étiquettes d'interface et gardent leurs couples déclarés —
+   d'où le poids du sélecteur. */
+.gdoc .bn .badge, .bn .badge { white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35em;
+  color: var(--on-primary-subtle); background: var(--primary-subtle); }
+.gdoc .bn .badge.info, .bn .badge.info { color: var(--on-info-subtle); background: var(--info-subtle); }
+.gdoc .bn .badge.warning, .bn .badge.warning { color: var(--on-warning-subtle); background: var(--warning-subtle); }
+.bn .badge svg { width: 0.8em; height: 0.8em; }
+.bn-labels { display: flex; flex-wrap: wrap; gap: var(--gap-3-inline); }
+/* la fiche des rôles : posée sur le bas de la tuile (sur le haut des tuiles
+   à contrôles, pour ne jamais couvrir un champ ou un bouton) */
+.bn-roles { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; margin: 0;
+  display: flex; flex-wrap: wrap; gap: var(--gap-4-block) var(--gap-3-inline);
+  font: var(--weight-body) var(--font-size-label)/1.5 var(--font-mono);
+  /* en inverse (retour d'Auteur) : l'encre du thème devient le fond, le fond
+     devient l'encre — le couple text-primary / bg, retourné, même rapport */
+  color: var(--bg); background: var(--text-primary);
+  border-radius: 0 0 var(--r-2) var(--r-2);
+  padding: var(--gap-3-block) var(--pad-2-inline);
+  opacity: 0; transform: translateY(4px); pointer-events: none;
+  transition: opacity var(--m-base) var(--e-out); } /* infobulle */
+@media (prefers-reduced-motion: no-preference) { .bn-roles { transition: opacity var(--m-base) var(--e-out), transform var(--m-base) var(--e-out); } }
+.bn-roles b { font-weight: var(--weight-heading); color: var(--bg); }
+.bn-tile:hover .bn-roles, .bn-tile:focus-within .bn-roles { opacity: 1; transform: none; }
+.bn-photo .bn-roles, .bn-list .bn-roles, .bn-word .bn-roles, .bn-session .bn-roles {
+  bottom: auto; top: 0; border-radius: var(--r-2) var(--r-2) 0 0; }
+/* la carte-photo : texte jamais nu (M2) ; --bn-voile est un CALCUL (M3) */
+.bn-photo { padding: 0; overflow: hidden; display: grid; grid-template-rows: 1fr auto; min-height: 20rem; isolation: isolate; }
+.bn-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; display: block; }
+/* l'aurore en code à la place de la photo (25 août) : le ciel entier, posé en haut, centré (meet).
+   DESSINÉE UNE FOIS, POSÉE À L'ÉCHELLE (12 septembre 2026) : ses couches sont filtrées (flous) — si son
+   cadre suivait la tuile, chaque pixel de redimensionnement les refaisait calculer (banc : la page
+   Couleur deux fois plus lente que les autres, images à 180 ms). Le cadre garde donc sa taille de
+   dessin (944 × 1150, le ciel) et c'est une transformation qui l'ajuste à la tuile — un geste du
+   compositeur, sans nouveau rendu des flous. La transformation est posée par la tuile (bento.tsx) sur le cadre
+   même — jamais en variable héritée : un changement de style sur les rectangles du dessin leur refait une mise en page. */
+/* .bn-aurore : le ciel en fond de tuile (25 août), traité comme une image « cover » (12 septembre 2026).
+   Le dessin est posé à SA taille de rendu — 944 × 1150, le ciel — en haut et centré ; la tuile le recadre.
+   Sa taille NE SUIT PLUS la largeur de la tuile : ses flous ne sont donc rendus qu'une fois, jamais
+   recalculés à chaque pixel d'un redimensionnement. C'était la seule page où redimensionner coûtait deux
+   fois le prix des autres (banc tests/bench-resize.mjs) : un fond décoratif refait à chaque image. */
+.bn-aurore { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bn-aurore .aurore-frame { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 944px; height: 1150px; aspect-ratio: auto; /* hors chaîne : la taille de rendu du dessin, le ciel */
+  will-change: transform; } /* un calque à part : le fond, à sa taille fixe, garde son rendu ; la tuile qui se repeint au redimensionnement ne le refait pas — ses flous ne sont calculés qu'une fois */
+.bn-band { position: relative; z-index: 1; align-self: end; grid-row: 2;
+  padding: var(--pad-2-block) var(--pad-2-inline); display: grid; gap: var(--gap-3-block);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--bg) calc(var(--bn-veil, 1) * 100%), transparent);
+  /* flou sous la bande (demande d'Auteur, 25 août) : il adoucit l'image,
+     il ne garantit rien — le voile calculé reste par-dessus. Le calcul du
+     pire pixel se fait sur l'image nette : un flou est une moyenne, il ne
+     produit jamais un pixel plus défavorable que le pire pixel net. */
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.bn-band .kicker { color: inherit; }
+.bn-band h3 { margin: 0; font-size: var(--font-size-h2); font-weight: var(--weight-heading); letter-spacing: -0.02em;
+  line-height: var(--leading-heading); text-wrap: balance; max-width: 26ch; }
+.bn-band .rank { margin-top: var(--gap-4-block); }
+.bn-veil-says { font: var(--weight-body) var(--font-size-label)/1.5 var(--font-mono); }
+/* le chiffre */
+.bn-value { font-size: var(--font-size-display); font-weight: var(--weight-heading); letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.bn-value small { font-size: 0.45em; font-weight: var(--weight-label); color: var(--text-secondary); letter-spacing: 0; margin-left: 0.15em; }
+.bn-delta { display: inline-flex; align-items: center; gap: 0.35em; font: var(--weight-heading) var(--font-size-small)/1 var(--font-mono);
+  color: var(--on-success-subtle); background: var(--success-subtle); border-radius: var(--r-3);
+  padding: var(--gap-4-block) var(--gap-3-inline); }
+.bn-delta svg { width: 0.8em; height: 0.8em; }
+.bn-curve { display: block; width: 100%; height: 2.6rem; }
+.bn-curve rect { fill: var(--primary-subtle); }
+.bn-curve rect.today { fill: var(--primary); }
+/* la liste */
+.bn-lines { display: grid; }
+.bn-line { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--gap-3-inline);
+  padding: var(--gap-3-block) var(--gap-3-inline); margin: 0 calc(-1 * var(--gap-3-inline)); /* la ligne déborde de sa marge : son fond de survol touche le bord de la tuile */
+  border-radius: var(--r-3); text-decoration: none; color: var(--text-primary);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.bn-line:hover { background: var(--surface-hover); color: var(--text-primary); }
+.bn-who { display: grid; gap: var(--gap-4-block); min-width: 0; } /* nom et poste : le plus petit cran, serrés (retour d'Auteur) */
+.bn-name { font-weight: var(--weight-label); line-height: 1.25; }
+.bn-ter { color: var(--text-secondary); font-size: var(--font-size-small); line-height: 1.3; }
+.bn-status { display: inline-flex; align-items: center; gap: 0.4em; font-size: var(--font-size-small); color: var(--text-secondary); white-space: nowrap; }
+.bn-status::before { content: ""; width: 0.5em; height: 0.5em; border-radius: var(--r-pill); background: var(--border-strong); }
+.bn-status.online::before { background: var(--success); }
+.bn-status.offline::before { background: var(--danger); }
+.bn-status.busy::before { background: var(--warning); }
+.bn-avatar { width: 2.5rem; height: 2.5rem; border-radius: var(--r-pill); object-fit: cover; display: block; }
+/* le mot du mentor — SUR FOND MARQUE (décision d'Auteur, 25 août, après
+   deux essais avec un formulaire) : le geste de couleur de l'écran est une
+   tuile éditoriale — une citation en corps d'affiche, une seule encre
+   déclarée, on-primary. Aucun contrôle : rien à inverser, rien à tracer. */
+.bn-word { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.bn-word:hover, .bn-word:focus-within { border-color: var(--primary); }
+.bn-word .kicker { color: var(--on-primary); }
+.bn-quote { margin: 0; display: grid; gap: var(--gap-2-block); align-self: end; }
+/* la citation parle serif (Auteur, 25 août) : la serif du système
+   (--font-serif), en graisse forte comme une affiche, corps display ;
+   le guillemet ouvrant “ est SUSPENDU dans la marge — la première lettre
+   reste alignée sur le bloc — et il n'a pas de fermant (convention
+   d'affiche). Décoratif : posé en CSS, hors lecture. */
+.bn-quote p { position: relative; font-family: var(--font-serif); font-weight: var(--weight-heading); letter-spacing: -0.015em;
+  font-size: var(--font-size-display); line-height: 1.06; text-wrap: balance; max-width: 15ch;
+  margin-left: 0.6em; /* décalée à droite (Auteur, 25 août) : le “ suspendu retombe sur le bord du bloc, aligné avec le kicker et la signature */ }
+.bn-quote p::before { content: "\201C"; position: absolute; right: 100%; margin-right: 0.04em; top: 0; }
+.bn-quote footer { font-size: var(--font-size-small); font-weight: var(--weight-label); }
+/* le vide, la session */
+.bn-empty-body { display: grid; justify-items: start; gap: var(--gap-3-block); color: var(--text-secondary); font-size: var(--font-size-small); }
+.bn-empty-body svg { width: 2.25rem; height: 2.25rem; color: var(--border-strong); }
+.bn-empty-heading { font-weight: var(--weight-label); color: var(--text-primary); font-size: var(--font-size-body); }
+.bn-date { font: var(--weight-body) var(--font-size-small)/1.5 var(--font-mono); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.bn-link { font-size: var(--font-size-small); font-weight: var(--weight-label); color: var(--primary-text); }
+.bn-link:hover { color: var(--primary-text-hover); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Le panneau de la scène du contraste : il vit dans le thème de la page.
+   La grille des deux panneaux (.gd-duo) est retirée le 2 septembre — la
+   scène n'en montre plus qu'un. */
+/* Le container est le gris, la card est le blanc posé dessus — la cascade
+   des fonds du kit, et non l'inverse (verdict d'Auteur, 2 septembre). Le
+   container pose son encre en même temps que son fond : une surface qui
+   peint déclare ce qui s'écrit dessus. */
+.gd-pan { background: var(--surface); color: var(--text-primary);
+  border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  display: grid; gap: var(--gap-2-block); align-content: start; }
+.gd-pan-card { background: var(--bg); color: var(--text-primary); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; gap: var(--gap-3-block); justify-items: start; }
+
+/* La table des rôles respire — un cran au-dessus du tableau standard
+   (retour d'Auré, 24 août : « un peu trop serré ces lignes »). */
+.table.airy th, .table.airy td { padding: var(--pad-3-block) var(--pad-3-inline); }
+.table.airy { font-size: var(--font-size-small); }
+
+/* ── Le playground du moteur (maquette d'Auré, 24 août) : rail de logos,
+      scène LOGO/Baseline, barres dérivées. ── */
+.mk { display: grid; grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--gap-1-inline); width: 100%; align-items: start; }
+.mk-rail { display: flex; flex-direction: column; gap: var(--gap-3-block); }
+.mk-chip { width: 3rem; height: 3rem; border-radius: var(--r-ctl);
+  border: 0; cursor: pointer; background: var(--surface); color: var(--text-secondary);
+  display: grid; place-items: center; padding: 0; overflow: hidden;
+  transition: background-color var(--m-fast) var(--e-out), color var(--m-fast) var(--e-out); } /* survol */
+.mk-chip:hover { background: var(--surface-hover); color: var(--text-primary); }
+.mk-scene { display: grid; gap: var(--gap-2-block); min-width: 0; }
+.mk-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--gap-1-inline); }
+.mk-large { border-radius: var(--r-1); min-height: clamp(14rem, 26vw, 21rem);
+  display: grid; place-content: center; justify-items: center; gap: var(--gap-3-block); }
+.mk-base { font-size: var(--font-size-small); font-weight: var(--weight-label); }
+.mk-rank { display: flex; gap: var(--gap-3-inline); }
+.mk-bar { flex: 1; min-width: 0; height: 1rem; /* hors chaîne : la barre dérivée, un objet — pas un espace */ border-radius: var(--r-pill); }
+.mk-pair { flex: 1; min-width: 0; display: flex; gap: var(--gap-3-inline); }
+@media (max-width: 48rem) {
+  .mk { grid-template-columns: 1fr; }
+  .mk-rail { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* ── Les gammes 50–950 (25 août) : la barre, les numéros dessous — et, sous
+      chaque numéro, le rôle qui se pose sur ce cran. En plein quand sa
+      valeur EST le cran ; en ≈ quand il n'en est que le voisin. ── */
+.gm { display: grid; gap: var(--gap-4-block); width: 100%; }
+/* Les gammes se suivent : de l'air entre elles, plus qu'entre une barre et ses numéros. */
+.gm-next { display: grid; gap: var(--gap-1-block); width: 100%; }
+.gm-next > .gm-heading { margin: 0; }
+.gm-next > .gm-heading:not(:first-child) { margin-top: var(--gap-3-block); }
+.gm-bar { display: flex; width: 100%; border-radius: var(--r-3); overflow: hidden; border: 1px solid var(--border); }
+.gm-bar > button { flex: 1; min-width: 0; height: var(--control-height-compact); border: 0; padding: 0; cursor: pointer; }
+.gm-steps { display: flex; width: 100%; align-items: start; }
+.gm-step { flex: 1; min-width: 0; display: grid; justify-items: center; font-size: var(--font-size-label); font-weight: var(--weight-body); line-height: 1.6; color: var(--text-secondary); text-align: center; }
+.gm-step.here > span:first-child { color: var(--text-primary); font-weight: var(--weight-heading); }
+.gm-role { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gm-role.exact { color: var(--text-primary); }
+
+

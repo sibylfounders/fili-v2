@@ -76,7 +76,8 @@ export function Band({ name, side, says, bare, rules, level = 3, children }: {
 export function Demo({ situation, action, bar, tools, caption, children }: {
   situation: ReactNode;
   /* `active` + `back` : l'action bascule (forme B). Sans eux, elle rejoue (forme A). */
-  action?: { label: string; onClick: () => void; back?: string; active?: boolean };
+  /* `disabled` : l'action existe dans ce cadre mais pas dans cet état — elle reste en place, la tête garde sa hauteur */
+  action?: { label: string; onClick: () => void; back?: string; active?: boolean; disabled?: boolean };
   /* un choix à plusieurs positions (les fautes, ce qu'on montre) : SOUS la tête, à la place du verdict */
   bar?: ReactNode;
   /* un réglage partagé par les deux côtés (une molette) : SOUS le phénomène — le lecteur regarde d'abord la scène */
@@ -92,7 +93,7 @@ export function Demo({ situation, action, bar, tools, caption, children }: {
           <b>{situation}</b>
           {action && (
             <button type="button" className={`button ${back ? "" : "on"} demo-go ${back ? "back" : ""}`}
-              aria-pressed={action.back ? !!action.active : undefined} onClick={action.onClick}>
+              aria-pressed={action.back ? !!action.active : undefined} disabled={action.disabled} onClick={action.onClick}>
               <span className="demo-icons" aria-hidden="true">
                 <svg className="demo-ic-play" viewBox="0 0 10 10"><path d="M2 1l7 4-7 4z" /></svg>
                 {action.back && <svg className="demo-ic-back" viewBox="0 0 12 12"><path d="M4.5 2.5 2 5l2.5 2.5M2 5h5a3 3 0 0 1 0 6H5" /></svg>}

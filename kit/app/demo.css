@@ -1,0 +1,415 @@
+/* demo.css — L'OUTILLAGE COMMUN DES DÉMONSTRATIONS (aperçu redimensionnable, espaces rendus visibles,
+   panneau de code, scène/figure, étages, cadre de démonstration). Chargé UNIQUEMENT par les pages de
+   Fondations qui montrent des preuves, jamais par le socle. Le décor propre à une page vit dans le CSS de sa page. */
+
+/* ── L'aperçu : tout le bloc est la surface redimensionnable ;
+      la barre d'options vit au-dessus, « d'où ça vient » en dessous ── */
+.preview { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); min-width: 0; }
+.preview-tools { display: flex; align-items: center; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.preview-tools .button { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+.preview-track { position: relative; min-width: 0; overflow: hidden; border-radius: var(--r-1); }
+.preview-frame {
+  position: relative; max-width: 100%; overflow: hidden;
+  border: 1px solid var(--border); border-radius: var(--r-1);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(45deg, color-mix(in srgb, var(--text-primary) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in srgb, var(--text-primary) 6%, transparent) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 6%, transparent) 75%),
+    linear-gradient(-45deg, transparent 75%, color-mix(in srgb, var(--text-primary) 6%, transparent) 75%);
+  background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+/* La variante déclarée « uni » : le damier s'efface au profit d'un gris
+   clair. Réservée aux scènes où l'objet du jugement est le TEXTE lui-même —
+   un damier qui court derrière une ligne qu'on mesure est un bruit, pas une
+   information (verdict d'Auteur, 2 septembre). */
+.preview.plain .preview-frame { background-image: none; background-color: var(--surface); }
+
+.preview-scene { padding: var(--pad-1-block) var(--pad-1-inline);
+  display: grid; justify-items: stretch; text-align: left; }
+.bullet-w {
+  position: absolute; bottom: 0.625rem; right: 0.625rem; pointer-events: none;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-3); padding: var(--gap-4-block) var(--gap-3-inline); color: var(--text-secondary); font-size: var(--font-size-label);
+}
+.handle {
+  position: absolute; top: 0; height: 100%; width: 1.75rem; transform: translateX(-50%);
+  display: flex; align-items: center; justify-content: center;
+  cursor: ew-resize; touch-action: none; border-radius: var(--r-ctl);
+}
+.handle-stroke { width: 0.4rem; height: 2.75rem; border-radius: var(--r-pill);
+  background: var(--text-secondary); opacity: 0.6;
+  transition: height var(--m-fast) var(--e-out), background-color var(--m-fast) var(--e-out), opacity var(--m-fast) var(--e-out); } /* survol : le cran rapide, propriété par propriété — jamais « all » */
+.handle:hover .handle-stroke, .handle:focus-visible .handle-stroke,
+.handle.engaged .handle-stroke { height: 3.5rem; background: var(--primary); opacity: 1; }
+.handle::after {
+  content: "Glisser ou redimensionner"; position: absolute;
+  top: calc(50% + 2.4rem); left: 50%; transform: translateX(-85%);
+  background: var(--code-bg); color: var(--code-text); font-size: var(--font-size-label); line-height: 1;
+  padding: var(--gap-4-block) var(--gap-3-inline); border-radius: var(--r-2); white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity var(--m-base) var(--e-out); /* infobulle */
+}
+.handle:hover::after, .handle:focus-visible::after { opacity: 1; }
+.handle.engaged::after { opacity: 0; }
+
+/* ── Le panneau de code (Copier) ── */
+.panel-code { border: 1px solid var(--border); border-radius: var(--r-1); overflow: hidden; }
+.panel-code-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--gap-3-block) var(--pad-3-inline); background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+/* Les encres de syntaxe — générées avec la famille (derivation.mjs), calées
+   sur le fond 950 du panneau. Un spécimen lisible, pas un compilateur. */
+pre.code .cs-com { color: var(--code-com); }
+pre.code .cs-str { color: var(--code-str); }
+pre.code .cs-kw { color: var(--code-kw); }
+pre.code .cs-tag { color: var(--code-tag); }
+pre.code .cs-var { color: var(--code-kw); }
+.panel-code-head .button { min-height: var(--control-height-compact); padding: 0 var(--gap-3-inline); font-size: var(--font-size-label); }
+
+/* ── Les espaces rendus visibles ── */
+.space { display: block; flex: none; border-radius: var(--r-4); position: relative; }
+.space.h { display: inline-block; }
+.space.seen { background: var(--surface-hover); outline: 1px dashed var(--border-strong); }
+/* La faute mesurée, façon Figma (retour d'Auteur, 24 août) : dans l'écart
+   menteur, un trait vertical avec ses repères aux deux bouts — on mesure
+   l'espace, on ne le remplit plus. L'étiquette se pose à côté du trait. */
+.space.ko::before {
+  content: ""; position: absolute; left: 50%; top: 0; height: 100%;
+  width: 0.5rem; transform: translateX(-50%);
+  border-top: 1px solid var(--danger); border-bottom: 1px solid var(--danger);
+  background: linear-gradient(var(--danger), var(--danger)) 50% 0 / 1px 100% no-repeat;
+}
+.space.ko[data-name]::after {
+  content: attr(data-name); position: absolute; left: calc(50% + 0.625rem); top: 50%;
+  transform: translateY(-50%); white-space: nowrap;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); color: var(--danger);
+}
+/* Une étiquette par token, posée DANS l'espace qu'elle nomme (24 août :
+   « on ne voit pas et ne comprend pas les espaces » — une seule couleur
+   neutre, une seule étiquette par rôle·cran, jamais l'accent). */
+.space.seen[data-name]::after {
+  content: attr(data-name); position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%); white-space: nowrap;
+  font: var(--weight-heading) var(--font-size-label)/1 var(--font-mono); color: var(--text-primary);
+}
+.space.h.seen[data-name]::after { left: 50%; top: 100%; transform: translate(-50%, 0.125rem); }
+/* Les espaces se révèlent au survol de la tranche — plus de bouton : la
+   scène s'annote d'elle-même sous le pointeur (ou au clavier, focus-within)
+   et s'efface en le quittant. Les blocs d'espace restent de vrais espaces :
+   seule leur encre apparaît. */
+.hovered-spaces .space.seen { background: transparent; outline-color: transparent;
+  transition: background-color var(--m-fast) var(--e-out), outline-color var(--m-fast) var(--e-out); } /* survol */
+.hovered-spaces .space.seen[data-name]::after { opacity: 0; transition: opacity var(--m-fast) var(--e-out); }
+.hovered-spaces:hover .space.seen, .hovered-spaces:focus-within .space.seen {
+  background: var(--surface-hover); outline-color: var(--border-strong); }
+.hovered-spaces:hover .space.seen[data-name]::after,
+.hovered-spaces:focus-within .space.seen[data-name]::after { opacity: 1; }
+.card-demo { background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r-2); width: 100%; max-width: 24rem; overflow: hidden; }
+.eye {
+  background: var(--danger-subtle); color: var(--danger); border-radius: var(--r-3);
+  padding: var(--pad-3-block) var(--pad-3-inline); font-size: var(--font-size-small);
+}
+
+/* ── Les sources en dépliant discret ── */
+/* le dépliant n'est pas une carte : un simple filet de rive, du texte */
+details.prov { border-left: 2px solid var(--border); padding-left: var(--pad-3-inline);
+  color: var(--text-secondary); font-size: var(--font-size-small); min-width: 0; }
+details.prov summary { cursor: pointer; font: var(--weight-heading) var(--font-size-small)/1.6 var(--font-sans);
+  color: var(--text-secondary); list-style: none; }
+details.prov summary::before { content: "▸ "; }
+details.prov[open] summary::before { content: "▾ "; }
+details.prov > div { display: grid; gap: var(--gap-1-block); padding-top: var(--gap-2-block); }
+details.prov p { max-width: var(--measure); } /* T5 : qui glisse se borne — chez nous aussi */
+
+
+/* ── Le bouton de casse : il annonce la couleur — pointillé rouge au repos,
+      plein quand la casse est active ── */
+.button.broken { color: var(--danger); border: 1px dashed var(--danger); background: var(--bg); }
+.button.broken:hover { background: var(--danger-subtle); }
+.button.broken.on { background: var(--danger); border: 1px solid var(--danger); color: var(--on-danger); }
+
+/* ── La table de correspondance des échelles ── */
+.table { border-collapse: collapse; font-size: var(--font-size-label); }
+.table th, .table td { text-align: left; padding: var(--gap-4-block) var(--pad-3-inline);
+  border-bottom: 1px solid var(--border); white-space: nowrap; }
+.table th { color: var(--text-secondary); font-weight: var(--weight-heading); }
+
+
+/* ── La scène : la seule grande surface de son écran — méritée (CP2).
+      Pour l'écran de l'échelle, elle est AUSSI son geste de couleur (CG3). ── */
+.bench {
+  margin: 0; border-radius: var(--r-1); padding: var(--doc-scene-block) var(--doc-scene-inline);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--gap-1-block); width: 100%;
+}
+.bench.primary { background: var(--primary); color: var(--on-primary); }
+/* Une terre sombre posée dans une page claire. Ce qui pose sa propre
+   surface claire par-dessus (une feuille, un panneau) garde ses encres ;
+   ce qui repose DIRECTEMENT sur la terre doit prendre celles du versant
+   sombre — --code-text, --code-com — sinon le texte secondaire s'y éteint.
+   Chaque page le déclare pour les éléments qu'elle y pose ; une scène qui a
+   besoin de toute la famille sombre (le rouge d'une faute) se déclare en
+   thème sombre plutôt que d'inventer une encre (7 septembre). */
+.bench.dark { background: var(--code-bg); color: var(--code-text); }
+/* La scène de nuit : le banc se déclare en thème sombre (data-theme="dark",
+   dans la vue) et prend le fond de page de ce versant — noir — avec toute
+   sa famille d'encres. Rien de propre à la scène : une faute y est rouge et
+   un juste y est vert par le système (verdict d'Auteur, 7 septembre). */
+.bench.black { background: var(--bg); color: var(--text-primary); }
+/* La figure : la scène, puis sa légende DESSOUS, hors du bloc de couleur
+   (décision d'Auteur, 24 août). */
+/* Tout part du même bord : un objet posé dans une figure part de l'axe de la
+   page, comme le titre, la commande et la légende — centré, il crée un axe de
+   plus, et chaque axe de plus est du bruit (retour d'Auteur, 9 septembre :
+   la liste au corps unique flottait au milieu de sa colonne). Les scènes qui
+   composent leur propre espace (un banc) restent maîtresses de leur dedans. */
+.gd-figure { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-2-block); justify-items: start; } /* même règle : la figure ne s'élargit jamais au-delà de sa colonne */
+.gd-figure > .gd-caption { justify-self: start; }
+/* La légende est du texte : elle se justifie à gauche comme tout le reste
+   de la page (charte, 24 août). Centrée, elle se lisait comme une
+   vignette de catalogue. */
+.gd-caption {
+  font: var(--weight-heading) var(--font-size-label)/1.6 var(--font-mono); font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary); text-align: left; max-width: var(--measure); /* tertiaire : la légende mono sous une démo */
+  justify-self: start !important;
+}
+
+/* ── Le bouton de la tranche : redéfini par rythme.css, mais consommé aussi par
+      la page Arrondis (ar-btn le complète) — gardé ici, sur la chaîne. ── */
+.tr-btn {
+  border: 0; cursor: default; border-radius: var(--r-ctl);
+  min-height: var(--control-height); padding: 0 var(--pad-3-inline);
+  font: var(--weight-heading) var(--font-size-small)/1 var(--font-sans);
+  background: var(--surface); color: var(--text-primary);
+}
+.tr-btn.first { background: var(--text-primary); color: var(--bg); }
+
+
+
+.bench.veil { background: var(--surface); color: var(--text-primary); }
+
+/* Le verdict en vert : un badge qui atteste une conformité (décision
+   d'Auteur, 24 août — « rouge pour l'erreur, vert plutôt que gris si
+   c'est ok »). Couple sémantique success de tokens.css ; le gris reste
+   aux badges purement descriptifs (identifiants de règles, fiches). */
+.badge.good { color: var(--success); background: var(--success-subtle); }
+
+/* Le code couleur des espaces (décision d'Auteur, 24 août) : danger pour
+   les retraits (padding), success pour les écarts (gap / margin) — la
+   convention des inspecteurs, portée par nos tokens sémantiques. */
+.space.seen.pad[data-name]::after { color: var(--danger); }
+.space.seen.gap[data-name]::after { color: var(--success); }
+/* Au repos, rien : les espaces espacent. La couleur n'apparaît qu'au
+   survol de la tranche (ou au clavier) — décision d'Auteur, 24 août. */
+.hovered-spaces:hover .space.seen.pad, .hovered-spaces:focus-within .space.seen.pad {
+  background: var(--danger-subtle); outline-color: var(--danger); }
+.hovered-spaces:hover .space.seen.gap, .hovered-spaces:focus-within .space.seen.gap {
+  background: var(--success-subtle); outline-color: var(--success); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES TROIS ÉTAGES DU DESSOUS — gabarit commun aux pages du kit
+   (verdict d'Auteur, 1er septembre 2026 ; composants dans etages.tsx).
+   L'étage des preuves n'a pas de gabarit : rien ici ne le concerne.
+   Tout consomme le registre ; les rares valeurs hors chaîne sont dites
+   sur leur ligne.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Étage « en bandes » — ce qui se voit ──
+   Une règle par bande, séparées par un filet. À gauche la parole (le
+   titre, la cote, la phrase, la commande) dans une colonne étroite et
+   fixe ; à droite la scène, à la largeur qu'il lui faut. Une petite
+   scène fait une bande courte, une grande scène une bande haute : rien
+   ne se tasse, rien ne flotte, et tout s'aligne parce que chaque règle a
+   sa propre ligne (verdict d'Auteur, 1er septembre — la grille de trois
+   colonnes écrasait les scènes et laissait des trous). */
+/* Aucune marge en tête : le corps de section (.gdoc-corps) porte déjà
+   l'espace qui suit le titre. L'ajouter ici le comptait deux fois — le
+   titre se détachait de son contenu, la faute même que la page documente
+   (attrapé par l'Auteur, 1er septembre). */
+/* Une pile de bandes est une pile : elle n'a ni colonnes, ni écart propre
+   (les filets et les marges des bandes font tout). Pas de boîte souple
+   pour rien. */
+.doc-bands { display: block; }
+.doc-band { display: grid; grid-template-columns: 18rem minmax(0, 1fr); /* hors chaîne : la mesure de la colonne de parole */
+  gap: var(--doc-gutter);
+  padding-block: var(--pad-1-block);
+  border-top: 1px solid var(--border); align-items: start; }
+.doc-band:last-child { padding-bottom: 0; }
+/* la bande se replie sous la somme parole 18 + gouttière + scène 26 = 47,6 rem de lecture (LAYOUTS.doc.sums.band) */
+@container reading (width < 47.6rem) {
+  .doc-band { grid-template-columns: minmax(0, 1fr); gap: var(--gap-1-block); }
+}
+.doc-band-say { display: grid; gap: var(--gap-2-block); align-content: start; max-width: var(--measure); }
+.doc-band-name { margin: 0; font-size: var(--font-size-h3); font-weight: var(--weight-heading);
+  letter-spacing: -0.015em; line-height: var(--leading-heading); text-wrap: balance; }
+.doc-band-side { font-weight: var(--weight-heading); color: var(--text-tertiary); } /* tertiaire : la cote d'une bande */
+.doc-band-says { color: var(--text-secondary); font-size: var(--font-size-small); line-height: 1.55; }
+.doc-band-prov { grid-column: 1 / -1; }
+
+/* La scène porte la marge et le coin de la profondeur 2 ; celle qui
+   apporte déjà sa propre coque s'en passe (variante « nue », CG4). */
+.doc-scene { background: var(--surface); border-radius: var(--r-2);
+  padding: var(--pad-2-block) var(--pad-2-inline);
+  display: grid; justify-items: center; align-content: center; }
+.doc-scene.bare { background: transparent; padding: 0; justify-items: stretch; }
+
+/* ── Le cadre d'une démonstration (9 septembre) : la tête dit la situation
+   et porte l'action ; deux côtés ou une scène. ── */
+.demo-wrap { display: grid; gap: var(--gap-3-block); }
+.demo { border: 1px solid var(--border); border-radius: var(--r-2); overflow: hidden; background: var(--bg);
+  container-type: inline-size; }
+.demo-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-2-inline);
+  padding: var(--pad-2-block) var(--pad-2-inline); border-bottom: 1px solid var(--border); }
+.demo-head b { font-size: var(--font-size-body); font-weight: var(--weight-heading); letter-spacing: -0.01em; line-height: var(--leading-heading); text-wrap: balance; } /* la tête d'une démo : le rôle titre (le 650 d'avant n'était d'aucun rôle) */
+/* l'action : le ▸ et le fond plein pour agir ; le retour est secondaire, avec ↺ */
+.demo-go { flex: none; gap: var(--gap-3-inline); /* la version compacte du bouton : la tête d'un cadre, pas un formulaire */
+  min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); }
+.demo-go.back { border-color: var(--border-strong); }
+.demo-go:disabled { color: var(--text-tertiary); font-weight: var(--weight-heading); border-color: var(--border); background: var(--bg); cursor: default; } /* tertiaire : l'action en retrait — elle existe dans ce cadre, pas dans cet état ; elle garde le rôle titre du bouton et la tête garde sa hauteur */
+.demo-icons { display: grid; width: 0.85rem; height: 0.85rem; } /* hors chaîne : l'icône du bouton */
+.demo-icons svg { grid-area: 1 / 1; width: 100%; height: 100%; transition: opacity var(--m-fast) var(--e-out); }
+.demo-ic-play { fill: currentColor; }
+.demo-ic-back { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: 0; } /* hors chaîne : le trait de l'icône */
+.demo-go.back .demo-ic-play { opacity: 0; } .demo-go.back .demo-ic-back { opacity: 1; }
+.demo-labels { display: grid; justify-items: center; }
+.demo-labels span { grid-area: 1 / 1; white-space: nowrap; transition: opacity var(--m-fast) var(--e-out); }
+.demo-l-back { opacity: 0; } .demo-go.back .demo-l-go { opacity: 0; } .demo-go.back .demo-l-back { opacity: 1; }
+/* deux côtés : verdicts sur une rangée, scènes sur la suivante, colonnes égales */
+.demo-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr; }
+.demo-side { display: contents; }
+.demo-compare .demo-verdict { grid-row: 1; }
+.demo-compare .demo-stage { grid-row: 2; }
+.demo-side.good .demo-verdict, .demo-side.good .demo-stage { border-left: 1px solid var(--border); }
+.demo-verdict { margin: 0; padding: var(--pad-3-block) var(--pad-2-inline); border-bottom: 1px solid var(--border);
+  font-size: var(--font-size-small); font-weight: var(--weight-heading); display: flex; gap: var(--gap-3-inline); align-items: baseline; }
+.demo-side.bad .demo-verdict, .demo-single.bad .demo-verdict { color: var(--danger); }
+.demo-side.good .demo-verdict, .demo-single.good .demo-verdict { color: var(--success); }
+.demo-single.neutral .demo-verdict { color: var(--text-secondary); }
+.demo-stage { padding: var(--pad-2-block) var(--pad-2-inline); background: var(--surface);
+  display: grid; align-content: center; justify-items: center; gap: var(--gap-2-block); }
+.demo-tools { padding: var(--pad-2-block) var(--pad-2-inline); border-top: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
+/* le choix (les fautes, ce qu'on montre) : une rangée sous la tête, à la place d'une ligne de verdict — tout part du même bord ; les molettes, elles, restent sous la scène */
+.demo-bar { padding: var(--pad-3-block) var(--pad-2-inline); border-bottom: 1px solid var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: var(--gap-2-inline); }
+/* le banc à poignée dans le cadre : la scène est le banc lui-même, bord à bord */
+.preview-in-demo { display: block; padding: 0; background: var(--surface); } /* la part d'écran que la largeur simulée ne couvre pas : le fond de scène */
+.preview-in-demo .preview-track { border-radius: 0; width: 100%; } /* le banc prend la largeur du cadre : c'est elle que la poignée mesure */
+.preview-in-demo .preview-frame { border-radius: 0; border-width: 0 1px 0 0; } /* l'écran simulé colle aux bords du cadre ; son seul bord est le droit, celui de la poignée */
+/* un réglage à deux ou trois positions : le nom du réglage, puis ses positions en boutons compacts */
+.demo-seg { display: inline-flex; align-items: center; gap: var(--gap-3-inline); font-size: var(--font-size-label); }
+.demo-seg .button { min-height: var(--control-height-compact); padding-inline: var(--gap-2-inline); font-size: var(--font-size-label); }
+.demo-caption { margin: 0; max-width: var(--measure); }
+/* sous 36 rem de cadre, les deux côtés se suivent : verdict, scène, verdict, scène */
+@container (max-width: 36rem) { /* hors chaîne : le point de bascule du cadre */
+  .demo-compare { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .demo-compare .demo-verdict, .demo-compare .demo-stage { grid-row: auto; }
+  .demo-side.good .demo-verdict, .demo-side.good .demo-stage { border-left: 0; }
+  .demo-side.good .demo-verdict { border-top: 1px solid var(--border); }
+  .demo-head { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) { .demo-icons svg, .demo-labels span { transition: none; } }
+
+/* ── Étage « en liste » — ce qu'aucune image ne prouve ── */
+.doc-list { width: 100%; border-collapse: collapse; }
+.doc-list th, .doc-list td { text-align: left; vertical-align: top;
+  padding: var(--pad-3-block) var(--gap-2-inline);
+  border-bottom: 1px solid var(--border); }
+.doc-list th { color: var(--text-secondary); font-weight: var(--weight-heading);
+  font-family: var(--font-mono); font-size: var(--font-size-label);
+  text-transform: uppercase; letter-spacing: var(--tracking-label);
+  border-bottom-color: var(--border-strong); }
+.doc-list td { font-size: var(--font-size-small); }
+.doc-list th:nth-child(1), .doc-list td:nth-child(1) { width: 30%; }
+.doc-list th:nth-child(2), .doc-list td:nth-child(2) { width: 47%; }
+.doc-list th:nth-child(3), .doc-list td:nth-child(3) { width: 23%; }
+.doc-list .l-name { font-weight: var(--weight-heading); }
+.doc-list .l-says { color: var(--text-secondary); }
+/* Tertiaire rendu : graisse 600 au moins, au cran étiquette — la règle
+   du kit sur les encres faibles. */
+.doc-list .l-or { font-family: var(--font-mono); font-size: var(--font-size-label);
+  font-weight: var(--weight-heading); color: var(--text-secondary); }
+.doc-list .l-or.render { color: var(--on-primary-subtle); }
+.doc-list .l-or.author { color: var(--text-tertiary); font-weight: var(--weight-heading); } /* tertiaire : une décision d'Auteur, vérifiée nulle part */
+
+/* ── Étage « dans le code » — le registre, pas de la prose ── */
+.doc-panel {
+  /* Le panneau est une terre sombre posée dans une page claire : il
+     emprunte les encres du thème sombre du kit. Aucune couleur nouvelle. */
+  background: var(--code-bg); color: var(--code-text);
+  border-radius: var(--r-1); overflow: hidden;
+  padding: var(--pad-1-block) var(--pad-1-inline) var(--pad-2-block); }
+.doc-code { width: 100%; border-collapse: collapse; }
+.doc-code th, .doc-code td { text-align: left; vertical-align: top;
+  padding: var(--pad-3-block) var(--gap-2-inline);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.doc-code th { font-family: var(--font-sans); font-weight: var(--weight-heading);
+  font-size: var(--font-size-small); color: #FFFFFF;
+  border-bottom-color: rgba(255, 255, 255, 0.22); }
+.doc-code th:first-child, .doc-code td:first-child { width: 46%; }
+.doc-code tr:last-child td { border-bottom: 0; }
+.doc-code td { font-family: var(--font-mono); font-size: var(--font-size-label); line-height: 1.75; }
+.doc-code .cs-kw { color: var(--code-kw); }
+.doc-code .cs-var { color: var(--code-str); }
+.doc-code .cs-com { color: var(--code-com); }
+.doc-code .cs-val { color: var(--code-text); }
+/* Dans « ce que ça produit » : la valeur sur sa ligne, le commentaire sous elle. */
+.doc-code td:last-child .cs-val, .doc-code td:last-child .cs-com { display: block; }
+.doc-code .rule { display: block; font-family: var(--font-sans);
+  font-size: var(--font-size-small); font-weight: var(--weight-heading); color: #FFFFFF;
+  margin-bottom: var(--gap-4-block); }
+.doc-code tr[data-fallback="oui"] { display: none; }
+.doc-code[data-open="oui"] tr[data-fallback="oui"] { display: table-row; }
+.doc-panel-foot { display: flex; justify-content: center; padding-top: var(--pad-2-block); }
+.doc-unfold { min-height: var(--control-height); min-width: var(--control-height);
+  padding-inline: var(--pad-2-inline); border-radius: var(--r-ctl); cursor: pointer; border: 0;
+  font-family: var(--font-mono); font-size: var(--font-size-label);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; font-weight: var(--weight-heading);
+  color: var(--code-text); background: rgba(255, 255, 255, 0.09);
+  transition: background-color var(--m-fast) var(--e-out); } /* survol */
+.doc-unfold:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* Les deux tables se dépilent en fiches quand la lecture ne tient plus leurs
+   trois colonnes : nom 15 + dit 20 + source 9,5 + deux marges de cellule =
+   48,1 rem (LAYOUTS.doc.sums.table). Zéro débord à la largeur minimale (invariant d'audit). */
+@container reading (width < 48.1rem) {
+  .doc-code, .doc-code tbody, .doc-code tr, .doc-code td,
+  .doc-list, .doc-list tbody, .doc-list tr, .doc-list td { display: block; width: 100%; }
+  .doc-code thead, .doc-list thead { display: none; }
+  .doc-code tr, .doc-list tr { border-bottom: 1px solid var(--border);
+    padding-block: var(--pad-3-block); }
+  .doc-code tr { border-bottom-color: rgba(255, 255, 255, 0.08); }
+  .doc-code[data-open="oui"] tr[data-fallback="oui"] { display: block; }
+  .doc-code td:nth-child(n), .doc-list td:nth-child(n) { width: auto; }
+  .doc-code td, .doc-list td { border: 0; padding: var(--gap-4-block) 0;
+    display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--gap-2-inline); }
+  .doc-code td { grid-template-columns: minmax(0, 1fr); }
+  .doc-list td::before { content: attr(data-quoi); font-family: var(--font-mono);
+    font-size: var(--font-size-label); letter-spacing: var(--tracking-label);
+    text-transform: uppercase; color: var(--text-tertiary); font-weight: var(--weight-heading); } /* tertiaire : l'en-tête de colonne, replié devant sa cellule */
+}
+/* la fiche perd sa colonne d'étiquette sous étiquette 9,5 + marge + valeur 17 = 28,3 rem (LAYOUTS.doc.sums.list) */
+@container reading (width < 28.3rem) {
+  .doc-list td { grid-template-columns: minmax(0, 1fr); gap: var(--gap-4-block); }
+}
+
+/* Le halo de « Tout voir » — même forme que partout (bande 3 px collée à
+   l'objet, trait 1 px qui la ferme), au clavier seulement. Il vit sur la
+   terre sombre du panneau : sa famille est dite ici, faute de token clair.
+   (Le bouton « Casser » des bandes a quitté le gabarit le 9 septembre :
+   les démonstrations vivent dans leur cadre.) */
+.doc-unfold { position: relative; --halo-r: var(--r-ctl);
+  --halo-band: rgba(255, 255, 255, 0.16); --halo-stroke: var(--code-kw); }
+.doc-unfold:focus-visible::before,
+.doc-unfold:focus-visible::after {
+  content: ""; position: absolute; pointer-events: none; }
+.doc-unfold:focus-visible::before {
+  inset: calc(-1px - var(--focus-band) - var(--focus-line));
+  border-radius: calc(var(--halo-r) + var(--focus-band) + var(--focus-line));
+  border: var(--focus-line) solid var(--halo-stroke); }
+.doc-unfold:focus-visible::after {
+  inset: calc(-1px - var(--focus-band));
+  border-radius: calc(var(--halo-r) + var(--focus-band));
+  border: var(--focus-band) solid var(--halo-band); }
+.doc-unfold:focus { outline: none; }
