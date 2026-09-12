@@ -27,7 +27,7 @@ import { KIT, WIDTHS, TOL, openSite, openBrowser, expected, near, numbers, calcP
 
 const ok = (a, b, msg, tol = TOL) => assert.ok(a !== null && near(a, b, tol), `${msg} : ${a} attendu ${b}`)
 const CSS = () => fs.readFileSync(path.join(KIT, 'app/composition/composition.css'), 'utf8')
-const GLOBAL = () => fs.readFileSync(path.join(KIT, 'app/globals.css'), 'utf8')
+const GLOBAL = () => ['app/kit.css', 'app/app.css', 'app/demo.css'].map((x) => fs.readFileSync(path.join(KIT, x), 'utf8')).join('\n')
 const VIEW = () => fs.readFileSync(path.join(KIT, 'app/composition/view.tsx'), 'utf8')
 
 let site, nav
@@ -100,8 +100,9 @@ test('2 · la feuille consomme, pour chaque pièce, le token qu’elle nomme, et
   const css = CSS(), g = GLOBAL()
   const block = (src, sel) => { const i = src.indexOf(`\n${sel} {`); assert.ok(i >= 0, `sélecteur absent : ${sel}`); return src.slice(i, src.indexOf('}', i)) }
   const waits = (src, sel, decl) => assert.ok(block(src, sel).includes(decl), `${sel} : « ${decl} » attendu`)
-  waits(g, '.co-scene', 'padding: var(--pad-1-block) var(--pad-1-inline)'); waits(g, '.co-bench', 'gap: var(--page-2-inline)')
-  waits(g, '.co-duo-t', 'gap: var(--page-2-inline)'); waits(g, '.co-pair', 'gap: var(--page-2-inline)')
+  /* le décor de la page vit dans composition.css depuis le 12 sept. 2026 (séparation kit / démos) ; le kit (globals) ne le porte plus */
+  waits(css, '.co-scene', 'padding: var(--pad-1-block) var(--pad-1-inline)'); waits(css, '.co-bench', 'gap: var(--page-2-inline)')
+  waits(css, '.co-duo-t', 'gap: var(--page-2-inline)'); waits(css, '.co-pair', 'gap: var(--page-2-inline)')
   waits(css, '.cb-photos', 'gap: var(--gap-4-block)')
   waits(css, '.cb-block.slab', 'padding: var(--pad-3-block) var(--pad-3-inline)')
   for (const sel of ['.cb-photos.cut > .cb-caption', '.cb-card.heavy', '.cb-column.defeat .cb-block.heading', '.cb-column.defeat .cb-block.text', '.cb-column.defeat .cb-block.slab']) {
@@ -109,8 +110,8 @@ test('2 · la feuille consomme, pour chaque pièce, le token qu’elle nomme, et
     assert.match(css.slice(css.lastIndexOf('\n', i), css.indexOf('\n', i)), /casse|broken/, `${sel} : casse dite sur sa ligne`)
   }
   /* la dette du 25 août est fermée : plus un bloc de dette dans le registre de la page, chaque valeur restante dit qu'elle est une réduction */
-  const start = g.indexOf('PAGE COMPOSITION'), end = g.indexOf('LES TROIS ÉTAGES', start) > 0 ? g.indexOf('LES TROIS ÉTAGES', start) : g.length
-  const blockPage = g.slice(start, end)
+  const start = css.indexOf('PAGE COMPOSITION'), end = css.indexOf('LES TROIS ÉTAGES', start) > 0 ? css.indexOf('LES TROIS ÉTAGES', start) : css.length
+  const blockPage = css.slice(start, end)
   assert.ok(!/HORS CHAÎNE — dette déclarée/.test(blockPage), 'plus de dette déclarée sur la page')
   assert.ok((blockPage.match(/réduction déclarée/g) ?? []).length >= 9, 'les réductions sont dites, une par ligne')
 })

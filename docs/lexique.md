@@ -41,6 +41,10 @@ Fili, pas seulement pour la couche de lecture (V0 du vocabulaire v1, tranché).
 | **thème clair · thème sombre** | les deux versants | DSFR ; « dark mode » reste du jargon oral |
 | **grille · gouttière · conteneur** | la structure de page | français installé (DSFR) |
 | **breakpoint** (code) · **point de rupture** (prose) | une largeur où la mise en page change | la traduction a gagné en prose (DSFR), le code reste anglais |
+| **posture** (prose et code : `POSTURE`) | la situation d'usage d'une surface — Mobile, Livre, Laptop, Tablet aujourd'hui | principe du 10 septembre 2026 : Fili conçoit pour des postures, pas pour des tailles d'écran ; les noms sont ceux de l'Auteur (Android dit *book* et *tabletop*, Apple *poses*) |
+| **état physique** · **fermé / semi-ouvert / largement ouvert / à plat** | ce que fait l'appareil, lu sur l'angle d'une charnière (0° · 1–90° · 91–179° · 180°) | des seuils d'état, jamais des points de rupture : personne ne dessine 45° |
+| **surface active** · **écran extérieur / écran intérieur** | l'écran qui travaille dans un état donné ; fermé → extérieur, ouvert → intérieur | deux surfaces, pas un écran qui grandit (Samsung dit *cover screen*, Apple *outer / inner display*) |
+| **frontière physique** · **charnière** | la coupure matérielle entre deux segments d'une surface | Android dit *fold* / *hinge*, Microsoft *seam* ; une zone ne la traverse jamais (P1) |
 | **viewport · gap** | la fenêtre d'affichage ; l'espace entre enfants | aucune traduction en usage |
 | **package** | un workspace npm | le mot npm ; « paquet » garde son sens de *lot* (voir plus bas) |
 | **plugin** | le plugin Cowork `design-system-md` | V11 tranché : *kit* = `@fili/react`, *package* = un workspace npm, *plugin* = le plugin Cowork |
@@ -82,6 +86,9 @@ règle 4 (le dictionnaire de migration fait foi : `docs/migration-code-en.json`)
 | **verdict** | ce qu'une épreuve conclut, ou ce que l'Auteur tranche | `verdict` |
 | **rôle** | un token sémantique de couleur (`--bg`, `--text-primary`) | `role` |
 | **voix** | un registre typographique (courante, mécanique, affiche) | `voice` |
+| **solde** · **se solder** | ce qu'une rangée sans élément élastique fait de ses hauteurs : elles restent proches (rapport 1,5 au plus), sans être égales — loi 16 de Composition, 11 septembre 2026 | `balance` |
+| **se fermer** | ce qu'une rangée fait quand elle porte un élément élastique : l'image prend la hauteur du texte, les bas arrivent ensemble | `close` |
+| **élastique** | ce qui, dans un item, peut prendre la hauteur que les voisins imposent — l'image, bornée par un rapport de recadrage ; jamais le texte, jamais un contrôle | `elastic` (`data-elastic`) |
 
 ## Ce qui ne bouge pas
 
@@ -98,6 +105,8 @@ ne bougent pas non plus. Les préfixes opaques de classes (`ry-`, `mo-`,
 
 ## Journal du lexique
 
+- **2026-09-11** — trois mots de la loi 16 de Composition : solde / se solder,
+  se fermer, élastique (`claude/composition-loi-16-le-solde-2026-09-11.md`).
 - **2026-09-08** — ouverture. La règle en quatre lignes, V0 et V11 tranchés,
   quatre francisés relevés dans le kit (jeton, squelette, tiroir, paquet-npm)
   et la migration du code vers l'anglais décidée, puis exécutée le jour même

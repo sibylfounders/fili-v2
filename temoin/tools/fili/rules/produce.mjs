@@ -179,6 +179,26 @@ au bord de la fenêtre · sous une image · avant un titre qui n'ouvre pas le bl
 Les quatre se lisent dans la structure sans savoir de quoi parle l'écran — comme
 la profondeur, ce sont des faits, pas des jugements.
 
+### Une rangée se ferme quand elle le peut, se solde sinon
+
+L'œil pèse les masses avant de lire. Deux blocs côte à côte sont comparés en
+hauteur avant qu'un mot soit déchiffré : un bas qui traîne, un vide sous une
+colonne se voient de loin.
+
+**Une rangée à colonnes se ferme** quand elle porte un élément élastique — une
+image : il prend la hauteur que le texte impose, et les bas arrivent ensemble, à
+une ligne près. **Elle se solde** sinon : sans élément élastique, les hauteurs de
+contenu restent proches (rapport 1,5 au plus — réglage ⚪, à valider à l'œil).
+Les hauteurs se mesurent **sur le contenu, jamais sur la boîte**.
+
+**L'empilement n'est jamais une réponse** : à une rangée qui ne se ferme pas, tu
+réponds par la forme des items (une, carte, vignette, ligne, titre), pas en les
+empilant. **Un contrôle n'est jamais élastique** — un bouton ne se tire pas à la
+hauteur d'un bloc. Un filet garde le même espace de chaque côté, à une ligne
+près. La règle ne vaut que pour une rangée effectivement à colonnes, à la
+largeur où les items sont côte à côte. Épreuve : \`node kit/tests/verify.mjs
+<fichier.html>\` (loi 16 de Composition, 11 septembre 2026).
+
 ### Les deux axes ne se mélangent jamais
 
 L'horizontal et le vertical ne respirent pas au même rythme. Le nom de la classe
@@ -363,6 +383,33 @@ Phrases courtes, mot courant plutôt que mot savant. **Pas d'excuses** — jamai
 reste possible. **Pas de félicitations**, aucun point d'exclamation. Le problème
 d'abord, la solution ensuite, un seul de chaque.
 
+
+## 9 · L'architecture des feuilles — le kit ne paie pas pour les démos
+
+Le CSS du front vit dans quatre feuilles, et une seule règle les sépare :
+**le socle ne porte jamais le décor d'une démonstration.**
+
+- **\`kit.css\`** — le socle livrable : primitives, patterns, halo de focus. Chargé
+  partout. Ni mise en page du site de doc, ni décor de démo ; neutre en mise en
+  page (aucune requête de fenêtre ni de conteneur).
+- **\`app.css\`** — la coque du site de documentation : en-tête, rail, feuille,
+  mega-menu, gabarit, paliers, et — en fin de feuille pour primer — les lois de
+  survie (postures divisées) et le plomb. Chargée partout, après \`kit.css\`. Ce
+  n'est pas le kit.
+- **\`demo.css\`** — l'outillage commun des démonstrations (aperçu redimensionnable,
+  espaces visibles, cadre, étages). Chargé **uniquement** par les pages qui
+  montrent des preuves.
+- **\`<page>.css\`** — le décor propre à une page (le bento de Couleur, les objets
+  de Composition…). Chargé par sa seule route.
+
+Le décor d'une démonstration va dans le CSS de sa page, ou dans \`demo.css\` s'il
+sert plusieurs pages — **jamais** dans \`kit.css\` ni \`app.css\`. Une animation se
+fait en CSS et n'anime que \`transform\` et \`opacity\` (jamais \`filter\`, \`width\` ou
+\`box-shadow\`, qui recalculent à chaque image) ; si l'effet ne peut pas s'exprimer
+ainsi, il devient une démo lourde en WebGL/canvas, chargée à la demande sur sa
+seule page, avec un repli statique. L'épreuve \`tests/frontiere.test.mjs\` bloque si
+un décor de démo retombe dans le socle.
+
 ---
 
 ## Avant de rendre ton travail
@@ -373,6 +420,7 @@ d'abord, la solution ensuite, un seul de chaque.
 4. Aucun token horizontal sur une propriété verticale.
 5. Aucune marge extérieure, sauf \`mx-auto\`.
 6. Chaque écart choisi par profondeur, pas au jugé.
+7. Aucun décor de démo dans \`kit.css\` ni \`app.css\` — il vit dans \`demo.css\` ou le CSS de la page.
 
 Puis lance \`npm run qpm\`. S'il rougit, c'est toi qui as tort, pas lui.
 `

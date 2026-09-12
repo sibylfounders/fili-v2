@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { RailDoc, useDocSections, type Toc } from "../rail";
 import { PanelCode } from "../preview";
-import { useAdaptation } from "../adaptation";
+import { useStack } from "../stack";
 import { Bands, Band, Demo, DemoSides, DemoSide, DemoScene, ListRules } from "../levels";
 import type { LineList } from "../levels";
 import type { ReactNode } from "react";
@@ -750,7 +750,7 @@ export default function View() {
   const [fault, setFault] = useState("");
   const [repaired, setRepaired] = useState(false); /* le pointeur est sur l'écran : il se répare, et le verdict le dit */
   const [fw, setFw] = useState<"React" | "Angular" | "HTML">("HTML");
-  const { styl } = useAdaptation();
+  const { styl } = useStack();
   const door = useRef<HTMLDivElement>(null);
   const bench = useRef<HTMLDivElement>(null);
   const current = FAULTS.find((f) => f.key === fault)!;

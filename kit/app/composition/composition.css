@@ -58,3 +58,211 @@
 .cb-column.defeat .cb-block.heading { margin-inline-start: 3.5rem; } /* casse */
 .cb-column.defeat .cb-block.text { margin-inline-start: 0; margin-inline-end: 2.5rem; } /* casse */
 .cb-column.defeat .cb-block.slab { margin-inline-start: 1.75rem; margin-inline-end: 0.75rem; } /* casse */
+
+/* ═══ DÉCOR DE LA PAGE COMPOSITION — sorti de globals.css le 12 septembre 2026 (séparation kit / démos).
+   Le kit ne charge plus ce décor ailleurs que sur /composition. ═══ */
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE COMPOSITION — pièce de référence : kit-composition-nu.html.
+   Le sujet de la page est le REGARD, et chaque preuve a SON objet : une
+   interface, une page de journal, une affiche, une page de magazine. La
+   faute écartée en séance : faire servir le même écran à toutes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* LA DETTE DU 25 AOÛT EST FERMÉE (7 septembre 2026). Treize valeurs vivaient
+   ici hors chaîne. L'arbitrage :
+   · ce qui appartient au KIT — la scène de preuve et les écarts entre une
+     scène et ce qu'elle dit (quatre valeurs) — descend de la chaîne : marge
+     de coque pour la scène, deuxième cran de page pour l'écart d'un banc ;
+   · ce qui appartient à l'OBJET IMITÉ — les boutons, champs et lignes de
+     la fausse interface, les colonnes du journal, l'affiche (neuf valeurs)
+     — n'entre PAS dans la chaîne, et c'est dit sur chaque ligne : un objet
+     mis en scène à échelle réduite imite un autre produit ; ses mesures
+     sont celles de ce produit, réduites d'un même facteur, pas des crans
+     du kit. Le banc des pages exclut ces objets par leur nom. */
+.co-scene { background: var(--surface); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline);
+  width: 100%; }
+/* La preuve 01 empile le verdict et le banc : elle seule, les autres
+   scènes de la page gardent leur mise en page. */
+.co-proof1 { display: grid; justify-items: start; gap: var(--pad-3-block); width: 100%; } /* toute la largeur de la scène du cadre */
+.co-duo-t { display: grid; grid-template-columns: 3fr 2fr; width: 100%;
+  gap: var(--page-2-inline); align-items: center; }
+/* Le banc de la preuve 01 : l'écran à gauche, les mots à droite, et les
+   filets tracés PAR-DESSUS les deux — d'où le calque en position absolue
+   sur le banc entier, et non sur la seule carte. */
+.co-bench { position: relative; display: grid; grid-template-columns: 3fr 2fr;
+  gap: var(--page-2-inline); align-items: stretch; width: 100%; }
+@media (max-width: 64rem) {
+  .co-bench { grid-template-columns: 1fr; }
+  .co-lex-foot { padding-left: 0; }
+}
+.co-hairlines { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 4; }
+.co-f-stroke { fill: none; stroke: var(--border-strong); stroke-width: 1; }
+.co-f-point { fill: var(--text-primary); }
+/* Le mot et le commentaire occupent la MÊME case : on passe de l'un à
+   l'autre sans que la page bouge d'un pixel. */
+.co-right { position: relative; display: grid; align-content: center; }
+.co-right > * { grid-area: 1 / 1; align-self: center; }
+.co-lex, .co-lex-foot dl { display: grid; gap: var(--pad-2-block); margin: 0; }
+/* Posé : chaque mot descend à la hauteur de son organe, le filet est droit. */
+.co-lex[data-set] { position: absolute; inset: 0; display: block;
+  grid-area: auto; align-self: stretch; justify-self: stretch; }
+.co-lex[data-set] > div { position: absolute; left: 0; right: 0; }
+.co-lex > div > dt, .co-lex-foot dt { font-weight: var(--weight-heading); font-size: var(--font-size-small); }
+.co-lex > div > dd, .co-lex-foot dd { margin: 0; font-size: var(--font-size-small);
+  line-height: 1.55; color: var(--text-secondary); }
+/* L'axe est une verticale : son mot descend avec elle, sous la carte. */
+.co-lex-foot { padding-left: var(--page-2-inline); padding-top: var(--pad-2-block); max-width: 46ch; }
+.co-lex.off, .co-says.off { visibility: hidden; }
+/* Le mot de l'axe part vraiment quand on casse : réserver sa place
+   creusait un trou sous la carte, et rien au-dessus ne bouge. */
+.co-lex-foot.off { display: none; }
+.co-left { display: grid; gap: var(--pad-3-block); justify-items: start; min-width: 0; }
+.co-door { position: relative; width: 100%; }
+.co-foot { position: relative; min-height: 1.5rem; width: 100%; }
+.co-says { font-size: var(--font-size-body); line-height: 1.6;
+  color: var(--text-primary); max-width: 32ch; }
+
+/* Le pied, une seule ligne : l'invite au repos ; la faute et le geste quand on casse ;
+   ce qui a réparé tant que le pointeur est sur l'écran (9 septembre : plus de verdict en tête). */
+.co-prompt { position: absolute; left: 0; top: 0;
+  font: var(--weight-label) var(--font-size-label)/1.5 var(--font-mono); color: var(--text-secondary);
+  pointer-events: none; max-width: 100%; }
+
+/* ── OBJET 1 · l'interface de travail ── */
+.co-app { border: 1px solid var(--border); border-radius: var(--r-1);
+  background: var(--bg); overflow: hidden; }
+.co-app-head { display: flex; align-items: center; gap: var(--gap-3-inline);
+  padding: var(--pad-3-block) var(--pad-3-inline); border-bottom: 1px solid var(--border); }
+.co-app-head i { width: 0.5rem; height: 0.5rem; border-radius: var(--r-pill); background: var(--primary); flex: none; }
+.co-app-head b { font-size: 0.8125rem; letter-spacing: -0.01em; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-app-body { padding: var(--pad-2-block) var(--pad-3-inline);
+  display: grid; gap: var(--co-g, 1.5rem); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-b { display: grid; gap: var(--co-gi, 0.35rem); margin-left: var(--co-dx, 0); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-label { font: var(--weight-label) 0.5625rem/1.4 var(--font-mono); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-kpi b { font-size: 2.6rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700; display: block; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-sub { font-size: 0.75rem; color: var(--text-secondary); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-li { display: flex; align-items: center; gap: var(--gap-3-inline);
+  font-size: 0.8125rem; padding-block: 0.28rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
+.co-li i { width: 0.35rem; height: 0.35rem; border-radius: var(--r-pill);
+  background: var(--border-strong); flex: none; }
+.co-pct { margin-left: auto; color: var(--text-secondary);
+  font-family: var(--font-mono); font-size: 0.625rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-cta { display: flex; gap: var(--gap-3-inline); flex-wrap: wrap; }
+.co-b1 { font-size: 0.75rem; font-weight: var(--weight-heading); border-radius: var(--r-ctl); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  padding: 0.45rem 0.8rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ background: var(--primary); color: var(--on-primary); }
+.co-b2 { font-size: 0.75rem; font-weight: var(--weight-label); border-radius: var(--r-ctl); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  padding: 0.45rem 0.8rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ border: 1px solid var(--border-strong); }
+.co-field { font-size: 0.75rem; color: var(--text-secondary); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border: 1px solid var(--border); border-radius: var(--r-2); padding: 0.3rem 0.55rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
+/* Les cinq fautes — appliquées TANT QU'ON NE SURVOLE PAS : le survol est
+   la solution, l'écran reprend sa forme juste. */
+.co-door:not(:hover) .f-dominant .co-list .co-label {
+  font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; text-transform: none; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  font-family: var(--font-sans); color: var(--text-primary); line-height: 1; }
+.co-door:not(:hover) .f-partition .co-b {
+  border: 1px solid var(--border); border-radius: var(--r-3); padding: var(--pad-3-block); }
+.co-door:not(:hover) .f-equi { --co-g: 0.6rem; --co-gi: 0.6rem; }
+.co-door:not(:hover) .f-axes .co-b:nth-child(2) { --co-dx: 1.4rem; }
+.co-door:not(:hover) .f-axes .co-b:nth-child(3) { --co-dx: 0.6rem; }
+.co-door:not(:hover) .f-axes .co-b:nth-child(4) { --co-dx: 2.2rem; }
+.co-door:not(:hover) .f-rupture .co-label { color: var(--primary); }
+.co-door:not(:hover) .f-rupture .co-b2 {
+  background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.co-door:not(:hover) .f-rupture .co-pct { color: var(--primary); font-weight: 700; } /* hors chaîne : la graisse de l'objet imité, à son échelle */
+.co-door:not(:hover) .f-rupture .co-app-head b { color: var(--primary); }
+
+/* ── Le calque de repères — il montre la faute là où elle est ── */
+.co-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 5;
+  transition: opacity var(--m-fast) var(--e-out); } /* survol */
+.co-door:hover .co-overlay { opacity: 0; }
+.co-r-frame { position: absolute; border: 1.5px solid var(--danger); border-radius: var(--r-ctl); }
+.co-r-thread { position: absolute; border-left: 1px dashed var(--danger); }
+.co-r-side { position: absolute; border-left: 1px solid var(--danger); width: 0; }
+.co-r-side::before, .co-r-side::after { content: ""; position: absolute; left: -3px;
+  width: 7px; border-top: 1px solid var(--danger); }
+.co-r-side::before { top: 0; } .co-r-side::after { bottom: 0; }
+.co-r-bullet { position: absolute; width: 0.55rem; height: 0.55rem; border-radius: var(--r-pill);
+  background: var(--danger); transform: translateY(-50%); }
+/* « fin » : l'étiquette se termine au point posé, elle pousse vers la
+   gauche — pour écrire dans le vide à gauche d'une cote. */
+.co-r-label.end { transform: translate(-100%, -50%); }
+.co-r-label { position: absolute; font: var(--weight-heading) 0.5625rem/1.35 var(--font-mono);
+  color: var(--on-danger); background: var(--danger); border-radius: var(--r-ctl);
+  padding: 0.15rem 0.4rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ white-space: nowrap; transform: translateY(-50%); }
+
+/* ── OBJET 2 · la page de journal et l'affiche ── */
+.co-pair { display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--page-2-inline); align-items: stretch; width: 100%; }
+.co-pair > div { display: grid; grid-template-rows: auto 1fr; gap: var(--pad-3-block); }
+.co-name-object { font: var(--weight-label) var(--font-size-label)/1 var(--font-mono); letter-spacing: var(--tracking-label);
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-press { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  padding: var(--pad-1-block) var(--pad-1-inline); font-family: var(--font-serif, Georgia, serif); height: 100%; }
+.co-kicker { font: var(--weight-label) 0.5625rem/1 var(--font-mono); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--danger); }
+.co-press h3 { font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  margin: 0.5rem 0 0.1rem; font-weight: 700; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-signature { font: var(--weight-body) 0.625rem/1.4 var(--font-mono); color: var(--text-secondary);
+  margin-bottom: var(--pad-3-block); }
+.co-cols { column-count: 2; column-gap: 1.1rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ font-size: 0.6875rem; line-height: 1.5;
+  text-align: justify; hyphens: auto; }
+.co-cols p { margin-bottom: 0.5rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-hairline { height: 1px; background: var(--surface-hover); margin: var(--pad-3-block) 0; }
+.co-brief { font-size: 0.625rem; line-height: 1.5; color: var(--text-secondary); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; gap: 0.35rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
+.co-display { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  height: 100%; padding: clamp(1.6rem, 4vw, 2.4rem); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; align-content: space-between; gap: 1.4rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ }
+.co-brand { font: var(--weight-heading) 0.625rem/1 var(--font-mono); letter-spacing: 0.24em; text-transform: uppercase; }
+.co-heading-display { font-size: clamp(1.7rem, 3.4vw, 2.6rem); line-height: 1.05; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  letter-spacing: -0.03em; font-weight: 700; } /* hors chaîne : la graisse de l'objet imité, à son échelle */
+.co-sub-display { font-size: 0.8125rem; color: var(--text-secondary); max-width: 26ch; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  margin-top: var(--pad-3-block); }
+.co-action { justify-self: start; font-size: 0.8125rem; font-weight: var(--weight-heading); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border-radius: var(--r-pill); padding: 0.6rem 1.2rem; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */ background: var(--primary); color: var(--on-primary); }
+
+/* Le chemin, en pointillé permanent — et le regard, un segment plein qui
+   le parcourt. Sans mouvement demandé, le pointillé dit le chemin. */
+.co-trace { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.co-trace path { fill: none; stroke: var(--warning); stroke-width: 4;
+  stroke-linecap: round; stroke-linejoin: round; }
+.co-path { stroke-dasharray: 1 9; opacity: 0.9; }
+.co-gaze { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .co-gaze { opacity: 1; stroke-width: 5; stroke-dasharray: 54 var(--len);
+    animation: co-read 4.6s cubic-bezier(0.5, 0, 0.5, 1) infinite; /* chorégraphie : la boucle du chemin de l'œil (verdict d'Auteur, 4 septembre) */
+    animation-delay: var(--delay, 0s); }
+}
+@keyframes co-read {
+  0% { stroke-dashoffset: 54; opacity: 0; }
+  6% { opacity: 1; }
+  72% { stroke-dashoffset: calc(-1 * var(--len)); opacity: 1; }
+  80%, 100% { stroke-dashoffset: calc(-1 * var(--len)); opacity: 0; }
+}
+
+/* ── OBJET 3 · la page de magazine, pour l'espace blanc ── */
+.co-mag { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-1);
+  padding: var(--co-mp, clamp(2rem, 5vw, 3.4rem)); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  display: grid; gap: var(--co-mg, 1.6rem); font-family: var(--font-serif, Georgia, serif); } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-section { font: var(--weight-label) 0.5625rem/1 var(--font-mono); letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--text-secondary); }
+.co-mag h3 { font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.1; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  letter-spacing: -0.02em; font-weight: 700; } /* hors chaîne : la graisse de l'objet imité, à son échelle */
+.co-lede-mag { font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); max-width: 34ch; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-pullquote { font-size: 1.05rem; line-height: 1.35; font-style: italic; /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  border-left: 2px solid var(--text-primary); padding-left: 1rem; max-width: 30ch; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-body-mag { column-count: 2; column-gap: var(--co-mg, 1.6rem); /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+  font-size: 0.75rem; line-height: 1.65; text-align: justify; hyphens: auto; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-body-mag p { margin-bottom: 0.6rem; } /* hors chaîne : réduction déclarée (7 sept. 2026) — mesure de l'objet imité, à son échelle */
+.co-door.tight .co-mag { --co-mp: 3px; --co-mg: 2px; }
+.co-door.tight .co-mag h3 { line-height: 0.98; }
+.co-door.tight .co-body-mag, .co-door.tight .co-lede-mag { line-height: 1.15; }
+.co-task { position: absolute; background: var(--text-primary); border-radius: var(--r-4); opacity: 0.9; }
+
+@media (max-width: 62rem) {
+  .co-duo-t { grid-template-columns: 1fr; align-items: start; }
+  .co-says { max-width: var(--measure); }
+  .co-pair { grid-template-columns: 1fr; }
+}

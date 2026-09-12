@@ -39,10 +39,10 @@ jugement.
 
 | Profondeur | Marge intérieure | Écart entre voisins | Rayon |
 |---|---|---|---|
-| `large` | 48 px | 24 px | — |
+| `wide` | 48 px | 24 px | — |
 | `page` | 34 px | 17 px | — |
-| `coque` | 24 px | 12 px | 12 px |
-| `carte` | 17 px | 8 px | 6 px |
+| `container` | 24 px | 12 px | 12 px |
+| `card` | 17 px | 8 px | 6 px |
 | `detail` | 12 px | 6 px | 3 px |
 
 Ces longueurs sont **arrondies pour la lecture**. Le calcul garde ses
@@ -76,7 +76,7 @@ cibles voisines, et les écarts des niveaux les plus fins tombent en dessous —
 un téléphone plus encore, parce que le vertical s'y resserre.
 
 **Une pile qui contient des composants emploie donc au minimum l'espace
-`coque`.** En dessous, deux boutons se touchent presque et
+`container`.** En dessous, deux boutons se touchent presque et
 le doigt se trompe. Ce n'est pas une préférence : c'est la seule règle du corpus
 qu'un utilisateur peut sentir dans son pouce.
 
@@ -123,6 +123,26 @@ au bord de la fenêtre · sous une image · avant un titre qui n'ouvre pas le bl
 Les quatre se lisent dans la structure sans savoir de quoi parle l'écran — comme
 la profondeur, ce sont des faits, pas des jugements.
 
+### Une rangée se ferme quand elle le peut, se solde sinon
+
+L'œil pèse les masses avant de lire. Deux blocs côte à côte sont comparés en
+hauteur avant qu'un mot soit déchiffré : un bas qui traîne, un vide sous une
+colonne se voient de loin.
+
+**Une rangée à colonnes se ferme** quand elle porte un élément élastique — une
+image : il prend la hauteur que le texte impose, et les bas arrivent ensemble, à
+une ligne près. **Elle se solde** sinon : sans élément élastique, les hauteurs de
+contenu restent proches (rapport 1,5 au plus — réglage ⚪, à valider à l'œil).
+Les hauteurs se mesurent **sur le contenu, jamais sur la boîte**.
+
+**L'empilement n'est jamais une réponse** : à une rangée qui ne se ferme pas, tu
+réponds par la forme des items (une, carte, vignette, ligne, titre), pas en les
+empilant. **Un contrôle n'est jamais élastique** — un bouton ne se tire pas à la
+hauteur d'un bloc. Un filet garde le même espace de chaque côté, à une ligne
+près. La règle ne vaut que pour une rangée effectivement à colonnes, à la
+largeur où les items sont côte à côte. Épreuve : `node kit/tests/verify.mjs
+<fichier.html>` (loi 16 de Composition, 11 septembre 2026).
+
 ### Les deux axes ne se mélangent jamais
 
 L'horizontal et le vertical ne respirent pas au même rythme. Le nom de la classe
@@ -130,7 +150,7 @@ porte son axe, et **un token horizontal posé sur une propriété verticale est 
 faute** que le robot voit.
 
 ```
-✅  px-inline-coque      py-block-coque
+✅  px-inline-container  py-block-container
 ✅  gap-x-inline-carte   gap-y-block-carte
 ❌  py-inline-coque      gap-y-inline-carte
 ```
@@ -141,7 +161,7 @@ Un élément ne pousse pas son voisin. C'est le conteneur qui distribue.
 
 ```
 ✅  <Pile espace="carte">…</Pile>          ✅  <Grille colonnes={2} espace="coque">
-❌  <div className="mt-block-carte">       ❌  style={{ marginTop: 12 }}
+❌  <div className="mt-block-card">       ❌  style={{ marginTop: 12 }}
 ```
 
 **Aucune marge extérieure n'est autorisée**, sauf `mx-auto` pour centrer.
@@ -165,8 +185,8 @@ hiérarchie mal posée.
 
 ## 3 · Les couleurs — huit fonds et encres, quatre états
 
-Fonds et encres : `papier` · `paperHollow` · `paperHover` · `paperSelection` · `scene` · `encre` · `inkSoft` · `inkLight` · `inkOff` · `inkInverse` · `trait` · `strokeNet` · `accent`
-États : `erreur` · `alerte` · `succes` · `information`
+Fonds et encres : `paper` · `paperHollow` · `paperHover` · `paperSelection` · `scene` · `ink` · `inkSoft` · `inkLight` · `inkOff` · `inkInverse` · `stroke` · `strokeNet` · `accent`
+États : `error` · `alert` · `success` · `information`
 
 Une seule couleur est choisie dans tout le système (`#4F46E5`) ; toutes
 les autres en sont calculées, et chaque paire fond/texte tient son contraste par
@@ -246,7 +266,7 @@ clic imprévisible.
 
 Largeurs : `max-w-reading` · `max-w-page` · `max-w-rail` · `max-w-floor` — un bloc de texte suivi ne dépasse jamais `max-w-reading`.
 
-Bascules d'écran : `mobile:` · `tablette:` · `bureau:` — et rien d'autre. Aucune largeur écrite à la main
+Bascules d'écran : `mobile:` · `tablet:` · `desktop:` — et rien d'autre. Aucune largeur écrite à la main
 dans une requête média.
 
 ---
@@ -256,7 +276,7 @@ dans une requête média.
 Une balise interactive nue est refusée. Ces 16 pièces existent,
 tu les emploies :
 
-`Section` · `Titre` · `Texte` · `Pile` · `Grille` · `Token` · `Alerte` · `Vide` · `Skeleton` · `Rendu` · `Prose` · `Selection` · `TextField` · `Button` · `EtatAsync` · `LIBELLES`
+`Section` · `Heading` · `Text` · `Stack` · `Grid` · `Chip` · `Alert` · `Empty` · `Skeleton` · `Render` · `Prose` · `Selection` · `TextField` · `Button` · `StateAsync` · `LABELS`
 
 ```
 ✅  <Button onPress={…}>Prononcer</Button>
@@ -307,6 +327,33 @@ Phrases courtes, mot courant plutôt que mot savant. **Pas d'excuses** — jamai
 reste possible. **Pas de félicitations**, aucun point d'exclamation. Le problème
 d'abord, la solution ensuite, un seul de chaque.
 
+
+## 9 · L'architecture des feuilles — le kit ne paie pas pour les démos
+
+Le CSS du front vit dans quatre feuilles, et une seule règle les sépare :
+**le socle ne porte jamais le décor d'une démonstration.**
+
+- **`kit.css`** — le socle livrable : primitives, patterns, halo de focus. Chargé
+  partout. Ni mise en page du site de doc, ni décor de démo ; neutre en mise en
+  page (aucune requête de fenêtre ni de conteneur).
+- **`app.css`** — la coque du site de documentation : en-tête, rail, feuille,
+  mega-menu, gabarit, paliers, et — en fin de feuille pour primer — les lois de
+  survie (postures divisées) et le plomb. Chargée partout, après `kit.css`. Ce
+  n'est pas le kit.
+- **`demo.css`** — l'outillage commun des démonstrations (aperçu redimensionnable,
+  espaces visibles, cadre, étages). Chargé **uniquement** par les pages qui
+  montrent des preuves.
+- **`<page>.css`** — le décor propre à une page (le bento de Couleur, les objets
+  de Composition…). Chargé par sa seule route.
+
+Le décor d'une démonstration va dans le CSS de sa page, ou dans `demo.css` s'il
+sert plusieurs pages — **jamais** dans `kit.css` ni `app.css`. Une animation se
+fait en CSS et n'anime que `transform` et `opacity` (jamais `filter`, `width` ou
+`box-shadow`, qui recalculent à chaque image) ; si l'effet ne peut pas s'exprimer
+ainsi, il devient une démo lourde en WebGL/canvas, chargée à la demande sur sa
+seule page, avec un repli statique. L'épreuve `tests/frontiere.test.mjs` bloque si
+un décor de démo retombe dans le socle.
+
 ---
 
 ## Avant de rendre ton travail
@@ -317,5 +364,6 @@ d'abord, la solution ensuite, un seul de chaque.
 4. Aucun token horizontal sur une propriété verticale.
 5. Aucune marge extérieure, sauf `mx-auto`.
 6. Chaque écart choisi par profondeur, pas au jugé.
+7. Aucun décor de démo dans `kit.css` ni `app.css` — il vit dans `demo.css` ou le CSS de la page.
 
 Puis lance `npm run qpm`. S'il rougit, c'est toi qui as tort, pas lui.
