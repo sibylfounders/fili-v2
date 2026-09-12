@@ -14,6 +14,9 @@
    RIEN N'EST VERT TANT QUE LA CAPACITÉ À ÉCHOUER N'EST PAS PROUVÉE : avant de juger le
    fichier, l'épreuve rejoue ses fixtures piégées et leurs mutations (tests/fixtures/voisins/).
    Une mutation qui ne fait pas rougir le cas qu'elle vise → refus de statuer, code 2.
+   Une mutation qui le rougit de moins de MARGE lignes → refus de statuer aussi : elle tient
+   à un cheveu, donc au rendu du texte de la machine, et elle repassera au vert ailleurs sans
+   que personne le voie (12 septembre 2026 : c'est exactement ce qui était arrivé au cas a).
    Un cas rouge sur le fichier → code 1. Tout vert → code 0.
 
    Ce que l'épreuve ne juge pas : si le seuil 1,5 et la tolérance d'une ligne sont les bons
@@ -32,6 +35,7 @@ import { MUTATIONS } from './fixtures/voisins/mutations.mjs'
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURES = path.join(HERE, 'fixtures', 'voisins')
 const CASES = { close: 'a · se fermer', balance: 'b · se solder', control: 'c · contrôle', separator: 'd · filet' }
+const MARGE = 3 /* lignes : la marge minimale qu'une mutation doit prendre sur son seuil */
 
 const args = process.argv.slice(2)
 const flag = (n) => args.includes(n)
@@ -64,8 +68,12 @@ async function prove() {
     const { verdict } = await neighbors(p)
     await close()
     const red = Object.keys(CASES).filter((k) => verdict[k].length > 0)
-    const ok = m.expect.length === 0 ? red.length === 0 : m.expect.every((k) => red.includes(k)) && red.every((k) => m.expect.includes(k))
-    results.push({ file: m.file, mutation: m.name, expect: m.expect, red, ok, detail: red.map((k) => verdict[k].map((f) => f.detail).join(' ; ')).join(' | ') })
+    const aimed = m.expect.length === 0 ? red.length === 0 : m.expect.every((k) => red.includes(k)) && red.every((k) => m.expect.includes(k))
+    /* la marge d'une mutation : la plus courte des marges des fautes qu'elle vise */
+    const margins = m.expect.flatMap((k) => verdict[k].map((f) => f.marginLines)).filter((x) => Number.isFinite(x))
+    const margin = margins.length ? Math.min(...margins) : null
+    const thin = aimed && m.expect.length > 0 && margin !== null && margin < MARGE
+    results.push({ file: m.file, mutation: m.name, expect: m.expect, red, margin, thin, ok: aimed && !thin, detail: red.map((k) => verdict[k].map((f) => f.detail).join(' ; ')).join(' | ') })
   }
   return results
 }
@@ -105,8 +113,14 @@ function report({ proof, file, over, url }) {
   lines.push(`Épreuve — ${url}`)
   lines.push(`Largeur de référence : ${WIDTH} px · seuil ${SETTINGS.ratio} · tolérance ${SETTINGS.lines} ligne (réglages ⚪)`)
   lines.push('')
-  lines.push(`${proofOk ? G : R} Preuve de la capacité à échouer : ${proof.filter((x) => x.ok).length}/${proof.length} — ${proof.filter((x) => x.ok).length === proof.length ? 'chaque mutation rougit le cas qu\'elle vise, chaque fixture piégée passe' : 'REFUS DE STATUER'}`)
-  for (const x of proof) if (!x.ok) lines.push(`   ${R} ${x.file} · ${x.mutation} : attendu ${x.expect.join(',') || 'vert'}, obtenu ${x.red.join(',') || 'vert'}${x.detail ? ' — ' + x.detail : ''}`)
+  lines.push(`${proofOk ? G : R} Preuve de la capacité à échouer : ${proof.filter((x) => x.ok).length}/${proof.length} — ${proof.filter((x) => x.ok).length === proof.length ? `chaque mutation rougit le cas qu'elle vise d'au moins ${MARGE} lignes, chaque fixture piégée passe` : 'REFUS DE STATUER'}`)
+  for (const x of proof) {
+    if (x.ok) continue
+    if (x.thin) lines.push(`   ${R} ${x.file} · ${x.mutation} : rougit bien ${x.red.join(',')}, mais de ${x.margin.toFixed(1)} ligne(s) seulement (il en faut ${MARGE}) — cette mutation dit la police de la machine, pas la loi`)
+    else lines.push(`   ${R} ${x.file} · ${x.mutation} : attendu ${x.expect.join(',') || 'vert'}, obtenu ${x.red.join(',') || 'vert'}${x.detail ? ' — ' + x.detail : ''}`)
+  }
+  const thinnest = proof.filter((x) => x.margin !== null && x.margin !== undefined)
+  if (proofOk && thinnest.length) lines.push(`   marge la plus courte : ${Math.min(...thinnest.map((x) => x.margin)).toFixed(1)} lignes`)
   if (!proofOk || !file) return { text: lines.join('\n'), red: !proofOk, refused: !proofOk }
   lines.push('')
   const v = file.verdict, c = v.counts

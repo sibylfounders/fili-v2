@@ -16,6 +16,11 @@
    ligne (la hauteur de ligne du texte de la rangée). Ils sont passés à l'inspecteur, jamais
    écrits dedans.
 
+   Chaque faute dit de combien de LIGNES elle franchit son seuil (marginLines) — dans la même
+   unité pour les quatre cas, y compris le solde, où l'excès se lit aussi en lignes. Une faute
+   n'est pas un booléen : une qui tient à un cheveu ne dit que la police de la machine. C'est
+   ce que la preuve de verify.mjs exige des mutations (12 septembre 2026).
+
    Tout ce fichier s'exécute DANS la page (page.evaluate) : il ne peut rien importer, il ne
    ferme sur rien. Il rend des faits ; le juge est dans verify.mjs. */
 
@@ -175,21 +180,21 @@ export function judge(facts, S = SETTINGS) {
       out.counts.rowsElastic++
       const bottoms = cols.map((c) => c.content.bottom)
       const spread = Math.max(...bottoms) - Math.min(...bottoms)
-      if (spread > S.lines * line + 0.5) out.close.push({ where, spread, line, detail: cols.map((c) => `${c.name} ${c.elastic ? '(élastique) ' : ''}bas à ${Math.round(c.content.bottom)}`).join(' · ') })
+      if (spread > S.lines * line + 0.5) out.close.push({ where, spread, line, marginLines: (spread - (S.lines * line + 0.5)) / line, detail: cols.map((c) => `${c.name} ${c.elastic ? '(élastique) ' : ''}bas à ${Math.round(c.content.bottom)}`).join(' · ') })
     } else {
       const tallest = Math.max(...cols.map((c) => c.content.height))
       if (tallest < S.minLines * line) continue
       out.counts.rowsPlain++
       const heights = cols.map((c) => c.content.height).filter((h) => h > 0)
       const ratio = Math.max(...heights) / Math.min(...heights)
-      if (ratio > S.ratio) out.balance.push({ where, ratio, detail: cols.map((c) => `${c.name} ${Math.round(c.content.height)}`).join(' · ') })
+      if (ratio > S.ratio) out.balance.push({ where, ratio, marginLines: (Math.max(...heights) - Math.min(...heights) * S.ratio) / line, detail: cols.map((c) => `${c.name} ${Math.round(c.content.height)}`).join(' · ') })
     }
   }
   for (const c of facts.controls) {
-    if (c.stretched > c.line * 0.5 && c.box > 2 * c.line) out.control.push({ where: c.name, box: c.box, content: c.content + c.shell, detail: `boîte ${Math.round(c.box)}, contenu ${Math.round(c.content + c.shell)}` })
+    if (c.stretched > c.line * 0.5 && c.box > 2 * c.line) out.control.push({ where: c.name, box: c.box, content: c.content + c.shell, marginLines: (c.stretched - c.line * 0.5) / c.line, detail: `boîte ${Math.round(c.box)}, contenu ${Math.round(c.content + c.shell)}` })
   }
   for (const s of facts.separators) {
-    if (Math.abs(s.above - s.below) > S.lines * s.line + 0.5) out.separator.push({ where: s.name, above: s.above, below: s.below, detail: `${Math.round(s.above)} au-dessus, ${Math.round(s.below)} au-dessous` })
+    if (Math.abs(s.above - s.below) > S.lines * s.line + 0.5) out.separator.push({ where: s.name, above: s.above, below: s.below, marginLines: (Math.abs(s.above - s.below) - (S.lines * s.line + 0.5)) / s.line, detail: `${Math.round(s.above)} au-dessus, ${Math.round(s.below)} au-dessous` })
   }
   return out
 }

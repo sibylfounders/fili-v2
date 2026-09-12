@@ -6,7 +6,14 @@
      Le piège : le texte porte un demi-ligne de marge intérieure en bas (12 px sous 24 de ligne) —
      les BOÎTES ont la même hauteur (grille étirée), les CONTENUS diffèrent d'une demi-ligne.
      Une mesure sur la boîte dirait toujours « aligné » ; une mesure au contenu dit « à une ligne
-     près », et c'est ce qu'il faut. Un compteur masqué traîne dans le code : il ne se lit pas. */
+     près », et c'est ce qu'il faut. Un compteur masqué traîne dans le code : il ne se lit pas.
+
+     L'image est une bande (400 × 140) : sous « height: 100% » son format ne compte pas, elle
+     prend la hauteur du texte. Mais dès qu'une mutation lui rend son format, son bas retombe
+     très au-dessus du texte — loin sous le seuil, quelle que soit la police qui rend la page.
+     C'est voulu : une mutation doit rougir par plusieurs lignes, jamais d'un cheveu, sinon la
+     preuve dit ce que disent les polices de la machine et non ce que dit la loi (12 septembre
+     2026 : en 400 × 300 elle ne tenait qu'à 33 px, et à 2,5 px pour le paragraphe masqué). */
   body { font: 16px/1.5 system-ui, sans-serif; margin: 40px; color: #1a1a1a; background: #fff; }
   .row { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; align-items: stretch; max-width: 900px; }
   .media img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -17,7 +24,7 @@
 </style></head>
 <body>
   <div class="row">
-    <div class="media"><img src="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect width=%22400%22 height=%22300%22 fill=%22%237a8ca0%22/><circle cx=%22200%22 cy=%22150%22 r=%2290%22 fill=%22%23e7ecf1%22/></svg>" alt=""></div>
+    <div class="media"><img src="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 140%22><rect width=%22400%22 height=%22140%22 fill=%22%237a8ca0%22/><circle cx=%22200%22 cy=%2270%22 r=%2245%22 fill=%22%23e7ecf1%22/></svg>" alt=""></div>
     <div class="text">
       <h2 style="margin:0 0 12px;font-size:20px;line-height:1.2">Le bas de l'image et le bas du texte arrivent ensemble</h2>
       <p>Une rangée qui porte une image n'a pas à choisir entre deux hauteurs : l'image prend celle du texte. Elle est élastique, le texte ne l'est pas — le texte est intouchable, l'image se recadre.</p>
